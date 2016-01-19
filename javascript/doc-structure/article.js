@@ -109,7 +109,7 @@ else g.disclaimer = ''
 
 var mainNavigation = '<aside id="mainNavigation">'+
 '	<nav id="site-navigation">'+
-'		<a href="/International/"><img id="picture" alt="'+s.worldMap+'" title="'+s.worldMap+'" src="/International/icons/world.gif" width="150" height="61"/></a>'+
+'		<a href="/International/"><img id="picture" alt="'+s.worldMap+'" title="'+s.worldMap+'" src="'+f.path+'/icons/world.gif" width="150" height="61"/></a>'+
 		versionList+
 '		</nav>'+
 	g.disclaimer+
@@ -120,7 +120,7 @@ var mainNavigation = '<aside id="mainNavigation">'+
 '	<div id="aboutdoc">'+g.about+'</div>'+
 '	</aside>'+
 '	<nav id="boilerplate">'+
-'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="/International/icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
+'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'/icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
 s.internationalizationTitle+'</a></div>'+
 '	<div id="sitelinks" class="noprint"><a href="/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a>&#xA0;'+s.rlm+
 '	<a href="/International/resources" title="'+s.informationResources+'">'+s.resources+'</a>&#xA0;'+s.rlm+
