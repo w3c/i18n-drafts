@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<title>Att använda kodade tecken i uppmärkning och CSS</title>
+<meta name="description" content="Hur kan jag använda kodade tecken i uppmärkning och i CSS, och när böär jag använda sådant respektive inte använda sådant?" />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions/' // the directory path below /International up to but not including the file name: must end in a slash! 
+f.filename = 'qa-escapes' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-escapes' // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-08-05' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-12', time:'16:47'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-19', time:'10:22'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Olle Olsson, SICS' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="olleo@sics.se" // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+// also make sure that the lang attribute on the html tag is correct!
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="application/javascript" src="qa-escapes-data/translations.js"> </script>
+<script type="application/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="application/javascript" src="../javascript/boilerplate-text/boilerplate-sv.js"> // TRANSLATORS must change -en to the subtag for their language! </script>  
+<script type="application/javascript" src="../javascript/doc-structure/article.js"> </script>
+<link rel="stylesheet" href="../style/article-display-html5.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header> 
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Att använda kodade tecken i uppmärkning och CSS</h1>
+</header>
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span>  Kodare av HTML/XML/CSS (som använder texteditorer eller scripts), skriptutvecklare (PHP, JSP, etc.), och alla som behöver ytterligare råd om hur och när man ska använda (eller inte ska använda) andra representationsformer för ett konkret tecken i ett dokument.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+  <p class="question">Hur kan jag använda kodade tecken i uppmärkning och i CSS, och när bör jag använda sådana, och när inte göra det?</p>
+</section>
+
+<section>
+	<h2 id="answer"><a href="#answer">Answer</a></h2>
+  <section id="what">
+    <h3><a href="#what"> Vilka typer av kodade tecken kan användas i uppmärkning?</a></h3>
+    <p>
+     Du kan använda ett <dfn><span lang="en">kodat tecken</span></dfn>
+     (<span lang="en">character escape</span>)
+     för att representera alla <span lang="en">Unicode</span>-tecken
+     i HTML, XHTML och XML, genom att enbart använda tecken i ASCII.
+   </p>
+   <aside class="insideinfonote">
+     Olika specifikationer kan använda olika benämningar på dessa konstruktioner.
+     Till exempel kan namngivna teckenreferenser
+     (<span lang="en">named character  references</span>)
+     i vissa sammanhang kallas 
+     <dfn>referenser till teckenentiteter</dfn>
+     (<span lang="en">character entity references</span>).
+     Vi har i denna artikel valt att använda de namn som förekommer inom HTML5. 
+   </aside>
+   <p>
+     <dfn id="ncr">Numeriska teckenreferenser</dfn>
+     (<span lang="en">numeric character references</span>, NCRs)
+     och
+     <dfn id="entity_ref">namngivna teckenreferenser</dfn>
+     (<span lang="en">named character  references</span>)
+     är olika typer av kodade tecken vilka används inom uppmärkning.
+     Så ges nedan exempel på olika sätt att representera tecknet
+     <span class="uname">U+00A0 <span lang="en">NO-BREAK SPACE</span></span>.
+   </p>
+   <p>
+     (Tecknet <span class="uname"><span lang="en">NO-BREAK SPACE</span></span>
+     ser ut som ett blanktecken, men det förhindrar radbrytning mellan
+     tecknen på ömse sidor om detta tecknet.
+     I det franska språket används det ofta tillsammans med
+     interpunktion som kolon och utropstecken, vilka föregås av ett
+     blankt tecken, men som själv inte får placeras först på en rad
+     vid radbrytning.)
+    </p>
+    <div class="sidenoteGroup"> 
+      <!--<p><span class="newterm">NCRs</span> (Numeric Character References) and <span class="newterm">character entities</span> are types of <span class="newterm">escape</span>, ie. ways of representing any Unicode character in XML or (X)HTML using only ASCII characters. For example, the following are different ways of representing the character <span class="uname">U+00A0 NO-BREAK SPACE</span>:</p>-->
+      <dl>
+        <dt><code>&amp;#xA0;</code></dt>
+        <dd>
+          En hexadecimal numerisk teckenreferens. 
+          Alla numeriska teckenreferenser börjar med <code>&amp;#</code>
+          och slutar med <code>;</code>. 
+          Bokstaven <code>x</code>
+     	  anger att det som följer är ett hexadecimalt tal vilket representerar värdet för 
+	  kodpunkten (<span lang="en">code point value</span>)
+  	  för ett tecken i <span lang="en">Unicode</span>.
+	  Det hexadecimala talet är inte känsligt för stora/små bokstäver.
+          <div class="example"><code lang="fr" xml:lang="fr">&lt;p&gt;Vive la France&amp;#xA0;!&lt;/p&gt;</code></div>
+        </dd>
+        <dt><code>&amp;#160;</code></dt>
+        <dd>
+	  En decimal numerisk teckenreferens.
+	  Denna använder ett decimalt tal för att representera samma kodpunkt i 
+	  <span lang="en">Unicode</span>.
+	    <div class="example"><code lang="fr" xml:lang="fr">&lt;p&gt;Vive la France&amp;#160;!&lt;/p&gt;</code></div>
+        </dd>
+        <dt><code>&amp;nbsp;</code></dt>
+        <dd>
+	  En namngiven teckenreferens.
+
+	  Detta är en helt annat sätt att koda tecken. 
+
+	  Namngivna teckenreferenser definieras i specifikationen av
+	  uppmärkningsspråket.
+
+ 	  Detta betyder till exempel att, för HTML, kan bara en
+ 	  begränsad mängd tecken (definierad i specifikationen av
+ 	  HTML) representeras som namngivna teckenreferenser (och detta
+ 	  utgör endast en liten delmängd av tecknen i
+	  <span lang="en">Unicode</span>).
+
+	  Observera att sådana namn är känsliga för stora/små tecken: 
+          i HTML representerar <code>&amp;Aacute;</code> 
+          den <em>versala</em> bokstaven <span class="qchar">Á</span>, 
+	  medan <code>&amp;aacute;</code> representerar 
+          den <em>gemena</em> bokstaven <span class="qchar">á</span>.
+
+          <div class="example"><code lang="fr" xml:lang="fr">&lt;p&gt;Vive la France&amp;nbsp;!&lt;/p&gt;</code></div>
+        </dd>
+      </dl>
+      <aside class="sideinfonote">
+        Några webbläsare kan även hantera numeriska teckenreferenser
+        då det avslutande semikolonet saknas, men man bör som
+        författare alltid avsluta numeriska teckenreferenser med semikolon,
+        eftersom annars interoperabilitetsproblem kan uppstå.
+
+	Och om man anger semikolon, så undviker man det potentiella
+	problemet att webbläsaren inte kan upptäcka var kodningen
+	slutar, i de fall att det kodade tecknet är inbäddat i text.
+      </aside>
+    </div>
+    <p>
+      Det är värt att påpeka att värdet för numeriska teckenreferenser 
+      (såsom <code>&amp;#x20AC;</code> eller <code>&amp;#8364;</code> 
+      vilka står för euro-tecknet <span class="qchar">&#x20ac;</span>)
+      tolkas som <span lang="en">Unicode</span>-tecken
+      &#x2013; <strong>oavsett vilken kodning du använder för ditt dokument</strong>.
+
+      Ofta ser man att de som arbetar med innehåll kodat i Windows
+      kodsida 1252 försöker representera euro-tecknet genom att ange
+      <code>&amp;#x80;</code>, eftersom eurotecknet finns i position
+      80 (hexadecimalt) i Windows kodsida 1252.
+
+      Men om man använder <code>&amp;#x80;</code> i HTML-innehåll,
+      så borde det faktiskt skapa ett kontrolltecken 
+      (<span lang="en">control character</span>),
+      eftersom denna kodning ska expanderas till tecknet i position 80
+      i <span lang="en">Unicode</span>-repertoaren.
+
+      (Men webbläsare brukar helt tyst korrigera detta fel.
+      Se <a href="/International/tests/repo/results/escapes#reallocated">testsidor</a>.)
+    </p>
+  </section>
+  <section id="cssescapes">
+    <h3><a href="#cssescapes"> CSS-kodningar</a></h3>
+    <p>
+      I CSS representeras kodade tecken på ett annat sätt.
+
+      För att representera ett tecken genom kodning, så ange först ett
+      omvänt snedstreck, och ange sedan det hexadecimala talet som
+      representerar det önskade tecknets kodpunktvärde i 
+      <span lang="en">Unicode</span>.
+    </p>
+    <p>
+      Om det därefter följande tecknet inte är ett av tecknen
+      A&#x2013;F, a&#x2013;f eller 0&#x2013;9,
+      så behöver du inte ange något mer.
+  
+      Följande exempel representerar ordet 
+      <span class="qterm" lang="fr" xml:lang="fr">émotion</span>.
+    </p>
+    <div class="example"><code xml:lang="fr" lang="fr">.\E9motion  { ... }</code></div>
+    <p>
+      Om, å andra sidan, det omedelbart följande tecknet är ett tecken som kan
+      användas för att hexadecimalt ange ett tal, då är det tvetydigt var
+      talets representation slutar.
+
+      I sådana fall finns det två alternativa tillvägagångssätt.
+
+      Det första är att använda ett blanktecken efter kodningen.
+ 
+      Detta blanktecken är en del av kodningens syntax, och kommer
+      inte att finnas kvar efter det att representationen av det
+      kodade tecknet analyserats.
+
+      Följande exempel visar hur du kan representera ordet
+      <span class="qterm"  lang="fr" xml:lang="fr">édition</span>.
+    </p>
+    <div class="example"><code xml:lang="fr" lang="fr">.\E9 dition  { ... }</code></div>
+    <p>
+      Alternativt kan du ange ett sexsiffrigt hexadecimalt tal, med
+      eller utan ett avslutande blanktecken.
+      Här följer ett alternativt sätt att skriva
+      <span class="qterm"  lang="fr" xml:lang="fr">édition</span>.
+    </p>
+    <div class="example"><code xml:lang="fr" lang="fr">.\0000E9dition  { ... }</code></div>
+    <p>
+      Eftersom ett blanktecken som följer efter ett hexadecimalt tal
+      räknas som en del i kodningen, så måste du, om du faktiskt vill
+      att det kodade tecknet ska följas av ett blanktecken, ange två
+      blanktecken (efter ett hexadecimalt tal av godtycklig längd).
+    </p>
+    <p>
+      Omvänt snedstreck kan i CSS även användas före sådana tecken som
+      har speciell betydelse i CSS, för att förhindra att detta tecken
+      hanteras som del i kodningen av ett kodat tecken.
+
+      Mer information om kodade tecken i CSS finns i 
+      <a href="http://www.w3.org/TR/css-syntax-3/#escaping">CSS <span lang="en">Syntax Module</span></a>.
+    </p>
+  </section>
+  <section id="not">
+    <h3><a href="#not">När man inte bör använda kodade tecken</a></h3>
+    <p>
+      Det är nästan alltid bäst att använda en teckenkodning i vilken
+      du kan använda tecken på deras normala sätt, istället för att
+      använda namngivna teckenreferenser eller numeriska
+      teckenreferenser.
+    </p>
+    <p>
+      Om man använder kodade tecken så kan det vara svårt att läsa och
+      underhålla källkoden, och det kan även avsevärt öka
+      filstorleken.
+    </p>
+    <p>
+      Många engelsktalande utvecklare tror att man i andra språk
+      enbart i begränsad omfattning använder tecken utanför ASCII, men
+      detta är fel.
+    </p>
+    <p>
+      Tag till exempel följande textstycke i tjeckiska.
+    </p>
+    <blockquote>
+      <p lang="cs" xml:lang="cs">Jako efektivn&#x11b;j&#x161;í se nám jeví po&#x159;ádání tzv. Road Show prost&#x159;ednictvím na&#x161;ich autorizovaných dealer&#x16f; v   &#x10c;echách a na Morav&#x11b;, které prob&#x11b;hnou v pr&#x16f;b&#x11b;hu zá&#x159;í a &#x159;íjna.</p>
+    </blockquote>
+    <p>
+      Om du skulle använda numeriska teckenreferenser för alla tecken
+      som inte är ASCII, så skulle detta stycke vara oläsbart, svårt
+      att underhålla, och mycket mer voluminöst.
+
+      Det skulle naturligtvis bli ännu värre i ett språk som inte
+      använder latinska bokstäver.
+    </p>
+    <blockquote>
+      <p lang="cs" xml:lang="cs">Jako efektivn&amp;#x115;j&amp;#x161;&amp;#xED; se n&amp;#xE1;m jev&amp;#xED;   po&amp;#x159;&amp;#xE1;d&amp;#xE1;n&amp;#xED; tzv. Road Show prost&amp;#x159;ednictv&amp;#xED;m na&amp;#x161;ich autorizovan&amp;#xFD;ch   dealer&amp;#x16F; v &amp;#x10C;ech&amp;#xE1;ch a na Morav&amp;#x11B;, kter&amp;#xE9; prob&amp;#x11B;hnou v pr&amp;#x16F;b&amp;#x11B;hu   z&amp;#xE1;&amp;#x159;&amp;#xED; a &amp;#x159;&amp;#xED;jna.</p>
+    </blockquote>
+    <p>
+      Som nämnts tidigare, så bör man använda direkta tecken snarare
+      än kodade tecken i vanlig text.
+    </p>
+    <p>
+      <strong class="leadin" id="useinxhtml">Användning i  XHTML.</strong> 
+      Det kan vara problematiskt att använda namngivna
+      teckenreferenser i dokument som skall analyseras som XML, om
+      dessa teckenentiteter definieras separat från ditt dokument, och om de
+      verktyg som bearbetar XML inte läser in externa filer.
+      I sådana fall kommer entitetsreferenserna inte att ersättas av
+      sina motsvarande tecken.
+      Av detta skäl bör du, om du måste använda kodade tecken, helst
+      använda numeriska teckenreferenser, eller definiera - i
+      dokumentet ifråga - de teckenentiteter som du behöver använda.
+    </p>
+    <p>
+      Om du använder 
+      <a href="http://www.w3.org/TR/html401/sgml/entities.html">teckenentitetsreferenser definierade av HTML</a>
+      (såsom <span class="kw">&amp;aacute;</span>) för att
+      representera tecken i XHTML, så bör du vara uppmärksam på vad
+      som händer när ditt innehåll bearbetas med XML-analysatorer
+      eller andra verktyg.
+    </p>
+  </section>
+  <section id="use">
+    <h3><a href="#use">När man bör använda kodade tecken</a></h3>
+    <p>
+      <strong class="leadin">Syntax-specifika tecken.</strong>
+      Det finns tre tecken som alltid bör kodas när de förekommer i innehåll, så att de
+      inte oavsiktligt påverkar syntaxen av uppmärkningen.
+      Dessa är reserverade delar av språket för alla dokument som
+      baseras på HTML, och för XML.
+    </p>
+    <ul>
+      <li>
+        <p><code>&amp;lt;</code> (&lt;)</p>
+      </li>
+      <li>
+        <p><code>&amp;gt;</code> (&gt;)</p>
+      </li>
+      <li>
+        <p><code>&amp;amp;</code> (&amp;)</p>
+      </li>
+    </ul>
+    <p>
+      Du kanske även behöva representera dubbelt citationstecken (") som
+      som <code>&amp;quot;</code>,
+      och enkelt citationstecken (') som <code>&amp;apos;</code> &#x2013; 
+      särskilt i attributtext när du i attributvärden behöver använda samma
+      typ av citationstecken som du använder för att omge attributvärden.
+
+      <!--Note, however, that, although it is part of the XML
+      language, &amp;apos; is not defined in HTML 4.01 and some browsers do not support &amp;apos; in HTML.
+      For this reason the <a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_16">XHTML
+      specification</a> recommends instead the use of &amp;#39; if text may be passed to an HTML browser.-->
+    </p>
+    <p>
+      <strong class="leadin">Osynliga eller tvetydiga tecken.</strong> 
+      En speciellt viktig användning av kodade tecken är när man
+      behöver representera tecken som är osynliga eller tvetydiga vid
+      visuell presentation.
+    </p>
+    <p>
+      Ett exempel på detta är <span lang="en">Unicode</span>-tecknet
+      <span class="uname">U+200F RIGHT-TO-LEFT MARK</span>.
+
+      Detta tecken kan användas för att förtydliga textuell riktning i
+      dubbelriktad text (t.ex. när man använder arabiskt eller hebreiskt
+      skriftspråk).
+
+      Det har dock ingen grafiskt visuell representation, så det är svårt
+      att se var sådana direktrepresenterade tecken förekommer i
+      text, och om de försvinner eller glöms bort, så kan de ge upphov
+      till oväntade resultat vid senare redigering av innehåll.
+
+      Om man istället använder <code>&amp;rlm;</code> (eller dess
+      motsvarande numeriska teckenreferens <code>&amp;#x200F;</code>)
+      så är det mycket lättare att upptäcka dessa tecken.
+    </p>
+    <p>
+      Ett exempel på ett tvetydigt tecken är 
+      <span class="uname">U+00A0 NO-BREAK SPACE</span>.
+
+      Denna typ av blanktecken förhindrar radbrytning, men, när det
+      används som tecken, så ser det ut som vilket annat blanktecken
+      som helst.
+
+      Om man använder <code>&amp;nbsp;</code> 
+      (eller <code>&amp;#xA0;</code>) 
+      så blir det lättare att upptäcka var sådana blanktecken
+      förekommer i texten.
+    </p>
+    <p>
+      <strong class="leadin">Inmatningsproblem.</strong>
+      Om ditt redigeringsverktyg inte gör det lätt att direkt mata in
+      de tecken du behöver använda, så kan du vara tvingad att
+      tillgripa kodade tecken.
+
+      Observera att detta inte är en långsiktig lösning, och inte
+      heller en smidig lösning om du måste mata in många sådana tecken
+      &#x2013; det tar längre tid och gör det svårare att underhålla innehåll.
+
+      Idealfallet är att du kan välja ett redigeringsverktyg som ger
+      dig möjlighet att mata in dessa tecken i direkt form.
+
+      Alternativt, om du bara vid sällsynta tillfällen behöver använda
+      besvärliga tecken, så kan du använda ett inmatningsverktyg som
+      arbetar med teckenavbildningar 
+      (<span lang="en">character map tools</span>)
+      eller en
+      <a href="http://r12a.github.io/pickers/">teckenväljare</a>.
+    </p>
+    <p>
+      <strong class="leadin">Ofullständiga teckenkodningar.</strong> 
+      Kodade tecken kan vara praktiskt att använda för att representera 
+      tecken som inte stöds av den teckenkodning du valt för
+      dokumentet, t.ex. för att representera kinesiska tecken i ett
+      dokument med Windows-1252 som teckenkodning.
+
+      Du bör dock först fundera på om det inte vore bäst att byte
+      teckenkodningen för dokumentet till UTF-8, som ju täcker alla
+      tecken du behöver.
+    </p>
+  </section>
+  <section id="styleattr">
+    <h3><a href="#styleattr">Att använda kodade tecken i formateringsattribut</a></h3>
+ <!-- old
+    <p>
+      Det är bästa att välja en relevant teckenkodning, så att du
+      direkt kan använda tecken i CSS-deklarationer.
+
+      Denna sektion beskriver vad som borde vara de sällsynta fall när
+      du kan ha valt att användate kodade tecken.
+    </p>
+    -->
+    <p class="note">
+      <b>Observera!</b> 
+      Det är bäst att använda teckenkodningen UTF-8 i formatmallar, så
+      att du direkt kan använda tecknen i CSS-deklarationer.
+
+      Denna sektion beskriver vad som bör göras i de sällsynta fall när
+      du kan ha valt att använda kodade tecken.
+    </p>
+    <p>
+      Det är vanligtvis en bra idé att placera
+      formateringsinformation i en extern formatmall eller i ett
+      <span class="kw">style</span>-element i huvudet av en HTML-fil.
+
+      Av och till, eller kanske rent temporärt, kan du istället använda ett
+      <span class="kw">style</span>-<em>attribut</em> på ett visst element.
+
+      I ännu mer sällsynta fall kan du vilja representera ett eller
+      flera tecken i ett
+      <span class="kw">style</span>-attribut genom att använda kodade tecken.
+    </p>
+    <p>
+      I ett <span class="kw">style</span>-attribut i HTML kan man representera 
+      tecken med numeriska teckenreferenser, genom namngivna
+      teckenreferenser, eller genom att använda CSS-kodade tecken.
+
+      Å andra sidan kan <span class="kw">style</span>-<em>elementet</em> i HTML
+      vare sig innehålla numeriska teckenreferenser eller namngivna
+      teckenreferenser, och detsamma gäller för en extern formatmall.
+    </p>
+    <p>
+      Eftersom det är vanligt att flytta formateringsdeklarationer
+      från attribut till formateringselementet, eller till en extern
+      formatmall (vilket t.ex. kan ske automatiskt genom att använda
+      något program eller skript), så är de säkrast att enbart använda
+      CSS-kodade tecken.
+    </p>
+    <p>
+      Så är det till exempel bättre att formulera sig som</p>
+    <div class="example">
+      <pre>&lt;span style=&quot;font-family: L\FC beck&quot;&gt;...&lt;/span&gt;</pre>
+    </div>
+    <p>än att formulera sig som</p>
+    <div class="example">
+      <pre>&lt;span style=&quot;font-family: L&amp;#xFC;beck&quot;&gt;...&lt;/span&gt;</pre>
+    </div>
+  </section>
+</section>
+
+
+<section>
+<h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>
+    <strong class="leadin">Om du byter angiven teckenkodning till UTF-8, så måste du spara din fil.</strong>
+    Om du använder teckenkodningen UTF-8 för din sida, så kan du
+    nästan helt undvika att koda tecken, och istället arbeta med direkta
+    tecken.
+
+    Observera dock att om du vill ändra teckenkodningen av ditt
+    dokument, så räcker det inte med att bara ändra deklarationen av
+    teckenkodningen (vilken typiskt förekommer i början av dokumentet)
+    eller bara ändra deklaration av teckenkodning för din webbserver.
+
+    Du måste även spara undan ditt dokument i den kodningen.
+
+    För att förstå hur du gör detta med dina redigeringsverktyg, se
+    mer om detta i
+    <a href="/International/questions/qa-setting-encoding-in-applications"><cite><span lang="en">Setting encoding in web authoring applications</span></cite></a>.
+  </p>
+  <p>
+    <span class="leadin">Hex vs. decimal. </span>
+    Unicode-standarden använder normalt hexadecimalt värde när den
+    refererar till eller ger en lista av tecken.
+
+    Så kan till exempel kodpunkten för bokstaven
+    <span class="qchar">á</span> 
+    refereras till som <span class="uname">U+00E1</span>. 
+    Eftersom detta är en så vanlig konvention, så är det ofta
+    praktiskt (även om inte nödvändigt) att använda hexadecimala
+    värden snarare än decimala värden i numeriskt kodade tecken.
+
+    Du behöver inte ange inledande nollor i numeriskt kodade tecken, dvs 
+    <span class="qchar">á</span> skulle kunna representeras som 
+    <code>&amp;#xE1;</code>.
+  </p>
+  <p>
+    <span class="leadin">Tilläggstecken (<span lang="en">supplementary characters</span>).</span>
+    Tilläggstecken kallas de <span lang="en">Unicode</span>-tecken
+    som har kodpunkter högre upp jämfört med tecknen i 
+    <span lang="en">Unicodes</span>
+    <a href="/International/articles/definitions-characters/#unicode" class="dfn"><span lang="en">Basic Multilingual Plane</span> (BMP)</a>.
+
+    I UTF-16 kodas ett tilläggstecken genom att använda två 16-bitars 
+    <dfn>surrogatkodpunkter</dfn> från BMP.
+
+    Av detta skäl förekommer missuppfattningen att tilläggstecken måste
+    representeras med två kodade tecken, men det är ett felaktigt
+    antagande &#x2013; du måste använda det unika kodpunktvärdet för
+    det aktuella tecknet.
+
+    Därför ska du till exempel använda <code>&amp;#x233B4;</code>
+    och inte <code>&amp;#xD84C;&amp;#xDFB4;</code>.
+  </p>
+  <p>
+    <strong class="leadin">Enkla och-tecken (&amp;, <span lang="en">ampersand</span>).</strong>
+    Fastän webbverktyg för HTML ofta försöker korrigera förekomst av
+    ett enkelt och-tecken (&amp;), så bör du aldrig själv placera ett
+    enkelt och-tecken
+    (<span class="qchar">&amp;</span>) i dina dokument.
+
+    Du bör bör speciellt uppmärksamma URI:er som innehåller parametrar.
+
+    Till exempel bör ditt dokument innehålla 
+    <code>http://example.org/my-script.php?class=guest<span class="highlight">&amp;amp;</span>name=user</code>
+    istället för 
+    <code>http://example.org/my-script.php?class=guest<span class="highlight">&amp;</span>name=user</code>.
+  </p>
+</section>
+
+
+<div class="section noprint">
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Nybörjare? <a href="/International/getting-started/characters"><cite><span lang="en">Introducing Character Sets and Encodings</span></cite></a></p>
+    </li>
+    <li>
+      <p>Handledning, <a href="/International/tutorials/tutorial-char-enc/"><cite><span lang="en">Handling character encodings in HTML and CSS</span></cite></a></p>
+    </li>
+    <li>
+      <p>Näraliggande länkar, <cite>Att författa HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset"><span lang="en">Characters</span></a></li>
+        <li><a href="/International/techniques/authoring-html#escapes"><span lang="en">Using escapes to represent characters</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Näraliggande länkar, <cite>Att författa XML</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-xml#charset"><span lang="en">Characters</span></a></li>
+        <li><a href="/International/techniques/authoring-xml#escapes"><span lang="en">Using escapes to represent characters</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Relaterade länkar, <cite>Att skapa specifikationer</cite></p>
+      <ul>
+        <li><a href="/International/techniques/developing-specs#char_escapes"><span lang="en">Designing character escapes</span></a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">
+fillinTranslations();
+if (document.getElementById("toclocation")) { createtoc();}
+</script>
+</body>
+</html>
