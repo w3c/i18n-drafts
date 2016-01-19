@@ -183,7 +183,7 @@ g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
 			
 
 g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
-			'<p><label class="interaction"><a href="https://github.com/w3c/i18n-activity/issues/new?title='+title+'&body='+body+'"><input src="/International/icons/mailus.gif" alt=" " type="image" /> '+s.sendAComment+'</a></label></p>'+
+			'<p><label class="interaction"><a href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'"><input src="/International/icons/mailus.gif" alt=" " type="image" /> '+s.sendAComment+'</a></label></p>'+
 			'<p>Twitter ('+s.homePageNews+')</p>'+
 			'<p><a class="interaction" href="http://twitter.com/webi18n" title="Twitter: @webi18n"><img src="/International/icons/twitter-bird.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n</a></p>'+
 			'<p>'+s.subscribeToRSS+'</p>'+
