@@ -1,6 +1,9 @@
 var g = { }
 
 
+
+// LANGUAGE RELATED STUFF
+
 g.nativeText = {
 'ar':'عربي',
 'bg':'Български',
@@ -32,32 +35,35 @@ g.nativeText = {
 }
 
 
-function getDateTime (dt) {
-	var parts = dt.split('T')
-	var datetime = parts[0]
-	if (parts[1]) datetime += ' '+parts[1].replace('Z','')
-	return datetime
+f.clang = document.querySelector('html').lang
+if (f.clang != 'en') { g.isTranslation = 'yes' } else { g.isTranslation = 'no' }
+
+
+// COOKIE
+// if changelang parameter set, set cookie to remember that language - cookie is read by /International/.htaccess
+var parameters = location.search.split('&');
+parameters[0] = parameters[0].substring(1);
+for (var p=0;p<parameters.length;p++) {  
+	
+	var pairs = parameters[p].split('=');
+	if (pairs[0] === 'changelang' && pairs[1]) { 
+		var response = false
+		response = confirm("The URL for this page contains a 'changelang' parameter. The page will set a cookie so that you will continue to see this and related pages in the language specified ("+pairs[1]+") until you select another language from the list at the top right of the page.  Do you want to set the cookie?")
+		if (response === true) {
+			var d = new Date()
+			d.setTime(d.getTime() + 60*24*60*60*1000)
+			var expires = 'expires='+d.toUTCString()
+			document.cookie = 'w3ci18nlang='+pairs[1]+'; '+expires
+			console.log('cookie set')
+			}
+	  	}
 	}
 
-var datearray = f.lastSubstUpdate.split('T')
-var enVersion = datearray[0]
-var thisVersionPlain = getDateTime(f.thisVersion)
-
-function getYear (dt) {
-	parts = dt.split('-')
-	return parts[0]
-	}
-
-g.pubyear = getYear(f.firstPubDate)
-g.curryear = getYear(f.thisVersion)
-
-g.copyrightYear = g.pubyear
-if (g.pubyear != g.curryear) g.copyrightYear += '-'+g.curryear
 
 
 
-if (f.clang != 'en') { g.isTranslation = 'yes'; } else { g.isTranslation = 'no'; }
 
+// MAIN NAVIGATION
 
 var basicLinks = '<link rel="copyright" href="#copyright"/>'+'\n'+'<script type="text/javascript" src="https://www.w3.org/International/javascript/articletoc-html5.js"></script>'
 
@@ -94,7 +100,7 @@ if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length ==
 	versionList = '<p class="noprint">'
 	for (lang=0; lang<trans.versions.length; lang++) {
 		if (f.clang != trans.versions[lang]) {
-			versionList += '<span title="'+s.currLang[trans.versions[lang]]+'"><a href="/International/'+f.directory+f.filename+'.'+trans.versions[lang]+'.php?changelang='+trans.versions[lang]+'" lang="'+trans.versions[lang]+
+			versionList += '<span title="'+s.currLang[trans.versions[lang]]+'"><a href="'+f.filename+'.'+trans.versions[lang]+'.html?changelang='+trans.versions[lang]+'" lang="'+trans.versions[lang]+
 			'" translate="no" dir="auto">'+g.nativeText[trans.versions[lang]]+'</a></span>'+s.rlm+'&nbsp; ';
 			}
 		}
@@ -157,43 +163,33 @@ if (trans.updatedtranslations.length > 0) {
 
 g.updated = ''
 if (g.isTranslation == 'no' && f.firstPubDate && f.lastSubstUpdate && f.firstPubDate != f.lastSubstUpdate) {
-	g.updated = "<p class='updated'>"+s.updated+" <a href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.lastSubstUpdate+"'>"+getDateTime(f.lastSubstUpdate)+"</time></a></p>"
+	g.updated = "<p class='updated'>"+s.updated+" <a href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+"</time></a></p>"
 	}
 if (outOfDateTranslation == 'yes') g.updated += "<p class='outofdate'>"+s.untranslatedChanges+" </p>" 
-else if (g.isTranslation == 'yes' && updatedTranslation == true) {g.updated ="<p class='updated'>"+s.translation_updated+" <a href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.thisVersion+"'>"+getDateTime(f.thisVersion)+"</time></a></p>" }
+else if (g.isTranslation == 'yes' && updatedTranslation == true) {g.updated ="<p class='updated'>"+s.translation_updated+" <a href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></a></p>" }
 
 
 // SURVEY
 
-var body = encodeURIComponent('[source] ('+window.location+')')
+var body = window.location.href
+var qm = body.search(/\?/)
+if (qm > 0) body = body.substr(0,qm)
+body = encodeURIComponent('[source] ('+body+')')
 var title = 'Feedback on '+f.filename
 
 g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
-			'<form action="/International/2007/06/surveyform-130422.php" method="post">'+
-			'<p><label class="interaction"><input src="/International/icons/mailus.gif" alt=" " type="image" /> '+s.sendAComment+'</label></p>'+
-			'<input type="hidden" name="docname" value="'+encodeURIComponent(window.location)+'" />'+
-			'<input type="hidden" name="referer" value="'+encodeURIComponent(document.referrer)+'" />'+
-			'<input type="hidden" name="lang" value="'+g.clang+'" />'+
-			'</form>'+
-			'<p>'+s.subscribeToRSS+'</p>'+
-			'<p><a class="interaction" href="http://www.w3.org/blog/International/category/new-resource/feed/rdf/" title="'+s.newResourcesAlt+'"><img src="/International/icons/rss.gif" alt=" " /> '+s.newResources+'</a></p>'+
-			'<p><a class="interaction" href="http://www.w3.org/blog/International/feed/rdf/" title="'+s.homePageNewsAlt+'"><img src="/International/icons/rss.gif" alt=" " /> '+s.homePageNews+'</a></p>'+
-			'<p>Twitter ('+s.homePageNews+')</p>'+
-			'<p><a class="interaction" href="http://twitter.com/webi18n" title="Twitter: @webi18n"><img src="/International/icons/twitter-bird.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n</a></p>'
-			
-
-g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
-			'<p><label class="interaction"><a href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'"><input src="/International/icons/mailus.gif" alt=" " type="image" /> '+s.sendAComment+'</a></label></p>'+
-			'<p>Twitter ('+s.homePageNews+')</p>'+
-			'<p><a class="interaction" href="http://twitter.com/webi18n" title="Twitter: @webi18n"><img src="/International/icons/twitter-bird.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n</a></p>'+
-			'<p>'+s.subscribeToRSS+'</p>'+
-			'<p><a class="interaction" href="http://www.w3.org/blog/International/feed/rdf/" title="'+s.homePageNewsAlt+'"><img src="/International/icons/rss.gif" alt=" " /> '+s.homePageNews+'</a></p>'
+			'<p><a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A">'+s.sendAComment+'</a></p>'+
+			'<p style="margin-top:1em">'+s.followOurNews+'</p>'+
+			'<p><a class="interaction" href="http://twitter.com/webi18n" title="Twitter: @webi18n"><img src="'+f.path+'icons/twitter-bird.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n</a></p>'+
+			'<p><a class="interaction" href="http://www.w3.org/blog/International/feed/rdf/" title="RSS"><img src="'+f.path+'icons/rssLink.png" alt=" " /> RSS</a></p>'
 			
 
 
 // BOTTOM OF PAGE
 
-dateStamp = ''
+g.dateStamp = ''
+if (g.isTranslation == 'yes') g.dateStamp = '<small>'+s.translatedFromEnglishVer+'</small>'
+else g.dateStamp = "<small id='version'>Content first published <time datetime='"+f.firstPubDate+"'>"+f.firstPubDate+"</time>. Last substantive update <time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+" GMT</time>. This version <time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+" GMT</time></small>";
 
 var previousCredit = ''
 if (f.previousauthors && f.previousauthors != '') previousCredit = ' '+s.previousAuthors+' '+f.previousauthors+s.sentenceDelimiter
@@ -210,7 +206,7 @@ if (f.contributors && f.contributors != '') credits += "<p class='acknowledgemen
 
 
 var copyright = "<small class='copyright' lang='en' "+s.ltrAttribute+"><a rel='Copyright' href='/Consortium/Legal/ipr-notice#Copyright' id='copyright'>Copyright</a> "+
-	"© "+g.copyrightYear+" <a href='/'><abbr title='World Wide Web Consortium'>W3C</abbr></a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr "+
+	"© "+dt.copyrightYear+" <a href='/'><abbr title='World Wide Web Consortium'>W3C</abbr></a><sup>®</sup> (<a href='http://www.csail.mit.edu/'><abbr "+
 	"title='Massachusetts Institute of Technology'>MIT</abbr></a>, <a href='http://www.ercim.eu/'><abbr title='European Research Consortium for "+
 	"Informatics and Mathematics'>ERCIM</abbr></a>, <a href='http://www.keio.ac.jp/'>Keio</a>, <a href='http://ev.buaa.edu.cn/'>Beihang</a>), All Rights Reserved. "+
 	"W3C <a href='/Consortium/Legal/ipr-notice#Legal_Disclaimer'>liability</a>, <a href='/Consortium/Legal/ipr-notice#W3C_Trademarks'>trademark</a>, "+
@@ -221,7 +217,21 @@ var copyright = "<small class='copyright' lang='en' "+s.ltrAttribute+"><a rel='C
 
 
 g.bottomOfPage = '<footer><address>'+credits+'</address>'+
-	dateStamp+
+	g.dateStamp+
 '	<small>'+s.historyOfDocumentChanges+'</small>'+
 	copyright+
 '	</footer>'
+
+
+
+// LANGUAGE FILL IN
+
+function fillinTranslations () {
+	if (g.isTranslation) {
+		if (document.getElementById('intendedAudience')) document.getElementById('intendedAudience').textContent = s.intendedAudience
+		if (document.getElementById('question')) document.getElementById('question').firstChild.textContent = s.question
+		if (document.getElementById('answer')) document.getElementById('answer').firstChild.textContent = s.answer
+		if (document.getElementById('bytheway')) document.getElementById('bytheway').firstChild.textContent = s.byTheWay
+		if (document.getElementById('endlinks')) document.getElementById('endlinks').firstChild.textContent = s.furtherReading
+		}
+	}
