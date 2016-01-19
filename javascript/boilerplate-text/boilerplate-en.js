@@ -1,7 +1,7 @@
 // translate the text between <<<eot and eot  or between quotes
 // text following double slashes (such as this line) provides comments for the translator
 // never add any text alongside the eot delimiters - not even spaces !
-// words beginning with $ are variables - do not disturb these ! (though you can move them)
+// words beginning with s. or f. are variables - do not disturb these ! (though you can move them)
 // where it would aid clarity, variables that occur in the text are described below
 
 var s = { }
@@ -56,7 +56,7 @@ s.accessKeyN = 'Accesskey n skips to <a href="#internal-links" accesskey="n">in-
 s.examplesInAnotherScript = "This document contains examples in another language/script."
 s.worldMap = "World map"
 s.searchI18nSite = "I18n site search:" 
-s.translationDisclaimer = 'This document is a translation. In the case of any discrepancy or errors, the <a href="/International/'+f.directory+f.filename+'.en.php">latest English original</a> should be considered authoritative.<a href="#copyright">Original copyright</a> belongs to W3C, as shown below.'
+s.translationDisclaimer = 'This document is a translation. In the case of any discrepancy or errors, the <a href="'+f.filename+'.en.php">latest English original</a> should be considered authoritative.<a href="#copyright">Original copyright</a> belongs to W3C, as shown below.'
 s.translator = "Translator:"
 s.relatedLinks = "Related links"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
@@ -97,13 +97,14 @@ s.furtherReadingLink = "Further reading"
 s.furtherReading = "Further reading"
 s.intendedAudience = "Intended audience:"
 s.skipToAnswer = "[Skip to the answer]"
-s.tellUsWhatYouThink = "Tell us what you think (English)."
-s.sendAComment = "Send us a comment"
+s.tellUsWhatYouThink = "Tell us what you think."
+s.sendAComment = "Leave a comment"
 s.subscribeToRSS = "Subscribe to an RSS feed."
 s.newResourcesAlt = "Notifies you each time a new resource is published for the first time."
 s.newResources = "New resources"
 s.homePageNewsAlt = "All news items shown on the home page."
 s.homePageNews = "Home page news"
+s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
 s.author = "By:" // followed by name of author(s)
@@ -114,7 +115,7 @@ s.validXHTML = "Valid XHTML 1.0!"
 s.validCSS = "Valid CSS!"
 s.codedInUtf8 = "Encoded in UTF-8!"
 
-s.translatedFromEnglishVer = "Translated from English content dated $enVersion. Translated version last changed $thisVersionPlain GMT"
+s.translatedFromEnglishVer = "Translated from English content dated "+dt.enVersion+". Translated version last changed "+dt.thisVersionPlain+" GMT"
 
 s.historyOfDocumentChanges = 'For the history of document changes, search for <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> in the i18n blog.'
 s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="/International/'+f.directory+f.filename+'.en.php">the English original</a> since this document was translated. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">See the change log.</a></span>'
@@ -124,7 +125,7 @@ s.translation_updated="Translation updated:" // date appears after colon
 
 s.aboutThisArticle="About this article" // title in the right column near the top of the page
 s.status_draft="This article is a draft that has not yet gone through public review. If there are things that need addressing, please send us feedback using the link near the bottom of the page."
-s.status_review="This article is currently out for public review. Please send comments to <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20var filename'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscribe</a>)</span>."
+s.status_review="This article is currently out for public review. Please send comments to <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscribe</a>)</span>."
 s.status_published="This article has been reviewed by the W3C Internationalization Working Group and has gone through public review to make it as accurate as possible. If there are things that need addressing, please send us feedback using the link near the bottom of the page."
 s.status_notreviewed="This article was published without public review. If there are things that need addressing, please send us feedback using the link near the bottom of the page."
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
