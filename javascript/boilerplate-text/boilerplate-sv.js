@@ -130,4 +130,4 @@ s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Snabbt svar" // heading
 s.longeranswer = "Längre svar" // heading
 s.acknowledgements = "Även tack till följande personer som bidragit eller gett kommentarer:"  // used at bottom of page to list people who provided feedback. The list comes after this text.
-s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.cookieMsg = "Om du tillåter webbläsaren att spara en kaka (cookie), så kommer du i fortsättningen att se sidor från W3C Internationalization Activity i det språk du valt (när sådana översättningar finns). Vill du spara kakan?" // this text is to be copied to another location
