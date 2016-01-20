@@ -53,7 +53,7 @@ s.accessKeyN = 'Använd accesskey \'n\' för att hoppa till de interna navigatio
 s.examplesInAnotherScript = "Detta dokument innehåller exempel uttryckta i andra språk/skript."
 s.worldMap = "Världskarta"
 s.searchI18nSite = "Sök på I18n:s webbplats" 
-s.translationDisclaimer = 'Detta dokument är en översättning av ett engelskt orginal. Om det finns tveksamheter eller fel i detta dokument, så är <a href="'+f.filename+'.en">senaste version av det engelska orginalet</a> den auktoritativa versionen. <a href="#copyright">Copyright</a> tillhör W3C, enligt nedan.'
+s.translationDisclaimer = 'Detta dokument är en översättning av ett engelskt orginal, utfört av frivilliga. Om det finns tveksamheter eller fel i detta dokument, så är <a href="'+f.filename+'.en">senaste version av det engelska orginalet</a> den auktoritativa versionen. <a href="#copyright">Copyright</a> tillhör W3C, enligt nedan.'
 s.translator = "Översättare:"
 s.relatedLinks = "Näraliggande länkar"
 s.articles = "Artiklar" // used in breadcrumbs, top right of page 
@@ -101,7 +101,7 @@ s.newResourcesAlt = "Informerar dig när en ny resurs publiceras för första g�
 s.newResources = "Nya resurser"
 s.homePageNewsAlt = "Alla nyhetsnotiser som visas på hemsidan."
 s.homePageNews = "Nyheter på hemsidan"
-s.followOurNews = "Follow our news feed."
+s.followOurNews = "Följ våra nyhetsflöden."
 s.sentenceDelimiter = "."
 
 s.author = "Av:" // followed by name of author(s)
