@@ -59,7 +59,7 @@ function stickyConneg (filename, cLang, targetLang) {
 		var d = new Date()
 		d.setTime(d.getTime() + 60*24*60*60*1000)
 		var expires = 'expires='+d.toUTCString()
-		document.cookie = 'w3ci18nlang='+pairs[1]+'; '+expires
+		document.cookie = 'w3ci18nlang='+targetLang+'; '+expires
 		console.log('cookie set')
 		}
 	document.location.assign(filename+'.'+targetLang)
