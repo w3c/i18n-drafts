@@ -55,12 +55,12 @@ function stickyConneg (filename, cLang, targetLang) {
 	msg += '\n\n'+'['+targetLang+'] '+cn[targetLang]
 	if (targetLang !== 'en' && cLang !== 'en') msg += '\n\n'+'[en] '+cn.en
 	response = confirm(msg)
-	if (response === true) {
+	if (response == true) {
 		var d = new Date()
 		d.setTime(d.getTime() + 60*24*60*60*1000)
-		var expires = 'expires='+d.toUTCString()
-		document.cookie = 'w3ci18nlang='+targetLang+'; '+expires
-		console.log('cookie set')
+		var expires = ';expires='+d.toUTCString()
+		var path = ";path=/"
+		document.cookie = 'w3ci18nlang='+targetLang+expires+path
 		}
 	document.location.assign(filename+'.'+targetLang)
 	}
