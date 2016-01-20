@@ -45,8 +45,9 @@ if (f.clang != 'en') { g.isTranslation = 'yes' } else { g.isTranslation = 'no' }
 var cn = { }
 
 cn.en = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?"
-cn.sv = "Om du tillåter webbläsaren att spara en kaka (cookie), så kommer du i fortsättningen att se sidor från W3C Internationalization Activity i det språk du valt (när sådana översättningar finns). Vill du spara kakan?"
 cn.de = "Wenn Sie die Seite ein Cookie lassen, werden Sie weiterhin W3C Internationalization Activity Seiten in der Sprache, die Sie ausgewählt haben, in denen zu sehen. Möchten Sie das Cookie gesetzt?"
+cn.fr = "Si vous laissez le navigateur définir un cookie, vous continuerez à voir les pages de l'Activité Internationalisation du W3C (si disponible) dans la langue que vous avez choisi. Voulez-vous définir le cookie?"
+cn.sv = "Om du tillåter webbläsaren att spara en kaka (cookie), så kommer du i fortsättningen att se sidor från W3C Internationalization Activity i det språk du valt (när sådana översättningar finns). Vill du spara kakan?"
 
 
 function stickyConneg (filename, cLang, targetLang) {
