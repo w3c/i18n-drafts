@@ -115,8 +115,8 @@ s.codedInUtf8 = "Kodad i UTF-8!"
 s.translatedFromEnglishVer = "Översatt från engelskt innehåll skapat/ändrat "+dt.enVersion+". Översättningen senast ändrad "+dt.thisVersionPlain+" GMT"
 
 s.historyOfDocumentChanges = 'Information om ändringar i orginaldokumentet kan fås genom att söka efter <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> i i18n-bloggen.'
-s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="/International/'+f.directory+f.filename+'.en.php">the English original</a> since this document was translated. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">See the change log.</a></span>'
-s.untranslatedChanges = '<strong>Obs:</strong> Det  <a href="/International/'+f.directory+f.filename+'.en.php">engelska originaldokumentet</a> har ändrats sedan det översattes. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Se ändringsloggen.</a></span>'
+s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="/International/'+f.directory+f.filename+'.en">the English original</a> since this document was translated. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">See the change log.</a></span>'
+s.untranslatedChanges = '<strong>Obs:</strong> Det  <a href="/International/'+f.directory+f.filename+'.en">engelska originaldokumentet</a> har ändrats sedan det översattes. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Se ändringsloggen.</a></span>'
 s.new="Ny"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Uppdaterad" // same as New
 s.translation_updated="Översättning uppdaterad:" // date appears after colon
