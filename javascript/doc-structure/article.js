@@ -40,25 +40,30 @@ if (f.clang != 'en') { g.isTranslation = 'yes' } else { g.isTranslation = 'no' }
 
 
 // COOKIE
-// if changelang parameter set, set cookie to remember that language - cookie is read by /International/.htaccess
-var parameters = location.search.split('&');
-parameters[0] = parameters[0].substring(1);
-for (var p=0;p<parameters.length;p++) {  
-	
-	var pairs = parameters[p].split('=');
-	if (pairs[0] === 'changelang' && pairs[1]) { 
-		var response = false
-		response = confirm(s.cookieMsg1+pairs[1]+s.cookieMsg2)
-		if (response === true) {
-			var d = new Date()
-			d.setTime(d.getTime() + 60*24*60*60*1000)
-			var expires = 'expires='+d.toUTCString()
-			document.cookie = 'w3ci18nlang='+pairs[1]+'; '+expires
-			console.log('cookie set')
-			}
-	  	}
-	}
+// when clicking on a language selector, ask the user if they want to set cookie to remember that language - cookie is read by /International/.htaccess
 
+var cn = { }
+
+cn.en = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?"
+cn.sv = "Om du låter sidan en cookie, kommer du att fortsätta att se W3C Interaktivitet sidor på det språk du väljer, i förekommande fall. Vill du ställa in kaka?"
+cn.de = "Wenn Sie die Seite ein Cookie lassen, werden Sie weiterhin W3C Internationalization Activity Seiten in der Sprache, die Sie ausgewählt haben, in denen zu sehen. Möchten Sie das Cookie gesetzt?"
+
+
+function stickyConneg (filename, cLang, targetLang) {
+	var response = false
+	var msg = '['+cLang+'] '+cn[cLang]
+	msg += '\n\n'+'['+targetLang+'] '+cn[targetLang]
+	if (targetLang !== 'en' && cLang !== 'en') msg += '\n\n'+'[en] '+cn.en
+	response = confirm(msg)
+	if (response === true) {
+		var d = new Date()
+		d.setTime(d.getTime() + 60*24*60*60*1000)
+		var expires = 'expires='+d.toUTCString()
+		document.cookie = 'w3ci18nlang='+pairs[1]+'; '+expires
+		console.log('cookie set')
+		}
+	document.location.assign(filename+'.'+targetLang)
+	}
 
 
 
@@ -100,7 +105,7 @@ if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length ==
 	versionList = '<p class="noprint">'
 	for (lang=0; lang<trans.versions.length; lang++) {
 		if (f.clang != trans.versions[lang]) {
-			versionList += '<span title="'+s.currLang[trans.versions[lang]]+'"><a href="'+f.filename+'.'+trans.versions[lang]+'.html?changelang='+trans.versions[lang]+'" lang="'+trans.versions[lang]+
+			versionList += '<span title="'+s.currLang[trans.versions[lang]]+'"><a href="#" onclick="stickyConneg(\''+f.filename+'\',\''+f.clang+'\',\''+trans.versions[lang]+'\'); return false;" lang="'+trans.versions[lang]+
 			'" translate="no" dir="auto">'+g.nativeText[trans.versions[lang]]+'</a></span>'+s.rlm+'&nbsp; ';
 			}
 		}

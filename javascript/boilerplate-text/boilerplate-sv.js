@@ -130,5 +130,4 @@ s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Snabbt svar" // heading
 s.longeranswer = "Längre svar" // heading
 s.acknowledgements = "Även tack till följande personer som bidragit eller gett kommentarer:"  // used at bottom of page to list people who provided feedback. The list comes after this text.
-s.cookieMsg1 = "The URL for this page contains 'changelang=' followed by a language tag (" // used in an prompt when switching languages. The language tag appears in the parentheses.
-s.cookieMsg2 = "). If you let the page set a cookie, you will continue to see W3C Internationalization Activity pages in the language specified, where available. Do you want to set the cookie?" // continuation of the above message.  Adjust the content of the two messages so that the parentheses appear in the correct location, and the first message ends with ( and the second starts with ).
+s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
