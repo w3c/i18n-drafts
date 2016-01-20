@@ -48,7 +48,7 @@ for (var p=0;p<parameters.length;p++) {
 	var pairs = parameters[p].split('=');
 	if (pairs[0] === 'changelang' && pairs[1]) { 
 		var response = false
-		response = confirm("The URL for this page contains a 'changelang' parameter. The page will set a cookie so that you will continue to see this and related pages in the language specified ("+pairs[1]+") until you select another language from the list at the top right of the page.  Do you want to set the cookie?")
+		response = confirm(s.cookieMsg1+pairs[1]+s.cookieMsg2)
 		if (response === true) {
 			var d = new Date()
 			d.setTime(d.getTime() + 60*24*60*60*1000)
@@ -174,7 +174,7 @@ else if (g.isTranslation == 'yes' && updatedTranslation == true) {g.updated ="<p
 var body = window.location.href
 var qm = body.search(/\?/)
 if (qm > 0) body = body.substr(0,qm)
-body = encodeURIComponent('[source] ('+body+')')
+body = encodeURIComponent('[source] ('+body+') ['+f.clang+']')
 var title = 'Feedback on '+f.filename
 
 g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+

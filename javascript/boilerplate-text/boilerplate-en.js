@@ -56,7 +56,7 @@ s.accessKeyN = 'Accesskey n skips to <a href="#internal-links" accesskey="n">in-
 s.examplesInAnotherScript = "This document contains examples in another language/script."
 s.worldMap = "World map"
 s.searchI18nSite = "I18n site search:" 
-s.translationDisclaimer = 'This document is a translation. In the case of any discrepancy or errors, the <a href="'+f.filename+'.en.php">latest English original</a> should be considered authoritative.<a href="#copyright">Original copyright</a> belongs to W3C, as shown below.'
+s.translationDisclaimer = 'This document is a translation provided by a volunteer. In the case of any discrepancy or errors, the <a href="'+f.filename+'.en.php">latest English original</a> should be considered authoritative.<a href="#copyright">Original copyright</a> belongs to W3C, as shown below.'
 s.translator = "Translator:"
 s.relatedLinks = "Related links"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
@@ -132,3 +132,5 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.cookieMsg1 = "The URL for this page contains 'changelang=' followed by a language tag (" // used in an prompt when switching languages. The language tag appears in the parentheses.
+s.cookieMsg2 = "). If you let the page set a cookie, you will continue to see W3C Internationalization Activity pages in the language specified, where available. Do you want to set the cookie?" // continuation of the above message.  Adjust the content of the two messages so that the parentheses appear in the correct location, and the first message ends with ( and the second starts with ).
