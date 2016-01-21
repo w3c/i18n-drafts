@@ -115,7 +115,7 @@ s.codedInUtf8 = "Codé en UTF-8 !";
 s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" GMT."; 
 
 s.historyOfDocumentChanges = 'Pour un résumé des changements importants, recherchez <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> dans le blog i18n.'
-s.untranslatedChanges = '<strong>Note:</strong>  Des changements ont été apportés au <a href="'+filename+'.en">document original en anglais</a> depuis sa traduction. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Consulter le fichier des changements.</a></span>'
+s.untranslatedChanges = '<strong>Note:</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Consulter le fichier des changements.</a></span>'
 s.new="New";// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Updated"; // same as New
 s.translation_updated="Translation updated:"; // date appears after colon 

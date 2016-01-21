@@ -45,9 +45,11 @@ if (f.clang != 'en') { g.isTranslation = 'yes' } else { g.isTranslation = 'no' }
 var cn = { }
 
 cn.en = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?"
+cn.es = "Si deja que el navegador establece una cookie, podrá seguir viendo páginas de la Actividad de Internacionalización del W3C (donde esté disponible) en el idioma que elija. ¿Usted desea establecer la cookie?"
 cn.de = "Wenn Sie die Seite ein Cookie lassen, werden Sie weiterhin W3C Internationalization Activity Seiten in der Sprache, die Sie ausgewählt haben, in denen zu sehen. Möchten Sie das Cookie gesetzt?"
 cn.fr = "Si vous laissez le navigateur définir un cookie, vous continuerez à voir les pages de l'Activité Internationalisation du W3C (si disponible) dans la langue que vous avez choisi. Voulez-vous définir le cookie?"
 cn.sv = "Om du tillåter webbläsaren att spara en kaka (cookie), så kommer du i fortsättningen att se sidor från W3C Internationalization Activity i det språk du valt (när sådana översättningar finns). Vill du spara kakan?"
+cn.uk = "Якщо ви дозволите браузер встановити куки, ви будете продовжувати бачити сторінки W3C Інтернаціоналізація активність (за наявності) на мові, який ви обрали. Ви хочете, щоб встановити печиво?"
 
 
 function stickyConneg (filename, cLang, targetLang) {
@@ -71,8 +73,6 @@ function stickyConneg (filename, cLang, targetLang) {
 
 // MAIN NAVIGATION
 
-var basicLinks = '<link rel="copyright" href="#copyright"/>'+'\n'+'<script type="text/javascript" src="https://www.w3.org/International/javascript/articletoc-html5.js"></script>'
-
 g.siteSearch = '<form method="get" action="/International/site-search.php" enctype="application/x-www-form-urlencoded" style="margin: 0;"><div id="searchSite"><input name="q" type="text" value="'+s.searchI18nSite+'" onfocus="this.value=\'\'" id="searchField" accesskey="E" maxlength="255"/></div></form>'
 
 g.breadcrumbs = "<a href='/International/'>"+s.home+"</a> &gt; <a href='/International/resources'>"+s.resources+"</a> &gt; "
@@ -86,19 +86,6 @@ if (f.status == "published") { g.about += "<p>"+s.status_published+"</p>" }
 if (f.status == "notreviewed") { g.about += "<p>"+s.status_notreviewed+"</p>" }
 
 var fontlink = ''
-
-g.langLinks = ''
-if (trans.versions) { 
-	for (var lang=0; lang<trans.versions.length; lang++) {
-		if (f.clang != trans.versions[lang]) {
-			g.langLinks += '<link title="'+g.nativeText[trans.versions[lang]]+'" type="text/html" rel="alternate" hreflang="'+trans.versions[lang]+
-			'" href="'+f.filename+'.'+trans.versions[lang]+'.php" lang="'+trans.versions[lang]+'" />\n'
-			}
-		}
-	}
-
-
-var headincludes = basicLinks+"\n"+fontlink+"\n"+g.langLinks//+$defaultstylesheets+$IEHtml5ScriptHack
 
 
 var versionList = ''
@@ -117,7 +104,6 @@ if (g.isTranslation == 'yes') g.disclaimer = '<div id="disclaimer"><p>'+s.transl
 else g.disclaimer = ''
 
 
-// MAIN NAVIGATION 
 var mainNavigation = '<aside id="mainNavigation">'+
 '	<nav id="site-navigation">'+
 '		<a href="/International/"><img id="picture" alt="'+s.worldMap+'" title="'+s.worldMap+'" src="'+f.path+'/icons/world.gif" width="150" height="61"/></a>'+
@@ -183,7 +169,7 @@ body = encodeURIComponent('[source] ('+body+') ['+f.clang+']')
 var title = 'Feedback on '+f.directory+f.filename
 
 g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
-			'<p><a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A">'+s.sendAComment+'</a></p>'+
+			'<p><a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A%0A">'+s.sendAComment+'</a></p>'+
 			'<p style="margin-top:1em">'+s.followOurNews+'</p>'+
 			'<p><a class="interaction" href="http://twitter.com/webi18n" title="Twitter: @webi18n"><img src="'+f.path+'icons/twitter-bird.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n</a></p>'+
 			'<p><a class="interaction" href="http://www.w3.org/blog/International/feed/rdf/" title="RSS"><img src="'+f.path+'icons/rssLink.png" alt=" " /> RSS</a></p>'
