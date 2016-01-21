@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Trabajar con idiomas en HTML</title>
+<meta name="description" content="Tutorial i18n W3C : Cómo declarar y usar el lenguaje en XHTML y HTML" />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'language-decl'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-language-decl'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-05-22'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-06-03', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-20', time:'18:22'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.languagemarketplace.com" title="Spanish">Translation Services Team</a>, Language Marketplace Inc'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="steve@languagemarketplace.com"; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'characters';
+</script>
+<script type="text/javascript" src="language-decl-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-es.js"> </script> <!--TRANSLATORS must change -en to the subtag for their language! -->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Trabajar con idiomas en HTML (tutoría)</h1>
+</header>
+
+<section id="sidebarExtras">
+  <section>
+	    <h2 id="whyread" class="notoc">¿Por qué debería leer esto?</h2>
+		    <p>La información sobre el idioma que se utiliza en una página es importante para la accesibilidad, establecer estilo, hacer búsquedas y otras razones. Además, la información sobre el idioma que se transmite generalmente entre el agente usuario y el servidor puede utilizarse para ayudar a mejorar la navegación de los usuarios y la localización del sitio. Este tutorial le ayudará a aprovechar las oportunidades que existen ahora y en el futuro cercano al declarar la información de idioma adecuadamente.</p>
+	      </section>
+  <section id="objectives">
+		 <h2 class="notoc">Objetivos</h2>
+		    <p>Cuando haya finalizado esta tutoría debería:</p>
+		    <ul>
+		      <li>saber cómo configurar el idioma por defecto de su página y el contenido en la página en un idioma diferente</li>
+			  <li>comprender cómo los metadatos de idioma sobre el idioma esperado de la audiencia son diferentes del idioma del texto mismo y las implicancias de ello para el marcado</li>
+		      <li>ubicar información sobre cómo elegir los valores adecuados de atributo de idioma</li>
+		      <li>saber cómo configurar las preferencias de idioma de su navegador</li>
+		      <li>saber cómo dar estilo a su página de manera congruente con el idioma.</li>
+	        </ul>
+	      </section>
+	</section>
+
+<section> 
+
+<section> 
+      <div id="audience"> 
+            <p><span id="intendedAudience" class="leadin">Intended audience:</span> Los codificadores de XHTML/HTML (que utilizan editores o lenguajes de script), los desarrolladores de script (PHP, JSP, etc.), codificadores de CSS y cualquiera que necesite orientación sobre cómo declarar y usar información sobre idioma en HTML. Se supone que quien lee esta tutoría está familiarizado con HTML y CSS.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+        </div>
+
+<p>Esta tutoría reúne y organiza enlaces a artículos que, en conjunto, ayudan a comprender los aspectos fundamentales de cómo trabajar con información de idioma al crear en HTML y CSS.</p>
+		</section>
+  
+		<div id="nutshell">
+		    <h2 id="quicksummary"><a href="#quicksummary">En pocas palabras</a></h2>
+		    <p id="nutshellintro">Esta sección está destinada a quienes están apresurados y tan solo quieren conocer las recomendaciones clave de la tutoría. Si no comprende algo, o si quiere contar con más información, lea el resto de la tutoría.</p>
+		    <p>Siempre agregue un atributo <code class="kw">lang</code> a la etiqueta html para establecer el idioma por defecto de la página. En el caso de XHTML 1.x o un documento políglota en HTML5 servido como XML, también deberá usar el atributo <code class="kw">xml:lang </code>(con el mismo valor). Si la página solo es servida como XML, solo use el atributo <code class="kw">xml:lang</code>.</p>
+	      <p>No use el elemento meta con <code class="kw">http-equiv</code> establecido en <code class="kw">Content-Language</code>.</p>
+	      <p>Elija etiquetas del Registro de Subetiquetas de la IANA y siga las normas de sintaxis en BCP 47 cuando use más de una subetiqueta de idioma. Mantenga las etiquetas de idioma lo más cortas posible.</p>
+		    <p>Utilice la propiedad <code class="kw">:lang</code> en CSS para aplicar estilos que dependen del idioma del contenido. </p>
+		</div>
+<section>
+  <h2 id="Slide0030"><a href="#Slide0030">¿Por qué declarar el idioma?</a></h2>
+		  <p>Esta parte de la tutoría establece la motivación para leer lo que resta. Si está apresurado y tan solo quiere saber qué hacer, sin la teoría, comience a leer a partir de la sección <a href="#Slide0140" class="dontprinturi">Cómo declarar el idioma de una página o elemento</a>.</p>
+		  <p>Los navegadores y otras aplicaciones pueden utilizar información sobre el idioma del contenido para aportar a los usuarios la información más adecuada o para presentar información a los usuarios de la manera más correta. Cuánto más contenido esté etiquetado y correctamente, más útiles y dominantes serán las aplicaciones. </p>
+<p><a href="/International/questions/qa-lang-why" class="maintitle"><cite>¿Por qué usar el atributo de idioma?</cite></a> incluye ejemplos de la utilidad de la información sobre idioma.</p>
+</section>
+<section>
+<h2 id="Slide0140"><a href="#Slide0140">Cómo declarar el idioma de una página o elemento</a></h2>
+		  <p>Debe establecer el idioma del texto en su página utilizando los atributos de idioma. Lamentablemente, en algunos formatos hay más de un atributo involucrado, y algunas otras cosas para clarificar. Esta sección analiza las distintas opciones: las que debería usar y las que debería evitar (y por qué). </p>
+		  <p><a href="/International/questions/qa-html-language-declarations" class="maintitle"><cite>Declaración del idioma en HTML</cite></a> presenta un resumen de cómo declarar el idioma utilizando atributos.</p>
+<p><a href="/International/questions/qa-http-and-lang" class="maintitle"><cite>Cabeceros HTTP, elementos meta e información de idioma</cite></a> describe cómo los metadatos de idioma difieren del idioma del texto y analiza Content-Language como se lo utiliza en las cabeceras HTTP y los elementos meta.</p>
+</section>
+
+
+<section>
+<h2 id="Slide0200"><a href="#Slide0200">Trabajar con etiquetas de idioma</a></h2>
+		  <p>Esta sección se refiere a cómo elegir y crear etiquetas de idioma, es decir los valores utilizados para atributos de idioma.</p>
+		  <p>Para asegurarse de que todos los agentes reconozcan a qué idioma se refiere, deberá seguir un enfoque estándar al aportar valores de idioma. Quizás también necesite considerar cómo referirse a diferencias de dialectos de una manera estándar, por ejemplo la diferencia entre inglés de Estados Unidos e inglés del Reino Unido, que se apartan significativamente en cuanto a ortografía y pronunciación.</p>
+  <p><a href="/International/articles/language-tags/" class="maintitle"><cite>Etiquetas de idioma en HTML y XML </cite></a> describe la sintaxis de las etiquetas de idioma utilizando la especificación BCP 47.</p>
+  <p><a href="/International/questions/qa-choosing-language-tags" class="maintitle"><cite>Elegir una etiqueta de idioma</cite></a> ofrece información práctica sobre cómo seleccionar las subetiquetas adecuadas entre las miles disponibles para representar el idioma que necesita.</p>
+</section>
+
+
+<section>
+  <h2 id="browser"><a href="#browser">Establecer las preferencias de idioma de su navegador</a></h2>
+<p>Cuando su navegador trae un documento de la Web, envía una solicitud HTTP al servidor en donde la información está almacenada. Con la solicitud, el navegador envía información sobre las configuraciones de preferencia de idioma. Estas preferencias pueden determinar qué contenido se le reenvía. Conozca cómo configurar o cambiar estas preferencias.</p>
+  <p> <a href="/International/questions/qa-lang-priorities" class="maintitle"><cite>Configuración de preferencias de idioma en el navegador</cite></a></p>
+</section>
+
+<section>
+  <h2 id="styling"><a href="#styling">Usar la información de idioma para aplicar estilo en su documento</a></h2>
+  <p>A menudo se desea aplicar diferentes estilos a un texto en distintos idiomas (p. ej. información sobre fuente o interlineado o quizás diferentes estilos para enfatizar, etc.). Si han utilizado atributos para identificar el idioma del contenido, puede usar algunos selectores útiles en CSS para aplicar automáticamente diferentes estilos al contenido a medida que cambia el idioma. El siguiente artículo explora las diferentes opciones para hacerlo.</p>
+  <p> <a href="/International/questions/qa-css-lang" class="maintitle"><cite>Estilos con atributos de idioma</cite></a></p>
+</section>
+
+<section class="noprint"> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+	<ul id="full-links">
+	  <li>
+	    <p>¿En los comienzos?  <a href="/International/getting-started/language" class="showuri"><cite>Idiomas en la Web</cite></a></p>
+      </li>
+	  <li>
+	    <p>Enlaces relacionados, <cite>Autoría en HTML y CSS</cite> – <a href="/International/techniques/authoring-html#language" class="showuri">Idioma</a></p>
+      </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+	</body>
+</html>
