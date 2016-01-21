@@ -42,11 +42,6 @@ s.rtlAttribute = ""
 s.ltrAttribute = ""
 s.rlm = ""
 
-//if (isset($xhtmlversion)) { // this is only true for pre-HTML5 pages
-//	$datearray = explode(' ',$lastSubstUpdate)
-//	$enVersion = $datearray[0]
-//	}
-
 
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N Activity Home"
@@ -117,14 +112,14 @@ s.codedInUtf8 = "Encoded in UTF-8!"
 s.translatedFromEnglishVer = "Translated from English content dated "+dt.enVersion+". Translated version last changed "+dt.thisVersionPlain+" GMT"
 
 s.historyOfDocumentChanges = 'For the history of document changes, search for <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> in the i18n blog.'
-s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="/International/'+f.directory+f.filename+'.en">the English original</a> since this document was translated. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">See the change log.</a></span>'
+s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="'+f.filename+'.en">the English original</a> since this document was translated. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">See the change log.</a></span>'
 s.new="New"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Updated" // same as New
 s.translation_updated="Translation updated:" // date appears after colon 
 
 s.aboutThisArticle="About this article" // title in the right column near the top of the page
 s.status_draft="This article is a draft that has not yet gone through public review. If there are things that need addressing, please send us feedback using the link near the bottom of the page."
-s.status_review="This article is currently out for public review. Please send comments to <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscribe</a>)</span>."
+s.status_review="This article is currently out for public review. Please send comments to <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscribe</a>)</span>."
 s.status_published="This article has been reviewed by the W3C Internationalization Working Group and has gone through public review to make it as accurate as possible. If there are things that need addressing, please send us feedback using the link near the bottom of the page."
 s.status_notreviewed="This article was published without public review. If there are things that need addressing, please send us feedback using the link near the bottom of the page."
 s.tests="Tests" // used at the end of breadcrumbs for test related pages

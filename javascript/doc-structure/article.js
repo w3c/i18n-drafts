@@ -118,7 +118,6 @@ else g.disclaimer = ''
 
 
 // MAIN NAVIGATION 
-
 var mainNavigation = '<aside id="mainNavigation">'+
 '	<nav id="site-navigation">'+
 '		<a href="/International/"><img id="picture" alt="'+s.worldMap+'" title="'+s.worldMap+'" src="'+f.path+'/icons/world.gif" width="150" height="61"/></a>'+
@@ -128,7 +127,7 @@ var mainNavigation = '<aside id="mainNavigation">'+
 '	<nav class="noprint" id="search">'+g.siteSearch+'</nav>'+
 '	<nav id="breadcrumbs"><p>'+g.breadcrumbs+'</p></nav>'+
 '	<nav class="noprint" id="toc"><h2 id="internal-links" class="notoc"><a href="#internal-links">'+s.onThisPage+'</a></h2><div id="toclocation"> </div></nav>'+
-'	<nav class="noprint" id="relatedlinks">'+f.additionalLinks+'</nav>'+
+'	<nav class="noprint" id="relatedlinks"></nav>'+
 '	<div id="aboutdoc">'+g.about+'</div>'+
 '	</aside>'+
 '	<nav id="boilerplate">'+
@@ -181,7 +180,7 @@ var body = window.location.href
 var qm = body.search(/\?/)
 if (qm > 0) body = body.substr(0,qm)
 body = encodeURIComponent('[source] ('+body+') ['+f.clang+']')
-var title = 'Feedback on '+f.filename
+var title = 'Feedback on '+f.directory+f.filename
 
 g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
 			'<p><a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A">'+s.sendAComment+'</a></p>'+
@@ -230,7 +229,16 @@ g.bottomOfPage = '<footer><address>'+credits+'</address>'+
 
 
 
-// LANGUAGE FILL IN
+// COMPLETE PAGE
+
+function completePage () {
+	var sidebarExtras = ''
+	if (document.getElementById('sidebarExtras')) sidebarExtras = document.getElementById('sidebarExtras').innerHTML
+	document.getElementById('relatedlinks').innerHTML = sidebarExtras
+	fillinTranslations();
+	if (document.getElementById("toclocation")) { createtoc();}
+	}
+
 
 function fillinTranslations () {
 	if (g.isTranslation) {

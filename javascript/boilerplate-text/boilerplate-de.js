@@ -114,14 +114,14 @@ s.codedInUtf8 = "Kodiert in UTF-8!"
 s.translatedFromEnglishVer = "Übersetzung der englischen Version vom "+dt.enVersion+". Letzte Änderung der übersetzten Version am "+dt.thisVersionPlain+" UTC."
 
 s.historyOfDocumentChanges = 'Suchen Sie nach <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> im i18n-Blog, um alle Dokumentänderungen nachzuvollziehen.'
-s.untranslatedChanges = '<strong>Hinweis:</strong> Das  <a href="/International/'+f.directory+f.filename+'.en">englische Original</a> wurde aktualisiert. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Für Änderungen siehe Blog.</a></span>'
+s.untranslatedChanges = '<strong>Hinweis:</strong> Das  <a href="'+f.filename+'.en">englische Original</a> wurde aktualisiert. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Für Änderungen siehe Blog.</a></span>'
 s.new="Neu"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Aktualisiert" // same as New
 s.translation_updated="Übersetzung aktualisiert am" // date appears after colon 
 
 s.aboutThisArticle="Über diesen Artikel" // title in the right column near the top of the page
 s.status_draft="Dieser Artikel ist ein Entwurf und wurde noch nicht öffentlich diskutiert. Wenn Sie Anmerkungen haben, senden Sie uns diese bitte über den Link am Ende der Seite."
-s.status_review="Dieser Artikel wird zur Zeit gerade öffentlich diskutiert. Senden Sie bitte Ihre Anmerkungen an <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>Abonnieren</a>)</span>."
+s.status_review="Dieser Artikel wird zur Zeit gerade öffentlich diskutiert. Senden Sie bitte Ihre Anmerkungen an <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>Abonnieren</a>)</span>."
 s.status_published="Dieser Artikel wurde von der Arbeits&shygruppe Inter&shynationali&shysierung des W3C geprüft und öffentlich diskutiert, damit er so korrekt wie möglich ist. Wenn Sie Anmerkungen haben, senden Sie uns diese bitte über den Link am Ende der Seite."
 s.status_notreviewed="Dieser Artikel wurde ohne vorherige öffentliche Diskussion veröffentlicht. Wenn Sie Anmerkungen haben, senden Sie uns diese bitte über den Link am Ende der Seite."
 s.tests="Tests" // used at the end of breadcrumbs for test related pages

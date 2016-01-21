@@ -94,7 +94,7 @@ s.furtherReadingLink = "Pour approfondir";
 s.furtherReading = "Pour approfondir";
 s.intendedAudience = "Public visé :";
 s.skipToAnswer = "[Aller à la réponse]";
-s.tellUsWhatYouThink = "Donnez-nous votre avis (en anglais).";
+s.tellUsWhatYouThink = "Donnez-nous votre avis.";
 s.sendAComment = "Envoyez-nous un commentaire";
 s.subscribeToRSS = "Abonnez-vous au flux RSS.";
 s.newResourcesAlt = "Pour vous informer de la parution de chaque nouvelle publication.";
@@ -115,14 +115,14 @@ s.codedInUtf8 = "Codé en UTF-8 !";
 s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" GMT."; 
 
 s.historyOfDocumentChanges = 'Pour un résumé des changements importants, recherchez <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> dans le blog i18n.'
-s.untranslatedChanges = '<strong>Note:</strong>  Des changements ont été apportés au <a href="/International/'+f.directory+f.filename+'.en">document original en anglais</a> depuis sa traduction. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Consulter le fichier des changements.</a></span>'
+s.untranslatedChanges = '<strong>Note:</strong>  Des changements ont été apportés au <a href="'+filename+'.en">document original en anglais</a> depuis sa traduction. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Consulter le fichier des changements.</a></span>'
 s.new="New";// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Updated"; // same as New
 s.translation_updated="Translation updated:"; // date appears after colon 
 
 s.aboutThisArticle="À propos de cet article"; // title in the right column near the top of the page
 s.status_draft="Cet article est un brouillon qui n’a pas encore été proposé à relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant le lien de bas de page";
-s.status_review="Cet article est proposé à relecture publique. Merci d'envoyer vos commentaires à <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>s’abonner</a>)</span>.";
+s.status_review="Cet article est proposé à relecture publique. Merci d'envoyer vos commentaires à <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>s’abonner</a>)</span>.";
 s.status_published="Cet article a été relu par le Groupe de Travail Internationalisation du W3C et a subi un processus de relecture publique pour le rendre aussi précis que possible. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant le lien de bas de page.";
 s.status_notreviewed="Cet article n’a pas fait l’objet d’une relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant le lien de bas de page.";
 s.tests=""; // used at the end of breadcrumbs for test related pages
