@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8" />
+<title>Manevrarea codării de caractere în HTML și CSS (tutorial)</title>
+<meta name="description" content="W3C i18n tutorial: Tutorial despre cum să marcăm pagini XHTML, HTML și CSS cu informații despre codările de caractere, și cum să folosim surogatele de caractere." />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'tutorial-char-enc'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-char-enc'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-12', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-22', time:'18:22'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'George Misel, <a href="http://traducere-autorizata.com">Traduceri autorizate</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="office@traducere-autorizata.com"; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'characters';
+</script>
+<script type="text/javascript" src="tutorial-char-enc-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-ro.js"> </script><!--TRANSLATORS must change -en to the subtag for their language! -->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav>
+  <script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  <h1>Manevrarea codării de caractere în HTML și CSS (tutorial)</h1>
+</header>
+
+
+<div id="sidebarExtras">
+  <section>
+    <h2 id="whyread" class="notoc">De ce ar trebui să citiți asta?</h2>
+    <p>Daca un browser nu este capabil să detecteze codarea caracterelor folosită în pagină, conținutul poate fi imposibil de citit. Informația din acest tutorial este foarte importantă pentru  cei care se ocupa de întreținerea și extinderea unui site multilingv, dar declararea codării de caractere a documentului este importantă pentru <em>oricine</em> crează  HTML sau CSS care folosește caractere  non-ASCII, pentru că, chiar dacă arată bine pentru tine, browserul altor oameni poate afecta felul în care este afișat. Acest tutorial o sa vă ofere întelegerea necesară pe acest topic care o să vă ajute sa luați deciziile potrivite.</p>
+  </section>
+  <section id="objectives">
+    <h2 class="notoc">Obiective</h2>
+    <p>Dupa ce ai terminat acest tutorial ar trebui să:</p>
+    <ul>
+      <li>ai o idee clară despre factorii care au legatură cu alegerea tipului de codare pentru documentele HTML, și să apreciezi valoarea utilizării Unicode</li>
+      <li>să știi când și cum să declari codarea de caractere (charset) pentru documente care folosesc  HTML și CSS</li>
+      <li>să fii constient de anumite aspecte problematice de redare și codare a fișierelor HTML în browsere vechi</li>
+      <li>să ințelegi ce inseamnă termenii <i class="termref">marcare byte-order</i> și <i class="termref">normalizare</i>, cum te pot afecta, și cum să lucrezi cu ele</li>
+      <li>să ințelegi când și cum să folosești surogatele pentru a reprezenta caractere</li>
+    </ul>
+  </section>
+</div>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> Autorii de conținut HTML/XHTML și CSS. Acest material este aplicabil chiar dacă creați într-un editor sau prin scripting.</p>
+    <div id="updateInfo"></div>
+    <script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+</div>
+  <p>Acest editor adună impreună și organizează direcții către articole care, luate împreună, ne ajută să ințelegem cum să manevram aspectele esentiale ale autorizarii HTML și CSS în legatura cu caracterele și codările caracterelor.</p>
+</section>
+
+
+<div id="nutshell">
+  <h2 id="quicksummary"><a href="#quicksummary">Pe scurt</a></h2>
+  <p>Salvați paginile ca UTF-8, de câte ori puteți.</p>
+  <p>Declarați de fiecare dată codarea unui document. Folosiți antetul HTTP dacă puteți. Folosiți de asemenea mereu declarația din document.</p>
+  <div class="example">
+  <p><code translate="no">&lt;meta charset=&quot;utf-8&quot;/&gt;</code></p>
+  </div>
+  <p>Poti folosi <code class="kw" translate="no">@charset</code> sau headerele HTTP pentru a declara codarea foii tale de stil, dar trebuie sa faci asta doar daca foaia ta de stil contine caractere non-ASCII si, din varii motive nu te poti baza pe codarea HTML si a foii de stil  asociate in acelasi timp.</p>
+  <p>Incercați să evitați folosirea semnului byte-order în UTF-8, și asigurați-vă că codul vostru HTML este salvat în formularul de normalizare C Unicode (NFC).</p>
+  <p>Evitați folosirea surogatelor, cu excepția caracterelor invizibile și ambigue. Și nu folosiți caractere de control Unicode cand puteți folosi marcare.</p>
+</div>
+
+
+<section>
+  <h2 id="Slide0030"><a href="#Slide0030">Informații esențiale de fundal</a></h2>
+  <p>Dacă sunteți nou în acest domeniu, sunt câteva concepte fundamentale pe care trebuie sa le întelegeți dacă doriți să urmariți diverse părti ale acestui tutorial. Dacă sunteți familiarizat cu aceste concepte, puteți să <a href="#Slide0110">săriți la următoarea secțiune</a>.</p>
+  <ul>
+    <li><a class="print" href="/International/questions/qa-what-is-encoding">Codarea caracterelor pentru începatori</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#unicode">Unicode</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#charsets">Seturi de caractere, seturi de caractere codate si codări</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#doccharset">Setul de caractere ale Documentului</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#escapes">Surogate de caractere</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#httpheader">Antetul HTTP</a></li>
+    <li><a class="print" href="/International/articles/serving-xhtml/#mime"> Tipuri MIME</a></li>
+    <li> <a class="print" href="/International/articles/serving-xhtml/#quirks">'Standarde' vs moduri 'Quirks'(capricioase)</a></li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="Slide0110"><a href="#Slide0110">Alegerea și aplicarea codării de caractere</a></h2>
+  <p>Conținutul este compus dintr-o secventă de caractere. Caracterele reprezintă litere din alfabet, punctuație, etc. Dar conținutul este stocat într-un computer ca o secventă de bytes, care sunt valori numerice. Uneori mai mult de un byte este folosit pentru a reprezenta un singur caracter. Ca și codurile folosite în spionaj, felul în care secventa de bytes este convertită în caractere depinde de ce cheie a fost folosită pentru a coda textul. În acest context, cheia este denumită o codare de caracter. </p>
+  <p>Sunt mai multe tipuri de codare de caracter din care putem alege. Această parte din tutorial oferă sfaturi simple legate de ce codare de caracter să folosim pentru conținutul nostru și cum să o aplicăm.</p>
+  <p><a href="/International/questions/qa-choosing-encodings" class="maintitle print"><cite>Alegerea și aplicarea unei codări de caracter</cite></a> ofera sfaturi simple despre ce caractere de codare sa folosim pentru continutul vostru, si cum sa il aplicam.</p>
+</section>
+
+
+<section>
+  <h2 id="declaring"><a href="#declaring">Cum să declarăm codarea de caracter</a></h2>
+  <p>Ar trebui să specificați de fiecare dată codarea folosită pentru o pagină HTML sau XML. Daca nu o faceți, riscați ca  caracterele din conținut să fie interpretate greșit. Aceasta nu este doar o chestiune de citire pentru oameni, ci și calculatorul trebuie să ințeleagă aceste date. Ar trebui să verificați de asemenea să nu  folosiți codări diferite in locuri diferite.</p>
+  <p><a href="/International/questions/qa-html-encoding-declarations" class="maintitle print"><cite>Declararea codărilor de caractere în HTML </cite></a> vă va oferii un set de recomandări rapide pentru cei care vor doar să afle ce au de făcut, și informații mai detaliate pentru cei care au nevoie de ele.</p>
+  <p><a href="/International/questions/qa-css-charset" class="maintitle print"><cite>Declararea codării de caractere în CSS</cite></a> ofera  informații pentru CSS.</p>
+</section>
+
+
+<section>
+  <h2 id="bom"><a href="#bom">Semnul byte-order</a> (<abbr title="Byte-Order Mark">BOM</abbr>)</h2>
+  <p>Semnul byte-order, sau BOM, este ceva peste care veți da atunci când folosiți o codare de caracter bazată pe Unicode, cum ar fi UTF-8 și UTF-16. În unele cazuri veți fi nevoiți să stergeți BOM-ul, pentru a vă asigura că e acolo. </p>
+  <p> <a href="/International/questions/qa-byte-order-mark" class="maintitle print"><cite>Semnul byte-order (BOM) în HTML</cite></a> va ajuta sa intelegeti problemele.</p>
+</section>
+
+
+<section>
+  <h2 id="n11n"><a href="#n11n">Formularele de normalizare Unicode</a></h2>
+  <p>Normalizarea este ceva ce trebuie să conștientizați dacă autorizați pagini HTML cu foi de stil CSS în UTF-8 (sau orice alta codare Unicode), în special dacș le folosiți cu text într-un script care folosește accente sau alte diacritice. </p>
+  <p> <a href="/International/questions/qa-html-css-normalization" class="maintitle print"><cite>Normalizarea în HTML și CSS</cite></a> explica acest lucru in continuare.</p>
+</section>
+
+
+<section>
+  <h2 id="Slide0420"><a href="#Slide0420">Folosirea surogatelor de caractere</a></h2>
+  <p>Puteți folosi un surogat de caracter pentru a reprezenta orice caracter din setul de caractere în HTML, XML sau CSS folosind numai caractere ASCII.</p>
+  <p><a href="/International/questions/qa-escapes" class="maintitle print"><cite>Folosirea surogatelor de caracter în marcare și CSS</cite></a> ofera cele mai bune practice pentru folosirea caracterelor de degajare, si va spune cum sa le folositi atunci cand sunt necesare.</p>
+</section>
+
+
+<section>
+  <h2 id="Slide0490"><a href="#Slide0490">Caractere sau marcaje?</a></h2>
+  <p>În sfarșit, sunt o serie de caractere Unicode tip control, unele din ele indeplinesc același rol ca marcaj. Întrebarea este, pe care îl folosim, și pe care îl evitam? </p>
+  <p><a href="/International/questions/qa-chars-vs-markup" class="maintitle print"><cite>Caractere sau marcaj?</cite></a> Raspunde la intrebare.</p>
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>La început? <a href="/International/getting-started/characters"><cite>Introducere în Seturi de Caractere și Codări</cite></a></p>
+    </li>
+    <li>
+      <p>Linkuri asociate, Autorizarea <cite> HTML &amp; CSS</cite> – <a href="/International/techniques/authoring-html#charset">Caractere</a> <span class="uri">/International/techniques/authoring-html#charset</span></p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

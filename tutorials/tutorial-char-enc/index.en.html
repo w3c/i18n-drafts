@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Handling character encodings in HTML and CSS (tutorial)</title>
+<meta name="description" content="W3C i18n tutorial: What you need to know about character encodings and characters in HTML and CSS." />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'tutorial-char-enc'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-char-enc'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-12', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-22', time:'18:22'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact=""; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'characters';
+</script>
+<script type="text/javascript" src="tutorial-char-enc-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"> </script><!--TRANSLATORS must change -en to the subtag for their language! -->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav>
+  <script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  <h1>Handling character encodings in HTML and CSS (tutorial)</h1>
+</header>
+
+
+<div id="sidebarExtras">
+  <section>
+    <h2 id="whyread" class="notoc">Why should you read this?</h2>
+    <p>If a browser is unable to detect the character encoding used in a page, the content may be unreadable. The information in this tutorial is particularly important for those maintaining and extending a multilingual site, but declaring the character encoding of the document is important for <em>anyone</em> producing HTML or CSS that uses non-ASCII characters, because, although it looks good to you, other people&quot;s browser settings can affect readability. This tutorial will give you an understanding of the topic that will help you make the right choices.</p>
+  </section>
+  <section id="objectives">
+    <h2 class="notoc">Objectives</h2>
+    <p>When you have finished this tutorial you should:</p>
+    <ul>
+      <li>have a clear idea about  factors relating to the choice of encoding for HTML documents, and appreciate the value of using Unicode</li>
+      <li>know when and how to declare the character encoding (charset) for documents using HTML and CSS</li>
+      <li>understand what the terms <i class="termref">byte-order mark</i> and <i class="termref">normalization</i> mean, how they can affect you, and how to deal with them</li>
+      <li>understand when and how to use escapes  to represent characters</li>
+    </ul>
+  </section>
+</div>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> HTML and CSS content authors. This material is applicable whether you create documents in an editor, or via scripting.</p>
+    <div id="updateInfo"></div>
+    <script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+  </div>
+  <p>This  tutorial gathers together and organizes pointers to articles that, taken together, help you understand how to handle the essential aspects of authoring HTML and CSS related to characters and character encodings.</p>
+</section>
+
+
+<div id="nutshell">
+  <h2 id="quicksummary"><a href="#quicksummary">In a nutshell</a></h2>
+  <p>Save your pages as UTF-8.</p>
+  <p>Always declare the encoding of your document. Use the HTTP header if you can. Always use an in-document declaration too. </p>
+  <div class="example">
+  <p><code translate="no">&lt;meta charset=&quot;utf-8&quot;/&gt;</code></p>
+  </div>
+  <p>You can use <code class="kw" translate="no">@charset</code> or HTTP headers to declare the encoding of your style sheet, but you only need to do so if your style sheet contains non-ASCII characters and, for some reason, you can't rely on the encoding of the HTML and the associated style sheet to be the same.</p>
+  <p>Try to avoid using the byte-order mark in UTF-8, and ensure that your HTML code is saved in Unicode normalization form C (NFC).</p>
+  <p>Avoid using character escapes, except for invisible or ambiguous characters. And don't use Unicode control characters when you can use markup instead.</p>
+</div>
+
+
+<section>
+  <h2 id="Slide0030"><a href="#Slide0030">Essential background information</a></h2>
+  <p>If you are a newcomer to this topic, there are certain foundational concepts you need to understand if you are to follow various parts of the tutorial. If  you are familiar with these concepts, you can <a href="#Slide0110">skip to the next section</a>.</p>
+  <ul>
+    <li><a class="print" href="/International/questions/qa-what-is-encoding">Character encodings for beginners</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#unicode">Unicode</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#charsets">Character sets, coded character sets, and encodings</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#doccharset">The Document Character Set</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#escapes">Character escapes</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#httpheader">The HTTP header</a></li>
+    <li><a class="print" href="/International/articles/serving-xhtml/#mime"> MIME types</a></li>
+    <li> <a class="print" href="/International/articles/serving-xhtml/#quirks">'Standards' vs 'Quirks' modes</a></li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="Slide0110"><a href="#Slide0110">Choosing and applying a character encoding</a></h2>
+  <p>Content is composed of a sequence of characters. Characters represent letters of the alphabet, punctuation, etc. But content is stored in a computer as a sequence of bytes, which are numeric values. Sometimes more than one byte is used to represent a single character. Like codes used in espionage, the way that the sequence of bytes is converted to characters depends on what key was used to encode the text. In this context, that key is called a character encoding. There are many character encodings to choose from. </p>
+  <p><a href="/International/questions/qa-choosing-encodings" class="maintitle print"><cite>Choosing &amp; applying a character encoding</cite></a> offers simple advice on which character encoding to use for your content, and how to apply it.</p>
+</section>
+<section>
+  <h2 id="declaring"><a href="#declaring">How to declare a character encoding</a></h2>
+  <p>You should always specify the encoding used for an HTML or XML page. If you don't, you risk  that characters in your content are  incorrectly interpreted. This is not just an issue of human readability, increasingly machines need to understand your data too. You should also check that you are not specifying different encodings in different places.</p>
+  <p><a href="/International/questions/qa-html-encoding-declarations" class="maintitle print"><cite>Declaring character encodings in HTML </cite></a> provides  quick recommendations for those who just want to be told what to do, and more detailed information for those who need it. </p>
+  <p><a href="/International/questions/qa-css-charset" class="maintitle print"><cite>Declaring character encodings in CSS</cite></a> provides information for CSS.</p>
+</section>
+<section>
+  <h2 id="bom"><a href="#bom">The byte-order mark</a> (<abbr title="Byte-Order Mark">BOM</abbr>)</h2>
+  <p>The byte-order mark, or BOM, is something you will come across when using a Unicode-based character encoding, such as UTF-8 and UTF-16. In some cases you will need to remove the BOM, in others you need to ensure that it is there. </p>
+  <p> <a href="/International/questions/qa-byte-order-mark" class="maintitle print"><cite>The byte-order mark (BOM) in HTML</cite></a> helps you understand the issues.</p>
+</section>
+
+
+<section>
+  <h2 id="n11n"><a href="#n11n">Unicode normalization forms</a></h2>
+  <p>Normalization is something you need to be aware of if you are authoring in UTF-8, be it HTML pages or CSS style sheets, particularly if you are dealing with text in a script that uses accents or other diacritics. </p>
+  <p> <a href="/International/questions/qa-html-css-normalization" class="maintitle print"><cite>Normalization in HTML and CSS</cite></a> explains this further.</p>
+</section>
+
+
+<section>
+  <h2 id="Slide0420"><a href="#Slide0420">Using character escapes</a></h2>
+  <p>You can use a character escape to represent any  character from the Unicode character set in HTML, XML or CSS using only ASCII characters. </p>
+  <p><a href="/International/questions/qa-escapes" class="maintitle print"><cite>Using character escapes in markup and CSS</cite></a> provides best practices for use of escapes, and tells you how to use them when they are needed.</p>
+</section>
+
+
+<section>
+  <h2 id="Slide0490"><a href="#Slide0490">Characters or markup?</a></h2>
+  <p>Finally, there are a range of control-like Unicode characters, some of which fulfill the same role as markup. The question is, which should you use, and which should you avoid? </p>
+  <p><a href="/International/questions/qa-chars-vs-markup" class="maintitle print"><cite>Characters or markup?</cite></a> answers that question.</p>
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+	<ul id="full-links">
+	  <li>
+	    <p>Getting started? <a href="/International/getting-started/characters"><cite>Introducing Character Sets and Encodings</cite></a></p>
+      </li>
+	<li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
+      </ul>
+      </li>
+      </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

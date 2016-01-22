@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<title>Att hantera teckenkodningar i HTML och CSS (handledning)</title>
+<meta name="description" content="W3C i18n tutorial: Handledning om hur man gör uppmärkning av sidor med XHTML-, HTML- och CSS-innehåll, och anger information om teckenkodningar, och hur man använder undantagstecken." />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'tutorial-char-enc'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-char-enc'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-12', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-22', time:'18:22'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Olle Olsson, SICS'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="olleo@sics.se"; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'characters';
+</script>
+<script type="text/javascript" src="tutorial-char-enc-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-sv.js"> </script><!--TRANSLATORS must change -en to the subtag for their language! -->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav>
+  <script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  <h1>Att hantera teckenkodningar i HTML och CSS (handledning)</h1>
+</header>
+
+
+<div id="sidebarExtras">
+  <section>
+    <h2 id="whyread" class="notoc">Varför bör du läsa detta??</h2>
+    <p> Om en webbläsare inte kan upptäcka vilken teckenkodning som
+      används i en webbsida, så kan innehållet bli oläsbart. 
+      
+      Informationen i denna handledning är särskilt viktigt för de som
+      underhåller och utvidgar en flerspråkig webbplats.
+      
+      Men att deklarera teckenkodning för ett dokument är faktiskt
+      viktigt för <em>alla</em> som skapar sådan HTML och CSS som
+      innehåller tecken vilka inte är representerade enligt
+      ASCII-koden.
+      
+      Detta är viktigt, eftersom andra användares
+      webbläsarinställningar kan försämra läsbarheten, trots att de
+      som skapar innehåller tycker att det ser bra ut när de själva
+      inspekterar innehållet.
+      
+      Denna handledning kommer att ge dig en förståelse för detta
+      område, och du kommer att vara bättre rustad att göra
+      kloka beslut. </p>
+  </section>
+  <section id="objectives">
+    <h2 class="notoc">Mål</h2>
+    <p> När du har gått igenom denna handledning så bör du: </p>
+    <ul>
+      <li> ha en bra förståelse av vilka faktorer som påverkar val av
+        kodning för HTML-dokument, och ha insikt i det mervärde som 
+        man får av att använda <span lang="en">Unicode</span>, </li>
+      <li> känna till när och hur man deklarerar teckenkodning 
+        (<span lang="en">charset</span>) 
+        för dokument som använder HTML och CSS, </li>
+      <li> förstå vad termer som <i class="termref"><span lang="en">byte-order mark</span></i> och <i class="termref"><span lang="en">normalization</span></i> betyder, hur de påverkar ditt arbete, och hur du hanterar dem, </li>
+      <li> förstå när och hur man kan använda undantagstecken för att
+        representera olika tecken. </li>
+    </ul>
+  </section>
+</div>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> Författare av HTML- och CSS-innehåll. Dessa råd är tillämpbara oavsett om du skapar dokument i ett redigeringssystem eller med hjälp av skripts.</p>
+    <div id="updateInfo"></div>
+    <script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+    </div>
+  <p> Denna handledning ger en översikt över, och ger länkar till,
+    artiklar som tillsammans hjälper dig, när du ska skapa innehåll i
+    HTML och CSS, att kunna hantera viktiga aspekter som
+    har med tecken och teckenkodningar att göra. </p>
+</section>
+
+
+<div id="nutshell">
+  <h2 id="quicksummary"><a href="#quicksummary">I korthet</a></h2>
+  <p>Spara dina sidor som UTF-8.</p>
+  <p>Deklarera alltid vilken kodning dina dokument har. 
+    Använd HTTP-huvuden om det är möjligt.
+    Deklarera även i själva dokumentet. </p>
+  <div class="example">
+  <p><code translate="no">&lt;meta charset=&quot;utf-8&quot;/&gt;</code></p>
+  </div>
+  <p> Du kan använda 
+    <span lang="en"><code class="kw" translate="no">@<span lang="en">charset</span></code></span> eller HTTP-huvuden för att deklarera kodningen av din formatmall,
+    men du behöver bara göra detta om din formatmall innehåller tecken
+    som inte tillhör ASCII, och om, av något skäl, du inte kan vara
+    säker på att kodningen av HTML-innehåll överensstämmer med kodning
+    av formatmallen. </p>
+  <p> Undvik om möjligt att använda en markering av byte-ordning
+    (<span lang="en">byte-order mark</span>)
+    för innehåll i UTF-8, och säkerställ att din HTML-kod sparas i <span lang="en">Unicode normalization form C</span> (NFC). </p>
+  <p> Låt bli att använda undantagstecken, i andra fall än för osynliga
+    tecken eller för tvetydiga tecken. Och använd inte 
+    kontrolltecken i <span lang="en">Unicode</span> (<span lang="en">Unicode control characters</span>)
+    i de fall då du istället kan åstadkomma samma effekt med
+    uppmärkning. </p>
+</div>
+
+
+<section>
+  <h2 id="Slide0030"><a href="#Slide0030">Viktig bakgrundsinformation</a></h2>
+  <p> Om du känner dig som nybörjare i detta temaområde, så finns det
+    ett antal begrepp som du behöver känna till för att du ska dra full
+    nytta av resten av denna handledning.
+    Om du är bekant med dessa begrepp, så kan du <a href="#Slide0110">hoppa direkt till nästa sektion</a>. </p>
+  <ul>
+    <li><a class="print" href="/International/questions/qa-what-is-encoding">Teckenkodning för nybörjare (<span lang="en">Character encodings for beginners</span>)</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#unicode"><span lang="en">Unicode</span></a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#charsets">Teckenuppsättningar och kodningar (<span lang="en">Character sets, coded character sets, and encodings</span>)</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#doccharset">Dokuments teckenuppsättning (<span lang="en">The Document Character Set</span>)</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#escapes">Undantagstecken (<span lang="en">Character escapes</span>)</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#httpheader">HTTP-huvud (<span lang="en">The HTTP header</span>)</a></li>
+    <li><a class="print" href="/International/articles/serving-xhtml/#mime"> MIME-typer</a></li>
+    <li> <a class="print" href="/International/articles/serving-xhtml/#quirks">Standardläge resp undantagsläge (<span lang="en">'Standards' vs 'Quirks' modes</span>)</a></li>
+  </ul>
+</section>
+
+<section>
+  <h2 id="Slide0110"><a href="#Slide0110">Att välja och använda en teckenkodning</a></h2>
+  <p> Webbinnehåll (en webbresurs) består av en sekvens av
+    tecken. 
+    Tecken står för bokstäver i ett alfabet, interpunktion, etc.
+    Men innehåll lagras i en dator som en sekvens av bytes, vilka är
+    numeriska värden.
+    Ibland behövs fler än en byte för att representera ett enskilt
+    tecken.
+    Analogt med hur man använder koder vid spionage, så påverkas
+    konverteringen av en sekvens av bytes, till en sekvens av tecken,
+    av vilken nyckel som användes för att koda texten.
+    I detta sammanhang kallas nyckeln för en teckenkodning.
+    Det finns många olika teckenkodningar som man skulle kunna
+    använda. </p>
+  <p> I dokumentet <a href="/International/questions/qa-choosing-encodings" class="maintitle print"><cite>Att välja &amp; att använda en teckenkodning (<span lang="en">Choosing &amp; applying a character encoding</span>)</cite></a> finns enkla råd om vilka teckenkodningar du bör använda för ditt
+    innehåll, och hur kodningarna användes. </p>
+</section>
+
+<section>
+  <h2 id="declaring"><a href="#declaring">Hur man deklarerar en teckenkodning</a></h2>
+  <p> Du bör alltid ange vilken kodning som använts för en webbsida i
+    HTML eller XML.
+    Om du inte gör det, så riskerar du att ditt innehåll inte hanteras
+    på ett korrekt sätt.
+    Detta är inte bara en fråga om mänsklig läsbarhet, eftersom
+    innehåll i webbsidor i ökande omfattning bearbetas maskinellt.
+    Du bör även försäkra dig om att du inte anger olika kodningar på
+    olika ställen i innehållet. </p>
+  <p> <a href="/International/questions/qa-html-encoding-declarations" class="maintitle print"><cite> Att deklarera teckenkodning i HTML (<span lang="en">Declaring character encodings in HTML</span>)</cite></a> ger kortfattade råd till den som bara vill veta hur man gör,
+    men här finns även mer detaljerad information för den som så
+    behöver. </p>
+  <p> <a href="/International/questions/qa-css-charset" class="maintitle print"><cite>Att deklarera teckenkodning i CSS (<span lang="en">Declaring character encodings in</span> CSS)</cite></a> ger motsvarande information för CSS. </p>
+</section>
+
+<section>
+  <h2 id="bom"><a href="#bom">Byteordningsmärke</a> (<abbr title="Byte-Order Mark">BOM</abbr>)</h2>
+  <p> Byteordningsmärket 
+    (<span lang="en">byte-order mark</span>, BOM) 
+    kan du komma i kontakt med när du använder teckenkodningar baserade på <span lang="en">Unicode</span>, såsom UTF-8 och
+    UTF-16.
+    I vissa fall måste du ta bort BOM:en, i andra fall ska du försäkra
+    dig om att BOM:en faktiskt är på plats. </p>
+  <p> <a href="/International/questions/qa-byte-order-mark" class="maintitle print"><cite><span lang="en">The byte-order mark</span> (BOM) in HTML</cite></a> ger den information du behöver behärska för att kunna förstå
+    användningsaspekter på BOM. </p>
+</section>
+
+<section>
+  <h2 id="n11n"><a href="#n11n">Normaliseringsformat för <span lang="en">Unicode</span></a></h2>
+  <p> Normalisering är ett begrepp du behöver känna till om du skapar
+    HTML-sidor med CSS-formatmallar i UTF-8 (eller andra <span lang="en">Unicode</span>-kodningar),
+    och det är speciellt viktigt om du hanterar text som använder
+    accenter eller andra diakritiska märken. </p>
+  <p> <a href="/International/questions/qa-html-css-normalization" class="maintitle print"><cite><span lang="en">Normalization in </span>HTML and CSS</cite></a> ger ytterligare förklaringar av detta. </p>
+</section>
+
+<section>
+  <h2 id="Slide0420"><a href="#Slide0420">Användning av undantagstecken</a></h2>
+  <p> Du kan använda ett undantagstecken för att - med hjälp av enbart ASCII-tecken - 
+    representera godtyckligt tecken i <span lang="en">Unicodes</span> teckenuppsättning,
+    då det ska förekomma i HTML, XML eller CSS, </p>
+  <p> <a href="/International/questions/qa-escapes" class="maintitle print"><cite><span lang="en">Using character escapes in markup and</span> CSS</cite></a> ger goda råd om hur man använder undantagstecken, och beskriver
+    hur du faktiskt använder dem när de krävs. </p>
+</section>
+
+<section>
+  <h2 id="Slide0490"><a href="#Slide0490">Tecken eller uppmärkning?</a></h2>
+  <p> Slutligen skall nämnas att det finns en uppsättning av <span lang="en">Unicode</span>-tecken
+    vilka i mångt och mycket liknar kontrolltecken 
+    (<span lang="en">control characters</span>),
+    och vissa av dessa får effekter som påminner om uppmärkning.
+    Frågan är då: vilka sådana tecken kan du använda, och vilka bör
+    du undvika? </p>
+  <p> <a href="/International/questions/qa-chars-vs-markup" class="maintitle print"><cite><span lang="en">Characters or markup</span>?</cite></a> ger svar på den frågan. </p>
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Nybörjare? <a href="/International/getting-started/characters"><cite>Introduktion till teckenuppsättningar och kodningar (<span lang="en">Introducing Character Sets and Encodings</span>)</cite></a> </p>
+    </li>
+	<li>
+      <p>Näraliggande länkar, <cite>Att skapa HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Tecken</a></li>
+      </ul>
+      </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
