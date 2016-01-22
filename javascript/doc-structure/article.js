@@ -154,10 +154,10 @@ if (trans.updatedtranslations.length > 0) {
 
 g.updated = ''
 if (g.isTranslation == 'no' && f.firstPubDate && f.lastSubstUpdate && f.firstPubDate != f.lastSubstUpdate) {
-	g.updated = "<p class='updated'>"+s.updated+" <a href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+"</time></a></p>"
+	g.updated = "<p class='updated'>"+s.updated+" <a class='print' href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+"</time></a></p>"
 	}
 if (outOfDateTranslation == 'yes') g.updated += "<p class='outofdate'>"+s.untranslatedChanges+" </p>" 
-else if (g.isTranslation == 'yes' && updatedTranslation == true) {g.updated ="<p class='updated'>"+s.translation_updated+" <a href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></a></p>" }
+else if (g.isTranslation == 'yes' && updatedTranslation == true) {g.updated ="<p class='updated'>"+s.translation_updated+" <a class='print'  href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></a></p>" }
 
 
 // SURVEY
@@ -221,8 +221,9 @@ function completePage () {
 	var sidebarExtras = ''
 	if (document.getElementById('sidebarExtras')) sidebarExtras = document.getElementById('sidebarExtras').innerHTML
 	document.getElementById('relatedlinks').innerHTML = sidebarExtras
-	fillinTranslations();
-	if (document.getElementById("toclocation")) { createtoc();}
+	fillinTranslations()
+	if (document.getElementById("toclocation")) createtoc();
+	getURLs()
 	}
 
 
@@ -234,4 +235,23 @@ function fillinTranslations () {
 		if (document.getElementById('bytheway')) document.getElementById('bytheway').firstChild.textContent = s.byTheWay
 		if (document.getElementById('endlinks')) document.getElementById('endlinks').firstChild.textContent = s.furtherReading
 		}
+	}
+
+
+function getURLs () {
+	// makes a list of URLs and adds footnote markers and footnotes to the bottom of the page
+	// this is revealed only when printing, and applies only to a tags with class print
+	
+	var links = document.querySelectorAll('a.print')
+	console.log(links.length)
+	var out = '<section id="printLinks"><h3 class="notoc"><a href="#printLinks">Links in this document:</a></h3><ol>\n'
+	for (var l=0;l<links.length;l++) {
+		links[l].title = l+1
+		out += '<li>'+links[l].href+'</li>\n'
+		}
+	out += '</ol></section>'
+	var container = document.createElement('div')
+	container.innerHTML = out
+	document.querySelector('#endlinks').parentNode.appendChild(container)
+	
 	}
