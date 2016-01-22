@@ -243,14 +243,14 @@ function getURLs () {
 	// this is revealed only when printing, and applies only to a tags with class print
 	
 	var links = document.querySelectorAll('a.print')
-	console.log(links.length)
-	var out = '<section id="printLinks"><h3 class="notoc"><a href="#printLinks">Links in this document:</a></h3><ol>\n'
+	var out = '<h3 class="notoc"><a href="#printLinks">Links in this document:</a></h3><ol>\n'
 	for (var l=0;l<links.length;l++) {
 		links[l].title = l+1
 		out += '<li>'+links[l].href+'</li>\n'
 		}
-	out += '</ol></section>'
-	var container = document.createElement('div')
+	out += '</ol>'
+	var container = document.createElement('section')
+	container.id = "printLinks"
 	container.innerHTML = out
 	document.querySelector('#endlinks').parentNode.appendChild(container)
 	
