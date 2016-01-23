@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Unicode Bidirectional Algorithm basics</title>
+<meta name="description" content="What does the Unicode Bidirectional (bidi) Algorithm do, basically?" />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'inline-bidi-markup'+'/'; // the name of the directory this file is in
+f.filename = 'uba-basics'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-uba-basics'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2013-04-24'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2013-04-24', time:'15:08'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-23', time:'21:53'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction';
+</script>
+<script type="text/javascript" src="uba-basics-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"> </script><!--TRANSLATORS must change -en to the subtag for their language! -->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav>
+  <script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Unicode Bidirectional Algorithm basics</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, schema developers (DTDs, XML Schema, RelaxNG, etc.), XSLT developers, Web project managers, and anyone who wants to get a basic idea of how the Unicode Bidirectional Algorithm supports inline bidirectional content.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+  <section>
+  
+  
+  <section>
+    <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">What does the Unicode Bidirectional (bidi) Algorithm do, basically?</p>
+</section>
+
+
+<section>
+    <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <div class="insideinfonote">
+    <p class="info">In some older technologies, such as mainframe and iSeries systems, you may still come across text stored in visual order. For more information, see <cite><a class="print" href="/International/questions/qa-visual-vs-logical">Visual vs. logical ordering of text</a></cite>.</p>
+  </div>
+  <p>It is important to understand from the outset that, in all major web browsers, the order of characters in memory (logical) is not the same as the order in which they are displayed (visual). </p>
+  <p>The set of rules applied by the browser to produce the correct order at the time of display are described by the Unicode Bidirectional Algorithm. We'll generally refer to this as 'the bidi algorithm'.</p>
+  <p>The rest of this section  introduces basic concepts of the bidi algorithm that will help you understand how to manage bidirectional inline text.</p>
+
+  <section>
+    <h3 id="context"><a href="#context">Base direction (direction of the context)</a></h3>
+    <p>The order in which text is displayed  depends on the <dfn id="term_basedirection2">base direction</dfn> assigned to the phrase, paragraph or block that contains it. The base direction is a fundamentally important concept. It establishes a directional context that the bidi algorithm refers to at various points to decide how to handle the text.</p>
+    <p>In HTML the base direction is either set explicitly by the nearest parent element that uses the <code class="kw" translate="no">dir</code> attribute, or, in the absence of any such attribute,  is inherited from the default direction of the document, which is left-to-right. </p>
+  </section>
+  
+  <section>
+    <h3 id="typing"><a href="#typing">Characters and directional typing</a></h3>
+    <p>We already know that a sequence of Latin characters is rendered (ie. displayed) one after the other from left to right (we can see
+      that in the text you are currently reading). On the other hand, the bidi algorithm will render a sequence of  Arabic or Hebrew characters one after the other from right to
+      left.</p>
+    <figure>
+      <div><a href='uba-basics-egs?test=1' target="text"><img class="codelink" src="/International/icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><img src="uba-basics-data/directional-typing.gif" alt="Examples of directionally typed words." /></p>
+    </figure>
+    <p>How does your browser know whether this is a sequence of left-to-right or right-to-left characters? Because each character in Unicode has an associated directional property. Most letters are <dfn>strongly
+      typed</dfn> as LTR (left-to-right). Letters from right-to-left scripts are strongly typed as RTL (right-to-left). </p>
+    <p>A sequence of strongly-typed RTL characters will be displayed from right to left. This is independent of the surrounding base direction.</p>
+  </section>
+  
+  <section>
+    <h3 id="directionalruns"><a href="#directionalruns">Directional runs</a></h3>
+    <p>When text with different directionality is mixed inline, the bidi algorithm produces a separate <dfn>directional run</dfn> out of each sequence of contiguous characters with the same
+      directionality.</p>
+    <p>So in the following example there are three directional runs:</p>
+    <figure>
+      <div><a href='uba-basics-egs?test=2' target="text"><img class="codelink" src="/International/icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><img src="uba-basics-data/directional-runs.gif" alt="Left-to-right ordered directional runs: bahrain مصر kuwait." /></p>
+    </figure>
+    <p>Note that you don't need any markup or styling to make this happen.</p>
+    <p><strong>Here's the important bit: the order in which directional runs themselves are displayed across the page depends on the prevailing base direction</strong>.</p>
+    <p>In the example above, which has an overall
+      context (ie. base direction) of <code class="kw" translate="no">ltr</code>, you would read 'bahrain', then '<span title="Means: 'egypt'" lang="ar">مصر</span>', then 'kuwait'. </p>
+    <figure>
+      <div><a href='uba-basics-egs?test=2' target="text"><img class="codelink" src="/International/icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><img src="uba-basics-data/ltr-directional-runs.gif" alt="Left-to-right ordered directional runs: bahrain مصر kuwait." /></p>
+    </figure>
+    <p>If you change the directional context of the example above by specifying that the direction of the <code class="kw" translate="no">html</code> element or a parent element, such as a <code class="kw" translate="no">div</code>, <code class="kw" translate="no">p</code> or <code class="kw" translate="no">span</code> element, is <code class="kw" translate="no">rtl</code>,  you will change the order of the directional runs.</p>
+    <figure>
+      <div><a href='uba-basics-egs?test=3' target="text"><img class="codelink" src="/International/icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><img src="uba-basics-data/rtl-directional-runs.gif" alt="Right-to-left ordered directional runs: bahrain مصر kuwait." /></p>
+    </figure>
+    <p>The characters in both cases  are stored in memory in exactly the same order, but the visual ordering of the directional runs, when displayed, is reversed.</p>
+  </section>
+  
+  <section>
+    <h3 id="neutralcharacters"><a href="#neutralcharacters">Neutral characters</a></h3>
+    <div class="sidenoteGroup">
+      <p>Spaces and punctuation are not strongly typed as either LTR or RTL in Unicode, because they may be used in either type of script. They are therefore classed as <dfn>neutral</dfn> or <dfn>weak</dfn> characters.</p>
+      <div class="sideinfonote">
+        <p class="info">Characters are usually classified as 'weak' when they are associated with numbers. A small number of  punctuation characters are initially classed as weak, but in a non-numeric context are treated like neutrals. In consequence, in this article we will refer to all punctuation as neutral characters.</p>
+      </div>
+    </div>
+    <p>This is where things begin to get interesting. When the bidi algorithm encounters characters with neutral directional properties (such
+      as spaces and punctuation) it works out how to handle them by looking at the surrounding characters.</p>
+    <p><strong>A neutral character between two strongly typed characters that have the same directional type will also assume that directionality</strong>. So a
+      neutral character between two RTL characters will be treated as a RTL character itself, and will have the effect of <strong>extending the directional run</strong>. This is why
+      the three arabic words in the following example  are read from right to left as a single directional run – <em>including the two intervening spaces</em>, which as neutrals take on the direction of the surrounding characters,. (The arrows show the reading order.)</p>
+    <figure>
+      <div><a href='uba-basics-egs?test=4' target="text"><img class="codelink" src="/International/icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><img src="uba-basics-data/neutrals-basic.gif" alt="Arabic words in an English sentence: The title is مفتاح معايير الويب in Arabic." /></p>
+    </figure>
+    <p>Even if there are several neutral characters between the two strongly typed characters, they will all be treated in the same way.</p>
+    <p>Note that you still don't need any markup or styling for this. And that there are still only three directional runs here.</p>
+    <p>But what happens <strong>when a space or punctuation falls between two strongly typed characters that have <em>different</em> directionality</strong>, ie. at the boundary between directional runs? In such a case <strong>the neutral character (or characters) will be treated as if they have the same directionality as the prevailing <em>base direction</em></strong>.</p>
+    <p>So, for example, if we add a comma after the last Arabic character in the example above it will be regarded as LTR (the direction of the base direction) and will therefore be displayed to the right of the Arabic text, ie. as part of the right-hand directional run.</p>
+    <figure>
+      <div><a href='uba-basics-egs?test=5' target="text"><img class="codelink" src="/International/icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><img src="uba-basics-data/title-comma.png" alt="Arabic words in an English sentence: The title is مفتاح معايير الويب, in Arabic." /></p>
+    </figure>
+    <p>So far, so good, but this does not always work to our advantage, however, as we shall see next. </p>
+  </section>
+  
+  <section>
+    <h3 id="embeddedbd"><a href="#embeddedbd">Embedding changes to the base direction</a></h3>
+    <p>If, in the previous example, the title in Arabic actually ended with an exclamation mark, then we would expect it to appear at the left edge of the Arabic text.</p>
+    <figure>
+      <div><a href='uba-basics-egs?test=6' target="text"><img class="codelink" src="/International/icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><img src="uba-basics-data/title-exclamation.png" alt="Arabic words in an English sentence: The title is مفتاح معايير الويب! in Arabic." /></p>
+    </figure>
+    <p>Unfortunately, it won't look like that by default. The exclamation mark will be treated just like the comma, and will end up in the same location, ie. to the right of the Arabic title.</p>
+    <p> To correct this, we need to define the base direction of the Arabic text <em>plus the exclamation mark</em> to be right-to-left. Then the exclamation mark will assume a right-to-left direction and be treated as a continuation of the Arabic text.</p>
+    <p>Not only is changing the base direction essential in some cases for handling punctuation on the boundary of a directional run, but it is also important to ensure the correct order of directional runs in embedded bidirectional text.  Take, for instance, the following example where the top line shows the expected rendering, but the second line shows the default treatment using just the bidi algorithm.</p>
+    <figure>
+      <div><a href='uba-basics-egs?test=7' target="text"><img class="codelink" src="/International/icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><img src="uba-basics-data/more-complex.png" alt="Arabic words in an English sentence: The title is مفتاح معايير الويب! in Arabic." /></p>
+    </figure>
+    <p>Don't worry too much about the meaning at this point: the issue is that on the bottom line, without a definition of the base direction, the directional runs inside the quote are ordered from left to right. </p>
+    <p>Again, the way to solve the problem is to redefine the base direction for the quotation.</p>
+    <p>The markup language or application you are working with need to provide mechanisms that allow you to redefine the base direction.</p>
+  </section>
+  
+  <section>
+    <h3 id="numbers"><a href="#numbers">Numbers</a></h3>
+    <p>A quick word about numbers. Numbers in RTL scripts run left-to-right within the right-to-left flow, but they are handled by the bidi algorithm a little differently than words. They are said to have <dfn>weak directionality</dfn>. The two examples in the picture illustrate this difference.</p>
+    <figure>
+      <div><a href='uba-basics-egs?test=8' target="text"><img class="codelink" src="/International/icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><img src="uba-basics-data/digits.gif" alt="one two ثلاثة 1234 خمسة  AND  one two ثلاثة ١٢٣٤ خمسة" /></p>
+    </figure>
+    <p>The first example uses European digits, '1234', the second expresses the same number using Arabic-Indic digits, ١٢٣٤. In both cases, the digits in the number are read left-to-right.</p>
+    <p>Because it is weakly typed, the number is seen as part of the preceding Arabic text, so the two Arabic words that surround the number are treated as part of the same directional run - even though the sequence of digits runs LTR on screen.</p>
+    <p>Note also that, alongside a number, certain otherwise neutral characters, such as currency symbols, will be treated as part of the number rather than a neutral. There are some other slight differences in the way numbers are handled that we don't need to discuss in detail here.</p>
+  </section>
+  
+  <section>
+    <h3 id="beyond"><a href="#beyond">Beyond the bidi algorithm</a></h3>
+    <p>The bidi algorithm will handle text perfectly well in many situations, and typically no special markup or other device is needed other than to set the overall direction for the document.  However, the more a document mixes text of both directions, the higher the chances that some of it will not be displayed as intended. When this happens, extra markup or other devices have to be added to the document to untangle the bidirectional text.</p>
+  </section>
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a href="http://www.unicode.org/reports/tr9/"><cite>Unicode Standard Annex #9, The Unicode Bidirectional Algorithm</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/bidi-xhtml/"><cite>Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts</cite></a></p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-html-dir"><cite>Text direction and structural markup in HTML</cite></a></p>
+    </li>
+    <li>
+      <p><a href="http://rishida.net/scripts/tutorial/" title="A tutorial on writing systems characteristics"><cite>Non-Latin scripts tutorial</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#direction">Text direction</a></li>
+        <li><a href="/International/techniques/authoring-html#inline">Mixing text direction inline</a></li>
+      </ul>
+    </li>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring SVG</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-svg#direction">Text direction</a></li>
+      </ul>
+    </li>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
