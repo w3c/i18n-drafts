@@ -121,6 +121,7 @@ s.status_draft="この記事は、公開レビュー前の草案です。対処�
 s.status_review="この記事は現在公開レビュー中です。 <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscribe</a>)までコメントをお願いします。</span>."
 s.status_published="この記事は、W3C 国際ワーキンググループによりレビューが行われていると同時に、できる限り正確なものにするため公開レビューも行われています。対処すべき部分がある場合は、ページ下部近くにあるリンクからフィードバックを送ってください。"
 s.status_notreviewed="この記事は公開レビューなしで正式公開されました。対処すべき部分がある場合は、ページ下部近くにあるリンクからフィードバックを送ってください。"
+s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "要約的な回答" // heading
 s.longeranswer = "詳細な回答" // heading

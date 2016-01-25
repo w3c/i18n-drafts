@@ -126,6 +126,7 @@ s.status_draft="Denna artikel är ett utkast som ännu genomgått en öppen gran
 s.status_review="Denna artikel är nu publicerad för öppen granskning. Skicka in kommentarer på <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>prenumerera</a>)</span>."
 s.status_published="Denna artikel har granskats av W3C:s arbetsgrupp för internationalisering, och har genomgått öppen granskning, för att säkerställa att den är så korrekt som möjligt. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda länken längst ner på denna sida."
 s.status_notreviewed="Denna artikel publicerades utan att ha blivit granskad. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda länken längst ner på denna sida."
+s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Snabbt svar" // heading
 s.longeranswer = "Längre svar" // heading

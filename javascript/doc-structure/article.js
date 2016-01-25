@@ -84,6 +84,7 @@ if (f.status == "draft") { g.about += "<p>"+s.status_draft+"</p>" }
 if (f.status == "review") { g.about += "<p>"+s.status_review+"</p>" }
 if (f.status == "published") { g.about += "<p>"+s.status_published+"</p>" }
 if (f.status == "notreviewed") { g.about += "<p>"+s.status_notreviewed+"</p>" }
+if (f.status == "obsolete") { g.about += "<p style='color:red;'>"+s.status_obsolete+"</p>" }
 
 var fontlink = ''
 

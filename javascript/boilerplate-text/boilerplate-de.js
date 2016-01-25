@@ -124,6 +124,7 @@ s.status_draft="Dieser Artikel ist ein Entwurf und wurde noch nicht öffentlich 
 s.status_review="Dieser Artikel wird zur Zeit gerade öffentlich diskutiert. Senden Sie bitte Ihre Anmerkungen an <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>Abonnieren</a>)</span>."
 s.status_published="Dieser Artikel wurde von der Arbeits&shygruppe Inter&shynationali&shysierung des W3C geprüft und öffentlich diskutiert, damit er so korrekt wie möglich ist. Wenn Sie Anmerkungen haben, senden Sie uns diese bitte über den Link am Ende der Seite."
 s.status_notreviewed="Dieser Artikel wurde ohne vorherige öffentliche Diskussion veröffentlicht. Wenn Sie Anmerkungen haben, senden Sie uns diese bitte über den Link am Ende der Seite."
+s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Kurze Antwort" // heading
 s.longeranswer = "Ausführliche Antwort" // heading
