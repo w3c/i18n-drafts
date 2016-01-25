@@ -1,4 +1,3 @@
-<?php
 // translate the text between quotes
 // text following double slashes (such as this line) provides comments for the translator
 // words beginning with s. or f. are variables - do not disturb these ! (though you can move them)
@@ -48,7 +47,7 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Página inicial de atividades de I18N"
 s.moreResourcesOfThisType = "Mais recursos desse tipo."
-s.accessKeyN = 'A tecla de acesso 'n'  salta para outro local na navegação da página. <a href="//contentstart">Saltar para o início do conteúdo.</a>'
+s.accessKeyN = 'A tecla de acesso \'n\'  salta para outro local na navegação da página. <a href="//contentstart">Saltar para o início do conteúdo.</a>'
 s.examplesInAnotherScript = "Este documento contém exemplos em outro idioma/script."
 s.worldMap = "Mapa Mundi"
 s.searchI18nSite = "Busca do site de I18n" 
@@ -113,9 +112,8 @@ s.codedInUtf8 = "Codificado em UTF-8!"
 
 s.translatedFromEnglishVer = "Traduzido de conteúdo em inglês datado de "+dt.enVersion+". Última versão traduzida modificada "+dt.thisVersionPlain+"n GMT"
 
-s.historyOfDocumentChanges = 'Para obter o histórico de alterações do documento, faça uma busca por <span class="searchkey">a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> no blog da i18n.'
-s.untranslatedChanges = '<strong>Nota:</strong> Depois que este documento foi traduzido,  alterações foram feitas no <a 
-href="'+f.filename+'.en.php">documento original em inglês.</a> <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Consulte o relatório das alterações.</a></span>'
+s.historyOfDocumentChanges = 'Para obter o histórico de alterações do documento, faça uma busca por <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> no blog da i18n.'
+s.untranslatedChanges = '<strong>Nota:</strong> Depois que este documento foi traduzido,  alterações foram feitas no <a href="'+f.filename+'.en.php">documento original em inglês.</a> <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Consulte o relatório das alterações.</a></span>'
 s.new="Novo"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Atualizado" // same as New
 s.translation_updated="Tradução atualizada:" // date appears after colon 
@@ -123,9 +121,7 @@ s.translation_updated="Tradução atualizada:" // date appears after colon
 
 s.aboutThisArticle="Sobre este artigo" // title in the right column near the top of the page
 s.status_draft="Este artigo é um rascunho ainda não submetido à revisão pública. Caso você encontre algo que necessite revisão, por favor envie seu feedback usando o link existente na parte inferior da página."
-s.status_review="Este artigo ainda não foi submetido à revisão pública. Por favor envie seus comentários para <a
-href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span
-class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscrever</a>)</span>."
+s.status_review="Este artigo ainda não foi submetido à revisão pública. Por favor envie seus comentários para <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscrever</a>)</span>."
 s.status_published="Este artigo foi revisto pelo Grupo de Trabalho de Internacionalização do W3C e passou por revisão pública para torná-lo o mais preciso possível. Se há revisões que devam ser abordadas, por favor envie-nos um feedback usando o link na parte inferior da página. "
 s.status_notreviewed="Este artigo foi publicado sem ter sido submetido à revisão pública. Se há revisões que devam ser abordadas, por favor envie-nos um feedback usando o link na parte inferior da página. "
 s.tests="Testes" // used at the end of breadcrumbs for test related pages
