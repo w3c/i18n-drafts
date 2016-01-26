@@ -112,18 +112,19 @@ s.codedInUtf8 = "Codificado em UTF-8!"
 
 s.translatedFromEnglishVer = "Traduzido de conteúdo em inglês datado de "+dt.enVersion+". Última versão traduzida modificada "+dt.thisVersionPlain+"n GMT"
 
-s.historyOfDocumentChanges = 'Para obter o histórico de alterações do documento, faça uma busca por <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> no blog da i18n.'
-s.untranslatedChanges = '<strong>Nota:</strong> Depois que este documento foi traduzido,  alterações foram feitas no <a href="'+f.filename+'.en.php">documento original em inglês.</a> <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Consulte o relatório das alterações.</a></span>'
+s.historyOfDocumentChanges = 'Para obter o histórico de alterações do documento, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.untranslatedChanges = '<strong>Nota:</strong> Depois que este documento foi traduzido,  alterações foram feitas no <a href="'+f.filename+'.en.php">documento original em inglês</a>. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
+s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
 s.new="Novo"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Atualizado" // same as New
 s.translation_updated="Tradução atualizada:" // date appears after colon 
 
 
 s.aboutThisArticle="Sobre este artigo" // title in the right column near the top of the page
-s.status_draft="Este artigo é um rascunho ainda não submetido à revisão pública. Caso você encontre algo que necessite revisão, por favor envie seu feedback usando o link existente na parte inferior da página."
-s.status_review="Este artigo ainda não foi submetido à revisão pública. Por favor envie seus comentários para <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscrever</a>)</span>."
-s.status_published="Este artigo foi revisto pelo Grupo de Trabalho de Internacionalização do W3C e passou por revisão pública para torná-lo o mais preciso possível. Se há revisões que devam ser abordadas, por favor envie-nos um feedback usando o link na parte inferior da página. "
-s.status_notreviewed="Este artigo foi publicado sem ter sido submetido à revisão pública. Se há revisões que devam ser abordadas, por favor envie-nos um feedback usando o link na parte inferior da página. "
+s.status_draft="Este artigo é um rascunho ainda não submetido à revisão pública. Caso você encontre algo que necessite revisão, por favor envie seu feedback usando <a href='#survey'>o link existente na parte inferior da página</a>."
+s.status_review="Este artigo ainda não foi submetido à revisão pública. Caso você encontre algo que necessite revisão, por favor envie seu feedback usando <a href='#survey'>o link existente na parte inferior da página</a>."
+s.status_published="Este artigo foi revisto pelo Grupo de Trabalho de Internacionalização do W3C e passou por revisão pública para torná-lo o mais preciso possível. Caso você encontre algo que necessite revisão, por favor envie seu feedback usando <a href='#survey'>o link existente na parte inferior da página</a>."
+s.status_notreviewed="Este artigo foi publicado sem ter sido submetido à revisão pública. Caso você encontre algo que necessite revisão, por favor envie seu feedback usando <a href='#survey'>o link existente na parte inferior da página</a>."
 s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="Testes" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Resposta resumida" // heading

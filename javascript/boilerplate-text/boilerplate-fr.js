@@ -114,17 +114,18 @@ s.codedInUtf8 = "Codé en UTF-8 !";
 
 s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" GMT."; 
 
-s.historyOfDocumentChanges = 'Pour un résumé des changements importants, recherchez <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> dans le blog i18n.'
-s.untranslatedChanges = '<strong>Note:</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Consulter le fichier des changements.</a></span>'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.untranslatedChanges = '<strong>Note:</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
+s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
 s.new="New";// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Updated"; // same as New
 s.translation_updated="Translation updated:"; // date appears after colon 
 
 s.aboutThisArticle="À propos de cet article"; // title in the right column near the top of the page
-s.status_draft="Cet article est un brouillon qui n’a pas encore été proposé à relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant le lien de bas de page";
-s.status_review="Cet article est proposé à relecture publique. Merci d'envoyer vos commentaires à <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>s’abonner</a>)</span>.";
-s.status_published="Cet article a été relu par le Groupe de Travail Internationalisation du W3C et a subi un processus de relecture publique pour le rendre aussi précis que possible. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant le lien de bas de page.";
-s.status_notreviewed="Cet article n’a pas fait l’objet d’une relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant le lien de bas de page.";
+s.status_draft="Cet article est un brouillon qui n’a pas encore été proposé à relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
+s.status_review="Cet article est proposé à relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
+s.status_published="Cet article a été relu par le Groupe de Travail Internationalisation du W3C et a subi un processus de relecture publique pour le rendre aussi précis que possible. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
+s.status_notreviewed="Cet article n’a pas fait l’objet d’une relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
 s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests=""; // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Réponse courte"; // heading

@@ -111,17 +111,19 @@ s.codedInUtf8 = "Codificado en UTF-8"
 
 s.translatedFromEnglishVer = "Traducido del inglés con fecha "+dt.enVersion+". Traducción modificada por última vez el "+dt.thisVersionPlain+" GMT."
 
-s.historyOfDocumentChanges = 'Para ver el historial de cambios del documento, busque <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> en la bitácora de internacionalización.'
-s.untranslatedChanges = '<strong>Nota:</strong> Desde la traducción de este documento se han producido modificaciones en el <a href="'+f.filename+'.en.php">original en inglés</a>. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Consulte el registro de cambios.</a></span>'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.untranslatedChanges = '<strong>Nota:</strong> Desde la traducción de este documento se han producido modificaciones en el <a href="'+f.filename+'.en.php">original en inglés</a>. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
+s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
 s.new="¡Nuevo!"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="¡Actualizado!" // same as New
 s.translation_updated="Traducción actualizada el:" // date appears after colon 
 
 s.aboutThisArticle="Acerca de este artículo" // title in the right column near the top of the page
-s.status_draft="Este artículo es un borrador que todavía no se ha sometido a revisión pública. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante el enlace ubicado cerca del final de la página."
-s.status_review="En este momento, este artículo está expuesto para revisión pública. Envíenos sus comentarios a <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>suscríbase</a>)</span>."
-s.status_published="El Grupo de Trabajo de Internacionalización de W3 ha revisado este artículo y se lo ha sometido a revisión pública para hacerlo tan preciso como sea posible. Si hay cuestiones para tratar, envíenos sus comentarios mediante el enlace ubicado cerca del final de la página."
-s.status_notreviewed="Este artículo se publicó sin revisión pública. Si hay asuntos para tratar, envíenos sus comentarios mediante el enlace ubicado cerca del final de la página."
+s.status_draft="This article is a draft that has not yet gone through public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
+s.status_draft="Este artículo es un borrador que todavía no se ha sometido a revisión pública. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
+s.status_review="En este momento, este artículo está expuesto para revisión pública. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
+s.status_published="El Grupo de Trabajo de Internacionalización de W3 ha revisado este artículo y se lo ha sometido a revisión pública para hacerlo tan preciso como sea posible. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
+s.status_notreviewed="Este artículo se publicó sin revisión pública. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
 s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Respuesta rápida" // heading

@@ -114,18 +114,18 @@ s.codedInUtf8 = "Kodad i UTF-8!"
 
 s.translatedFromEnglishVer = "Översatt från engelskt innehåll skapat/ändrat "+dt.enVersion+". Översättningen senast ändrad "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Information om ändringar i orginaldokumentet kan fås genom att söka efter <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span> i i18n-bloggen.'
-s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="'+f.filename+'.en">the English original</a> since this document was translated. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">See the change log.</a></span>'
-s.untranslatedChanges = '<strong>Obs:</strong> Det  <a href="/International/'+f.directory+f.filename+'.en">engelska originaldokumentet</a> har ändrats sedan det översattes. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Se ändringsloggen.</a></span>'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.untranslatedChanges = '<strong>Obs:</strong> Det  <a href="/International/'+f.directory+f.filename+'.en">engelska originaldokumentet</a> har ändrats sedan det översattes. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
+s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
 s.new="Ny"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Uppdaterad" // same as New
 s.translation_updated="Översättning uppdaterad:" // date appears after colon
 
 s.aboutThisArticle="Om denna artikel" // title in the right column near the top of the page
-s.status_draft="Denna artikel är ett utkast som ännu genomgått en öppen granskning. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda länken längst ner på denna sida."
-s.status_review="Denna artikel är nu publicerad för öppen granskning. Skicka in kommentarer på <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>prenumerera</a>)</span>."
-s.status_published="Denna artikel har granskats av W3C:s arbetsgrupp för internationalisering, och har genomgått öppen granskning, för att säkerställa att den är så korrekt som möjligt. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda länken längst ner på denna sida."
-s.status_notreviewed="Denna artikel publicerades utan att ha blivit granskad. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda länken längst ner på denna sida."
+s.status_draft="Denna artikel är ett utkast som ännu genomgått en öppen granskning. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
+s.status_review="Denna artikel är nu publicerad för öppen granskning. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
+s.status_published="Denna artikel har granskats av W3C:s arbetsgrupp för internationalisering, och har genomgått öppen granskning, för att säkerställa att den är så korrekt som möjligt. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
+s.status_notreviewed="Denna artikel publicerades utan att ha blivit granskad. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
 s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Snabbt svar" // heading

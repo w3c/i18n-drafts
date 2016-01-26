@@ -112,17 +112,18 @@ s.codedInUtf8 = "UTF-8-ben kódolva!"
 
 s.translatedFromEnglishVer = "Angolról fordítva: "+dt.enVersion+". A lefordított verzió utolsó módosítása: "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'A dokumentum módosításainak a történetéhez keresse ezt az i18n blogban: <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span>'
-s.untranslatedChanges = '<strong>Megjegyzés:</strong> Változások történtek <a href="'+f.filename+'.en.php">az eredeti angol változatban</a> amióta a dokumentum le lett fordítva. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Változások megtekintése.</a></span>'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.untranslatedChanges = '<strong>Megjegyzés:</strong> Változások történtek <a href="'+f.filename+'.en.php">az eredeti angol változatban</a> amióta a dokumentum le lett fordítva. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
+s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
 s.new="New"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Updated" // same as New
 s.translation_updated="Translation updated:" // date appears after colon 
 
 s.aboutThisArticle="About this article" // title in the right column near the top of the page
-s.status_draft="This article is a draft that has not yet gone through public review. If there are things that need addressing, please send us feedback using the link near the bottom of the page."
-s.status_review="This article is currently out for public review. Please send comments to <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscribe</a>)</span>."
-s.status_published="This article has been reviewed by the W3C Internationalization Working Group and has gone through public review to make it as accurate as possible. If there are things that need addressing, please send us feedback using the link near the bottom of the page."
-s.status_notreviewed="This article was published without public review. If there are things that need addressing, please send us feedback using the link near the bottom of the page."
+s.status_draft="This article is a draft that has not yet gone through public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
+s.status_review="This article is currently out for public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
+s.status_published="This article has been reviewed by the W3C Internationalization Working Group and has gone through public review to make it as accurate as possible. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
+s.status_notreviewed="This article was published without public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
 s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading

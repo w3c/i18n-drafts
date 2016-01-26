@@ -48,7 +48,7 @@ cn.en = "If you let the browser set a cookie, you will continue to see W3C Inter
 cn.es = "Si deja que el navegador establece una cookie, podrá seguir viendo páginas de la Actividad de Internacionalización del W3C (donde esté disponible) en el idioma que elija. ¿Usted desea establecer la cookie?"
 cn.de = "Wenn Sie die Seite ein Cookie lassen, werden Sie weiterhin W3C Internationalization Activity Seiten in der Sprache, die Sie ausgewählt haben, in denen zu sehen. Möchten Sie das Cookie gesetzt?"
 cn.fr = "Si vous laissez le navigateur définir un cookie, vous continuerez à voir les pages de l'Activité Internationalisation du W3C (si disponible) dans la langue que vous avez choisi. Voulez-vous définir le cookie?"
-cn.pt-br = "Se você deixar o navegador definir um cookie, você vai continuar a ver páginas W3C Internacionalização Atividade (quando disponível) no idioma que você escolheu. Você quer definir o cookie?"
+cn['pt-br'] = "Se você deixar o navegador definir um cookie, você vai continuar a ver páginas W3C Internacionalização Atividade (quando disponível) no idioma que você escolheu. Você quer definir o cookie?"
 cn.sv = "Om du tillåter webbläsaren att spara en kaka (cookie), så kommer du i fortsättningen att se sidor från W3C Internationalization Activity i det språk du valt (när sådana översättningar finns). Vill du spara kakan?"
 cn.uk = "Якщо ви дозволите браузер встановити куки, ви будете продовжувати бачити сторінки W3C Інтернаціоналізація активність (за наявності) на мові, який ви обрали. Ви хочете, щоб встановити печиво?"
 
@@ -81,8 +81,8 @@ if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='/International/tests/'>"
 else g.breadcrumbs += "<a href='/International/articlelist#"+f.breadcrumb+"'>"+s.articles+"</a>"
 
 g.about = "<h2 id='abouthead' class='notoc'>"+s.aboutThisArticle+"</h2>\n"
-if (f.status == "draft") { g.about += "<p>"+s.status_draft+"</p>" }
-if (f.status == "review") { g.about += "<p>"+s.status_review+"</p>" }
+if (f.status == "draft") { g.about += "<p style='color:red;'>"+s.status_draft+"</p>" }
+if (f.status == "review") { g.about += "<p style='color:red;'>"+s.status_review+"</p>" }
 if (f.status == "published") { g.about += "<p>"+s.status_published+"</p>" }
 if (f.status == "notreviewed") { g.about += "<p>"+s.status_notreviewed+"</p>" }
 if (f.status == "obsolete") { g.about += "<p style='color:red;'>"+s.status_obsolete+"</p>" }
@@ -144,6 +144,15 @@ if (trans.outofdatetranslations.length > 0) {
 			}
 		}
 	}
+var unlinkedTranslation = false
+if (trans.unlinkedtranslations.length > 0) { 
+	for (var lang in trans.unlinkedtranslations) {
+		if (f.clang == trans.unlinkedtranslations[lang]) {
+			unlinkedTranslation = true
+			break
+			}
+		}
+	}
 var updatedTranslation = false
 if (trans.updatedtranslations.length > 0) { 
 	for (var lang in trans.updatedtranslations) {
@@ -156,10 +165,11 @@ if (trans.updatedtranslations.length > 0) {
 
 g.updated = ''
 if (! g.isTranslation && f.firstPubDate && f.lastSubstUpdate && f.firstPubDate != f.lastSubstUpdate) {
-	g.updated = "<p class='updated'>"+s.updated+" <a class='print' href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+"</time></a></p>"
+	g.updated = "<p class='updated'>"+s.updated+" <time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+"</time></p>"
 	}
 if (outOfDateTranslation) g.updated += "<p class='outofdate'>"+s.untranslatedChanges+" </p>" 
-else if (g.isTranslation && updatedTranslation) {g.updated ="<p class='updated'>"+s.translation_updated+" <a class='print'  href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></a></p>" }
+else if (unlinkedTranslation) g.updated += "<p class='unlinked'>"+s.unlinkedTranslation+" </p>" 
+else if (g.isTranslation && updatedTranslation) {g.updated ="<p class='updated'>"+s.translation_updated+" <time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></p>" }
 
 
 // SURVEY

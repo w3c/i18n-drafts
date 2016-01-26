@@ -110,17 +110,18 @@ s.codedInUtf8 = "UTF-8 でエンコードされています!"
 
 s.translatedFromEnglishVer = "$enVersion GMT に英文コンテンツから翻訳されました。翻訳内容の最終更新は $thisVersionPlain GMT に行われました。"
 
-s.historyOfDocumentChanges ='この文書の更新履歴は i18n ブログから<span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">'+f.searchString+'</a></span>を検索してください。'
-s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="'+f.filename+'.en">the English original</a> since this document was translated. <span class="searchkey"><a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">See the change log.</a></span>'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="'+f.filename+'.en">the English original</a> since this document was translated. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
+s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
 s.new="New"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Updated" // same as New
 s.translation_updated="Translation updated:" // date appears after colon 
 
 s.aboutThisArticle="この記事について" // title in the right column near the top of the page
-s.status_draft="この記事は、公開レビュー前の草案です。対処すべき部分がある場合は、ページ下部近くにあるリンクからフィードバックを送ってください。"
-s.status_review="この記事は現在公開レビュー中です。 <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20"+f.directory+f.filename+"'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>subscribe</a>)までコメントをお願いします。</span>."
-s.status_published="この記事は、W3C 国際ワーキンググループによりレビューが行われていると同時に、できる限り正確なものにするため公開レビューも行われています。対処すべき部分がある場合は、ページ下部近くにあるリンクからフィードバックを送ってください。"
-s.status_notreviewed="この記事は公開レビューなしで正式公開されました。対処すべき部分がある場合は、ページ下部近くにあるリンクからフィードバックを送ってください。"
+s.status_draft="この記事は、公開レビュー前の草案です。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
+s.status_review="この記事は現在公開レビュー中です。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
+s.status_published="この記事は、W3C 国際ワーキンググループによりレビューが行われていると同時に、できる限り正確なものにするため公開レビューも行われています。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
+s.status_notreviewed="この記事は公開レビューなしで正式公開されました。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
 s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "要約的な回答" // heading
