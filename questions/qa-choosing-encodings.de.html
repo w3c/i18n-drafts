@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Eine Zeichencodierung wählen und anwenden</title>
+<meta name="description" content="Welche Zeichencodierung sollte man für seinen Inhalt wählen und wie wendet man diese auf seinen Inhalt an?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-choosing-encodings'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-choosing-encodings'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-03-31', time:'19:50'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-26', time:'08:17'} // date and time of latest edits to this document/translation
+f.contributors = 'Henri Sivonen, Gunnar Bittersmann, Zack Weinberg'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://bittersmann.de/">Gunnar Bittersmann</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-choosing-encodings-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style>
+.badencoding {
+	font-weight: bold;
+	color: #a52a2a;
+}
+</style>
+</head>
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Eine Zeichencodierung wählen und anwenden</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML-Entwickler (die Editoren oder Scripte verwenden), Script-Entwickler (PHP, JSP u.a.), CSS-Entwickler, Webprojekt-Manager und alle, die eine Anleitung suchen, wie man eine Zeichencodierung wählt und anwendet</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Frage</a></h2>
+    <p class="question">Welche Zeichencodierung sollte man für seinen Inhalt wählen und wie wendet man diese auf seinen Inhalt an?</p>
+
+  <p>Inhalt setzt sich aus einer Sequenz von Zeichen zusammen. Zu den Zeichen gehören die Buchstaben des Alphabets, Interpunktionszeichen usw. In einem Computer wird der Inhalt jedoch als eine Sequenz von Bytes gespeichert, das sind Zahlenwerte. Manche Zeichen werden durch mehr als ein Byte dargestellt. Wie bei Chiffren in der Spionage hängt die Art, wie Sequenzen von Bytes in Zeichen umgewandelt werden, von dem Schlüssel ab, mit dem der Text codiert wurde. Den <i class="quote-term">Schlüssel</i> nennt man in diesem Kontext <b class="newterm">Zeichencodierung</b>.</p>
+  <p>Dieser Artikel gibt Ihnen einfache Ratschläge, welche Zeichencodierung Sie für Ihre Inhalte verwenden sollten und wie man diese anwendet, d.h. wie man ein Dokument in dieser Zeichencodierung erstellt.</p>
+  <p>Wenn Sie besser verstehen möchten, was Zeichen und Zeichencodierungen sind, lesen Sie den Artikel <a class="print" href="/International/questions/qa-what-is-encoding"><cite>Zeichencodierung für Anfänger</cite></a>.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Antwort</a></h2>
+  
+  <section>
+    <h3 id="choosing"><a href="#choosing">Die Zeichencodierung wählen</a></h3>
+    <p>Verwenden Sie UTF-8 für alle Ihre Inhalte. Ziehen Sie in Erwägung, Inhalte in veralteten Zeichencodierungen nach UTF-8 zu konvertieren.</p>
+    <p>Wenn Sie keine Unicode-Codierung verwenden können, prüfen Sie, ob die von Ihnen gewählte Codierung <a href="#nonutf8">von verschiedenen Browsern unterstützt</a> wird und ob diese Codierung nicht auf der <a href="#avoid">Liste der zu vermeidenden Codierungen</a> steht, die den aktuellen Spezifikationen zufolge nicht verwendet werden sollten.</p>
+    <p>Prüfen Sie, ob Ihre Wahl durch serverseitige <a href="#http">HTTP-Einstellungen</a> überschrieben wird.</p>
+  </section>
+  
+  <section>
+    <h3 id="applyingencoding"><a href="#applyingencoding">Die Zeichencodierung auf den Inhalt anwenden</a></h3>
+    <p>Inhaltsautoren sollten die Zeichencodierung ihrer Seiten mit einer der in <a class="print" href="/International/questions/qa-html-encoding-declarations"><cite>Angabe der Zeichencodierung in HTML</cite></a> beschriebenen Methoden angeben.</p>
+    <p>Es ist aber wichtig zu verstehen, dass es nicht genügt, die Zeichencodierung im Dokument oder auf dem Server anzugeben. Das ändert nicht die Bytes; Sie müssen <strong>den Text in dieser Zeichencodierung speichern</strong>. (Die Angabe hilft dem Browser lediglich, die Bytesequenz zu interpretieren, in welcher der Text gespeichert ist.)</p>
+    <p>Der Artikel <a class="print" href="/International/questions/qa-setting-encoding-in-applications"><cite>Einstellung der Zeichencodierung in Web-Editoren und Texteditoren</cite></a> gibt Ratschläge, wie man die Zeichencodierung beim Speichern für eine Reihe verschiedener Editoren einstellt.</p>
+    <div class="sidenoteGroup">
+      <p>Am besten stellt man eine Zeichencodierung wie UTF-8 in seinem Editor als Voreinstellung für neue Dokumente ein, wenn das möglich ist. Das folgende Bild zeigt, wie man das in den Einstellungen von Dreamweaver tut.</p>
+      <aside class="sideinfonote">
+        <p class="info">Für Informationen zu Normalisierungsformen siehe <a class="print" href="/International/questions/qa-html-css-normalization"><cite>Normalisierung in HTML und CSS</cite></a>. Für Informationen zur Unicode-Signatur (BOM) siehe <a class="print" href="/International/questions/qa-byte-order-mark"><cite>Das BOM (<span lang="en">byte-order mark</span>) in HTML</cite></a>.</p>
+      </aside>
+    </div>
+    <figure><img src="qa-choosing-encodings-data/dwprefs-encoding.png" alt="In Dreamweaver erlauben es die Einstellungen für neue Dokumente, eine Zeichencodierung voreinzustellen." /></figure>
+    <p>Sie sollten sich auch versichern, dass Ihr Server Dokumente mit den richtigen HTTP-Angaben ausliefert, denn diese überschreiben die Angaben innerhalb des Dokuments (<a href="#http">siehe unten</a>).</p>
+    <p>Entwickler müssen auch sicherstellen, dass die verschiedenen Teile des Systems miteinander kommunizieren können. Webseiten müssen mit Scripten im Backend, Datenbanken usw. kommunizieren können. Das funktioniert natürlich am besten, wenn alles UTF-8-codiert ist. Was Entwickler berücksichtigen müssen finden Sie im Artikel <a class="print" href="/International/articles/unicode-migration/"><cite>Migration zu Unicode</cite></a>.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="more"><a href="#more">Details</a></h2>
+  
+  <section>
+    <h3 id="useunicode"><a href="#useunicode">Warum sollte man UTF-8 verwenden?</a></h3>
+    <p>Eine HTML-Seite kann nur in einer Zeichencodierung codiert sein. Man kann nicht verschiedene Teile eines Dokuments in verschiedenen Zeichencodierungen codieren.</p>
+    <div class="sidenoteGroup">
+      <p>Eine Unicode-Codierung wie UTF-8 kann viele Sprachen unterstützen und Seiten und Formulare mit beliebig gemischten Sprachen in Einklang bringen.
+        Verwendet man eine Unicode-Codierung, benötigt man keine serverseitige Logik, um für jede ausgelieferte Seite oder alle hereinkommenden Formulardaten gesondert die Zeichencodierung zu bestimmen.
+        Das verringert den Bearbeitungsaufwand bei einer mehrsprachigen Website oder Applikation deutlich.</p>
+      <p>Eine Unicode-Codierung erlaubt es auch, viel mehr Sprachen auf einer Webseite gemischt zu verwenden als es bei jeder anderen Zeichencodierung möglich wäre.</p>
+      <aside class="sideinfonote">
+        <p class="info">Die Unterstützung einer bestimmten Zeichencodierung, nicht einmal einer Unicode-Codierung, heißt noch nicht unbedingt, dass ein Browser den Text richtig darstellt. Eine Reihe von Schriften, wie z.B. die arabische und indische Schriften, erfordern weitere Regeln, um eine Folge von Zeichen im Speicher in die entsprechende Folge von anzuzeigenden Schriftzeichen (Glyphen) zu überführen.</p>
+      </aside>
+    </div>
+    <p>Die Hürden bei der Verwendung von Unicode sind heutzutage sehr niedrig. Im Januar 2012 gab Google bekannt, dass über 60% des Webs bei mehreren Milliarden untersuchter Webseiten jetzt UTF-8 verwenden. Zählt man die Zahl der reinen ASCII-Webseiten hinzu (ASCII ist eine Teilmenge von UTF-8), erhöht sich der Wert auf annähernd 80%.</p>
+    <p>Es gibt 3 verschiedene <a class="termref print" href="/International/articles/definitions-characters/#charsets">Zeichencodierungen</a> für Unicode: UTF-8, UTF-16 und UTF-32. Von diesen wird nur UTF-8 zur Verwendung für Web-Inhalte empfohlen. Die HTML5-Spezifikation <a class="print" href="http://www.w3.org/TR/html5/document-metadata#charset">sagt</a>: „Autoren sollten UTF-8 verwenden. Validatoren können Autoren darauf hinweisen, keine veralteten Zeichencodierungen zu verwenden. Autorenwerkzeuge sollten UTF-8 als Voreinstellung für neue Dokumente verwenden.“</p>
+    <p>Alle ASCII-Zeichen werden in UTF-8 durch exakt dieselben Bytes codiert wie in der ASCII-Codierung, was oft hilfreich für Interoperabilität und Rückwärtskompatibilität ist.</p>
+  </section>
+  
+  <section>
+    <h3 id="http"><a href="#http">Berücksichtigung des HTTP-Headers</a></h3>
+    <p>Eine Angabe zur Zeichencodierung im <a href="/International/articles/definitions-characters/Overview#httpheader" class="termref print">HTTP-Header</a> überschreibt Angaben innerhalb des Dokuments. Wenn der HTTP-Header eine Zeichencodierung angibt, die nicht der entspricht, die Sie für Ihren Inhalt verwenden möchten, stellt das ein Problem dar, wenn Sie die Servereinstellungen nicht ändern können.</p>
+    <p>Eventuell haben Sie keinen Zugriff auf die Angaben im HTTP-Header und müssen Ihre Serveradministratoren um Hilfe bitten. Andererseits können Sie aber Servereinstellungen ändern, wenn Sie beschränkten Zugang zu den Konfigurationsdateien haben oder wenn Sie Seiten mit Scriptsprachen generieren. Lesen Sie <a class="print" href="/International/O-HTTP-charset"><cite>Einstellung des HTTP-charset-Parameters</cite></a> für weitere Informationen zur Änderung der Angabe der Zeichencodierung für eine Anzahl von Dateien auf dem Server oder für Inhalt, der per Scriptsprache generiert wird.</p>
+    <p>Bevor Sie das tun, sollten Sie prüfen, ob der HTTP-Header eine Angabe zur  Zeichencodierung enthält. Sie können den <a class="print" href="http://qa-dev.w3.org/i18n-checker/">W3C-Internationalization-Checker</a> verwenden um herauszufinden, ob eine Zeichencodierung im HTTP-Header angegeben wird und wenn ja, welche. Der Artikel <a class="print" href="/International/questions/qa-headers-charset"><cite>HTTP-Header überprüfen</cite></a> verweist auf alternative Tools zur Überprüfung der Zeichencodierungsangabe des Servers.</p>
+  </section>
+  
+  <section>
+    <h3 id="nonutf8"><a href="#nonutf8">Was tun, wenn man nicht UTF-8 verwenden kann?</a></h3>
+    <p>Wenn Sie es wirklich nicht vermeiden können, eine andere Codierung als UTF-8 zu verwenden, müssen Sie einen aus einer begrenzten Menge von Bezeichnern für Zeichencodierungen wählen, um maximale Interoperabilität und zukünftige Lesbarkeit Ihrer Inhalte zu gewährleisten und um Sicherheitslücken zu minimieren.</p>
+    <p>Bis vor Kurzem war das <a class="print" href="http://www.iana.org/assignments/character-sets">IANA-Register</a> das Nachschlagewerk für Bezeichner von Zeichencodierungen. Das IANA-Register enthält oft mehrere Bezeichner für dieselbe Codierung. In diesen Fällen sollten Sie den als „<span lang="en">preferred</span>“ (bevorzugt) gekennzeichneten Bezeichner verwenden.</p>
+    <p>Die neue Spezifikation <a class="print" href="http://encoding.spec.whatwg.org/" lang="en"><cite>Encoding</cite></a> enthält eine Liste, die gegen aktuelle Browserimplementierungen getestet wurde. Sie finden Sie in der Tabelle im Abschnitt <a class="print" href="http://encoding.spec.whatwg.org/#encodings" lang="en">Encodings</a>. Am besten verwenden Sie die Bezeichner in der linken Spalte dieser Tabelle.</p>
+    <p><strong>Beachten Sie:</strong> Wenn ein Bezeichner in einer dieser Quellen vorkommt, bedeutet das nicht automatisch, dass es gut wäre, diese Codierung zu verwenden. Lesen Sie im folgenden Abschnitt, welche Zeichencodierungen Sie vermeiden sollten.</p>
+  </section>
+  
+  <section>
+    <h3 id="avoid"><a href="#avoid">Vermeiden Sie diese Zeichencodierungen</a></h3>
+    <p>Die HTML5-Spezifikation <a class="print" href="http://www.w3.org/TR/html5/document-metadata#charset">nennt</a> einige Zeichencodierungen, die Sie vermeiden sollten.</p>
+    <p>Dokumente dürfen nicht <b class="badencoding" translate="no">JIS_C6226-1983</b>, <b class="badencoding" translate="no">JIS_X0212-1990</b>, <b class="badencoding" translate="no">HZ-GB-2312</b>, <b class="badencoding" translate="no">JOHAB</b> (Windows code page 1361), <b class="badencoding" translate="no">ISO-2022</b>-basierte Codierungen oder <b class="badencoding" translate="no">EBCDIC</b>-basierte Codierungen verwenden. Der Grund ist, dass darin ASCII-Zeichencodes Nicht-ASCII-Zeichen repräsentieren, was eine Sicherheitslücke darstellt.</p>
+    <p>Dokumente dürfen auch nicht <b class="badencoding" translate="no">CESU-8</b>, <b class="badencoding" translate="no">UTF-7</b>, <b class="badencoding" translate="no">BOCU-1</b> oder <b class="badencoding" translate="no">SCSU</b>-Codierungen verwenden; diese waren nie für Web-Inhalte vorgesehen und die HTML5-Spezifikation verbietet Browsern, diese zu verwenden.</p>
+    <p>Die Spezifikation rät auch von der Verwendung von <b class="badencoding" translate="no">UTF-16</b> ab, und von der Verwendung von <b class="badencoding" translate="no">UTF-32</b> wird „besonders abgeraten“.</p>
+    <p>Auch andere <a class="print" href="http://encoding.spec.whatwg.org/#encodings">in der <cite lang="en">Encoding</cite>-Spezifikation aufgeführte</a> Zeichencodierungen sollten nicht verwendet werden, darunter <b class="badencoding" translate="no">Big5</b> und <b class="badencoding" translate="no">EUC-JP</b>, die hinsichtlich Interoperabilität problematisch sind. <b class="badencoding" translate="no">ISO-8859-8</b> (hebräische Codierung für <a class="termref print" href="/International/questions/qa-visual-vs-logical#term_visualordering">visuelle Buchstaben&shy;reihenfolge</a>) sollten Sie ebenfalls nicht verwenden, sondern eine Codierung, die in <a href="/International/questions/qa-visual-vs-logical#term_logicalordering" class="termref print">logischer Buchstaben&shy;reihenfolge</a> codiert (UTF-8; oder wenn das nicht möglich ist: ISO-8859-8-i).</p>
+    <p>Die in der <cite lang="en">Encoding</cite>-Spezifikation aufgeführte <b class="badencoding" lang="en">replacement</b>-Codierung ist eigentlich keine Codierung, sondern ein Fallback, der jedes Oktett (Byte) auf den Unicode-Zeichencode <span class="uname">U+FFFD REPLACEMENT CHARACTER</span> abbildet. Es ist natürlich nicht sinnvoll, Daten in dieser Codierung zu übertragen.</p>
+    <p>Die <b class="badencoding" translate="no">x-user-defined</b>-Codierung ist eine Ein-Byte-Codierung, deren untere Hälfte ASCII ist und deren obere Hälfte in den Unicode-Bereich zum privaten Gebrauch (<span lang="en">Unicode Private Use Area</span>, PUA) abgebildet wird. Wie der Bereich zum privaten Gebrauch im Allgemeinen sollte diese Codierung im öffentlichen Internet vermieden werden, weil sie Interoperabilität und langfristiger Verwendung abträglich ist.</p>
+  </section>
+</section>
+
+
+<div class="section">
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Erste Schritte: <a href="/International/getting-started/characters"><cite>Einführung in Zeichensätze und Zeichencodierungen</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial: <a href="/International/tutorials/tutorial-char-enc/"><cite>Umgang mit Zeichencodierungen in HTML und CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Verwandte Links: <cite>HTML und CSS erstellen</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Zeichen</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Eine Zeichencodierung wählen</a></li>
+        <li><a href="/International/techniques/authoring-html#changing">Die Zeichencodierung eines Dokuments ändern</a></li>
+        <li><a href="/International/techniques/authoring-html#checkenc">Die Zeichencodierung eines Dokuments prüfen</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

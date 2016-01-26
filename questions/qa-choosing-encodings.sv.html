@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<title>Att välja &amp; att använda en teckenkodning</title>
+<meta name="description" content="Vilken teckenkodning bör jag välja för mitt innehåll, och hur använder jag den på mitt innehåll?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-choosing-encodings'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-choosing-encodings'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-03-31', time:'19:50'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-26', time:'08:17'} // date and time of latest edits to this document/translation
+f.contributors = 'Henri Sivonen, Gunnar Bittersmann, Zack Weinberg'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Olle Olsson, SICS/W3CSweden'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-choosing-encodings-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-sv.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style>
+.badencoding {
+	font-weight: bold;
+	color: #a52a2a;
+}
+</style>
+</head>
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Att välja &amp; att använda en teckenkodning<br>
+  </h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML-kodare (använder redigeringsverktyg eller skripts), skriptutvecklare (PHP, JSP, etc.), CSS-kodare, projektledare för webbprojekt, och alla som är nybörjare vad gäller teckenkodning och behöver en inledning till hur man väljer och tillämpar teckenkodningar.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Fråga</a></h2>
+  <p class="question">Vilken teckenkodning bör jag använda för mitt innehåll, och hur tillämpar jag den på mitt innehåll?</p>
+
+    <p>Innehåll består av en sekvens av tecken.
+      Tecken står för bokstäver, interpunktion,
+      etc.
+      Men innehåll lagras på en dator som en sekvens av
+      bytes, vilka är numeriska värden.
+      Ibland kan fler än en byte behövas för att
+      representera ett enskilt tecken.
+      I likhet med koder som används av spioner, så kommer
+      sättet att konvertera en sekvens av bytes till tecken
+      att bero på vilken nyckel som använts för att koda
+      texten.
+      I detta sammanhang kallas en sådan <i class="quote-term">nyckel</i> för en <b class="newterm">teckenkodning</b>.</p>
+    <p>Denna artikel ger enkla råd om vilken teckenkodning du bör använda
+      för ditt innehåll, och hur du applicerar den, dvs hur du faktiskt
+      skapar ett dokument i den kodningen.</p>
+    <p>Om du behöver veta mer om vad tecken och teckenkodningar är, 
+      så titta på artikeln <a class="print" href="/International/questions/qa-what-is-encoding"><cite>Character encodings for beginners</cite></a>.</p>
+  </section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Svar</a></h2>
+  <section>
+    <h3 id="choosing"><a href="#choosing">Att välja en kodning</a></h3>
+    <p> Välj UTF-8 för allt innehåll, och konvertera helst innehåll 
+      som representerats i gamla kodningar till UTF-8.</p>
+    <p>Om du inte har möjlighet att använda en <span lang="en">Unicode</span>-kodning, <a href="#nonutf8">kontrollera att det finns gott webbläsarstöd</a> för den kodning av sidan som du har valt, och att kodningen inte finns i <a href="#avoid">listan över kodningar som bör undvikas</a> enligt färska specifikationer.</p>
+    <p>Undersök om ditt val kommer att <a href="#http">påverkas av HTTP-inställningarna</a> för webbservern.</p>
+  </section>
+  <section>
+    <h3 id="applyingencoding"><a href="#applyingencoding">Att använda en kodning på ditt innehåll</a></h3>
+    <p>Innehållsförfattare bör deklarera sina webbsidors teckenkodning genom att använda 
+      en av de metoder som beskrivs i <a class="print" href="/International/questions/qa-html-encoding-declarations"><cite>Declaring character encodings in HTML</cite></a>. </p>
+    <p>Det är dock viktigt att förstå att deklaration av
+      kodningen inne i ett dokument eller på en
+      server inte medför att dokumentets bytes ändras; du måste <strong>spara texten i den kodningen</strong> för att få kodningen att ta effekt.
+      (Deklarationen är bara till för att hjälpa webbläsaren
+      att tolka den sekvens av bytes som utgör den lagrade
+      texten.)</p>
+    <p>Artikeln <a class="print" href="/International/questions/qa-setting-encoding-in-applications"><cite>Setting encoding in web authoring applications</cite></a> ger, för ett antal redigeringsmiljöer, råd om hur man anger 
+      en sidas kodning när man sparar den.</p>
+    <div class="sidenoteGroup">
+      <p>Om möjligt bör du ange att UTF-8 är normalkodning för nya
+        dokument i ditt redigeringsverktyg.
+        
+        Bilden nedan visar hur du kan ange detta som del i
+        inställningarna 
+        (eng: <span lang="en">preferences</span>)
+        för ett redigeringsverktyg som <span lang="en">Dreamweaver</span>.</p>
+      <aside class="sideinfonote">
+        <p class="info">Om du vill veta mer om 
+          &#8221;<span lang="en">Unicode Normalization Form</span>&#8221;
+          så titta på <a class="print" href="/International/questions/qa-html-css-normalization"><cite><span lang="en">Normalization in HTML and CSS</span></cite></a>.  
+          
+          För mer information om 
+          &#8221;<span lang="en">Unicode Signature (BOM)</span>&#8221;,
+          titta på <a class="print" href="/International/questions/qa-byte-order-mark"><cite><span lang="en">The byte-order mark (BOM) in HTML</span></cite></a>.</p>
+      </aside>
+    </div>
+    <figure><img src="qa-choosing-encodings-data/dwprefs-encoding.png" alt="DreamWeavers nya dokumentpreferenser ger möjlighet att ange en normalkodning." /></figure>
+    <p>Du kan även behöva kontrollera att din server levererar dokument med 
+      korrekta HTTP-deklarationer, eftersom dessa annars kommer att ersätta
+      det som angivits i dokumentet
+      (<a href="#http">se nedan</a>). </p>
+    <p>Utvecklare måste också säkerställa att olika delar av
+      systemet kan kommunicera med varandra.
+      
+      Webbsidor måste kunna kommunicera sömlöst med skripts,
+      databaser etc som finns på servern.
+      
+      Dessa fungerar naturligtvis också bäst med UTF-8.
+      
+      Utvecklare kan hitta en detaljerad beskrivning av vad som
+      behöver göras i artikeln <a class="print" href="/International/articles/unicode-migration/"><cite><span lang="en">Migrating to Unicode</span></cite></a>. </p>
+  </section>
+</section>
+<section>
+  <h2 id="more"><a href="#more">Detaljer</a></h2>
+  <section>
+    <h3 id="useunicode"><a href="#useunicode">Varför använda UTF-8?</a></h3>
+    <p>En HTML-sida kan bara ha en kodning. Du kan inte
+      koda olika delar av dokumentet i olika kodningar.</p>
+    <div class="sidenoteGroup">
+      <p>En kodning baserad på <span lang="en">Unicode</span>, 
+        t.ex. UTF-8, kan stödja många språk och kan användas
+        för sidor och formulär i godtycklig blandning av dessa
+        språk.
+        
+        Genom att använda en sådan kodning behöver man inte ha
+        speciell hantering på servern som, för alla levererade
+        sidor eller all formulärinmatning, försöker avgöra
+        vilken teckenkodning detta innehåll har.
+        
+        Detta ger en avsevärd minskning av komplexiteten i att
+        hantera en flerspråkig webbplats eller tillämpning. </p>
+      <p> Med en <span lang="en">Unicode</span>-kodning
+        kan man även ha text i många flera olika språk på samma webbsida
+        än är möjligt med andra val för teckenkodning.</p>
+      <aside class="sideinfonote">
+        <p class="info">Att det finns stöd för en given kodning, t.o.m. en <span lang="en">Unicode</span>-kodning,
+          behöver inte nödvändigtvis medföra att ett webbverktyg kan
+          presentera texten på ett korrekt sätt.
+          
+          Många skrivsätt, såsom arabiska och indiska, kräver ytterligare regler
+          för att transformera teckensekvensen som den lagras i
+          minnet till en lämplig följd av visuella tecken.</p>
+      </aside>
+    </div>
+    <p>Numera finns det inte mycket som försvårar användning av <span lang="en">Unicode</span>.
+      I januari 2012 rapporterade Google att mer än 60% av webben i 
+      ett undersökt stort urval (många miljarder sidor) var
+      representerat i UTF-8.
+      
+      Till det bör man lägga den mängd sidor som är kodade i
+      ren ASCII (eftersom ASCII är en delmängd av UTF-8),
+      och då når man upp till närmare 80%.</p>
+    <p>Det finns tre olika <a class="termref print" href="/International/articles/definitions-characters/#charsets">teckenkodningar</a> i <span lang="en">Unicode</span>;
+      UTF-8, UTF-16 och UTF-32.
+      
+      Av dessa tre bör endast UTF-8 användas för
+      webbinnehåll.
+      
+      Specifikationen för HTML5 <a class="print" href="http://www.w3.org/TR/html5/document-metadata#charset">säger</a> att
+      &#8221;Innehållsförfattare uppmanas att använda UTF-8. 
+      Konformitetsgranskare kan avråda författare från att
+      använda gamla kodningar. Författarverktyg bör ha UTF-8 
+      som normalvärde för nyskapat innehåll&#8221;.</p>
+    <p>Kom ihåg att alla ASCII-tecken i UTF-8 använder
+      exakt samma numeriska värden (bytes) som traditionell
+      ASCII-kodning, ett faktum som ofta underlättar
+      interoperabilitet och bakåtkompatibilitet.</p>
+  </section>
+  <section>
+    <h3 id="http"><a class="print" href="#http">Att ta hänsyn till HTTP-huvuden</a></h3>
+    <p>Om en teckenkodning deklareras i <a href="/International/articles/definitions-characters/Overview#httpheader" class="termref print">HTTP-huvudet</a>, 
+      så kommer detta värde att gälla, oavsett vad som anges i webbsidan.
+      
+      Om HTTP-huvudet deklarerar en kodning som inte är likvärdig
+      med den du valt för ditt innehåll, så kommer detta att skapa
+      problem, såvida du inte ser till att ändra inställningarna för servern.</p>
+    <p>Du kanske inte har möjlighet att själv påverka deklarationerna
+      som finns i HTTP-huvudet, och då måste du begära hjälp av de
+      som ansvarar för servern.
+      
+      Men det kan finnas sätt att få saker och ting att fungera bra,
+      om du åtminstone har viss tillgång till serverns
+      inställningsfiler, eller om du genererar sidor med hjälp av
+      något skriptspråk.
+      
+      Se t.ex. i <a class="print" href="/International/O-HTTP-charset"><cite><span lang="en">Setting the HTTP charset parameter</span></cite></a>,
+      där det finns mer information om hur man kan ändra information
+      om kodning, antingen lokalt för en viss uppsättning filer på
+      servern, eller för innehåll genererat med skriptspråk.</p>
+    <p>Men innan du gör det så ska du undersöka om HTTP-huvudet
+      faktiskt deklarerar teckenkodningen.
+      
+      Du kan använda <a class="print" href="http://qa-dev.w3.org/i18n-checker/">W3C <span lang="en">Internationalization Checker</span></a> för att få information om någon teckenkodning angivits i
+      HTTP-huvudet, och i så fall vilken teckenkodning.
+      
+      Du kan även titta i artikeln <a class="print" href="/International/questions/qa-headers-charset"><cite><span lang="en">Checking HTTP Headers</span></cite></a>,
+      som pekar ut andra verktyg vilka kan användas för att undersöka
+      vilken information servern levererar om kodning.</p>
+  </section>
+  <section>
+    <h3 id="nonutf8"><a href="#nonutf8">Men om jag inte kan använda UTF-8?</a></h3>
+    <p>Om du av något skäl inte kan använda UTF-8 som
+      teckenkodning, så måste du välja något i en begränsad lista
+      över kodningsnamn, för att säkerställa maximal
+      interoperabilitet, att ditt innehåll kommer att vara läsbart i
+      framtiden, och att minska säkerhetsrisker.</p>
+    <p>Fram till relativt nyligen var <a class="print" href="http://www.iana.org/assignments/character-sets">IANA-registret</a> det ställe där man skulle finna kodningsnamn.
+      
+      I IANA-registret finns många förekomster av multipla namn för
+      en och samma kodning.
+      
+      När en kodning har flera namn, så bör du välja det namn som 
+      markerats som &#8221;<span lang="en">preferred</span>&#8221;.</p>
+    <p>Den nya specifikationen <a class="print" href="http://encoding.spec.whatwg.org/"><cite><span lang="en">Encoding</span></cite></a> ger nu en lista av kodningsnamn som testats i existerande
+      webbläsare.
+      
+      Den listan finns i tabellen i sektionen benämnd <a class="print" href="http://encoding.spec.whatwg.org/#encodings"><span lang="en">Encodings</span></a>.
+      
+      Det är säkrast att använda namn som finns i den vänstra kolumnen i den tabellen.</p>
+    <p><strong>Notera dock</strong> att bara för att ett namn
+      förekommer i dessa två källor så medför inte detta automatiskt
+      att det är fritt fram att använda den kodningen.
+      
+      Nästa sektion tar upp kodningar du bör undvika.</p>
+  </section>
+  <section>
+    <h3 id="avoid"><a href="#avoid">Undvik dessa kodningar</a></h3>
+    <p>HTML5-specifikationen <a class="print" href="http://www.w3.org/TR/html5/document-metadata#charset">anger</a> ett antal kodningar som du inte bör använda.</p>
+    <p>Dokument ska inte använda <b class="badencoding" translate="no">JIS_C6226-1983</b>, <b class="badencoding" translate="no">JIS_X0212-1990</b>, <b class="badencoding" translate="no">HZ-GB-2312</b>, <b class="badencoding" translate="no">JOHAB</b> (<span lang="en">Windows code page</span> 1361), 
+      kodningar byggda på <b class="badencoding" translate="no">ISO-2022</b>, 
+      eller
+      kodningar byggda på <b class="badencoding" translate="no">EBCDIC</b>. 
+      
+      Anledningen är att alla dessa tillåter att numeriska värden
+      som förekommer i ASCII-kodningen här fås att representera
+      tecken som inte finns i ASCII, och detta medför
+      säkerhetsrisker. </p>
+    <p>Dokument skall inte använda kodningar enligt <b class="badencoding" translate="no">CESU-8</b>, <b class="badencoding" translate="no">UTF-7</b>, <b class="badencoding" translate="no">BOCU-1</b>,
+      eller <b class="badencoding" translate="no">SCSU</b>,
+      eftersom dessa aldrig varit avsedda för webbinnehåll, och
+      HTML5-specifikationen förbjuder webbläsare att hantera dem.</p>
+    <p>Specifikationen avråder kraftigt från användning av <b class="badencoding" translate="no">UTF-16</b>, 
+      och användning av <b class="badencoding" translate="no">UTF-32</b> &#8221;avråds bestämt&#8221;. </p>
+    <p>Man bör även undvika vissa andra av de teckenkodningar som <a class="print" href="http://encoding.spec.whatwg.org/#encodings">listas i specifikationen <cite><span lang="en">Encoding</span></cite></a> ,
+      
+      Bland dessa finns t.ex. kodningarna <b class="badencoding" translate="no">Big5</b> och <b class="badencoding" translate="no">EUC-JP</b>,
+      vilka har interoperabilitetsproblem. <b class="badencoding" translate="no">ISO-8859-8</b> (en kodning för hebreiska avsedd för <a class="termref print" href="/International/questions/qa-visual-vs-logical#term_visualordering">visuellt ordnad</a> text) 
+      bör också undvikas, och använd istället en kodning som fungerar med <a href="/International/questions/qa-visual-vs-logical#term_logicalordering" class="termref print">logiskt ordnad</a> text (dvs UTF-8, eller, som andrahandsval, ISO-8859-8-i).</p>
+    <p>Den s.k. <b class="badencoding" translate="no"><span lang="en">replacement</span></b>-kodningen,
+      vilken nämns i <cite><span lang="en">Encoding</span></cite>-specifikationen,
+      
+      är egentligen inte en kodning; det är en reserv som avbildar varje oktett till <span lang="en">Unicode</span>-kodpunkten <span class="uname">U+FFFD <span lang="en">REPLACEMENT CHARACTER</span></span>.
+      
+      Av uppenbara skäl är det inte meningsfullt att överföra data i denna kodning. </p>
+    <p>Kodningen <b class="badencoding" translate="no"><span lang="en">x-user-defined</span></b> är en en-bytes-kodning, vars nedre halva är ASCII, och vars
+      övre halva avbildas in i <span lang="en">Unicode Private Use Area</span> (PUA).
+      
+      På samma sätt som för PUA i allmänhet, så bör man undvika
+      denna kodning på det öppna Internet, eftersom den försvårar
+      interoperabilitet och långsiktig användning.</p>
+  </section>
+</section>
+
+
+<div class="section">
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p> Nybörjare? <a href="/International/getting-started/characters"><cite><span lang="en">Introducing Character Sets and Encodings</span></cite></a> </p>
+    </li>
+    <li>
+      <p> Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite><span lang="en">Handling character encodings in HTML and CSS</span></cite></a> </p>
+    </li>
+    <li>
+      <p> Se även, <cite>Att skapa HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset"><span lang="en">Characters</span></a></li>
+        <li><a href="/International/techniques/authoring-html#choosing"><span lang="en">Choosing a character encoding</span></a></li>
+        <li><a href="/International/techniques/authoring-html#changing"><span lang="en">Changing the encoding of a document</span></a></li>
+        <li><a href="/International/techniques/authoring-html#checkenc"><span lang="en">Checking the encoding of a document</span></a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
