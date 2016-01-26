@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Authoring HTML with bidi localization in mind</title>
+<meta name="description" content="yyyDESCRIPTION GOES HERE." />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-bidi-localization'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-localization'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2013-05-07'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2013-05-07', time:'16:47'}  // date and time of latest substantive changes to this document
+f.status = 'draft';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-25', time:'21:22'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction';
+</script>
+<script type="text/javascript" src="qa-bidi-localization-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"> </script><!--TRANSLATORS must change -en to the subtag for their language! -->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Authoring HTML with bidi localization in mind</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    users, XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, schema developers (DTDs, XML Schema, RelaxNG, etc.), XSLT developers, Web project managers, and anyone who is new to internationalization and needs guidance on topics to consider and ways to get into the material on the site. yyy adapt this to describe the intended reader of the article.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script></div>
+  
+    <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">What  should I look out for when authoring HTML content that will help when localizing into a language that uses a right-to-left script?</p>
+  <aside class="insidenote">
+    <p><strong>Insidenotes</strong></p>
+    <p>All the text in this aside will be displayed to the right of the main text flow, but will displace the right side of the main text flow
+      if there is another floated item to its right. It was designed to be used only at the top of a page where sidenotes may overlap with stuff at the top
+      of the right page column. Normally you should use a regular sidenote, illustrated below.</p>
+  </aside>
+  <p>The screen shots below, of the Arabic and Russian pages of BBC World News, show how content layout is mirror imaged for text written in right-to-left vs. left-to-right scripts. Note also how the Arabic text in each paragraph is right-aligned.</p>
+  <p><img src="bidi-localization-data/arabic.png" height="300px" /> <img src="bidi-localization-data/russian.png" height="300px" /></p>
+  <p>Much of the directional difference in the  page can be achieved simply by setting the <code class="kw">dir</code> attribute to <code class="kw">rtl</code> or (by default) <code class="kw">ltr</code> – ie. changing the base direction of the content. But sometimes to get the correct the positioning of items you need to intervene explicitly, using properties such as <code class="kw">float</code>, <code class="kw">position</code>, or <code class="kw">text-align</code>. This article urges caution when doing that, in light of the fact that you may need to localize pages from one language to another, and you need that process to be as efficient as possible.</p>
+</section>
+
+
+<section id="nutshell">
+    <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>Avoid HTML attributes with values of <code class="kw">right</code> and <code class="kw">left</code>. Use CSS in a linked style sheet instead.</p>
+  <p>Only use <code class="kw">text-align</code> where you specifically want to override the current default alignment.</p>
+</section>
+
+
+<section>
+    <h2 id="details"><a href="#details">Details</a></h2>
+
+  <section>
+    <h3 id="yyyshortcomings"><a href="#yyyshortcomings">Avoid attributes with values of <code class="kw">left</code> and <code class="kw">right</code></a></h3>
+    <p> Values of <code class="kw">right</code> and <code class="kw">left</code> in attributes need to be reversed when translating the document into a language using a right-to-left script. </p>
+    <p>It can save a lot of time  to use CSS style sheets to align text, since it is far easier to make one small change in a CSS file than edit code in many HTML documents. </p>
+    <p>Attributes in HTML 4.01 that had values of <code class="kw">right</code> and <code class="kw">left</code> are <code class="kw">align</code> and <code class="kw">clear</code>. The use of these attributes is deprecated in HTML5, in favour of CSS.</p>
+    <p>For example, to right-align an image pointing back to a table of contents, rather than adding <code>align=&quot;right&quot;</code> to the <code class="kw">img</code> tag, you should do something like this in the CSS style sheet:</p>
+    <figure class="example">
+      <p><code>img.TOClink { float: right; }</code></p>
+    </figure>
+    <p>You can achieve the same effect as the <code class="kw">clear</code> attribute using the following CSS. This rule ensures that the <code class="kw">h2</code> element has no floated content to its left. </p>
+    <figure class="example">
+      <p><code>h2 { clear: left; }</code></p>
+    </figure>
+  </section>
+  
+  <section>
+    <h3 id="stickyness"><a href="#stickyness">Use text-align only when really needed</a></h3>
+    <p> It is not hard to find examples of pages where <code class="kw">text-align</code> has been used when it is not actually required.</p>
+    <p>Values of <code class="kw">right</code> and <code class="kw">left</code> need to be reversed when you translate the document
+      into a language that uses a  script with a different direction. To reduce the effort and complexity of adapting the styles it is better to only use <code class="kw">text-align</code> where it is actually needed to override the  alignment produced by setting the base direction with <code class="kw">dir</code>. </p>
+    <p>It is also better to use <code class="kw">text-align</code> in an external style sheet, rather than embedded in the HTML code, since that makes it easier to change. </p>
+  </section>
+  
+  <section>
+  <h3 id="stickyness2"><a href="#stickyness">Using <code class="kw">start</code> and <code class="kw">end</code> instead of <code class="kw">right</code> and <code class="kw">left</code></a></h3>
+  <p> The latest CSS3 Text working draft (not yet stable) introduces the new values <code class="kw">start</code> and <code class="kw">end</code> for use with <code class="kw">text-align</code>. The value <code class="kw">start</code> refers to the beginning of the line of text – ie. left for English text, right for Arabic. The <code class="kw">end</code> value is the opposite.</p>
+  <p>If you use these values, and the positioning is relative to the direction of the text, there is no need to change the style sheet values for <code class="kw">text-align</code> when localizing a page to or from a language that uses a right-to-left script. As the base direction of the text (set by the <code class="kw">dir</code> attribute) changes, so will the alignment.</p>
+  <p>At the time of writing, of the major browsers, only Chrome, Safari and Firefox support these values. Internet Explorer and Opera do not. The latest drafts, at the time of writing, for properties such as float and clear do not propose <code class="kw">start</code> and <code class="kw">end</code> values.</p>
+  <p>So this is perhaps not something that can be widely used yet, but may be useful in the future if it is implemented by all major browsers.</p>
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite> – <a href="/International/techniques/authoring-html#direction">Text direction</a></p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
