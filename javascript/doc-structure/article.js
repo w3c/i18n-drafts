@@ -36,7 +36,7 @@ g.nativeText = {
 
 
 f.clang = document.querySelector('html').lang
-if (f.clang != 'en') { g.isTranslation = 'yes' } else { g.isTranslation = 'no' }
+if (f.clang != 'en') { g.isTranslation = true } else { g.isTranslation = false }
 
 
 // COOKIE
@@ -101,7 +101,7 @@ if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length ==
 	versionList += '</p>';
 	}
 
-if (g.isTranslation == 'yes') g.disclaimer = '<div id="disclaimer"><p>'+s.translationDisclaimer+'</p><p>'+s.translator+' '+f.translators+'</p></div>' 
+if (g.isTranslation) g.disclaimer = '<div id="disclaimer"><p>'+s.translationDisclaimer+'</p><p>'+s.translator+' '+f.translators+'</p></div>' 
 else g.disclaimer = ''
 
 
@@ -137,7 +137,7 @@ s.internationalizationTitle+'</a></div>'+
 var outOfDateTranslation = false
 if (trans.outofdatetranslations.length > 0) { 
 	for (var lang in trans.outofdatetranslations) {
-		if (g.clang == lang) {
+		if (f.clang == trans.outofdatetranslations[lang]) {
 			outOfDateTranslation = true
 			break
 			}
@@ -146,7 +146,7 @@ if (trans.outofdatetranslations.length > 0) {
 var updatedTranslation = false
 if (trans.updatedtranslations.length > 0) { 
 	for (var lang in trans.updatedtranslations) {
-		if (g.clang == lang) {
+		if (f.clang == trans.updatedtranslations[lang]) {
 			updatedTranslation = true
 			break
 			}
@@ -154,11 +154,11 @@ if (trans.updatedtranslations.length > 0) {
 	}
 
 g.updated = ''
-if (g.isTranslation == 'no' && f.firstPubDate && f.lastSubstUpdate && f.firstPubDate != f.lastSubstUpdate) {
+if (! g.isTranslation && f.firstPubDate && f.lastSubstUpdate && f.firstPubDate != f.lastSubstUpdate) {
 	g.updated = "<p class='updated'>"+s.updated+" <a class='print' href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+"</time></a></p>"
 	}
-if (outOfDateTranslation == 'yes') g.updated += "<p class='outofdate'>"+s.untranslatedChanges+" </p>" 
-else if (g.isTranslation == 'yes' && updatedTranslation == true) {g.updated ="<p class='updated'>"+s.translation_updated+" <a class='print'  href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></a></p>" }
+if (outOfDateTranslation) g.updated += "<p class='outofdate'>"+s.untranslatedChanges+" </p>" 
+else if (g.isTranslation && updatedTranslation) {g.updated ="<p class='updated'>"+s.translation_updated+" <a class='print'  href='http://www.w3.org/blog/International/tag/"+f.searchString+"/'><time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></a></p>" }
 
 
 // SURVEY
@@ -180,7 +180,7 @@ g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
 // BOTTOM OF PAGE
 
 g.dateStamp = ''
-if (g.isTranslation == 'yes') g.dateStamp = '<small>'+s.translatedFromEnglishVer+'</small>'
+if (g.isTranslation) g.dateStamp = '<small>'+s.translatedFromEnglishVer+'</small>'
 else g.dateStamp = "<small id='version'>Content first published <time datetime='"+f.firstPubDate+"'>"+f.firstPubDate+"</time>. Last substantive update <time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+" GMT</time>. This version <time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+" GMT</time></small>";
 
 var previousCredit = ''
@@ -190,7 +190,7 @@ var modCredit = ''
 if (f.modifiers && f.modifiers != '') modCredit = s.modifiedBy+' '+f.modifiers+s.sentenceDelimiter
 
 var translatorCredit = ''
-if (g.isTranslation == 'yes') translatorCredit = s.translatedBy+' '+f.translators+s.sentenceDelimiter
+if (g.isTranslation) translatorCredit = s.translatedBy+' '+f.translators+s.sentenceDelimiter
 
 var credits = "<p>"+s.author+' '+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
 if (f.contributors && f.contributors != '') credits += "<p class='acknowledgements'>"+s.acknowledgements+" "+f.contributors+"</p>"
