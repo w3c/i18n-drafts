@@ -98,7 +98,7 @@ s.newResourcesAlt = "Te notifica la primera vez que se publica un nuevo recurso.
 s.newResources = "Nuevos recursos"
 s.homePageNewsAlt = "Todos los elementos mostrados en la página de inicio."
 s.homePageNews = "Noticias de la página de inicio"
-s.followOurNews = "Follow our news feed."
+s.followOurNews = "Siga nuestras noticias."
 s.sentenceDelimiter = "."
 
 s.author = "De:" // followed by name of author(s)
@@ -128,5 +128,5 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Respuesta rápida" // heading
 s.longeranswer = "Respuesta extensa" // heading
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.acknowledgements = "Agradecemos también a las siguientes personas cuyas contribuciones y opiniones fueron incluidas:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

@@ -101,7 +101,7 @@ s.newResourcesAlt = "Pour vous informer de la parution de chaque nouvelle public
 s.newResources = "Nouvelles publications";
 s.homePageNewsAlt = "Chacune des nouvelles figurant en page d'accueil.";
 s.homePageNews = "Les nouvelles de la page d'accueil";
-s.followOurNews = "Follow our news feed."
+s.followOurNews = "Abonnez-vous à notre fil d’actualités."
 s.sentenceDelimiter = ".";
 
 s.author = "Par :"; // followed by name of author(s)
@@ -130,4 +130,5 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests=""; // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Réponse courte"; // heading
 s.longeranswer = "Réponse longue"; // heading
+s.acknowledgements = "Nous remercions également les personnes suivantes pour leur contribution ou leurs commentaires\u00A0:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Si vous laissez le navigateur définir un cookie, vous continuerez à voir les pages de l'Activité Internationalisation du W3C (si disponible) dans la langue que vous avez choisi. Voulez-vous définir le cookie?" // this text is to be copied to another location
