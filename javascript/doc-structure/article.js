@@ -244,6 +244,7 @@ function fillinTranslations () {
 		if (document.getElementById('intendedAudience')) document.getElementById('intendedAudience').textContent = s.intendedAudience
 		if (document.getElementById('question')) document.getElementById('question').firstChild.textContent = s.question
 		if (document.getElementById('answer')) document.getElementById('answer').firstChild.textContent = s.answer
+		if (document.getElementById('quickanswer')) document.getElementById('quickanswer').firstChild.textContent = s.quickanswer
 		if (document.getElementById('bytheway')) document.getElementById('bytheway').firstChild.textContent = s.byTheWay
 		if (document.getElementById('endlinks')) document.getElementById('endlinks').firstChild.textContent = s.furtherReading
 		}
