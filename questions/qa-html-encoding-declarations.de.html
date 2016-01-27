@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Angabe der Zeichencodierung in HTML</title>
+<meta name="description" content="Wie sollte man die Zeichencodierung einer HTML-Datei angeben?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'qa-html-encoding-declarations'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-html-encoding-declarations'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-09-09'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-02-26', time:'11:49'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-27', time:'08:19'} // date and time of latest edits to this document/translation
+f.contributors = 'Henri Sivonen, Gunnar Bittersmann'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://bittersmann.de/">Gunnar Bittersmann</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-html-encoding-declarations-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Angabe der Zeichencodierung in HTML</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML-Entwickler (die Editoren oder Scripte verwenden), Script-Entwickler (PHP, JSP u.a.), Webprojekt-Manager und alle, die sich eine Einführung wünschen, wie die Zeichencodierung einer HTML-Datei anzugeben ist</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Wie sollte man die Zeichencodierung einer HTML-Datei angeben?</p>
+
+  <p>Sie sollten immer die für ein HTML- oder XML-Dokument verwendete Zeichencodierung angeben. Andernfalls riskieren Sie, dass Zeichen im Inhalt nicht korrekt interpretiert werden. Das betrifft nicht nur die Lesbarkeit für Menschen, in zunehmendem Maße müssen auch Maschinen Ihre Daten verstehen können. Die Angabe der Zeichencodierung wird auch benötigt, um Nicht-ASCII-Zeichen verarbeiten zu können, die von Nutzern in Formulare eingegeben werden oder die in durch Scripte generierten URLs auftreten usw. Dieser Artikel beschreibt, wie Sie das für HTML-Dateien umsetzen.</p>
+  <p>Wenn Sie besser verstehen möchten, was Zeichen und Zeichencodierungen sind, lesen Sie den Artikel <a class="print" href="/International/questions/qa-what-is-encoding"><cite>Zeichencodierung für Anfänger</cite></a>. Für Informationen zur Angabe der Zeichencodierung für CSS-Stylesheets lesen Sie <a class="print" href="/International/questions/qa-css-charset"><cite>Angabe der Zeichencodierung in CSS</cite></a>.</p>
+</section>
+
+
+<section id="nutshell">
+  <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>Geben Sie immer die Zeichencodierung Ihrer Dokumente mittels <code class="kw" translate="no">meta</code>-Element an – entweder mit <code class="kw" translate="no">charset</code>-Attribut oder mit <code class="kw" translate="no">http-equiv</code>- und <code class="kw" translate="no">content</code>-Attributen (der sogenannten Pragma-Direktive). Die Angabe der Zeichencodierung sollte in den ersten 1024 Bytes des Dokuments Platz finden. Setzen Sie diese also am besten gleich hinter das Start-Tag des <code class="kw" translate="no">head</code>-Elements.</p>
+  <figure class="example">
+    <p><code>&lt;!DOCTYPE html&gt;<br />
+      &lt;html lang=&quot;de&quot;&gt;<br />
+      &lt;head&gt;<br />
+      &lt;meta charset=&quot;utf-8&quot;/&gt;<br/>
+      ...</code></p>
+  </figure>
+  <div class="sidenoteGroup">
+    <figure class="example">
+      <p><code>&lt;!DOCTYPE html&gt;<br />
+        &lt;html lang=&quot;de&quot;&gt;<br />
+        &lt;head&gt;<br />
+        &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;<br/>
+        ...</code></p>
+    </figure>
+    <aside class="sidenote">
+      <p>Anmerkung des Übersetzers: Die Angabe <code>lang=&quot;de&quot;</code> gilt für deutschsprachigen Seiteninhalt. Für Seiten in anderen Sprachen müssen Sie diese entsprechend anzugeben, für Englisch bspw. <code>lang=&quot;en&quot;</code>.</p>
+    </aside>
+  </div>
+  <p>Es macht keinen Unterschied, welches Sie verwenden, das erste ist jedoch einfacher einzugeben. Es macht auch keinen Unterschied, ob Sie <code>UTF-8</code> oder <code>utf-8</code> schreiben.</p>
+  <p>Sie sollten immer UTF-8 als Zeichencodierung verwenden. (Das heißt, der Inhalt muss auch wirklich als UTF-8 <em>gespeichert</em> werden.)  Beachten Sie, <a href="#nonutf8">was Sie bedenken müssen</a>, wenn Sie wirklich nicht UTF-8 verwenden können.</p>
+  <p>Wenn Sie Zugang zu den Servereinstellungen haben, sollten Sie auch bedenken, ob es sinnvoll ist, die Zeichencodierung <a href="#httphead">im HTTP-Header anzugeben</a>. <strong>Beachten Sie aber</strong>, dass der HTTP-Header höhere Priorität hat als <code class="kw" translate="no">meta</code>-Angaben im Dokument und Autoren deshalb immer berücksichtigen müssen, ob die Zeichencodierung bereits im HTTP-Header angegeben ist. Wenn das der Fall ist, dann muss das <code class="kw" translate="no">meta</code>-Element dieselbe Codierung angeben.</p>
+  <p>Mithilfe des <a class="print" href="http://validator.w3.org/i18n-checker/">Internationalization-Checkers</a> können Sie im HTTP-Header gesendete Zeichen&shy;codierungs&shy;angaben erkennen.</p>
+</section>
+
+<section>
+  <h2 id="detail"><a href="#detail">Details</a></h2>
+  <section>
+    <h3 id="bom"><a href="#bom">Was ist mit dem BOM?</a></h3>
+    <p>Wenn ein UTF-8-<a href="International/questions/qa-byte-order-mark#bomwhat" class="termref print">BOM</a> (<span lang="en">byte-order mark</span>) am Dateianfang steht, erkennen gängige Browser außer Internet Explorer 10 und 11, dass die Seite in UTF-8 codiert ist. Das BOM hat höhere Priorität als jede andere Angabe, auch als der HTTP-Header.</p>
+    <p>Man könnte auf die <code class="kw" translate="no">meta</code>-Angabe zur Zeichencodierung verzichten, wenn ein BOM vorhanden ist. Wir empfehlen aber,  eine zu verwenden, denn sie hilft denen, die sich den Quelltext ansehen, die Zeichencodierung der Seite zu erkennen.</p>
+    <p>Lesen Sie mehr <a class="print" href="/International/questions/qa-byte-order-mark">über das BOM</a>.</p>
+  </section>
+  <section>
+    <h3 id="httphead"><a href="#httphead">Sollte man die Zeichencodierung im HTTP-Header angeben?</a></h3>
+    <p>Verwenden Sie Angaben zur Zeichencodierung in <a href="/International/articles/definitions-characters/Overview#httpheader" class="termref print">HTTP-Headern</a> für alle Inhaltstypen, für die das sinnvoll ist und für die Sie dazu in der Lage sind, <strong>aber in Verbindung</strong> mit einer Angabe im Dokument.</p>
+    <p>Stellen Sie immer sicher, dass die HTTP-Angaben mit den Angaben im Dokument übereinstimmen.</p>
+    <section>
+      <h4 id="httpprocon">Für und Wider der Angabe im HTTP-Header</h4>
+      <div class="sidenoteGroup">
+        <p>Ein Vorteil der Angabe im HTTP-Header ist, dass Nutzerprogramme die Zeichen&shy;codierungs&shy;information früher finden können, wenn sie im HTTP-Header gesendet wird.</p>
+        <aside class="sideinfonote">
+          <p class="info">
+          <p>Die Information im HTTP-Header hat die höchste Priorität, wenn sie sich von Angaben im Dokument unterscheidet – außer dem BOM, welches noch höhere Priorität hat. Zwischengeschaltete Server, die die Daten umcodieren (d.h. in eine andere Zeichencodierung konvertieren), nutzen dies aus, um die Zeichencodierung eines Dokuments zu ändern, bevor es an kleine Geräte ausgeliefert wird, die nur einige wenige Codierungen verstehen. Es ist unklar, ob solche Umcodierung heutzutage noch oft verwendet wird. Wenn das der Fall sein sollte und in andere Codierungen als UTF-8 konvertiert wird, birgt das ein hohes Risiko für Datenverlust. Deshalb ist das keine gute Praxis.</p>
+        </aside>
+      </div>
+      <p>Andererseits bringt das eventuell Nachteile mit sich:</p>
+      <ul>
+        <li>
+          <p>Für Inhaltsautoren kann es schwierig sein, die Zeichen&shy;codierungs&shy;information für statische Dateien auf dem Server zu ändern – besonders, wenn man es mit einem Provider zu tun hat.
+            Sie benötigen Kenntnisse über und Zugang zu Servereinstellungen.</p>
+        </li>
+        <li>
+          <p>Servereinstellungen können aus verschiedenen Gründen aus der Synchronisation mit dem Dokument geraten. Das kann bspw. geschehen, wenn man sich auf die Voreinstellung des Servers verlässt und sich diese ändert. Das ist eine sehr ungünstige Situation, denn die höhere Priorität der HTTP-Information gegenüber Angaben innerhalb des Dokuments kann das Dokument unlesbar machen.</p>
+        </li>
+        <li>
+          <p>Es gibt potentielle Probleme bei statischen und dynamischen Dokumenten, wenn diese nicht von einem Webserver gelesen werden, sondern bspw. auf CD oder Festplatte gespeichert sind. In diesen Fällen gibt es gar keine Zeichen&shy;codierungs&shy;information aus einem HTTP-Header.</p>
+          <p>Wenn die Zeichencodierung ausschließlich im HTTP-Header angegeben ist, steht diese Information auch nicht zur Verfügung, wenn Dateien editiert werden, wenn sie durch XSLT oder Scripte verarbeitet werden oder wenn sie zur Übersetzung geschickt werden usw.</p>
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h4 id="shouldi">Sollte man diese Methode also verwenden?</h4>
+      <p>Wenn Dateien per HTTP von einem Server ausgeliefert werden, ist es kein Problem, die Information über die Zeichencodierung des Dokuments im HTTP-Header zu senden, solange diese Information korrekt ist.</p>
+      <p>Wenn Sie denken, dass die Möglichkeit besteht, dass die Zeichencodierung der Datei zwischendurch geändert wird, bevor sie den Nutzer erreicht (z.B. dass sie in eine für Mobiltelefone verständliche Codierung umcodiert wird), dann sollten Sie die HTTP-Angabe verwenden, denn genau dort vollzieht sich die Änderung.</p>
+      <p>Andererseits empfiehlt sich aufgrund der oben genannten Nachteile, die Zeichen&shy;codierungs&shy;information immer auch zusätzlich innerhalb des Dokuments anzugeben. Eine Angabe innerhalb des Dokuments ist auch hilfreich für Entwickler, Tester und Übersetzuns&shy;prozess&shy;manager, die die Zeichencodierung eines Dokuments visuell prüfen möchten.</p>
+      <p>(Manche vertreten die Auffassung, dass es wenig sinnvoll ist, die Zeichencodierung im HTTP-Header anzugeben, um sie innerhalb des Dokuments zu wiederholen. Sie schlagen daher vor, dass der HTTP-Header gar keine Angabe zur Zeichencodierung des Dokuments macht. Das bedeutet üblicherweise, Maßnahmen zu ergreifen, die Voreinstellungen des Servers zu <em>deaktivieren</em>.)</p>
+    </section>
+  </section>
+  <section>
+    <h3 id="xml"><a href="#xml">Polyglottes HTML und XML-Formate</a></h3>
+    <p><b class="leadin">XHTML5:</b> Ein XHTML5-Dokument wird als XML ausgeliefert und verwendet XML-Syntax. XML-Parser beachten nicht die Zeichen&shy;codierungs&shy;angabe in <code class="kw" translate="no">meta</code>-Elementen. Sie beachten nur die XML-Deklaration. Hier ein Beispiel:</p>
+    <figure class="example">
+      <blockquote> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;<br/>
+        &lt;!DOCTYPE html  .... </code></blockquote>
+    </figure>
+    <p>Die XML-Deklaration ist nur erforderlich, wenn die Seite nicht in UTF-8 (oder UTF-16) codiert ist. Sie dennoch zu verwenden ist allerdings hilfreich für Entwickler, Tester und Übersetzuns&shy;prozess&shy;manager, die die Zeichencodierung eines Dokuments visuell prüfen möchten, wenn sie sich den Quelltext ansehen.</p>
+    <p><b class="leadin">Polyglottes Markup:</b> Eine Seite in polyglottem Markup verwendet eine Untermenge von HTML in XML-Syntax. Sie kann sowohl von einem HTML-Parser als auch einem XML-Parser verarbeitet werden. Das wird in <a class="print" href="http://www.w3.org/TR/html-polyglot/" lang="en"><cite>Polyglot Markup: A robust profile of the HTML5 vocabulary</cite></a> beschrieben.</p>
+    <p>Weil polyglottes Markup in UTF-8 codiert sein muss, müssen Sie keine und dürfen Sie auch keine XML-Deklaration verwenden. Wenn die Datei andererseits als HTML verarbeitet werden soll, müssen Sie die Zeichencodierung per <code class="kw" translate="no">meta</code>-Element, BOM oder HTTP-Header angeben.</p>
+    <p>Da die Angabe mittels <code class="kw" translate="no">meta</code>-Element nur von HTML-Parsern beachtet wird, sollte, wenn Sie den Weg mit <code class="kw" translate="no">content</code>-Attribut gehen, dessen Wert mit <code>text/html;</code> beginnen.</p>
+    <figure class="example">
+      <blockquote> <code>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt; </code></blockquote>
+    </figure>
+    <p>Wenn Sie ein <code class="kw" translate="no">meta</code>-Element mit <code class="kw" translate="no">charset</code>-Attribut verwenden, müssen Sie hier nichts bedenken.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="obscure"><a href="#obscure">Weitere Informationen</a></h2>
+  <p>Dieser Abschnitt enthält Feinheiten, die Sie nicht unbedingt wissen müssen, die aber der Vollständigkeit halber hier erwähnt sind.</p>
+  <section>
+    <h3 id="nonutf8"><a href="#nonutf8">Andere Zeichencodierungen als UTF-8</a></h3>
+    <div class="sidenoteGroup">
+      <p>Die Verwendung von UTF-8 macht nicht nur die Erstellung von Seiten einfacher, damit verhindert man auch unerwartete Resultate bei der Übertragung von Formularen und bei der Codierung von URLs, wo auch die Zeichencodierung des Dokuments als Grundlage verwendet wird. Wenn Sie es wirklich nicht vermeiden können, eine andere Codierung als UTF-8 zu verwenden, müssen Sie einen aus einer begrenzten Menge von Bezeichnern für Zeichencodierungen wählen, um maximale Interoperabilität und zukünftige Lesbarkeit Ihrer Inhalte zu gewährleisten.</p>
+      <aside class="sideinfonote">
+        <p class="info">Obwohl die Bezeichner normalerweise <dfn>charset</dfn> genannt werden, beziehen sie sich in Wirklichkeit auf Zeichencodierungen, nicht auf Zeichensätze. Der Unicode-Zeichensatz kann mit drei verschiedenen Zeichencodierungen codiert werden.</p>
+      </aside>
+    </div>
+    <p>Bis vor Kurzem war das <a class="print" href="http://www.iana.org/assignments/character-sets">IANA-Register</a> das Nachschlagewerk für Bezeichner von Zeichencodierungen. Das IANA-Register enthält oft mehrere Bezeichner für dieselbe Codierung. In diesen Fällen sollten Sie den als „<span lang="en">preferred</span>“ (bevorzugt) gekennzeichneten Bezeichner verwenden.</p>
+    <p>Die neue Spezifikation <a class="print" href="http://encoding.spec.whatwg.org/" lang="en"><cite>Encoding</cite></a> enthält eine Liste, die gegen aktuelle Browserimplementierungen getestet wurde. Sie finden Sie in der Tabelle im Abschnitt <a class="print" href="http://encoding.spec.whatwg.org/#encodings" lang="en">Encodings</a>. Am besten verwenden Sie die Bezeichner in der linken Spalte dieser Tabelle.</p>
+    <p><strong>Beachten Sie:</strong> Wenn ein Bezeichner in einer dieser Quellen vorkommt, bedeutet das nicht automatisch, dass es gut wäre, diese Codierung zu verwenden. Einige der Codierungen sind problematisch. Wenn Sie wirklich nicht UTF-8 verwenden können, beachten Sie die Ratschläge im Artikel <a class="print" href="/International/questions/qa-choosing-encodings"><cite>Eine Zeichencodierung wählen und anwenden</cite></a>.</p>
+    <p>Entwerfen Sie keine eigenen Bezeichner für Zeichencodierungen mit vorangestelltem <code>x-</code>! Das wäre eine schlechte Idee, denn es schränkt die Interoperabilität ein.</p>
+  </section>
+  <section>
+    <h3 id="legacyhtml"><a href="#legacyhtml">Ältere HTML-Formate</a></h3>
+    <p>HTML&nbsp;4.01 spezifiziert kein <code class="kw" translate="no">charset</code>-Attribut für das <code class="kw" translate="no">meta</code>-Element, doch jeder gängige Browser erkennt es und wendet es an, auch wenn die Seite als HTML4 und nicht als HTML5 deklariert ist. Dieser Abschnitt ist nur relevant, wenn Sie aus anderen Gründen als die Auslieferung an Browser an eine ältere HTML-Version gebunden sind. Er beschreibt Abweichungen vom Abschnitt Antwort weiter oben.</p>
+    <p>Für Seiten, die als XML ausgeliefert werden, siehe <a href="#xml">Polyglottes HTML und XML-Formate</a>.</p>
+    <p><b class="leadin">HTML4:</b> Wie eben gesagt, müssen Sie die Pragma-Direktive statt des <code class="kw" translate="no">charset</code>-Attributs verwenden, um konform mit HTML&nbsp;4.01 zu sein.</p>
+    <p><b class="leadin">XHTML 1.x ausgeliefert text/html:</b> Auch hier müssen Sie die Pragma-Direktive statt des <code class="kw" translate="no">charset</code>-Attributs verwenden, um konform mit HTML&nbsp;4.01 zu sein. Sie müssen keine XML-Deklaration verwenden, denn die Datei wird als HTML verarbeitet.</p>
+    <p><b class="leadin">XHTML 1.x ausgeliefert als XML:</b> Verwenden Sie die <code class="kw" translate="no">encoding</code>-Angabe in der XML-Deklaration in der ersten Zeile des Seitenquelltexts. Stellen Sie sicher, dass nichts davor steht, auch keine Leerzeichen. (Ein <a class="termref print" href="/International/questions/qa-byte-order-mark">BOM (<span lang="en">byte-order mark</span>)</a> ist aber OK.)</p>
+  </section>
+  <section>
+    <h3 id="charset"><a href="#charset">Das <code class="kw" translate="no">charset</code>-Attribut für einen Link</a></h3>
+    <p>HTML5 missbilligt die Verwendung des <code class="kw" translate="no">charset</code>-Attributs für <code class="kw" translate="no">a</code>- und <code class="kw" translate="no">link</code>-Elemente; Sie sollten es nicht einsetzen. Es war in der HTML-4.01-Spezifikation für <code class="kw" translate="no">a</code>-, <code class="kw" translate="no">link</code>- und <code class="kw" translate="no">script</code>-Elemente vorgesehen und sollte die Zeichencodierung des verlinkten Dokuments angeben.</p>
+    <p>Es war für Links folgendermaßen gedacht:</p>
+    <figure class="example">
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Achtung! Diesen Code nicht verwenden!</span> </div>
+      <div><code>Siehe unsere &lt;a href=&quot;/mysite/mydoc.html&quot; charset=&quot;iso-8859-15&quot;&gt;Liste der Publikationen&lt;/a&gt;.</code></div>
+    </figure>
+    <p>Die Idee war, dass der Browser die richtige Zeichencodierung auf das empfangene Dokument anwenden kann, wenn nicht auf eine andere Art die Zeichencodierung für das Dokument angegeben wurde.</p>
+    <p>Die Verwendung dieses Attributs war schon immer problematisch. Erstens wird es von gängigen Browsern nicht gut unterstützt. Es gibt einen Grund, dieses Attribut nicht zu unterstützen: Wenn Browser dies ohne zusätzliche Regeln täten, wäre das ein Angriffspunkt für XSS-Attacken. Zweitens können Sie kaum sicherstellen, dass die Information stets korrekt ist. Der Autor des verlinkten Dokuments könnte die Zeichencodierung des Dokuments ändern, ohne dass Sie dies erfahren. Wenn der Autor dann immer noch nicht die Zeichencodierung seines Dokuments angibt, weisen Sie den Browser an, eine falsche Zeichencodierung anzuwenden. Und drittens ist dieses Attribut überhaupt nicht nötig, wenn die Ratschläge in diesem Tutorial befolgt werden und Dokumente entsprechend gekennzeichnet sind. Das ist die weitaus bessere Verfahrensweise.</p>
+    <p>Diese Art der Angabe der Zeichencodierung eines Dokuments hat die niedrigste Priorität (d.h. sie wird ignoriert, wenn die Zeichencodierung auf andere Art angegeben ist). Das bedeutet, dass man dies sowieso nicht dazu verwenden kann, falsche Angaben zu korrigieren.</p>
+  </section>
+  <section>
+    <h3 id="utf16"><a href="#utf16">Verwendung von UTF-16</a></h3>
+    <p>Nach einer Untersuchung von Google über mehrere Milliarden Webseiten sind weniger als 0,01% aller Seiten im Web in UTF-16 codiert. UTF-8 macht über 80% aller Webseiten aus, wenn man ASCII als Untermenge mitzählt, sonst über 60%. Es wird dringend davon abgeraten, UTF-16 als Codierung für Ihre Seiten zu verwenden.</p>
+    <p>Wenn Sie aus irgendeinem Grund keine andere Wahl haben, hier einige Regeln, wie diese Codierung anzugeben ist. Sie unterscheiden sich von denen für andere Codierungen.</p>
+    <p>Die HTML5-Spezifikation verbietet die Verwendung des <code class="kw" translate="no">meta</code>-Element zur Angabe von UTF-16, denn die Werte müssen <a class="termref print" href="http://www.w3.org/TR/html5/infrastructure.html#ascii-compatible-character-encoding">ASCII-kompatibel</a> sein. Stattdessen sollten Sie sicherstellen, dass Sie immer ein <a href="/International/questions/qa-byte-order-mark" class="termref print">BOM (<span lang="en">byte-order mark</span>)</a> ganz am Anfang einer UTF-16-codierten Datei zu stehen haben. Im Effekt ist dies die Angabe innerhalb des Dokuments.</p>
+    <p>Geben Sie für UTF-16-codierte Seiten nicht &quot;UTF-16BE&quot; oder &quot;UTF-16LE&quot; an, sondern verwenden Sie ausschließlich &quot;UTF-16&quot;. Das BOM am Dateianfang zeigt an, ob das Codierungsschema <span class="qterm" lang="en">little-endian</span> oder <span class="qterm" lang="en">big-endian</span> ist. (Der Grund dafür ist, dass als UTF-16BE oder UTF-16LE gekennzeichneter Inhalt kein BOM haben darf; HTML5 für UTF-16-codierte Seiten aber ein BOM verlangt.)</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Erste Schritte: <a href="/International/getting-started/characters"><cite>Einführung in Zeichensätze und Zeichencodierungen</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial: <a href="/International/tutorials/tutorial-char-enc/"><cite>Umgang mit Zeichensätzen und Zeichencodierungen in  HTML und CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Verwandte Links: <cite>HTML und CSS erstellen</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Zeichen</a></li>
+        <li><a href="/International/techniques/authoring-html#indoc">Angabe der Zeichencodierung in HTML</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Eine Zeichencodierung wählen und anwenden</a></li>
+      </ul>
+    </li>
+    </li>
+    <li>
+      <p>Verwandte Links: <cite>Server-Konfiguration</cite></p>
+      <ul>
+        <li><a href="/International/techniques/server-setup#charset">Zeichen</a></li>
+      </ul>
+    </li>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

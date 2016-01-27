@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<title>Att deklarera teckenkodningar i HTML</title>
+<meta name="description" content="Hur bör jag deklarera kodning av min HTML5-fil?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'qa-html-encoding-declarations'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-html-encoding-declarations'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-09-09'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-02-26', time:'11:49'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-27', time:'08:19'} // date and time of latest edits to this document/translation
+f.contributors = 'Henri Sivonen, Gunnar Bittersmann'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Olle Olsson, SICS'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-html-encoding-declarations-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-sv.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Att deklarera teckenkodning i HTML</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    Författare av HTML (med textbehandlare eller skript), skriptutvecklare (PHP, JSP, etc.), projektledare för webbutvecklingsprojekt, och alla som behöver en introduktion i hur man deklarerar teckenkodning av en HTML-fil.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <h2 id="question"><a href="#question">Fråga</a></h2>
+    <p class="question">Hur bör jag deklarera kodningen av min HTML-fil?</p>
+
+  <p> Du bör alltid ange vilken kodning som använts för en HTML-
+    eller XML-sida.
+    Om du inte gör detta, så finns risken att tecken i ditt
+    innehåll tolkas på ett oriktigt sätt.
+    Det handlar inte bara om läsbarhet för människor, eftersom
+    även maskiner i allt större utsträckning hanterar dina data.
+    En deklaration av teckenkodning behövs också för hantering av
+    icke-ASCII-tecken som matas in av användare i formulär; i
+    URL:er genererade av skript; osv.
+    Denna artikel beskriver hur man gör detta för innehåll som är
+    HTML-filer. </p>
+  <p> Om du behöver få bättre insikt i vad tecken och
+    teckenkodningar är, så titta då på artikeln <a hreflang="en" class="print" href="/International/questions/qa-what-is-encoding"><cite><span lang="en">Character encodings for beginners</span></cite></a>. 
+    För information om hur man deklarerar teckenkodningar av
+    formatmallar i CSS, titta då på <a hreflang="en" class="print" href="/International/questions/qa-css-charset"><cite><span lang="en">CSS character encoding declarations</span></cite></a>. </p>
+</section>
+
+
+<section id="nutshell">
+  <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p> Ange alltid vilken kodning ditt dokument har, genom att
+    använda elementet <code class="kw" translate="no">meta</code> med attributet <code class="kw"><span lang="en">charset</span></code>,
+    eller genom att använda attributen <code class="kw"><span lang="en">http-equiv</span></code> och <code class="kw"><span lang="en">content</span></code> (även kallad pragma-direktiv).
+    Deklarationen skall i sin helhet rymmas inom de första 1024
+    bytes räknat från början av filen, så det är bäst att ange den
+    direkt efter starttaggen <code class="kw"><span lang="en">head</span></code>. </p>
+  <figure lang="en" class="example">
+    <p><code>&lt;!DOCTYPE html&gt;<br>
+      &lt;html lang=&quot;en&quot;&gt; <br />
+      &lt;head&gt;<br />
+      &lt;meta charset=&quot;utf-8&quot;/&gt;<br/>
+      ...</code></p>
+  </figure>
+  <figure lang="en" class="example">
+    <p><code>&lt;!DOCTYPE html&gt;<br>
+      &lt;html lang=&quot;en&quot;&gt; <br />
+      &lt;head&gt;<br />
+      &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;<br/>
+      ...</code></p>
+  </figure>
+  <p> Det har ingen betydelse vilken av dessa ansatser du väljer,
+    men det är enklare att skriva enligt det första alternativet.
+    Det har heller ingen betydelse om du skriver <code>UTF-8</code> eller <code>utf-8</code>. </p>
+  <p> Du bör alltid använda UTF-8 som teckenkodning.
+    (Kom ihåg att du även måste försäkra dig om att <em>spara</em> ditt innehåll i UTF-8-format.)
+    Titta på vad som står i denna artikel om <a href="#nonutf8">vad du bör tänka på</a> om du av något skäl inte kan använda kodningen UTF-8. </p>
+  <p> Om du har möjlighet att påverka inställningarna av din
+    webbserver, så bör du även fundera på om det är vettigt att <a href="#httphead">använda HTTP-huvuden</a>. <strong>Tänk dock på</strong> att, eftersom HTTP-huvuden har
+    högre prioritet än <code class="kw" translate="no">meta</code>-deklarationer i dokumentet,
+    så bör innehållsförfattare alltid ta reda på om teckenkodning
+    redan anges i HTTP-huvudet.
+    Om det är på det sättet, så måste <code class="kw" translate="no">meta</code>-elementet ange samma teckenkodning. </p>
+  <p> Du kan ta reda på om information om teckenkodning sändes i
+    HTTP-huvudet, genom att använda <a class="print" href="http://validator.w3.org/i18n-checker/">internationaliseringsgranskaren</a>. </p>
+</section>
+
+
+<section>
+  <h2 id="detail"><a href="#detail">Detaljer</a></h2>
+  <section>
+    <h3 id="bom"><a href="#bom">Hur är det med byte-ordnings-märket?</a></h3>
+    <p> Om du har ett UTF-8 <a hreflang="en" href="/International/questions/qa-byte-order-mark#bomwhat" class="termref print">byte-ordnings-märke</a> (BOM) i början av din fil, så kommer aktuella versioner av webbläsare (utom <span lang="en">Internet Explorer</span> 10 eller 11)
+      att använda detta för att hantera din sida som en UTF-8-fil. 
+      Detta har högre prioritet än alla andra deklarationer, alltså
+      även högre än vad som anges i HTTP-huvudet. </p>
+    <p> Du behöver inte ange kodning med en <code
+	class="kw">meta</code>-deklaration om du har en BOM, men vi
+      rekommenderar ändå att du anger en sådan, eftersom det kan
+      hjälpa de som inspekterar källkod för att avgöra vilken
+      kodning som använts för sidan. </p>
+    <p>Läs mer om <a hreflang="en" class="print" href="/International/questions/qa-byte-order-mark">byte-ordnings-märket</a>.</p>
+  </section>
+  <section>
+    <h3 id="httphead"><a href="#httphead">Bör jag deklarera kodning i HTTP-huvudet?</a></h3>
+    <p> Använd deklaration av teckenkodning i <a hreflang="en" href="/International/articles/definitions-characters/Overview#httpheader" class="termref print">HTTP-huvuden</a> om det känns vettigt och om du får ange sådan, för alla typer av innehåll, <strong>men tillsammans med</strong> en deklaration i dokumentet självt. </p>
+    <p> Innehållsförfattare bör alltid säkerställa att
+      HTTP-deklarationer är konsistenta med deklarationer i
+      dokumentet självt. </p>
+    <section>
+      <h4 id="httpprocon">För- och nackdelar med att använda HTTP-huvuden</h4>
+      <div class="sidenoteGroup">
+        <p> En fördel av att använda HTTP-huvuden är att webbläsaren kan
+          hitta information om teckenkodning tidigare när den sänds i
+          HTTP-huvudet. </p>
+        <aside class="sideinfonote">
+          <p class="info"> Information i HTTP-huvud har högsta prioritet när den inte
+            stämmer överens med deklarationer i dokumentet, med undantag
+            för byte-ordningsmärket.
+            Intermediära servers (som vidarebefordrar innehåll) vilka
+            kodar om data (t.ex. konverterar till annan kodning)
+            kan ha nytta av detta så att den kan ändra dokumentets kodning
+            innan den sänder det till en liten apparat vilken bara kan
+            hantera ett fåtal kodningar.
+            Det är inte säkert att sådan omkodning används så mycket nuförtiden.
+            Om sådan omkodning sker och om den konverterar innehåll till
+            en icke-UTF-8-kodning, så riskerar man att förlora data, så
+            detta arrangemang bör man undvika. </p>
+        </aside>
+      </div>
+      <p>Å andra sidan, så finns ett antal potentiella nackdelar:</p>
+      <ul>
+        <li>
+          <p> Det kan vara svårt för innehållsförfattare att ändra kodning
+            för statiska filer på en server &#x2013; speciellt när man
+            utnyttjar en ISP.
+            Författare behöver ha kunskap om och tillgång till
+            inställningarna för servern. </p>
+        </li>
+        <li>
+          <p> Serverns inställningar kan bli inkonsistenta med dokumentet av olika orsaker.
+            Detta kan t.ex. ske när man förlitar sig på att servern har
+            vissa normalinställningar, och att dessa inställningar
+            faktiskt ändras.
+            I så fall kan det vara kritiskt, eftersom information i
+            HTTP-huvudet har högre prioritet än deklarationer i
+            dokumentet, och detta kan göra att dokumentet blir oläsbart. </p>
+        </li>
+        <li>
+          <p> Det finns potentiella problem med såväl statiska som dynamiska
+            dokument, om de inte hämtas från en server, t.ex. om de har
+            sparats på en CD eller på en hårddisk.
+            I sådana fall finns ingen HTTP-server som kan leverera
+            information om kodning. </p>
+          <p> Och om teckenkodningen bara anges i HTTP-huvudet, så finns
+            inte denna information tillgänglig när filerna
+            redigeras, eller när de bearbetas av sådant som XSLT eller
+            skripts, eller när de sänds iväg för översättning, etc. </p>
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h4 id="shouldi">Bör jag alltså använda denna metod?</h4>
+      <p> Om filer levereras via HTTP från en server, så finns det inga
+        problem med att sända information om dokumentets teckenkodning
+        i HTTP-huvud, så länge som denna information är korrekt. </p>
+      <p> Å andra sidan, på grund av de nackdelar som nämnts ovan,
+        rekommenderar vi att du alltid även deklarerar information om
+        kodningen i dokumentet självt. 
+        En deklaration i dokumentet underlättar för utvecklare,
+        testare och översättare som vill vill visuellt kontrollera
+        kodningen av ett dokument. </p>
+      <p> (Vissa argumenterar för att det sällan är rimligt att
+        deklarera kodningen i HTTP-huvudet om du i alla fall ska
+        repetera denna information i dokumentets innehåll.
+        Här rekommenderar de att HTTP-huvudet inte säger något om
+        kodningen av dokumentet.
+        Notera att detta vanligen innebär att man bör konfigurera
+        servern så att den <strong>inte</strong> levererar någon information om kodning. </p>
+    </section>
+  </section>
+  <section>
+    <h3 id="xml"><a href="#xml">Att arbeta med polyglott format och XML-format</a></h3>
+    <p><b class="leadin">XHTML5:</b> Ett dokument i XHTML5 levereras som XML och har XML-syntax.
+      XML-parsers hanterar inte kodningsdeklarationer i <code class="kw" translate="no">meta</code>-element.
+      De agerar bara på XML-deklarationen. Här är ett exempel: </p>
+    <figure lang="en" class="example">
+      <blockquote> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;<br>
+        &lt;!DOCTYPE html  .... </code></blockquote>
+    </figure>
+    <p> En sådan XML-deklaration krävs endast då sidan inte levereras
+      som UTF-8 (eller UTF-16), men det kan ändå vara bra att
+      ange en sådan, så att utvecklare, testare och översättare
+      visuellt kan få information om kodning av dokumentet genom att
+      titta på källkoden. </p>
+    <p> <b class="leadin">Polyglott uppmärkning:</b> en sida som använder polyglott uppmärkning är uttryckt i en
+      delmängd av HTML, och använder XML-syntax som kan hanteras
+      antingen av en HTML-parser eller en XML-parser.
+      Detta beskrivs i <a hreflang="en" class="print" href="http://www.w3.org/TR/html-polyglot/"><cite><span lang="en">Polyglot Markup: A robust profile of the HTML5 vocabulary</span></cite></a>. </p>
+    <p> Eftersom ett polyglott dokument måste vara kodad i UTF-8, så
+      behöver man inte, och faktiskt <em>får inte</em>, använda en XML-deklaration.
+      Å andra sidan, om filen ska läsas som HTML så måste man ange
+      kodningen med ett <code class="kw" translate="no">meta</code>-element, med ett
+      byte-ordnings-märke eller med ett HTTP-huvud. </p>
+    <p> Eftersom en deklaration i ett <code class="kw" translate="no">meta</code>-element bara kommer att påverka
+      hur en HTML-parser arbetar, så måste, om man använder <code class="kw" translate="no">content</code>-attributet, dess värde börja
+      med <code>text/html;</code>. </p>
+    <figure lang="en" class="example">
+      <blockquote> <code>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt; </code></blockquote>
+    </figure>
+    <p> Om du använder <code class="kw" translate="no">meta</code>-elementet
+      med attributet <code class="kw" translate="no">charset</code> så behöver du inte tänka på detta. </p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="obscure"><a href="#obscure">Ytterligare information</a></h2>
+  <p> Informationen i denna sektion handlar om sådant du vanligtvis
+    inte behöver behöver ha kännedom om, men som inkluderas här
+    för fullständighetens skull. </p>
+  <section>
+    <h3 id="nonutf8"><a href="#nonutf8">Att arbeta med andra kodningar än UTF-8</a></h3>
+    <div class="sidenoteGroup">
+      <p> Om man använder UTF-8 så förenklas skapandet av sidor, men
+        dessutom undviker man oväntade effekter vid insändning av data
+        i ett formulär och URL-kodning, som normalt använder
+        dokumentets teckenkodning.
+        Om du trots allt måste använda tecken som inte kodas i UTF-8,
+        så måste du välja från en liten uppsättning kodningsnamn, för
+        att uppnå maximal interoperabilitet och långsiktig läsbarhet
+        för ditt innehåll. </p>
+      <aside class="sideinfonote">
+        <p class="info"> Fastän dessa normalt kallas <dfn><span lang="en">charset</span></dfn>-namn
+          så är de namn på kodningar, inte namn på teckenuppsättningar.
+          Till exempel kan <span lang="en">Unicode</span>s
+          teckenuppsättning (eller &#8221;repertoar&#8221;)
+          kodas enligt tre olika kodningsscheman. </p>
+      </aside>
+    </div>
+    <p> Fram till relativt nyligen var <a hreflang="en" class="print" href="http://www.iana.org/assignments/character-sets">IANA-registret</a> den plats där man kunde hitta namn på kodningar.
+      I IANA-registret förekommer ofta flera olika namn på samma kodning.
+      I sådana fall bör man använda det namn som angetts som
+      &#8221;<span lang="en">preferred</span>&#8221;. </p>
+    <p> Den nya specifikationen <a hreflang="en" class="print" href="http://encoding.spec.whatwg.org/"><cite><span lang="en">Encoding</span></cite></a> ger nu en förteckning av kodningsnamn som testats i riktiga
+      implementationer av webbläsare.
+      Du hittar den förteckningen i sektionen som heter <a hreflang="en" class="print" href="http://encoding.spec.whatwg.org/#encodings"><span lang="en">Encodings</span></a>. 
+      Det är bäst att använda namn som anges i den vänstra kolumnen
+      i den tabellen. </p>
+    <p><strong>Lägg dock märke till</strong> att bara för att ett namn
+      förekommer i någon av dessa källor, så är det inte alltid
+      rekommendabelt att använda den kodningen.
+      Flera av kodningarna medför problem.
+      Om du verkligen inte kan använda UTF-8, så bör du noggrant
+      överväga de råd som ges i artikeln <a hreflang="en" class="print" href="/International/questions/qa-choosing-encodings"><cite><span lang="en">Choosing &amp; applying a character encoding</span></cite></a>. </p>
+    <p> Uppfinn inte egna namn på kodningar genom att inleda dem med <code>x-</code>.
+      Sådant är inte bra, eftersom det begränsar interoperabilitet. </p>
+  </section>
+  <section>
+    <h3 id="legacyhtml"><a href="#legacyhtml">Att arbeta med gamla HTML-format</a></h3>
+    <p> HTML&nbsp;4.01 specificerar inte användning av attributet <code class="kw"><span lang="en">charset</span></code> för elementet <code class="kw" translate="no">meta</code>,
+      men alla vanliga webbläsare kommer ändå att leta efter det och
+      använda det, även om sidan anges vara i HTML4 och inte i HTML5.
+      Denna sektion är bara relevant om du använder äldre
+      HTML-format av andra skäl än att leverera till en webbläsare.
+      Här beskrivs skillnaderna gentemot vad som sagts i sektionen <a href="#answer">Svar</a> ovan. </p>
+    <p> För sidor som levereras som XML, läs då <a href="#xml">Att arbeta med polyglott format och XML-format</a>. </p>
+    <p> <b class="leadin">HTML4:</b> Som nämnts ovan så behöver du
+      används pragma-direktivet för att följa standarden 
+      HTML&nbsp;4.01, 
+      och inte attributet <code class="kw"><span lang="en">charset</span></code>. </p>
+    <p> <b class="leadin">XHTML 1.x levererad som text/html:</b> Här behövs också pragma-direktivet för att följa standarden 
+      HTML&nbsp;4.01, och inte attributet <code class="kw"><span lang="en">charset</span></code>.
+      Du behöver inte ange XML-deklaration, eftersom filen
+      levereras som HTML. </p>
+    <p> <b class="leadin">XHTML 1.x levererad som XML:</b> Använd <code class="kw"><span lang="en">encoding</span></code>-deklarationen 
+      i XML-deklarationen på första raden av sidan.
+      Försäkra dig om att XML-deklarationen inte föregås av annan text i sidan, 
+      inte ens blanka tecken (men ett <a hreflang="en" class="termref print" href="/International/questions/qa-byte-order-mark">byte-ordnings-märke</a> får finnas där). </p>
+  </section>
+  <section>
+    <h3 id="charset"><a href="#charset">Attributet <code class="kw"><span lang="en">charset</span></code> på en länk</a></h3>
+    <p> HTML5 har nedgraderat användningen av attributet <code class="kw"><span lang="en">charset</span></code> på <code class="kw" translate="no">a</code>-element och <code class="kw"><span lang="en">link</span></code>-element, 
+      och du bör alltså inte använda attributet i samband med dessa.
+      Denna användning har sitt ursprung i specifikationen
+      HTML&nbsp;4.01,
+      och användes där tillsammans med elementen <code class="kw" translate="no">a</code>, <code class="kw"><span lang="en">link</span></code> och <code class="kw"><span lang="en">script</span></code> ,
+      och tanken var att på detta sätt indikera kodningen av det
+      dokument du länkar till. </p>
+    <p>Det förutsågs användas på inbäddade länkar på följande sätt: </p>
+    <figure lang="en" class="example">
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> <span lang="sv">Dålig kod. Kopiera inte</span>!</span> </div>
+      <div><code><span lang="sv">Se vår</span> &lt;a href=&quot;/mysite/mydoc.html&quot; charset=&quot;iso-8859-15&quot;&gt;<span lang="sv">förteckning över publikationer</span>&lt;/a&gt;.</code></div>
+    </figure>
+    <p> Tanken var att webbläsare skulle kunna tillämpa korrekt
+      kodning på det dokument det hämtar, om det dokumentets kodning
+      inte angavs på något annat sätt. </p>
+    <p> Det har alltid funnits problem med sådan av användning av
+      detta attribut.
+      För det första så är det inte brett stött av större
+      webbläsare.
+      En anledning att inte stödja detta attribut är att om
+      webbläsare tar hänsyn till denna information om kodning, och
+      det inte finna andra regler som styr hämtning av inlänkat
+      innehåll, så kan detta användas för säkerhetsattacker.
+      För det andra är det svårt att säkerställa att
+      kodningsinformationen är korrekt.
+      Den som ansvarar för det inlänkade dokumentet kan ändra
+      dess kodning utan att du vet om det.
+      Om skaparen av det inlänkade dokumentet inte har angett vilken
+      kodning som används, så kommer webbläsaren att tillämpa fel
+      kodning på det hämtade dokumentet.
+      Och för det tredje så bör det inte vara nödvändigt att ange
+      kodning på detta sätt, om skapare av sidor följer de råd som
+      ges i denna artikel och ger relevant uppmärkning i sina dokument.
+      Det är en mycket bättre ansats. </p>
+    <p> Detta sätt att ange kodning av dokument har den lägsta
+      prioriteten (dvs om kodning har angivits på något annat sätt,
+      så kommer kodningsinformationen angiven i länkelementet att ignoreras).
+      Det betyder att du inte heller kan använda denna form för att
+      korrigera inkorrekta deklarationer av kodningar. </p>
+  </section>
+  <section>
+  </section>
+  <section>
+    <h3 id="utf16"><a href="#utf16">Att arbeta med UTF-16</a></h3>
+    <p> En undersökning som Google gjort av flera miljarder sidor
+      visar att färre än 0,01% av sidorna på webben kodats i UTF-16.
+      Mer än 80% av alla webbsidor är i UTF-8, om man i detta
+      inräknar även delmängden ASCII, och mer än 60% om man inte gör
+      det.
+      Vi avråder å det starkaste användning av UTF-16 som kodning av
+      dina sidor. </p>
+    <p> Om du av något skäl ändå måste använda UTF-16, så ger vi här
+      några regler för hur man då deklarerar kodning.
+      De skiljer sig från råden för andra kodningar. </p>
+    <p> HTML5-specifikationen förbjuder användning av elementet <code class="kw" translate="no">meta</code> för att deklarera användning av UTF-16,
+      eftersom värdet måste vara <a hreflang="en" class="termref print" href="http://www.w3.org/TR/html5/infrastructure.html#ascii-compatible-character-encoding">ASCII-kompatibelt</a>.
+      Istället bör du försäkra dig om att du alltid har ett <a hreflang="en" href="/International/questions/qa-byte-order-mark" class="termref print">byte-ordnings-märke</a> alldeles i början av en fil kodad i UTF-16. 
+      I praktiken fungerar detta som en deklaration i dokumentet självt. </p>
+    <p> Om din sida kodas som UTF-16, deklarera inte kodningen för din fil som
+      &quot;UTF-16BE&quot; eller &quot;UTF-16LE&quot;,
+      använd endast &quot;UTF-16&quot;.
+      Byte-ordnings-märket i början av din fil indikerar om kodningsschemat är <span class="qterm"><span lang="en">little-endian</span></span> eller <span class="qterm"><span lang="en">big-endian</span></span>.
+      (Detta fungerar eftersom innehåll explicit kodat som t.ex. 
+      UTF-16BE inte bör använda byte-ordnings-märke, 
+      men HTML5 kräver ett byte-ordnings-märke för sidor kodade i UTF-16.) </p>
+  </section>
+</section>
+
+
+<!--div class="section2">
+  <h3><a id="xmldeclaration" name="xmldeclaration" href="#xmldeclaration">XML-deklarationen</a></h3>
+  <p>
+	XML-deklarationen definieras av XML-standarden.
+	Den skall anges alldeles i början av en XML-fil och erbjuder
+	deklaration av
+	<span class="kw"><span lang="en">encoding</span></span>.
+	Till exempel:
+  </p>
+  <div lang="en" class="example"> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code> </div>
+  <p>
+	En XML-deklaration krävs för dokument som skall analyseras som
+	XML, om dokumentet har kodats i något annat än UTF-8 eller
+	UTF-16, och om kodningen inte anges av något 
+	<q>överliggande protokoll protocol</q>, t.ex. HTTP-huvud.
+  </p>
+  <p>
+	Detta är viktigt, ty om du väljer bort XML-deklarationen så måste du välja UTF-8 eller UTF-16 som kodning av sidan, om den skall användas med HTTP!
+  </p>
+  <p>
+	Du bör använda en XML-deklaration för att ange kodning av
+	dokument i XHTML 1.x  vilka levereras som XML.
+  </p>
+  <p>
+	Det kan vara bra att använda en XML-deklaration för webbsidor
+	som levereras som XML, även om den använda kodningen är UTF-8
+	eller UTF-16, eftersom en sådan deklaration i själva
+	dokumentet även hjälper utvecklare, testare och översättare
+	att genom viuell inspektion fastställa kodningen av filen.
+  </p>
+  <div class="sidenoteGroup">
+    <p>
+	<span class="leadin">Att använda XML-deklarationen för XHTML levererad som HTML.</span> 
+	XHTML levererad som HTML kommer att parsas som HTML, fastän
+	den baseras på XML-syntax och därför bör inte webbläsaren ta
+	hänsyn till en XML-deklaration.
+	Det är av detta skäl som du bör använda ett
+	<a href="#metacontenttype">pragma-direktiv</a>
+	för att ange kodningen när XHTML levereras på detta sätt.
+  </p>
+    <div class="sidenote">
+      <p>* Och omvänt, pragma-direktivet är del i XML.standarden men
+      tolkas inte av XML-parsers som ett angivande av kodning.
+      </p>
+    </div>
+  </div>
+  <p>
+	Å andra sidan kan filen också bli använd som indata till andra
+	processer som använder XML-parsers.
+	I detta ingår XML-editorer, XSLT-transformeringar, AJAX, etc.
+	Dessutom används ibland logic på servern för att fastställa om
+	filen skall levereras som HTML eller XML.
+	Av sådana skäl bör du, om du inte använder UTF-8 eller UTF-16,
+	lägga till en XML-deklaration i början av filen, även om den
+	levereras till webbläsare som HTML.
+	I sådana fall kommer början av filen att se ut som:
+  </p>
+  <div lang="en" class="example"> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;<br />
+    &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+    &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;<br />
+    &lt;html xmlns=&quot;http&lrm;://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot; lang=&quot;en&quot;&gt;<br />
+    &lt;head&gt;<br />
+    &lt;meta http-equiv=&quot;Content-type&quot; content=&quot;text/html;charset=ISO-8859-1&quot;&nbsp;/&gt;<br />
+    ...</code> </div>
+  <p>
+	Om du dock använder UTF-8 eller UTF-16 så finns det ingen
+	anledning att ange en XML-deklaration, speciellt eftersom
+	elementet
+	<code class="kw" translate="no">meta</code> stöder visuell inspektion av
+	kodningen för de personer som arbetar med filen.
+  </p>
+  <p>
+	<span class="leadin">Att stödja äldre webbläsare.</span> 
+	Om någonting föregår 
+	<span lang="en">DOCTYPE</span>-deklarationen
+	och <span lang="en">Internet Explorer</span> 6 
+	används, så kommer sidan att poresenteras i s.k.
+	<a hreflang="en" href="/International/articles/serving-xhtml/#quirks"><span lang="en">quirks mode</span></a>
+	Om du använder UTF-8 eller UTF-16 kan du utelämna XML-deklarationen, 
+	vilket inte ger några negativa effekter.
+  </p>
+  <p>
+	Om du däremot inte använder dessa kodningar, och en viktig del
+	av dina användare utnyttjar
+	och <span lang="en">Internet Explorer</span> 6,
+	och om dina dokument innehåller uttryck som påverkas av skillnaden mellan 
+	<a hreflang="en" href="/International/articles/serving-xhtml/#quirks"><span lang="en">standards mode</span></a> 
+	och <span lang="en">quirks mode</span>, 
+	så kan detta innebära problem.
+	Om du vill säkerställa att dina sidor visas på samma sätt i
+	alla webbläsare som följer standarder, så måste du lägga till
+	speciell hantering i dina CSS-formatmallar för att kompensera
+	dessa skillnader.
+  </p>
+  <p>
+	Det kan även finnas andra presentationsproblem som beror på
+	XML-deklarationen, men med största sannolikhet sker detta
+	endast i mycket föråldrade webbläsare.
+	XHTML-specifikationen 
+	<a hreflang="en" href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_1">varnar</a> 
+	för att 
+	<q>process-instruktioner kommer att uppvisar i vissa
+	webbklienter. Dessutom kommer vissa webbklienter att tolka
+	XML-deklarationen som att dokumentet är icke igenkänd XML. och
+	inte HTML, och därför visar de inte dokumentet som förväntat.</q>
+	Du bör 
+	<a hreflang="en" href="http://www.w3.org/International/tests/tests-html-css/list-encoding-html-css">testa</a>
+	dokumenten med olika webbklienter för att avgöra
+	<a hreflang="en" href="http://www.webstandards.org/learn/articles/prolog_problems/">om detta skapar problem för dig</a>.</p>
+  <p>
+	Självklart, vilket nämnt ovan, kan du, om du använder UTF-8
+	eller UTF-16, låta bli att ange en XML-deklaration, och filen
+	kommer ändå att fungera bra som XML eller HTML.
+	Detta är troligen den enklaste lösningen.
+  </p>
+
+</div-->
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Nybörjare? <a hreflang="en" href="/International/getting-started/characters"><cite><span lang="en">Introducing Character Sets and Encodings</span></cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a hreflang="en" href="/International/tutorials/tutorial-char-enc/"><cite><span lang="en">Handling character encodings in HTML and CSS</span></cite></a></p>
+    </li>
+    <li>
+      <p>Näraliggande länkar, <cite>Att skapa HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a hreflang="en" href="/International/techniques/authoring-html#charset"><span lang="en">Characters</span></a></li>
+        <li><a hreflang="en" href="/International/techniques/authoring-html#indoc"><span lang="en">Declaring the character encoding for HTML</span></a></li>
+        <li><a hreflang="en" href="/International/techniques/authoring-html#choosing"><span lang="en">Choosing and applying a character encoding</span></a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Näraliggande länkar, <cite>Att konfigurera en server</cite></p>
+      <ul>
+        <li><a hreflang="en" href="/International/techniques/server-setup#charset"><span lang="en">Characters</span></a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
