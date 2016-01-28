@@ -234,7 +234,7 @@ function completePage () {
 	if (document.getElementById('sidebarExtras')) sidebarExtras = document.getElementById('sidebarExtras').innerHTML
 	document.getElementById('relatedlinks').innerHTML = sidebarExtras
 	fillinTranslations()
-	if (document.getElementById("toclocation")) createtoc();
+	if (document.getElementById("toclocation")) createtoc(true);
 	getURLs()
 	}
 
