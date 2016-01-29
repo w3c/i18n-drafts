@@ -46,11 +46,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Página de inicio de internacionalización"
 s.moreResourcesOfThisType = "Más recursos relacionados con la internacionalización."
-s.accessKeyN = 'La tecla de acceso "n" lleva a la navegación de la página. <a href="//contentstart">Ir al inicio del contenido.</a>'
+s.accessKeyN = 'La tecla de acceso "n" lleva a la navegación de la página. <a href="#contentstart">Ir al inicio del contenido.</a>'
 s.examplesInAnotherScript = "Este documento contiene ejemplos en otros idiomas y escrituras."
 s.worldMap = "Mapa mundial"
 s.searchI18nSite = "Buscar en el sitio de internacionalización" 
-s.translationDisclaimer = 'Este documento es una traducción. En caso de discrepancias o errores, la única versión normativa es el <a href="'+f.filename+'.en">último original en inglés</a>. Los <a href="//copyright">derechos de autor originales</a> corresponden al W3C, como puede verse al final de la página.'
+s.translationDisclaimer = 'Este documento es una traducción. En caso de discrepancias o errores, la única versión normativa es el <a href="'+f.filename+'.en">último original en inglés</a>. Los <a href="#copyright">derechos de autor originales</a> corresponden al W3C, como puede verse al final de la página.'
 s.translator = "Traductor:"
 s.relatedLinks = "Enlaces relacionados"
 s.articles = "Artículos" // used in breadcrumbs, top right of page 
@@ -128,5 +128,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Respuesta rápida" // heading
 s.longeranswer = "Respuesta extensa" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Agradecemos también a las siguientes personas cuyas contribuciones y opiniones fueron incluidas:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
-s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.cookieMsg = "Si permite que el navegador establezca una cookie, continuará viendo las páginas de Actividad de Internacionalización de W3C (si existieran) en el idioma de su elección. ¿Quiere establecer la cookie?" // this text is to be copied to another location

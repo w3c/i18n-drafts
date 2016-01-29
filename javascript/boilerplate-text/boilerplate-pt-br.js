@@ -47,11 +47,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Página inicial de atividades de I18N"
 s.moreResourcesOfThisType = "Mais recursos desse tipo."
-s.accessKeyN = 'A tecla de acesso \'n\'  salta para outro local na navegação da página. <a href="//contentstart">Saltar para o início do conteúdo.</a>'
+s.accessKeyN = 'A tecla de acesso \'n\'  salta para outro local na navegação da página. <a href="#contentstart">Saltar para o início do conteúdo.</a>'
 s.examplesInAnotherScript = "Este documento contém exemplos em outro idioma/script."
 s.worldMap = "Mapa Mundi"
 s.searchI18nSite = "Busca do site de I18n" 
-s.translationDisclaimer = 'Este documento é uma tradução. Se ocorrerem discrepâncias ou erros, o <a href="'+f.filename+'.en">original em inglês mais recente</a> terá precedência. <a href="//copyright">Os direitos autorais originais</a> pertencem ao W3C, como indicado no final da página.'
+s.translationDisclaimer = 'Este documento é uma tradução. Se ocorrerem discrepâncias ou erros, o <a href="'+f.filename+'.en">original em inglês mais recente</a> terá precedência. <a href="#copyright">Os direitos autorais originais</a> pertencem ao W3C, como indicado no final da página.'
 s.translator = "Tradutor:"
 s.relatedLinks = "Links relacionados"
 s.articles = "Artigos" // used in breadcrumbs, top right of page 
@@ -128,6 +128,7 @@ s.status_notreviewed="Este artigo foi publicado sem ter sido submetido à revis�
 s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="Testes" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Resposta resumida" // heading
-s.longeranswer = "Resposta detalhada" // heading
+s.longeranswer = "Detalhes" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Obrigado às seguintes pessoas pelo feedback ou contribuição incluídas nesta página:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

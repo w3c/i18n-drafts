@@ -49,11 +49,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Accueil de l'Activité I18N";
 s.moreResourcesOfThisType = "Autres ressources du même type.";
-s.accessKeyN = 'Utiliser la touche d\'accès n pour naviguer au sein de la page. <a href="//contentstart">Sauter au début du contenu.</a>'
+s.accessKeyN = 'Utiliser la touche d\'accès n pour naviguer au sein de la page. <a href="#contentstart">Sauter au début du contenu.</a>'
 s.examplesInAnotherScript = "Ce document contient des exemples dans une autre langue et une autre écriture.";
 s.worldMap = "Carte du monde";
 s.searchI18nSite = "Recherche sur le site I18N"; 
-s.translationDisclaimer = 'Ce document est une traduction. En cas de divergences ou d\'erreurs, la <a href="'+f.filename+'.en">dernière version originale en anglais</a> fait autorité. Comme indiqué ci-dessous, les <a href="//copyright">droits d\'auteur</a> reviennent au W3C.'
+s.translationDisclaimer = 'Ce document est une traduction. En cas de divergences ou d\'erreurs, la <a href="'+f.filename+'.en">dernière version originale en anglais</a> fait autorité. Comme indiqué ci-dessous, les <a href="#copyright">droits d\'auteur</a> reviennent au W3C.'
 s.translator = "Traducteur:";
 s.relatedLinks = "Liens utiles";
 s.articles = "Articles"; // used in breadcrumbs, top right of page 
@@ -130,5 +130,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests=""; // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Réponse courte"; // heading
 s.longeranswer = "Réponse longue"; // heading
-s.acknowledgements = "Nous remercions également les personnes suivantes pour leur contribution ou leurs commentaires\u00A0:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
-s.cookieMsg = "Si vous laissez le navigateur définir un cookie, vous continuerez à voir les pages de l'Activité Internationalisation du W3C (si disponible) dans la langue que vous avez choisi. Voulez-vous définir le cookie?" // this text is to be copied to another location
+s.additionalinfo = "Information complémentaire" // heading that sometimes follows 'Details'
+s.acknowledgements = "Nous remercions également les personnes suivantes pour leur contribution ou leurs commentaires\u202F:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.cookieMsg = "Si vous acceptez que votre navigateur crée un cookie, vous continuerez de voir les pages d’activité d’internationalisation de W3C (lorsque cela est possible) dans la langue de votre choix. Souhaitez-vous créer le cookie\u202F?" // this text is to be copied to another location

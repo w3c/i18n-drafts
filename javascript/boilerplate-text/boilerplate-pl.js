@@ -7,33 +7,33 @@ var s = { }
 
 // DO NOT TRANSLATE
 s.currLang = {
-'ar':'Arabic',
-'bg':'Bulgarian',
-'de':'German',
-'da':'Danish',
-'el':'Greek',
-'en':'English',
-'es':'Spanish',
-'fr':'French',
-'he':'Hebrew',
-'hi':'Hindi',
-'hu':'Hungarian',
-'it':'Italian',
-'ja':'Japanese',
-'ko':'Korean',
-'nl':'Dutch',
-'pl':'Polish',
-'pt':'Portuguese',
-'pt-br':'Brazilian Portuguese',
-'ro':'Romanian',
-'ru':'Russian',
-'sv':'Swedish',
-'th':'Thai',
-'tr':'Turkish',
-'uk':'Ukrainian',
-'vi':'Vietnamese',
-'zh-hans':'Simplified Chinese',
-'zh-hant':'Traditional Chinese'
+  'ar':'Arabski',
+  'bg':'Bułgarski',
+  'da':'Duński',
+  'de':'Niemiecki',
+  'el':'Grecki',
+  'en':'Angielski',
+  'es':'Hiszpański',
+  'fr':'Francuski',
+  'he':'Hebrajski',
+  'hi':'Hindi',
+  'hu':'Węgierski',
+  'it':'Włoski',
+  'ja':'Japoński',
+  'ko':'Koreański',
+  'nl':'Niderlandzki',
+  'pl':'Polski',
+  'pt':'Portugalski',
+  'pt-br':'Portugalski',
+  'ro':'Rumuński',
+  'ru':'Rosyjski',
+  'sv':'Szwedzki',
+  'th':'Tajski',
+  'tr':'Turecki',
+  'uk':'Ukraiński',
+  'vi':'Wietnamski',
+  'zh-hans':'Chiński (uproszczony)',
+  'zh-hant':'Chiński (tradycyjny)',
 }
 
 s.suppStylesheets = ''
@@ -46,11 +46,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Strona Główna Działalności I18N"
 s.moreResourcesOfThisType = "Więcej źródeł tego typu."
-s.accessKeyN = 'Klucz dostępu n przeskakuje w nawigacji strony. <a href="//contentstart">Przejdź do początku.</a>'
+s.accessKeyN = 'Klucz dostępu n przeskakuje w nawigacji strony. <a href="#contentstart">Przejdź do początku.</a>'
 s.examplesInAnotherScript = "Dokument ten zawiera przykłady w innym języku/skrypcie."
 s.worldMap = "Mapa świata"
 s.searchI18nSite = "Wyszukiwanie na stronie I18n" 
-s.translationDisclaimer = 'Ten dokument jest tłumaczeniem. W przypadku rozbieżności i błędów <a href="'+f.filename+'.en">aktualna wersja angielska</a> powinna być uznana za autorytatywną. <a href="//copyright">Pierwotne prawa autorskie</a> należą do W3C jak wykazano poniżej.'
+s.translationDisclaimer = 'Ten dokument jest tłumaczeniem. W przypadku rozbieżności i błędów <a href="'+f.filename+'.en">aktualna wersja angielska</a> powinna być uznana za autorytatywną. <a href="#copyright">Pierwotne prawa autorskie</a> należą do W3C jak wykazano poniżej.'
 s.translator = "Tłumacz:"
 s.relatedLinks = "Linki Pokrewne"
 s.articles = "Artykuły" // used in breadcrumbs, top right of page 
@@ -98,6 +98,7 @@ s.newResourcesAlt = "Poinformuje Państwa za każdym razem kiedy nowe źródło 
 s.newResources = "Nowe źródła"
 s.homePageNewsAlt = "Wszystkie wiadomości ze strony głównej."
 s.homePageNews = "Wiadomość ze strony głównej"
+s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
 s.author = "Autor:" // followed by name of author(s)
@@ -126,5 +127,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

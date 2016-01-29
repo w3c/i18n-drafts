@@ -7,33 +7,33 @@ var s = { }
 
 // DO NOT TRANSLATE
 s.currLang = {
-'ar':'Arabic',
-'bg':'Bulgarian',
-'de':'German',
-'da':'Danish',
-'el':'Greek',
-'en':'English',
-'es':'Spanish',
-'fr':'French',
-'he':'Hebrew',
-'hi':'Hindi',
-'hu':'Hungarian',
-'it':'Italian',
-'ja':'Japanese',
-'ko':'Korean',
-'nl':'Dutch',
-'pl':'Polish',
-'pt':'Portuguese',
-'pt-br':'Brazilian Portuguese',
-'ro':'Romanian',
-'ru':'Russian',
-'sv':'Swedish',
-'th':'Thai',
-'tr':'Turkish',
-'uk':'Ukrainian',
-'vi':'Vietnamese',
-'zh-hans':'Simplified Chinese',
-'zh-hant':'Traditional Chinese'
+  'ar':'Árabe',
+  'bg':'Búlgaro',
+  'da':'Dinamarquês',
+  'de':'Alemão',
+  'el':'Grego',
+  'en':'Inglês',
+  'es':'Espanhol',
+  'fr':'Francês',
+  'he':'Hebraico',
+  'hi':'Hindi',
+  'hu':'Húngaro',
+  'it':'Italiano',
+  'ja':'Japanese',
+  'ko':'Coreano',
+  'nl':'Holandês',
+  'pl':'Polonês',
+  'pt':'Português',
+  'pt-br':'Português brasiliero',
+  'ro':'Romeno',
+  'ru':'Russo',
+  'sv':'Sueco',
+  'th':'Tailandês',
+  'tr':'Turco',
+  'uk':'Ucraniano',
+  'vi':'Vietnamita',
+  'zh-hans':'Chinês simplificado',
+  'zh-hant':'Chinês tradicional',
 }
 
 s.suppStylesheets = ''
@@ -50,7 +50,7 @@ s.accessKeyN = 'A tecla de acesso n  salta para outro local na navegação da p�
 s.examplesInAnotherScript = "Este documento contém exemplos em outro idioma/script."
 s.worldMap = "Mapa Mundi"
 s.searchI18nSite = "Busca do site de I18n" 
-s.translationDisclaimer = 'Este documento é uma tradução. Se ocorrerem discrepâncias ou erros, o <a href="'+f.filename+'.en">original em inglês mais recente</a> terá precedência. <a href="//copyright">Os direitos autorais originais</a> pertencem à W3C, como indicado abaixo.'
+s.translationDisclaimer = 'Este documento é uma tradução. Se ocorrerem discrepâncias ou erros, o <a href="'+f.filename+'.en">original em inglês mais recente</a> terá precedência. <a href="#copyright">Os direitos autorais originais</a> pertencem à W3C, como indicado abaixo.'
 s.translator = "Tradutor:"
 s.relatedLinks = "Links relacionados"
 s.articles = "Artigos" // used in breadcrumbs, top right of page 
@@ -98,6 +98,7 @@ s.newResourcesAlt = "Receba uma notificação sempre que for publicado um novo r
 s.newResources = "Novos recursos"
 s.homePageNewsAlt = "Todas as notícias apresentadas na página principal."
 s.homePageNews = "Notícias na página principal"
+s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
 s.author = "Autor:" // followed by name of author(s)
@@ -126,5 +127,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

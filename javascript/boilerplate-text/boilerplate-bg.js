@@ -7,33 +7,33 @@ var s = { }
 
 // DO NOT TRANSLATE
 s.currLang = {
-'ar':'Arabic',
-'bg':'Bulgarian',
-'de':'German',
-'da':'Danish',
-'el':'Greek',
-'en':'English',
-'es':'Spanish',
-'fr':'French',
-'he':'Hebrew',
-'hi':'Hindi',
-'hu':'Hungarian',
-'it':'Italian',
-'ja':'Japanese',
-'ko':'Korean',
-'nl':'Dutch',
-'pl':'Polish',
-'pt':'Portuguese',
-'pt-br':'Brazilian Portuguese',
-'ro':'Romanian',
-'ru':'Russian',
-'sv':'Swedish',
-'th':'Thai',
-'tr':'Turkish',
-'uk':'Ukrainian',
-'vi':'Vietnamese',
-'zh-hans':'Simplified Chinese',
-'zh-hant':'Traditional Chinese'
+  'ar':'Арабски',
+  'bg':'Български',
+  'da':'Датски',
+  'de':'Немски',
+  'el':'Гръцки',
+  'en':'Английски',
+  'es':'Испански',
+  'fr':'Френски',
+  'he':'Иврит',
+  'hi':'Хинди',
+  'hu':'Унгарски',
+  'it':'Италиански',
+  'ja':'Японски',
+  'ko':'Корейски',
+  'nl':'Холандски',
+  'pl':'Полски',
+  'pt':'Португалски',
+  'pt-br':'Португалски (BR)',
+  'ro':'Румънски',
+  'ru':'Руски',
+  'sv':'Шведски',
+  'th':'Таи',
+  'tr':'Турски',
+  'uk':'Украински',
+  'vi':'Виетнамски',
+  'zh-hans':'Китайски (опростен)',
+  'zh-hant':'Китайски (традиционен)',
 }
 
 s.suppStylesheets = ''
@@ -46,11 +46,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N Начална страница"
 s.moreResourcesOfThisType = "Още ресурси от този тип."
-s.accessKeyN = 'Код за достъп n прескача към<a href="//internal-links" accesskey="n">навигацията във страницата</a>. <a href="//contentstart">Отиди в началото на съдържанието.</a>'
+s.accessKeyN = 'Код за достъп n прескача към<a href="#internal-links" accesskey="n">навигацията във страницата</a>. <a href="#contentstart">Отиди в началото на съдържанието.</a>'
 s.examplesInAnotherScript = "Този документ съдържа и примери написани на дург език/скрипт."
 s.worldMap = "Карта на света"
 s.searchI18nSite = "Търсене в сайта I18n" 
-s.translationDisclaimer = 'Този документ е преведен. В случй на несъответствие или грешки, <a href="'+f.filename+'.en">най-новият Английси оригинал</a> трябва да се счита за официален. <a href="//copyright">Оригиналното авторско право</a> принадлежи на W3C, както е указано долу.'
+s.translationDisclaimer = 'Този документ е преведен. В случй на несъответствие или грешки, <a href="'+f.filename+'.en">най-новият Английси оригинал</a> трябва да се счита за официален. <a href="#copyright">Оригиналното авторско право</a> принадлежи на W3C, както е указано долу.'
 s.translator = "Преводач:"
 s.relatedLinks = "Линкове по темата"
 s.articles = "Статии" // used in breadcrumbs, top right of page 
@@ -98,6 +98,7 @@ s.newResourcesAlt = "Нотифицира ви всеки път когато и
 s.newResources = "Нови ресурси"
 s.homePageNewsAlt = "Всички новини от началната страница."
 s.homePageNews = "Новините от началната страница"
+s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
 s.author = "Автор:" // followed by name of author(s)
@@ -126,5 +127,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

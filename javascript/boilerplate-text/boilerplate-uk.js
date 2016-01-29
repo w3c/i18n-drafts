@@ -48,11 +48,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Процес переходу на головну сторінку I18N"
 s.moreResourcesOfThisType = "Більше ресурсів даного типу."
-s.accessKeyN = 'Прискорююча кнопка n назначена для пропусків при навігації по сторінкам. <a href="//contentstart">Пропуск для переходу на початок контента.</a>'
+s.accessKeyN = 'Прискорююча кнопка n назначена для пропусків при навігації по сторінкам. <a href="#contentstart">Пропуск для переходу на початок контента.</a>'
 s.examplesInAnotherScript = "Дійсний документ має приклади іншими мовами/скриптами."
 s.worldMap = "Карта світу"
 s.searchI18nSite = "Пошук веб-сайту I18n" 
-s.translationDisclaimer = 'Даний документ є перекладом. У випадку будь-яких невідповідностей і помилок <a href="'+f.filename+'.en">остання версія документу англійською мовою</a> повинна розглядатися як офіційна. <a href="//copyright">Першопочаткове авторське право</a> належить W3C, як це вказано нижче.'
+s.translationDisclaimer = 'Даний документ є перекладом. У випадку будь-яких невідповідностей і помилок <a href="'+f.filename+'.en">остання версія документу англійською мовою</a> повинна розглядатися як офіційна. <a href="#copyright">Першопочаткове авторське право</a> належить W3C, як це вказано нижче.'
 s.translator = "Перекладач:"
 s.relatedLinks = "Посилання"
 s.articles = "Статті" // used in breadcrumbs, top right of page 
@@ -129,5 +129,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Швидка відповідь" // heading
 s.longeranswer = "Детальна відповідь" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

@@ -7,33 +7,33 @@ var s = { }
 
 // DO NOT TRANSLATE
 s.currLang = {
-'ar':'Arabic',
-'bg':'Bulgarian',
-'de':'German',
-'da':'Danish',
-'el':'Greek',
-'en':'English',
-'es':'Spanish',
-'fr':'French',
-'he':'Hebrew',
-'hi':'Hindi',
-'hu':'Hungarian',
-'it':'Italian',
-'ja':'Japanese',
-'ko':'Korean',
-'nl':'Dutch',
-'pl':'Polish',
-'pt':'Portuguese',
-'pt-br':'Brazilian Portuguese',
-'ro':'Romanian',
-'ru':'Russian',
-'sv':'Swedish',
-'th':'Thai',
-'tr':'Turkish',
-'uk':'Ukrainian',
-'vi':'Vietnamese',
-'zh-hans':'Simplified Chinese',
-'zh-hant':'Traditional Chinese'
+  'ar':'Арабский',
+  'bg':'Болгарский',
+  'da':'Датский',
+  'de':'Немецкий',
+  'el':'Греческий',
+  'en':'Английский',
+  'es':'Испанский',
+  'fr':'Французский',
+  'he':'Иврит',
+  'hi':'Хинди',
+  'hu':'Венгерский',
+'it':'Итальянский',
+'ja':'Японский',
+'ko':'Корейский',
+'nl':'Голландский',
+'pl':'Польский',
+'pt':'Португальский',
+'pt-br':'Португальский',
+'ro':'Румынский',
+'ru':'Русский',
+'sv':'Шведский',
+'th':'Тайский',
+'tr':'Турецкий',
+'uk':'Украинский',
+'vi':'Вьетнамский',
+'zh-hans':'Упрощенный китайский',
+'zh-hant':'Традиционный китайский'
 }
 
 s.suppStylesheets = ''
@@ -46,11 +46,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Процесс перехода на главную страницу I18N"
 s.moreResourcesOfThisType = "Больше ресурсов данного типа."
-s.accessKeyN ='Ускоряющая клавиша n предназначена для пропусков при навигации по страницам. <a href="//contentstart">Пропуск для перехода на начало контента.</a>'
+s.accessKeyN ='Ускоряющая клавиша n предназначена для пропусков при навигации по страницам. <a href="#contentstart">Пропуск для перехода на начало контента.</a>'
 s.examplesInAnotherScript = "Настоящий документ содержит примеры на других языках/скриптах."
 s.worldMap = "Карта мира"
 s.searchI18nSite = "Поиск веб-сайта I18n" 
-s.translationDisclaimer ='Данный документ является переводом. В случае каких-либо несоответствий и ошибок <a href="'+f.filename+'.en">последняя версия документа на английском языке</a> должна рассматриваться в качестве официальной. <a href="//copyright">Первоначальное авторское право</a> принадлежит W3C, как то указано ниже.'
+s.translationDisclaimer ='Данный документ является переводом. В случае каких-либо несоответствий и ошибок <a href="'+f.filename+'.en">последняя версия документа на английском языке</a> должна рассматриваться в качестве официальной. <a href="#copyright">Первоначальное авторское право</a> принадлежит W3C, как то указано ниже.'
 s.translator = "Переводчик:"
 s.relatedLinks = "Связанные ссылки"
 s.articles = "Статьи"
@@ -98,6 +98,7 @@ s.newResourcesAlt = "Уведомляет вас о новых публикац�
 s.newResources = "Новые публикации"
 s.homePageNewsAlt = "Все новости, показываемые на главной странице."
 s.homePageNews = "Новости главной страницы"
+s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
 s.author = "Автор:" // followed by name of author(s)
@@ -127,5 +128,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

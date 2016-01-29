@@ -48,11 +48,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Startseite der I18n-Tätigkeit"
 s.moreResourcesOfThisType = "Weitere Ressourcen diesen Typs."
-s.accessKeyN = 'Accesskey n springt zur Seitennavigation. <a href="//contentstart">Springe zum Inhalt.</a>'
+s.accessKeyN = 'Accesskey n springt zur Seitennavigation. <a href="#contentstart">Springe zum Inhalt.</a>'
 s.examplesInAnotherScript = "Dieses Dokument enthält Beispiele in einer anderen Sprache/Schrift."
 s.worldMap = "Weltkarte"
 s.searchI18nSite = "I18n-Suche" 
-s.translationDisclaimer = 'Dieses Dokument ist eine Übersetzung. Im Falle von Abweichungen oder Fehlern sollte das <a href="'+f.filename+'.en">aktuelle englische Original</a> als maßgeblich angenommen werden. Das W3C besitzt das <a href="//copyright">Copyright am Original</a>, wie unten beschrieben.'
+s.translationDisclaimer = 'Dieses Dokument ist eine Übersetzung. Im Falle von Abweichungen oder Fehlern sollte das <a href="'+f.filename+'.en">aktuelle englische Original</a> als maßgeblich angenommen werden. Das W3C besitzt das <a href="#copyright">Copyright am Original</a>, wie unten beschrieben.'
 s.translator = "Übersetzer:"
 s.relatedLinks = "Verwandte Links"
 s.articles = "Artikel" // used in breadcrumbs, top right of page 
@@ -128,6 +128,7 @@ s.status_notreviewed="Dieser Artikel wurde ohne vorherige öffentliche Diskussio
 s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Kurze Antwort" // heading
-s.longeranswer = "Ausführliche Antwort" // heading
+s.longeranswer = "Details" // heading
+s.additionalinfo = "Weitere Informationen" // heading that sometimes follows 'Details'
 s.acknowledgements = "Vielen Dank für die Beiträge und Kommentare zu diesem Artikel an:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

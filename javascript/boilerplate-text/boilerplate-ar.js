@@ -37,9 +37,6 @@ s.currLang = {
 }
 
 s.suppStylesheets = ''
-<<<eot
-@import "/International/style/article-standards-ar.css"
-eot
 
 s.rtlAttribute = " dir='rtl' "
 s.ltrAttribute = " dir='ltr' "
@@ -50,11 +47,11 @@ s.rlm = "‏"
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "الصفحة الرئيسية لنشاط I18N"
 s.moreResourcesOfThisType = "المزيد من هذا النوع من الموارد."
-s.accessKeyN = 'مفتاح الوصول n يتخطى إلى التصفح داخل الصفحة. <a href="//contentstart">تخطي إلى بداية المحتوى</a>'
+s.accessKeyN = 'مفتاح الوصول n يتخطى إلى التصفح داخل الصفحة. <a href="#contentstart">تخطي إلى بداية المحتوى</a>'
 s.examplesInAnotherScript = "تتضمن هذه الوثيقة أمثلة بلغات/أبجديات أخرى."
 s.worldMap = "خريطة العالم"
 s.searchI18nSite = "بحث موقع I18n" 
-s.translationDisclaimer = 'هذه الوثيقة ترجمة للأصل. في حالة وجود تعارض أو أخطاء، تكون   <a href="'+f.filename+'.en">أحدث نسخة من المستند الإنجليزي الأصلي</a> هي التي يُعتد بها. <a href="//copyright">حقوق النسخ الأصلية</a> مملوكة بواسطة W3C، كما هو موضح بأدناه.'
+s.translationDisclaimer = 'هذه الوثيقة ترجمة للأصل. في حالة وجود تعارض أو أخطاء، تكون   <a href="'+f.filename+'.en">أحدث نسخة من المستند الإنجليزي الأصلي</a> هي التي يُعتد بها. <a href="#copyright">حقوق النسخ الأصلية</a> مملوكة بواسطة W3C، كما هو موضح بأدناه.'
 s.translator = "المترجم:"
 s.relatedLinks = "روابط متعلقة"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
@@ -131,4 +128,5 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

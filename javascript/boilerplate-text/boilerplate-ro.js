@@ -48,11 +48,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Pagina de start a activitatii I18N"
 s.moreResourcesOfThisType = "Mai multe resurse de acest tip"
-s.accessKeyN = 'Cheia de acces n sare la<a href="//internal-links" accesskey="n">nagigarea in pagina</a>. <a href="//contentstart">Sari la inceputul continutului.</a>'
+s.accessKeyN = 'Cheia de acces n sare la<a href="#internal-links" accesskey="n">nagigarea in pagina</a>. <a href="#contentstart">Sari la inceputul continutului.</a>'
 s.examplesInAnotherScript = "Acest document contine exemple in alta limba/script."
 s.worldMap = "Harta lumii"
 s.searchI18nSite = "Cauta in site-ul I18n" 
-s.translationDisclaimer = 'Acest document e o traducere. In caz ca apare vreo eroare sau discrepanta, <a href="'+f.filename+'.en">ultima versiune in Engleza</a> este cea autoritativa. <a href="//copyright">Copyright-ul original</a> apartine W3C, dupa cum e aratat mai jos.'
+s.translationDisclaimer = 'Acest document e o traducere. In caz ca apare vreo eroare sau discrepanta, <a href="'+f.filename+'.en">ultima versiune in Engleza</a> este cea autoritativa. <a href="#copyright">Copyright-ul original</a> apartine W3C, dupa cum e aratat mai jos.'
 s.translator = "Traducator:"
 s.relatedLinks = "Alte linkuri"
 s.articles = "Articole" // used in breadcrumbs, top right of page 
@@ -129,5 +129,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

@@ -47,11 +47,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N Tevékenység Kezdőoldala"
 s.moreResourcesOfThisType = "Több ehhez hasonló forrás."
-s.accessKeyN = 'Az n billentyű átugrik az <a href="//internal-links" accesskey="n">oldal navigációhoz</a>. <a href="//contentstart">Ugrás a szöveg elejére.</a>'
+s.accessKeyN = 'Az n billentyű átugrik az <a href="#internal-links" accesskey="n">oldal navigációhoz</a>. <a href="#contentstart">Ugrás a szöveg elejére.</a>'
 s.examplesInAnotherScript = "Ez a dokumentum más nyelvű példákat tartalmaz."
 s.worldMap = "Világtérkép"
 s.searchI18nSite = "Keresés az I18n oldalán" 
-s.translationDisclaimer = 'Ez a dokumentum egy fordítás. Bármilyen ellentmondás vagy hiba esetén a <a href="'+f.filename+'.en">legfrissebb angol nyelvű eredeti változatot</a> kell mérvadónak tekinteni. <a href="//copyright">A szerzői jog</a> a W3C tulajdonát képezi, amint az alább látható.'
+s.translationDisclaimer = 'Ez a dokumentum egy fordítás. Bármilyen ellentmondás vagy hiba esetén a <a href="'+f.filename+'.en">legfrissebb angol nyelvű eredeti változatot</a> kell mérvadónak tekinteni. <a href="#copyright">A szerzői jog</a> a W3C tulajdonát képezi, amint az alább látható.'
 s.translator = "Fordító:"
 s.relatedLinks = "Kapcsolódó linkek"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
@@ -128,5 +128,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

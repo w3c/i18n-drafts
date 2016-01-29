@@ -7,33 +7,33 @@ var s = { }
 
 // DO NOT TRANSLATE
 s.currLang = {
-'ar':'Arabic',
-'bg':'Bulgarian',
-'de':'German',
-'da':'Danish',
-'el':'Greek',
-'en':'English',
-'es':'Spanish',
-'fr':'French',
-'he':'Hebrew',
-'hi':'Hindi',
-'hu':'Hungarian',
-'it':'Italian',
-'ja':'Japanese',
-'ko':'Korean',
-'nl':'Dutch',
-'pl':'Polish',
-'pt':'Portuguese',
-'pt-br':'Brazilian Portuguese',
-'ro':'Romanian',
-'ru':'Russian',
-'sv':'Swedish',
-'th':'Thai',
-'tr':'Turkish',
-'uk':'Ukrainian',
-'vi':'Vietnamese',
-'zh-hans':'Simplified Chinese',
-'zh-hant':'Traditional Chinese'
+  'ar':'อาหรับ',
+  'bg':'บัลแกเรีย',
+  'da':'เดนมาร์ก',
+  'de':'เยอรมัน',
+  'el':'กรีก',
+  'en':'อังกฤษ',
+  'es':'สเปน',
+  'fr':'ฝรั่งเศส',
+  'he':'ฮิบรู',
+  'hi':'ฮินดี',
+  'hu':'ฮังการี',
+  'it':'อิตาลี',
+  'ja':'ญี่ปุ่น',
+  'ko':'เกาหลี',
+  'nl':'ดัตช์',
+  'pl':'โปแลนด์',
+  'pt':'โปรตุเกส',
+  'pt-br':'โปรตุเกส',
+  'ro':'โรมัน',
+  'ru':'รัสเซีย',
+  'sv':'สวีเดน',
+  'th':'ไทย',
+  'tr':'ตุรกี',
+  'uk':'ยูเครน',
+  'vi':'เวียดนาม',
+  'zh-hans':'จีนประยุกต์',
+  'zh-hant':'จีนดั้งเดิม',
 }
 
 s.suppStylesheets = ''
@@ -46,11 +46,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N หน้า Activity"
 s.moreResourcesOfThisType = "ข้อมูลเพิ่มเติมประเภทดังกล่าว."
-s.accessKeyN = 'Accesskey n ใช้เพื่อข้ามไปยัง <a href="//internal-links" accesskey="n">หน้าในของ navigation</a>. <a href="//contentstart">ข้ามไปยังส่วนเริ่มต้นของเนื้อหา</a>'
+s.accessKeyN = 'Accesskey n ใช้เพื่อข้ามไปยัง <a href="#internal-links" accesskey="n">หน้าในของ navigation</a>. <a href="#contentstart">ข้ามไปยังส่วนเริ่มต้นของเนื้อหา</a>'
 s.examplesInAnotherScript = "เอกสารนี้ประกอบไปด้วยตัวอย่างในภาษาอื่น/script."
 s.worldMap = "แผนที่โลก"
 s.searchI18nSite = "I18n ค้นหาไซด์" 
-s.translationDisclaimer = 'เอกสารฉบับนี้เป็นเอกสารฉบับแปลในกรณีที่มีข้อมูลไม่ตรงกันหรือมีข้อบกพร่อง <a href="'+f.filename+'.en">เอกสารดั้งเดิมฉบับภาษาอังกฤษ</a> จะถือว่าเป็นฉบับที่เป็นทางการ <a href="//copyright">ลิขสิทธิ์ดั้งเดิม</a> เป็นของ W3C, ดังที่แสดงไว้ข้างล่าง'
+s.translationDisclaimer = 'เอกสารฉบับนี้เป็นเอกสารฉบับแปลในกรณีที่มีข้อมูลไม่ตรงกันหรือมีข้อบกพร่อง <a href="'+f.filename+'.en">เอกสารดั้งเดิมฉบับภาษาอังกฤษ</a> จะถือว่าเป็นฉบับที่เป็นทางการ <a href="#copyright">ลิขสิทธิ์ดั้งเดิม</a> เป็นของ W3C, ดังที่แสดงไว้ข้างล่าง'
 s.translator = "ผู้แปล:"
 s.relatedLinks = "ลิงคฺ์ที่เกี่ยวข้อง"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
@@ -127,5 +127,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

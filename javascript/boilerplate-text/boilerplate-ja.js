@@ -7,33 +7,33 @@ var s = { }
 
 // DO NOT TRANSLATE
 s.currLang = {
-'ar':'Arabic',
-'bg':'Bulgarian',
-'de':'German',
-'da':'Danish',
-'el':'Greek',
-'en':'English',
-'es':'Spanish',
-'fr':'French',
-'he':'Hebrew',
-'hi':'Hindi',
-'hu':'Hungarian',
-'it':'Italian',
-'ja':'Japanese',
-'ko':'Korean',
-'nl':'Dutch',
-'pl':'Polish',
-'pt':'Portuguese',
-'pt-br':'Brazilian Portuguese',
-'ro':'Romanian',
-'ru':'Russian',
-'sv':'Swedish',
-'th':'Thai',
-'tr':'Turkish',
-'uk':'Ukrainian',
-'vi':'Vietnamese',
-'zh-hans':'Simplified Chinese',
-'zh-hant':'Traditional Chinese'
+  'ar':'アラビア語',
+  'bg':'ブルガリア語',
+  'da':'デンマーク語',
+  'de':'ドイツ語',
+  'el':'ギリシャ語',
+  'en':'英語',
+  'es':'スペイン語',
+  'fr':'フランス語',
+  'he':'ヘブライ語',
+  'hi':'ヒンディー語',
+  'hu':'ハンガリー語',
+  'it':'イタリア語',
+  'ja':'日本語',
+  'ko':'韓国語',
+  'nl':'オランダ語',
+  'pl':'ポーランド語',
+  'pt':'ポルトガル語',
+  'pt-br':'ポルトガル語',
+  'ro':'ルーマニア語',
+  'ru':'ロシア語',
+  'sv':'スウェーデン語',
+  'th':'タイ語',
+  'tr':'トルコ語',
+  'uk':'ウクライナ語',
+  'vi':'ベトナム語',
+  'zh-hans':'簡体中国語',
+  'zh-hant':'繁体中国語',
 }
 
 s.suppStylesheets = ''
@@ -46,11 +46,11 @@ s.rlm = ""
 // TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N アクティビティ ホーム"
 s.moreResourcesOfThisType = "この技術に関連する他のリソース"
-s.accessKeyN = 'アクセスキー n により、<a href="//internal-links" accesskey="n">ページ内ナビゲーション</a>へスキップします。<a href="//contentstart">文章の開始までスキップします。</a>'
+s.accessKeyN = 'アクセスキー n により、<a href="#internal-links" accesskey="n">ページ内ナビゲーション</a>へスキップします。<a href="#contentstart">文章の開始までスキップします。</a>'
 s.examplesInAnotherScript = "この文書には、他の言語で書かれた例やスクリプトが存在します。"
 s.worldMap = "世界地図"
 s.searchI18nSite = "I18n サイト検索" 
-s.translationDisclaimer = 'この文書は翻訳版です。エラーや訳の食い違いがある場合は、<a href="'+f.filename+'.en">英語で書かれた最新版のオリジナル文書</a>を信頼するようにしてください。<a href="//copyright">オリジナル文書の著作権</a>は W3C および、次に記す人間や団体に帰属します。'
+s.translationDisclaimer = 'この文書は翻訳版です。エラーや訳の食い違いがある場合は、<a href="'+f.filename+'.en">英語で書かれた最新版のオリジナル文書</a>を信頼するようにしてください。<a href="#copyright">オリジナル文書の著作権</a>は W3C および、次に記す人間や団体に帰属します。'
 s.translator = "訳者:"
 s.relatedLinks = "関連するリンク"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
@@ -98,6 +98,7 @@ s.newResourcesAlt = "(ホームページ上のニュースのうち)初めて公
 s.newResources = "新しいリソース"
 s.homePageNewsAlt = "ホームページ上に表示されるすべてのニュースを購読します"
 s.homePageNews = "ホームページニュース"
+s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
 s.author = "作成者:" // followed by name of author(s)
@@ -126,5 +127,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "要約的な回答" // heading
 s.longeranswer = "詳細な回答" // heading
+s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location

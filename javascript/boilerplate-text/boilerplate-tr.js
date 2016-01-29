@@ -7,33 +7,33 @@ var s = { }
 
 // DO NOT TRANSLATE
 s.currLang = {
-'ar':'Arabic',
-'bg':'Bulgarian',
-'de':'German',
-'da':'Danish',
-'el':'Greek',
-'en':'English',
-'es':'Spanish',
-'fr':'French',
-'he':'Hebrew',
-'hi':'Hindi',
-'hu':'Hungarian',
-'it':'Italian',
-'ja':'Japanese',
-'ko':'Korean',
-'nl':'Dutch',
-'pl':'Polish',
-'pt':'Portuguese',
-'pt-br':'Brazilian Portuguese',
-'ro':'Romanian',
-'ru':'Russian',
-'sv':'Swedish',
-'th':'Thai',
-'tr':'Turkish',
-'uk':'Ukrainian',
-'vi':'Vietnamese',
-'zh-hans':'Simplified Chinese',
-'zh-hant':'Traditional Chinese'
+  'ar':'Arapça',
+  'bg':'Bulgarca',
+  'da':'Danca',
+  'de':'Almanca',
+  'el':'Yunanca',
+  'en':'İngilizce',
+  'es':'İspanyolca',
+  'fr':'Fransızca',
+  'he':'İbranice',
+  'hi':'Hintçe',
+  'hu':'Macarca',
+  'it':'İtalyanca',
+  'ja':'Japonca',
+  'ko':'Korece',
+  'nl':'Hollanda Dili',
+  'pl':'Polonya Dili',
+  'pt':'Portekizce',
+  'pt-br':'Portekizce',
+  'ro':'Romence',
+  'ru':'Rusça',
+  'sv':'İsveççe',
+  'th':'Tay Dili',
+  'tr':'Türkçe',
+  'uk':'Ukraynaca',
+  'vi':'Vietnamca',
+  'zh-hans':'Basitleştirilmiş Çince',
+  'zh-hant':'Geleneksel Çince',
 }
 
 s.suppStylesheets = ''
@@ -44,72 +44,72 @@ s.rlm = ""
 
 
 // TRANSLATE THE FOLLOWING
-s.i18nActivityHome = "I18N Activity Home"
-s.moreResourcesOfThisType = "More resources of this type."
-s.accessKeyN = 'Accesskey n skips to <a href="#internal-links" accesskey="n">in-page navigation</a>. <a href="#contentstart">Skip to the content start.</a>'
-s.examplesInAnotherScript = "This document contains examples in another language/script."
-s.worldMap = "World map"
-s.searchI18nSite = "I18n site search:" 
-s.translationDisclaimer = 'This document is a translation provided by a volunteer. In the case of any discrepancy or errors, the <a href="'+f.filename+'.en">latest English original</a> should be considered authoritative.<a href="#copyright">Original copyright</a> belongs to W3C, as shown below.'
-s.translator = "Translator:"
-s.relatedLinks = "Related links"
+s.i18nActivityHome = "I18N Activity Ana Sayfası"
+s.moreResourcesOfThisType = "Bu türdeki diğer kaynaklar."
+s.accessKeyN = 'Sayfada gezinmek için n erişim tuşunu kullanın. <a href="#contentstart">İçeriğin başına git.</a>'
+s.examplesInAnotherScript = "Bu belge başka bir dilde yazılmış örnekler içerir."
+s.worldMap = "Dünya haritası"
+s.searchI18nSite = "I18n sitesinde ara" 
+s.translationDisclaimer = 'Bu belge bir çeviridir. Herhangi bir tutarsızlık veya hata durumunda, <a href="'+f.filename+'.en">en son tarihli İngilizce orijinal belge</a> esas alınmalıdır. <a href="#copyright">Orijinal belgenin telif hakkı</a> aşağıdaki belirtildiği gibi W3C\'ye aittir.'
+s.translator = "Çeviren:"
+s.relatedLinks = "İlgili bağlantılar"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
-s.topicIndexText = "Topic index"
-s.techIndexText = "Techniques index"
-s.gotoW3cHome = "Go to W3C Home Page"
-s.gotoI18nHome = "Go to Internationalization Activity Home Page"
+s.topicIndexText = "Konu dizini"
+s.techIndexText = "Yöntemler dizini"
+s.gotoW3cHome = "W3C ana sayfasına git"
+s.gotoI18nHome = "Internationalization Activity ana sayfasına git"
 s.internationalizationTitle = "Internationalization"
-s.i18nActivityHomePage = "Internationalization Activity home page."
+s.i18nActivityHomePage = "Internationalization Activity ana sayfası."
 s.home = "Home"
-s.aboutI18nActivity = "About the Internationalization Activity."
+s.aboutI18nActivity = "Çeviri etkinliği ile ilgili bilgiler."
 s.about = "About"
-s.groupsThatMakeUp = "Groups that make up the Internationalization Activity."
+s.groupsThatMakeUp = "Çeviri etkinliğine katılan gruplar."
 s.groups = "Groups"
-s.topicIndexForInformation = "Topic index for information on this site."
+s.topicIndexForInformation = "Bu siteyle ilgili bilgilerin konu dizini."
 s.topics = "Topics"
-s.taskBasedIndex = "Task-based index of i18n techniques."
+s.taskBasedIndex = "I18n yöntemleriyle ilgili görevleri gösteren dizin."
 s.techniques = "Techniques"
-s.informationResources = "Information resources on the Internationalization site."
+s.informationResources = "Çeviri sitesiyle ilgili bilgi kaynakları."
 s.resources = "Resources"
-s.newsFiltersAndFeeds = "Information about news filters and RSS feeds for W3C Internationalization."
+s.newsFiltersAndFeeds = "W3C çevirisi için haber filtreleri ve RSS akışlarıyla ilgili bilgiler."
 s.news = "News"
-s.onThisPage = "On this page"
-s.questionAlt = "Question"
-s.questionLink = "Question"
-s.question = "Question"
-s.backgroundAlt = "Background information"
-s.backgroundLink = "Background"
-s.background = "Background"
-s.answerAlt = "Answer"
-s.answerLink = "Answer"
-s.answer = "Answer" // heading
-s.byTheWayAlt = "Additional useful information"
-s.byTheWayLink = "By the way"
-s.byTheWay = "By the way"
-s.furtherReadingAlt = "Further reading"
-s.furtherReadingLink = "Further reading"
-s.furtherReading = "Further reading"
+s.onThisPage = "bu sayfadakiler"
+s.questionAlt = "Soru"
+s.questionLink = "Soru"
+s.question = "Soru"
+s.backgroundAlt = "İlgili bilgiler"
+s.backgroundLink = "İlgili bilgiler"
+s.background = "İlgili bilgiler"
+s.answer = "Yanıt" // heading
+s.answerAlt = "Yanıt"
+s.answerLink = "Yanıt"
+s.byTheWayAlt = "İşinize yarayacak ek bilgiler"
+s.byTheWayLink = "Aklınızda bulunsun"
+s.byTheWay = "Aklınızda bulunsun"
+s.furtherReadingAlt = "Ek kaynaklar"
+s.furtherReadingLink = "Ek kaynaklar"
+s.furtherReading = "Ek kaynaklar"
 s.intendedAudience = "Intended audience:"
-s.skipToAnswer = "[Skip to the answer]"
-s.tellUsWhatYouThink = "Tell us what you think."
-s.sendAComment = "Leave a comment"
-s.subscribeToRSS = "Subscribe to an RSS feed."
-s.newResourcesAlt = "Notifies you each time a new resource is published for the first time."
-s.newResources = "New resources"
-s.homePageNewsAlt = "All news items shown on the home page."
-s.homePageNews = "Home page news"
+s.skipToAnswer = "[Yanıta git]"
+s.tellUsWhatYouThink = "Lütfen bize görüşlerinizi bildirin (İngilizce)."
+s.sendAComment = "Yorum gönderin"
+s.subscribeToRSS = "Bir RSS akışına abone olun."
+s.newResourcesAlt = "Yeni bir kaynak yayımlandığında sizi haberdar eder."
+s.newResources = "Yeni kaynaklar"
+s.homePageNewsAlt = "Ana sayfada yer alan tüm haberler."
+s.homePageNews = "Ana sayfadaki haberler"
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
-s.author = "By:" // followed by name of author(s)
-s.previousAuthors = "Previously by:" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Changed by:" // person's name appears after colon
-s.translatedBy = "Translator:"
-s.validXHTML = "Valid XHTML 1.0!"
-s.validCSS = "Valid CSS!"
-s.codedInUtf8 = "Encoded in UTF-8!"
+s.author = "Yazan:" // followed by name of author(s)
+s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Değiştiren:" // person's name appears after colon
+s.translatedBy = "Çeviren:"
+s.validXHTML = "Geçerli XHTML 1.0!"
+s.validCSS = "Geçerli CSS!"
+s.codedInUtf8 = "UTF-8 ile kodlanmış!"
 
-s.translatedFromEnglishVer = "Translated from English content dated "+dt.enVersion+". Translated version last changed "+dt.thisVersionPlain+" GMT"
+s.translatedFromEnglishVer = dt.enVersion+" tarihli İngilizce içerikten çevrilmiştir. Çeviri en son "+dt.thisVersionPlain+" GMT tarihinde değiştirilmiştir"
 
 s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
 s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="'+f.filename+'.en">the English original</a> since this document was translated. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
