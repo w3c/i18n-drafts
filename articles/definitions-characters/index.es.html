@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Codificación de caracteres: Conceptos básicos</title>
+<meta name="description" content="Tutorial sobre cómo etiquetar páginas XHTML, HTML y CSS con información sobre codificaciones de caracteres y cómo usar escapes de caracteres." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/definitions-characters'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-definitions-characters'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-20', time:'07:41'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-29', time:'14:42'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.trustedtranslations.com/spanish-translation.asp" title="Spanish Translation">Spanish Translation</a> Team, Trusted Translations, Inc'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css" media="all">
+th.bytes {
+	font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Codificación de caracteres: conceptos básicos</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    codificadores de XHTML/HTML (que usen editores o lenguaje de script), desarrolladores de sistemas de escritura (PHP, JSP, etc.), codificadores de CSS y todo aquel que no conozca la terminología de la codificación de caracteres y busque comprender los conceptos básicos. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+ 
+  <p>En este artículo se presentan distintos conceptos básicos necesarios para comprender otros artículos que tratan cuestiones vinculadas con caracteres y codificación de caracteres.</p>
+</section>
+
+
+<section>
+  <h2 id="unicode"><a href="#unicode">Unicode</a></h2>
+  <p><dfn>Unicode</dfn> es un set de caracteres universal, es decir, un estándar en el que se definen todos los caracteres necesarios para la escritura de la mayoría de los idiomas hablados en la actualidad que se usan en la computadora. Su objetivo es ser, y, en gran medida, ya lo ha logrado, un superconjunto de todos los sets de caracteres que se hayan codificado.</p>
+  <p>El texto que aparece en la computadora o en la Web se compone de caracteres. Los <dfn>caracteres</dfn> representan letras del abecedario, signos de puntuación y otros símbolos.</p>
+  <p>En el pasado, distintas organizaciones han recopilado diferentes sets de caracteres y han creado codificaciones específicas para ellos. Un set puede abarcar tan sólo los idiomas de Europa occidental con base en el latín (sin incluir países de la UE como Bulgaria o Grecia), otro set puede contemplar un idioma específico del Lejano Oriente (como el japonés), y otros pueden ser parte de distintos sets diseñados especialmente para representar otro idioma de algún lugar del mundo.</p>
+  <p>Lamentablemente, no es posible garantizar que su aplicación particular pueda soportar todas las codificaciones, ni que una determinada codificación pueda soportar todos sus requerimientos para la representación de un cierto idioma. Además, generalmente resulta imposible combinar distintas codificaciones en la misma página web o en una base de datos, por lo que siempre es muy difícil soportar páginas plurilingües si se aplican enfoques "antiguos" cuando se trata de tareas de codificación.</p>
+  <p>El <a class="print" href="http://www.unicode.org/">Consorcio Unicode</a> proporciona un único y extenso set de caracteres que pretende incluir todos los caracteres necesarios para cualquier sistema de escritura del mundo, incluyendo sistemas ancestrales (como el cuneiforme, el gótico y los jeroglíficos egipcios). Hoy resulta fundamental para la arquitectura de la Web y de los sistemas operativos, y las principales aplicaciones y navegadores web incluyen soporte para este elemento. En el <a class="print" href="http://www.unicode.org/standard/standard.html">Estándar Unicode</a> también se describen las propiedades y algoritmos necesarios para trabajar con caracteres.</p>
+  <p>Este enfoque facilita mucho el trabajo con sistemas o páginas plurilingües y responde mucho mejor a las necesidades del usuario que la mayoría de los sistemas de codificación tradicionales. </p>
+  <p>A continuación se muestran bloques de script Unicode, según la versión 5.2 de Unicode:</p>
+  <p><img src="index-data/unicodeblocks.png" alt="Bloques Unicode" /></p>
+  <div class="sidenoteGroup">
+    <p>Se considera que las primeras 65.536 ubicaciones de puntos de código en el set de caracteres Unicode constituyen el <dfn>Plano plurilingüe básico (Basic Multilingual Plane, BMP)</dfn>. El BMP incluye la mayoría de los caracteres utilizados más frecuentemente.</p>
+    <div class="sideinfonote"><p class="info">El número 65.536 es 2 elevado a la 16. En otras palabras, la cantidad máxima de combinaciones de bits que se pueden obtener en dos bytes.</p></div>
+  </div>
+  <p>El set de caracteres Unicode también contiene espacio para aproximadamente un millón de ubicaciones de puntos de código adicionales. Los caracteres en este último rango se denominan <dfn>caracteres complementarios</dfn>.</p>
+  <p><img src="index-data/unicodeplanes.png" alt="Ilustración de los 17 planos en el set de códigos Unicode." /></p>
+  <p>Para más información acerca de Unicode, consulte la <a class="print" href="http://www.unicode.org/">Página de inicio de Unicode</a>, o lea el tutorial <a class="print" href="https://r12a.github.io/scripts/tutorial/"><cite>Introducción a los sistemas de escritura &amp; Unicode</cite></a>.</p>
+</section>
+
+
+<section>
+  <h2 id="charsets"><a href="#charsets">Sets de caracteres, sets de caracteres codificados y codificaciones</a></h2>
+  <p>Es importante hacer una clara distinción entre los conceptos "set de caracteres" y "codificación de caracteres".</p>
+  <p>Un <dfn>set de caracteres</dfn> o <dfn>repertorio</dfn> comprende el grupo de caracteres que se utilizarían para una finalidad específica, ya sea los necesarios para el soporte de los idiomas de Europa Occidental en la computadora, o los que aprendería en el colegio un niño chino en tercer grado (sin relación con la computadora).</p>
+  <p>Un <dfn>set de caracteres codificados</dfn> es un grupo de caracteres en el que se ha asignado un número exclusivo a cada carácter. Las unidades de un set de caracteres codificados se conocen como <dfn>puntos de código</dfn>. El valor de un punto de código representa la ubicación de un carácter en el set de caracteres codificados. Por ejemplo, el punto de código para la letra <span class="qchar">à</span> en el set de caracteres codificados Unicode es 225 en notación decimal, o E1 en notación hexadecimal. (Tenga presente que la notación hexadecimal generalmente se utiliza para hacer referencia a puntos de código y es la que se usará aquí).</p>
+  <p>En algunos casos, los sets de caracteres codificados se denominan páginas codificadas. </p>
+  <p>La <dfn>codificación de caracteres</dfn> refleja la manera en la que el set de caracteres codificados se convierte a bytes para su procesamiento en la computadora. En la siguiente imagen se muestra cómo se convierten a secuencias de bytes en memoria los caracteres y puntos de código del sistema de escritura Tifinagh (Berber) mediante la codificación UTF-8. Los valores de los puntos de código para cada carácter se enumeran inmediatamente debajo del glifo (es decir, la representación visual) correspondiente a dicho carácter en la parte superior del diagrama. Las flechas indican de qué manera estos elementos se convierten en secuencias de bytes, donde cada byte está representado por un número hexadecimal de dos dígitos. Observe cómo los puntos de código de Tifinagh se convierten en tres bytes mientras que el signo de exclamación se convierte en un solo byte.</p>
+  <p><img src="index-data/encodings-utf8.png" alt="Imagen de la conversión de caracteres a bytes" /></p>
+  <p>En esta explicación se trata muy brevemente la nomenclatura detallada vinculada con la codificación. Para más información, consulte <a class="print" href="http://unicode.org/reports/tr17/"><cite>Informe técnico sobre Unicode N.° 17</cite></a>. </p>
+  <p><span class="leadin"><a name="multipleencodings" id="multipleencodings">Un set de caracteres, múltiples codificaciones.</a></span> Muchas normas en materia de codificación de caracteres, como aquellas incluidas en la serie ISO 8859, emplean un solo byte para un determinado carácter y la codificación es una conversión sencilla a la ubicación escalar de los caracteres en el set de caracteres codificados. Por ejemplo, en el set de caracteres codificados de la norma ISO 8859-1, la letra <span class="qchar">A</span> se encuentra en la ubicación N.° 65 (comenzando por cero) y está codificada para representación en la computadora mediante un byte al que corresponde el valor 65. Esta organización de ISO 8859-1 es fija y no se modifica.</p>
+  <p>En Unicode, sin embargo, el proceso no es tan sencillo. Mientras que el punto de código para la letra <span class="qchar">à</span> en el set de caracteres codificados Unicode es siempre 225 (en decimal), en UTF-8 se representa en la computadora mediante dos bytes. En otras palabras, no existe una correspondencia uno a uno entre el valor del set de caracteres codificados y el valor de codificación para este carácter.</p>
+  <p>Además, en Unicode existen distintas formas de codificar el mismo carácter. Por ejemplo, la letra <span
+					class="qchar">à</span> se puede representar mediante dos bytes en una codificación y con cuatro bytes, en otra. Los <dfn>formatos de codificación</dfn> que se pueden usar con Unicode se denominan UTF-8, UTF-16 y UTF-32.</p>
+  <p><img src="index-data/encodings.png" alt="Imagen de la conversión de caracteres a bytes" /></p>
+  <p>UTF-8 utiliza 1 byte para representar caracteres en el set ASCII, dos bytes para caracteres en otros bloques alfabéticos y tres bytes para el resto del BMP. Para los caracteres complementarios se utilizan 4 bytes.</p>
+  <p>UTF-16 utiliza 2 bytes para cualquier carácter en el BMP y 4 bytes para los caracteres complementarios.</p>
+  <p>UTF-32 emplea 4 bytes para todos los caracteres.</p>
+  <p>En el siguiente gráfico, la primera línea de números representa la ubicación de un determinado carácter en el set de caracteres codificados Unicode. En las otras líneas, se muestra el valor de los bytes utilizados para representar dicho carácter en una codificación de caracteres específica.</p>
+  <table id="bytes">
+    <tr>
+      <th></th>
+      <th class="bytes"><img src="index-data/a.png" height="20" width="22"
+							alt="Latin A." /></th>
+      <th class="bytes"><img src="index-data/alef.png" height="20" width="22"
+							alt="Hebrew alef." /></th>
+      <th class="bytes"><img src="index-data/an.png" height="20" width="22"
+							alt="Han ideograph AN." /></th>
+      <th class="bytes"><img src="index-data/stumpOfTree.gif" height="20" width="22"
+							alt="Símbolo chino que significa 'tronco de árbol'." /></th>
+    </tr>
+    <tr>
+      <th>Punto de código</th>
+      <td>U+0041</td>
+      <td>U+05D0</td>
+      <td>U+597D</td>
+      <td>U+233B4</td>
+    </tr>
+    <tr>
+      <th>UTF-8</th>
+      <td>41</td>
+      <td>D7 90</td>
+      <td>E5 A5 BD</td>
+      <td>F0 A3 8E B4</td>
+    </tr>
+    <tr>
+      <th>UTF-16</th>
+      <td>00 41</td>
+      <td>05 D0</td>
+      <td>59 7D</td>
+      <td>D8 4C DF B4</td>
+    </tr>
+    <tr>
+      <th>UTF-32</th>
+      <td>00 00 00 41</td>
+      <td>00 00 05 D0</td>
+      <td>00 00 59 7D</td>
+      <td>00 02 33 B4</td>
+    </tr>
+  </table>
+  <p>Para más información sobre caracteres y codificaciones, consulte <a class="print" href="/International/getting-started/characters"><cite>Introducción a las codificaciones y a los sets de caracteres</cite></a>, o lea el tutorial <a class="print" href="/International/tutorials/tutorial-char-enc/"><cite>Cómo procesar codificaciones de caracteres en HTML y CSS </cite></a>.</p>
+</section>
+
+
+<section>
+  <h2 id="doccharset"><a href="#doccharset">Set de caracteres para documentos</a></h2>
+  <p>Para XML y HTML (de la versión 4.0 en adelante), el <dfn>set de caracteres para documentos</dfn> es el set de caracteres universales (Universal Character Set, UCS) tal como se define en las normas ISO/IEC 10646 y Unicode. (Para que resulte más sencillo y siguiendo las prácticas comunes, aquí se hará referencia al UCS simplemente como <span class="qterm">Unicode</span>).</p>
+  <p>Esto significa que el modelo lógico que especifica la manera de procesar XML y HTML se describe en términos del set de caracteres definido por Unicode. (En términos prácticos, significa que habitualmente los navegadores convierten internamente todo el texto a Unicode).</p>
+  <p>¡Esto no quiere decir que todos los documentos HTML y XML deban usar la codificación Unicode! Significa, en cambio, que estos documentos sólo pueden contener caracteres definidos por Unicode. Puede utilizar cualquier codificación para sus documentos, siempre que se haya declarado correctamente y que los caracteres que representa el set conformen un set secundario del repertorio Unicode.</p>
+  <p>Para más información acerca del set de caracteres para documentos, consulte el artículo <a class="print" href="/International/questions/qa-doc-charset"><cite>Set de caracteres para documentos</cite></a>.</p>
+</section>
+
+
+<section>
+  <h2 id="escapes"><a href="#escapes">Escapes de caracteres</a></h2>
+  <p>El escape de caracteres es una forma de representar caracteres sin usar efectivamente el propio carácter.</p>
+  <p>Por ejemplo, no existe una manera de representar directamente el carácter hebreo <span>א</span> en un documento si se utiliza una codificación ISO 8859-1 (que cubre los idiomas de Europa Occidental). Una forma de indicar que desea incluir dicho carácter es utilizar el escape XHTML &amp;#x05D0;. Como el set de caracteres del documento es Unicode, el agente de usuario debería reconocer que este elemento representa el carácter hebreo alef.</p>
+  <p>En el artículo <a class="print" href="/International/questions/qa-escapes"><cite>Cómo usar escapes de caracteres en etiquetado y CSS</cite></a> se incluyen ejemplos de escapes en HTML/XHTML y CSS y recomendaciones acerca de cómo utilizarlos y en qué casos.</p>
+</section>
+
+
+<section>
+  <h2 id="httpheader"><a href="#httpheader">El encabezado <acronym>HTTP</acronym></a></h2>
+  <p>Al recuperar un documento del servidor, este último generalmente envía información adicional junto con el documento. Esto es lo que se denomina encabezado HTTP. A continuación se muestra un ejemplo del tipo de información sobre el documento que incluye el encabezado HTTP mientras el elemento se traslada del servidor al cliente. </p>
+  <p>En este ejemplo, la anteúltima línea incluye información acerca de la codificación de caracteres del documento. </p>
+  <div class="example">
+    <pre>HTTP/1.1 200 OK
+Date: Wed, 05 Nov 2003 10:46:04 GMT
+Server: Apache/1.3.28 (Unix) PHP/4.2.3
+Content-Location: CSS2-REC.en.html
+Vary: negotiate,accept-language,accept-charset
+TCN: choice
+P3P: policyref=http://www.w3.org/2001/05/P3P/p3p.xml
+Cache-Control: max-age=21600
+Expires: Wed, 05 Nov 2003 16:46:04 GMT
+Last-Modified: Tue, 12 May 1998 22:18:49 GMT
+ETag: &quot;3558cac9;36f99e2b&quot;
+Accept-Ranges: bytes
+Content-Length: 10734
+Connection: close
+<span style="color: red;" title="This line indicates the encoding of the document.">Content-Type: text/html; charset=UTF-8</span>
+Content-Language: en</pre>
+  </div>
+  <p>Si su documento se creó en forma dinámica mediante lenguaje de script, podría agregar esta información explícitamente al encabezado HTTP. Si está ejecutando archivos estáticos, el servidor puede vincular esta información con los archivos. El método de configuración de un servidor para que trasmita información sobre codificación de caracteres de esta manera varía de un servidor a otro. Deberá consultar estas cuestiones al administrador del servidor.</p>
+  <p>A modo de ejemplo, los servidores Apache habitualmente incluyen una codificación predeterminada que, por lo general, se puede anular a partir de las configuraciones elegidas por el usuario. Por ejemplo, un usuario puede agregar la siguiente línea a un archivo .htaccess para que todos los archivos con extensión .html se ejecuten como UTF-8 en este y en todos los directorios hijo:</p>
+  <div class="example">
+    <blockquote> <code>AddType 'text/html; charset=UTF-8' html</code></blockquote>
+  </div>
+  <p>Para más información acerca de cómo modificar la codificación en el encabezado HTTP, consulte <a class="print" href="/International/O-HTTP-charset"><cite>Configuración del parámetro charset HTTP</cite></a>.</p>
+</section>
+
+
+<section>
+  <h2 id="other"><a href="#other">Otros temas</a></h2>
+  <p>Consulte <a class="print" href="/International/articles/serving-xhtml/"><cite>Ejecución de HTML &amp; XHTML</cite></a> para obtener información acerca de conceptos vinculados, lo que incluye <a class="print" href="/International/articles/serving-xhtml/#mime">tipos de MIME</a>, <a class="print" href="/International/articles/serving-xhtml/#quirks">modos standards versus quirks</a> y <a class="print" href="/International/articles/serving-xhtml/#declaration">declaraciones DOCTYPE</a>.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Primeros pasos, <a href="/International/getting-started/characters"><cite>Introducción a las codificaciones y a los sets de caracteres</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Cómo procesar codificaciones de caracteres en HTML y CSS</cite></a></p>
+    </li>
+    <li>
+      <p><a href="/International/articles/serving-xhtml/"><cite>Ejecución de HTML &amp; XHTML</cite></a></p>
+    </li>
+    <li>
+      <p>Enlaces vinculados, <cite>Autoría de HTML &amp; CSS</cite></p><ul><li><a href="/International/techniques/authoring-html#charset">Caracteres</a></li></ul>
+    </li>
+    <li>
+      <p>Enlaces vinculados, <cite>Configuración de servidores</cite></p><ul><li><a href="/International/techniques/server-setup#charset">Caracteres</a></li></ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Character encodings: Essential concepts</title>
+<meta name="description" content="Introduces a number of basic concepts needed to understand other articles that deal with characters and character encodings." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/definitions-characters'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-definitions-characters'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-20', time:'07:41'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-29', time:'14:42'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css" media="all">
+th.bytes {
+	font-size: 20px;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Character encodings: Essential concepts</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, and anyone who is new to character encoding terminology and wants to understand the basics. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+  
+  <p>This article introduces a number of basic concepts needed to understand other articles that deal with characters and character encodings.</p>
+</section>
+
+
+<section>
+  <h2 id="unicode"><a href="#unicode">Unicode</a></h2>
+  <p><dfn>Unicode</dfn> is a universal character set, ie. a standard that defines, in one place, all the characters
+    needed for writing the majority of living languages in use on computers. It aims to be, and to a large extent already is, a superset of all other character sets that have been encoded.</p>
+  <p>Text in a computer or on the Web is composed of characters. <dfn>Characters</dfn> represent letters of the alphabet, punctuation, or other symbols.</p>
+  <p>In the past, different organizations have assembled different sets of characters and created encodings for them – one set may cover just Latin-based Western European languages (excluding EU countries such as Bulgaria or Greece), another may cover a particular Far Eastern language (such as Japanese), others may be one of many sets devised in a rather ad hoc way for representing another language somewhere in the world.</p>
+  <p>Unfortunately, you can’t guarantee that your application will support all encodings, nor that a given encoding will support all your needs for representing a given language. In addition, it is usually impossible to combine different encodings on the same Web page or in a database, so it is usually very difficult to support multilingual pages using ‘legacy’ approaches to encoding.</p>
+  <p>The <a class="print" href="http://www.unicode.org/">Unicode Consortium</a> provides a large, single character set that aims to include all the characters needed for any writing system in the world, including ancient scripts (such as Cuneiform, Gothic and Egyptian Hieroglyphs). It is now fundamental to the architecture of the Web and operating systems, and is supported by all major web browsers and applications. The <a class="print" href="http://www.unicode.org/standard/standard.html">Unicode Standard</a> also describes properties and algorithms for working with characters.</p>
+  <p>This approach makes it much easier to deal with multilingual pages or systems, and provides much better coverage of your needs than most traditional encoding systems. </p>
+  <p>The following shows Unicode script blocks as of Unicode version 5.2:</p>
+  <p><img src="index-data/unicodeblocks.png" alt="Unicode blocks" /></p>
+  <div class="sidenoteGroup">
+    <p>The first 65,536 code point positions in the Unicode character set are said to constitute the <dfn>Basic Multilingual Plane (BMP)</dfn>. The BMP includes most of the more commonly used characters.</p>
+    <div class="sideinfonote"><p class="info">The number 65,536 is 2 to the power of 16.  In other words, the maximum number of bit permutations you can get in two bytes.</p></div>
+  </div>
+  <p>The Unicode character set also contains space for around a million additional code point positions. Characters in this latter range are referred to as <dfn>supplementary characters</dfn>.</p>
+  <p><img src="index-data/unicodeplanes.png" alt="Illustration of the 17 planes in the Unicode code set." /></p>
+  <p>For more information about Unicode, see the <a class="print" href="http://www.unicode.org/">Unicode Home Page</a>, or read the tutorial <a class="print" href="https://r12a.github.io/scripts/tutorial/"><cite>An Introduction to Writing Systems &amp; Unicode</cite></a>.</p>
+</section>
+
+
+<section>
+  <h2 id="charsets"><a href="#charsets">Character sets, coded character sets, and encodings</a></h2>
+  <p>It is important to clearly distinguish between the concepts of a character set versus a character encoding.</p>
+  <p>A <dfn>character set</dfn> or <dfn>repertoire</dfn> comprises the set of characters one might use for a particular purpose – be it those required to support
+    Western European languages in computers, or those a Chinese child will learn at school in the third grade (nothing to do with computers).</p>
+  <p>A <dfn>coded character set</dfn> is a set of characters for which a unique number has been assigned to each
+    character. Units of a coded character set are known as <dfn>code points</dfn>. A code point value represents the position of a character in the coded character set. For example, the code point for the letter <span class="qchar">à</span> in the Unicode coded character set is 225 in decimal, or E1 in hexadecimal notation. (Note that hexadecimal notation is
+    commonly used for referring to code points, and will be used here.)</p>
+  <p>Coded character sets are sometimes called code pages. </p>
+  <p>The <dfn>character encoding</dfn> reflects the way the coded character set is mapped to bytes for manipulation in
+    a computer. The picture below shows how characters and code points in the Tifinagh (Berber)  script are mapped to sequences of bytes in memory using the UTF-8 encoding. The code point values for each character are listed immediately below the glyph (ie. the visual representation) for that character at the top of the diagram. The arrows show how those are mapped to sequences of bytes, where each byte is represented by a two-digit hexadecimal number. Note how the Tifinagh code points map to three bytes, but the exclamation mark maps to a single byte.</p>
+  <p><img src="index-data/encodings-utf8.png" alt="Picture of how characters map to bytes." /></p>
+  <p>This explanation glosses over some of the detailed nomenclature related to encoding. More detail can be found in <a class="print" href="http://unicode.org/reports/tr17/"><cite>Unicode Technical
+    Report #17</cite></a>. </p>
+  <p><span class="leadin"><a name="multipleencodings" id="multipleencodings">One character set, multiple encodings.</a></span> Many character encoding standards, such as those in the ISO 8859 series, use a single byte for a given character and the encoding is
+    a straightforward mapping to the scalar position of the characters in the coded character set. For example, the letter <span class="qchar">A</span> in the ISO 8859-1 coded character set is in the 65th character position (starting from zero), and is encoded for representation in the computer using
+    a byte with the value of 65. For ISO 8859-1 this never changes.</p>
+  <p>For Unicode, however, things are not so straightforward. Although the code point for the letter <span class="qchar">à</span> in the
+    Unicode coded character set is always 225 (in decimal), in UTF-8 it is represented in the computer by two bytes. In other words there isn't a trivial,
+    one-to-one mapping between the coded character set value and the encoded value for this character.</p>
+  <p>In addition, in Unicode there are a number of ways of encoding the same character. For example, the letter <span class="qchar">à</span> can be represented by two bytes in one encoding and four bytes in another. The <dfn>encoding forms</dfn> that can be used with Unicode
+    are called UTF-8, UTF-16, and UTF-32.</p>
+  <p><img src="index-data/encodings.png" alt="Picture of how characters map to bytes." /></p>
+  <p>UTF-8 uses 1 byte to represent characters in the ASCII set, two bytes for characters in several more alphabetic blocks, and three
+    bytes for the rest of the BMP. Supplementary characters use 4 bytes.</p>
+  <p>UTF-16 uses 2 bytes for any character in the BMP, and 4 bytes for supplementary characters.</p>
+  <p>UTF-32 uses 4 bytes for all characters.</p>
+  <p>In the following chart, the first line of numbers represents the position of a character in the Unicode coded character set. The
+    other lines show the byte values used to represent that character in a particular character encoding.</p>
+  <table id="bytes">
+    <tr>
+      <th></th>
+      <th class="bytes"><img src="index-data/a.png" height="20" width="22"
+							alt="Latin A." /></th>
+      <th class="bytes"><img src="index-data/alef.png" height="20" width="22"
+							alt="Hebrew alef." /></th>
+      <th class="bytes"><img src="index-data/an.png" height="20" width="22"
+							alt="Han ideograph AN." /></th>
+      <th class="bytes"><img src="index-data/stumpOfTree.gif" height="20" width="22"
+							alt="Chinese ideograph meaning 'stump of tree'." /></th>
+    </tr>
+    <tr>
+      <th>Code point</th>
+      <td>U+0041</td>
+      <td>U+05D0</td>
+      <td>U+597D</td>
+      <td>U+233B4</td>
+    </tr>
+    <tr>
+      <th>UTF-8</th>
+      <td>41</td>
+      <td>D7 90</td>
+      <td>E5 A5 BD</td>
+      <td>F0 A3 8E B4</td>
+    </tr>
+    <tr>
+      <th>UTF-16</th>
+      <td>00 41</td>
+      <td>05 D0</td>
+      <td>59 7D</td>
+      <td>D8 4C DF B4</td>
+    </tr>
+    <tr>
+      <th>UTF-32</th>
+      <td>00 00 00 41</td>
+      <td>00 00 05 D0</td>
+      <td>00 00 59 7D</td>
+      <td>00 02 33 B4</td>
+    </tr>
+  </table>
+  <p>For more information about characters and encodings  see <a class="print" href="/International/getting-started/characters"><cite>Introducing Character Sets and Encodings</cite></a>, or read the tutorial <a class="print" href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS </cite></a>.</p>
+</section>
+
+
+<section>
+  <h2 id="doccharset"><a href="#doccharset">The Document Character Set</a></h2>
+  <p>For XML and HTML (from version 4.0 onwards) the <dfn>document character set</dfn> is defined to be the Universal
+    Character Set (UCS) as defined by both ISO/IEC 10646 and Unicode standards. (For simplicity and in line with common practice, we will refer to the
+    UCS here simply as <span class="qterm">Unicode</span>.)</p>
+  <p>What this means is that the logical model describing how XML and HTML are processed is described in terms of the set of characters defined by
+    Unicode. (In practical terms, this means that browsers usually convert all text to  Unicode  internally.)</p>
+  <p>Note that this does not mean that all HTML and XML documents have to use a Unicode encoding! It does mean, however, that
+    documents can only contain characters defined by Unicode. Any encoding can be used for your document as long as it is properly declared and represents a subset
+    of the Unicode repertoire.</p>
+  <p>For more information about the document character set see the  article <a class="print" href="/International/questions/qa-doc-charset"><cite>Document character set</cite></a>.</p>
+</section>
+
+
+<section>
+  <h2 id="escapes"><a href="#escapes">Character escapes</a></h2>
+  <p>A character escape is a  way of representing a character without actually using the   character itself.</p>
+  <p>For example, there is no way of directly representing the Hebrew character <span>א</span> in your document if you are using an ISO 8859-1
+    encoding (which covers Western European languages). One way to indicate that you want to include that character in HTML is to use the  escape
+    &amp;#x05D0;. Because the document character set is Unicode, the user agent should recognize that this represents a Hebrew aleph character.</p>
+  <p>Examples of escapes in HTML / XHTML and CSS, and advice on when and how to use them, can be found in the article <a class="print" href="/International/questions/qa-escapes"><cite>Using character escapes in markup and CSS</cite></a>.</p>
+</section>
+
+
+<section>
+  <h2 id="httpheader"><a href="#httpheader">The <acronym>HTTP</acronym> header</a></h2>
+  <p>When you retrieve a document from a server, the server normally sends some additional information with the document. This is called the HTTP header. Here is an example of the kind of information about the document that is passed by HTTP header with a document as it travels from the server to the client. </p>
+  <p>The second line from the bottom in this example carries information about the character encoding for the document. </p>
+  <div class="example">
+    <pre>HTTP/1.1 200 OK
+Date: Wed, 05 Nov 2003 10:46:04 GMT
+Server: Apache/1.3.28 (Unix) PHP/4.2.3
+Content-Location: CSS2-REC.en.html
+Vary: negotiate,accept-language,accept-charset
+TCN: choice
+P3P: policyref=http://www.w3.org/2001/05/P3P/p3p.xml
+Cache-Control: max-age=21600
+Expires: Wed, 05 Nov 2003 16:46:04 GMT
+Last-Modified: Tue, 12 May 1998 22:18:49 GMT
+ETag: &quot;3558cac9;36f99e2b&quot;
+Accept-Ranges: bytes
+Content-Length: 10734
+Connection: close
+<span style="color: red;" title="This line indicates the encoding of the document.">Content-Type: text/html; charset=UTF-8</span>
+Content-Language: en</pre>
+  </div>
+  <p>If your document is dynamically created using scripting, you may be able to explicitly add this information to the HTTP header. If you
+    are serving static files, the server may associate this information with the files. The method of setting up a server to pass character
+    encoding information in this way will vary from server to server. You should check with the server administrator.</p>
+  <p>As an example, Apache servers typically provide a default encoding, which can usually be overridden by directory-specific settings. For example, a
+    webmaster might add the following line to a .htaccess file to serve all files with a .html extension as UTF-8 in this and all child directories:</p>
+  <div class="example">
+    <blockquote> <code>AddType 'text/html; charset=UTF-8' html</code></blockquote>
+  </div>
+  <p>For more information on changing the encoding in the HTTP header, see <a class="print" href="/International/O-HTTP-charset"><cite>Setting the HTTP charset parameter</cite></a></p>
+</section>
+
+
+<section>
+  <h2 id="other"><a href="#other">Other things</a></h2>
+  <p>See <a class="print" href="/International/articles/serving-xhtml/"><cite>Serving HTML &amp; XHTML</cite></a> for information about related concepts, including <a class="print" href="/International/articles/serving-xhtml/#mime">MIME types</a>, <a class="print" href="/International/articles/serving-xhtml/#quirks">standards vs quirks modes</a>, and <a class="print" href="/International/articles/serving-xhtml/#declaration">DOCTYPEs</a>.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Getting started? <a href="/International/getting-started/characters"><cite>Introducing Character Sets and Encodings</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a></p>
+    </li>
+    <li>
+      <p><a href="/International/articles/serving-xhtml/"><cite>Serving HTML &amp; XHTML</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p><ul><li><a href="/International/techniques/authoring-html#charset">Characters</a></li></ul>
+    </li>
+    <li>
+      <p>Related links, <cite>Setting up a server</cite></p><ul><li><a href="/International/techniques/server-setup#charset">Characters</a></li></ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
