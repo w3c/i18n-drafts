@@ -112,9 +112,9 @@ s.codedInUtf8 = "UTF-8-ben kódolva!"
 
 s.translatedFromEnglishVer = "Angolról fordítva: "+dt.enVersion+". A lefordított verzió utolsó módosítása: "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Amennyiben a dokumentum volt változásaira kíváncsi, ezek az információk elérhetők a <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">hírlevelünkön</a>, a 2016 Január óta bekövetkezett változásokról pedig a <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github “commit” lista</a> a megfelelő forrás.'
-s.untranslatedChanges = '<strong>Megjegyzés:</strong> A fordítás megjelenése óta változások történtek <a href="'+f.filename+'.en.php">az eredeti angol változatban</a>. A változásokat átvezettük a dokumentumba, úgyhogy egyes részek, az új fordítás véglegesítéséig, angolul szerepelnek.'
-s.unlinkedTranslation = '<strong>Figyelmeztetés:</strong> A fordítás megjelenése óta jelentős változások történtek <a href="'+f.filename+'">az eredeti angol változatban</a>. Tanácsoljuk, hogy az új fordítás véglegesítéséig <a href="'+f.filename+'.en">az angol verziót</a> olvassa.'
+s.historyOfDocumentChanges = 'Amennyiben a dokumentum volt változataira kíváncsi, ezek az információk elérhetők a <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">hírlevelünkön</a>, a 2016 Január óta bekövetkezett változásokról pedig a <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">GitHub „<span lang="en">commit</span>” lista</a> a megfelelő forrás.'
+s.untranslatedChanges = '<strong>Megjegyzés:</strong> A fordítás megjelenése óta változások történtek <a href="'+f.filename+'.en">az eredeti angol változatban</a>. A változásokat átvezettük a dokumentumba, úgyhogy egyes részek, az új fordítás véglegesítéséig, angolul szerepelnek.'
+s.unlinkedTranslation = '<strong>Figyelmeztetés:</strong> A fordítás megjelenése óta jelentős változások történtek az eredeti angol változatban. Tanácsoljuk, hogy az új fordítás véglegesítéséig <a href="'+f.filename+'">egy más nyelven rendelkezésre álló változatot</a> olvasson.'
 s.new="Új"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Új verzió" // same as New
 s.translation_updated="Az új verzió dátuma:" // date appears after colon 
