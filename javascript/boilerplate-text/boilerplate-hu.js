@@ -51,7 +51,7 @@ s.accessKeyN = 'Az n billentyű átugrik az <a href="#internal-links" accesskey=
 s.examplesInAnotherScript = "Ez a dokumentum más nyelvű példákat tartalmaz."
 s.worldMap = "Világtérkép"
 s.searchI18nSite = "Keresés az I18n oldalán" 
-s.translationDisclaimer = 'Ez a dokumentum egy fordítás. Bármilyen ellentmondás vagy hiba esetén a <a href="'+f.filename+'.en">legfrissebb angol nyelvű eredeti változatot</a> kell mérvadónak tekinteni. <a href="#copyright">A szerzői jog</a> a W3C tulajdonát képezi, amint az alább látható.'
+s.translationDisclaimer = 'A dokumentumot önkéntesek fordították. Különbségek vagy hibák esetén a <a href="'+f.filename+'.en">legfrissebb, angol eredeti</a> a meghatározó. <a href="#copyright">Az eredeti szerzői jog</a> tulajdonosa a W3C, további részletek alább találhatók.'
 s.translator = "Fordító:"
 s.relatedLinks = "Kapcsolódó linkek"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
@@ -99,7 +99,7 @@ s.newResourcesAlt = "Értesíti Önt amikor első alkalommal lett új forrás pu
 s.newResources = "Új források"
 s.homePageNewsAlt = "Minden hír a kezdőoldalon."
 s.homePageNews = "Kezdőoldal hírek"
-s.followOurNews = "Follow our news feed."
+s.followOurNews = "Kövesse hírlevelünket."
 s.sentenceDelimiter = "."
 
 s.author = "Szerző:" // followed by name of author(s)
@@ -112,22 +112,23 @@ s.codedInUtf8 = "UTF-8-ben kódolva!"
 
 s.translatedFromEnglishVer = "Angolról fordítva: "+dt.enVersion+". A lefordított verzió utolsó módosítása: "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
-s.untranslatedChanges = '<strong>Megjegyzés:</strong> Változások történtek <a href="'+f.filename+'.en.php">az eredeti angol változatban</a> amióta a dokumentum le lett fordítva. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
-s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
-s.new="New"// placed alongside new articles at http://www.w3.org/International/articlelist 
-s.updated="Updated" // same as New
-s.translation_updated="Translation updated:" // date appears after colon 
+s.historyOfDocumentChanges = 'Amennyiben a dokumentum volt változásaira kíváncsi, ezek az információk elérhetők a <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">hírlevelünkön</a>, a 2016 Január óta bekövetkezett változásokról pedig a <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github “commit” lista</a> a megfelelő forrás.'
+s.untranslatedChanges = '<strong>Megjegyzés:</strong> A fordítás megjelenése óta változások történtek <a href="'+f.filename+'.en.php">az eredeti angol változatban</a>. A változásokat átvezettük a dokumentumba, úgyhogy egyes részek, az új fordítás véglegesítéséig, angolul szerepelnek.'
+s.unlinkedTranslation = '<strong>Figyelmeztetés:</strong> A fordítás megjelenése óta jelentős változások történtek <a href="'+f.filename+'">az eredeti angol változatban</a>. Tanácsoljuk, hogy az új fordítás véglegesítéséig <a href="'+f.filename+'.en">az angol verziót</a> olvassa.'
+s.new="Új"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.updated="Új verzió" // same as New
+s.translation_updated="Az új verzió dátuma:" // date appears after colon 
 
-s.aboutThisArticle="About this article" // title in the right column near the top of the page
-s.status_draft="This article is a draft that has not yet gone through public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_review="This article is currently out for public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_published="This article has been reviewed by the W3C Internationalization Working Group and has gone through public review to make it as accurate as possible. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_notreviewed="This article was published without public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
-s.tests="Tests" // used at the end of breadcrumbs for test related pages
-s.quickanswer = "Quick answer" // heading
-s.longeranswer = "Longer answer" // heading
-s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
-s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.aboutThisArticle="Továbbiak a cikkről" // title in the right column near the top of the page
+s.status_draft="A cikk jelenleg egy tervezet, amely még nem ment át nyilvános bírálaton. Ha megjegyzése van, annak elküldéséhez használja <a href='#survey'>a lap alján található linket</a>."
+s.status_review="A cikk jelenleg nyilvános elbírálás alatt áll. Ha megjegyzése van, annak elküldéséhez használja <a href='#survey'>a lap alján található linket</a>."
+s.status_published="Annak érdekében, hogy a tartalom a lehető legpontosabb legyen, a cikket a W3C Nemzetköziesítési Munkacsoportja elbírálta, és átment nyilvános bírálaton is. Ha megjegyzése van, annak elküldéséhez használja <a href='#survey'>a lap alján található linket</a>."
+s.status_notreviewed="Ezt cikket nyilvános elbírálás nélkül publikáljuk. Ha megjegyzése van, annak elküldéséhez használja <a href='#survey'>a lap alján található linket</a>."
+s.status_obsolete="Ez a cikk mára már elavult. Új verziói már nem készülnek, és valószínűleg pontatlanságokat tartalmaz. Frissebb információkért forduljon a <a href='http://www.w3.org/International/'>W3C Nemzetköziesítés Fejlesztési Tevékenység honlapjához.</a>."
+s.tests="Teszt" // used at the end of breadcrumbs for test related pages
+s.quickanswer = "Gyors válasz" // heading
+s.longeranswer = "Részletek" // heading
+s.additionalinfo = "További információ" // heading that sometimes follows 'Details'
+s.acknowledgements = "Közreműködésükért és átvett megjegyzéseikért köszönjük:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.cookieMsg = "Amennyiben hozzájárul ahhoz, hogy a böngészője elfogadjon egy sütit, a <a href='http://www.w3.org/International/'>W3C Nemzetköziesítés Fejlesztési Tevékenység lapjait</a>, ha rendelkezésre állnak, az ön által választott nyelven tudja elérni. Hozzájárul a süti használatához?" // this text is to be copied to another location
+s.supercededTranslation = '<strong>Figyelmeztetés:</strong> Ez a dokumentumnak egy lejárt verziója! Olvassa inkább a <a href="'+g.filename+f.clang+'">legfrissebb verziót</a> és, ha lehetséges, változtassa meg azt a linket vagy könyvjelzőt amelynek révén ide jött.'
