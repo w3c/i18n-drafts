@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8" />
+<title>Többnyelvű űrlapok kódolása</title>
+<meta name="description" content="Hogyan lehet a legjobban a többféle nyelvet és szkriptet használó űrlapok kódolási problémáit kezelni?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'qa-forms-utf-8'; // the file name WITHOUT extensions
+f.authors = 'Martin Dürst, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-forms-utf-8'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-06-09'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-10-26', time:'13:14'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' //what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-29', time:'20:42'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Petra Csobanka, <a href="http://www.webhat.hu">Webhat translations</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'forms';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-forms-utf-8-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-hu.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Többnyelvű űrlapok kódolása</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    XHTML/HTML kódolóknak (szerkesztőt használóknak és szkriptelőknek), szkript fejlesztőknek (PHP, JSP, stb.), Web projekt menedzsereknek, és mindazoknak, akik az iránt érdeklődnek, hogy űrlapok esetében hogyan kell a karakterkódolással bánni.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Hogyan lehet a legjobban a többféle nyelvet és szkriptet használó űrlapok kódolási problémáit kezelni?</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>A legjobb módja az (X)HTML űrlapok kódolási problémáinak kezelésére az, ha minden oldalunknál UTF-8 kódolást használunk. 
+    Az UTF-8 a legkülönbözőbb nyelvek karaktereit meg tudja jeleníteni. A böngészők ugyanabban a kódolásban küldik vissza az űrlap adatait, mint amiben az oldal tartalmazza az űrlapot, 
+    így a felhasználó az adatokat bármilyen nyelven vagy írásjelet használva megadhatja.</p>
+  <p>Van azonban néhány apróság, amit figyelembe kell vennünk ahhoz, hogy ez a megközelítés biztosan jól működjön. Először is, tudatni kell a böngészővel, hogy az űrlap UTF-8-ban kódolt. 
+    Többféle módon lehet <a class="print" href="/International/questions/qa-html-encoding-declarations">megadni oldalunk kódolását a böngészőnek</a>.
+    Ez minden esetben fontos, különösen akkor, ha az űrlap nem tartalmaz US-ASCII-n kívül más karaktereket, 
+    ám felhasználóink esetleg más típusú karaktereket is beírnak.</p>
+  <p>Másodszor, az űrlap adatait feldolgozó szkripteknél érdemes ellenőrizni, hogy a visszaadott adat valóban UTF-8 kódolású-e 
+    (pl. valami elromlott-e, vagy a felhasználó megváltoztatta-e a kódolást). Az ellenőrzés azért lehetséges, mert az UTF-8-nak teljesen egyedi, 
+    másra nem jellemző bájt mintázata van. Ha nem UTF-8 kódolású adat érkezik vissza, akkor a rendszernek egy hibaüzenet kell küldeni.</p>
+  <p>Perlben például egy reguláris kifejezés vizsgálata UTF-8 kódolásra a következőképpen nézhet ki:</p>
+  <div class="example">
+    <pre>$field =~
+  m/\A(
+     [\x09\x0A\x0D\x20-\x7E]            # ASCII
+   | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+   |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
+   | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+   |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
+   |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
+   | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+   |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
+  )*\z/x;
+</pre>
+  </div>
+  <p>Ez a kifejezés más programozási nyelvekre is átvihető. Ez különböző dolgokat képes kezelni, 
+    mint pl. az illegális, túl hosszú kódolásokat és a helyettesítések illegális használatát. Igaz logikai értéket ad vissza, ha a <code>$field</code> UTF-8 kódolású, máskülönben hamis értékkel tér vissza.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Choosing and applying a character encoding</a></li>
+        <li><a href="/International/techniques/authoring-html#indoc">Declaring the character encoding for HTML</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

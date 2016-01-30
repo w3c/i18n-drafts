@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Encodage de formulaire multilingue</title>
+<meta name="description" content="Quel est le meilleur moyen de faire face aux problèmes d’encodage dans les formulaires utilisant plusieurs langues et scripts ?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'qa-forms-utf-8'; // the file name WITHOUT extensions
+f.authors = 'Martin Dürst, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-forms-utf-8'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-06-09'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-10-26', time:'13:14'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' //what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-29', time:'20:42'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.languagemarketplace.ca/" title="Translation Services">French Translation Team</a>, Language Marketplace Inc'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'forms';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-forms-utf-8-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-fr.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Encodage de formulaire multilingue</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    les codeurs XHTML/HTML (utilisant les éditeurs ou le script), les développeurs de script (PHP, JSP, etc.), les gestionnaires de projet Web, et quiconque étant à la recherche d’informations relatives à l’encodage des caractères dans un formulaire. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Quel est le meilleur moyen de faire face aux problèmes d’encodage dans les formulaires utilisant plusieurs langues et scripts&#xA0;?</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>La meilleure façon de faire face aux problèmes d’encodage dans les formulaires (X)HTML est d’utiliser l’UTF-8 pour l’ensemble des pages. L’UTF-8 peut représenter les caractères d’une multitude de langues. Les navigateurs renvoient les données dans le même encodage que la page contenant le formulaire. Ainsi, l’utilisateur peut remplir le formulaire dans la langue ou le script qu’il souhaite.</p>
+  <p>Les recommandations suivantes permettent de s’assurer que cette procédure fonctionne bien. Premièrement, il est important d’indiquer au navigateur que la page est au format UTF-8. Il existe plusieurs façons d<a class="print" href="/International/questions/qa-html-encoding-declarations">’indiquer au navigateur l’encodage de la page </a>. Dans tous les cas, ceci est important, encore plus si le format de la page ne contient pas lui-même des caractères étrangers à l’US-ASCII. Cependant, les utilisateurs peuvent taper d’autres caractères.</p>
+  <p>Deuxièmement, il peut être bien que le script qui reçoit les données du formulaire vérifie que les données renvoyées utilisent bien l’UTF-8 (au cas où quelque chose ne fonctionnait pas, par exemple si l’utilisateur avait changé l’encodage). La vérification est possible car l’UTF-8 possède un modèle d’octet très particulier absent des autres encodages. Si des données n’utilisant pas l’UTF-8 sont reçues, un message d’erreur devrait être envoyé.</p>
+  <p>Dans Perl, à titre d’exemple, une expression courante testée pour l’UTF-8 peut apparaître ainsi&#xA0;:</p>
+  <figure class="example">
+    <pre>$field =~
+  m/\A(
+     [\x09\x0A\x0D\x20-\x7E]            # ASCII
+   | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+   |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
+   | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+   |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
+   |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
+   | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+   |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
+  )*\z/x;
+</pre>
+  </figure>
+  <p>Cela peut être adapté à d’autres langages de programmation. Il prend en compte différents problèmes tels que les encodages illégaux trop longs ou l’utilisation illégale d’encodages de substitution. Le programme ne sera validé que si <code>$field</code> est en UTF-8.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Liens utiles,<cite> création HTML et CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Caractères</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Choisir et appliquer un codage de caractères</a></li>
+        <li><a href="/International/techniques/authoring-html#indoc">Déclarer le codage de caractères dans HTML</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

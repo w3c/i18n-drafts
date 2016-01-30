@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Мультиязычные формы</title>
+<meta name="description" content="Какой наилучший способ работы с формами, включающими в себя несколько языков?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'qa-forms-utf-8'; // the file name WITHOUT extensions
+f.authors = 'Martin Dürst, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-forms-utf-8'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-06-09'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-10-26', time:'13:14'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' //what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-29', time:'20:42'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://specialist-shans.ru/author/">Алексей Давыдов</a> (Alexey Davydoff)'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'forms';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-forms-utf-8-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Мультиязычные формы</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    XHTML/HTML верстальщики, программисты (PHP, JSP, и т.д.), менеджеры веб-проектов, и любые другие, кто хочет узнать информацию по работе с кодировками в формах. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Какой наилучший способ работы с формами, включающими в себя несколько языков?</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Наилучшим способом работы с особенностями кодировок в (X)HTML является хранение ваших страниц в UTF-8. Кодировка UTF-8 содержит большой набор символов из различных языков. Браузеры посылают данные из заполненных форм обратно на сервер в той-же кодировке, что и оригинальная страница. Поэтому пользователь может заполнить информацию на любом языке, который ему необходим.</p>
+  <p>Есть несколько пунктов которые надо проверить для того, чтобы убедиться в работоспособности данного метода у вас. 
+    Первым делом, надо указать браузеру что страница написана в UTF-8. Существует <a class="print" href="/International/questions/qa-html-encoding-declarations">ряд способов</a> указания кодировки страницы. 
+    Указание кодировки становится особенно важным, когда форма на странице не содержит национальных символов кроме стандартных латинских US-ASCII, но пользователи могут вводить таковые в форму.</p>
+  <p>Далее, скрипт принимающий данные пользователя должен убедиться что введенные данные действительно в UTF-8 кодировке 
+    (на случай если произошла какая либо непредвиденная ситуация, например смена кодировки пользователем). Проверка возможна благодаря тому, что UTF-8 имеет особенную последовательность байт, не встречающуюся в других кодировках. Если от пользователя поступили данные в кодировке отличной от UTF-8, мы должны выдать ему сообщение об ошибке.</p>
+  <p>Например, в Perl регулярное выражение, проверяющее кодировку пользователя, может выглядеть следующим образом:</p>
+  <div class="example">
+    <pre>$field =~
+  m/\A(
+     [\x09\x0A\x0D\x20-\x7E]            # ASCII
+   | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+   |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
+   | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+   |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
+   |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
+   | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+   |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
+  )*\z/x;
+</pre>
+  </div>
+  <p>Эта конструкция может быть портирована под другие языки программирования.
+    Она предусматривает обработку различных ошибок связанных с неверным формированием UTF-8. Функция вернет true если переменная <code>$field</code> в  UTF-8, и false в противоположном случае.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Choosing and applying a character encoding</a></li>
+        <li><a href="/International/techniques/authoring-html#indoc">Declaring the character encoding for HTML</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
