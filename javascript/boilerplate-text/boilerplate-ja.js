@@ -109,7 +109,7 @@ s.validXHTML = "Valid な XHTML 1.0 です!"
 s.validCSS = "Valid な CSS です!"
 s.codedInUtf8 = "UTF-8 でエンコードされています!"
 
-s.translatedFromEnglishVer = "$enVersion GMT に英文コンテンツから翻訳されました。翻訳内容の最終更新は $thisVersionPlain GMT に行われました。"
+s.translatedFromEnglishVer = dt.enVersion+" GMT に英文コンテンツから翻訳されました。翻訳内容の最終更新は "+dt.thisVersionPlain+" GMT に行われました。"
 
 s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
 s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="'+f.filename+'.en">the English original</a> since this document was translated. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
