@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Ruby Markup and Styling</title>
+<meta name="description" content="How W3C markup and styling to support ruby text, such as Japanese furigana." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/ruby'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-ruby'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-07-21'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2005-07-21', time:'15:36'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-31', time:'18:05'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'markup';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Ruby Markup and Styling</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, and
+      anyone who wants to know how to use ruby annotations. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <p>Ruby is a name for small annotations that are rendered alongside base text. This is especially useful for Japanese and other East Asian
+    content (ruby is known as furigana in Japanese).</p>
+  <p>The Ruby Annotation specification provides a way to mark up ruby text, and has been adopted as an XHTML 1.1 module. Work is under way in
+    CSS3 on mechanisms to support styling of ruby text.</p>
+  <p>This article will introduce you to the basic mechanisms, and discuss the current state of the art with regards to ruby support.</p>
+</section>
+
+
+<section>
+  <h2 id="Slide0040"><a href="#Slide0040">Who is Ruby?</a></h2>
+  <p>Unfortunately, this <span class="newterm">ruby</span> doesn't refer to a glamourous woman. This more prosaic technical term refers to a
+    particular type of annotation associated with a base text. The name 'ruby' originated from a named font size (about half the size of the normal 10
+    point font) used by British typesetters. </p>
+  <p>Typically ruby is used in East Asian scripts to provide phonetic transcriptions of obscure characters, or characters that the reader is
+    not expected to be familiar with. For example it is widely used in education materials and children’s texts. It is also occasionally used to convey
+    information about the meaning of ideographic characters.</p>
+  <p>In Japanese, where ruby is called <span class="newterm">furigana</span>, phonetic transcriptions typically appear in hiragana above
+    horizontal text and to the right of vertical text. Although ruby in Japanese is often in hiragana, it is also possible to occasionally find
+    annotations in kanji, katakana (particularly in Japanese 'manga' comics) and Latin text.</p>
+  <p>Furigana typically appears below horizontal text, and to the left of vertical text on the rare occasions that it is used to express
+    semantic information.</p>
+  <figure>
+    <p><img src="index-data/Slide0050.gif" alt="An example of ruby in Japanese." width="306" height="170" /> </p>
+    <figcaption>An example of ruby in Japanese.</figcaption>
+  </figure>
+  <p>The use of ruby annotation is not limited to Japanese. Indeed it is not necessarily limited to any of the Asian scripts. It can be used
+    as an annotation device for many different applications, such as linguistic glossing and annotation.</p>
+  <p>This following illustration shows examples of ruby text using Latin, kanji, and katakana for annotating base text.</p>
+  <figure>
+    <p><img src="index-data/Slide0060.gif" alt="Any character is valid in ruby text and annotations." width="576" height="58" /> </p>
+    <figcaption>Any character is valid in ruby text and annotations.</figcaption>
+  </figure>
+  <p>This shows Simplified Chinese characters annotated with pinyin transliterations below each character.</p>
+  <figure>
+    <p><img src="index-data/Slide0070.gif" alt="An example of ruby in Simplified Chinese script" width="263" height="131" /> </p>
+    <figcaption>An example of ruby in Simplified Chinese script.</figcaption>
+  </figure>
+  <p>Such annotation in Traditional Chinese commonly uses <span class="newterm">bopomofo</span> characters to indicate pronunciation, and
+    rather than the annotation appearing above the main text, it is included vertically to the right of each character, whether the main text flows
+    vertically or horizontally.</p>
+  <p>Note how the tone marks appear to the right of the column of alphabetic bopomofo characters.</p>
+  <figure>
+    <p><img src="index-data/Slide0080.gif" alt="An example of ruby in Traditional Chinese script" width="359" height="115" /> </p>
+    <figcaption>An example of ruby in Traditional Chinese script.</figcaption>
+  </figure>
+</section>
+
+
+<section>
+  <h2 id="Slide0090"><a href="#Slide0090">Ruby markup</a></h2>
+  <p>There are two aspects to dealing with ruby text: the first is to provide structural information through markup that relates the ruby and
+    its base text; the second is to address presentational (styling) questions, such as whether long ruby text overlaps adjacent base text, whether short
+    ruby text is centered or left aligned over a long base text, etc. In this section we look at expressing the structure using markup.</p>
+  <p>The W3C Recommendation <a class="print" href="http://www.w3.org/TR/ruby/">Ruby Annotation</a> (also available in <a class="print" href="http://www.doraneko.org/webauth/ruby/20010531/">Japanese</a>) describes markup that can be used for ruby support.</p>
+  <p>The specification defines two variants of ruby markup, called <span class="newterm">simple ruby markup</span> and <span
+				class="newterm">complex ruby markup</span>.</p>
+
+  <section>
+    <h3 id="Slide0100"><a href="#Slide0100">Simple ruby</a></h3>
+    <p> Simple ruby markup associates a single run of ruby text with a run of base text.</p>
+    <figure>
+      <p><img src="index-data/Slide0100.gif" alt="Simple ruby markup." width="344" height="178" /> </p>
+      <figcaption>Simple ruby markup.</figcaption>
+    </figure>
+    <p>The example above shows the desired visual result, followed by the markup that should produce that.</p>
+    <p>We are looking to place the hiragana sequence <span lang="ja">かみしばい</span> over the top of the base text <span lang="ja">紙芝居</span>, which is part of a longer sentence. The annotation is usually in a small font size.</p>
+    <p>The first step is to surround both the base text and the annotation with <code class="kw" translate="no">ruby</code> markup. Then, within that, add
+      the base text to a <code class="kw" translate="no">rb</code> (ruby base) element, and the annotation to a <code class="kw" translate="no">rt</code> (ruby text) element, in that
+      order. And that's it. Whether your user agent knows how to display this markup is another question, which we will get to later.</p>
+    <p>The markup for the whole sentence would therefore be:</p>
+    <div class="example" lang="ja">
+      <p lang="ja">&lt;p&gt;これは&lt;ruby&gt;&lt;rb&gt;紙芝居&lt;/rb&gt;&lt;rt&gt;かみしばい&lt;/rt&gt;&lt;/ruby&gt;です。&lt;/p&gt;</p>
+    </div>
+  </section>
+  
+  <section>
+    <h3 id="Slide0110"><a href="#Slide0110">Complex ruby</a></h3>
+    <p>Complex ruby markup can define more fine-grained associations between annotations and base text, and can associate two ruby texts with
+      one base text. Let's look at this in easy steps.</p>
+    <p>Whereas the example of simple ruby markup we saw earlier associated a whole run of annotation text with a whole run of base text,
+      complex ruby markup allows you to indicate which bit of annotation relates to which character within a single <code class="kw" translate="no">ruby</code> element.</p>
+    <figure>
+      <p><img src="index-data/Slide0110.gif" alt="Complex ruby markup." width="361" height="221" /> </p>
+      <figcaption>Complex ruby markup.</figcaption>
+    </figure>
+    <p>The example above shows the three characters in the base text <span lang="ja">林和代</span> annotated for pronunciation
+      with the three strings <span lang="ja">はやし</span>, <span lang="ja">かず</span> and <span lang="ja">よ</span>.
+      Each annotation is clearly aligned with its respective character.</p>
+    <p>To markup up the data in a way that enables us to achieve this we use two new elements, <code class="kw" translate="no">rbc</code> (ruby base
+      container), and <code class="kw" translate="no">rtc</code> (ruby text container). In the simplest case (shown on the slide), each of these elements contains the
+      same number of <code class="kw" translate="no">rb</code> and <code class="kw" translate="no">rt</code> elements, respectively. In this way, an <code class="kw" translate="no">rb</code> element
+      and its respective <code class="kw" translate="no">rt</code> element can be effectively paired together.</p>
+    <p>This is analogous to use of <code class="kw" translate="no">td</code> elements within <code class="kw" translate="no">tr</code> elements in HTML tables.</p>
+    <p>The markup for the whole, as shown on the slide, is:</p>
+    <div class="example" lang="ja">
+      <p lang="ja">&lt;ruby&gt;<br />
+        &lt;rbc&gt;&lt;rb&gt;林&lt;/rb&gt; &lt;rb&gt;和&lt;/rb&gt;
+        &lt;rb&gt;代&lt;/rb&gt;&lt;/rbc&gt; <br />
+        &lt;rtc&gt; &lt;rt&gt;はやし&lt;/rt&gt;&lt;rt&gt;かず&lt;/rt&gt;&lt;rt&gt;よ&lt;/rt&gt; &lt;/rtc&gt;<br />
+        &lt;/ruby&gt;</p>
+    </div>
+    <p>The rule is: simple ruby has no <code class="kw" translate="no">rbc</code> or <code class="kw" translate="no">rtc</code> elements; complex ruby has <span
+					class="kw">rtc</span> and <code class="kw" translate="no">rtc</code> elements.</p>
+    <p><strong class="leadin">One-to-many associations.</strong> We can get a little more clever about this. In the diagram below we use the
+      same example, but the annotation is split into only two runs: the first above the family name, <span lang="ja">林</span>, and the second
+      above the given name <span lang="ja">和代</span>. In other words, we have associated one run of annotations with multiple runs of base
+      characters.</p>
+    <figure>
+      <p><img src="index-data/Slide0120.gif" alt="One-to-many associations with complex ruby markup." width="363" height="218" /> </p>
+      <figcaption>One-to-many associations with complex ruby markup.</figcaption>
+    </figure>
+    <p>This is achieved by applying a method familiar to those who have created tables in HTML. The second and third <span
+					class="kw">rt</span> elements become one, with the addition of an <code class="kw" translate="no">rbspan</code> attribute whose value is, in this case, 2. </p>
+    <p>The markup is now as follows:</p>
+    <div class="example" lang="ja">
+      <p lang="ja">&lt;ruby&gt;<br />
+        &lt;rbc&gt;&lt;rb&gt;林&lt;/rb&gt; &lt;rb&gt;和&lt;/rb&gt;
+        &lt;rb&gt;代&lt;/rb&gt;&lt;/rbc&gt; <br />
+        &lt;rtc&gt; &lt;rt&gt;はやし&lt;/rt&gt;&lt;rt rbspan="2"&gt;かずよ&lt;/rt&gt; &lt;/rtc&gt;<br />
+        &lt;/ruby&gt;</p>
+    </div>
+    <p><strong class="leadin">Multiple annotations.</strong> In our final example of complex ruby annotation we show how to associate base
+      text with 2 annotations at the same time. The example at the top of the illustration below shows this for Japanese, where one annotation runs above
+      the base text, and the other below.</p>
+    <figure>
+      <p><img src="index-data/Slide0130.gif" alt="Multiple annotations with complex ruby markup." width="358" height="225" /> </p>
+      <figcaption>Multiple annotations with complex ruby markup.</figcaption>
+    </figure>
+    <p>In the example we keep this simple, using only a single <code class="kw" translate="no">rb</code> and <code class="kw" translate="no">rt</code> pair. What is new
+      here is that we have two <code class="kw" translate="no">rtc</code> elements within the <code class="kw" translate="no">ruby</code> element (but still only one <span
+					class="kw">rbc</span> element).</p>
+    <p>Here is the code:</p>
+    <div class="example">
+      <p lang="ja">&lt;ruby&gt;<br />
+        &lt;rbc&gt;&lt;rb&gt;民政局&lt;/rb&gt;&lt;/rbc&gt;<br />
+        &lt;rtc&gt;&lt;rt&gt;みんせいきょく&lt;/rt&gt;&lt;/rtc&gt;<br />
+        &lt;rtc&gt;&lt;rt&gt;ガバメント・セクシヨン&lt;/rt&gt;&lt;/rtc&gt; <br />
+        &lt;/ruby&gt;</p>
+    </div>
+    <p>You cannot have more than two <code class="kw" translate="no">rtc</code> elements associated with a single <code class="kw" translate="no">rbc</code> element.</p>
+    </section>
+  
+    <section>
+    <h3 id="Slide0140"><a href="#Slide0140">Default display of the markup</a></h3>
+    <p>The Ruby Annotation specification provides no normative text about placement of annotations, leaving it up to the implementation.
+      There are, however, some informative suggestions for user agents with regard to default styling. (There are also useful style properties specified in
+      the CSS3 Ruby Module, which we will discuss in the next section.)</p>
+    <div class="sidenoteGroup">
+      <p>If an implementation follows the advice in the specification you could expect the font size of the annotation to be about half the
+        height of the base text, and for the annotation in simple ruby to appear <span class="newterm">before</span> the base text. 'Before', in this case,
+        is a technical term used to refer to the area above a normal line of horizontal text, and the area to the right of a line of vertical text whose
+        columns progress right-to-left (eg. vertical Chinese, Japanese and Korean text). You would also expect the ruby text to have the same directionality
+        as the base text (ie. vertical or horizontal). If there are multiple annotations for a single base, you would expect the first to appear before the
+        base, and the second <span class="newterm">after</span>, ie. below horizontal text and to the left of vertical text whose columns progress
+        right-to-left.</p>
+      <div class="sideinfonote"><p class="info">'Before' means to the <em>left</em> of a line of vertical Mongolian text, since the columns progress
+        left-to-right.</p></div>
+    </div>
+    <figure>
+      <p><img src="index-data/Slide0140.gif" alt="Visual illustration of 'before' and 'after'." width="322" height="223" /> </p>
+      <figcaption>Visual illustration of 'before' and 'after'.</figcaption>
+    </figure>
+    <div class="sidenoteGroup">
+      <p>This is likely to produce the expected results for Japanese text, but expected behavior may be different in other scripts. The
+        specification notes, for example, that pinyin ruby commonly appears after the base text in Chinese. Additional styling support would be needed to
+        achieve this in simple ruby.</p>
+      <p>Likewise, the specification draws attention to the fact that bopomofo ruby on Chinese text commonly appears to the right of
+        characters in horizontal text but offers no advice about how to handle that.</p>
+      <div class="sideinfonote"><p class="info">Details of ruby formatting in a Japanese print context can be found in JIS X 4051 ("Formatting rules for
+        Japanese documents" (<span lang="ja">日本語文書の組版方法</span>) JIS X 4051:2004, Japanese Standards Association, 2004 (in Japanese)).</p></div>
+    </div>
+    <p>We will also see (next) that there are fallback features defined in the standard that enable base text and ruby to be presented
+      sequentially on user agents that don't yet handle the markup.</p>
+    </section>
+  
+    <section>
+    <h3 id="Slide0150"><a href="#Slide0150">A fallback mechanism</a></h3>
+    <p>While we are discussing rendering, there is one more bit of markup that we have not yet explored. If a user agent doesn't understand
+      how to display ruby text, it will just display the base text immediately followed by the ruby text, using the same font size (as shown in the slide).
+      This will be confusing to the reader.</p>
+    <p>The <code class="kw" translate="no">rp</code> (ruby parenthesis) element allows you to specify characters that will appear around simple ruby text if
+      the user agent doesn't support ruby presentation. You are most likely to want to use parentheses here, but any character or sequence of characters is
+      valid.</p>
+    <figure>
+      <p><img src="index-data/Slide0150.gif" alt="Ruby without rp markup." width="352" height="172" /> </p>
+      <figcaption>Ruby without rp markup.</figcaption>
+    </figure>
+    <p>If we add <code class="kw" translate="no">rp</code> elements before and after the ruby text as in this example, when a user agent fails to recognize
+      the ruby text it will now appear within parentheses, which is much more acceptable. User agents that do know how to handle ruby will automatically
+      hide the contents of the <code class="kw" translate="no">rp</code> elements as they display the ruby in the appropriate location.</p>
+    <div class="example" lang="ja">
+      <p lang="ja">&lt;ruby&gt;<br />
+        &lt;rb&gt;紙芝居&lt;/rb&gt;<br />
+        &lt;rp&gt;(&lt;/rp&gt;<br />
+        &lt;rt&gt;かみしばい&lt;/rt&gt;<br />
+        &lt;rp&gt;)&lt;/rp&gt;<br />
+        &lt;/ruby&gt;</p>
+    </div>
+    <p>We can use any character within the <code class="kw" translate="no">rp</code> element. For example, Japanese uses different characters sometimes for
+      parentheses.</p>
+    <figure>
+      <p><img src="index-data/Slide0160.gif" alt="Ruby with rp markup" width="355" height="216" /> </p>
+      <figcaption>Ruby with rp markup.</figcaption>
+    </figure>
+    <p>Note that this fallback mechanism is not available for complex ruby.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="Slide0170"><a href="#Slide0170">Ruby style</a></h2>
+  <p>The CSS3 Ruby Module provides a number of properties for describing the placement of ruby text in relation to the base text. Note that
+    this specification is not yet finalized, so this section will aim to give you an idea of what will be possible using this specification, rather than
+    exhaustively listing all the capabilities.</p>
+  <p>We will use the words 'before' and 'after' with the same meaning as <a href="#Slide0140">described earlier</a>.</p>
+  <p>There are three main properties: ruby-position, ruby-overhang, and ruby-align.</p>
+  <p>Topics we will not discuss here include:</p>
+  <ul>
+    <li>the <code class="kw" translate="no">ruby-span</code> property</li>
+    <li>a small number of property values</li>
+    <li>the ruby box model and a set of related values for the <code class="kw" translate="no">display</code> property that can be used to associate
+      arbitrary XML markup with ruby constructs defined in the Ruby Annotation specification.</li>
+  </ul>
+
+    <section>
+    <h3 id="Slide0180"><a href="#Slide0180">Ruby position</a></h3>
+    <p> The first property, <code class="kw" translate="no">ruby-position</code>, allows you to indicate where ruby text should appear relative to the base
+      text.</p>
+    <p><code class="kw" translate="no">ruby-position</code> can have the following values: <code class="kw" translate="no">before</code>, <code class="kw" translate="no">after</code>, <code class="kw" translate="no">inline</code>, and <code class="kw" translate="no">right</code>. You would apply this style to the <code class="kw" translate="no">ruby</code> element.</p>
+    <p>To position the ruby text above horizontal base text or to the right of vertical text, use <code>ruby-position: before</code>. This is
+      the default behavior. </p>
+    <figure>
+      <p><img src="index-data/Slide0180.gif" alt="Ruby-position: before" width="332" height="130" /> </p>
+      <figcaption>Ruby-position: before</figcaption>
+    </figure>
+    <p>To position the ruby text below horizontal base text or to the left of vertical text, use <code>ruby-position: after</code>.</p>
+    <figure>
+      <p><img src="index-data/Slide0190.gif" alt="Ruby-position: after" width="334" height="130" /> </p>
+      <figcaption>Ruby-position: after</figcaption>
+    </figure>
+    <p>For example, if your document contains Chinese text with pinyin ruby, and you want all ruby to appear below the base text, you would
+      include the following in your CSS declarations:</p>
+    <div class="example" lang="ja">
+      <p>ruby { ruby-position: after; }</p>
+    </div>
+    <p>If you want to force the ruby text to appear inline you would use <code>ruby-position: inline</code>. Note that due to an error this
+      is not explained in the current version of the CSS3 Ruby specification.</p>
+    <figure>
+      <p><img src="index-data/Slide0200.gif" alt="Ruby-position: inline" width="331" height="227" /> </p>
+      <figcaption>Ruby-position: inline</figcaption>
+    </figure>
+    <p>The parentheses in the illustration above need to be provided in the <code class="kw" translate="no">rp</code> markup.</p>
+  </section>
+  
+    <section>
+    <h3 id="Slide0210"><a href="#Slide0210">Ruby alignment</a></h3>
+    <div class="sidenoteGroup">
+      <p>The <code class="kw" translate="no">ruby-align</code> property addresses the relative alignment of ruby and base text when one is longer than the
+        other. Basically the effect is applied to whichever is shorter, the ruby text or the base text. It takes the following values: <span
+						class="kw">auto</span>, <code class="kw" translate="no">left</code>, <code class="kw" translate="no">start</code>, <code class="kw" translate="no">center</code>, <code class="kw" translate="no">end</code>, <code class="kw" translate="no">right</code>, <code class="kw" translate="no">distribute-letter</code>, <code class="kw" translate="no">distribute-space</code>, and <span
+						class="kw">line-edge</span>.</p>
+      <div class="sideinfonote">
+        <p class="info">Two separate words are chosen for these examples, one to the left, one to the right of the vertical line.
+          This line is purely to separate the examples on the slides, and is not a product of the styling.</p>
+      </div>
+    </div>
+    <p>If you apply <code class="kw" translate="no">auto</code> the behavior is left up to the implementation, but the recommended behavior (described by
+      the JIS 4051 standard) is to apply <code class="kw" translate="no">distribute-letter</code> to full-width Chinese, Japanese or Korean characters, but to apply <code class="kw" translate="no">center</code> to others. This is the default behavior.</p>
+    <p><code>ruby-align: distribute-letter</code> spreads the shorter text by applying even inter-character spacing so that the beginning
+      edges of the first ruby and base character are aligned, as are the end edges of the last ruby and base characters.</p>
+    <figure>
+      <p><img src="index-data/Slide0210.gif" alt="Ruby-align: distribute-letter" width="337" height="188" /> </p>
+      <figcaption>Ruby-align: distribute-letter</figcaption>
+    </figure>
+    <p><code>ruby-align: distribute-space</code> does the same as <code>ruby-align: distribute-letter</code>, but a small space is left
+      before the first and after the last of the affected characters.</p>
+    <figure>
+      <p><img src="index-data/Slide0220.gif" alt="Ruby-align: distribute-space" width="336" height="189" /> </p>
+      <figcaption>Ruby-align: distribute-space</figcaption>
+    </figure>
+    <p><code>ruby-align: center</code> aligns the centers of the ruby text and base text.</p>
+    <figure>
+      <p><img src="index-data/Slide0230.gif" alt="Ruby-align: center" width="335" height="188" /> </p>
+      <figcaption>Ruby-align: center</figcaption>
+    </figure>
+    <p><code>ruby-align: left</code> and <code>ruby-align: start</code> are synonymous, and the result is to align the start of both ruby
+      text and base text.</p>
+    <figure>
+      <p><img src="index-data/Slide0240.gif" alt="Ruby-align: left / start" width="334" height="197" /> </p>
+      <figcaption>Ruby-align: left / start</figcaption>
+    </figure>
+    <p><code>ruby-align: right</code> and <code>ruby-align: end</code> are synonymous, and the result is to align the end of both ruby text
+      and base text.</p>
+    <figure>
+      <p><img src="index-data/Slide0250.gif" alt="Ruby-align: right / end" width="337" height="194" /> </p>
+      <figcaption>Ruby-align: right / end</figcaption>
+    </figure>
+  </section>
+  
+    <section>
+    <h3 id="Slide0260"><a href="#Slide0260">Ruby overhang</a></h3>
+    <p>If the ruby text is wider than the base text you can specify whether or not it overhangs any surrounding base text, and to what
+      amount, using the <code class="kw" translate="no">ruby-overhang</code> property. It takes the following values: <code class="kw" translate="no">auto</code>, <span
+					class="kw">start</span>, <code class="kw" translate="no">end</code>, and <code class="kw" translate="no">none</code>.</p>
+    <p>To allow the ruby text to overlap surrounding base characters on both sides use <code>ruby-overhang: auto</code>. It is up to the
+      implementation to decide how much overlap to allow, but the JIS 4051 standard recommends a maximum of one ruby character width. The implementation
+      may also apply this selectively depending on the type of character - again there are rules for this in the JIS standard.</p>
+    <p>This is the default value.</p>
+    <figure>
+      <p><img src="index-data/Slide0260.gif" alt="Ruby-overhang: auto" width="333" height="191" /> </p>
+    </figure>
+    <p><code>ruby-overhang: start</code> only allows ruby text to overhang the preceding base characters.</p>
+    <figure>
+      <p><img src="index-data/Slide0270.gif" alt="Ruby-overhang: start" width="334" height="190" /> </p>
+    </figure>
+    <p><code>ruby-overhang: end</code> only allows ruby text to overhang the following base characters.</p>
+    <figure>
+      <p><img src="index-data/Slide0280.gif" alt="Ruby-overhang: end" width="332" height="194" /> </p>
+    </figure>
+    <p><code>ruby-overhang: none</code> prevents any overhang.</p>
+    <figure>
+      <p><img src="index-data/Slide0290.gif" alt="Ruby-overhang: none" width="334" height="193" /> </p>
+    </figure>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="Slide0300"><a href="#Slide0300">Implementing ruby</a></h2>
+  
+    <section>
+    <h3 id="Slide0310"><a href="#Slide0310">Specifications</a></h3>
+    <p>The Ruby Annotation markup specification became a W3C Recommendation in May 2001, so this is completed work.</p>
+    <p>Ruby annotation markup is not valid in HTML 4 or XHTML 1.0 documents. However, the specification is one of the modules that make up
+      XHTML 1.1. It is also expected to be one of the modules in XHTML 2.0, which is in development.</p>
+    <p>The work being undertaken by the <a class="print" href="/International/its/">Internationalized Tag Set (ITS) Working
+      Group</a> at the W3C to produce a markup vocabulary that schema developers can use to support internationalization and localization will most likely
+      incorporate the ruby markup.</p>
+    <p>The CSS3 Ruby Module moved to Candidate Recommendation on 14 May 2003, but still needs some editorial work. Once the text is
+      finalized, it will be necessary to find some implementations, and create and apply tests to move the specification to Proposed and then full
+      Recommendation status.</p>
+  </section>
+  
+    <section>
+    <h3 id="Slide0320"><a href="#Slide0320">Implementation status</a></h3>
+    <p>The Ruby Annotation markup specification defines two levels of conformance. Implementations can support just simple ruby markup, or
+      both simple and complex markup.</p>
+    <p>Internet Explorer 5+ supports simple ruby markup in various types of document. Although the actual implementation is not exactly the
+      same as the specification, it still does the right thing with standard markup. This means that when rendering it places ruby text above base text and
+      removes any characters in <code class="kw" translate="no">rp</code> elements. Since this markup is not standard for HTML or XHTML 1.0, <em>we cannot advise that you
+      use it for those formats</em> (your pages will no longer validate). However, simple ruby is also supported for XHTML 1.1 documents, where its use <em>is</em> valid.</p>
+    <p>The W3C browser, Amaya, supports both simple and (to a large extent) complex ruby display.</p>
+    <p>There is an extension for Mozilla, Netscape 7 and Firefox browsers that supports both simple and complex ruby, including <code class="kw" translate="no">rbspan</code>, for pages served as "application/xhtml+xml" (not as "text/html"). However, the <a class="print" href="http://piro.sakura.ne.jp/xul/_rubysupport.html.en">download location</a> warns that:</p>
+    <blockquote>
+      <p>"This extension sometimes causes crush when you show popup menus, load webpages, or operate tabs, because it intrudes into
+        operations about loading pages. Please don't use it if you would like to use stable browser."</p>
+    </blockquote>
+    <p>Masayasu Ishikawa also wrote an <a
+					class="print" href="http://www.w3.org/People/mimasa/test/schemas/NOTE-ruby-implementation#css2-inline-table">article</a> that proposes some workarounds for
+      rendering simple ruby in Mozilla/Firefox, Safari and Opera version 8.</p>
+    <p>There are some <a class="print" href="/International/tests/#ruby">tests for simple and complex ruby markup</a> on the
+      W3C site.</p>
+    <p>Internet Explorer also provides very limited support for some of the CSS3 Ruby Module properties, but not always using the same
+      property values as defined in the specification. Otherwise you are unlikely to find support for these properties yet - which is hardly surprising,
+      since the specification is not yet a recommendation.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a href="/TR/ruby">Ruby Annotation Recommendation</a></p>
+    </li>
+    <li>
+      <p><a href="/TR/css3-ruby"> CSS3 Ruby Module</a></p>
+    </li>
+    <li>
+      <p><a href="/TR/jlreq/#en-subheading2_3">Requirements for Japanese Text Layout, Ruby section</a></p>
+    </li>
+    <li>
+      <p><a href="/International/tests/#ruby"> W3C i18n test for ruby markup</a></p>
+    </li>
+    <li>
+      <p><a href="/TR/2001/REC-xhtml11-20010531/doctype.html#s_doctype">Ruby Annotation in XHTML 1.1</a></p>
+    </li>
+    <li>
+      <p><a href="http://www.w3.org/People/mimasa/test/schemas/NOTE-ruby-implementation#css2-inline-table">Implementing the Ruby Module</a></p>
+    </li>
+    <li>
+      <p>There is useful information about ruby in Ken Lunde's book, CJKV Information Processing (ISBN 1-56592-224-7), especially chapters 6
+        and 7.</p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
