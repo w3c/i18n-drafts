@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Migración a Unicode</title>
+<meta name="description" content="Este artículo W3C I18n proporciona pautas para la migración de software y datos a Unicode. Comprende la planificación de la migración, y el diseño y la implementación de software habilitado para Unicode." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/unicode-migration'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Norbert Lindenberg, Yahoo!; Editor: Addison Phillips, Yahoo!'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-unicode-migration'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2008-04-11'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2008-04-11', time:'10:19'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-31', time:'06:01'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.spanishtranslation.us/">Spanish Translation</a> Team, Spanish Translation US'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Migración a Unicode</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    Desarrolladores web, programadores, administradores de sitios y todos aquellos que deseen migrar un sitio web o contenidos basados en web desde una codificación de caracteres preexistentes (que no son Unicode) a Unicode. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <p>Este artículo proporciona pautas para realizar la migración de software y de datos a Unicode. Comprende la planificación de la migración, y el diseño y la implementación de software habilitado para Unicode. Se da por sentado que se tiene una comprensión básica de Unicode y de los principios de la codificación de caracteres. A continuación, enumeramos algunas fuentes de información acerca de estos temas: </p>
+  <ul>
+    <li><a class="print" href="http://www.unicode.org/">Consorcio Unicode</a></li>
+    <li><a class="print" href="http://www.w3.org/TR/CharMod">Modelo de caracteres W3C</a></li>
+    <li><a
+	class="print" href="http://www.inter-locale.com/whitepaper/IUC-Intro-to-I18N-Tutorial.pdf">Tutorial de internacionalización</a></li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="why"><a href="#why">¿Por qué migrar a Unicode?</a></h2>
+  <p>Existen diversas razones por las que adoptar Unicode:</p>
+  <ul>
+    <li>El procesamiento de texto requiere de la comprensión del texto que se procesa y, en consecuencia, depende de la codificación de caracteres. Unicode proporciona un fundamento sólido para el procesamiento de todo tipo de textos a nivel mundial, mientras que las codificaciones que no son Unicode requieren implementaciones separadas para cada codificación y sólo son compatibles con un conjunto de idiomas limitado cada uno. Además, la utilización uniforme de Unicode hace más sencillo compartir el software de procesamiento de textos en todo el mundo. </li>
+    <li>Algunas aplicaciones son compatibles con la comunicación y la colaboración entre usuarios que viven en diferentes partes del mundo y utilizan idiomas diferentes. Unicode representa el estándar que permite la comunicación en todo el mundo, sin restricciones impuestas por el idioma que utiliza el usuario o la región en la que vive.</li>
+    <li>Debido a que existen diversos idiomas que no son compatibles con las codificaciones de caracteres distintas a Unicode, a veces los usuarios envían contenidos generados por los usuarios (tales como datos de formularios) en codificaciones diferentes a las compatibles (por ejemplo, por medio del cambio de la codificación del explorador). Eso evita que la aplicación procese el texto correctamente, por ejemplo, cuando lo busque en la base de datos o cuando seleccione anuncios que se van a colocar a su lado. </li>
+    <li>Diversos errores de aplicación o sitios web se relacionan con las codificaciones de caracteres, debido a que diferentes sitios o localizaciones del mismo sitio utilizan codificaciones de caracteres diferentes y la codificación de datos de textos se interpreta erróneamente en diversos lugares. </li>
+  </ul>
+  <p>Se debe tener en cuenta que el simple cambio de codificación de caracteres de sus páginas a Unicode no eliminará todos los problemas de codificación de caracteres. En realidad, durante la migración existe un riesgo significativamente mayor de dichos errores, debido a que se deben convertir a Unicode los datos existentes y no siempre se conoce la codificación actual. Este documento brinda consejos sobre la manera de minimizar los riesgos y proporcionar mecanismos a fin de corregir problemas de conversión de caracteres.</p>
+</section>
+<section>
+  <h2 id="planning"><a href="#planning">Planificación de la migración</a></h2>
+  <p>A fin de focalizar la migración a Unicode, es necesario comprender la utilización de las codificaciones de caracteres en su configuración actual y decidir sobre la utilización interna y externa de las codificaciones de caracteres del diseño basado en Unicode. Además, debe conocer el estado de compatibilidad de Unicode en los componentes de software en los que confía y, según el caso, la planificación de migración para dichos componentes. De este modo, podrá planificar la actualización del software que ha de basarse en Unicode y la conversión de los datos existentes a las codificaciones Unicode.</p>
+  <p>Asimismo, sería conveniente desarrollar un proyecto de migración a Unicode para mejorar la internacionalización en general. En particular, debe considerar si es posible utilizar las capacidades plurilingües de Unicode a fin de superar los obstáculos innecesarios entre los diversos públicos, culturas o idiomas. Tendría sentido tener un único sitio a nivel mundial con contenido plurilingüe compartido, a pesar de tener diversas interfaces de usuario localizadas, especialmente para aquellos sitios o aplicaciones que permitan la comunicación entre usuarios y que, por lo tanto, alojen o transmitan contenido generado por los usuarios.</p>
+</section>
+<section>
+  <h2 id="understanding"><a href="#understanding">Comprensión de la utilización actual de la codificación de caracteres</a></h2>
+  <p>Como punto de partida, es necesario comprender en profundidad de qué manera opera la codificación de caracteres en su software actual. Identifique los componentes del software y los contenedores de datos: interfaz de usuario (front end), procesador de entrada (back end), almacenamiento, API, interfaces web, etc., y aclare la utilización de las codificaciones:</p>
+  <ul>
+    <li>¿Qué componentes ya están basados en Unicode? ¿Qué codificación Unicode se utiliza (UTF-8 o UTF-16)? ¿Qué componentes utilizan codificaciones preexistentes (es decir, que no son Unicode)? </li>
+    <li>¿Cuáles son los flujos de datos entre los componentes y qué codificación se utiliza en cada ruta?</li>
+    <li>¿Qué codificaciones se han especificado para las interfaces entre los componentes?</li>
+    <li>¿Qué codificaciones se han especificado para las interfaces externas del software?</li>
+    <li>¿Dónde se realiza la conversión de las codificaciones?</li>
+    <li>¿Se han separado claramente las unidades de texto que utilizan diferentes codificaciones? y ¿se han especificado las codificaciones en cada punto o existe la posibilidad de almacenar o procesar el texto en codificaciones diferentes o desconocidas?</li>
+  </ul>
+  <p>Es posible que la última pregunta sea sorprendente; sin embargo, reviste particular importancia. La falta de información correcta relacionada con la codificación de caracteres que se utiliza en los textos que ingresan desde la parte externa del sitio (por ejemplo, canales de contenidos o datos ingresados por los usuarios) o que ya se han incorporado a la recopilación de datos es un problema habitual que se debe tratar con especial atención. (En realidad, es necesario prestar atención a dichos casos incluso si no realizara la conversión a Unicode). Esta falta de información correcta puede expresarse de diferentes maneras:</p>
+  <ul>
+    <li>Es posible que los datos externos no identifiquen de ningún modo la codificación de caracteres. Es un problema muy común en los canales de datos, las páginas web y el correo electrónico.</li>
+    <li>Es posible que los datos externos no identifiquen correctamente la codificación de caracteres. Este también es un problema común del correo electrónico y las páginas web.</li>
+    <li>Es posible que las aplicaciones web hayan asumido una codificación de caracteres para los envíos de formularios; pero, en realidad, los usuarios cambiaron la codificación del explorador. Por lo general, los usuarios lo hacen si la codificación utilizada por la aplicación web no es compatible con el idioma del usuario; por ejemplo, la aplicación sólo es compatible con ISO 8859-1, pero el usuario desea utilizar un lenguaje de script que no es latino, por ejemplo, griego, ruso, indio, chino, etc.</li>
+    <li>Se conocía la codificación en algún momento, pero luego se quitó la información. Es una situación habitual que ocurre con los archivos de registro; es posible que la aplicación web conociera (o al menos asumiera correctamente) la codificación de caracteres utilizada para una solicitud de HTTP, pero la solicitud en sí misma y, por lo tanto, el registro de errores, no contiene esta información.</li>
+    <li>Los datos se transmitieron mediante una interfaz en una codificación en la cual la interfaz en realidad requiere de una codificación diferente. Por ejemplo, el almacenamiento de la información de usuario codificada mediante UTF-8 en una base de datos ISO 8859-1.</li>
+  </ul>
+  <p>A fin de manejar tales situaciones, se utiliza, en general, la detección de codificaciones de caracteres. Mediante la detección de codificación se intenta determinar la codificación utilizada en una secuencia de bytes en función de las características de la propia secuencia de bytes. En la mayoría de los casos, es un proceso estadístico que necesita largas secuencias de bytes de ingreso, aunque pueda mejorar su precisión mediante la utilización de otra información disponible para su aplicación. Debido al alto índice de errores, con frecuencia es necesario proporcionarle a las personas maneras de descubrir y corregir errores. Esto requiere mantener disponible la secuencia de bytes original para su posterior reconversión. Algunos ejemplos de bibliotecas de detección de codificaciones incluyen:</p>
+  <ul>
+    <li><a
+  class="print" href="http://www.mozilla.org/projects/intl/chardet.html">Mozilla</a></li>
+    <li><a
+  class="print" href="http://icu-project.org/userguide/charsetDetection.html">ICU</a></li>
+  </ul>
+</section>
+<section>
+  <h2 id="checking"><a href="#checking">Verificación de fundamentos</a></h2>
+  <p>Con frecuencia, la implementación de un software dependerá de otro software:</p>
+  <ul>
+    <li>idiomas de programación y sus bibliotecas asociadas,</li>
+    <li>motores de bases de datos,</li>
+    <li>plataformas de software o bibliotecas en las que se base su software,</li>
+    <li>otros sitios o aplicaciones con las que interactúe su software,</li>
+    <li>otras bibliotecas,</li>
+    <li>herramientas que utilice para desarrollar, probar e implementar su software.</li>
+  </ul>
+  <p>Necesitará verificar si el software del que depende admite Unicode o que, al menos, no le ocasione inconvenientes en su adopción. Por lo general, será necesario actualizarlo a versiones más recientes de plataformas subyacentes y, en algunos casos, será necesario migrar desde plataformas obsoletas a otras más recientes.</p>
+</section>
+<section>
+  <h2 id="internal"><a href="#internal">Decisión sobre la utilización de la codificación de caracteres para uso interno</a></h2>
+  <p>Unicode ofrece tres formas de codificación: UTF-8, UTF-16 y UTF-32. En el caso del transporte por toda la red o del almacenamiento en archivos, UTF-8 por lo general funciona mejor debido a su compatibilidad con ASCII, mientras que los bytes similares a ASCII que se incluyen en el texto UTF-16 y UTF-32 son problemáticos para algunos dispositivos de red o herramientas de procesamiento de archivos. En el caso del procesamiento de memoria interna, las tres formas de codificación pueden ser útiles y, con frecuencia, la mejor elección dependerá de las bibliotecas y las plataformas de programación que utilice: Java, JavaScript, ICU y la mayoría de los API de Windows se basan en UTF-16, mientras que los sistemas Unix tienden a preferir UTF-8. El tamaño del almacenamiento rara vez constituye un factor que interviene en la decisión entre UTF-8 y UTF-16, debido a que cualquiera de ellos puede tener un mejor perfil de tamaño, que dependerá de la combinación de etiquetas de los idiomas europeos o asiáticos. El UTF-32 no resulta eficaz para el almacenamiento y, por lo tanto, se utiliza con muy poca frecuencia con dicho fin; sin embargo, es muy conveniente para el procesamiento. Además, algunas bibliotecas, por ejemplo, Java e ICU, proporcionan descriptores de acceso y API de procesamiento en términos de puntos de codificación UTF-32. La conversión entre las tres formas de codificación es rápida y segura; por lo tanto, la utilización de diferentes formas de codificación en distintos componentes de grandes sistemas de software es bastante factible y habitual.</p>
+  <p>El almacenamiento de texto cuya codificación de caracteres no es conocida con certeza constituye una excepción a la regla de sólo Unicode. Con frecuencia, dicho texto debe interpretarse mediante la utilización de detección de codificaciones de caracteres. Además, la detección de codificaciones de caracteres no es un proceso confiable. Por lo tanto, se deberán mantener activos los bytes originales (junto con la codificación de caracteres detectada), de manera que se pueda reconvertir el texto si una persona corrigiera la selección de codificación.</p>
+</section>
+<section>
+  <h2 id="externalif"><a href="#externalif">Decisión sobre la utilización de codificaciones de caracteres para interfaces externas</a></h2>
+  <p>A fin de establecer una comunicación con el mundo fuera de la aplicación, se deberá utilizar UTF-8 siempre que sea posible. Sin embargo, existen diversas situaciones en las que no es posible controlar la codificación o es necesario comunicarse con sistemas que no son compatibles con UTF-8. A continuación, se describen recomendaciones para casos comunes:</p>
+  <ul>
+    <li>
+      <p><strong class="leadin">Correo electrónico:</strong> es necesario aceptar el correo electrónico entrante en cualquier codificación que utilice. En el caso del correo electrónico saliente, es posible que deba tener en cuenta que diversas aplicaciones anteriores de correo electrónico no son compatibles con UTF-8. Por el momento, los correos electrónicos salientes deberán convertirse, por tanto, a una codificación preexistente que pueda representar su contenido completo; el UTF-8 sólo se deberá utilizar en aquellos casos en los que no se pueda encontrar una codificación preexistente. Se deberá especificar la codificación del correo electrónico saliente. La selección de la utilización de las codificaciones salientes dependerá de las necesidades de su aplicación.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">Datos POST y URI:</strong> se utilizan en diversos contextos diferentes: desde envíos, servicios web o URL que se ingresan directamente a un explorador web. En el caso de envíos de formularios, el formulario HTML deberá diseñarse para identificar la codificación de caracteres incluso si el usuario la cambia en el explorador. (Podrá utilizar JavaScript o valores de campo especiales para determinar si el usuario ha cambiado la codificación: ¿tal vez debería recordarle amablemente al usuario que no lo haga?)</p>
+    </li>
+    <li>
+      <p><strong class="leadin">Servicios web:</strong> los servicios web (especialmente los servicios web basados en REST) deberán especificar la utilización de UTF-8 y rechazar aquellas solicitudes de UTF-8 no válido. En el caso de otros servicios web, utilice UTF-8 si éste es compatible con el servicio web y asegúrese de la correcta identificación de la codificación de caracteres utilizada. Es posible que los URI que se ingresen directamente a un explorador web (por ejemplo, los URI de marketing) deban ser compatibles con otras codificaciones.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">HTML:</strong> se recomienda utilizar UTF-8 al servir páginas en exploradores de escritorio. En la actualidad, su compatibilidad es casi universal. Los exploradores móviles no siempre son compatibles con UTF-8; por consiguiente, es posible que deba utilizar una codificación preexistente dependiendo del dispositivo de destino. La codificación utilizada se deberá declarar mediante el encabezado <code
+	class="kw" translate="no">Content-Type</code> de HTTP, la etiqueta <code
+	class="kw" translate="no">meta</code> de HTML o ambos (recomendado). Si no es posible controlar la configuración de su servidor a nivel de archivo o solicitud o si no se puede configurar para enviar UTF-8 como codificación, entonces deberá al menos asegurarse de que no se envíe ningún tipo de codificación: los agentes de usuario prestarán atención a esta codificación antes que a cualquier otra configuración declarada en una etiqueta meta. La etiqueta <code
+	class="kw" translate="no">meta</code> de HTML correcta es la siguiente: </p>
+      <p
+   ><code>&lt;meta http-equiv="Content-Type" content="text/html;charset=utf-8"&gt;</code></p>
+      <p>La manera de configurar el encabezado <code
+	class="kw" translate="no">Content-Type</code> de HTTP dependerá de su entorno de tiempo de ejecución. Por ejemplo, en PHP, utilizaría:</p>
+      <p
+   ><code>&lt;?php header("Content-type: text/html; charset=UTF-8"); ?&gt;</code>. </p>
+      <p>Para obtener más información, consulte <a
+	class="print" href="/International/O-HTTP-charset">configuración de content-type</a>.</p>
+      <p>Si toma los contenidos desde afuera del sitio (por ejemplo, cuando busca un motor de búsqueda o incluye HTML externo), necesitará manejar cualquier codificación en la que se encuentre el material. En algunos casos, significará aceptar y procesar la codificación utilizada. Si incorpora ese material en sus propias páginas, necesitará lograr que la codificación sea coherente con su página (o colocarla en un marco flotante en el que pueda utilizar su codificación original).</p>
+    </li>
+    <li>
+      <p><strong
+	class="leadin">XML:</strong>el XML saliente siempre deberá codificarse en UTF-8; la <a class="print" href="http://www.w3.org/TR/REC-xml/#charencoding">especificación de XML</a> requiere que cada analizador de XML la comprenda. Para fuentes de datos XML, especifique la utilización de UTF-8. En otros casos, será necesario aceptar los archivos XML en otras codificaciones siempre que sean válidos.  Tenga en cuenta que, de manera predeterminada, Content-Type text/xml de HTTP cambia a US-ASCII (por ese motivo, usualmente se prefiere application/xml+*) y aún así deberá especificar el juego de caracteres si utiliza text/xml Content-Type.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">JSON:</strong> los datos JSON salientes siempre se deben codificar en UTF-8 y, preferentemente, en ASCII con escapes \u para todos los caracteres que no fueran ASCII. En el caso de los datos entrantes, además podría considerarse la compatibilidad con UTF-16 y UTF-32. La <a
+	class="print" href="http://www.ietf.org/rfc/rfc4627.txt">especificación JSON </a> no admite otras codificaciones.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">PHP serializado:</strong> se recomienda evitar este formato de datos debido a que no permite la especificación de la codificación utilizada y, por lo tanto, puede conducir a la corrupción de datos de textos que no fueran ASCII. Una buena alternativa sería utilizar JSON. Si de ninguna manera puede evitar la utilización de PHP serializado, especifíquelo y utilice UTF-8.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">Otros canales de datos:</strong> en aquellos casos en los que pudiera influenciar la codificación de caracteres de los canales entrantes, debe utilizar UTF-8 o, al menos, deberá estar bien especificada. Sin embargo, en algunos casos, es posible que desee utilizar canales que no puede controlar y, por lo tanto, deberá utilizar el que pueda.</p>
+    </li>
+  </ul>
+  <p>En general, el texto entrante deberá convertirse a la codificación Unicode lo antes posible y, si se debe enviar el texto saliente en una codificación que no es Unicode, se deberá convertir de Unicode a otra codificación lo más tarde posible. Sin embargo, si no es posible determinar la codificación del texto entrante con certeza, entonces se deberá almacenar el texto original junto con la información relacionada con la codificación probable. De este modo, será posible tomar una acción correctiva en el caso de que la codificación fuera errónea.</p>
+</section>
+<section>
+  <h2 id="roadmap"><a href="#roadmap">Creación de una estrategia</a></h2>
+  <p>Para el caso de aplicaciones o sitios simples, quizás se pueda cambiar todo el software a fin de basarlo en Unicode, convertir todos los datos a una codificación Unicode y pasar de una versión anterior a Unicode a la versión de Unicode en un instante. Sin embargo, diversos sitios o aplicaciones ofrecen interfaces externas, tienen grandes cuerpos de códigos y acumulan enormes conjuntos de datos; por consiguiente, su conversión constituye un gran proyecto con dependencias múltiples que se deben planificar cuidadosamente. A continuación, incluimos un análisis de los subproyectos probables:</p>
+  <ul>
+    <li>Especifique la codificación utilizada en los API existentes. Debido a que cada vez más componentes utilizarán codificaciones Unicode, es esencial saber qué componentes aún no lo hacen a fin de evitar la corrupción de datos.</li>
+    <li>Introduzca las versiones basadas en Unicode de las interfaces externas de las que depende otro software. Este deberá ser el primer paso a fin de permitir la migración del software dependiente. En este paso, cada interfaz externa (API, servicio web, flujo de datos) basada en codificaciones preexistentes se duplica con una interfaz paralela basada en Unicode. En diversas interfaces, la versión inicial de la nueva interfaz simplemente convertirá el texto entrante desde Unicode hasta la codificación preexistente que aún se utiliza, solicitará la interfaz anterior y convertirá el texto saliente de la codificación preexistente a Unicode. En algunos casos, la nueva interfaz será bastante diferente a la anterior: Por ejemplo, en aquellos casos en los que la interfaz anterior se componga de un acceso directo a los datos compartidos, la nueva interfaz deberá ser API (sí, la encapsulación de datos es una buena idea). La utilización de codificaciones preexistentes en la implementación subyacente implica que sólo será compatible un conjunto secundario de caracteres Unicode; esta limitación se deberá documentar y, a continuación, quitar mediante la realización de pasos posteriores.</li>
+    <li>Incentive a los propietarios de otros productos que acceden a sus bases de datos directamente a que migren al nuevo API. Usted querrá comenzarlo de manera temprana debido a que no podrá convertir su base de datos a Unicode mientras que otras personas acceden a la base de datos y asumen las codificaciones preexistentes.</li>
+    <li>Introduzca una capa de abstracción de datos basada en Unicode en las bases de datos privadas del producto. De manera similar al paso anterior, permite la conversión de la implementación de su producto a fin de continuar sin esperar a la conversión de las bases de datos.</li>
+    <li>Convierta la implementación de su producto a Unicode. Como parte de este paso, necesitará cambiar sus interfaces externas de modo que ahora las versiones basadas en Unicode trabajarán directamente con la implementación, mientras que las versiones basadas en codificaciones preexistentes realizarán conversiones hacia y desde Unicode. Para el caso de aplicaciones o sitios grandes, este paso podrá comenzar mediante la introducción de interfaces internas basadas en Unicode entre subsistemas, de manera similar a lo que hizo con las interfaces externas anteriormente, de modo que los subsistemas se podrán convertir independientemente.</li>
+    <li>
+      <p>Convierta sus bases de datos o almacenamientos de datos a Unicode. Si se accedía a las bases de datos directamente desde otros productos, es posible que deba esperar hasta que esos productos hayan migrado a los API introducidos en el primer paso. Para obtener más información acerca de este paso, consulte <a
+	href="#migratingdata">Migración de datos</a>.</p>
+    </li>
+    <li>Elimine las interfaces basadas en codificaciones preexistentes. Este será el paso final de su migración y, dependiendo de la persona que trabaje con estas interfaces, es posible que deba esperar mucho tiempo.</li>
+  </ul>
+  <p>Algunos de estos subproyectos se pueden ejecutar en paralelo o en un orden diferente, según la situación específica de su producto. Por ejemplo, es posible que la migración de la implementación de su producto se demore por dependencias en otros componentes de software que aún no hayan progresado lo suficiente en la migración. Por otro lado, se podrán migrar las bases de datos SQL a Unicode mucho antes, debido a que el componente de clientes del software de la base de datos aísla los clientes de la codificación utilizada en la base de datos y realiza la conversión de la codificación de caracteres cuando es necesario. La migración temprana de base de datos tiene beneficios: simplifica las pruebas debido a que la base de datos se puede probar independientemente del software que se esté utilizando, mientras que la realización de pruebas de software de mayor nivel típicamente requiere una base de datos y podrá permitirle combinar múltiples bases de datos por separado mediante la utilización de codificaciones preexistentes en una sola base de datos plurilingüe.</p>
+</section>
+<section>
+  <h2 id="designing"><a href="#designing">Diseño para Unicode</a></h2>
+  <section>
+    <h3 id="encodingspecs"><a href="#encodingspecs">Especificaciones de codificaciones de caracteres</a></h3>
+    <p>Las secuencias de bytes sólo se podrán interpretar correctamente como texto si se conoce la codificación de caracteres. Diversas aplicaciones se escriben de modo que sólo puedan moverse por secuencias de bytes sin nombrar la codificación de caracteres. Tal como se analizó anteriormente, esto siempre ha ocasionado problemas. No obstante, ha funcionado en diversos casos en los que todos los usuarios hablaban el mismo idioma o deseaban adaptarlo a algún contenido que se visualice de manera incorrecta en la página. Sin embargo, durante la transición a Unicode, cada idioma se manejará con al menos dos codificaciones, la codificación preexistente para ese idioma y UTF-8. Por consiguiente, la especificación de la codificación para cada secuencia de bytes será de vital importancia a fin de evitar una gran cantidad de errores de corrupción de datos.</p>
+    <p>Las codificaciones de caracteres se podrán especificar de diversas maneras:</p>
+    <ul>
+      <li>
+        <p>En la especificación del formato: la especificación del formato de datos podrá especificar la codificación de caracteres directamente o mediante un mecanismo de determinación simple a fin de detectar la codificación de caracteres al observar el comienzo de la secuencia de bytes. Por ejemplo, la especificación de la <a
+	class="print" href="http://java.sun.com/javase/6/docs/api/java/lang/String.html">clase de Java String </a>, que especifica el UTF-16, y la <a
+	class="print" href="http://www.ietf.org/rfc/rfc4627.txt">especificación JSON</a>, que prescribe la utilización de codificaciones Unicode y la manera de distinguirlos.</p>
+      </li>
+      <li>
+        <p>Como parte de la secuencia de bytes: La especificación del formato de datos podrá proporcionar un mecanismo para especificar la codificación de caracteres como parte de la secuencia de bytes. La especificación XML lo hace de manera elegante mediante la utilización de la <a
+	class="print" href="http://www.w3.org/TR/2006/REC-xml-20060816/#charencoding">declaración de codificación</a>, la especificación de HTML lo hace de manera menos elegante mediante la utilización de la etiqueta <code class="kw" translate="no"><a
+	class="print" href="http://www.w3.org/TR/html401/charset.html#h-5.2.2">meta</a></code>. En el caso de aquellos formatos de datos que permiten dicha especificación, los datos podrán contener la especificación de la codificación a menos que la secuencia de bytes se encuentre en UTF-8 y la especificación asegure la detección correcta de UTF-8 (como para XML). En el caso de los archivos HTML, la etiqueta <code class="kw" translate="no">meta</code> que especifica el tipo de contenido y la codificación de caracteres deberá ser el primer subelemento del elemento <code
+	class="kw" translate="no">head</code> y no deberá estar precedido de caracteres que no sean ASCII.</p>
+      </li>
+      <li>
+        <p>Datos externos a la secuencia de bytes: en muchos casos, el contenedor de la secuencia de bytes proporciona la especificación de la codificación. Algunos ejemplos incluyen HTTP o MIME, donde el campo de encabezado <code class="kw" translate="no"><a
+	class="print" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a></code> puede especificar la codificación de caracteres y las bases de datos, y donde se especifica la codificación como parte de la configuración de la base de datos o del esquema. Nuevamente, si existen dichas capacidades, los datos textuales las deberían utilizar. En algunos casos, por ejemplo, al enviar HTML por HTTP, la especificación de la codificación externa podrá duplicar a aquella que fuera parte de la secuencia de bytes, lo cual es beneficioso porque los exploradores prefieren el encabezado HTTP, mientras que la etiqueta <code class="kw" translate="no">meta</code> es la única especificación que permanecerá si se guarda el archivo en un disco.</p>
+      </li>
+      <li>
+        <p>Especificaciones de interfaces: las especificaciones de las interfaces que aceptan o devuelven secuencias de bytes sin ninguna especificación de la codificación de caracteres indicada anteriormente puede (y debe) especificar la codificación de caracteres utilizada. La especificación puede ser absoluta o relacionada con la configuración del entorno. Por ejemplo, algunas bibliotecas proporcionan funciones que aceptan o devuelven secuencias en UTF-8, mientras que otras aceptan o devuelven secuencias codificadas en alguna codificación preexistente.</p>
+      </li>
+      <li>
+        <p>Por contexto: La codificación de caracteres puede derivar del contexto en el cual se produce la secuencia de bytes. Por ejemplo, los exploradores generalmente envían datos de formularios en la codificación de caracteres de la página web que contiene el formulario. Es una forma de especificación muy débil debido a que la secuencia de bytes con frecuencia se transfiere fuera del contexto, por ejemplo, a los archivos de registro, donde ya no es posible reconstruir la codificación. Además, los usuarios a veces cambian la codificación del explorador de modo que la codificación de los datos del formulario devuelto ya no coincide con la codificación de la página generada por la aplicación web. La utilización de UTF-8 constituye una manera de minimizar el daño resultante de esta débil forma de especificación de la codificación debido a que elimina la necesidad de los usuarios de cambiar la codificación del explorador y debido a que la detección de la codificación de caracteres funciona mejor con UTF-8 que con la mayoría de las otras codificaciones. </p>
+      </li>
+      <li>Mediante acuerdo externo: en caso de que no se aplique ninguno de los casos anteriores, por ejemplo, archivos de texto plano, se deberá realizar un acuerdo externo relacionado con la codificación. Tal acuerdo podrá, por ejemplo, ser parte de un acuerdo de licencia de un canal de contenidos. Los primeros cuatro mecanismos son mejores que los últimos dos y deben preferirse siempre que sea posible. Cualquiera de ellos será mejor que no especificar la codificación en absoluto.</li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="encodingnames"><a href="#encodingnames">Nombres de codificaciones de caracteres</a></h3>
+    <p>Existe un estándar para nombrar las codificaciones de caracteres en Internet, el <a
+class="print" href="http://www.ietf.org/rfc/rfc2978.txt">RFC 2978</a> y un <a
+class="print" href="http://www.iana.org/assignments/character-sets">registro de juego de caracteres IANA</a> asociado. Sin embargo, el uso real con frecuencia es diferente. Diversas codificaciones tienen diferentes variantes o complementos que son compatibles con juegos de caracteres extendidos y con frecuencia los diferentes software utilizan nombres distintos para la misma codificación o el mismo nombre para diferentes codificaciones. Por ejemplo, el nombre ISO-8859-1 con frecuencia se utiliza para describir datos que en realidad utiliza la codificación Windows-1252. Esta última codificación (página del código 1252 de Microsoft Windows) es muy similar a la ISO-8859-1, pero le asigna caracteres gráficos a la extensión de bytes entre 0x80 y 0x9F. Diversas aplicaciones Web (por ejemplo, exploradores, motores de búsqueda, etc.) procesan el contenido que contiene la etiqueta ISO 8859-1 como si en cambio utilizara la codificación Windows-1252, debido a que, con fines prácticos, Windows-1252 es un &quot;súper set&quot; de ISO 8859-1. Otras aplicaciones, tales como conversores de codificación (como iconv o ICU) son bastante literales; por consiguiente, se deberá especificar el nombre de codificación correcta a fin de obtener los resultados adecuados.</p>
+  </section>
+  <section>
+    <h3 id="determination"><a href="#determination">Determinación de la codificación de caracteres</a></h3>
+    <p>Cada vez que una secuencia de bytes se interprete como texto y se procese, se deberá conocer su codificación de caracteres. En diversos casos, la determinación de la codificación de caracteres es tan trivial que ni siquiera se la considera, por ejemplo, cuando se procesa una secuencia en un lenguaje de programación que especifica que las secuencias están codificadas en UTF-16. Sin embargo, en otros casos, no existe una clara especificación que indique que la codificación de caracteres se encuentra disponible o que el texto proviene de una fuente respecto de la cual no se puede confiar completamente que proporcionará la especificación correcta. En dichos casos, se requiere un proceso más complicado a fin de determinar la codificación de caracteres y permitir la corrección posterior de los errores cometidos:</p>
+    <ul>
+      <li>Interprete todas las especificaciones de codificaciones de caracteres disponibles. Si existe una especificación disponible confiable, no debe hacer nada más.</li>
+      <li>Si existe una especificación de la codificación de caracteres disponible pero no es completamente confiable, deberá validarla. La validación es posible para aquellas codificaciones que imponen restricciones en secuencias de bytes válidas, por ejemplo, UTF-8, EUC-KR e ISO 2022-JP. Si se convierte el texto en una codificación diferente para procesamiento interno, con frecuencia la validación sólo será un efecto secundario de la conversión y no será necesario realizar ninguna conversión, aunque si se requerirá aún la validación. Si la secuencia de bytes es no válida para la codificación especificada, deberá rechazar el ingreso y solicitar al proveedor la ejecución del ingreso correcto (en el caso de XML, la especificación requerirá el rechazo). Sin embargo, en aquellos casos en los que no tiene control sobre los datos, se deberá continuar con el paso siguiente.</li>
+      <li>Si no existe especificación de la codificación de caracteres disponible o si se produjo un error en la validación, utilice la detección de la codificación de caracteres a fin de detectar la codificación probable.</li>
+      <li>Si la codificación de caracteres se determinó mediante la detección (en lugar de la especificación y la validación), mantenga la secuencia de bytes original a fin de poder reconvertirla en una codificación de caracteres diferente en lo sucesivo. Deberá proporcionar un mecanismo de interfaces de usuarios que le permita a los usuarios anular la codificación de caracteres especificada o detectada y rehacer la conversión. Almacene la codificación de caracteres utilizada más recientemente que corresponde a la secuencia de bytes junto con la secuencia de bytes, en especial si el usuario la ha seleccionado, a fin de evitar rehacer de manera innecesaria todos los pasos descritos anteriormente.</li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="selection"><a href="#selection">Declaración y selección de codificación de caracteres</a></h3>
+    <p>Cuando envíe texto, será necesario seleccionar la codificación de caracteres adecuada en función del formato de datos y del destinatario. La sección <a href="#externalif">Decisión sobre la utilización de la codificación de caracteres para interfaces externas</a> describe la utilización de la codificación en función de los formatos de datos. En la mayoría de los casos, se recomienda la codificación Unicode. Sin embargo, existen dos excepciones principales: </p>
+    <ul>
+      <li>
+        <p><em>Correo electrónico</em>: diversas aplicaciones anteriores de correo electrónico no son compatibles con UTF-8. Por el momento, el correo electrónico saliente, por lo tanto, se deberá convertir a una codificación preexistente que pueda representar su contenido completo; el UTF-8 sólo se deberá utilizar en aquellos casos en los que no se pueda encontrar una codificación preexistente.</p>
+      </li>
+      <li>
+        <p><em>Exploradores móviles</em>: los sistemas móviles no siempre son compatibles con UTF-8. Por lo tanto, puede ser necesario seleccionar otras codificaciones basadas en el dispositivo específico. </p>
+      </li>
+    </ul>
+    <p>Independientemente de la codificación utilizada, la codificación de caracteres se deberá especificar de manera no ambigua mediante la utilización de uno de los mecanismos descritos en la sección <a href="#encodingspecs">Especificaciones de la codificación de caracteres</a>. </p>
+  </section>
+  <section>
+    <h3 id="ceconversion"><a href="#ceconversion">Conversión de codificaciones de caracteres</a></h3>
+    <p>Cuando se espera que el texto se encuentre en una codificación de caracteres en primer lugar y en una codificación de caracteres diferente en segundo lugar, será necesario realizar una conversión de codificación. ICU e iconv son algunas de las bibliotecas utilizadas de forma habitual para la conversión de codificaciones de caracteres; sin embargo, algunas plataformas, tales como Java y Perl, contienen sus propias bibliotecas de conversión.</p>
+    <p>Cuando utilice bibliotecas, es importante utilizar los nombres de codificación correctos que corresponden a la biblioteca específica. Para obtener más información, consulte la sección <a href="#encodingnames">Nombres de codificaciones de caracteres</a>.</p>
+    <p>Existen problemas de conversión específicos que pueden afectar algunos productos en particular:</p>
+    <ul>
+      <li>Mapeos alternativos de ciertos caracteres: En algunas codificaciones de Asia del Este, algunos caracteres tienen múltiples interpretaciones. Por ejemplo, el valor 0x5C en Shift-JIS se podrá interpretar como "\" en los nombres de archivos, pero se interpretará como "¥" en los datos financieros. Cuando se realice el mapeo a Unicode, se deberá tomar una decisión acerca de si se lo debe mapear a U+005C "\" o a U+00A5 "¥". El enfoque que comúnmente se da consiste en mapearlo a U+005C, que funciona para el sistema de archivos y que diversas fuentes japonesas mostrarán como "¥". Sin embargo, si el comportamiento de su aplicación pudiera depender del mapeo (por ejemplo, análisis de valores de monedas), deberá tomar las medidas necesarias a fin de controlar el resultado. En el caso del ejemplo, podría mapear 0x5C al código de moneda "JPY" antes de realizar la conversión y, a continuación, "JPY" a U+00A5 después de la conversión.</li>
+      <li>
+        <p>Caracteres de uso privado: algunas codificaciones de caracteres, incluidas Unicode y la mayoría de las codificaciones de Asia del Este, tienen extensiones de puntos de codificaciones reservadas para uso privado o que sólo están sin definir. Con frecuencia, se utilizan para caracteres de uso personal o específicos de una empresa: por ejemplo, el <a class="print" href="http://en.wikipedia.org/wiki/Emoji">emoji</a> definido por los operadores móviles japoneses. Los conversores de caracteres estándar no saben de qué manera mapear dichos caracteres. En el caso de las aplicaciones en las que es de vital importancia la compatibilidad de caracteres de uso privado, deberá utilizar conversores de caracteres personalizados o soluciones temporales, por ejemplo, referencias de caracteres numéricos, a fin de garantizar el mapeo correcto.</p>
+      </li>
+      <li>
+        <p>Versiones de mapeos y codificaciones de caracteres: existen diversas codificaciones de caracteres que han evolucionado con el tiempo, al igual que los mapeos entre ellas. Por ejemplo, el mapeo desde <a
+	class="print" href="http://en.wikipedia.org/wiki/HKSCS">HKSCS</a> hacia Unicode: Las versiones anteriores de HKSCS debían realizar mapeos de diversos caracteres en el área de utilización privada de Unicode debido a que Unicode no era compatible con los caracteres; sin embargo, más tarde, estos caracteres se agregaron al repertorio de caracteres Unicode y se cambiaron los mapeos desde HKSCS a fin de poder mapear caracteres agregados recientemente. En general, se debe asegurar de utilizar las últimas versiones de los conversores de caracteres.</p>
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="normalization"><a href="#normalization">Normalización</a></h3>
+    <p>Algunos caracteres tienen más de una manera de estar representados en Unicode. Unicode define diversas maneras de eliminar estas diferencias cuando no afectan el procesamiento de textos. Para obtener más información acerca de la normalización, consulte <a
+class="print" href="http://www.w3.org/TR/charmod-norm">CharMod-Norm</a>. </p>
+    <p>Unicode no indica el momento de utilizar un formulario de normalización de Unicode específico. Sin embargo, existen diversos procesos que funcionan mejor si el texto está normalizado, en particular, aquellos procesos relacionados con la comparación de textos tales como el procesamiento de expresión regular, la búsqueda y la colación. Algunas bibliotecas que realizan estos procesos ofrecen normalización como parte del proceso; de otro modo, se deberá asegurar de que el texto esté normalizado antes de utilizar estos procesos. En general, para aplicaciones web, se recomienda la forma C de normalización (NFC). Sin embargo, algunos procesos, tales como los nombres de dominio internacionalizados, utilizan otras formas de normalización.</p>
+    <p>Algunos idiomas requerirán la normalización antes del procesamiento debido a que los diferentes métodos de ingreso pueden generar secuencias distintas de puntos de codificación Unicode. El idioma vietnamita es un buen ejemplo, debido a que la disposición del teclado vietnamita en Windows 2000 en adelante proporciona secuencias de caracteres diferentes a las que proporciona la mayoría de otros software de entrada de datos vietnamita. Existen problemas similares con una gran cantidad de idiomas africanos, por ejemplo, el yoruba.</p>
+  </section>
+  <section>
+    <h3 id="textsize"><a href="#textsize">Problemas relacionados con el tamaño del texto</a></h3>
+    <p>El almacenamiento de texto como Unicode con frecuencia ocupa más espacio que su almacenamiento en codificaciones preexistentes. La cantidad exacta de expansión dependerá del idioma y del texto en particular involucrado. Las expansiones de algunas codificaciones comunes podrían ser las siguientes:</p>
+    <table>
+      <tbody>
+        <tr>
+          <td><p><strong>Codificación de fuente</strong> </p></td>
+          <td><p><strong>Idiomas</strong> </p></td>
+          <td><p><strong>UTF-8</strong> </p></td>
+          <td><p><strong>UTF-16</strong> </p></td>
+        </tr>
+        <tr>
+          <td>ASCII </td>
+          <td>Inglés, malayo, ... </td>
+          <td>0% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>ISO-8859-1</td>
+          <td>Europeo occidental</td>
+          <td>10% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>ISO-8859-7, texto plano </td>
+          <td>Griego </td>
+          <td>90% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>ISO-8859-7, 50% de etiquetas </td>
+          <td>Griego </td>
+          <td>45% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>TIS-620, texto plano </td>
+          <td>Tailandés </td>
+          <td>190% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>TIS-620, 50% de etiquetas </td>
+          <td>Tailandés </td>
+          <td>95% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>EUC-KR, texto plano </td>
+          <td>Coreano </td>
+          <td>50% </td>
+          <td>5% </td>
+        </tr>
+        <tr>
+          <td>EUC-KR, 50% de etiquetas </td>
+          <td>Coreano </td>
+          <td>25% </td>
+          <td>55% </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>A nivel de macros, en realidad esto no es tan importante. En la actualidad, en el ancho de banda de red y en el almacenamiento predominan los videos, las imágenes y los archivos de sonido, mientras que el texto consume sólo una fracción. Podría impactar en aquellos sistemas de almacenamiento que almacenen sólo texto. Si el tamaño del texto es en realidad un inconveniente, se podrá reducir mediante la compresión.</p>
+    <p>Sin embargo, a nivel de microcomputadora, el aumento en el tamaño de almacenamiento plantea diversas implicancias:</p>
+    <ul>
+      <li>Los algoritmos que fueron diseñados con la suposición de un carácter y un byte ya no sirven incluso para los idiomas europeos (nunca han servido para idiomas de Asia del Este). Es necesario cambiarlos a fin de adaptar las representaciones de caracteres de múltiples bytes. Asegúrese de que todo el procesamiento opere siempre con caracteres completos. Los caracteres completos pueden ocupar entre uno y cuatro bytes en UTF-8 y una o dos unidades de códigos de 16 bits en UTF-16. Para posiciones de caracteres, utilice siempre el índice del primer byte o unidad de código del carácter.</li>
+      <li>En particular, será necesario revisar las especificaciones de longitud a fin de observar si deberán basarse en bytes, en caracteres, en unidades de código UTF-16 o en glifos. Cada una de las bases se aplica en algunas situaciones, pero será necesario aclarar la que se debe aplicar. La utilización de una definición basada en caracteres garantizará contar con el espacio suficiente, pero podrá consumir más almacenamiento que lo estrictamente necesario debido a que cada carácter ahora requiere 4 bytes. La utilización de definiciones basadas en bytes evita la expansión de tamaño, pero podrá restringir demasiado el número de caracteres. Por supuesto, es mejor disponer de esquemas que asignen sólo el espacio suficiente para contener un texto específico. Es posible que otras aplicaciones dirigidas por espacio (tales como la cantidad de "caracteres" que se pueden visualizar en el campo de un formulario) no se relacionen en absoluto con la cantidad de caracteres lógicos y en cambio sea necesario contar las unidades de texto visuales con números (llamadas grafemas).</li>
+      <li>El tamaño del texto cambiará cuando se convierta el texto de una codificación a la otra. No existen multiplicadores fijos que puedan aplicarse a fin de calcular el tamaño del almacenamiento necesario; por consiguiente, la única manera de saberlo consiste realmente en convertir el texto. Se deberá tener cuidado a fin de evitar el truncamiento. Si el truncamiento fuera absolutamente necesario, como ocurre en algunos contextos de visualización, se deberá tener cuidado en truncar los límites de grafemas o caracteres.</li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="libraries"><a href="#libraries">Utilización de bibliotecas</a></h3>
+    <p>Cuando se trabaja con Unicode, a menudo es conveniente utilizar bibliotecas de software especializadas en la compatibilidad con Unicode. Es posible que las bibliotecas anteriores no tengan plena compatibilidad con Unicode o que no sean compatibles en absoluto.</p>
+  </section>
+  <section>
+    <h3 id="language"><a href="#language">Declaración y determinación del idioma</a></h3>
+    <p>Mientras que Unicode permite la utilización de documentos y aplicaciones plurilingües, existen diversos procesos que requieren tener conocimientos acerca del idioma real que se utiliza. Dichos procesos varían desde simplemente expresarlo en mayúsculas hasta buscar y verificar la ortografía.</p>
+    <p>Por lo tanto, los API basados en Unicode deberán permitir la especificación del(de los) idioma(s) utilizado(s) cada vez que sea necesario dicho conocimiento. Además, se deberá registrar el idioma del contenido generado por el usuario cuando sea posible. En aquellos casos en los que no sea posible captar el idioma desde la fuente, podría ser útil tener una biblioteca de detección de idiomas.</p>
+    <p>A fin de ayudar a otras aplicaciones, se deberá declarar el idioma del contenido web, cuando se lo conozca, mediante la utilización del encabezado <code class="kw" translate="no">Content-Language</code> de HTTP o los atributos <code class="kw" translate="no">lang</code> de HTML/XML.</p>
+  </section>
+  <section>
+    <h3 id="fonts"><a href="#fonts">Problemas relacionados con las fuentes</a></h3>
+    <p>En aquellos sitios web que utilicen Unicode, se deberá tener más cuidado con la especificación de fuentes que en los sitios web que utilicen codificaciones preexistentes. Existen diversos idiomas que tienen tradiciones de escritura específicas o únicas, aún cuando comparten un script con otros idiomas. En otros casos, la compatibilidad de las fuentes puede ser un obstáculo debido a la necesidad de las fuentes de mostrar scripts específicos que no estén instalados en la mayoría de los sistemas.</p>
+    <p>Por ejemplo, los sistemas de escritura china y japonesa comparten una gran cantidad de caracteres, pero tienen diferentes tradiciones tipográficas; por consiguiente, las fuentes chinas en general no se pueden utilizar para los textos japoneses y viceversa. Por ejemplo, aquí se muestran los mismos caracteres que utilizan fuentes chinas y japonesas (junto con el código HTML utilizado para generar la captura de pantalla):</p>
+    <div class="example">
+      <p><img src="index-data/zhs-jpn-font.jpg" height="53" width="105"
+alt="Imagen de los mismos caracteres ideográficos de Unicode, pero con dos representaciones de glifos diferentes."
+/></p>
+      <p><code>&lt;span style="font-size:3em;font-family:sans-serif;"&gt;<br />
+        &lt;span lang="zh-Hans-CN" style="font-family: simsun, hei, sans-serif;"&gt;直&lt;/span&gt;<br />
+        &lt;span lang="ja" style="font-family: 'ms gothic', osaka;"&gt;直&lt;/span&gt;<br />
+        &lt;/span&gt;</code></p>
+    </div>
+    <p>Cuando se utilizan codificaciones preexistentes, los exploradores frecuentemente adivinan el idioma desde la codificación y eligen una fuente adecuada.</p>
+    <p>Debido a que Unicode es compatible con los idiomas chino y japonés, no es posible aplicar este recurso con páginas codificadas con Unicode y, como resultado, se podrá obtener una fuente inadecuada o incluso una combinación inadecuada de fuentes utilizadas para visualizar el contenido.</p>
+    <p>Una solución consiste en controlar el idioma utilizado e informar tanto del idioma como de las fuentes preferidas del idioma al explorador. En el caso de las páginas monolingües, la utilización de una hoja de estilo específica del idioma constituye un enfoque simple y eficaz. En el caso de las páginas plurilingües, se deberá utilizar el atributo <code class="kw" translate="no">lang</code> en las etiquetas HTML a fin de identificar el idioma; algunos exploradores utilizan esta información como guía para seleccionar la fuente correcta. A fin de obtener el control preciso de la fuente, podrá utilizar además clases para la identificación del idioma y selectores de clases en la hoja de estilo para configurar la fuente. Internet Explorer no es compatible con los selectores pseudo-clase de lenguaje CSS 2.1 que realizan directamente selecciones basadas en el(los) atributo(s) del idioma; por consiguiente, su utilidad es limitada. Consultar <a
+class="print" href="http://www.w3.org/International/tests/results/css-lang">Resultados de las pruebas: Estilos que dependen del idioma</a>.</p>
+  </section>
+</section>
+<section>
+  <h2 id="migrating"><a href="#migrating">Migración de datos</a></h2>
+  <p>En diversas situaciones, la conversión de datos asociada a un producto será el mayor desafío al migrar el producto a Unicode. Por ejemplo, algunas aplicaciones poseen una cantidad específica de bases de datos o acceden a ellas, algunas de las cuales son administradas por motores de bases de datos como Oracle o MySQL. Otras utilizan mecanismos de acceso y formatos de archivo personalizados. Estas bases de datos, independientemente de su tipo, deben migrarse para ser compatibles con Unicode.</p>
+  <p>La migración de datos a Unicode es además un buen momento para considerar la consolidación de bases de datos que previamente estaban separadas debido a diferentes codificaciones de caracteres. La utilización de una única base de datos a nivel mundial o de sólo algunas bases de datos para las principales regiones puede simplificar la implementación y el mantenimiento, y puede permitir compartir contenidos entre mercados diferentes; por consiguiente, Unicode es la herramienta ideal para estas situaciones debido a que puede representar texto en todos los idiomas. Sin embargo, cuando se realice la consolidación se deberá tener en cuenta que permanecerán vigentes otras restricciones relacionadas con los contenidos compartidos, por ejemplo, disponibilidad de idiomas, condiciones de licencias y restricciones culturales o legales del material de publicación vinculado con contenidos de política, religión, sexo y violencia.</p>
+  <p>Las estrategias de conversión de datos variará en función de varios factores:</p>
+  <ul>
+    <li>Si todos los datos contenidos en la base de datos utilizan la misma codificación o codificaciones diferentes.</li>
+    <li>Si se conoce con certeza o se desconoce la codificación de los datos.</li>
+    <li>Si el acceso a los datos u otras funciones implementadas dentro de la base de datos dependen o no del conocimiento relacionado con la codificación de caracteres. Por ejemplo, los índices en los campos de texto generalmente dependen del idioma y de la codificación de caracteres, mientras que los índices en los campos numéricos no dependen de éstos.</li>
+    <li>Tamaño de los datos.</li>
+    <li>Replicación de los datos.</li>
+    <li>Requisitos de tiempo de funcionamiento.</li>
+  </ul>
+  <p>Debido a las variaciones en estos factores, no existe una receta simple que pueda seguirse para convertir las bases de datos de un producto. A continuación, se describe un análisis de algunas consideraciones comunes; sin embargo, en general, será necesario crear un plan de conversión adecuado para cada producto. Dicho plan probablemente tendrá diversas fases de análisis, conversión con verificación de resultados de la conversión y recuperación en caso de errores.</p>
+  <section>
+    <h3 id="sizeissues"><a href="#sizeissues">Manejo de problemas relacionados con el tamaño del texto</a></h3>
+    <p>Como se indica en la sección <a href="#textsize">Problemas relacionados con el tamaño del texto</a> (arriba), en general, la conversión de texto a Unicode genera requisitos de almacenamiento expandidos; por consiguiente, es necesario considerar cuidadosamente si se debe medir la longitud del texto en bytes, caracteres o unidades de código UTF-16. Con el propósito de reducir el impacto del aumento en los tamaños de campos, puede tener sentido cambiar los campos CHAR en las bases de datos SQL a VARCHAR; por consiguiente, la base de datos podrá distribuir la cantidad de espacio que necesite.</p>
+    <p>En el caso de la medición de textos, algunas bases de datos no brindan opciones. Por ejemplo, MySQL siempre mide en términos de caracteres BMP de Unicode, cuyo resultado es de 3 bytes por carácter. Otros, como Oracle, permiten la selección entre semántica de bytes o caracteres. Otros sistemas de almacenamiento que imponen límites de tamaño probablemente se miden en bytes.</p>
+    <p>Durante la migración, que implica la conversión de la codificación, se deberá tener cuidado a fin de evitar el truncamiento. Desafortunadamente, en algunos casos es posible que no pueda hacerlo debido a limitaciones externas, tales como el límite de Oracle de 30 bytes para los nombres de objetos de esquemas en diccionarios de datos (la utilización de caracteres ASCII para nombres de esquemas ayuda a evitar este inconveniente). En esos casos, al menos se deberá asegurar de truncar en un límite de carácter.</p>
+    <p>También: tenga en cuenta que puede haber expansión de texto debido a la traducción. Consulte <a
+class="print" href="/International/articles/article-text-size">Tamaño del texto en la traducción</a>.</p>
+  </section>
+  <section>
+    <h3 id="asciidata"><a href="#asciidata">Identificación de datos ASCII</a></h3>
+    <p>Vale la pena identificar los conjuntos de datos (archivos, tablas de bases de datos, columnas de bases de datos) que se encuentran completamente en ASCII. Si la codificación Unicode deseada es UTF-8, no será necesario realizar la conversión para dichos conjuntos de datos debido a que las secuencias de bytes de ASCII son idénticas a las secuencias de bytes UTF-8 correspondientes. Además, los índices sobre los campos de texto ASCII son también válidos para los campos de texto UTF-8 o UTF-16 correspondientes, a menos que se basen en órdenes de clasificación con distinción de idiomas. Sin embargo, se deberá ser estricto al identificar los conjuntos de datos ASCII. El término "ASCII" frecuentemente se utiliza erróneamente para aquello que no es ASCII, tal como el texto plano (en cualquier codificación) o el texto de codificaciones Windows-1252 o ISO 8859-1. Además, se han diseñado diversas codificaciones de caracteres a fin de encajarlos en secuencias de bytes de 7 bits y, al mismo tiempo, representar juegos de caracteres de ASCII completamente diferentes.</p>
+    <p>A fin de verificar que el conjunto de datos se encuentra efectivamente en ASCII, controle lo siguiente:</p>
+    <ul>
+      <li>Que todos los valores de bytes dentro del conjunto de datos se encuentren dentro del rango de 0x00 a 0x7F. ASCII no utiliza valores de bytes superiores a 0x7F.</li>
+      <li>
+        <p>Que no se utilicen los valores de bytes 0x0E, 0x0F y 0x1B. La presencia de estos valores de bytes probablemente indique que en realidad los datos tienen alguna <a class="print" href="http://en.wikipedia.org/wiki/ISO_2022">codificación ISO-2022</a>.</p>
+      </li>
+      <li>
+        <p>Si aparecen los caracteres "+" y "-", los bytes intervinientes no serán BASE-64 válidos. Si son válidos, es posible que el texto en el que se encuentren tengan la <a class="print" href="http://en.wikipedia.org/wiki/UTF-7">codificación UTF-7</a>. Tenga en cuenta que se debe evitar UTF-7 siempre que sea posible debido a la posibilidad de sufrir ataques XSS.</p>
+      </li>
+      <li>
+        <p>Las secuencias de caracteres "~{" y "~}" no aparecerán. En caso de que aparezcan, probablemente el texto tendrá la <a
+	class="print" href="http://en.wikipedia.org/wiki/HZ_%28character_encoding%29">codificación HZ</a>.</p>
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="uncertainty"><a href="#uncertainty">Manejo de datos desconocidos</a></h3>
+    <p>Como se mencionó anteriormente, en algunos casos las bases de datos contienen texto con codificación desconocida. La detección de codificación de caracteres se podrá utilizar para tener una idea de la codificación; sin embargo no es un proceso confiable. A fin de manejar los datos desconocidos, será necesario seguir algunos pasos adicionales:</p>
+    <ul>
+      <li>Realice una prueba a fin de evaluar la precisión de la detección de codificación. Utilice el algoritmo de detección que quiera utilizar en un conjunto secundario de datos, convierta los datos de la codificación detectada a Unicode y familiarice a las personas con los idiomas utilizados para la verificación de resultados. Si la precisión no cumple con los requisitos, pruebe con otros algoritmos de detección o utilice otra información adicional disponible para su aplicación.</li>
+      <li>Si los datos tienen información codificada asociada (pero no confía en ésta completamente), concéntrese en aquellos casos en los que el algoritmo de detección percibe una codificación diferente. Será útil a fin de dirigir la atención a las mejoras necesarias relacionadas con la utilización de información adicional.</li>
+      <li>Después de la migración, proporcione maneras de corregir la codificación en lo sucesivo. Una solución consiste en proporcionar una interfaz de usuario que le permita al usuario indicar la codificación real, la cual luego se almacena con el texto y se utiliza para reconvertir el texto. A fin de lograrlo, necesitará mantener la secuencia de bytes original disponible, junto con el nombre de la codificación detectada. La elección de almacenar además una versión Unicode del texto dependerá de la frecuencia a la que se accede al texto; para aquel texto al cual se accede con frecuencia, quizás convendrá almacenar en caché la versión Unicode, mientras que para otro tipo de textos será mejor evitar el almacenamiento y regenerar la versión Unicode sobre la marcha cuando sea necesario. </li>
+    </ul>
+    <p>Por cuestiones de simplicidad, las siguientes secciones asumen que la codificación se puede determinar con certeza y, por consiguiente, que la conversión es un evento que ocurre sólo una vez. Si este no fuera el caso, será necesario ajustar las estrategias.</p>
+  </section>
+  <section>
+    <h3 id="ncrs"><a href="#ncrs">Referencias de caracteres numéricos con sentido</a></h3>
+    <p>Las bases de datos que contienen contenidos generados por los usuarios frecuentemente incluyen referencias de caracteres numéricos (NCR) para aquellos caracteres que no son ASCII y que hayan ingresado los usuarios, por ejemplo, "&amp;#x0152;" (Œ) o &quot;&amp;#x20AC;&quot; (€). Diversos exploradores generan las NCR cuando los usuarios ingresan texto en campos de formularios que no se pueden expresar con la codificación de caracteres del formulario. Las NCR funcionan correctamente si, posteriormente, el texto se vuelve a visualizar en HTML. Sin embargo, no funcionan con otros procesos debido a que no coinciden con el texto que representan en la búsqueda, se clasifican en el lugar equivocado o son ignorados por la conversión de mayúsculas y minúsculas. Por consiguiente, la migración a Unicode es además un buen momento para convertir las NCR a los caracteres Unicode correspondientes. Sin embargo, deberá tener cuidado a fin de evitar conversiones que cambien el significado del texto (como lo haría la conversión de  "&amp;amp;" a "&amp;") o la conversión a texto que se hubiera filtrado por razones de seguridad.</p>
+  </section>
+  <section>
+    <h3 id="bom"><a href="#bom">Utilización de la BOM</a></h3>
+    <p>Durante la migración de las codificaciones preexistentes a Unicode, es habitual utilizar codificaciones preexistentes y Unicode en paralelo. Además, deberá poder distinguirlas. En el caso general, se requieren especificaciones de codificaciones de caracteres. Sin embargo, si es necesario distinguir entre sólo un tipo de codificación preexistente específica (por ejemplo, la codificación predeterminada anterior del sitio) y UTF-8, podrá utilizar la marca de orden de bytes Unicode (BOM) como prefijo a fin de identificar las secuencias UTF-8. Esto es particularmente útil si no se hubiera previsto la especificación de la codificación de caracteres, por ejemplo, en archivos de texto plano o en cookies. La BOM en UTF-8 representa la secuencia de bytes 0xEF 0xBB 0xBF, la cual es muy improbable que tenga sentido en una codificación preexistente.</p>
+    <p>El lector de datos que identifica su codificación de este modo leerá los primeros tres bytes a fin de determinar la codificación. Si los bytes coinciden con la BOM, se eliminarán los tres bytes y se devolverá el contenido restante a UTF-8. Si no coinciden, todo el contenido se convertirá de la codificación preexistente a UTF-8. Sin embargo, esta eliminación no es automática e interfiere con algunas plataformas o idiomas. Por ejemplo, los archivos PHP que comienzan con una BOM no serán interpretados adecuadamente por el procesador PHP. Por consiguiente, es mejor limitar este recurso a partes conocidas de su sitio o código.</p>
+  </section>
+  <section>
+    <h3 id="plaintext"><a href="#plaintext">Conversión de archivos de texto plano</a></h3>
+    <p>Los archivos de texto plano que utilizan una única codificación de caracteres se convierten fácilmente. Por ejemplo, la herramienta iconv está disponible en la mayoría de los sistemas Unix/Linux. En aquellos sistemas que no la tienen, un enfoque conveniente consiste en instalar un kit de desarrollo en Java y utilizar su herramienta native2ascii:</p>
+    <div class="example"> <code>native2ascii -encoding _''sourceencoding'' ''sourcefile'' | native2ascii -reverse -encoding ''targetencoding'' &gt; ''targetfile''</code></div>
+    <p>Para cantidades reducidas de archivos, también es posible utilizar editores: TextPad en Windows, TextEdit en Mac o jEdit en cualquier plataforma son sólo algunos de los editores que pueden convertir archivos. Tenga en cuenta que algunos editores, por ejemplo, Notepad, prefieren prefijar los archivos Unicode con una marca de orden de bytes (BOM) de Unicode, lo cual es innecesario para el caso de archivos UTF-8 y puede ocasionar problemas con el software que lee los archivos.</p>
+  </section>
+  <section>
+    <h3 id="structured"><a href="#structured">Conversión de archivos estructurados</a></h3>
+    <p>En este contexto, archivos estructurados significa cualquier archivo, independientemente de las bases de datos SQL, que tengan componentes que pudieran tener codificaciones diferentes o que tengan limitaciones de longitud. Por ejemplo: archivos de registro, donde las entradas diferentes pueden utilizar codificaciones diferentes; correo electrónico, donde los diferentes encabezados y los componentes del cuerpo MIME pueden utilizar codificaciones diferentes y los encabezados tienen limitaciones de longitud; y las cookies, que frecuentemente son tratadas como si tuvieran campos múltiples. Para dichos archivos, se debe convertir cada uno de los componentes por separado y se deben tratar las limitaciones de longitud de cada componente por separado.</p>
+  </section>
+  <section>
+    <h3 id="sql"><a href="#sql">Conversión de bases de datos SQL</a></h3>
+    <p>Una base de datos SQL en realidad contiene dos componentes: Un componente del servidor, que en realidad maneja los datos, y un componente cliente, que interactúa con otro software (por ejemplo, PHP o tiempo de ejecución Java) y se comunica con los componentes del servidor. La codificación de caracteres que utiliza el cliente para comunicarse con el servidor se puede configurar en forma separada a las codificaciones de caracteres que utiliza el servidor; éste realizará la conversión si fuera necesario.</p>
+    <p>Dependiendo del tamaño de la base de datos y de sus requisitos de tiempo de funcionamiento, es posible utilizar diversas estrategias de conversión:</p>
+    <ul>
+      <li>Descargar y recargar: Los contenidos de la base de datos se descargan en un archivo de texto, convertido a la codificación Unicode deseada, y se cargan en una nueva base de datos. Es una estrategia simple, pero sólo funciona con bases de datos que se puedan tomar fuera de línea durante el período de tiempo extendido que se necesita para realizar la conversión.</li>
+      <li>Crear una nueva base de datos Unicode: Se creará una nueva base de datos que utiliza la codificación Unicode, se copiará el contenido de la base de datos anterior y se realizará la conversión durante este proceso. Se deberán replicar a la nueva base de datos aquellas transacciones que impliquen actualización o borrado de contenido ya copiado. Cuando la anterior base de datos se haya incorporado a la nueva, se cambiará el acceso a la nueva base de datos. En general, es la mejor estrategia para las bases de datos de producción, pero requiere de suficiente disponibilidad del hardware del servidor de la base de datos a fin de ejecutar las dos bases de datos en paralelo.</li>
+      <li>Agregar columnas Unicode: en este modelo, cada columna de texto en una codificación preexistente se coloca a la par de la nueva columna de codificación Unicode. Los campos de esta columna están poblados y, por consiguiente, se cambian las consultas a fin de acceder a la columna Unicode en lugar de la columna de codificación preexistente. Si la codificación preexistente era conocida con certeza, se podrá eliminar la columna de codificación preexistente. Puede ser necesario emplear esta estrategia si no hubiera suficiente espacio en el disco disponible para crear una base de datos completamente nueva y si el código de acceso a la base de datos fuera razonablemente reducido.</li>
+      <li>Convertir en el lugar: algunas bases de datos, por ejemplo, MySQL, tienen la capacidad de convertir una tabla en el lugar desde una codificación hacia la otra. Esto sólo funciona con aquellas bases de datos que se puedan tomar fuera de línea durante el período necesario para la conversión.</li>
+      <li>Convertir en el lugar con etiqueta de codificación: Si la base de datos sólo administra bytes y la interpretación total de los bytes como texto se realiza fuera de la base de datos, será posible realizar la conversión en el lugar y mantener un registro del progreso mediante la utilización de una etiqueta de codificación por cada registro. Los procesos de acceso a la base de datos necesitarán conocer la etiqueta de codificación y convertir los bytes que almacenan o deberán extraerlos de la base de datos hacia sus propias codificaciones. Si la base de datos sólo contiene una única codificación preexistente, la BOM se podrá utilizar para distinguir las secuencias Unicode.</li>
+    </ul>
+    <p>Desafortunadamente, el lenguaje SQL y la documentación a menudo utilizan el término "juego de caracteres" para la codificación de caracteres e ignoran el hecho de que UTF-8 y UTF-16 (e incluso GB18030) son codificaciones diferentes que pertenecen al mismo juego de caracteres.</p>
+    <div class="h4">
+      <h4 id="oracle"><a href="#oracle">Temas específicos de Oracle</a></h4>
+      <p>Oracle tiene compatibilidad general con Unicode a partir de la versión 8; sin embargo, la compatibilidad con los caracteres complementarios sólo está disponible con la versión 9r2 y la compatibilidad con Unicode 3.2 sólo está disponible a partir de la versión 10. Además, la utilización de los tipos de datos <code class="kw" translate="no">NCHAR</code> y <code class="kw" translate="no">NVARCHAR</code> en versiones anteriores a la versión 9 es bastante complicada. Oracle ofrece pautas de compatibilidad de globalización (Globalization Support Guides) integrales para las versiones <a
+class="print" href="http://download-west.oracle.com/docs/cd/A91202_01/901_doc/server.901/a90236/toc.htm">9r1</a>, <a
+class="print" href="http://download-west.oracle.com/docs/cd/B10501_01/server.920/a96529/toc.htm">9r2</a>, <a
+class="print" href="http://download-west.oracle.com/docs/cd/B14117_01/server.101/b10749/toc.htm">10r1</a> y <a
+class="print" href="http://download-west.oracle.com/docs/cd/B19306_01/server.102/b14225/toc.htm">10r2</a>. Los capítulos relacionados con la Migración de juegos de caracteres (Character Set Migration) y con el Escáner de juegos de caracteres (Character Set Scanner) son particularmente relevantes.</p>
+    </div>
+    <p>La codificación de caracteres seleccionada de la base de datos de Oracle se configura para toda la base de datos, incluidos los datos, los esquemas y las consultas con una única excepción: los tipos <code class="kw" translate="no">NCHAR</code> y <code class="kw" translate="no">NVARCHAR</code> siempre utilizan Unicode. Se ofrecen diferentes codificaciones Unicode para las bases de datos en general y para los tipos de datos <code class="kw" translate="no">NCHAR</code> y <code
+class="kw" translate="no">NVARCHAR</code>. En el caso de la base de datos, existen UTF-8 correctos con el nombre <code class="kw" translate="no">AL32UTF8</code> y una variante de <code
+class="kw" translate="no">UTF8</code> que codifica los caracteres complementarios como dos secuencias de 3 bytes. Para bases de datos que migran a Unicode, deberá utilizar <code
+class="kw" translate="no">AL32UTF8</code> (las bases de datos que ya utilizan <code
+class="kw" translate="no">UTF8</code> podrán seguir utilizándolas; la diferencia entre estas codificaciones podrá afectar a la colación y la indexación dentro de la base de datos, pero en general, no importará demasiado debido a que la interfaz del cliente convertirá el <code class="kw" translate="no">UTF8</code> a UTF-8 correcto). Para los tipos de datos <code
+class="kw" translate="no">NCHAR</code> y <code class="kw" translate="no">NVARCHAR</code>, el UTF-16 estará disponible con el nombre <code class="kw" translate="no">AL32UTF8</code>, junto con la variante de codificación <code class="kw" translate="no">UTF8</code>. La semántica de las especificaciones de longitud para los tipos de datos <code class="kw" translate="no">CHAR</code>, <code
+class="kw" translate="no">VARCHAR2</code> y <code class="kw" translate="no">LONG</code> se podrá configurar mediante la utilización de <code class="kw" translate="no">NLS_LENGTH_SEMANTICS</code>, con semántica de bytes predeterminada, mientras que los tipos de datos <code class="kw" translate="no">NCHAR</code> y <code
+class="kw" translate="no">NVARCHAR</code> utilizarán siempre la semántica de caracteres.</p>
+    <p>A fin de obtener una conversión adecuada entre las codificaciones utilizadas dentro de la base de datos hacia la codificación del cliente, es esencial definir la variable del entorno <code
+class="kw" translate="no">NLS_LANG</code> del lado del cliente. Esta variable describe el idioma, el territorio y la codificación que es utilizada por el cliente OS. Oracle tiene muchas configuraciones diferentes a fin de especificar el comportamiento que distingue ubicaciones en la base de datos; éstas generalmente se pueden configurar por separado desde la codificación en tanto y en cuanto la codificación pueda representar los caracteres de la ubicación seleccionada. Unicode es compatible con todas las ubicaciones.</p>
+    <p>Oracle proporciona compatibilidad incorporada para diversas estrategias de conversión. La herramienta Escáner de juegos de caracteres ayuda a identificar los posibles problemas relacionados con la conversión y el truncamiento en el análisis previo a la conversión. Los servicios de exportación e importación ayudan a implementar una estrategia de descarga y recarga de datos. El agregado de columnas Unicode es sencillo debido a que los tipos de datos <code class="kw" translate="no">NCHAR</code> y <code
+class="kw" translate="no">NVARCHAR</code> son compatibles con Unicode independientemente de la codificación de la base de datos. La conversión en el lugar con una etiqueta de codificación será posible si la base de datos en sí misma no interpreta el texto. Se podrá utilizar la declaración <code class="kw" translate="no">ALTER DATABASE CHARSET</code> a fin de informar la codificación real a la base de datos una vez que se haya completado la conversión.</p>
+    <p>Existen informes en los cuales los tipos de datos <code class="kw" translate="no">NCHAR</code> <a
+class="print" href="http://download-west.oracle.com/otndocs/tech/ias/portal/files/RG/complete_web_site_php_faq2.htm#nchar">no son compatibles</a> en la interfaz de llamadas de Oracle PHP.</p>
+    <div class="h4">
+      <h4 id="mysql"><a href="#mysql">Temas específicos de MySQL</a></h4>
+      <p>A fin de obtener compatibilidad Unicode en las bases de datos MySQL, necesitará utilizar MySQL 4.1 o una versión superior. Para obtener información relacionada con la actualización a esta versión y con los posibles problemas relacionados con la compatibilidad, consulte <a
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-upgrading.html">Actualización de juegos de caracteres de MySQL 4.0</a>. Para obtener más información relacionada con la compatibilidad de codificaciones de caracteres en MySQL, consulte el capítulo denominado <a
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset.html">Compatibilidad de juegos de caracteres</a> de la documentación de MySQL. La codificación de caracteres del <a
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-syntax.html">contenido de la base de datos</a> se podrá configurar por separado en el nivel del servidor, base de datos, tabla o columna. En aquellos casos en los que no esté configurado de manera explícita, se heredará desde el próximo nivel superior.</p>
+    </div>
+    <p>La codificación predeterminada de MySQL es <code class="kw" translate="no">latin1</code>, es decir, ISO-8859-1. Las codificaciones compatibles de Unicode se denominan <code class="kw" translate="no">utf8</code> y <code class="kw" translate="no">ucs2</code>. Generalmente, la codificación de caracteres recomendada para MySQL debe ser <code class="kw" translate="no">utf8</code>. Ambos<code class="kw" translate="no">utf8</code> y <code class="kw" translate="no">ucs2</code> se limitan a los caracteres del Plano Plurilingüe Básico (BMP) de Unicode; por consiguiente, no existe compatibilidad con los caracteres complementarios de MySQL. Como resultado, <code class="kw" translate="no">utf8</code> no es una implementación de cumplimiento total de UTF-8 (aunque es adecuada para la mayoría de los propósitos). Los tipos de datos <code class="kw" translate="no">NCHAR</code> y <code class="kw" translate="no">NVARCHAR</code> siempre utilizan <code class="kw" translate="no">utf8</code>.</p>
+    <p>Se interpretará que las especificaciones de longitud para los tipos de datos de caracteres se encuentran en los caracteres Unicode BMP; por consiguiente, la especificación <code>CHAR(5) CHARACTER SET utf8</code> reservará 15 bytes. Los metadatos, por ejemplo, nombres de usuarios, siempre se almacenan en UTF-8; por consiguiente, es posible utilizar nombres que no sean latinos. La codificación de caracteres para la <a
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-connection.html">conexión con el cliente</a> se puede configurar por separado en función del cliente, la conexión y los resultados; sin embargo, para evitar confusión, es mejor configurarlas todas juntas mediante <code>SET NAMES 'utf8'</code>. La codificación <code class="kw" translate="no">ucs2</code> no es compatible con la conexión del cliente, de modo que tampoco existe una buena razón para utilizar esta codificación para el contenido de la base de datos.</p>
+    <p>La colación se relaciona con la codificación de caracteres; por consiguiente, siempre se deberá configurar en el mismo momento que la codificación. Si se utiliza <code class="kw" translate="no">utf8</code> sin especificar la colación, se utilizará la colación <code
+class="kw" translate="no">utf8_general_ci</code> predeterminada. Este es un algoritmo de colación preexistente que no es adecuado para ningún idioma en particular. La colación <code
+class="kw" translate="no">utf8_unicode_ci</code> es una mejor colación preexistente, debido a que implementa el Algoritmo de Colación Unicode (UCA) y funciona con diversos idiomas que no son compatibles específicamente con ninguna colación denominada. Además, podrá seleccionar una de las colaciones UTF-8 denominadas por el idioma a fin de obtener las colaciones específicas y "orientadas" a los idiomas en función del UCA. Consulte la lista de colaciones de los <a
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-unicode-sets.html">Juegos de caracteres Unicode</a>. MySQL es compatible con la <a
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-convert.html">función CONVERT</a>, que permite la conversión de los resultados de una consulta de una codificación a la otra. Además, MySQL es compatible con la conversión en el lugar de una codificación a la otra mediante la utilización de la <a
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/alter-table.html">declaración ALTER</a>: <code>ALTER TABLE table CONVERT TO CHARACTER SET utf8 COLLATE collation;</code>.</p>
+    <div class="sidenoteGroup">
+      <p>En algunos casos, es posible que la codificación de una columna se declare de manera incorrecta en el esquema; por ejemplo, los datos UTF-8 pudieron haberse guardado en una base de datos MySQL con el nombre de codificación <code class="kw" translate="no">latin1</code> antes de que MySQL realmente fuera compatible con UTF-8, o se pudieron haber etiquetado datos en japonés como <code class="kw" translate="no">sjis</code> cuando en realidad se utilizaba la versión Windows de Shift-JIS, la cual MySQL denomina <code class="kw" translate="no">cp932</code> (para obtener más información sobre este caso, consultar <a
+
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-cp932.html">Juego de caracteres cp932</a>). En esos casos, se puede etiquetar nuevamente la columna sin realizar la conversión mediante el cambio de su tipo a un equivalente binario (<code class="kw" translate="no">BINARY</code>, <code
+class="kw" translate="no">VARBINARY</code>, <code class="kw" translate="no">BLOB</code>) y, a continuación, volver a los caracteres (<code class="kw" translate="no">CHAR</code>, <code class="kw" translate="no">VARCHAR</code>, <code class="kw" translate="no">TEXT</code>) con el nombre de codificación correcto, por ejemplo, para una columna <code class="kw" translate="no">TEXT</code>: <code>ALTER TABLE table CHANGE column column BLOB; ALTER TABLE table CHANGE column column TEXT CHARACTER SET utf8 COLLATION collation;</code>. Se puede y se deben cambiar a la vez todas las columnas de una tabla a fin de minimizar los gastos indirectos derivados de la reconstrucción de la tabla.</p>
+      <div class="sideinfonote"><p class="warning">Nota: De manera predeterminada, el cliente PHP de MySQL especifica <strong>latin1</strong> como la codificación de conexión para cada conexión nueva; por consiguiente, será necesario insertar la declaración <code>SET NAMES 'utf8'</code> para cada conexión nueva.</p></div>
+    </div>
+  </section>
+  <section>
+    <h3 id="filenames"><a href="#filenames">Conversión de nombres de archivos</a></h3>
+    <p>Diversos sistemas operativos de servidores (por ejemplo, !FreeBSD, Red Hat) almacenan nombres de archivos como secuencias de bytes simples, cuya interpretación depende de los procesos de niveles superiores. Los procesos de servidores podrán interpretar las secuencias de bytes en función de la codificación de caracteres de la ubicación en la que se ejecuten o simplemente trasladarlas a los procesos de clientes. Por lo tanto, la codificación real deberá estar determinada por la evaluación de la manera en la que se creó el nombre, lo que se podría realizar mediante la página web en la codificación predeterminada del usuario o del sitio en particular. Si no es definitivo, se podrá utilizar también la detección de codificación de caracteres.</p>
+    <p>Si la codificación del nombre de un archivo se puede determinar con certeza, se podrá convertir a UTF-8 y se podrá utilizar la marca de orden de bytes para marcarla como convertida. Si la codificación es incierta, es posible que sea necesario crear una base de datos paralela al sistema de archivos a fin de registrar la codificación detectada y posiblemente la versión UTF-8; por consiguiente, se podrá guardar el nombre del archivo original a fin de realizar una corrección posterior de la codificación.</p>
+  </section>
+</section>
+<section>
+  <h2 id="testing"><a href="#testing">Pruebas con Unicode</a></h2>
+  <p>La prueba de compatibilidad de Unicode con el texto ASCII no es útil. Asegúrese de probar el manejo de datos de usuarios con texto en una variedad de idiomas que serán compatibles:</p>
+  <ul>
+    <li>Caracteres latinos que no son ASCII: <span lang="fr">élève</span>, <span lang="de">süß</span>, <span lang="tr">İstanbul</span>, <span lang="da">Århus</span>,
+      ©®€“”’«»</li>
+    <li>Sistemas de escritura de Europa del Este: <span lang="el">ελληνικά</span>, <span lang="ru">русский</span></li>
+    <li>Idiomas de Asia del Este: <span lang="zh-hans">中文</span>, <span lang="ja">日本語</span>, <span lang="ko">한국어</span></li>
+    <li>Idiomas del Sudeste de Asia: <span lang="vi">Tiếng Việt</span>, <span lang="th">ไทย</span></li>
+    <li style="text-align: left;">Idiomas índicos: <span lang="hi">हिंदी</span></li>
+  </ul>
+  <p>Las pruebas con estos idiomas requerirán que configure su computadora a fin de obtener compatibilidad con éstos. El capítulo denominado <a
+class="print" href="http://www.inter-locale.com/whitepaper/learn/learn_to_type.html">Aprenda a escribir en japonés en el teclado y en otros idiomas</a> le brinda información acerca de cómo hacer esto en todos los sistemas operativos comunes.</p>
+  <p>A fin de demostrar que se ha manejado correctamente el texto en la interfaz de usuario de su aplicación, la pseudo-localización es una estrategia de prueba útil. Las herramientas de pseudo-traducción pueden reemplazar automáticamente los caracteres ASCII en los mensajes de interfaces de usuarios con caracteres latinos de ancho completo equivalentes de la extensión Unicode U+FF01 a U+FF5E (inglés -&gt; Ｅｎｇｌｉｓｈ) o con letras variantes que incluyen marcas diacríticas de la extensión latina completa (inglés -&gt; Ëñgłíšh).</p>
+  <p>A continuación, se describen algunos de los problemas a los cuales se debe prestar especial atención cuando se prueba la compatibilidad con Unicode:</p>
+  <ul>
+    <li>Preservación del texto ingresado por el usuario en toda la extensión desde el ingreso del texto en el teclado mediante la aplicación y la base de datos lista para la nueva visualización.</li>
+    <li>Correcta especificación de las codificaciones de caracteres en cualquier lugar.</li>
+    <li>Detección de codificaciones preexistentes además de la corrección de codificaciones detectadas de manera incorrecta.</li>
+    <li>Conversión a otros formatos, por ejemplo, desde el ingreso en el formulario hasta el canal RSS.</li>
+    <li>Búsqueda de texto, en particular las búsquedas que no sólo comparan secuencias de bytes, por ejemplo, búsqueda que no distingue mayúsculas y minúsculas en textos "similares", incluido el ingreso en diferentes formularios de normalización.</li>
+    <li>Clasificación de secuencias, incluidas las secuencias de formularios de normalización diferentes.</li>
+  </ul>
+  <p>Algunas de las pautas correspondientes a las pruebas de internacionalización y compatibilidad con Unicode están disponibles en: <a
+class="print" href="http://www.inter-locale.com/whitepaper/learn/learn-to-test.html">Conceptos básicos sobre pruebas internacionales</a></p>
+</section>
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>El capítulo denominado <a
+	href="http://dev.mysql.com/doc/refman/4.1/en/charset.html">Compatibilidad de juegos de caracteres</a> corresponde a MySQL.</p>
+    </li>
+    <li>
+      <p>El capítulo denominado <a
+	href="http://www.inter-locale.com/whitepaper/learn/learn_to_type.html">Aprenda a escribir en japonés en el teclado y en otros idiomas</a> le brinda información sobre la configuración y la utilización de todos los sistemas operativos comunes en las pruebas plurilingües.</p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

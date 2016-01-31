@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Migrating to Unicode</title>
+<meta name="description" content="This W3C I18n article provides guidelines for the migration of software and data to Unicode. It covers planning the migration, and design and implementation of Unicode-enabled software." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/unicode-migration'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Norbert Lindenberg, Yahoo!; Editor: Addison Phillips, Yahoo!'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-unicode-migration'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2008-04-11'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2008-04-11', time:'10:19'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-31', time:'06:01'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Migrating to Unicode</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    Web developers, programmers, site
+      administrators, and others wishing to migrate a Web site or Web-based content
+      from a legacy (non-Unicode) character encoding to Unicode. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <p>This article provides guidelines for the migration of software and data to
+    Unicode. It covers planning the migration, and design and implementation of
+    Unicode-enabled software. A basic understanding of Unicode and the principles
+    of character encoding is assumed. Some sources for information about these
+    include: </p>
+  <ul>
+    <li><a class="print" href="http://www.unicode.org/">Unicode Consortium</a></li>
+    <li><a class="print" href="http://www.w3.org/TR/CharMod">W3C Character Model</a></li>
+    <li><a
+    class="print" href="http://www.inter-locale.com/whitepaper/IUC-Intro-to-I18N-Tutorial.pdf">Internationalization
+      Tutorial</a></li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="why"><a href="#why">Why migrate to Unicode?</a></h2>
+  <p>There are a number of reasons for adopting Unicode:</p>
+  <ul>
+    <li>Text processing requires understanding the text being processed, and so
+      depends on the character encoding. Unicode provides a solid foundation
+      for processing all text worldwide, while non-Unicode encodings require
+      separate implementations for each encoding and support only a limited set
+      of languages each. Using Unicode consistently also makes it easier to
+      share text processing software around the world. </li>
+    <li>Some applications support communication and collaboration
+      between users who live in different parts of the world and use different
+      languages. Unicode is the standard that enables worldwide communication,
+      without restrictions imposed by the language that the user uses or region
+      that they live in. </li>
+    <li>Because many languages are not supported by non-Unicode
+      character encodings, users sometimes submit user-generated content (such
+      as form data) in encodings other than the supported ones (e.g., by
+      changing the browser encoding). This prevents the application from
+      processing the text correctly, for example, when searching for it in the
+      database, or when selecting ads to be placed next to it. </li>
+    <li>Many Web site or application bugs are related to character
+      encodings, because different sites or different localizations of the same
+      site use different character encodings, and the encoding of text data is
+      misinterpreted in many places. </li>
+  </ul>
+  <p>Note that simply changing the character encoding of your pages to Unicode
+    will not eliminate all character encoding problems. In fact, during the
+    migration there is a significantly increased risk of such bugs, because
+    existing data must be converted to Unicode, and the current encoding is not
+    always known. This document provides tips on how to minimize this risk, and
+    how to provide mechanisms to correct character conversion issues.</p>
+</section>
+
+
+<section>
+  <h2 id="planning"><a href="#planning">Planning your migration</a></h2>
+  <p>To scope the migration to Unicode, you need to understand the use of
+    character encodings in your current setup and decide on the internal and
+    external use of character encodings for the Unicode-based design. You also
+    need to know the state of Unicode support in software components you rely on,
+    and where needed, the migration plans for these components. This enables you
+    to plan the upgrade of your software to be based on Unicode, and the
+    conversion of existing data to Unicode encodings.</p>
+  <p>A project to migrate to Unicode may also be a good time to improve
+    internationalization in general. In particular, you should consider whether
+    you can use the multilingual capabilities of Unicode to break down
+    unnecessary barriers between different audiences, cultures, or languages.
+    Especially for sites or applications that enable communication between users
+    and thus host or transmit user-generated content, it may make sense to have a
+    single worldwide site with shared multilingual content, despite having
+    several localized user interfaces.</p>
+</section>
+
+
+<section>
+  <h2 id="understanding"><a href="#understanding">Understanding the current use of character encodings</a></h2>
+  <p>As a starting point, you need to thoroughly understand how character
+    encodings are used in your current software. Identify the components of the
+    software and the data containers: front end, back end, storage, APIs, web
+    interfaces, and so on, and clarify their use of encodings:</p>
+  <ul>
+    <li>Which components are Unicode-based already? Which Unicode encoding is
+      used (UTF-8 or UTF-16)? Which components use legacy (that is,
+      non-Unicode) encodings? </li>
+    <li>What are the data flows between the components, and which encoding is
+      used on each path?</li>
+    <li>Which encodings are specified for the interfaces between
+      components?</li>
+    <li>Which encodings are specified for the external interfaces of the
+      software?</li>
+    <li>Where does encoding conversion occur?</li>
+    <li>Are units of text that use different encodings clearly separated, and
+      are the encodings specified at each point, or are there opportunities for
+      text in different or unknown encodings to be stored or processed?</li>
+  </ul>
+  <p>The last question may be surprising, but is particularly important. Lack
+    of correct information about the character encoding used for text that is
+    coming in from outside the site (such as content feeds or user input) or
+    that's already in your data collections is a common problem, and needs
+    particular attention. (Actually, you need to pay attention to such things
+    even if you're not converting to Unicode.) There are variety of ways this
+    lack of correct information may come about:</p>
+  <ul>
+    <li>Data from the outside may not identify its character encoding at all.
+      This is a very common problem for email, web pages, or data feeds.</li>
+    <li>Data from the outside may incorrectly identify its character encoding.
+      This is also a common problem for email and web pages.</li>
+    <li>Web applications may have assumed a character encoding for form
+      submissions, but users actually changed the encoding in the browser.
+      Users commonly do this if the encoding used by the web application
+      doesn't support the user's language, e.g., the application only supports
+      ISO 8859-1, but the user wants to use a non-Latin script language, such
+      as Greek, Russian, Hindi, Chinese, and so on.</li>
+    <li>The encoding was known at some point, but then the information was
+      stripped. This is a common situation with log files - the web application
+      may have known (or at least correctly assumed) the character encoding
+      used for an HTTP request, but the request itself and therefore the log
+      record do not contain this information.</li>
+    <li>Data was passed through an interface in one encoding where the
+      interface actually requires a different encoding. An example would be
+      storing user information encoded using UTF-8 in an ISO 8859-1
+      database.</li>
+  </ul>
+  <p>To deal with such situations, character encoding detection is commonly
+    used. Encoding detection attempts to determine the encoding used in a byte
+    sequence based on characteristics of the byte sequence itself. In most cases
+    it's a statistical process that needs long input byte sequences to work well,
+    although you may be able to improve its accuracy by using other information
+    available to your application. Because of the high error rate, it's often
+    necessary to provide ways for humans to discover and correct errors. This
+    requires keeping the original byte sequence available for later reconversion.
+    Examples of encoding detection libraries include:</p>
+  <ul>
+    <li><a
+  class="print" href="http://www.mozilla.org/projects/intl/chardet.html">Mozilla</a></li>
+    <li><a
+  class="print" href="http://icu-project.org/userguide/charsetDetection.html">ICU</a></li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="checking"><a href="#checking">Checking the foundations</a></h2>
+  <p>Software often depends on other software for its implementation:</p>
+  <ul>
+    <li>programming languages and their associated libraries,</li>
+    <li>database engines,</li>
+    <li>software platforms or libraries your software is based on,</li>
+    <li>other sites or applications your software interfaces with,</li>
+    <li>third party libraries, </li>
+    <li>tools you use to build, test, and deploy your software.</li>
+  </ul>
+  <p>You need to check whether the software you depend on supports Unicode, or
+    at least doesn't put obstacles into your adopting it. It will commonly be
+    necessary to upgrade to newer versions of underlying platforms, and in a few
+    cases it will be necessary to migrate from obsolete platforms to newer
+    ones.</p>
+</section>
+
+
+<section>
+  <h2 id="internal"><a href="#internal">Deciding on character encoding use for internal use</a></h2>
+  <p>Unicode offers three encoding forms: UTF-8, UTF-16, and UTF-32. For
+    transportation over the network or for storage in files UTF-8 usually works
+    the best because it is ASCII-compatible, while the ASCII-look-alike bytes
+    contained in UTF-16 and UTF-32 text are a problem for some network
+    devices or file processing tools. For in-memory processing, all three
+    encoding forms can be useful, and the best choice often depends on the
+    programming platforms and libraries you use: Java, JavaScript, ICU, and most
+    Windows APIs are based on UTF-16, while Unix systems tend to prefer UTF-8.
+    Storage size is rarely a factor in deciding between UTF-8 and UTF-16 because
+    either one can have a better size profile, depending on the mix of markup and
+    European or Asian languages. UTF-32 is inefficient for storage and therefore
+    rarely used for that purpose, but it is very convenient for processing, and
+    some libraries, such as Java and ICU, provide string accessors and processing
+    API in terms of UTF-32 code points. Conversion between the three encoding
+    forms is fast and safe, so it's quite feasible and common to use different
+    encoding forms in different components of large software systems.</p>
+  <p>Storage of text whose character encoding is not known with certainty is an
+    exception from the Unicode-only rule. Such text often has to be interpreted
+    using character encoding detection. And character encoding detection is not a
+    reliable process. Thus, you should keep the original bytes around (along with
+    the detected character encoding) so that the text can be reconverted if a
+    human corrects the encoding selection.</p>
+</section>
+
+
+<section>
+  <h2 id="externalif"><a href="#externalif">Deciding on character encoding use for external interfaces</a></h2>
+  <p>For communicating with the world outside your application, UTF-8 should be
+    used wherever possible. However, there are situations where you can't control
+    the encoding, or need to communicate with systems that don't support UTF-8.
+    Here are recommendations for common cases:</p>
+  <ul>
+    <li>
+      <p><strong class="leadin">Email:</strong> You need to accept incoming
+        email in whatever encoding it uses. For outgoing email, you might have to
+        take into consideration that many older email applications don't support
+        UTF-8. For the time being, outgoing email should therefore be converted
+        to a legacy encoding that can represent its entire content; UTF-8 should
+        only be used if no such legacy encoding can be found. The encoding of
+        outgoing email must be specified. Selecting which outbound encodings to
+        use will depend on your application's needs.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">URIs and POST
+        data:</strong> These are used in several different contexts: form
+        submissions, web services, or URLs entered directly into a web browser.
+        For form submissions, the HTML form should be designed to identify the
+        character encoding even if the user changes it in the browser. (You can
+        use JavaScript or special field values to determine if the user has
+        changed the encoding: perhaps you should gently remind the user not to do
+        that?)</p>
+    </li>
+    <li>
+      <p><strong class="leadin">Web
+        services:</strong> Web services (especially REST-based Web services)
+        should specify the use of UTF-8 and reject requests that are not valid
+        UTF-8. For third party web services, use UTF-8 if supported by the web
+        service and ensure correct identification of the character encoding used.
+        For URIs entered directly into a web browser (such as marketing URIs),
+        other encodings may need to be supported.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">HTML:</strong> When serving pages to desktop browsers, use UTF-8; support for it is now
+        almost universal. Mobile browsers don't always support UTF-8, so you may
+        have to use a legacy encoding depending on the target device. The
+        encoding used should be declared using the HTTP <code
+    class="kw" translate="no">Content-Type</code> header, the HTML <code
+    class="kw" translate="no">meta</code> tag, or (preferably) both. If you cannot control
+        the configuration of your server on a file or request level or can't set
+        it to send UTF-8 as the encoding, then least be sure that it does not
+        send an encoding at all: user agents pay attention to this encoding
+        before any declared in a meta tag. The correct HTML <code
+    class="kw" translate="no">meta</code> tag is </p>
+      <p><code>&lt;meta http-equiv="Content-Type" content="text/html;charset=utf-8"&gt;</code></p>
+      <p>How to set the HTTP <code
+    class="kw" translate="no">Content-Type</code> header depends on your runtime
+        environment. For example, in PHP, you'd use </p>
+      <p><code>&lt;?php header("Content-type: text/html; charset=UTF-8"); ?&gt;</code>. </p>
+      <p>See more information on <a 
+    class="print" href="/International/O-HTTP-charset">setting the
+        content-type</a>.</p>
+      <p>If you take content from outside your site (such as
+        when you spider for a search engine or include external HTML), you'll
+        need to deal with whatever encoding that material is in. In some cases
+        this means accepting and processing the encoding used. If you incorporate
+        that material into your own pages, you'll need to make the encoding
+        consistent with your page (or put it into an iframe where it can use its
+        original encoding).</p>
+    </li>
+    <li>
+      <p><strong
+    class="leadin">XML:</strong>Outgoing XML should always be encoded in
+        UTF-8; the <a class="print" href="http://www.w3.org/TR/REC-xml/#charencoding">XML
+        specification</a> requires every XML parser to understand it. For XML
+        data sources, specify the use of UTF-8. In other cases, XML files in
+        other encodings need to be accepted as long as they are valid.  Note that the HTTP Content-Type text/xml defaults to US-ASCII (for this reason, application/xml+* is usually preferred) and you'll still need to specify the charset if you use the text/xml Content-Type.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">JSON:</strong> Outgoing JSON data should always be encoded in UTF-8 and preferably in
+        ASCII with \u escapes for all non-ASCII characters. For incoming data,
+        support for UTF-16 and UTF-32 might also be considered. The <a
+    class="print" href="http://www.ietf.org/rfc/rfc4627.txt">JSON specification</a> does
+        not allow any other encodings.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">Serialized
+        PHP:</strong> This data format should be avoided because it does not
+        allow the specification of the encoding used, and is therefore likely to
+        lead to data corruption for non-ASCII text. JSON is a good alternative.
+        If you absolutely can't avoid serialized PHP, specify and use UTF-8.</p>
+    </li>
+    <li>
+      <p><strong class="leadin">Other data
+        feeds:</strong> Where you can influence the character encoding of
+        incoming feeds, it should be UTF-8, or at least well-specified. There may
+        be cases though where you want to use feeds that you can't control, in
+        which case you have to use whatever you get.</p>
+    </li>
+  </ul>
+  <p>Generally, incoming text should be converted to a Unicode encoding as soon
+    as possible, and outgoing text, if it has to be sent in a non-Unicode
+    encoding, converted from Unicode to that other encoding as late as possible.
+    However, if the encoding of incoming text cannot be determined with
+    certainty, then the original text must be stored along with information about
+    the likely encoding. This enables corrective action if it turns out that the
+    encoding was wrong.</p>
+</section>
+
+
+<section>
+  <h2 id="roadmap"><a href="#roadmap">Creating a road map</a></h2>
+  <p>For very simple sites or applications it may be possible to change the
+    entire software to be based on Unicode, convert all data to a Unicode
+    encoding, and switch over from the pre-Unicode version to the Unicode version
+    in one instant. But many sites or applications offer external interfaces,
+    have large bodies of code, and have accumulated huge data sets, so their
+    conversion is a big project with multiple dependencies that needs to be
+    carefully planned. Here's a breakdown into likely sub-projects:</p>
+  <ul>
+    <li>Specify the encoding used in existing APIs. As more and more components
+      are going to use Unicode encodings, it is essential to know which
+      components don't do so yet in order to avoid data corruption.</li>
+    <li>Introduce Unicode-based versions of external interfaces
+      that other software depends on. This should be the first step in order to
+      enable the migration of the dependent software. In this step, every
+      external interface (API, web service, data flow) that is based on legacy
+      encodings is duplicated with a parallel Unicode-based interface. For many
+      interfaces, the initial version of the new interface simply converts
+      incoming text from Unicode to the legacy encoding that's still used,
+      calls the old interface, and converts outgoing text from the legacy
+      encoding to Unicode. In some cases, the new interface will be quite
+      different from the old one: For example, where the old interface consists
+      of direct access to shared data, the new interface needs to be an API
+      (yes, data encapsulation is a good idea). The use of legacy encodings in
+      the underlying implementation implies that only a subset of the Unicode
+      character set is supported - this limitation should be documented and
+      then removed by subsequent steps.</li>
+    <li>Encourage the owners of other products that access your
+      databases directly to migrate to the new API. You want to get this
+      started early, because you can't convert your database to Unicode while
+      others access it assuming legacy encodings.</li>
+    <li>Introduce a Unicode-based data abstraction layer to the
+      product's private databases. Similar to the step above, this enables the
+      conversion of the implementation of your product to go ahead without
+      waiting for the conversion of the databases.</li>
+    <li>Convert the implementation of your product to Unicode. As
+      part of this step, you'll change your external interfaces so that now the
+      Unicode-based versions work directly with the implementation, while the
+      versions based on legacy encodings convert to and from Unicode. For large
+      sites or applications, this step may start by introducing Unicode-based
+      internal interfaces between subsystems, similar to what you did for
+      external interfaces above, so that the subsystems can be converted
+      independently.</li>
+    <li>
+      <p>Convert your databases and/or data stores
+        to Unicode. If the databases were accessed directly by other products,
+        this may have to wait until those products have migrated to the APIs
+        introduced in the first step. The section <a
+    href="#migratingdata">Migrating Data</a> has more information on this
+        step.</p>
+    </li>
+    <li>Remove interfaces that are based on legacy encodings. This
+      will be the final step of your migration, and, depending on who relies on
+      these interfaces, may have to wait for a long time.</li>
+  </ul>
+  <p>Some of these sub-projects can be executed in parallel or in a different
+    order, depending on the specific situation of your product. For example,
+    migration of the implementation of your product may be held up by
+    dependencies on other software components that haven't sufficiently
+    progressed in their migration yet. On the other hand, SQL databases can be
+    migrated to Unicode much earlier because the client component of the database
+    software insulates clients from the encoding used in the database and
+    performs character encoding conversion when necessary. Migrating databases
+    early on has benefits: It simplifies testing, because the database can be
+    tested independently from the software using it, while testing higher-level
+    software typically requires a database, and it may allow you to merge
+    multiple separate databases using legacy encodings into a single multilingual
+    database.</p>
+</section>
+
+
+<section>
+  <h2 id="designing"><a href="#designing">Designing for Unicode</a></h2>
+
+    <section>
+      <h3 id="encodingspecs"><a href="#encodingspecs">Character encoding specifications</a></h3>
+    <p>Byte sequences can only be correctly interpreted as text if the character
+      encoding is known. Many applications are written such that they just move
+      around byte sequences, without naming the character encoding. As discussed
+      above, this has always caused problems. But it happened to work in many cases
+      in which users all speak the same language or are willing to adapt to some
+      content being incorrectly rendered on the page. During the transition to
+      Unicode, however, each language will be handled in at least two encodings,
+      the legacy encoding for that language and UTF-8, so specifying the encoding
+      for each byte sequence will be critical in order to avoid an avalanche of
+      data corruption bugs.</p>
+    <p>Character encodings can be specified in a variety of ways:</p>
+    <ul>
+      <li>
+        <p>In the format specification: The specification for a
+          data format may specify either the character encoding directly or a
+          simple deterministic mechanism for detecting the character encoding by
+          looking at the beginning of a byte sequence. Examples are the
+          specification of the <a
+    class="print" href="http://java.sun.com/javase/6/docs/api/java/lang/String.html">Java
+          String class</a>, which specifies UTF-16, and the <a
+    class="print" href="http://www.ietf.org/rfc/rfc4627.txt">JSON specification</a>, which
+          prescribes the use of Unicode encodings and how to distinguish between
+          them.</p>
+      </li>
+      <li>
+        <p>As part of the byte sequence: The
+          specification for a data format may provide for a mechanism to specify
+          the character encoding as part of the byte sequence. The XML
+          specification does so in an elegant way using the <a 
+    class="print" href="http://www.w3.org/TR/2006/REC-xml-20060816/#charencoding">encoding
+          declaration</a>, the HTML specification in a less elegant way using the <code class="kw" translate="no"><a
+    class="print" href="http://www.w3.org/TR/html401/charset.html#h-5.2.2">meta</a></code> tag. For data formats that allow such specification, the data can contain
+          the encoding specification unless the byte sequence is in UTF-8 and the
+          specification ensures correct detection of UTF-8 (as for XML). For HTML
+          files, the <code class="kw" translate="no">meta</code> tag specifying the content type
+          and character encoding should be the first sub-element of the <code
+    class="kw" translate="no">head</code> element, and it must not be preceded by non-ASCII
+          characters.</p>
+      </li>
+      <li>
+        <p>In data external to the byte sequence:
+          In many cases, a container of the byte sequence provides the encoding
+          specification. Some examples would include HTTP or MIME, where the <code class="kw" translate="no"><a
+    class="print" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.17">Content-Type</a></code> header field can specify the character encoding, and databases, where
+          the encoding is specified as part of the schema or the database
+          configuration. Again, where such capabilities exist, textual data should
+          make use of it. In some cases, such as sending HTML over HTTP, the
+          external encoding specification may duplicate one that's part of the byte
+          sequence - that's a good thing, because the HTTP header is preferred by
+          browsers, while the <code class="kw" translate="no">meta</code> tag is the only
+          specification that survives if the file is saved to disk.</p>
+      </li>
+      <li>
+        <p>In interface specifications: Specifications of interfaces
+          that accept or return byte sequences without any of the character
+          encoding specifications above can (and should) specify the character
+          encoding used. The specification may be absolute or relative to an
+          environment setting. For example, some libraries provide functions that
+          accept or return strings in UTF-8, while others accept or return strings
+          encoded in some legacy encoding.</p>
+      </li>
+      <li>
+        <p>By context: The character encoding may
+          be derived from the context in which the byte sequence occurs. For
+          example, browsers generally send form data in the character encoding of
+          the web page that contains the form. This is a very weak form of
+          specification because the byte sequence often is transferred out of the
+          context, such as into log files, where the encoding can no longer be
+          reconstructed. Also, users sometimes change the browser encoding so that
+          the encoding of the returned form data no longer matches the encoding of
+          the page that the web application generated. Using UTF-8 is one way to
+          minimize the damage resulting from this weak form of encoding
+          specification because it eliminates the need for users to change the
+          browser encoding and because character encoding detection works better
+          for UTF-8 than for most other encodings. </p>
+      </li>
+      <li>By an external agreement: Where none of the above applies,
+        such as plain text files, an external agreement must be made about the
+        encoding. Such an agreement might, for example, be part of the license
+        agreement for a content feed.The first four mechanisms are better than
+        the last two and should be preferred wherever possible. Any of them is
+        better than not specifying the encoding at all.</li>
+    </ul>
+    </section>
+
+    <section>
+      <h3 id="encodingnames"><a href="#encodingnames">Character Encoding Names</a></h3>
+    <p>There is a standard for naming character encodings on the internet, <a
+class="print" href="http://www.ietf.org/rfc/rfc2978.txt">RFC 2978</a>, and an associated <a
+class="print" href="http://www.iana.org/assignments/character-sets">IANA charset
+      registry</a>. However, actual use is often different. Many encodings come in
+      different variants or have siblings supporting extended character sets, and
+      different software often uses different names for the same encoding or the
+      same name for different encodings. For example, the name ISO-8859-1 is often used to describe data that actually uses the encoding windows-1252. This latter encoding (Microsoft Windows code page 1252) is very similar to ISO 8859-1 but assigns graphic characters to the range of bytes between  0x80 and 0x9F. Many Web applications (such as browsers, search engines, etc.) treat content bearing the ISO 8859-1 label as using the windows-1252 encoding instead, since, for all practical purposes, windows-1252 is a &quot;superset&quot; of ISO 8859-1. Other applications, such as encoding converters (like iconv or ICU) are pretty literal, and you must specify the right encoding name in order to get the proper results.</p>
+    </section>
+
+    <section>
+      <h3 id="determination"><a href="#determination">Character Encoding Determination</a></h3>
+    <p>Whenever a byte sequence is interpreted as text and processed, its
+      character encoding must be known. In many cases determining the character
+      encoding is so trivial that it's not even thought about - for example, when
+      processing a string in a programming language that specifies that strings are
+      encoded in UTF-16. However, in other cases, no clear specification of the
+      character encoding is available, or the text comes from a source that may not
+      be fully trusted to provide a correct specification. In such cases, a more
+      complicated process is necessary to determine the character encoding and to
+      enable later correction of mistakes made:</p>
+    <ul>
+      <li>Interpret any available character encoding specification. If a
+        specification is available and can be trusted, you're done.</li>
+      <li>If a character encoding specification is available, but
+        can't be fully trusted, validate it. Validation is possible for encodings
+        that impose restrictions on valid byte sequences, such as UTF-8, EUC-KR,
+        ISO 2022-JP. If the text is converted to a different encoding for
+        internal processing, validation is often just a side effect of
+        conversion, but if no conversion is necessary, validation is still
+        required. If the byte sequence is invalid for the specified encoding, you
+        should reject the input and get the provider to produce correct input (in
+        the case of XML, rejection is required by the specification). However, in
+        cases where you have no control over the data, we move on to the next
+        step.</li>
+      <li>If no character encoding specification is available, or
+        validation failed, use character encoding detection to detect the likely
+        encoding.</li>
+      <li>If the character encoding was determined through detection
+        (rather than specification and validation), keep the original byte
+        sequence around so that it can be reconverted in a different character
+        encoding later on. Provide a user interface mechanism that lets users
+        override the specified or detected character encoding and redo
+        conversion. Store the most recently used character encoding for the byte
+        sequence along with the byte sequence, especially if the user selected
+        it, so as to avoid unnecessarily redoing all the steps above.</li>
+    </ul>
+    </section>
+
+    <section>
+      <h3 id="selection"><a href="#selection">Character Encoding Selection and Declaration</a></h3>
+    <p>When sending text, the appropriate character encoding needs to be selected based on the data format and the recipient. The section <a href="#externalif">Deciding on Character Encoding Use for External Interfaces</a> discusses encoding use based on data formats. In most cases, a Unicode encoding is recommended. However, there are two major exceptions: </p>
+    <ul>
+      <li>
+        <p><em>Email</em>: Many older email applications don't support UTF-8. For the time being, email should therefore be converted to a legacy encoding that can represent its entire content; UTF-8 should only be used if no such legacy encoding can be found.</p>
+      </li>
+      <li>
+        <p><em>Mobile browsers</em>: Mobile systems don't always support UTF-8. It may therefore be necessary to select other encodings based on the specific device. </p>
+      </li>
+    </ul>
+    <p>No matter which encoding is used, the character encoding really must be unambiguously specified using one of the mechanisms described in the <a href="#encodingspecs">Character Encoding Specifications</a> section. </p>
+    </section>
+
+    <section>
+      <h3 id="ceconversion"><a href="#ceconversion">Character Encoding Conversion</a></h3>
+    <p>Whenever text is expected to be in one character encoding in one place and in a different character encoding in the next place, encoding conversion is necessary. Some commonly used libraries for character encoding conversion are ICU and iconv, however, some platforms, such as Java and Perl, bring along their own conversion libraries.</p>
+    <p>When using the libraries, it is important to use the right encoding names for the specific library. See the section <a href="#encodingnames">Character Encoding Names</a> above for more information.</p>
+    <p>There are some specific conversion issues that may affect particular
+      products:</p>
+    <ul>
+      <li>Alternative mappings for certain characters: In some East Asian
+        encodings, a few characters have multiple interpretations. For example,
+        the value 0x5C in Shift-JIS may be interpreted as "\" in file names, but
+        as "¥" in financial data. When mapping to Unicode, a decision has to be
+        made whether to map to U+005C "\" or to U+00A5 "¥". A common approach is
+        to map to U+005C, which works for the file system and which many Japanese
+        fonts will display as "¥". However, if the behavior of your application
+        could depend on the mapping (e.g., it parses currency values), you have
+        to take the necessary steps to control the outcome. In the example case,
+        you might map 0x5C to the currency code "JPY" before the conversion and
+        then "JPY" to U+00A5 after conversion.</li>
+      <li>
+        <p>Private use characters: Several
+          character encodings, including Unicode and most East Asian encodings,
+          have code point ranges that are reserved for private use or just
+          undefined. These are often used for company specific or personal use
+          characters — the <a class="print" href="http://en.wikipedia.org/wiki/Emoji">emoji</a> defined by Japanese mobile operators are an example. Standard character
+          converters don't know how to map such characters. For applications where
+          support for private use characters is critical, you either have to use
+          custom character converters or use workarounds such as numeric character
+          references to ensure correct mapping.</p>
+      </li>
+      <li>
+        <p>Versions of character encodings and
+          mappings: Many character encodings evolve over time, and so do the
+          mappings between them. An example is the mapping from <a
+    class="print" href="http://en.wikipedia.org/wiki/HKSCS">HKSCS</a> to Unicode: Early
+          versions of HKSCS had to map numerous characters into the Unicode private
+          use area because Unicode didn't support the characters, but later these
+          characters were added to the Unicode character repertoire, and the
+          mappings from HKSCS were changed to map to the newly added characters. In
+          general, you should make sure you're using the latest versions of the
+          character converters.</p>
+      </li>
+    </ul>
+    </section>
+
+    <section>
+      <h3 id="normalization"><a href="#normalization">Normalization</a></h3>
+    <p>Some characters have more than one way of being represented in Unicode.
+      Unicode defines several ways of eliminating these differences when they do
+      not matter to text processing. For more information on Normalization, see <a
+class="print" href="http://www.w3.org/TR/charmod-norm">CharMod-Norm</a>. </p>
+    <p>Unicode does not prescribe when to use a specific Unicode normalization
+      form. However, a number of processes work better if text is normalized, in
+      particular processes involving text comparison such as collation, search, and
+      regular expression processing. Some libraries performing these processes
+      offer normalization as part of the process; otherwise, you should ensure that
+      text is normalized before using these processes. Generally, normalization
+      form C (NFC) is recommended for web applications. However, some processes,
+      such as internationalized domain names, use other normalization forms.</p>
+    <p>Some languages will require normalization before processing since
+      different input methods may generate different sequences of Unicode
+      codepoints. Vietnamese is a prime example where the Vietnamese keyboard
+      layout in Windows 2000 onwards produces a different character sequence than
+      most other third party Vietnamese input software does. Similar issues arise
+      in a number of African languages, Yoruba being the first that comes to
+      mind.</p>
+    </section>
+
+    <section>
+      <h3 id="textsize"><a href="#textsize">Text Size Issues</a></h3>
+    <p>Storing text as Unicode often takes more space than storing it in legacy
+      encodings. The exact amount of expansion depends on the  language and particular text involved. Expansions for some common encodings might be as much as:</p>
+    <table>
+      <tbody>
+        <tr>
+          <td><p><strong>Source Encoding</strong> </p></td>
+          <td><p><strong>Languages</strong> </p></td>
+          <td><p><strong>UTF-8</strong> </p></td>
+          <td><p><strong>UTF-16</strong> </p></td>
+        </tr>
+        <tr>
+          <td>ASCII </td>
+          <td>English, Malay, ... </td>
+          <td>0% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>ISO-8859-1</td>
+          <td>Western European </td>
+          <td>10% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>ISO-8859-7, plain text </td>
+          <td>Greek </td>
+          <td>90% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>ISO-8859-7, 50% markup </td>
+          <td>Greek </td>
+          <td>45% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>TIS-620, plain text </td>
+          <td>Thai </td>
+          <td>190% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>TIS-620, 50% markup </td>
+          <td>Thai </td>
+          <td>95% </td>
+          <td>100% </td>
+        </tr>
+        <tr>
+          <td>EUC-KR, plain text </td>
+          <td>Korean </td>
+          <td>50% </td>
+          <td>5% </td>
+        </tr>
+        <tr>
+          <td>EUC-KR, 50% markup </td>
+          <td>Korean </td>
+          <td>25% </td>
+          <td>55% </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>At a macro level, this doesn't really matter much. Network bandwidth and
+      storage nowadays are dominated by videos, images, and sound files, while text
+      only consumes a fraction. There may be an impact on storage systems that
+      store only text. If text size is really a concern, it can be reduced using
+      compression.</p>
+    <p>At the micro level, however, the increased storage size has a number of
+      implications:</p>
+    <ul>
+      <li>Algorithms that were designed under the assumption of one character,
+        one byte, don't work anymore even for European languages (they never
+        worked for East Asian languages). They need to be changed to accommodate
+        multi-byte character representations. Make sure that all processing
+        always operates on complete characters. A complete character can take
+        between one and four bytes in UTF-8, and either one or two 16-bit code
+        units in UTF-16. For character positions, always use the index of the
+        first byte or code unit of the character.</li>
+      <li>In particular, any length specifications need to be
+        reviewed to see whether they should be based on bytes, characters, UTF-16
+        code units, or glyphs. Each basis makes sense in some situations, but it
+        needs to be clear which one applies. Using a character-based definition
+        will guarantee enough space, but may consume more storage than is
+        strictly necessary because each character now requires 4 bytes. Using a
+        byte-based definition avoids this size expansion, but may restrict the
+        number of characters too much. Best of course are schemes that allocate
+        just enough space to hold the given text. Other space-driven applications
+        (such as number of "characters" that can be displayed in a form field)
+        may have nothing to do with the number of logical characters and instead
+        need to count the number visual text units (called graphemes).</li>
+      <li>Text size changes whenever text is converted from one
+        encoding to another. There are no fixed multipliers that can be applied
+        to estimate the needed storage size, so the only way to find out is to
+        actually convert the text. Care must be taken to avoid truncation. If
+        truncation is absolutely required, as in some display contexts, care must
+        be taken to truncate on character or grapheme boundaries.</li>
+    </ul>
+    </section>
+
+    <section>
+      <h3 id="libraries"><a href="#libraries">Using libraries</a></h3>
+    <p>To work with Unicode, it is often advantageous to use software libraries
+      that are dedicated to Unicode support. Older libraries may support Unicode
+      less well, or not at all.</p>
+    </section>
+
+    <section>
+      <h3 id="language"><a href="#language">Language determination and declaration</a></h3>
+    <p>While Unicode enables multilingual applications and documents, there are
+      many processes that require knowledge about the actual language in use. Such
+      processes range from simple case-folding to searching and spelling
+      checking.</p>
+    <p>Unicode-based APIs should therefore enable the specification of the
+      language(s) used wherever such knowledge may be needed, and the language of
+      user-generated content should be recorded where possible. Where the language
+      cannot be captured at the source, a language detection library may be
+      useful.</p>
+    <p>To help other applications, the language of web content, where known,
+      should be declared using the HTTP <code class="kw" translate="no">Content-Language</code> header or the HTML/XML <code class="kw" translate="no">lang</code> attributes.</p>
+    </section>
+
+    <section>
+      <h3 id="fonts"><a href="#fonts">Font issues</a></h3>
+    <p>Web sites using Unicode need to be more careful about specifying fonts
+      than web sites using legacy encodings. Many languages have unique or specific
+      writing traditions, even though they share a script with other languages. In
+      other cases, fonts support can be a barrier because the fonts necessary to
+      display specific scripts are not installed on most systems.</p>
+    <p>For example, the Chinese and Japanese writing systems share a large number
+      of characters, but have different typographic traditions, so that Chinese
+      fonts are generally not acceptable for Japanese text and vice versa. For
+      example, here is the same character being displayed using a Chinese and a
+      Japanese font (along with the HTML code used to generate the screen
+      capture):</p>
+    <div class="example">
+      <p><img src="index-data/zhs-jpn-font.jpg" height="53" width="105"
+alt="Picture of the same Unicode ideographic character, but with two different glyph representations."
+/></p>
+      <p><code>&lt;span style="font-size:3em;font-family:sans-serif;"&gt;<br />
+        &lt;span lang="zh-Hans-CN" style="font-family: simsun, hei,
+        sans-serif;"&gt;直&lt;/span&gt;<br />
+        &lt;span lang="ja" style="font-family: 'ms gothic',
+        osaka;"&gt;直&lt;/span&gt;<br />
+        &lt;/span&gt;</code></p>
+    </div>
+    <p>When legacy encodings are used, browsers often guess the language from the
+      encoding and pick an appropriate font.</p>
+    <p>Since Unicode supports both Chinese and Japanese, this trick doesn't work
+      for Unicode-encoded pages, and the result can be an inappropriate font or
+      even an ugly mix of fonts being used to render the content.</p>
+    <p>One solution is to keep track of the language in use, and
+      communicate both the language and the preferred fonts for the language to the
+      browser. For monolingual pages, using a language specific style sheet is a
+      simple and effective approach. For multilingual pages, you should use the <code class="kw" translate="no">lang</code> attribute on HTML tags to identify the language; a few browsers
+      use this information as guidance in selecting the right font. For precise
+      control over the font you can also use classes to identify the language and
+      class selectors in the style sheet to set the font. The CSS 2.1 language
+      pseudo class selectors, which would select directly based on language
+      attribute(s), isn't supported by Internet Explorer and so is of limited
+      usefulness. See <a 
+class="print" href="http://www.w3.org/International/tests/results/css-lang">Test results: Language-dependent styling</a>.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="migrating"><a href="#migrating">Migrating Data</a></h2>
+  <p>Converting the data associated with a product will in many cases be the
+    biggest challenge in migrating the product to Unicode. For example, some
+    applications own or access a number of databases, some of which are managed
+    by database engines such as Oracle or MySQL. Others use custom file formats
+    and access mechanisms. These databases, regardless of type, need to be
+    migrated to support Unicode.</p>
+  <p>Migration of the data to Unicode is also a good time to consider
+    consolidating databases that were previously separate because of different
+    character encodings. Using a single database worldwide or just a few for the
+    main regions may simplify deployment and maintenance, and may enable content
+    sharing between different markets, and Unicode is ideal for this because it
+    can represent text in all languages. Consolidation will however have to keep
+    in mind that other restrictions on content sharing may remain - such as
+    language availability, licensing conditions, and legal or cultural
+    restrictions on publishing material related to politics, religion, sex, and
+    violence.</p>
+  <p>Strategies for conversion of the data will vary based on a number of
+    factors:</p>
+  <ul>
+    <li>Whether the data in a database all uses the same encoding or different
+      encodings.</li>
+    <li>Whether the encoding of the data is known with certainty or not.</li>
+    <li>Whether data access or other functions implemented within the database
+      depend on knowledge about the character encoding or not. For example,
+      indices on text fields generally depend on the character encoding and
+      language, while indices on numeric fields don't.</li>
+    <li>Size of the data.</li>
+    <li>Replication of the data.</li>
+    <li>Uptime requirements.</li>
+  </ul>
+  <p>Because of variations in these factors, there's no simple recipe that can
+    be followed in converting the databases of a product. The following is a
+    discussion of common considerations; however, it will generally be necessary
+    to create a tailored conversion plan for each product. Such a plan will
+    likely have several phases for analysis, conversion with checking of the
+    conversion results, and recovery if something goes wrong.</p>
+
+    <section>
+      <h3 id="sizeissues"><a href="#sizeissues">Dealing with text size issues</a></h3>
+    <p>As mentioned in <a href="#textsize">Text Size Issues</a> (above),
+      converting text to Unicode generally results in expanded storage
+      requirements, and you need to carefully consider whether to measure text
+      lengths in bytes, characters, or UTF-16 code units.To reduce the impact of
+      increased field sizes, it may make sense to switch CHAR fields in SQL
+      databases to VARCHAR, thus allowing the database to allocate just as much
+      space as needed.</p>
+    <p>On text measurement, some databases don't give you a choice. For example,
+      MySQL always measures in terms of Unicode BMP characters, resulting in 3
+      bytes per character. Others, such as Oracle, let you choose between character
+      or byte semantics. Other storage systems that impose size limits are likely
+      to measure in bytes.</p>
+    <p>During the migration, which involves encoding conversion, be careful to
+      avoid truncation. In some cases, unfortunately, you may not be able to do so
+      because of external constraints, such as Oracle's limit of 30 bytes for
+      schema object names in data dictionaries (use of ASCII characters for schema
+      names helps avoid this issue). In such cases, at least make sure to truncate
+      at a character boundary.</p>
+    <p>Also: note that there can be text expansion due to translation. See <a
+class="print" href="/International/articles/article-text-size">Text size in translation</a>.</p>
+    </section>
+
+    <section>
+      <h3 id="asciidata"><a href="#asciidata">Identifying ASCII data</a></h3>
+    <p>It is worthwhile identifying data sets (files, database tables, database
+      columns) that are entirely in ASCII. If the desired Unicode encoding is
+      UTF-8, no conversion is necessary for such data sets because ASCII byte
+      sequences are identical to the corresponding UTF-8 byte sequences. Also,
+      indices over ASCII text fields are also valid for the corresponding UTF-8 or
+      UTF-16 text fields, unless they are based on language sensitive sort orders.
+      However, you have to be strict in identifying ASCII data sets. The term
+      "ASCII" is often mistakenly used for things that aren't ASCII, such as plain
+      text (in any encoding) or for text in the ISO 8859-1 or Windows-1252
+      encodings. In addition, a number of character encodings have been designed to fit into
+      7-bit byte sequences while representing completely different character sets
+      from ASCII.</p>
+    <p>To verify that the data set is indeed in ASCII, check for the
+      following:</p>
+    <ul>
+      <li>All byte values within the data set are in the range 0x00 to 0x7F.
+        ASCII does not use byte values above 0x7F.</li>
+      <li>
+        <p>The byte values 0x0E, 0x0F, and 0x1B are not used.
+          The presence of these byte values is likely to indicate that the data is
+          really in some <a class="print" href="http://en.wikipedia.org/wiki/ISO_2022">ISO-2022
+          encoding</a>.</p>
+      </li>
+      <li>
+        <p>If the characters "+" and "-" occur, the intervening
+          bytes are not valid BASE-64. If they are, the text is possible that they
+          are in the <a class="print" href="http://en.wikipedia.org/wiki/UTF-7">UTF-7
+          encoding</a>. Note that UTF-7 should be avoided wherever possible because
+          of the potential for XSS attacks.</p>
+      </li>
+      <li>
+        <p>The character sequences "~{" and "~}" don't occur.
+          If they do, the text is likely to be in <a
+    class="print" href="http://en.wikipedia.org/wiki/HZ_%28character_encoding%29">HZ
+          encoding</a>.</p>
+      </li>
+    </ul>
+    </section>
+
+    <section>
+      <h3 id="uncertainty"><a href="#uncertainty">Dealing with uncertainty</a></h3>
+    <p>As mentioned earlier, it sometimes occurs that databases contain text
+      whose encoding isn't known. Character encoding detection can be used to get
+      an idea of the encoding, but this process is not reliable. To deal with the
+      uncertainty, a number of additional steps may be necessary:</p>
+    <ul>
+      <li>Perform a trial to assess the accuracy of the encoding detection. Use
+        the detection algorithm you intend to use on a subset of the data,
+        convert the data from the detected encoding to Unicode, and have people
+        familiar with the languages used verify the results. If the accuracy
+        doesn't meet requirements, try other encoding detection algorithms or use
+        additional information available to your application.</li>
+      <li>If your data has associated encoding information (but you
+        don't fully trust it), focus on cases where the detection algorithm
+        detects a different encoding. This may help you zero in on necessary
+        improvements in the use of additional information.</li>
+      <li>After migration, provide ways to correct the encoding later
+        on. One solution is to provide a user interface that lets the user
+        indicate the actual encoding, which is then stored with the text and used
+        to reconvert the text. To do this, you'll need to keep the original byte
+        sequences available, along with the name of the detected encoding.
+        Whether to also store a Unicode version of the text depends on how often
+        the text is accessed - for text that is accessed often, it may be
+        worthwhile caching the Unicode version, while for other text it may be
+        better to save the storage and regenerate the Unicode version on the fly
+        when needed. </li>
+    </ul>
+    <p>For simplicity, the following sections assume that the encoding can be
+      determined with certainty and conversion therefore is a one-time event. Where
+      this is not the case, strategies need to be adjusted.</p>
+    </section>
+
+    <section>
+      <h3 id="ncrs"><a href="#ncrs">Making sense of Numeric Character References</a></h3>
+    <p>Databases holding user-generated content often contain numeric character
+      references (NCRs) for non-ASCII characters that users have entered, such as
+      "&amp;#x0152;" (Œ) or &quot;&amp;#x20AC;&quot; (€). Many browsers generate the NCRs when
+      users enter text into form fields that cannot be expressed in the form's
+      character encoding. NCRs work fine if the text is subsequently redisplayed in
+      HTML. They do not work, however, for other processes because they don't match
+      the text they represent in searching, they get sorted in the wrong place, or
+      they're ignored by case conversion. Migration to Unicode is therefore also a
+      good time to convert NCRs to the corresponding Unicode characters. You'll
+      need to be careful however to avoid conversions that change the meaning of
+      the text (as might a conversion of "&amp;amp;" to "&amp;") or conversion to
+      text that would have been filtered out for security reasons.</p>
+    </section>
+
+    <section>
+      <h3 id="bom"><a href="#bom">Using the BOM</a></h3>
+    <p>During the migration from legacy encodings to Unicode, it's common to use
+      legacy encodings and Unicode in parallel, and you need to be able to
+      distinguish between them. In the general case, this requires character
+      encoding specifications. However, if you need to distinguish between just one
+      specific legacy encoding (such as the site's old default encoding) and UTF-8,
+      you might use the Unicode byte order mark (BOM) as a prefix to identify UTF-8
+      strings. This is particularly handy if there is no provision for a character
+      encoding specification, for example in plain text files or in cookies. The
+      BOM in UTF-8 is the byte sequence 0xEF 0xBB 0xBF, which is very unlikely to
+      be meaningful in any legacy encoding.</p>
+    <p>A reader for data that identifies its encoding in this way reads the first
+      three bytes to determine the encoding. If the bytes match the BOM, the three
+      bytes are stripped off and the remaining content returned as UTF-8. If they
+      don't, the entire content is converted from the legacy encoding to UTF-8. This stripping, however, isn't automatic and it interferes with some platforms or languages. For example, a PHP file that starts with a BOM won't be interpreted properly by the PHP processor. So this trick is  best confined to well-known parts of your site or code.</p>
+    </section>
+
+    <section>
+      <h3 id="plaintext"><a href="#plaintext">Converting plain text files</a></h3>
+    <p>Plain text files that use a single character encoding are easy to convert.
+      For example, the iconv tool is available on most Unix/Linux systems. On
+      systems that don't have it, a convenient approach is to install a Java
+      Development Kit and use its native2ascii tool:</p>
+    <div class="example"> <code>native2ascii -encoding _''sourceencoding'' ''sourcefile'' |
+      native2ascii -reverse -encoding ''targetencoding'' &gt;
+      ''targetfile''</code></div>
+    <p>For small numbers of files, editors can also be used: TextPad on Windows,
+      TextEdit on Mac, or jEdit on any platform are just a few editors that can
+      convert files. Note that some editors, such as Notepad, like to prefix
+      Unicode files with a Unicode byte-order mark (BOM), which in the case of
+      UTF-8 files is unnecessary and may cause problems with software reading the
+      files.</p>
+    </section>
+
+    <section>
+      <h3 id="structured"><a href="#structured">Converting structured files</a></h3>
+    <p>Structured files in this context means any files, other than SQL
+      databases, that have components that might have different encodings or that
+      have length limitations. Examples are: log files, where different entries may
+      use different encodings; email messages, where different headers and MIME
+      body components may use different encodings, and the headers have length
+      limitations; and cookies, which are often treated as having multiple fields.
+      For such files, every component has to be converted separately, and length
+      limitations have to be dealt with separately for each component.</p>
+    </section>
+
+    <section>
+      <h3 id="sql"><a href="#sql">Converting SQL databases</a></h3>
+    <p>An SQL database really consists of two components: A server component,
+      which actually manages the data, and a client component, which interfaces
+      with other software (such as a PHP or Java runtime) and communicates with the
+      server components. The character encoding that the client uses to communicate
+      with the server can be set separately from the character encodings used by
+      the server; the server will convert if necessary.</p>
+    <p>Depending on the size of a database and its uptime requirements, various
+      strategies for conversion are possible:</p>
+    <ul>
+      <li>Dump and reload: The contents of the database are dumped into a text
+        file, converted to the desired Unicode encoding, and loaded into a new
+        database. This strategy is simple, but only works for databases that can
+        be taken offline for the extended period needed for conversion.</li>
+      <li>Create new Unicode database: A new database using a Unicode
+        encoding is created and content from the old database is copied over,
+        doing conversion on the way. Transactions that update or delete already
+        copied content need to be mirrored to the new database. When the new
+        database has caught up to the old one, access is switched over to the new
+        database. This is generally the best strategy for production databases,
+        but it requires that enough database server hardware is available to run
+        two databases in parallel.</li>
+      <li>Add Unicode columns: In this model, each text column in a
+        legacy encoding is paired with a new column in a Unicode encoding. Fields
+        in this column are populated, and then queries are changed to access the
+        Unicode column instead of the legacy encoding column. If the legacy
+        encoding was known with certainty, the legacy encoding column can be
+        deleted. This strategy may be necessary if not enough disk space is
+        available to create a completely new database and if the code accessing
+        the database is reasonably small.</li>
+      <li>Convert in place: Some databases, such as MySQL, have the
+        capability to convert a table in place from one encoding to another. This
+        only works for databases that can be taken offline for the period needed
+        for the conversion.</li>
+      <li>Convert in place with encoding tag: If the database just
+        manages bytes, and all interpretation of the bytes as text is done
+        outside the database, it's possible to do the conversion in place and
+        keep track of the progress using an encoding tag per record. Processes
+        accessing the database need to be aware of the encoding tag and convert
+        the bytes they store into or retrieve from the database from and to their
+        own encodings. If the database only contains a single legacy encoding,
+        the BOM can be used to distinguish Unicode strings.</li>
+    </ul>
+    <p>The SQL language and documentation have the unfortunate habit of using the
+      term "character set" for character encodings, ignoring the fact that UTF-8
+      and UTF-16 (and even GB18030) are different encodings of the same character
+      set.</p>
+    <div class="h4">
+      <h4 id="oracle"><a href="#oracle">Oracle specifics</a></h4>
+      <p>Oracle has general Unicode support starting with version
+        8, but support for supplementary characters is only available starting with
+        version 9r2, and support for Unicode 3.2 only starting with version 10. Also,
+        the use of the <code class="kw" translate="no">NCHAR</code> and <code class="kw" translate="no">NVARCHAR</code> data types before version 9 is somewhat
+        difficult. Oracle provides comprehensive Globalization Support Guides for
+        versions <a 
+class="print" href="http://download-west.oracle.com/docs/cd/A91202_01/901_doc/server.901/a90236/toc.htm">9r1</a>, <a 
+class="print" href="http://download-west.oracle.com/docs/cd/B10501_01/server.920/a96529/toc.htm">9r2</a>, <a 
+class="print" href="http://download-west.oracle.com/docs/cd/B14117_01/server.101/b10749/toc.htm">10r1</a>,
+        and <a 
+class="print" href="http://download-west.oracle.com/docs/cd/B19306_01/server.102/b14225/toc.htm">10r2</a>.
+        The chapters on Character Set Migration and Character Set Scanner are
+        particularly relevant.</p>
+    </div>
+    <p>The character encoding selected for an Oracle database is set for the
+      entire database, including data, schema, and queries, with one exception: The <code class="kw" translate="no">NCHAR</code> and <code class="kw" translate="no">NVARCHAR</code> types
+      always use Unicode. Different Unicode encodings are offered for the database
+      as a whole and the <code class="kw" translate="no">NCHAR</code> and <code
+class="kw" translate="no">NVARCHAR</code> data types. For the database, there are correct
+      UTF-8 under the name <code class="kw" translate="no">AL32UTF8</code>, and a variant <code
+class="kw" translate="no">UTF8</code> that encodes supplementary characters as two 3-byte
+      sequences. For databases migrating to Unicode, you should use <code
+class="kw" translate="no">AL32UTF8</code> (databases that already use <code
+class="kw" translate="no">UTF8</code> can in most cases continue to do so - the difference
+      between these encodings may affect collation and indexing within the
+      database, but in general it doesn't matter much since the client interface
+      converts <code class="kw" translate="no">UTF8</code> to correct UTF-8). For the <code
+class="kw" translate="no">NCHAR</code> and <code class="kw" translate="no">NVARCHAR</code> data types,
+      UTF-16 is available under the name <code class="kw" translate="no">AL32UTF8</code>, along
+      with the variant <code class="kw" translate="no">UTF8</code> encoding. The semantics of
+      length specifications for the <code class="kw" translate="no">CHAR</code>, <code
+class="kw" translate="no">VARCHAR2</code>, and <code class="kw" translate="no">LONG</code> data types can
+      be set using the <code class="kw" translate="no">NLS_LENGTH_SEMANTICS</code>, with byte
+      semantics as the default, while the <code class="kw" translate="no">NCHAR</code> and <code
+class="kw" translate="no">NVARCHAR</code> data types always use character semantics.</p>
+    <p>For correct conversion between the encoding(s) used within the database to
+      the client's encoding it is essential to define the <code
+class="kw" translate="no">NLS_LANG</code> environment variable on the client side. This
+      variable describes the language, territory, and encoding used by the client
+      OS. Oracle has numerous other settings to specify locale-sensitive behavior
+      in the database; these can generally be set separately from the encoding as
+      long as the encoding can represent the characters of the selected locale.
+      Unicode supports all locales.</p>
+    <p>Oracle provides built-in support for several conversion strategies. The
+      Character Set Scanner tool helps in identifying possible conversion and
+      truncation problems in the pre-conversion analysis. The Export and Import
+      utilities help in implementing a dump and reload strategy. Adding Unicode
+      columns is easy because the <code class="kw" translate="no">NCHAR</code> and <code
+class="kw" translate="no">NVARCHAR</code> data types support Unicode independent of the
+      database encoding. Converting in place with an encoding tag is possible if
+      the database itself doesn't interpret the text - the <code class="kw" translate="no">ALTER
+      DATABASE CHARSET</code> statement can be used to inform the database of the
+      actual encoding once conversion has completed.</p>
+    <p>There are reports that the <code class="kw" translate="no">NCHAR</code> data types are <a
+class="print" href="http://download-west.oracle.com/otndocs/tech/ias/portal/files/RG/complete_web_site_php_faq2.htm#nchar">not
+      supported</a> in the PHP Oracle Call Interface.</p>
+    <div class="h4">
+      <h4 id="mysql"><a href="#mysql">MySQL specifics</a></h4>
+      <p>To get Unicode support in MySQL databases, you'll need to
+        use MySQL 4.1 or higher. For information on upgrading to this version and on
+        possible compatibility issues, see <a 
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-upgrading.html">Upgrading
+        Character Sets from MySQL 4.0</a>. For detailed information on character
+        encoding support in MySQL, see the <a 
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset.html">Character Set
+        Support</a> chapter of the MySQL documentation. The character encoding for
+        the <a 
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-syntax.html">database
+        content</a> can be set separately at the server, database, table, or column
+        level. Where the encoding isn't set explicitly, it's inherited from the next
+        higher level.</p>
+    </div>
+    <p>MySQL's default encoding is <code class="kw" translate="no">latin1</code>, that is, ISO-8859-1. The supported
+      Unicode encodings are called <code class="kw" translate="no">utf8</code> and <code class="kw" translate="no">ucs2</code>. Usually the recommended character
+      encoding for MySQL should be <code class="kw" translate="no">utf8</code>. Both <code class="kw" translate="no">utf8</code> and <code class="kw" translate="no">ucs2</code> are limited to the
+      characters of the Unicode Basic Multilingual Plane (BMP), so there's no
+      support for supplementary characters in MySQL. As a result, <code class="kw" translate="no">utf8</code> isn't a
+      wholly compliant implementation of UTF-8 (although for most purposes it is
+      fine). The <code class="kw" translate="no">NCHAR</code> and <code class="kw" translate="no">NVARCHAR</code> data types always use <code class="kw" translate="no">utf8</code>.</p>
+    <p>Length specifications for character data types are
+      interpreted to be in Unicode BMP characters, so a specification <code>CHAR(5) CHARACTER SET utf8</code> will reserve 15 bytes. Metadata,
+      such as user names, is always stored in UTF-8, so non-Latin names can be
+      used. The character encoding for the <a 
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-connection.html">client
+      connection</a> can be set separately for client, connection, and results, but
+      to avoid confusion, it's best to set them all together using <code>SET NAMES 'utf8'</code>. The <code class="kw" translate="no">ucs2</code> encoding is not
+      supported for the client connection, so there's no good reason to use this
+      encoding for the database content either.</p>
+    <p>Collations are related to character encodings, so they
+      should always be set at the same time as the encoding. If <code class="kw" translate="no">utf8</code> is
+      used without specifying a collation, the default collation <code
+class="kw" translate="no">utf8_general_ci</code> is used. This is a legacy collation
+      algorithm that's not good for any particular language. The collation <code
+class="kw" translate="no">utf8_unicode_ci</code> is a better default, since it implements
+      the Unicode Collation Algorithm (UCA) and works for many languages that are
+      not specifically supported by a named collation. You can also select one of
+      the language-named UTF-8 collations to get language-specific collation
+      "tailoring" based on UCA. See the list of collations for <a 
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-unicode-sets.html">Unicode
+      Character Sets</a>. MySQL supports the <a 
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-convert.html">CONVERT
+      function</a>, which allows the results of a query to be converted from one
+      encoding to another. MySQL also supports in-place conversion from one
+      encoding to another using the <a 
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/alter-table.html">ALTER
+      statement</a>: <code>ALTER TABLE table CONVERT TO CHARACTER SET
+      utf8 COLLATE collation;</code>.</p>
+    <div class="sidenoteGroup">
+      <p>In some cases, the encoding of a column may be incorrectly
+        declared in the schema - for example, UTF-8 data may have been stored in a
+        MySQL database under the encoding name <code class="kw" translate="no">latin1</code> before MySQL really supported
+        UTF-8, or Japanese data may have been labeled <code class="kw" translate="no">sjis</code> when it was actually
+        using the Windows version of Shift-JIS, which MySQL calls <code class="kw" translate="no">cp932</code> (see <a
+
+class="print" href="http://dev.mysql.com/doc/refman/4.1/en/charset-cp932.html">The cp932
+        Character Set</a> for more information on this case). In such cases, a column
+        can be relabeled without conversion by changing its type to the binary
+        equivalent (<code class="kw" translate="no">BINARY</code>, <code
+class="kw" translate="no">VARBINARY</code>, <code class="kw" translate="no">BLOB</code>), then back to
+        characters (<code class="kw" translate="no">CHAR</code>, <code class="kw" translate="no">VARCHAR</code>, <code class="kw" translate="no">TEXT</code>) with the correct encoding name, e.g., for a <code class="kw" translate="no">TEXT</code> column: <code>ALTER TABLE table CHANGE
+        column column BLOB; ALTER TABLE table CHANGE column column TEXT
+        CHARACTER SET utf8 COLLATION collation;</code>. You can and should change
+        all columns of one table together in order to minimize the overhead of
+        rebuilding the table.</p>
+      <div class="sideinfonote"><p class="warning">The PHP client for MySQL by default specifies <strong>latin1</strong> as the connection encoding for each new connection, so it is necessary to
+        insert a statement <code>SET NAMES 'utf8'</code> for each new connection.</p></div>
+    </div>
+    </section>
+
+    <section>
+      <h3 id="filenames"><a href="#filenames">Converting file names</a></h3>
+    <p>Several server operating systems (for example, !FreeBSD, Red Hat) store
+      file names as simple byte sequences whose interpretation is up to higher
+      level processes. Server processes may interpret the byte sequences according
+      to the character encoding of the locale they run in, or just pass them on to
+      client processes. The actual encoding must therefore be determined by
+      evaluating how the name was created, which might be through a web page in the
+      default encoding for the particular site or user. If that's not conclusive,
+      character encoding detection may also be used.</p>
+    <p>If the encoding of a file name can be determined with certainty, it can be
+      converted to UTF-8, and a Byte Order Mark can be used to mark it as
+      converted. If the encoding is uncertain, it may be necessary to create a
+      database parallel to the file system to record the detected encoding and
+      possibly the UTF-8 version, so that the original file name can be kept around
+      for later correction of the encoding.</p>
+  </section>
+</section>
+
+<section>
+  <h2 id="testing"><a href="#testing">Testing with Unicode</a></h2>
+  <p>Testing Unicode support with ASCII text is useless. Make sure that you
+    test handling of user data with text in a variety of the languages you will
+    support:</p>
+  <ul>
+    <li>Non-ASCII Latin characters: <span lang="fr">élève</span>, <span lang="de">süß</span>, <span lang="tr">İstanbul</span>, <span lang="da">Århus</span>,
+      ©®€“”’«»</li>
+    <li>East European writing systems: <span lang="el">ελληνικά</span>, <span lang="ru">русский</span></li>
+    <li>East-Asian languages: <span lang="zh-hans">中文</span>, <span lang="ja">日本語</span>, <span lang="ko">한국어</span></li>
+    <li>South-East Asian languages: <span lang="vi">Tiếng Việt</span>, <span lang="th">ไทย</span></li>
+    <li style="text-align: left;">Indic languages: <span lang="hi">हिंदी</span></li>
+  </ul>
+  <p>Testing with these languages will require your computer to be configured
+    to support them. <a
+class="print" href="http://www.inter-locale.com/whitepaper/learn/learn_to_type.html">Learn
+    To Type Japanese and Other Languages</a> has information on how to do this
+    for all common operating systems.</p>
+  <p>To show that text in the user interface of your application is handled
+    correctly, pseudo-localization is a useful testing strategy.
+    Pseudo-translation tools can automatically replace ASCII characters in user
+    interface messages with equivalent full width Latin characters from the
+    Unicode range U+FF01 to U+FF5E (English -&gt; Ｅｎｇｌｉｓｈ) or with
+    variant letters with diacritic marks from the complete Latin range (English
+    -&gt; Ëñgłíšh).</p>
+  <p>Issues that need particular attention when testing Unicode support
+    include:</p>
+  <ul>
+    <li>Preservation of user-entered text all the way from text entry on the
+      keyboard via the application and the database back to redisplay.</li>
+    <li>Correct specification of character encodings everywhere.</li>
+    <li>Detection of legacy encodings as well as correction of misdetected
+      encodings.</li>
+    <li>Conversion to other formats, e.g., from form input to RSS feed.</li>
+    <li>Searching for text, in particular searches that don't just compare byte
+      sequences, e.g., case-insensitive search or search for "similar" text,
+      including input in different normalization forms.</li>
+    <li>Sorting of strings, including strings in different normalization
+      forms.</li>
+  </ul>
+  <p>Some guidelines for testing Unicode support and internationalization are
+    available at: <a
+class="print" href="http://www.inter-locale.com/whitepaper/learn/learn-to-test.html">International
+    Testing Basics</a></p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a
+    href="http://dev.mysql.com/doc/refman/4.1/en/charset.html">Character Set
+        Support</a> is for MySQL.</p>
+    </li>
+    <li>
+      <p><a
+    href="http://www.inter-locale.com/whitepaper/learn/learn_to_type.html">Learn
+        To Type Japanese and Other Languages</a> has information on configuring
+        and using all common operating systems for multilingual testing.</p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
