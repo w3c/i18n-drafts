@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<title>Розмітка і Стилізація Ruby</title>
+<meta name="description" content="Як W3C розмічає і стилізує, щоб підтримувати такий текст ruby, як Японська Фуріґана." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/ruby'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-ruby'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-07-21'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2005-07-21', time:'15:36'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-01-31', time:'18:05'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak (Александр Шлапак)'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'markup';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-uk.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Розмітка і Стилізація Ruby</h1>
+</header>
+
+
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    шифрувальники XML та XHTML/HTML (використовуючи редактори або скрипти), розробники скриптів (PHP, JSP, і т.д.), шифрувальники CSS, і
+      кожен хто хоче дізнатися як використовувати анотації ruby. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <p>Ruby - маленькі анотації, які зображуються поряд із основним текстом. Це особливо корисно для Японського та іншого Східноазіатського
+    контенту (ruby в Японській мові відома як Фуріґана).</p>
+  <p>Специфікація Анотацій Ruby забезпечує спосіб для відмітки тексту ruby, і прийнята у якості модуля XHTML 1.1. В CSS3 ведеться робота
+    над механізмами для підтримки стайлінгу ruby тексту.</p>
+  <p>У цій статті ми познайомимо вас з основними механізмами, і обговорити сучасний рівень знань по відношенню до підтримки ruby.</p>
+</div>
+<section>
+  <h2 id="Slide0040"><a href="#Slide0040">Хто така Ruby?</a></h2>
+  <p>На жаль, <span class="newterm">ruby</span> не відноситься до гламурної жінки. Це більш прозаїчний технічний термін, який відноситься до
+    певного типу анотацій пов'язаних з основним текстом. Назва 'ruby' походить від назви розміру шрифту (близько половини розміру нормального 10
+    піксельного шрифту), що використовується Британськими верстальниками. </p>
+  <p>Як правило, ruby використовується у Східноазіатських скриптах для забезпечення фонетичних транскрипцій неясних символів, або символів з якими читач
+    може бути незнайомий. Наприклад, він широко використовується в навчально-методичних матеріалах і текстах для дітей. Також іноді використовуються для передачі
+    інформації про значення ідеографічних символів.</p>
+  <p>У Японській мові, де ruby має називу <span class="newterm">Фуріґана</span>, фонетичні транскрипції зазвичай з'являються в Хірагані вище
+    горизонтального тексту і справа від вертикального тексту. Хоча ruby в Японській мові часто представлена Хіраганою, також іноді можна знайти
+    анотації написані на Кандзі, Катакані (зокрема, у Японському 'Манга' коміксі) і Латинському тексті.</p>
+  <p>Фуріґана зазвичай з'являється під горизонтальним текстом, і зліва від вертикального тексту в тих рідкісних випадках, коли вона використовується, щоб виразити
+    семантичну інформацію.</p>
+  <figure>
+    <p><img src="index-data/Slide0050.gif" alt="Приклад ruby в Японській мові." width="306" height="170" /> </p>
+    <figcaption>Приклад ruby в Японській мові.</figcaption>
+  </figure>
+  <p>Використання ruby анотації для Японської мови не обмежене. Насправді воно не обов'язково обмежене і для будь-якого з Азіатських скриптів. Її можна використовувати
+    як спосіб для анотації для багатьох різних застосувань, таких як тлумачення мови і анотацій.</p>
+  <p>Нижче на малюнку показані приклади ruby тексту, що використовує Латинську мову, Кандзі, і Катакану для анотації основного тексту.</p>
+  <figure>
+    <p><img src="index-data/Slide0060.gif" alt="Будь-який символ дійсний в ruby тексті і анотаціях." width="576" height="58" /> </p>
+    <figcaption>Будь-який символ дійсний в ruby тексті і анотаціях.</figcaption>
+  </figure>
+  <p>Тут показано, Спрощені Китайські символи, що нижче під кожним символом містять анотації, що представлені піньїньськими транслітераціями.</p>
+  <figure>
+    <p><img src="index-data/Slide0070.gif" alt="Приклад ruby в Спрощеному Китайському скрипті" width="263" height="131" /> </p>
+    <figcaption>Приклад ruby в Спрощеному Китайському скрипті.</figcaption>
+  </figure>
+  <p>Такі анотації в Традиційній Китайській зазвичай використовують символи <span class="newterm">Бопомофо</span> для визначення вимови, і
+    скоріше анотації з'являються над основним текстом, він розташовується вертикально справа від кожного символу, незалежно від того чи основний текст розташовується
+    вертикально або горизонтально.</p>
+  <p>Зверніть увагу, як звукові відмітки з'являються праворуч від стовпця алфавітних символів Бопомофо.</p>
+  <figure>
+    <p><img src="index-data/Slide0080.gif" alt="Приклад ruby в Традиційному Китайському скрипті" width="359" height="115" /> </p>
+    <figcaption>Приклад ruby в Традиційному Китайському скрипті.</figcaption>
+  </figure>
+</section>
+<section>
+  <h2 id="Slide0090"><a href="#Slide0090">Розмітка ruby</a></h2>
+  <p>Є два аспекти при роботі з текстом ruby: по-перше, забезпечити структурну інформацію за допомогою розмітки, яка стосується ruby і
+    її основного тексту, по-друге спрямувати презентаційні (стайлінг) питання, наприклад, чи довгий текст ruby перекриває сусідній основний текст, чи короткий
+    ruby текст розташовується по центру або вирівнюється по лівому краю за більш довгим основним текстом і т.д. У цьому розділі ми розглянемо вираження структури за допомогою розмітки.</p>
+  <p>Рекомендація W3C щодо <a class="print" href="http://www.w3.org/TR/ruby/" shape="rect">Ruby Анотацій</a> (також доступні в <a class="print" href="http://www.doraneko.org/webauth/ruby/20010531/" shape="rect">Японській мові</a>) описує розмітку яку можна використати для підтримки ruby.</p>
+  <p>Специфікація визначає два варіанти розмітки ruby: <span class="newterm">проста розмітка ruby</span> та <span
+				class="newterm">комплексна розмітка ruby</span>.</p>
+  <section>
+    <h3 id="Slide0100"><a href="#Slide0100">Проста ruby</a></h3>
+    <p> Проста розмітка ruby пов'язує одне написання ruby тексту із написанням основного тексту.</p>
+    <figure>
+      <p><img src="index-data/Slide0100.gif" alt="Проста розмітка ruby." width="344" height="178" /> </p>
+      <figcaption>Проста розмітка ruby.</figcaption>
+    </figure>
+    <p>Приклад вище показує бажаний візуальний результат, а потім розмітку, що повинна це робити.</p>
+    <p>Ви хочете розмістити речення на Хірагані <span lang="ja">かみしばい</span> поверх основного тексту <span lang="ja">紙芝居</span>, яке є частиною довшого речення. Анотація як правило, написана шрифтом невеликого розміру.</p>
+    <p>Перший крок - оточити як основний текст так і анотацію розміткою <code class="kw" translate="no">ruby</code>. Тоді, в її рамках, додайте
+      основний текст до елементу <code class="kw" translate="no">rb</code> (основний елемент ruby), і анотацію до елементу <code class="kw" translate="no">rt</code> (текст ruby), в такому
+      порядку. От і все. Чи знає ваш клієнтський додаток як відобразити цю розмітку це вже інше питання, яке ми розглянемо пізніше.</p>
+    <p>Розмітка для цілого речення матиме такий вигляд:</p>
+    <div class="example" lang="ja">
+      <p lang="ja">&lt;p&gt;これは&lt;ruby&gt;&lt;rb&gt;紙芝居&lt;/rb&gt;&lt;rt&gt;かみしばい&lt;/rt&gt;&lt;/ruby&gt;です。&lt;/p&gt;</p>
+    </div>
+  </section>
+  <section>
+    <h3 id="Slide0110"><a href="#Slide0110">Комплексна ruby</a></h3>
+    <p>Комплексна розмітка ruby може встановити більш тісний зв'язок між анотаціями і основним текстом, і може об'єднати два тексти ruby із
+      одним основним текстом. Давайте подивимося на це просто.</p>
+    <p>У той час як приклад простої розмітки ruby, що ми бачили раніше пов'язує все написання тексту анотації з усім написанням основного тексту,
+      комплексна розмітка ruby дозволяє вказати, який біт анотації відноситься до якого символу в межах одного елементу <code class="kw" translate="no">ruby</code> .</p>
+    <figure>
+      <p><img src="index-data/Slide0110.gif" alt="Комплексна розмітка markup." width="361" height="221" /> </p>
+      <figcaption>Комплексна розмітка ruby.</figcaption>
+    </figure>
+    <p>Наведений вище приклад показує три символи в основному тексті <span lang="ja">林和代</span> анотовані для вимови
+      трьома рядками <span lang="ja">はやし</span>, <span lang="ja">かず</span> та <span lang="ja">よ</span>.
+      Кожна анотація чітко узгоджена з відповідним символом.</p>
+    <p>Для розмітки даних таким способом, що дозволяє нам досягти цього ми використовуємо два нові елементи <code class="kw" translate="no">rbc</code> (основне вмістилище  
+      ruby), та <code class="kw" translate="no">rtc</code> (вмістилище тексту ruby). У найпростішому випадку (як показано на слайді), кожен з цих елементів відповідно містить
+      стільки ж елементів <code class="kw" translate="no">rb</code> та <code class="kw" translate="no">rt</code>. Таким чином, елемент <code class="kw" translate="no">rb</code> і його відповідний елемент <code class="kw" translate="no">rt</code> можуть ефективно використовуватися разом у парі.</p>
+    <p>Це аналогічно використанню елементів <code class="kw" translate="no">td</code> всередині елементів <code class="kw" translate="no">tr</code> в HTML таблицях.</p>
+    <p>Розмітка для цього, буде такою яка показана на слайді:</p>
+    <div class="example" lang="ja">
+      <p lang="ja">&lt;ruby&gt;<br clear="none" />
+        &lt;rbc&gt;&lt;rb&gt;林&lt;/rb&gt; &lt;rb&gt;和&lt;/rb&gt;
+        &lt;rb&gt;代&lt;/rb&gt;&lt;/rbc&gt; <br clear="none" />
+        &lt;rtc&gt; &lt;rt&gt;はやし&lt;/rt&gt;&lt;rt&gt;かず&lt;/rt&gt;&lt;rt&gt;よ&lt;/rt&gt; &lt;/rtc&gt;<br
+						clear="none" />
+        &lt;/ruby&gt;</p>
+    </div>
+    <p>Є правило: проста ruby не має <code class="kw" translate="no">rbc</code> або <code class="kw" translate="no">rtc</code> елементів; комплексна ruby має <span
+					class="kw">rtc</span> та <code class="kw" translate="no">rtc</code> елементи.</p>
+    <p><strong class="leadin">Асоціації one-to-many.</strong> Ми можемо дізнатися трохи більше про це. На діаграмі нижче ми використовуємо
+      той же приклад, але анотації розділені тільки на два написи: перший вище прізвище, <span lang="ja">林</span>, і другий
+      над заданим ім'ям <span lang="ja">和代</span>. Іншими словами, ми пов'язували одне написання анотацій з кількома написаннями основних
+      символів.</p>
+    <figure>
+      <p><img src="index-data/Slide0120.gif" alt="Асоціації one-to-many із комплексною розміткою ruby." width="363" height="218" /> </p>
+      <figcaption>Асоціації one-to-many із комплексною розміткою ruby.</figcaption>
+    </figure>
+    <p>Це досягається шляхом застосування методу схожого на той, що використовувався при створенні таблиць в HTML. Другий і третій елементи <span
+					class="kw">rt</span> стають одним цілим, при додаванні атрибуту <code class="kw" translate="no">rbspan</code> що в даному випадку має значення №2. </p>
+    <p>Розмітка в даний час має наступний вигляд:</p>
+    <div class="example" lang="ja">
+      <p lang="ja">&lt;ruby&gt;<br clear="none" />
+        &lt;rbc&gt;&lt;rb&gt;林&lt;/rb&gt; &lt;rb&gt;和&lt;/rb&gt;
+        &lt;rb&gt;代&lt;/rb&gt;&lt;/rbc&gt; <br clear="none" />
+        &lt;rtc&gt; &lt;rt&gt;はやし&lt;/rt&gt;&lt;rt rbspan="2"&gt;かずよ&lt;/rt&gt; &lt;/rtc&gt;<br
+						clear="none" />
+        &lt;/ruby&gt;</p>
+    </div>
+    <p><strong class="leadin">Декілька анотацій.</strong> У нашому останньому прикладі комплексної анотації ruby ми показуємо як одночасно пов'язати основний
+      текст із 2 анотаціями. Нижче, приклад у верхній частині ілюстрації показує це для Японської мови, де одна анотація написана над
+      основним текстом, а інша нижче тексту.</p>
+    <figure>
+      <p><img src="index-data/Slide0130.gif" alt="Декілька анотацій з комплексной розміткою ruby." width="358" height="225" /> </p>
+      <figcaption>Декілька анотацій з комплексной розміткою ruby.</figcaption>
+    </figure>
+    <p>На даному прикладі ми дотримуємося цього просто використовуючи тільки одну пару <code class="kw" translate="no">rb</code> і <code class="kw" translate="no">rt</code>. Що тут нового - 
+      це те, що ми маємо два елементи <code class="kw" translate="no">rtc</code> всередині елемента <code class="kw" translate="no">ruby</code> (але як і раніше тільки один елемент <span
+					class="kw">rbc</span>).</p>
+    <p>Ось код:</p>
+    <div class="example">
+      <p lang="ja">&lt;ruby&gt;<br clear="none" />
+        &lt;rbc&gt;&lt;rb&gt;民政局&lt;/rb&gt;&lt;/rbc&gt;<br
+						clear="none" />
+        &lt;rtc&gt;&lt;rt&gt;みんせいきょく&lt;/rt&gt;&lt;/rtc&gt;<br clear="none" />
+        &lt;rtc&gt;&lt;rt&gt;ガバメント・セクシヨン&lt;/rt&gt;&lt;/rtc&gt; <br clear="none" />
+        &lt;/ruby&gt;</p>
+    </div>
+    <p>Ви не можете мати більше двох елементів <code class="kw" translate="no">rtc</code>, пов'язаних з одним елементом <code class="kw" translate="no">rbc</code>.</p>
+  </section>
+  <section>
+    <h3 id="Slide0140"><a href="#Slide0140">Відображення розмітки за замовчуванням</a></h3>
+    <p>Специфікація Анотації Ruby не забезпечує нормативний текст про розміщення анотацій, залишаючи це для реалізації.
+      Однак, є деякі інформативні пропозиції для клієнтських додатків щодо стилізації за замовчуванням. (Є також корисні властивості стилю, зазначені в
+      CSS3 Модулі Ruby, які ми обговоримо в наступному розділі.)</p>
+    <div class="sidenoteGroup">
+      <p>Якщо реалізація буде слідувати порадам в специфікації, то ви можете очікувати, що розмір шрифту анотації бути близько половини
+        висоти основного тексту, і для анотації в простій ruby з'являтиметься <span class="newterm">перед</span> основним текстом. В цьому випадку, 'перед',
+        це технічний термін, що використовується щоб звернутися до області вище нормальної лінії горизонтального тексту і області праворуч від лінії вертикального тексту чиї
+        стовпці розвиваються справа наліво (наприклад вертикальний Китайський, Японський і Корейський текст). Ви також розраховує на те, що текст ruby матиме таке саме спрямування
+        що і основний текст (тобто вертикальне або горизонтальне). Якщо є декілька анотацій для одного тексту, то ви можете очікувати, що перша з'явитися перед 
+        текстом, і друга <span class="newterm">після</span>, тобто нижче горизонтального тексту і зліва від вертикального тексту чиї стовпці розвиваються 
+        справа наліво.</p>
+      <div class="sideinfonote"><p class="info">'Перед' означає <em>ліворуч</em> від рядка вертикального Монгольського тексту, відтоді як стовпці розвиваються 
+        зліва направо.</p></div>
+    </div>
+    <figure>
+      <p><img src="index-data/Slide0140.gif" alt="Візуальна ілюстрація 'перед' і 'після'." width="322" height="223" /> </p>
+      <figcaption>Візуальна ілюстрація 'перед' і 'після'.</figcaption>
+    </figure>
+    <div class="sidenoteGroup">
+      <p>Це, ймовірно, дійсне для отримання очікуваних результатів для тексту на Японській мові, але в інших скриптах очікувана поведінка може відрізнятися.
+        Специфікація зазначає, що, наприклад, Піньінь ruby зазвичай з'являється після основного тексту Китайською мовою. Потрібна буде додаткова підтримка стилів, щоб
+        досягнути цього в простій ruby.</p>
+      <p>Крім того, специфікація звертає вашу увагу на той факт, що Бопомофо ruby в Китайському тексті зазвичай з'являється праворуч 
+        від символів в горизонтальному тексті, але не дає поради як це змінити.</p>
+      <div class="sideinfonote"><p class="info">Примітка: Інформацію про форматування ruby в Японському контенті можна знайти в JIS X 4051 ("Правила форматування для
+        Японських документів" (<span lang="ja">日本語文書の組版方法</span>) JIS X 4051:2004, Японська Асоціація Стандартів, 2004 (в Японській мові)).</p></div>
+    </div>
+    <p>Ми також побачимо (потім) що є функції відступу визначені в стандарті, які дозволяють послідовно відображати основний текст і ruby 
+      на клієнтських додатках, які ще не обробляють розмітку.</p>
+  </section>
+  <section>
+    <h3 id="Slide0150"><a href="#Slide0150">Механізм відступу</a></h3>
+    <p>Ми обговорювали подання, а є ще одна частина розмітки яку ми ще не дослідили. Якщо клієнтський додаток не розуміє
+      як відобразити текст ruby, він просто відобразить основний текст, який відразу слідує після тексту ruby, використовуючи той самий розмір шрифта (як показано на слайді).
+      Це заплутає користувача.</p>
+    <p>Елемент <code class="kw" translate="no">rp</code> (круглі дужки ruby) дозволяє вам вказати символи які з'являться навколо простого тексту ruby, якщо
+      клієнтський додаток не підтримує представлення ruby. Швидше за все, ви захочете використовувати тут дужки, але тут доступні будь-який символ або послідовність   
+      символів.</p>
+    <figure>
+      <p><img src="index-data/Slide0150.gif" alt="Ruby без rp розмітки." width="352" height="172" /> </p>
+      <figcaption>Ruby без rp розмітки.</figcaption>
+    </figure>
+    <p>Якщо додати елементи <code class="kw" translate="no">rp</code> перед і після тексту ruby як у цьому прикладі, то коли клієнтський додаток не в змозі буде розпізнати
+      текст ruby він з'явиться в дужках, що є більш прийнятним. Клієнтські додатки що не знають як обробити ruby автоматично ховатимуть
+      контент елементів <code class="kw" translate="no">rp</code> оскільки вони показують ruby у відповідному місці.</p>
+    <div class="example" lang="ja">
+      <p lang="ja">&lt;ruby&gt;<br clear="none" />
+        &lt;rb&gt;紙芝居&lt;/rb&gt;<br clear="none" />
+        &lt;rp&gt;(&lt;/rp&gt;<br
+						clear="none" />
+        &lt;rt&gt;かみしばい&lt;/rt&gt;<br clear="none" />
+        &lt;rp&gt;)&lt;/rp&gt;<br clear="none" />
+        &lt;/ruby&gt;</p>
+    </div>
+    <p>Ми можемо використовувати символ всередині елемента <code class="kw" translate="no">rp</code>. Наприклад, Японська мова іноді використовує різні символи для
+      круглих дужок.</p>
+    <figure>
+      <p><img src="index-data/Slide0160.gif" alt="Ruby із rp розміткою" width="355" height="216" /> </p>
+      <figcaption>Ruby із rp розміткою.</figcaption>
+    </figure>
+    <p>Зауважимо, що цей механізм відступу не доступний для комплексної ruby.</p>
+  </section>
+</section>
+<section>
+  <h2 id="Slide0170"><a href="#Slide0170">Стиль Ruby</a></h2>
+  <p>CSS3 Ruby Модуль запроваджує ряд властивостей для опису розміщення тексту ruby по відношенню до основного тексту. Зверніть увагу, що
+    ця специфікація ще не завершена, так що цей розділ прагнутиме дати вам уявлення про те, що буде можливо за допомогою цієї специфікації, а не
+    вичерпно перераховує всі можливості.</p>
+  <p>Ми використовуватимо слова 'перед' та 'після' з тим самим значенням як <a href="#Slide0140">описано раніше</a>.</p>
+  <p>Є три основні властивості: ruby-position, ruby-overhang, та ruby-align.</p>
+  <p>Теми, які ми не будемо обговорювати тут, включають:</p>
+  <ul>
+    <li>властивість <code class="kw" translate="no">ruby-span</code></li>
+    <li>невелика кількість значень властивості</li>
+    <li>модель вікна ruby і набір значень пов'язаних із властивістю <code class="kw" translate="no">відображення</code>, яку можна використати, щоб зв'язати
+      довільну XML розмітку з конструкціями ruby визначені в специфікації Анотації Ruby.</li>
+  </ul>
+  <section>
+    <h3 id="Slide0180"><a href="#Slide0180">Положення ruby</a></h3>
+    <p> Перша властивість, <code class="kw" translate="no">ruby-position</code>, дозволяє вам вказати де повинна з'явитися ruby по відношенню до основного 
+      тексту.</p>
+    <p><code class="kw" translate="no">ruby-position</code> може мати наступні властивості: <code class="kw" translate="no">before</code> (перед), <code class="kw" translate="no">after</code> (після), <code class="kw" translate="no">inline</code> (вбудована), та <code class="kw" translate="no">right</code> (праворуч). Ви можете застосувати цей стиль до елементу <code class="kw" translate="no">ruby</code>.</p>
+    <p>Для розміщення тексту ruby вище горизонтального основного тексту або праворуч від вертикального тексту, використовуйте <code>ruby-position: before</code>. Це
+      поведінка за замовчуванням. </p>
+    <figure>
+      <p><img src="index-data/Slide0180.gif" alt="Ruby-position: before" width="332" height="130" /> </p>
+      <figcaption>Ruby-position: before</figcaption>
+    </figure>
+    <p>Для розміщення тексту ruby нижче горизонтального основного тексту або зліва від вертикального тексту, використовуйте <code>ruby-position: after</code>.</p>
+    <figure>
+      <p><img src="index-data/Slide0190.gif" alt="Ruby-position: after" width="334" height="130" /> </p>
+      <figcaption>Ruby-position: after</figcaption>
+    </figure>
+    <p>Наприклад, якщо ваш документ містить Китайський текст з Піньінь ruby, і ви хочете щоб вся ruby з'являлася нижче основного тексту, ви маєте
+      включити наступне у ваші CSS призначення:</p>
+    <div class="example" lang="ja">
+      <p>ruby { ruby-position: after; }</p>
+    </div>
+    <p>Якщо ви хочете щоб текст ruby з'являвся вбудованим, то ви повинні використовувати <code>ruby-position: inline</code>. Зверніть увагу, що через помилки, 
+      це не пояснюється в поточній версії специфікації CSS3 Ruby.</p>
+    <figure>
+      <p><img src="index-data/Slide0200.gif" alt="Ruby-position: inline" width="331" height="227" /> </p>
+      <figcaption>Ruby-position: inline</figcaption>
+    </figure>
+    <p>Дужки на малюнку вище повинні бути забезпечені в розмітці <code class="kw" translate="no">rp</code>.</p>
+  </section>
+  <section>
+    <h3 id="Slide0210"><a href="#Slide0210">Вирівнювання ruby</a></h3>
+    <div class="sidenoteGroup">
+      <p>Властивість <code class="kw" translate="no">ruby-align</code> спрямовує відносне вирівнювання ruby і основного тексту коли один довший ніж 
+        інший. В основному ефект застосовується до того що коротший або текст ruby або основний текст. Це набуває таких значень: <span
+						class="kw">auto</span>, <code class="kw" translate="no">left</code>, <code class="kw" translate="no">start</code>, <code class="kw" translate="no">center</code>, <code class="kw" translate="no">end</code>, <code class="kw" translate="no">right</code>, <code class="kw" translate="no">distribute-letter</code>, <code class="kw" translate="no">distribute-space</code>, та <span
+						class="kw">line-edge</span>.</p>
+      <div class="sideinfonote">
+        <p class="info">Примітка: два окремих слова вибрані для цих прикладів, одне ліворуч, одне праворуч від вертикальної лінії.
+          Ця лінія застосовується тільки для відокремлення прикладів на слайдах, і не є частиною стайлінгу.</p>
+      </div>
+    </div>
+    <p>Якщо ви приміняєте <code class="kw" translate="no">auto</code> поведінка залишається до реалізації, але рекомендована поведінка (описана стандартом
+      JIS 4051) - це приміняти <code class="kw" translate="no">distribute-letter</code> до Китайських, Японських або Корейських символів написаних в повну ширину, але приміняти <code class="kw" translate="no">center</code> до інших. Це поведінка за замовчуванням.</p>
+    <p><code>ruby-align: distribute-letter</code> поширюється на коротший текст застосовуючи відстань між символами так що початкові
+      краї першого ruby і основного символа вирівнюються, як кінцеві краї останнього ruby і основних символів.</p>
+    <figure>
+      <p><img src="index-data/Slide0210.gif" alt="Ruby-align: distribute-letter" width="337" height="188" /> </p>
+      <figcaption>Ruby-align: distribute-letter</figcaption>
+    </figure>
+    <p><code>ruby-align: distribute-space</code> робить те ж саме, що й <code>ruby-align: distribute-letter</code>, але невеликий простір залишається
+      перед першим і після останнього символа.</p>
+    <figure>
+      <p><img src="index-data/Slide0220.gif" alt="Ruby-align: distribute-space" width="336" height="189" /> </p>
+      <figcaption>Ruby-align: distribute-space</figcaption>
+    </figure>
+    <p><code>ruby-align: center</code> вирівнює центри ruby і основного текстів.</p>
+    <figure>
+      <p><img src="index-data/Slide0230.gif" alt="Ruby-align: center" width="335" height="188" /> </p>
+      <figcaption>Ruby-align: center</figcaption>
+    </figure>
+    <p><code>ruby-align: left</code> та <code>ruby-align: start</code> є синонімами, і результатом є вирівнювання початку як ruby
+      так і основного тексту.</p>
+    <figure>
+      <p><img src="index-data/Slide0240.gif" alt="Ruby-align: left / start" width="334" height="197" /> </p>
+      <figcaption>Ruby-align: left / start</figcaption>
+    </figure>
+    <p><code>ruby-align: right</code> та <code>ruby-align: end</code> є синонімами, і результатом є вирівнювання кінця як ruby 
+      так і основного тексту.</p>
+    <figure>
+      <p><img src="index-data/Slide0250.gif" alt="Ruby-align: right / end" width="337" height="194" /> </p>
+      <figcaption>Ruby-align: right / end</figcaption>
+    </figure>
+  </section>
+  <section>
+    <h3 id="Slide0260"><a href="#Slide0260">Виступ ruby</a></h3>
+    <p>Якщо текст ruby ширший ніж основний текст, то ви можете вказати чи виступає він за будь-який оточуючий основний текст чи ні, і на
+      скільки саме він виступає, використовуючи властивість <code class="kw" translate="no">ruby-overhang</code>. Це набуває таких значень: <code class="kw" translate="no">auto</code>, <span
+					class="kw">start</span>, <code class="kw" translate="no">end</code>, та <code class="kw" translate="no">none</code>.</p>
+    <p>Щоб дозволити тексту ruby перекрити оточуючі основні символи з обох сторін використовуйте <code>ruby-overhang: auto</code>. Це залежить тільки від
+      прийняття рішення скільки перекриттів дозволити, але стандарт JIS 4051 рекомендує максимальну ширину символу ruby. Реалізація
+      також може примінити це вибірково в залежності від типу символа - для цього є правила в стандарті JIS.</p>
+    <p>Це значення за замовчуванням.</p>
+    <figure>
+      <p><img src="index-data/Slide0260.gif" alt="Ruby-overhang: auto" width="333" height="191" /> </p>
+    </figure>
+    <p><code>ruby-overhang: start</code> тільки дозволяє тексту ruby виступати за попередні основні символи.</p>
+    <figure>
+      <p><img src="index-data/Slide0270.gif" alt="Ruby-overhang: start" width="334" height="190" /> </p>
+    </figure>
+    <p><code>ruby-overhang: end</code> тільки дозволяє тексту ruby виступати за наступні основні символи.</p>
+    <figure>
+      <p><img src="index-data/Slide0280.gif" alt="Ruby-overhang: end" width="332" height="194" /> </p>
+    </figure>
+    <p><code>ruby-overhang: none</code> запобігає будь-які виступи.</p>
+    <figure>
+      <p><img src="index-data/Slide0290.gif" alt="Ruby-overhang: none" width="334" height="193" /> </p>
+    </figure>
+  </section>
+</section>
+<section>
+  <h2 id="Slide0300"><a href="#Slide0300">Виконання ruby</a></h2>
+  <section>
+    <h3 id="Slide0310"><a href="#Slide0310">Специфікації</a></h3>
+    <p>Специфікація розмітки Анотації Ruby в Травні 2001 року стала Рекомендацією W3C, так що це завершена робота.</p>
+    <p>Розмітка анотації ruby не діє в HTML 4 або XHTML 1.0 документах. Тим не менш, специфікація є одним з модулів, що складають
+      XHTML 1.1. Також очікується, що вона буде одним з модулів в XHTML 2.0, яка знаходиться в розробці.</p>
+    <p>Робота робилася <a class="print" href="/International/its/" shape="rect">Робочою Групою Набору Інтернаціоналізованих Тегів 
+      (ITS)</a> в W3C щоб зробити словник розмітки який розробники схем могли б використати для підтримки інтернаціоналізації і локалізації і швидше за все,
+      включити розмітку ruby.</p>
+    <p>14 Травня 2003 року модуль CSS3 Ruby був переміщений до Кандидатських Рекомендацій, але досі потребує редагування. Як тільки текст буде
+      готовий треба буде знайти деякі реалізації, створити і примінити тести щоб перемістити специфікацію до Пропонованого і потім повністю
+      Рекомендованого статусу.</p>
+  </section>
+  <section>
+    <h3 id="Slide0320"><a href="#Slide0320">Реалізація статуту</a></h3>
+    <p>Специфікація розмітки анотації ruby визначає два рівня відповідності. Реалізації можуть підтримувати тільки просту розмітку ruby, або
+      одночасно просту і комплексну розмітку.</p>
+    <p>Internet Explorer 5+ підтримує просту розмітку ruby в різних типах документів. Хоча фактична реалізація є не зовсім
+      тим самим що й специфікація, вона досі робить правильні речі з стандартною розміткою. Це означає, що при поданні він поміщає текст ruby над основним текстом і
+      видаляє будь-які символи в елементах <code class="kw" translate="no">rp</code>. Так як ця розмітка не є стандартом для HTML або XHTML 1.0, <em>ми не можемо рекомендувати її вам
+      для використання для цих форматів</em> (ваші сторінки більше не перевірятимуться). Тим не менш, проста ruby також підтримується в XHTML 1.1 документах, де її використання <em>є</em> дійсним.</p>
+    <p>W3C браузер Amaya підтримує відображення як простої, так і (в значній мірі) комплексної ruby.</p>
+    <p>Існує розширення для таких браузерів, як: Mozilla, Netscape 7 і Firefox що підтримує як просту так і комплексну ruby, включаючи <code class="kw" translate="no">rbspan</code>, для сторінок, які обслуговуються як "application/xhtml+xml" (а не як "text/html"). Тим не менш, <a class="print" href="http://piro.sakura.ne.jp/xul/_rubysupport.html.en">місце завантаження</a> попереджає, що:</p>
+    <blockquote>
+      <p>"Інколи це розширення спричиняє помилку, коли ви показуєте спливаючі меню, завантажуєте веб-сторінки, або працюєте з вкладками, тому що воно вторгається в
+        операції пов'язані з завантаженням сторінок. Будь ласка, не використовуйте його, у разі якщо ви хотіли б використовувати стабільний браузер"</p>
+    </blockquote>
+    <p>Masayasu Ishikawa також написав <a
+					class="print" href="http://www.w3.org/People/mimasa/test/schemas/NOTE-ruby-implementation#css2-inline-table">статтю</a>, що пропонує деякі обхідні шляхи для
+      подання простої ruby в Mozilla/Firefox, Safari і Opera 8-ї версії.</p>
+    <p>Є деякі <a class="print" href="/International/tests/#ruby" shape="rect">тести для простої і комплексної розмітки ruby</a> на 
+      сайті W3C.</p>
+    <p>Internet Explorer також забезпечує дуже обмежену підтримку для деяких властивостей CSS3 Модуля Ruby, але не завжди використовує те саме 
+      значення властивості що зазначене в специфікації. В іншому випадку нині вам навряд чи вдасться знайти підтримку для цих властивостей - що не дивно,
+      так як специфікація все ще не є рекомендацією.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a href="/TR/ruby" shape="rect">Рекомендації щодо Ruby Анотацій</a></p>
+    </li>
+    <li>
+      <p><a href="/TR/css3-ruby" shape="rect"> CSS3 Ruby Модуль</a></p>
+    </li>
+    <li>
+      <p><a href="/TR/jlreq/#en-subheading2_3">Вимоги до компонування Японсько тексту, розділ Ruby</a></p>
+    </li>
+    <li>
+      <p><a href="/International/tests/#ruby" shape="rect"> W3C i18n тест розмітки ruby</a></p>
+    </li>
+    <li>
+      <p><a href="/TR/2001/REC-xhtml11-20010531/doctype.html#s_doctype" shape="rect">Ruby Анотації в XHTML 1.1</a></p>
+    </li>
+    <li>
+      <p><a href="http://www.w3.org/People/mimasa/test/schemas/NOTE-ruby-implementation#css2-inline-table">Застосування Модуля Ruby</a></p>
+    </li>
+    <li>
+      <p>Книжка написана Ken Lunde містить корисну інформацію про ruby, CJKV Обробка Інформації (ISBN 1-56592-224-7), особливо 6
+        і 7 розділи.</p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
