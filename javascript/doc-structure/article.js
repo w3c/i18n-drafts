@@ -196,6 +196,7 @@ if (g.isTranslation) translatorCredit = s.translatedBy+' '+f.translators+s.sente
 
 var credits = "<p>"+s.author+' '+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
 if (f.contributors && f.contributors != '') credits += "<p class='acknowledgements'>"+s.acknowledgements+" "+f.contributors+"</p>"
+if (f.sources && f.sources != '') credits += "<p class='acknowledgements'>"+f.sources+"</p>"
 
 
 
