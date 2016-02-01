@@ -130,5 +130,5 @@ s.quickanswer = "Gyors válasz" // heading
 s.longeranswer = "Részletek" // heading
 s.additionalinfo = "További információ" // heading that sometimes follows 'Details'
 s.acknowledgements = "Közreműködésükért és átvett megjegyzéseikért köszönjük:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
-s.cookieMsg = "Amennyiben hozzájárul ahhoz, hogy a böngészője elfogadjon egy sütit, a <a href='http://www.w3.org/International/'>W3C Nemzetköziesítés Fejlesztési Tevékenység lapjait</a>, ha rendelkezésre állnak, az ön által választott nyelven tudja elérni. Hozzájárul a süti használatához?" // this text is to be copied to another location
+s.cookieMsg = "Amennyiben hozzájárul ahhoz, hogy a böngészője elfogadjon egy sütit, a W3C Nemzetköziesítés Fejlesztési Tevékenység lapjait, ha rendelkezésre állnak, az ön által választott nyelven tudja elérni. Hozzájárul a süti használatához?" // this text is to be copied to another location
 s.supercededTranslation = '<strong>Figyelmeztetés:</strong> Ez a dokumentumnak egy lejárt verziója! Olvassa inkább a <a href="'+g.filename+f.clang+'">legfrissebb verziót</a> és, ha lehetséges, változtassa meg azt a linket vagy könyvjelzőt amelynek révén ide jött.'
