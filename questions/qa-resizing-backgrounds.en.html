@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Background images that support localization</title>
+<meta name="description" content="How can I ensure that when text expands in translation the background images will still work?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-resizing-backgrounds' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-resizing-backgrounds' // blog search string - usually the filename without extensions
+f.firstPubDate = '2007-07-03' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2012-09-16', time:'16:42'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-02', time:'05:18'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'styling'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-resizing-backgrounds-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="stylesheet" href="qa-resizing-backgrounds-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Background images that support localization</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    CSS coders, HTML coders (using editors or scripting), and anyone who plans to apply background images behind text in fixed width columns. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">How can I ensure that when text expands in translation the background images will still work?</p>
+  </section>
+
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Text tends to change size when translated. For background information about this, see <a
+				class="print" href="/International/articles/article-text-size">Text size in translation</a>. </p>
+  <p>This means that any background images you carefully crafted to fit behind your source text may now be too small or too large. This
+    article looks at a way of dealing with this.</p>
+  <div class="note">
+    <p><strong>NOTE!</strong> The  examples chosen for this article show how to use graphics to achieve rounded corners and gradient effects that can now be done using CSS, without the need to download graphics and with simpler code. However, at the time of this update, the requisite CSS properties are not yet supported by all major browsers, and even then only by recent versions. Furthermore, you may want to still use graphics to achieve more complicated effects. Nevertheless, the article has been updated with links to live code that show how you could use CSS rather than images for these particular examples, assuming that the browser supports the necessary properties.</p>
+  </div>
+
+  <section>
+    <h3 id="problem"><a href="#problem">The problem</a></h3>
+    <p> For a first example we will keep things simple, and assume that we want to implement a fixed-width box on our page. The text can
+      expand downwards, but not sideways.</p>
+    <p>Let's also assume that we want a background with a nice gradient behind the title of the box, a line across the bottom, and rounded
+      corners. To get these effects, designers will often choose to use a background image behind the title.</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg-spanish.png" height="294" width="274" alt="A dialog box in Spanish." /></p>
+    <p>This fixed-width box in Spanish has the title 'Interface Language', and a list of radio buttons to select a language. It uses this
+      graphic to achieve the graded effect behind the title:</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg-small.gif" height="40" width="275" alt="The background graphic." /></p>
+    <p>Our CSS would look like this:</p>
+    <pre>div.box h3 {
+    margin: 0;
+    padding: 6px 8px 4px 10px;
+    font-size: 130%;
+    color: #333;
+    background: url(img/h3-bg.gif) no-repeat top left;
+    }
+</pre>
+    <p>The problem with this approach is that when we translate this dialogue box into something like Malay the title text expands to occupy
+      two lines. Because the graphic used for the gradient background is only one line deep, things now begin to look a mess.</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg-malay-broken.png" height="329" width="273"
+					alt="The same dialog box in Malay, with title background not covering the whole title." /></p>
+    <p>Similar problems can arise with horizontally expanding text. For example, suppose the original Chinese interface included a tab
+      metaphor using background images behind each link as follows.</p>
+    <p><img src="qa-resizing-backgrounds-data/tabs-chinese.gif" height="41" width="620" alt="Picture of tabs containing Chinese text." /></p>
+    <p>If images were used for the tabs, they would have to all be redrawn for every translation - a time-consuming process. This is because
+      the labels would all be different sizes in different languages. Sometimes a single background image is used for the graphic part of the tabs. Again,
+      such a background would have to be redrawn for each translation, otherwise you would see something like this:</p>
+    <p><img src="qa-resizing-backgrounds-data/tabs-broken.gif" height="42" width="619"
+					alt="Picture of Portuguese text overflowing the tabs originally set for Chinese." /></p>
+    <p>Of course, these scenarios are only examples. Such problems are not only limited to box headings and tabs, but can occur anywhere that
+      you are trying to match background graphics with text.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>The way to deal with this type of issue is to ensure that your graphic backgrounds can automatically expand with the text they are
+    related to, and to anticipate that the box containing your text may grow during translation and avoid highly constrained spaces. </p>
+  <p>In the following subsections we will briefly allude to a small number of solutions that may help. These are just illustrations of
+    possible approaches. For more information on how to apply these, see the original sources cited. We will spend a little more time on the first
+    example, so that you can understand the basic idea. There may be other approaches that work. The key thing is to think how you will provide the
+    flexibility for text to grow and shrink across different language versions.</p>
+  <p>It is important to note that the solutions described below are based on good standards-compliant code, and were initially designed to
+    support accessibility, since people with poor vision often want to boost the text size. The approach works equally well for localization issues.</p>
+
+  <section>
+    <h3 id="first"><a href="#first">Titles in fixed width boxes</a></h3>
+    <p>This solution deals with variable text height. One way to approach this issue is to use a graphic that is three or four lines deep behind the title. This example uses a technique
+      described in Dan Cederholm's book, Bulletproof Web Design.</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg.gif" height="120" width="273" alt="A larger version of the background graphic." /></p>
+    <p>By attaching the graphic using the CSS background property, only the amount needed to view the title will actually be shown. </p>
+    <p>Note that the graphic no longer provides the solid line underneath the title. We can still apply such a line, however, by adding to
+      the CSS as follows.</p>
+    <pre>div.box h3 {
+    margin: 0;
+    padding: 6px 8px 4px 10px;
+    font-size: 130%;
+    color: #333;
+    background: url(img/h3-bg.gif) no-repeat top left;
+    <strong style="color: red;">border-bottom: 1px solid #E0CFAB;</strong>
+   }
+</pre>
+    <p>This will now produce the effect we are looking for in the translated version.</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg-malay.png" height="325" width="273" alt="The Malay box, looking fine now." /></p>
+    <p>Of course, a similar technique has to be used for the lower part of the box, since that text may also change and, with different content, add or subtract lines of text.</p>
+    <p>See an <a href="qa-resizing-backgrounds-data/examples/qa-resizing-backgrounds-1">example of how to do this in CSS</a>, for browsers that support the necessary CSS properties.</p>
+  </section>
+  
+  <section>
+    <h3 id="tabsection"><a href="#tabsection">Tabs</a></h3>
+    <p>This technique builds on the simple approach just described and shows how to maintain several graphic edges to a box while stretching the interior space horizontally. It is based on the article "<a class="print" href="http://alistapart.com/articles/slidingdoors/">Sliding Doors of CSS</a>" by Doug
+      Bowman. The basic idea is similar to that in the previous section, albeit a little more complicated to code. Each tab has two background
+      graphics:</p>
+    <p><img src="qa-resizing-backgrounds-data/slidingdoors/left.gif" alt="A background image for the left part of the tab." width="9" height="150" /> and <img src="qa-resizing-backgrounds-data/slidingdoors/right.gif" alt="A background image for the right part of the tab." width="400" height="150" />.</p>
+    <p>The two graphics are attached as backgrounds to two different, overlapping elements. Only the needed parts of the graphics are
+      visible, and the result looks like a single background. (The article describes some additional code for the currently selected tab and the line at the
+      base of the other tabs.)</p>
+    <p>The following tabs in Chinese and Italian use exactly the same code - only the label text has been changed - but the tabs accommodate
+      the varied label sizes perfectly, even when the text shrinks rather than expands.</p>
+    <div class="sidenoteGroup">
+      <div id="tabs">
+        <div class="tabspace">
+          <ul>
+            <li><a href="#tabsection">首頁</a></li>
+            <li class="current"><a href="#tabsection">你的足跡</a></li>
+            <li><a href="#tabsection">管理</a></li>
+            <li><a href="#tabsection">自己人</a></li>
+            <li><a href="#tabsection">小組</a></li>
+          </ul>
+        </div>
+        <div class="tabspace">
+          <ul>
+            <li><a href="#tabsection">Home</a></li>
+            <li class="current"><a href="#tabsection">Tu</a></li>
+            <li><a href="#tabsection">Organizza</a></li>
+            <li><a href="#tabsection">Contatti</a></li>
+            <li><a href="#tabsection">Gruppi</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="sideinfonote"><p class="info">These examples are designed into this page - they aren't graphics - so you can test the expanding/shrinking
+        behavior by increasing/decreasing the text size for this page in Firefox.</p></div>
+    </div>
+    <p>Note that we have left some expansion space to the right of the tabs. You should also consider doing this. If there is not enough
+      space available, you will need to find a solution that allows tabs to wrap onto another line, and allow for the box or column to grow downwards to
+      accomodate that.</p>
+    <p>See an <a href="qa-resizing-backgrounds-data/examples/qa-resizing-backgrounds-2">example of how to do this in CSS</a>, for browsers that support the necessary CSS properties.</p>
+  </section>
+  
+  <section>
+    <h3 id="boxes"><a href="#boxes">Boxes</a></h3>
+    <p>This example looks at boxes that can vary in size in both directions. It uses an adaptation of another technique described in Dan Cederholm's book, Bulletproof Web Design, and also draws on the
+      Sliding Doors approach.</p>
+    <div class="expandingbox">
+      <div class="container">
+        <p class="desc">English:</p>
+        <p class="link"><em><a href="#boxes" class="firefox">International­ization Activity, W3C</a></em></p>
+      </div>
+      <div class="container">
+        <p class="desc">Japanese:</p>
+        <p class="link"><em><a href="#boxes" class="firefox">国際化活動 W3C</a></em></p>
+      </div>
+      <div class="container">
+        <p class="desc">Russian:</p>
+        <p class="link"><em><a href="#boxes" class="firefox">Деятельность по интернационализации, консорциум W3C</a></em></p>
+      </div>
+    </div>
+    <div class="sidenoteGroup">
+      <p>The HTML source code for each box is the same, except for the text. The CSS is also the same.</p>
+      <p>A <code class="kw" translate="no">max-width</code> property has been used to ensure that the box width is never greater than 250 pixels, but it can be less than that (as is
+        likely the case for the Japanese, if your font size is the default for this page). This causes new lines to be added to the box if the contained text
+        is long. Nevertheless, the graphics that create the border and the rounded corners still look right.</p>
+      <div class="sideinfonote"><p class="info">You can find the code used for the HTML and CSS by examining the source text for this page.</p></div>
+    </div>
+    <p>There is, however, one potential issue that remains. If a single word is longer than the <code class="kw" translate="no">max-width</code> setting, it will stick out of the side
+      of the box. For example, with the default font settings for this page, the word for internationalization (<span lang="ru"
+					xml:lang="ru">интернационализации</span>) will probably not fit in a box with <code class="kw" translate="no">max-width</code> set to <code class="kw" translate="no">100px</code>. There are two things that can be done here.</p>
+    <ul>
+      <li>Don't make the <code class="kw" translate="no">max-width</code> too narrow. Remember that not only are foreign words sometimes longer than the source text, but that some
+        languages create compound nouns by adding the components together to form a single word. For example, the German for "Input processing features" is
+        "<span>Eingabeverarbeitungsfunktionen</span>".</li>
+    </ul>
+    <ul>
+      <li>Make sure the translator knows where text will be used in restricted width boxes, and by how much, and get them to add soft
+        hyphens inside the long words (ie. &amp;#xAD; or &amp;shy;). On major browsers, these hyphens are invisible normally, but where a word is too wide
+        for its box, then recent versions of major browsers will split the word and the hyphen will appear at the end of the line, like this:
+        <p><img src="qa-resizing-backgrounds-data/soft-hyphen.gif" height="102" width="140"
+							alt="Picture of a box where Internationalization is split with a hyphen after the 'l'." /></p>
+      </li>
+    </ul>
+    <p>See an <a href="qa-resizing-backgrounds-data/examples/qa-resizing-backgrounds-3">example of how to do this in CSS</a>, for browsers that support the necessary CSS properties.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Bulletproof Web Design, by Dan Cederholm. ISBN 0-321-34693-9</p>
+    </li>
+    <li>
+      <p><a href="http://alistapart.com/articles/slidingdoors/">Sliding Doors of CSS</a></p>
+    </li>
+    <li>
+      <p><a href="/Style/Examples/007/roundshadow.html">Rounded corners and shadowed boxes</a></p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

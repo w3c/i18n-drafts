@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Hintergrundbilder, die die Lokalisierung eines Dokumentes erleichtern</title>
+<meta name="description" content="Wie kann sichergestellt werden, dass ein Text nach der Übersetzung immer noch mit seinen Hintergrundbildern übereinstimmt, auch wenn sich die Menge des Textes nach der Übersetzung vergrößert hat?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-resizing-backgrounds' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-resizing-backgrounds' // blog search string - usually the filename without extensions
+f.firstPubDate = '2007-07-03' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2012-09-16', time:'16:42'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-02', time:'05:18'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Carolin Winterholler, <a href="http://www.copypanthers.se">Copypanthers</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'styling'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-resizing-backgrounds-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="stylesheet" href="qa-resizing-backgrounds-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Hintergrundbilder, die die Lokalisierung eines Dokumentes erleichtern</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    CSS, XHTML/HTML Programmierer (die einen Editor oder Skript zum Programmieren benutzen) und jeder, der vor hat, Hintergrundbilder mit einem Text zu verbinden, der in Spalten mit fester Breite eingepasst wurde.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Wie kann ich sicherstellen, dass ein übersetzter Text auch nach einer Längenänderung noch in das Hintergrundbild passt?</p>
+  </section>
+
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Es ist sehr wahrscheinlich, dass sich die Größe eines Textes nach der Übersetzung ändert. Hintergrundinformationen dazu siehe <a class="print" href="/International/articles/article-text-size">"Textlängen und Übersetzungen"</a>.</p>
+  <p>Das bedeutet, dass jedes Hintergrundbild, welches im Vorfeld sorgfältig angepasst wurde, um hinter den Quelltext zu passen, nun zu groß oder zu klein sein könnte. Dieser Artikel befasst sich mit der Lösung diese Problems.</p>
+  <div class="note" style="clear:none;">
+    <p><strong>WICHTIG!</strong> Die Beispiele, die für diesen Text ausgewählt wurden, zeigen, wie man Grafiken benutzt, um runde Ecken und einen Gradient-Effekt hervorzurufen. Diese Effekte können heutzutage auch mit einem einfachen CSS-Code erzeugt werden und es ist nicht mehr nötig, Grafiken herunterzuladen. Zu der Zeit jedoch, als das Update für diesen Artikel erstellt wurde, wurden die nötigen CSS-Eigenschaften noch nicht von allen Internetbrowsern unterstützt und selbst wenn, dann nur von der neuesten Version. Außerdem werden oft Grafiken benutzt, um ansprechendere Effekte zu erzielen. Nichtsdestotrotz wurde der aktualisierte Artikel, unter der Annahme, dass der Browser die nötigen Eigenschaften unterstützt, mit Verweisen auf Seiten ausgestattet, deren Quelltexte zeigen, wie man CSS statt Grafiken für diese bestimmten Beispiele verwenden kann.</p>
+  </div>
+
+  <section>
+    <h3 id="problem"><a href="#problem">Das Problem</a></h3>
+    <p>Das erste Beispiel ist einfach gehalten. Wir nehmen an, dass wir eine Box mit festgelegter Breite in unsere Seite einfügen wollen. Der Text kann sich in der Länge, aber nicht in der Breite ausdehen.</p>
+    <p>Wir nehmen an, dass wir einen Hintergrund mit einem schönen Verlauf hinter dem Titel der Box einfügen möchten. Außerdem hätten wir gerne einen Strich zwischen Titel und Text und abgerundete Ecken. Um diese Effekte zu erzielen, werden oft Hintergrundbilder hinter den Titel gelegt.</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg-spanish.png" height="294" width="274" alt="Ein Dialogfenster in Spanisch" /></p>
+    <p>Diese Box mit einer festen Breite ist in spanischer Sprache und hat den Titel "Interface Language". Außerdem hat sie eine Reihe mit Radio-Buttons, um Sprachen auszuwählen. Die folgende Grafik wird benutzt, um den Verlaufseffekt hinter dem Titel zu generieren:</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg-small.gif" height="40" width="275" alt="Die Hintergrund-Grafik" /></p>
+    <p>Unser CSS-Code würde dann so aussehen:</p>
+    <pre>
+div.box h3 {
+    margin: 0;
+    padding: 6px 8px 4px 10px;
+    font-size: 130%;
+    color: #333;
+    background: url(img/h3-bg.gif) no-repeat top left;
+    }
+</pre>
+    <p>Ein Problem tritt auf, wenn wir das Dialogfenster in eine Sprache wie Malaiisch übersetzen. Der Text erstreckt sich dann über zwei Zeilen. Die Grafik, die wir für den Verlauf benutzt haben, umfasst aber nur eine Zeile und ist somit kleiner als der Text - damit fängt das Durcheinander an.</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg-malay-broken.png" height="329" width="273" alt="Das gleich Dialogfenster in Malaiisch. Der Hintergrund stimmt nicht mit dem Titel überein." /></p>
+    <p>Das gleiche Problem tritt auch bei Texten auf, die sich in die der Breite erweitern. In diesem Beispiel sehen wir einen chinesischen Text auf Registrierkarten. Hinter jeder Registrierkarte wurde eine Hintergrundgrafik eingefügt.</p>
+    <p><img src="qa-resizing-backgrounds-data/tabs-chinese.gif" height="41" width="620" alt="Bild mit Registrierkarten mit chinesischen Schriftzeichen" /></p>
+    <p>Wenn Bilder für Tabs benutzt werden, müssen sie bei jeder Übersetzung neu angepasst werden - das kostet Zeit. Das ist so, weil sich die einzelnen Überschriften, je nach Sprache, in der Länge unterscheiden. Manchmal wird auch nur ein einziges Hintergrundbild für den graphischen Teil der Registrierkarte benutzt. Auch diese müsste bei jeder Übersetzung angepasst werden, sonst würde die Registrierkarte so aussehen:</p>
+    <p><img src="qa-resizing-backgrounds-data/tabs-broken.gif" height="42" width="619" alt="Registrierkarten mit portugiesischem Text. Der Text ist nun zu lange für die Registrierkarten, da diese auf chinesische Schriftzeichen ausgerichtet waren." /></p>
+    <p>Natürlich sind das nur Beispiele. Diese Probleme treten natürlich nicht nur bei Boxen und Tabs auf, sondern überall, wo ein Text und ein Hintergrundbild kombiniert werden.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Dieses Problem kann vermieden werden, indem man sicherstellt, dass sich die Hintergrund- Grafik automatisch an die Länge des verknüpften Textes anpasst.</p>
+  <p>Im Folgenden werden wir kurz ein paar Lösungen aufzeigen, die bei diesem Problem helfen können. Es folgt die Darstellungen von möglichen Herangehensweisen. Weitergehende Informationen finden Sie im zitierten Originaltext. Wir werden das erste Beispiel etwas ausführlicher erklären, um den grundsätzlichen Gedankengang klarzumachen. Es gibt auch andere Herangehensweisen, um das Problem zu lösen. Das Ziel ist jedoch herauszufinden, wie man dem Text die nötige Flexibilität gibt, um sich in seiner Länge und Breite verändern zu können.</p>
+  <p>Wichtig zu beachten ist, dass die beschriebenen Lösungswege nur in Verbindung mit normgerechter Programmierung funktionieren. Sie wurden entwickelt, um die Zugriffszahlen auf Webseiten zu erhöhen. Der Hinweis ist deshalb wichtig, weil gerade minderwertige Internetseiten in vielen Fällen versuchen, die Menge des auf ihr dargestellten Textes zu vergrößern. Die unten erklärte Herangehensweise funktioniert auch bei Lokalisierungsproblemen.</p>
+
+  <section>
+    <h3 id="first"><a href="#first">Titel in Boxen mit festgelegter Breite</a></h3>
+    <p>Dieser Lösungsweg beschäftigt sich mit der einer variablen Texthöhe. Eine Herangehensweise ist, eine Grafik zu benutzen, die drei oder vier Zeilen länger ist, als der Titel. Diese Technik wird in dem Buch Bulletproof Web Desing von Dan Cederholm beschrieben.</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg.gif" height="120" width="273" alt="Eine großere Version der Hintergrund-Grafik." /></p>
+    <p>Wenn man eine Grafik in das Dokument einfügt und dabei mit der CSS-Background-Property arbeitet, wird nur der Teil der Grafik gezeigt, der auch der Länge des Titels entspricht.</p>
+    <p>Wichtig, die Grafik hat jetzt keine durchgehende Linie mehr unter dem Titel. Wir können diese Linie aber mit dem folgenden Code hinzufügen:</p>
+    <pre>
+div.box h3 {
+    margin: 0;
+    padding: 6px 8px 4px 10px;
+    font-size: 130%;
+    color: #333;
+    background: url(img/h3-bg.gif) no-repeat top left;
+    <strong class="c2">border-bottom: 1px solid #E0CFAB;</strong>
+   }
+</pre>
+    <p>Dieser Code sorgt für den gewünschten Effekt in der übersetzten Version</p>
+    <p><img src="qa-resizing-backgrounds-data/h3-bg-malay.png" height="325" width="273" alt="Die Box in malaiischer Sprache. Jetzt sieht sie gut aus." /></p>
+    <p>Natürlich muss für den unteren Teil der Box die gleiche Technik benutzt werden, da sich dieser Text ebenfalls in seiner Länge verändern kann.</p>
+    <p>Hier ein <a href="qa-resizing-backgrounds-data/examples/qa-resizing-backgrounds-1">Beispiel, wie man diese Technik mit CSS umsetzt</a>. Für Browser, die die notwendigen CSS-Eigenschaften unterstützen.</p>
+  </section>
+  
+  <section>
+    <h3 id="tabsection"><a href="#tabsection">Registrierkarten</a></h3>
+    <p>Diese Technik baut auf dem eben gezeigten einfachen Lösungsansatz auf. Sie zeigt, wie man mehrere grafische Flächen in einer Box zusammenfassen kann, obwohl sich deren Inhalt in der Breite ausdehnen wird. Diese Technik basiert auf dem Artikel "<a class="print" href="http://alistapart.com/articles/slidingdoors/">The Sliding Doors in CSS</a>" von Doug Bowman. Die Grundidee ist die gleiche, wie im vorherigen Abschnitt, wenn auch etwas schwieriger zu programmieren. Jedes Tab hat zwei Hintergrundgraphiken:</p>
+    <p><img src="qa-resizing-backgrounds-data/slidingdoors/left.gif" alt="Ein Hintergrundbild für die linke Seite des Tabs." width="9" height="150" /> und <img src="qa-resizing-backgrounds-data/slidingdoors/right.gif" alt="Ein Hintergrundbild für die rechte Seite des Tabs." width="400" height="150" />.</p>
+    <p>Die zwei Grafiken sind zwei Hintergrundbilder mit überlappenden Elementen. Nur die Teile der Grafiken, die als als Hintergund des Textes dienen, sind sichtbar. Das Resultat sieht aus, wie ein einzelner Hintergrund. (Im Artikel werden zusätzliche Codes für diese Tabelle, sowie die Linie am Ende der Registrierkarte im anderen Beispieles beschrieben.)</p>
+    <p>Die folgende Registrierkarte in chinesischer und italienischer Sprache wurden mit dem selben Code programmiert. Einzig der Text auf den Labels wurde geändert. Die Labels passen sich an den Text an, egal ob der ab- oder zunimmt.</p>
+    <div class="sidenoteGroup">
+      <div id="tabs">
+        <div class="tabspace">
+          <ul>
+            <li><a href="#tabsection">首頁</a></li>
+            <li class="current"><a href="#tabsection">你的足跡</a></li>
+            <li><a href="#tabsection">管理</a></li>
+            <li><a href="#tabsection">自己人</a></li>
+            <li><a href="#tabsection">小組</a></li>
+          </ul>
+        </div>
+        <div class="tabspace">
+          <ul>
+            <li><a href="#tabsection">Home</a></li>
+            <li class="current"><a href="#tabsection">Tu</a></li>
+            <li><a href="#tabsection">Organizza</a></li>
+            <li><a href="#tabsection">Contatti</a></li>
+            <li><a href="#tabsection">Gruppi</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="sideinfonote"><p class="info">Die gezeigten Beispiele wurden an die Seite angepasst - und sind somit keine Grafiken. Ihr Verhalten beim Vergrößern bzw. Verkleinern kann getestet werden, wenn man die Größe des Textes in Firefox verändert.</p></div>
+    </div>
+    <p>Wichtig zu beachten ist, dass wir an der rechten Seite der Registrierkarte etwas Platz gelassen haben. Es ist ratsam das zu tun. Sollte seitlich nicht genügend Platz vorhanden sein, ist es wichtig nach unten Platz zu schaffen. Die Wörter können so in die nächste Zeile ausweichen und die Spalte wird sich nach unten hin vergrößern.</p>
+    <p>Siehe dazu: <a href="qa-resizing-backgrounds-data/examples/qa-resizing-backgrounds-2">ein Beispiel, wie man diese Technik mit CSS umstetzt</a>. Für Browser, die die nötigen CSS-Eigenschaften unterstützen.</p>
+  </section>
+  
+  <section>
+    <h3 id="boxes"><a href="#boxes">Boxen</a></h3>
+    <p>Dieses Beispiel befasst sich mit Boxen, deren Größe sich in nach unten und zur Seite hin verändern können. Dazu beschreiben wir die Abwandlung einer Technik aus Dan Cederholm´s Buch: Bulletproof Web Desing, welche sich des "Sliding Doors"-Lösungsansatzes bedient.</p>
+    <div class="expandingbox">
+      <div class="container">
+        <p class="desc">English:</p>
+        <p class="link"><em><a href="#boxes" class="firefox">International­ization Activity, W3C</a></em></p>
+      </div>
+      <div class="container">
+        <p class="desc">Japanese:</p>
+        <p class="link"><em><a href="#boxes" class="firefox">国際化活動 W3C</a></em></p>
+      </div>
+      <div class="container">
+        <p class="desc">Russian:</p>
+        <p class="link"><em><a href="#boxes" class="firefox">Деятельность по интернационализации, консорциум W3C</a></em></p>
+      </div>
+    </div>
+    <div class="sidenoteGroup">
+      <p>Der XHTML-Quellcode für jeden Kasten ist gleich, lediglich der Text ist anders. Das gleiche gilt auch für denn CSS-Code.</p>
+      <p>Die Eigenschaft <code class="kw" translate="no">max-width</code> wurde benutzt, um sicherzustellen, dass die Box in keinem Fall größer als 250 Pixel wird. Sie kann aber kleiner sein und (wie im japanischen Beispiel, dort entspricht die Schriftgröße der Standarteinstellung) die Grafiken, für die Linien und die abgerundeten Ecken, sind immer noch an der richtigen Stelle.</p>
+      <div class="sideinfonote"><p class="info">Der Code, der für XHTML und CSS benutzt wurde, kann dem Quelltext dieser Seite entnommen werden.</p></div>
+    </div>
+    <p>Ein mögliches Problem besteht aber weiterhin, wenn ein einziges Wort länger ist, als die Einstellung <code class="kw" translate="no">max-width</code> und über den Rand der Box hinausragt. Mit der Standarteinstellung für die Schriftgröße auf dieser Seite, wird zum Beispiel das Wort für Internationalisierung (<span lang="ru">интернационализации</span>) wahrscheinlich nicht in den Kasten mit der Einstellung <code class="kw" translate="no">max-width</code> eingestellt auf <code class="kw" translate="no">100px</code> passen. In diesem Fall kann man zwei Dinge tun:</p>
+    <ul>
+      <li>Bemessen Sie die Einstellung für die <code class="kw" translate="no">max-width</code> nicht zu knapp. Wir erinnern uns, dass nicht nur längere Wörter, sondern auch zusammengesetzte Hauptwörter den Quelltext verlängern können, indem sie einzelne Wörter zu einem ganzen Wort verbinden. Ein Beispiel dafür wäre die deutsche Übersetzung von "Input processing features" "<span>Eingabeverarbeitungsfunktionen</span>".</li>
+    </ul>
+    <ul>
+      <li>Es muss auch sichergestellt werden, dass der Übersetzer weiß, wenn ein Text in eine Box mit festgelegter Größe eingesetzt wird. Außerdem ist es gut, weiche Trennzeichen (z.B. &amp;#xAD; oder &amp;shy;) zu benutzen. Bei den meisten Browsern sind diese Trennzeichen unter normalen Umständen nicht sichtbar, wenn ein aber Wort zu breit für eine Box werden sollte, werden die neuesten Versionen der Browser das Wort teilen. Ein Trennzeichen wird am Ende der Zeile angezeigt. Siehe hier:
+        <p><img src="qa-resizing-backgrounds-data/soft-hyphen.gif" height="102" width="140" alt="Bild einer Box." /></p>
+      </li>
+    </ul>
+    <p>Siehe dazu: <a href="qa-resizing-backgrounds-data/examples/qa-resizing-backgrounds-3">Ein Beispiel, wie man diese Technik in CSS umstetzt</a>. Für Browser, die die nötigen CSS-Eigenschaften unterstützen.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Bulletproof Web Design, by Dan Cederholm. ISBN 0-321-34693-9</p>
+    </li>
+    <li>
+      <p><a href="http://alistapart.com/articles/slidingdoors/">Sliding Doors of CSS</a></p>
+    </li>
+    <li>
+      <p><a href="/Style/Examples/007/roundshadow.html">Rounded corners and shadowed boxes</a></p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
