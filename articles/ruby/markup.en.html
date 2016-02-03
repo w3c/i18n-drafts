@@ -15,12 +15,12 @@ f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-ruby-markup'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2016-02-02'; // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2016-02-02', time:'11:57'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2016-02-03', time:'11:57'}  // date and time of latest substantive changes to this document
 f.status = 'draft';  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-02-03', time:'11:50'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2016-02-03', time:'13:09'} // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -85,15 +85,14 @@ function highlightCode () {
   <h2 id="Slide0090"><a href="#Slide0090">A simple example</a></h2>
   <p>Let's start out with a simple example, then we can discuss more detailed aspects later. Let's suppose we want to produce the following:</p>
   <figure>
-  <p lang="ja" class="rubyExample">これは<ruby>
-    <rb>日</rb><rt>に</rt><rb>本</rb><rt>ほん</rt><rb>語</rb><rt>ご</rt></ruby>です。</p>
+  <p lang="ja" class="rubyExample">これは<ruby><rb>日</rb><rt>に</rt><rb>本</rb><rt>ほん</rt><rb>語</rb><rt>ご</rt></ruby>です。</p>
   </figure>
   <p>There are a number of ways to use  HTML markup to produce even this simple example. What follows uses opening and closing tags, and uses tags for <code class="kw" translate="no">rb</code> elements, but we'll see in a moment that there are alternative approaches that use less markup, or move the markup around.</p>
   <figure class="example">
   <p><code>これは&lt;ruby&gt;    <span class="nowrap">&lt;rb&gt;日&lt;/rb&gt;&lt;rt&gt;に&lt;/rt&gt;</span>    <span class="nowrap">&lt;rb&gt;本&lt;/rb&gt;&lt;rt&gt;ほん&lt;/rt&gt;</span>    <span class="nowrap">&lt;rb&gt;語&lt;/rb&gt;&lt;rt&gt;ご&lt;/rt&gt;</span>    <span class="nowrap">&lt;/ruby&gt;です。</span></code></p>
   </figure>
   <p>The <code class="kw" translate="no">rb</code> element has the ruby base, and the following <code class="kw" translate="no">rt</code> element has the associated ruby text. </p>
-  <p>The example shows gaps between each <code class="kw" translate="no">rb</code>+<code class="kw" translate="no">rt</code> pair – this is just to improve the readability of the example. It makes no difference to the result as long as you are using both start and end tags.</p>
+  <p>The example shows gaps between each <code class="kw" translate="no">rb</code>+<code class="kw" translate="no">rt</code> pair – in principle, this is just to improve the readability of the example. It should make no difference to the result as long as you are using both start and end tags. Unfortunately, at the time of writing, Microsoft Edge doesn't ignore the spaces, so actually you need to eliminate any gaps in your code.</p>
   <p>Browsers will automatically position the annotations above the base characters in horizontal writing mode, and to the right in vertical writing mode. To change that you will need to use CSS (<code class="kw" translate="no">ruby-position</code>). That and other ways to alter the rendering of the ruby are discussed in the companion article, <a href="/International/articles/ruby/styling" class="print">Ruby Styling</a>.</p>
   </section>
   
@@ -142,35 +141,22 @@ function highlightCode () {
 <h2 id="single"><a href="#single">Producing single-sided ruby</a></h2>
 <p>This section tells you how to produce various types of single-sided ruby annotation, and covers various things to bear in mind.</p>
 
-  <section>
+<section>
     <h3 id="mono_group_etc"><a href="#mono_group_etc">Mono vs. group vs. jukugo</a></h3>
     <p>The most common approach for ruby annotation is to associate each base character with a single ruby text, ie. <a class="termref print" href="index#def_mono_ruby">mono ruby</a>. All of the earlier examples illustrate mono ruby.</p>
     <p>Mono ruby makes it easy to handle line breaks when justifying text, since the browser can split the line between any two base characters. It also maps base characters and annotations precisely, and allows styling to apply the fine rendering control you may need. </p>
     <p><a class="termref print" href="index#def_group_ruby">Group ruby</a>, on the other hand, assigns a single annotation to a sequence of base characters, and these base characters can no longer be split at the end of a line. Situations where group ruby is appropriate include sequences of base characters that are associated with a single phonetic sound, or semantic ruby that applies to a whole word, or even a phrase. </p>
-<p>Here is an example that shows group ruby on the left, and mono-ruby on the right. Note the difference in how the annotations are distributed in relation to the base characters.</p>
+    <p>Here is an example that shows group ruby on the left, and mono-ruby on the right. Note the difference in how the annotations are distributed in relation to the base characters.</p>
     <figure>
-    <p lang="ja" class="rubyExample">
-      <ruby>
-        <rb>今日</rb>
-        <rt>きょう</rt>
-      </ruby>
-      の
-      <ruby>
-        <rb>会</rb>
-        <rt>かい</rt>
-        <rb>議</rb>
-        <rt>ぎ</rt>
-      </ruby>
-    </p>
+      <p lang="ja" class="rubyExample"><ruby><rb>今日</rb><rt>きょう</rt></ruby>の<ruby><rb>会</rb><rt>かい</rt><rb>議</rb><rt>ぎ</rt></ruby></p>
     </figure>
-<p>To mark up group ruby you simply put more than one base character in the <code class="kw" translate="no">rb</code> tag, as shown in the following code sample.</p>
+    <p>To mark up group ruby you simply put more than one base character in the <code class="kw" translate="no">rb</code> tag, as shown in the following code sample.</p>
     <figure class="example">
       <p><code>&lt;ruby&gt;&lt;rb&gt;今日&lt;rt&gt;きょう&lt;/ruby&gt;の&lt;ruby&gt;&lt;rb&gt;会&lt;rt&gt;かい&lt;rb&gt;議&lt;rt&gt;ぎ&lt;/ruby&gt;。</code></p>
-</figure>
-<p>If you want to apply <a class="termref print" href="index#def_jukugo_ruby">jukugo</a> rules to your ruby text, you should just mark  up the content in the same way as mono ruby. You don't need to worry about the overlaps in the markup. That will be taken care of by CSS. As previously mentioned, the markup simply estabishes the correspondances between base characters and annotations.</p>
+    </figure>
+    <p>If you want to apply <a class="termref print" href="index#def_jukugo_ruby">jukugo</a> rules to your ruby text, you should just mark  up the content in the same way as mono ruby. You don't need to worry about the overlaps in the markup. That will be taken care of by CSS. As previously mentioned, the markup simply estabishes the correspondances between base characters and annotations.</p>
   </section>
-  
-  <section>
+<section>
     <h3 id="bopomofo"><a href="#bopomofo">Bopomofo</a></h3>
     <p>Bopomofo, or zhuyin fuhao, characters used in ruby with Traditional Chinese characters are marked up in exactly the same way as mono ruby. No special markup is needed.</p>
     <div class="sidenoteGroup">
