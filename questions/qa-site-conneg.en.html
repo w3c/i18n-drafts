@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Managing multilingual pages on the Internationalization Activity subsite</title>
-<meta name="description" content="How does the W3C Internationalization Activity manage articles that have  translations?" />
+<title>Guiding users to translated pages</title>
+<meta name="description" content="If my site contains alternative language versions of the same page, what can I do to help the user see the page in their preferred language?" />
 <script type="application/javascript">
 var f = { }
 
@@ -43,7 +43,7 @@ f.breadcrumb = 'navigation';
 <header> 
   <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
 
-  <h1>Routing people to translated pages on the Internationalization Activity subsite</h1>
+  <h1>Guiding users to translated pages (draft!)</h1>
 </header>
 
 
@@ -53,20 +53,19 @@ f.breadcrumb = 'navigation';
   HTML developers (using editors or scripting),  Web project managers, and anyone who is interested in a case study of content negotiation and language switching.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script></div>
 
-    <p class="note"><b>NOTE!</b>This article is in development. It is not safe to refer to it or use the information it contains.</p>
+    <p class="note" style="clear:none;"><b>NOTE!</b>This article is in development. It is not safe to refer to it or use the information it contains.</p>
 
     <h2 id="question"><a href="#question">Question</a></h2>
-  <p class="question">How does the W3C Internationalization Activity manage articles that have  translations?</p>
-  <p>This article explains how we guide the reader to the right place when content such as this,  is available in more than one language. </p>
-  <p>The article focuses on pages for which there are complete translations of the content. If your alternative pages have different content, or are regional variants rather than translations, you may need to do things differently.</p>
+  <p class="question">If my site contains alternative language versions of the same page, what can I do to help the user see the page in their preferred language?</p>
+  <p>This article focuses on pages for which there are complete translations of the content. If your alternative pages have different content, or are regional variants rather than translations, you may need to do things differently.</p>
 </section>
 
 
 <section id="nutshell">
-    <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
-  <p>We initially use server-based content-negotiation to point you to the page that matches your browser preferences, but we add links to each page so that you can change languages easily if you prefer.</p>
-  <p>If you switch to a different language, we remember and serve up subsequent pages in that language, overriding your browser settings.</p>
-  <p>Each of these things is described in more detail in the sections that follow.</p>
+  <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>Use server-based content-negotiation to point the user to the page that matches their browser preferences, but <em>also</em>  add links to the page so that the user can change languages easily if they prefer.</p>
+  <p>Consider how to indicate to the user where the in-page language links are, and if the page is available in a long list of languages, consider whether or not to use something like a select control (and if so, how to make it obvious what its function is).</p>
+  <p>If the user switches to a different language, offer them the opportunity to remember that choice and serve up subsequent pages in that language, overriding their browser settings.</p>
 </section>
 
 
@@ -75,39 +74,62 @@ f.breadcrumb = 'navigation';
   
   <section>
     <h3 id="bom"><a href="#bom">Content negotiation</a></h3>
-    <p>It's usually helpful to  guide a reader automatically to a page in a language they prefer, if such a page is available.  This is called <dfn id="def_content_negotiation">content negotiation</dfn>, and is done by the server when they request a page.</p>
-    <p>This makes it easier for the user to quickly get to content in the language they prefer. There may be times when this delivers a page in a language the reader doesn't actually want,  but there are ways to help with that, as you will see below.</p>
+    <p>It's usually helpful to  automatically guide a reader  to a page in a language they prefer, if such a page is available.  This is called <dfn id="def_content_negotiation">content negotiation</dfn>, and is done by the server when they request a page.</p>
+    <p>This makes it easier for the user to quickly get to content in the language they prefer. There may be times when this delivers a page in a language the reader doesn't actually want,  but there are ways to help with that, as we will see below.</p>
     <p>For the page you are reading now, the server looks at the <code class="kw" translate="no">Accept-Language</code> header, sent via HTTP when your browser requests a page. </p>
-    <p>The <code class="kw" translate="no">Accept-language</code> header takes information from your browser settings. When you install a browser, these preferences are always set, but in most browsers the reader can also <a href="http://www.w3.org/International/questions/qa-lang-priorities">change or add to their language preferences</a>. You can also specify a ranked list of languages to look for if the one at the top of your list is not available.</p>
-    <p><a target="_blank" href="http://validator.w3.org/i18n-checker/check?uri=www.w3.org%2FInternational%2Fquestions%2Fqa-translate-flag#validate-by-uri+">See what information your browser sent to the server</a> when it requested this page (look for Accept-language at the bottom of the table).</p>
-    <p>The page you are reading is served by an Apache server. When doing content-negotiation, there are two common ways of managing page redirects with Apache: <dfn>multiviews</dfn> or <dfn>type maps</dfn>. We <a href="#varFiles">use type maps</a> because we feel it gives us greater flexibility in redirecting requests. The downside is that it requires some additional files on the server, and those files need to be edited when a translation is added or removed. We have an article that describes <a href="http://www.w3.org/International/questions/qa-apache-lang-neg">how to use multiviews</a>, if you prefer that approach.</p>
-    <p>Whichever content-negotiation method is used, you should ensure that there is a default option, which comes into play when the requested language(s) is or are not available. In the case of the page you are reading, the fallback is to the English version, because that is the original version, is most up-to-date and has undergone wide review. English is also chosen because the W3C views it as the most widely accessible language, worldwide.</p>
-    <p>Of course, some people may prefer to fall back to another language that they know well, rather than to English. This is a matter of personal preference. If you prefer to fall back to another language, before receiving the English version, you should <a href="http://www.w3.org/International/questions/qa-lang-priorities">set your browser or system's language preferences</a> to a ranked list of languages. If content-negotiation fails for your preferred language, it will try the others in your list, in order.</p>
+    <div class="sidenoteGroup">
+     <p>The <code class="kw" translate="no">Accept-language</code> header takes information from the  browser settings. When you install a browser, these preferences are always set, but in most browsers you can also <a href="http://www.w3.org/International/questions/qa-lang-priorities">change or add to their language preferences</a>. You can also specify a ranked list of languages to look for if the one at the top of their list is not available.</p>
+     <aside class="sideinfonote">
+    <p><a target="_blank" href="http://validator.w3.org/i18n-checker/check?uri=www.w3.org%2FInternational%2Fquestions%2Fqa-translate-flag#validate-by-uri+">See what information your browser sent to the server</a> when it requested this page (after clicking on the link, look for Accept-language at the bottom of the table).</p>
+    </aside>
+    </div>
+    <p>Be wary about using IP addresses or other location services to guess the language of the user. This approach can be useful for accessing region-specific services or finding local information, etc., but it can cause problems for content language negotiation since the location of the user doesn't necessarily tally with the language in which they prefer to read a web page.</p>
+    <p>Whichever content-negotiation method is used, you should ensure that there is a default option, which comes into play when the requested language(s) is or are not available. In the case of the page you are reading, the fallback is to the English version, because that is the original version, is most up-to-date and has undergone wide review. English is also chosen because the W3C views it as the most widely accessible lingua franca.</p>
+    <p>Of course, as a user, you may prefer to fall back to another language that you know well, rather than to English. This is a matter of personal preference. If you prefer to look for another language before being redirected to the English default version, you should <a href="http://www.w3.org/International/questions/qa-lang-priorities">set your browser or system's language preferences</a> to a ranked list of languages. If content-negotiation fails for your preferred language, it will try the others in your list, in order.</p>
+    <p>You may also find the article <a class="print" href="/International/questions/qa-when-lang-neg">When to use language negotiation</a> useful. It discusses in more detail when it is appropriate, or not, to use language negotiation. </p>
+    </section>
+    
+  <section>
+    <h3 id="genericLinks"><a href="#genericLinks">Links in the source code</a></h3>
+    <p>Using content negotiation also makes it a lot easier to manage translations and to pass links to others.</p>
+    <p>Without content negotiation, the source text of a page would be full of links hard-wired to a particular language version, such as <code class="kw" translate="no">qa-site-conneg.en.html</code>. With content-negotiation, that link becomes simply <code class="kw" translate="no">qa-site-conneg</code>.</p>
+    <p>That reduces work for translators,  is less prone to error, and makes it easier to manage changes as new language versions are added or removed. It also alleviates potential problems if you want to send a link to someone else, since they would automatically see the page in their preferred language.</p>
+    <p>The only time you would use <code class="kw" translate="no">qa-site-conneg.en</code> is when you specifically want to point to a particular language version.</p>
   </section>
   
   <section>
     <h3 id="yyyshortcomings"><a href="#yyyshortcomings">Links on the page</a></h3>
-    <p>As we mentioned above, there may be times when the language requested by your browser is not the language you actually prefer when reading this page. Reasons for this may include that you prefer reading technical information in English, or you prefer reading the original rather than a translation, or perhaps you are using a colleague's computer or working from a cyber-café in a foreign country.</p>
-    <p>For this reason we always add links to alternate language versions on every page. </p>
-    <p>On this page, you'll find them at the top right corner of the page. We put them there because we think you can spot them easily. We don't	think that such information should be hidden, since you may be looking at a page full of text that means nothing to you. The easier it is to find those links, the better.</p>
-    <p>If you look at the links at the top of this page, you'll notice that they are in the language of the page they point to. This again is to help you find what you need. If you were English and faced with a Persian page, and if the link to the English page was written in Arabic, you might not find it easily!</p>
-    <p>Since we have the space for it, all the links are visible at once. If you have a long list of alternatives, you may prefer to use a pull-down list. There are significant drawbacks with that approach, however. The main one is how to indicate what the selection control is for in a language neutral way, so that you can find it easily. We have an article about things to consider when <a href="http://www.w3.org/International/questions/qa-navigation-select">using selection lists for language navigation</a>. </p>
-    <p>Another key recommendation is to resist the temptation to use country flags to identify languages. Some countries have more than one language, and some languages are spoken in more than one country. The article just mentioned gives additional advice on these issues, and includes a number of further recommendations which are also relevant even if you use links (like on this page) rather than a selection list.</p>
+    <p>As we mentioned above, there may be times when the language requested by the user's browser is not the language they actually prefer when reading that particular page. This may be because they prefer reading technical information in English, or they prefer reading the original rather than a translation, or perhaps they are using a colleague's computer or working from a cyber-café in a foreign country and therefore don't control the browser language preferences.</p>
+    <p>For this reason it is always best to add links to alternate language versions, and to do so on every page. </p>
+    <p>On the page you are currently reading, you'll find them at the top right corner of the page. <span class="ed">Prepare some translations before publishing this article! </span>We put them there to make it easy to spot them easily as soon as you arrive at the page. Such information should not be hidden, since the user may be looking at a page full of text that means nothing to them. The easier it is to find those links, the better.</p>
+    <p>It's true that if a link brings you into the middle of the page you won't see the language selectors, but at least they should be easy to find, if needed.</p>
+    <p>If you look at the links at the top of this page, you'll notice that they are in the language of the page they point to. This again is to help users find what they need. If you were English and faced with a Persian page, and if the link to the English page was written in Arabic, you might not find it easily!</p>
+    <p>Since we have the space for it, all the links are visible at once. If you have a long list of alternatives, you may prefer to use a pull-down list. There can be significant drawbacks with that approach, however. The main one being how to indicate, in a language neutral but clearly recognisable way, what the selection control does. The article <a href="http://www.w3.org/International/questions/qa-navigation-select">Using <code class="kw" translate="no">select</code> to link to localized content</a> goes into greater detail about things you should consider when using a pull-down list.</p>
+    <p>Another key recommendation is to resist the temptation to use country flags to identify languages. Some countries have more than one language, and some languages are spoken in more than one country. Although flags may be suitable to link to <em>geographically</em> tailored versions of a page, such as a UK vs. a Canadian vs. an Australia retail site, they are not appropriate for linking to pages that are simply translations.</p>
   </section>
   
   <section>
     <h3 id="stickiness"><a href="#stickiness">Overriding the content negotiation</a></h3>
-    <p>Suppose your native language is Spanish and so your browser is set to receive content in Spanish most of the time, but suppose you understand English and you prefer to read the W3C articles in the English original. How does that work, given that we use content negotiation&nbsp;to determine which language version to send you?</p>
-    <p>If you are redirected to a Spanish page every time you follow a link, this can quickly become tiresome. You need some way to indicate that you want to stay in English while reading pages on this site, and a mechanism that ensures that you do.</p>
-    <p>We enable this by setting a cookie&nbsp;any time you click on the language links at the top right of the page. Every time you load one of these pages,	the server checks whether you have a cookie set and active, and if so, serves you the language version you last viewed.</p>
-    <p>Using this session mechanism is a lot easier to manage than translating each link in the page to point explicitly to the language version of that page. The latter approach creates extra work for translators, and is prone to error. It also causes problems if you want to send a link to someone who doesn't speak the same language as you. For&nbsp;example, if you copied a link to this page into an email, and sent it to your German friend, the file&nbsp;name would be <code class="kw" translate="no">qa-site-conneg.en</code>.&nbsp; Such a file name would not be content-negotiated, so your German-speaking friend would be taken to the English page, and would have to switch to German manually. Instead, links you copy from this site would have a file name such as qa-site-conneg, and the server would use the mechanisms just described to send your German friend to the German version of the page, or to another language that they last viewed.</p>
+    <p>Suppose your native language is Spanish and so your browser is set to receive content in Spanish most of the time, but suppose also that you understand English and you prefer to read technical articles such as W3C pages in the English original.</p>
+    <p>If you are redirected to a Spanish page every time you follow a link and have to manually move to the English page, this can quickly become tiresome. You need some way to indicate that you want to stay in English while reading pages on the site, and a mechanism that ensures that you do.</p>
+    <p>The page you are reading enables this by allowing the user to set a cookie&nbsp;any time they click on the language links at the top right of the page. Every time they load one of these pages,	the server checks whether the cookie is set and active, and if so, serves them the language version they last viewed.</p>
+    <p>You can do the same thing with <code class="kw" translate="no">localStorage</code>, if you prefer that to cookies.</p>
   </section>
+</section>
+
+<section>
+<h2 id="additional"><a href="additional">Additional information</a></h2>
   
   <section>
+    <h3 id="apacheConneg"><a href="#apacheConneg">Which type of content negotiation to use on Apache?</a></h3>
+    <p>The page you are currently reading is served by an Apache server. When doing content-negotiation, there are two common ways of managing page redirects with Apache: <dfn>multiviews</dfn> or <dfn>type maps</dfn>. We <a href="#varFiles">use type maps</a> because we feel it gives us greater flexibility in redirecting requests, but your mileage may vary. The downside is that it requires some additional files on the server, and those files need to be edited when a translation is added or removed. See the next section for a quick overview of type maps. We also have an article that describes <a href="http://www.w3.org/International/questions/qa-apache-lang-neg">how to use multiviews</a>, if you prefer that approach.</p>
+  </section>
+
+  <section>
     <h3 id="varFiles"><a href="#varFiles">Using type maps for content negotiation</a></h3>
-    <p>As we mentioned above, we use the type map approach for content negotiation on our Apache server. See <a href="http://httpd.apache.org/docs/2.4/mod/mod_negotiation.html">the Apache documentation</a> for full details of how to use this approach.</p>
-    <p>To use type maps we create a file in the same directory as the main file, with the same name, but with the extension <code class="kw" translate="no">.var</code>. This file is invoked by the server when a file of that name is requested without a language extension (ie. .en, or .de). The file tells the server where to look for the specific language version.</p>
-    <p>You also need to configure your server to use type maps content negotiation by adding an <a href="http://httpd.apache.org/docs/2.4/mod/mod_mime.html#addhandler">AddHandler directive</a>. We use:</p>
+    <p>What follows are some brief notes about using the type map approach for content negotiation on a Apache server. See <a href="http://httpd.apache.org/docs/2.4/mod/mod_negotiation.html">the Apache documentation</a> for full details of how to use this approach.</p>
+    <p>To use type maps you create a file in the same directory as the main file, with the same name, but with the extension <code class="kw" translate="no">.var</code>. This file is invoked by the server when a file of that name is requested without a language extension (ie. .en, or .de). The file tells the server where to look for the specific language version.</p>
+    <p>You also need to configure your server to use type maps content negotiation by adding an <a href="http://httpd.apache.org/docs/2.4/mod/mod_mime.html#addhandler">AddHandler directive</a>. For example, we use:</p>
     <pre style="margin-left: 8%;" translate="no">AddHandler type-map .var</pre>
     <p>Here is an example of a <code class="kw" translate="no">.var</code> file:</p>
     <pre style="margin-left: 8%;" translate="no">URI: qa-lang-priorities
@@ -122,7 +144,7 @@ URI: qa-lang-priorities.en.php
 
 Content-language: es
 Content-type: text/html
-URI: another-file.php
+URI: another-file-with-long-name-so-you-notice.php
 
 Content-language: uk
 Content-type: text/html
@@ -131,34 +153,13 @@ URI: qa-lang-priorities.uk.php
 URI: qa-lang-priorities.en.php
 Content-type: text/html
 </pre>
-    <p>When a request comes in for the resource http://www.w3.org/International/questions/qa-lang-priorities, the server looks at the <code class="kw" translate="no">Accept-Language</code> header sent by the browser. If it is <code class="kw" translate="no">de</code> (German), the server will look down the list and send back the file <code class="kw" translate="no">qa-lang-priorities.de.php</code>. </p>
-    <p>Now note how, if the incoming <code class="kw" translate="no">Accept-Language</code> header is set to <code class="kw" translate="no">es</code> (Spanish), the server routes the request to a  file with a completely different name. We don't actually do this on our server, but it can occasionally be useful. </p>
+    <p>When a request comes in for the resource <a href="http://www.w3.org/International/questions/qa-lang-priorities">http://www.w3.org/International/questions/qa-lang-priorities</a>, the server looks at the <code class="kw" translate="no">Accept-Language</code> header sent by the browser. If it is <code class="kw" translate="no">de</code> (German), the server will look down the list and send back the file <code class="kw" translate="no">qa-lang-priorities.de.php</code>. </p>
+    <p>Now note how, if the incoming <code class="kw" translate="no">Accept-Language</code> header is set to <code class="kw" translate="no">es</code> (Spanish), the server routes the request to a  file with a completely different name. It could also be in a different directory.</p>
     <p>Finally note that the last two lines define the default case: if no <code class="kw" translate="no">Accept-Language</code> is matched to the items above, the server will return the nominated file (in this case the English version at <code class="kw" translate="no">qa-lang-priorities.en.php</code>).</p>
   </section>
-  
-  <section>
-    <h3 id="languageSelector"><a href="#languageSelector">Creating the in-page language selector</a></h3>
-    <p>If a page has many translations, creating and maintaining the set of language links such as we have at the top right of this page is difficult without some type of scripting.</p>
-    <p>These pages use a PHP template, which creates the links automatically from a single, simple list. We keep this list in a separate file (for this page it is called <code class="kw" translate="no">qa-site-conneg-trans.php</code>). In fact, the file typically contains additional information that is used to generate alerts if the translation for a given page is not based on an up-to-date version of the original.</p>
-    <p>Here is an example:</p>
-    <pre style="margin-left: 8%;" translate="no">&lt;?php
-$versions = array('bg', 'de', 'el', 'en', 'es','ro', 'ru', 'uk');
-
-$outofdatetranslations = array('pl');
-?></pre>
-    <p>Each time a page is served, the PHP code constructs the appropriate links for each page whose language tag is listed in <var>$versions</var>. It does the same for languages listed in <var>$outofdatetranslations</var>, but adds a banner to the top of the page to advise the user that the translation is not based on the most up-to-date version of the content.</p>
-  </section>
 </section>
-
-
-<section>
-  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
-  <p>To find out how to change your browser's language preferences, see the article <a href="International/questions/qa-lang-priorities">Setting language preferences in a browser</a>.</p>
-</section>
-
-
 <section> 
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+  <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
   <ul id="full-links">
