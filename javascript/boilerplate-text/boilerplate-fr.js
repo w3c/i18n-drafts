@@ -53,7 +53,7 @@ s.accessKeyN = 'Utiliser la touche d\'accès n pour naviguer au sein de la page.
 s.examplesInAnotherScript = "Ce document contient des exemples dans une autre langue et une autre écriture.";
 s.worldMap = "Carte du monde";
 s.searchI18nSite = "Recherche sur le site I18N"; 
-s.translationDisclaimer = 'Ce document est une traduction. En cas de divergences ou d\'erreurs, la <a href="'+f.filename+'.en">dernière version originale en anglais</a> fait autorité. Comme indiqué ci-dessous, les <a href="#copyright">droits d\'auteur</a> reviennent au W3C.'
+s.translationDisclaimer = 'Ce document est une traduction fournie bénévolement. En cas de divergences ou d\'erreurs, la <a href="'+f.filename+'.en">dernière version originale en anglais</a> fait autorité. Comme indiqué ci-dessous, les <a href="#copyright">droits d\'auteur</a> reviennent au W3C.'
 s.translator = "Traducteur:";
 s.relatedLinks = "Liens utiles";
 s.articles = "Articles"; // used in breadcrumbs, top right of page 
@@ -114,22 +114,23 @@ s.codedInUtf8 = "Codé en UTF-8 !";
 
 s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" GMT."; 
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
-s.untranslatedChanges = '<strong>Note:</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
-s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
-s.new="New";// placed alongside new articles at http://www.w3.org/International/articlelist 
-s.updated="Updated"; // same as New
-s.translation_updated="Translation updated:"; // date appears after colon 
+s.historyOfDocumentChanges = 'Pour l’historique des modifications du document, veuillez consulter <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">le flux d’actualité</a> pour les changements conséquents, et <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la liste des « commits » sur Github</a> pour voir toutes les modifications apportées depuis janvier 2016.'
+s.untranslatedChanges = '<strong>Remarque :</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. Les changements ont été intégrés à cette page, et il est possible que vous verez certains passages en anglais en attendant que la traduction soit mise à jour.'
+s.unlinkedTranslation = '<strong>Avertissement :</strong> Des modifications importantes ont été apportées à la version originale en anglais depuis qu’elle a été traduite. Il est recommandé de lire  <a href="'+f.filename+'.en">une version dans une autre langue</a> en attendant que cette traduction soit mise à jour.'
+s.new="Nouveau";// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.updated="Mis à jour"; // same as New
+s.translation_updated="Traduction mise à jour:"; // date appears after colon 
 
 s.aboutThisArticle="À propos de cet article"; // title in the right column near the top of the page
 s.status_draft="Cet article est un brouillon qui n’a pas encore été proposé à relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
 s.status_review="Cet article est proposé à relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
 s.status_published="Cet article a été relu par le Groupe de Travail Internationalisation du W3C et a subi un processus de relecture publique pour le rendre aussi précis que possible. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
 s.status_notreviewed="Cet article n’a pas fait l’objet d’une relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
-s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
+s.status_obsolete="Cet article est maintenant dépassé. Il n’est plus entretenu et est probablement inexact. Pour plus de renseignements sur la mise à jour, consulter la <a href='http://www.w3.org/International/'>page d’accueil des Activités d’internationalisation</a>."
 s.tests=""; // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Réponse courte"; // heading
-s.longeranswer = "Réponse longue"; // heading
+s.longeranswer = "Détails"; // heading
 s.additionalinfo = "Information complémentaire" // heading that sometimes follows 'Details'
 s.acknowledgements = "Nous remercions également les personnes suivantes pour leur contribution ou leurs commentaires\u202F:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Si vous acceptez que votre navigateur crée un cookie, vous continuerez de voir les pages d’activité d’internationalisation de W3C (lorsque cela est possible) dans la langue de votre choix. Souhaitez-vous créer le cookie\u202F?" // this text is to be copied to another location
+s.supercededTranslation = '<strong>Avertissement :</strong> Ceci est une version dépassée de ce document! Il est recommandé de lire <a href="'+g.betterfilename+'.en">la dernière version</a> et si vous le pouvez, de modifier le marque-page ou le lien qui vous a redirigé ici.'
