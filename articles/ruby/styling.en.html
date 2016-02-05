@@ -43,7 +43,14 @@ f.additionalLinks = ''
 .rubyExample { font-size: 40px; font-family: "ms mincho"; margin: 0; }
 .el { color: #D61B1B; font-size: 100%; font-weight: 400; margin: 0 2px; }
 .nowrap { white-space:nowrap; }
+ruby { font-size: 40px; color: #333; font-family: "ms mincho", stsong, 'lisong pro';  }
+rt {}
+rb {}
+rtc {}
 </style>
+<!-- styling for alignment examples:
+ruby { font-size: 55px; font-family: "ms mincho", stsong, 'lisong pro'; color: #333; }
+-->
 <script>
 function highlightCode () {
 	var examples = document.querySelectorAll('figure.example')
@@ -73,29 +80,35 @@ function highlightCode () {
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
-  <p>Ruby is the name given to the small annotations in Japanese and Chinese content that are rendered alongside base text, usually to provide phonetic information, but sometimes to provide other information. We will assume that you are familiar with how you want your ruby to look. (If not,  <a class="print" href="/International/articles/ruby/">see the short overview</a> of how ruby works.)</p>
+  <p>Ruby is the name given to the small annotations in Japanese and Chinese content that are rendered alongside base text, usually to provide a pronunciation guide, but sometimes to provide other information. We will assume that you are familiar with ruby, and how you want it to look. (If not,  <a class="print" href="/International/articles/ruby/">see the short overview</a> of how ruby works.)</p>
   <p>This article will only discuss how to use CSS <em>styling</em> to affect the rendering of ruby content. For information about how to create the markup needed to support ruby, see <a href="/International/articles/ruby/markup" class="print">Ruby Markup</a>.</p>
-  <p>The editor's draft of the <a href="https://drafts.csswg.org/css-ruby-1/">CSS Ruby Layout Module Level 1</a> provides a number of initial properties for describing the placement of ruby text in relation to the base text. Later versions of the spec are expected to add more properties. Note that
-    this specification is not yet finalized, so this section will aim to give you an idea of what to expect if it is fully implemented, as well as describing what is currently supported.</p>
+    <aside class="insideimplnote">
+  <p class="impl"> While the main body of the text explains how to achieve the result you want using CSS, as described in the editor's draft of the CSS Ruby Layout module, you'll find boxes like this that explain some of the associated caveats and issues, as well as identifying which features that are not supported by one browser or another.</p>
+    </aside>
+  <p>The editor's draft of the <a href="https://drafts.csswg.org/css-ruby-1/">CSS Ruby Layout Module Level 1</a> provides a number of initial properties for describing the placement of ruby text in relation to the base text. Later versions of the spec are expected to add more properties. Note that this specification is not yet finalized, so this section will aim to give you an idea of what to expect if it is fully implemented, as well as describing what is currently supported.</p>
   <p>We won't simply reproduce the spec itself here, but rather provide guidance about how content authors can achieve key techniques. We will assume that your ruby content is marked up appropriately, so that the mapping between ruby bases and ruby text is correct.</p>
 </section>
 
 
 <section>
   <h2 id="ruby_position"><a href="#ruby_position">Positioning ruby relative to the base text</a></h2>
-    <p> The  property <code class="kw" translate="no">ruby-position</code> allows you to indicate where ruby text should appear relative to the base
+    <p> This section looks at how you make the ruby text appear above, below or to the side of the ruby base
       text.</p>
-    <p><code class="kw" translate="no">ruby-position</code> can have the following values: <code class="kw" translate="no">over</code>, <code class="kw" translate="no">under</code>, and <code class="kw" translate="no">inter-character</code>. You would apply this style to the <code class="kw" translate="no">ruby</code> element. We will also mention, in this section, how to make the ruby text appear inline after the ruby base.</p>
-    
     <section>
     <h3 id="position_over"><a href="#position_over">Positioning ruby text 'over' the base</a></h3>
     <p>By 'over' we mean above horizontal text and to the right of vertical CJK text.</p>
+<div class="sidenoteGroup">
     <figure>
-      <p lang="ja" class="rubyExample" style="float:left;margin-right: 5em;"><ruby><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
-      <p lang="ja" class="rubyExample" style="float:left; writing-mode: vertical-rl;"><ruby><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
-    </figure><br style="clear:left;"/>
-    <p>This is
-      the default behavior, and you can expect browsers to produce this without CSS. </p>
+    <p><img style="margin-right: 40%; vertical-align:top;" src="styling-data/ruby-position-over-hor.png" alt="Horizontal ruby for 水芝居(みずしばい)"><img src="styling-data/ruby-position-over-ver.png" alt="Vertical ruby for 水芝居(みずしばい)"></p>
+      <!--p lang="ja" class="rubyExample" style="float:left;margin-right: 5em;"><ruby><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
+      <p lang="ja" class="rubyExample" style="float:left; writing-mode: vertical-rl;"><ruby><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p-->
+    </figure>
+<aside class="implnote">
+  <p class="impl">Works  in Chrome, Firefox, Safari and Edge, because this is the default rendering for ruby. <br>
+    <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position">See tests for standard syntax</a>.</p>
+</aside>
+</div>
+    <p>This is the default behavior, and you can expect browsers to produce this without CSS. </p>
     <p>If you need to place the ruby explicitly in this position, use:      </p>
     <figure class="example" lang="ja">
       <p>ruby { ruby-position: over; }</p>
@@ -106,11 +119,18 @@ function highlightCode () {
     <section>
     <h3 id="position_under"><a href="#position_under">Positioning ruby text 'under' the base</a></h3>
     <p>By 'under' we mean below horizontal text and to the left of vertical CJK text.</p>
+    <div class="sidenoteGroup">
     <figure>
-      <p lang="ja" class="rubyExample" style="float:left;margin-right: 5em;"><ruby style="ruby-position: under;"><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
-      <p lang="ja" class="rubyExample" style="float:left; writing-mode: vertical-rl;"><ruby style="ruby-position: under;"><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
-    </figure><br style="clear:left;"/>
-    <p>This position is often used in Japanese for semantic information (as opposed to phonetic labelling). It is also used sometimes for pinyin annotations in Chinese. Here is an example from the moedict dictionary.</p>
+    <p><img style="margin-right: 40%; vertical-align:top;" src="styling-data/ruby-position-under-hor.png" alt="Horizontal ruby for  水芝居(みずしばい)"><img src="styling-data/ruby-position-under-ver.png" alt="Vertical ruby for  水芝居(みずしばい)"></p>
+      <!--p lang="ja" class="rubyExample" style="float:left;margin-right: 5em;"><ruby style="ruby-position: under;"><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
+      <p lang="ja" class="rubyExample" style="float:left; writing-mode: vertical-rl;"><ruby style="ruby-position: under;"><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p-->
+    </figure>
+ <aside class="implnote">
+  <p class="impl">Works  only in  Firefox using standard syntax. Works in Chrome and Safari if you use <code class="kw" translate="no">-webkit-ruby-position: after</code>.<br>
+    <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position">See tests for standard syntax</a>, and <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position_prop">for proprietary syntax</a>.</p>
+</aside>
+</div>
+   <p>This position is often used in Japanese for semantic information (as opposed to phonetic labelling). It is also used sometimes for pinyin annotations in Chinese. Here is an example from the moedict dictionary.</p>
     <figure>
     <p><img src="styling-data/pinyin-under.png" width="267" height="190" alt=""/></p>
     </figure>
@@ -123,11 +143,17 @@ function highlightCode () {
     <section>
     <h3 id="bopomofo_position"><a href="#bopomofo_position">Positioning bopomofo ruby</a></h3>
     <p>In Traditional Chinese, bopomofo (zhuyin fuhao) ruby appears to the right of the base character, whether the text is set horizontally or vertically. Furthermore, the bopomofo annotation is always set vertically and the tone marks (apart from the light tone) are moved into an additional column to the right of the bopomofo characters.</p>
-    <figure style="font-family: 'LiSong Pro';">
-    <p><img src="styling-data/bopomofo.png" style="width: 350px;" alt="Ruby for 電(ㄉㄧㄢˋ)腦(ㄋㄠˇ)"></p>
-      <!--p lang="zh-TW" class="rubyExample" style="float:left;margin-right: 5em;"><ruby style="ruby-position: under; font-size: 60px;"><rb>電</rb><rt style="font-size=30%;">ㄉㄧㄢˋ</rt><rb>腦</rb><rt style="font-size:30%;">ㄋㄠˇ</rt></ruby></p>
-      <p lang="zh-TW" class="rubyExample" style="float:left; writing-mode: vertical-rl;"><ruby style="ruby-position: under; font-size: 60px;"><rb>電</rb><rt style="font-size:30%;">ㄉㄧㄢˋ</rt><rb>腦</rb><rt style="font-size:30%;">ㄋㄠˇ</rt></ruby></p-->
+    <div class="sidenoteGroup">
+    <figure>
+    <p><img style="margin-right: 40%; vertical-align:top;" src="styling-data/bopomofo-hor.png" alt="Horizontal ruby for 電(ㄉㄧㄢˋ)腦(ㄋㄠˇ)"><img src="styling-data/bopomofo-ver.png" alt="Vertical ruby for 電(ㄉㄧㄢˋ)腦(ㄋㄠˇ)"></p>
+      <!--p lang="zh-TW" style="float:left;margin-right: 5em;"><ruby><rb>電</rb><rt>ㄉㄧㄢˋ</rt><rb>腦</rb><rt>ㄋㄠˇ</rt></ruby></p>
+      <p lang="zh-TW"><ruby><rb>電</rb><rt>ㄉㄧㄢˋ</rt><rb>腦</rb><rt style="font-size:30%;">ㄋㄠˇ</rt></ruby></p-->
     </figure>
+ <aside class="implnote">
+  <p class="impl">Doesn't work in any browser.<br>
+    <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position">See tests for standard syntax</a>, and <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position_prop">for proprietary syntax</a>.</p>
+</aside>
+</div>
     <p>The vertical placement for the bopomofo and the relative position of the tone characters within the invisible box to the right of the Han base character relies on the browser, and possibly font information. You don't need to specify anything in CSS. </p>
     <p>What you <em>do</em> have to do in CSS, however, is indicate that this will be bopomofo ruby, so that the annotation doesn't appear 'over' or 'under' the base text. To do that, you need the <code class="kw" translate="no">inter-character</code> value of <code class="kw" translate="no">ruby-position</code>.</p>
     <figure class="example" lang="ja">
@@ -143,9 +169,8 @@ function highlightCode () {
       <figure class="example" lang="ja">
         <p>&lt;ruby&gt;<br>
           &lt;rb&gt;電&lt;rb&gt;腦<br>
-        &lt;rtc&gt;&lt;rt&gt;ㄉㄧㄢˋ&lt;rt&gt;diàn&lt;/rt&gt;&lt;/rtc&gt;<br>
-        &lt;rtc&gt;
-        &lt;rt&gt;ㄋㄠˇ&lt;rt&gt;nǎo&lt;/rt&gt;&lt;/rtc&gt;<br>
+        &lt;rtc&gt;&lt;rt&gt;ㄉㄧㄢˋ&lt;rt&gt;ㄋㄠˇ&lt;/rt&gt;&lt;/rtc&gt;<br>
+        &lt;rtc&gt;&lt;rt&gt;diàn&lt;rt&gt;nǎo&lt;/rt&gt;&lt;/rtc&gt;<br>
         &lt;/ruby&gt;</p>
       </figure>
       <aside class="sideinfonote"><p class="warning">To make the examples of markup easier to read, we have split the ruby element components onto several lines. In theory, this should work fine. However, in practise, Microsoft Edge will add unwanted spaces to the rendered text. Therefore you should keep all the markup on a single line.</p></aside>
@@ -164,8 +189,8 @@ function highlightCode () {
       </figure>
       <p>you could use CSS like this:</p>
       <figure class="example" lang="ja">
-        <p>ruby + rt { ruby-position: under; }<br>
-          ruby &gt; ruby &gt; rt { ruby-position: inter-character; }
+        <p>ruby { ruby-position: under; }<br>
+          ruby  ruby { ruby-position: inter-character; }
         </p>
       </figure>
 	</section>
@@ -174,15 +199,21 @@ function highlightCode () {
     <section>
     <h3 id="inline_position"><a href="#inline_position">Rendering ruby text inline</a></h3>
     <p>In some situations you may want the ruby text to appear inline, after the base text. For example, the Ruby markup article describes how complicated kanji characters with ruby on top can create accessibility issues. In other cases you may want to do this because the user interface is too small for ruby text to be legible, or because you want to repurpose the content for another type of application, etc.</p>
-    <p>&nbsp;</p>
+ <aside class="insideimplnote">
+  <p class="impl">Works in all browsers.<br>
+    <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position">See tests for standard syntax</a>, and <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position_prop">for proprietary syntax</a>.</p>
+</aside>
     <figure>
       <p lang="ja" class="rubyExample" style="font-size: 150%; float:left;margin-right: 4em;">水芝居（みずしばい）</p>
       <p lang="ja" class="rubyExample" style="font-size: 150%; float:left; writing-mode: vertical-rl;">水芝居（みずしばい）</p>
     </figure><br style="clear:left;"/>
-    <p>To achieve this you need to change the <code class="kw" translate="no">display</code> value for the <code class="kw" translate="no">rt</code> element. If you haven't used an <code class="kw" translate="no">rp</code> element in your markup, you will also need to surround the ruby text with something, to set it off from the base text. Here we use the <code class="kw" translate="no">before</code> and <code class="kw" translate="no">after</code> pseudoelements.</p>
+    <p>To achieve this you need to change the <code class="kw" translate="no">display</code> value for the <code class="kw" translate="no">rt</code> element. You also need to set the font size to be the same as the base text, since the browser will have set a default size for the <code class="kw" translate="no">rt</code> element.</p>
     <figure class="example" lang="ja">
-      <p>rt { display: inline; }<br>
-        rt::before { content: '（'; }<br>
+      <p>rt { display: inline; font-size: 1em; }</p>
+  </figure>
+    <p>If you haven't used an <code class="kw" translate="no">rp</code> element in your markup, you will also need to surround the ruby text with something, to set it off from the base text. Here we use the <code class="kw" translate="no">before</code> and <code class="kw" translate="no">after</code> pseudo-elements to surround it with parentheses.</p>
+    <figure class="example" lang="ja">
+      <p>        rt::before { content: '（'; }<br>
         rt::after { content: '）'; }
       </p>
   </figure>
@@ -192,12 +223,27 @@ function highlightCode () {
 
 <section>
   <h2 id="alignment"><a href="#alignment">Aligning annotations and bases</a></h2>
+  <div class="sidenoteGroup">
   <p>When the ruby text annotation is longer than the ruby base it belongs to, or vice-versa, there can be several different ways of dealing with the extra space that is lying around. The CSS Ruby spec deals with this mostly through the use of the <code class="kw" translate="no">ruby-align</code> property.</p>
+  <aside class="sideinfonote">
+    <p class="info">The examples in this section are slightly unusual in that they use group ruby and distort pinyin annotations in order to clearly illustrate the point being made. We also add red lines to help clarify positioning.</p>
+  </aside> 
+  </div>
   <p>This property can be used on the <code class="kw" translate="no">ruby</code> element, but also on individual ruby bases and texts, if needed.</p>
   
   <section>
   <h3 id="aligning_ends"><a href="#aligning_ends">Aligning the edges</a></h3>
+<div class="sidenoteGroup">
+  <figure>
   <p><img src="styling-data/ruby-align-start.png" alt="Picture of start-aligned text."/></p>
+  </figure>
+  <!--p><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p-->
+<aside class="implnote">
+  <p class="impl">Works as specified in Firefox. In Edge it only works if you use the value <code class="kw" translate="no">left</code>. Doesn't work in Chrome or Safari.<br>
+    <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align">See tests for standard syntax</a>, and <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align_prop">for proprietary extensions</a>.</p>
+</aside>
+</div>
+
   <p>If you want to align the edges of the annotation and the base, you can use the <code class="kw" translate="no">start</code> value of <code class="kw" translate="no">ruby-align</code>. An older version of the Ruby CSS spec also included an <code class="kw" translate="no">end</code> value, but that has been removed from the current version.</p>
   <figure class="example" lang="ja">
     <p>ruby { ruby-align: start; }</p>
@@ -207,16 +253,25 @@ function highlightCode () {
   <section>
   <h3 id="aligning_justified"><a href="#aligning_justified">Centering and spread</a></h3>
   <p>If the shorter of the ruby base or ruby text is centred, rather than aligned with an edge, there are three choices available in terms of how wide the text is spread within the space available.</p>
+<div class="sidenoteGroup">
+  <figure>
   <p><img src="styling-data/ruby-align-center.png" alt="Picture of start-aligned text."/></p>
-  <p>If you just want to center the text, with the characters set solid, it will come as no real surprise that you need to set the value of <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">center</code>.</p>
+  </figure>
+ <aside class="implnote">
+  <p class="impl">Works as specified in Firefox and Edge. Doesn't work in Chrome or Safari.<br>
+    <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align">See tests for standard syntax</a>, and <a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align_prop">for proprietary extensions</a>.</p>
+</aside>
+</div>
+ <p>If you just want to center the text, with the characters set solid, it will come as no real surprise that you need to set the value of <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">center</code>.</p>
   <figure class="example" lang="ja">
     <p>ruby { ruby-align: center; }</p>
   </figure>
   <p>If, on the other hand, you want to use up the redundant space by justifying the shorter text, then you have two choices. However, the effect of those choices actually differs according to what scripts are involved. </p>
   <p>Let's look first at what happens if the characters in your ruby are Han characters and kana characters. First, you can stretch the shorter text to exactly the same width as the wider text, stretching the inter-character spaces equally. This is shown in the top image just below this paragraph, and requires the <code class="kw" translate="no">space-between</code> value of <code class="kw" translate="no">ruby-align</code>.</p>
   <figure>
-  <p><img style="border: 1px solid red;" src="styling-data/ruby-align-between.png" alt="Picture of start-aligned text."/></p>
-  <p><img style="border: 1px solid red;" src="styling-data/ruby-align-around.png" alt="Picture of start-aligned text."/></p>
+  <p><img src="styling-data/ruby-align-between.png" alt="Picture of start-aligned text."/></p>
+  <p><img src="styling-data/ruby-align-around.png" alt="Picture of start-aligned text."/></p>
+  <!--p><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p-->
   </figure>
   <p>Or you can stretch the text in the same way, but not quite so far, leaving half a character width of space on either side, as shown in the lower image. For this you need the <code class="kw" translate="no">space-around</code> value.</p>
   <p>In fact, <code class="kw" translate="no">space-around</code> is the default for major desktop browsers.</p>
@@ -226,8 +281,8 @@ function highlightCode () {
   <figure class="example" lang="ja">
     <p>ruby { ruby-align: space-around; }</p>
   </figure>
-  <p>If, however, either the base or the annotation use another script, such as pinyin in the Latin script, no justification will take place if the text is a single word. If there is more than one word, then the text will be justified in the normal way for that script, ie. you can expect to see inter-word spacing for Latin text. The following example illustrates this.</p>
-    <!--p lang="ja" class="rubyExample" style="ruby-align:space-around; ruby-position:under; font-family: 'stsong';"><ruby><rb>頤和園</rb><rt>yíhéyuán</rt></ruby><ruby><rb>頤和園</rb><rt>yí hé yuán</rt></ruby></p-->
+  <p>If, however, either the base or the annotation use another script, such as pinyin in the Latin script, no justification will take place if the text is a single word. If there is more than one word, then the text will be justified in the normal way for that script, ie. you can expect to see inter-word spacing for Latin text. There is no difference in styling for the two examples below – we simple removed the space from the pinyin on the left.</p>
+    <!--p lang="zh-hans"><ruby><rb>頤和園</rb><rt>yíhéyuán</rt></ruby><ruby><rb>頤和園</rb><rt>yí hé yuán</rt></ruby></p-->
   <figure>
   <p><img src="styling-data/summer-palace.png" alt="Picture of start-aligned text."/></p>
   </figure>
@@ -235,6 +290,20 @@ function highlightCode () {
   </section>
 </section>
 
+
+<section>
+<h2 class="notoc" id="todo"><a href="#todo">To do</a></h2>
+<ul>
+  <li> overlapping, including jukugo, ie. managing the space within adjacent ruby pairs.</li>
+  <li>Link it to overhang (which gives more room by overlapping adjacent bases)</li>
+  <li>Figure out what to do about ruby-merge</li>
+  <li>section on styling base text, including removal, replacement with boxes (for educational text), etc.</li>
+  <li><a href="https://drafts.csswg.org/css-ruby-1/#autohide">autohiding </a></li>
+  <li>clarify <a  href="https://drafts.csswg.org/css-ruby-1/#white-space">space handling</a> - do this in ruby markup article too</li>
+  <li>setting line height</li>
+  <li>making line head and end flush</li>
+</ul>
+</section>
 
 <section>
   <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
