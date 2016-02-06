@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Normalización en HTML y CSS</title>
+<meta name="description" content="¿Qué son formas de normalización y por qué es necesario saber acerca de ellas a la hora de crear páginas HTML y contenido CSS?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-html-css-normalization' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-html-css-normalization' // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-10' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-10', time:'14:48'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-05', time:'20:08'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.trustedtranslations.com/spanish-language/spanish-translation-services.asp" title="Spanish Translation Services">Spanish Translation Services</a> by Trusted Translations, Inc' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-html-css-normalization-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Normalización en HTML y CSS</h1>
+</header>
+
+
+<section id="sidebarExtras">
+  <section>
+    <h2><a id="quicktest" href="quicktest">Verificación rápida</a></h2>
+    <form action="http://validator.w3.org/i18n-checker/index" method="get" class="quickcheck">
+      <p>Verifique la existencia de diferencias de normalización en los nombres de identificación y clase.</p>
+      <p>
+        <input type="text" value="URI de la página a verificar" name="docAddr" onfocus="this.value=''" />
+      </p>
+      <p>
+        <button type="submit">Verificar</button>
+      </p>
+      <p><span class="guide">Busque el campo "Nombres de clase e identificación" en la Tabla de Información.</span></p>
+    </form>
+  </section>
+</section>
+
+
+<section>
+<div id="audience">
+<p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    Los codificadores de XHTML/HTML (que utilizan editores o lenguajes de script), los desarrolladores de sistemas de escritura (PHP, JSP, etc.), los codificadores CSS, los gerentes de proyectos web y cualquiera que no esté familiarizado con la normalización Unicode y cómo puede afectar el éxito de la autoría de HTML y CSS.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">¿Qué son formas de normalización y por qué es necesario saber acerca de ellas a la hora de crear páginas HTML y contenido CSS?</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>La normalización es algo que se debe tener en cuenta si está en la autoría de páginas HTML con hojas de estilo CSS en UTF-8 (o cualquier otra codificación Unicode), particularmente si se debe tratar con texto de script que emplea acentos u otros diacríticos. </p>
+  <section>
+    <h3 id="n11nwhat"><a href="#n11nwhat">¿Qué son formas de normalización?</a></h3>
+    <p>En Unicode es posible producir el mismo texto con distintas secuencias de caracteres. Por ejemplo, la palabra en húngaro <span class="qterm">világ</span>. La cuarta letra podría guardarse en la memoria como un U+00E1 <dfn>precompuesto</dfn> LA LETRA A MINÚSCULA LATINA CON ACENTO AGUDO (un solo carácter) o como una secuencia <dfn>descompuesta</dfn> de U+0061   LETRA A MINÚSCULA LATINA seguida de U+0301   COMBINACIÓN DE ACENTO AGUDO (dos caracteres). </p>
+    <p><img src="qa-html-css-normalization-data/vilag.png" alt=" " /></p>
+    <p>El Estándar Unicode permite cualquiera de estas alternativas, pero requiere que ambos sean tratados como iguales. Para mejorar la efectividad, una aplicación generalmente <dfn>normaliza</dfn> el texto antes de realizar búsquedas o comparaciones. En este caso, la normalización significa convertir el texto para usar todos los caracteres precompuestos o todos los descompuestos.</p>
+    <p>Existen cuatro <dfn>formas de normalización</dfn> especificadas por el Estándar Unicode: NFC, NFD, NFKC y NFKD. La <span class="qchar">C</span> representa (pre-)compuesto y la <span class="qchar">D</span>, descompuesto. La <span class="qchar">K</span> representa la compatibilidad. Para mejorar la interoperabilidad, W3C recomienda el uso de texto <strong>NFC</strong> normalizado en la Web.</p>
+  </section>
+  
+  <section>
+    <h3 id="n11nhow"><a href="#n11nhow">¿Qué es necesario saber acerca de la normalización?</a></h3>
+    <p style="">Desafortunadamente, la normalización no siempre se lleva a cabo antes de comparar el contenido. Un caso particularmente importante es el uso de selectores y nombres de clase o identificaciones en HTML y CSS. Si la palabra <span class="qterm">világ</span> se usa en una forma precompuesta en HTML (p. ej., <code>&lt;span class=&quot;világ&quot;&gt;</code>), pero en la forma descompuesta en CSS (p. ej., <code>.vila&#x0301;g { font-style: italic; }</code>), el selector no va a coincidir con el nombre de clase.</p>
+    <p style="">Esto significa que cuando se produce contenido, se debería asegurar que los selectores y los nombres de clase o identificación sean los mismos, carácter por carácter. Es muy probable que esto sea un problema si distintas personas tienen la autoría o dan mantenimiento a la marcación y el CSS.</p>
+    <p style="">La mejor forma de asegurar que coincidan es utilizar una forma particular de normalización Unicode para la autoría de todo contenido. Como se indicó antes, W3C recomienda NFC.</p>
+    <p style="">La mayoría de los teclados para los idiomas europeos ya producen texto en NFC, pero esto es menos probable si se trata con muchos idiomas no europeos</p>
+    <p style="">En algunos casos, su editor puede permitirle guardar información en distintas formas de normalización. La imagen a continuación muestra una opción para programar una forma de normalización particular como la predeterminada, cuando se abren nuevos archivos en DreamWeaver (se selecciona NFC). Se muestra una selección similar cuando se guarda un documento.</p>
+    <p style=""><img src="qa-html-css-normalization-data/dwprefs-nfc.png" alt="Preferencias de la forma de normalización Unicode en un panel de diálogo, que muestran el NFC seleccionado." /></p>
+  </section>
+  
+  <section>
+    <h3 id="checking"><a href="#checking">¿Cómo se puede verificar que las páginas no tengan problemas?</a></h3>
+    <p style="">Se puede averiguar cuando una página HTML contiene nombres de clase y valores de identificación que no están normalizados de acuerdo al NFC mediante el <a class="print" href="http://validator.w3.org/i18n-checker/">Verificador internacional de W3C</a>.</p>
+    <p style="">Si tiene problemas, debería encontrar un editor o una herramienta de conversión que le permita especificar la forma de normalización y usarla para volver a guardar su página.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>¿Cómo comenzar? <a href="/International/getting-started/characters"><cite>Introducción a las codificaciones y a los sets de caracteres</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Manejo de codificación de caracteres en HTML y CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Enlaces relacionados, <cite>Autoría de HTML y CSS</cite></p>
+      		<ul>
+            <li><a href="/International/techniques/authoring-html#charset">Caracteres</a></li>
+      		<li><a href="/International/techniques/authoring-html#normalization">Manejo de la normalización</a></li>
+      		</ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
