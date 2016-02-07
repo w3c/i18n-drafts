@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Символы или разметка?</title>
+<meta name="description" content="Есть ряд символов Unicode похожих на управляющие, некоторые из которых выполняют такую же роль, как разметка. Какие из них я должен использовать, и которые я должен избегать?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-chars-vs-markup' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-chars-vs-markup' // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-12', time:'17:00'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-97', time:'10:10'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-chars-vs-markup-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Символы или разметка?</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    шифровальщики XHTML / HTML (используя редакторы или скрипты), разработчики скриптов (PHP, JSP, и т.д.), шифровальщики  CSS,
+      Менеджеры веб-проектов, и те, кто задается вопросом, стоит ли использовать разметку или специальные символы Unicode в их коде.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Есть ряд символов Unicode похожих на управляющие, некоторые из которых выполняют такую же роль, как разметка. Какие из них я должен использовать, и которые я должен избегать?</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Ответ зависит от того, какие символы рассматриваются. Более подробную информацию вы должны прочитать в Примечании W3C и Техническом Отчете Unicode <a class="print" href="http://www.w3.org/TR/unicode-xml/"><cite>Unicode в XML и Других Языках Разметки</cite></a>. Эта статья суммирует часть этой информации.</p>
+
+  <section>
+    <h3 id="not"><a href="#not">Некоторые символы Unicode не могут использоваться с разметкой</a></h3>
+    <p>В следующей таблице перечислены символы Unicode, которые не должны использоваться в контексте разметки, согласно с <a class="print" href="http://www.w3.org/TR/unicode-xml/"><cite>Unicode в XML и Других Языках Разметки</cite></a>. Вы должны использовать вместо разметки.</p>
+    <figure class="table">
+    <table>
+      <tr>
+        <th>Названия / Описание </th>
+        <th>Краткое Объяснение </th>
+      </tr>
+      <tr>
+        <td>Разделение строк и параграфов </td>
+        <td>используйте &lt;br&gt;, &lt;p&gt;, или эквивалент</td>
+      </tr>
+      <tr>
+        <td>Вложенные управляющие BIDI (LRE, RLE, LRO, RLO, PDF)</td>
+        <td>Не рекомендуются, тем где есть разметка.</td>
+      </tr>
+      <tr>
+        <td>Включить/блокировать Симметричный обмен</td>
+        <td>Устаревшее в Unicode</td>
+      </tr>
+      <tr>
+        <td>Включить/блокировать формирование Арабской формы</td>
+        <td>Устаревшее в Unicode</td>
+      </tr>
+      <tr>
+        <td>Включить/блокировать формы Национальной цифры</td>
+        <td>Устаревшее в Unicode</td>
+      </tr>
+      <tr>
+        <td>Межстрочных символы аннотации</td>
+        <td>Используйте разметку ruby</td>
+      </tr>
+      <tr>
+        <td>Byte order mark / ZWNBSP</td>
+        <td>Используйте только как byte order mark. Используйте Объеденитель Слова U+2060 вместо U+FEFF как ZWNBSP</td>
+      </tr>
+      <tr>
+        <td>Символы замены объекта</td>
+        <td>Используйте разметку, например, HTML &lt;object&gt; или HTML &lt;img&gt;</td>
+      </tr>
+      <tr>
+        <td>Видимость для Музыкальной Записи</td>
+        <td>Используйте соответствующий язык разметки</td>
+      </tr>
+      <tr>
+        <td>Точки кода Тега Язык</td>
+        <td>Используйте lang и/или xml:lang</td>
+      </tr>
+    </table>
+    </figure>
+    <p>Вложенные управляющие двунаправленного текста, как правило, часто приводят к путанице. Есть несколько мест, где они должны использоваться, чтобы создать правильно упорядоченный двунаправленный текст на языках, использующих скрипты с выравниванием текста справа налево, таких как арабский, иврит, тана и т.п. Это места где элемент не позволяет встроенную разметку, такие, как элемент <code class="kw" translate="no">title</code>. Там где разметка доступна, все же, вы должны ее использовать. Для получения дополнительной информации об этом смотрите <a class="print" href="/International/questions/qa-bidi-controls"><cite>Unicode управляющие по сравнению с разметкой для поддержки bidi</cite></a>. Для руководства о том, как использовать вложенные управляющие в ситуациях, когда нельзя использовать разметку, смотрите <a class="print" href="/International/questions/qa-bidi-unicode-controls"><cite>Использование Unicode управляющих для bidi текста</cite></a>.</p>
+  </section>
+
+  <section>
+    <h3 id="ok"><a href="#ok">Другие подходящие символы Unicode</a></h3>
+    <p>Это не исчерпывающий перечень. Это лишь для того, чтобы привести несколько примеров из символов Unicode, которые можно использовать как 
+      приложение к разметке чтобы предоставить информацию о тексте.</p>
+    <figure class="table">
+    <table>
+      <tr>
+        <th>Названия / Описание </th>
+        <th>Краткое Объяснение </th>
+      </tr>
+      <tr>
+        <td>Разные</td>
+        <td>Пробел, Мягкий Дефис, Объеденитель Графемы, Неразрывный Дефис, Объеденитель Слова, и т.д.</td>
+      </tr>
+      <tr>
+        <td>Объеденители Нулевой ширины (ZWJ та ZWNJ)</td>
+        <td>необходимые для Персидского языка</td>
+      </tr>
+      <tr>
+        <td>Неявные знаки направленности (LRM та RLM) </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Знаки каскадирования </td>
+        <td>Общая черта в арабском и сирийском скриптах</td>
+      </tr>
+      <tr>
+        <td>Селекторы Изменения</td>
+        <td>необходимые для Монгольского языка</td>
+      </tr>
+      <tr>
+        <td>Символы Описания Иероглифов</td>
+        <td>указывает состав иероглифов</td>
+      </tr>
+    </table>
+    </figure>
+  </section>
+
+  <section>
+    <h3 id="compat"><a href="#compat">'Совместимость символов' изменяется в зависимости от их целесообразности</a></h3>
+    <p>Это взято из <a class="print" href="http://www.w3.org/TR/unicode-xml/"><cite>Unicode в XML и Других Языках Разметки</cite></a>:</p>
+    <blockquote>
+      <p>Стандарт Unicode обеспечивает совместимость отображения для группы символов. Совместимость отображения указывает на 
+        связь с другим символом, но точный характер связи меняется. В некоторых случаях связь означает &quot;основанный на&quot;, в некоторых других 
+        случаях он обозначает собственность. Когда обычный текст размечен, то может иметь смысл отразить некоторые из этих символов в их эквивалентах совместимости и  
+        подходящей разметке. Важно понять природу различий между символами и их эквивалентами совместимости и контекст  
+        в котором эти различия имеют значение. Не целесообразно применять совместимость отображения без разбора.</p>
+    </blockquote>
+    <p>Следующая таблица дает неполный перечень примеров.</p>
+    <figure class="table">
+    <table>
+      <tr>
+        <th>Названия / Описание </th>
+        <th>Примеры </th>
+        <th>Суждения </th>
+      </tr>
+      <tr>
+        <td>Помещеные в круг буквы и цифры, используемые для маркеров списка</td>
+        <td>① ② ③ Ⓐ Ⓑ Ⓒ ㊂ ㊃ ㊄ ㊓ ㊔ ㊕ ㋝ ㋞ ㋟ </td>
+        <td>хорошо </td>
+      </tr>
+      <tr>
+        <td>Номер в скобках или пунктирный номер, который используется в качестве маркера списка</td>
+        <td>⑴ ⑵ ⑶ </td>
+        <td>используйте стиль маркера списка </td>
+      </tr>
+      <tr>
+        <td>Арабские Презентационные формы </td>
+        <td>ﻉ ﻊ ﻋ ﻌ </td>
+        <td>нормализуйте </td>
+      </tr>
+      <tr>
+        <td>Символы полуширины и полной ширины </td>
+        <td>ﾔ ﾕ ﾖ ﾗ ａ ｂ ｃ ｄ </td>
+        <td>хорошо </td>
+      </tr>
+      <tr>
+        <td>Символы верхнего и нижнего индекса </td>
+        <td>¹ ² ³ ₁ ₂ ₃ </td>
+        <td>используйте &lt;sup&gt; или &lt;sub&gt; разметку </td>
+      </tr>
+    </table>
+    </figure>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Приступая к работе? <a href="/International/getting-started/characters"><cite>Представляем Наборы Символов и Кодирование</cite></a> <span class="uri">http://www.w3.org/International/getting-started/characters</span></p>
+    </li>
+    <li>
+      <p>Пособие, <a href="/International/tutorials/tutorial-char-enc/"><cite>Обработка кодирования символов в HTML и CSS</cite></a> <span class="uri">http://www.w3.org/International/tutorials/tutorial-char-enc/</span></p>
+    </li>
+    <li>
+      <p>Ссылки по теме, <cite>Разработка HTML и CSS</cite></p>
+      <ul><li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
+      <li><a href="/International/techniques/authoring-html#controlcodes">Using Unicode control codes in text</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Ссылки по теме, <cite>Разработка XML</cite></p>
+      <ul><li><a href="/International/techniques/authoring-xml#charset">Characters</a></li>
+      <li><a href="/International/techniques/authoring-html#controls">Using Unicode control codes in text</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

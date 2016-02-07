@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Characters or markup?</title>
+<meta name="description" content="There are a range of control-like Unicode characters, some of which fulfill the same role as markup. Which should I use, and which should I avoid?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-chars-vs-markup' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-chars-vs-markup' // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-12', time:'17:00'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-97', time:'10:10'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-chars-vs-markup-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Characters or markup?</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders,
+      Web project managers, and anyone who  is wondering whether to use markup or a special Unicode character in their code.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">There are a range of control-like Unicode characters, some of which fulfill the same role as markup. Which should I use, and which should I avoid?</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>The answer depends on which characters are being considered. For more detail you should read the W3C Note and Unicode
+    Technical Report <a class="print" href="http://www.w3.org/TR/unicode-xml/"><cite>Unicode in XML &amp; Other Markup Languages</cite></a>. This article will summarize some of that information.</p>
+
+  <section>
+    <h3 id="not"><a href="#not">Some Unicode characters are not suitable for use with markup</a></h3>
+    <p>The following table lists Unicode characters that should not be used in a markup context, according to <a class="print" href="http://www.w3.org/TR/unicode-xml/"><cite>Unicode in XML &amp; Other Markup Languages</cite></a>. You should use markup instead.</p>
+   <figure class="table">
+    <table>
+      <tr>
+        <th>Names/ Description </th>
+        <th>Short Comment </th>
+      </tr>
+      <tr>
+        <td>Line and paragraph separator </td>
+        <td>use &lt;br&gt;, &lt;p&gt;, or equivalent</td>
+      </tr>
+      <tr>
+        <td>BIDI embedding controls (LRE, RLE, LRO, RLO, PDF)</td>
+        <td>Strongly discouraged where markup exists.</td>
+      </tr>
+      <tr>
+        <td>Activate/Inhibit Symmetric swapping</td>
+        <td>Deprecated in Unicode</td>
+      </tr>
+      <tr>
+        <td>Activate/Inhibit Arabic form shaping</td>
+        <td>Deprecated in Unicode</td>
+      </tr>
+      <tr>
+        <td>Activate/Inhibit National digit shapes</td>
+        <td>Deprecated in Unicode</td>
+      </tr>
+      <tr>
+        <td>Interlinear annotation characters</td>
+        <td>Use ruby markup</td>
+      </tr>
+      <tr>
+        <td>Byte order mark / ZWNBSP</td>
+        <td>Use only as byte order mark. Use U+2060 Word Joiner instead of using U+FEFF as ZWNBSP</td>
+      </tr>
+      <tr>
+        <td>Object replacement character</td>
+        <td>Use markup, e.g. HTML &lt;object&gt; or HTML &lt;img&gt;</td>
+      </tr>
+      <tr>
+        <td>Scoping for Musical Notation</td>
+        <td>Use an appropriate markup language</td>
+      </tr>
+      <tr>
+        <td>Language Tag code points </td>
+        <td>Use lang and/or xml:lang</td>
+      </tr>
+    </table>
+    </figure>
+    <p>The bidirectional text embedding controls, in particular, often cause  confusion. There are some places where these have to be used to produce correctly ordered bidirectional text in languages that use right-to-left scripts, such as Arabic, Hebrew, Thaana, etc. These are places where an element doesn't allow embedded markup, such as the <code class="kw" translate="no">title</code> element. Where markup is available, however, you should use it. For more information about this, see <a class="print" href="/International/questions/qa-bidi-controls"><cite>Unicode controls vs. markup for bidi support</cite></a>. For guidance on how to use the embedding controls in situations where markup cannot be used, see <a class="print" href="/International/questions/qa-bidi-unicode-controls"><cite>Using Unicode controls for bidi text</cite></a>.</p>
+  </section>
+
+  <section>
+    <h3 id="ok"><a href="#ok">Other Unicode characters are OK</a></h3>
+    <p>This is not an exhaustive list. It is merely intended to provide some examples of Unicode characters that are valid for use in
+      addition to markup to provide information about the text.</p>
+      <figure class="table">
+    <table>
+      <tr>
+        <th>Names/ Description </th>
+        <th>Short Comment </th>
+      </tr>
+      <tr>
+        <td>Various</td>
+        <td>No-break space, Soft Hyphen, Combining Grapheme Joiner, Non breaking Hyphen, Word Joiner, etc.</td>
+      </tr>
+      <tr>
+        <td>Zero-width Joiners (ZWJ and ZWNJ)</td>
+        <td>eg. required for Persian</td>
+      </tr>
+      <tr>
+        <td>Implicit directional marks (LRM and RLM) </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Subtending marks </td>
+        <td>common feature in the Arabic and Syriac scripts</td>
+      </tr>
+      <tr>
+        <td>Variation Selectors</td>
+        <td>eg. required for Mongolian</td>
+      </tr>
+      <tr>
+        <td>Ideographic Description Characters</td>
+        <td>indicate the composition of ideographs</td>
+      </tr>
+    </table>
+    </figure>
+  </section>
+
+  <section>
+    <h3 id="compat"><a href="#compat">'Compatibility characters' vary in appropriateness</a></h3>
+    <p>This is taken from <a class="print" href="http://www.w3.org/TR/unicode-xml/"><cite>Unicode in XML &amp; Other Markup Languages</cite></a>:</p>
+    <blockquote>
+      <p>The Unicode Standard provides compatibility mappings for a number of characters. Compatibility mappings indicate a
+        relationship to another character, but the exact nature of the relationship varies. In some cases the relationship means &quot;is based on&quot;, in some other
+        cases it denotes a property. When plain text is marked up, it may make sense to map some of these characters to their compatibility equivalents and
+        suitable markup. It is important to understand the nature of the distinctions between characters and their compatibility equivalents and the context
+        in which these distinctions matter. It is never advisable to apply compatibility mappings indiscriminately.</p>
+    </blockquote>
+    <p>The following table gives an non-exhaustive list of examples.</p>
+    <figure class="table">
+    <table>
+      <tr>
+        <th>Names/ Description </th>
+        <th>Examples </th>
+        <th>Verdict </th>
+      </tr>
+      <tr>
+        <td>Circled letters and digits used for list item markers</td>
+        <td>① ② ③ Ⓐ Ⓑ Ⓒ ㊂ ㊃ ㊄ ㊓ ㊔ ㊕ ㋝ ㋞ ㋟ </td>
+        <td>OK </td>
+      </tr>
+      <tr>
+        <td>Parenthesized or dotted number used as list item markers</td>
+        <td>⑴ ⑵ ⑶ </td>
+        <td>use list item marker style </td>
+      </tr>
+      <tr>
+        <td>Arabic Presentation forms </td>
+        <td>ﻉ ﻊ ﻋ ﻌ </td>
+        <td>normalize </td>
+      </tr>
+      <tr>
+        <td>Half-width and full-width characters </td>
+        <td>ﾔ ﾕ ﾖ ﾗ ａ ｂ ｃ ｄ </td>
+        <td>OK </td>
+      </tr>
+      <tr>
+        <td>Superscripted and subscripted characters </td>
+        <td>¹ ² ³ ₁ ₂ ₃ </td>
+        <td>use &lt;sup&gt; or &lt;sub&gt; markup </td>
+      </tr>
+    </table>
+    </figure>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Getting started? <a href="/International/getting-started/characters"><cite>Introducing Character Sets and Encodings</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul><li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
+      <li><a href="/International/techniques/authoring-html#controlcodes">Using Unicode control codes in text</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring XML</cite></p>
+      <ul><li><a href="/International/techniques/authoring-xml#charset">Characters</a></li>
+      <li><a href="/International/techniques/authoring-html#controls">Using Unicode control codes in text</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
