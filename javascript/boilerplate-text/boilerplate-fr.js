@@ -115,7 +115,7 @@ s.codedInUtf8 = "Codé en UTF-8 !";
 s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" GMT."; 
 
 s.historyOfDocumentChanges = 'Pour l’historique des modifications du document, veuillez consulter <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">le flux d’actualité</a> pour les changements conséquents, et <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la liste des « commits » sur Github</a> pour voir toutes les modifications apportées depuis janvier 2016.'
-s.untranslatedChanges = '<strong>Remarque :</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. Les changements ont été intégrés à cette page, et il est possible que vous verez certains passages en anglais en attendant que la traduction soit mise à jour.'
+s.untranslatedChanges = '<strong>Remarque :</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. Les changements ont été intégrés à cette page, et il est possible que certains passages s\'affichent en anglais en attendant que la traduction soit mise à jour.'
 s.unlinkedTranslation = '<strong>Avertissement :</strong> Des modifications importantes ont été apportées à la version originale en anglais depuis qu’elle a été traduite. Il est recommandé de lire  <a href="'+f.filename+'.en">une version dans une autre langue</a> en attendant que cette traduction soit mise à jour.'
 s.new="Nouveau";// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Mis à jour"; // same as New
