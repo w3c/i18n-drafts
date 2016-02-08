@@ -237,6 +237,8 @@ function fillinTranslations () {
 		if (document.getElementById('question')) document.getElementById('question').firstChild.textContent = s.question
 		if (document.getElementById('answer')) document.getElementById('answer').firstChild.textContent = s.answer
 		if (document.getElementById('quickanswer')) document.getElementById('quickanswer').firstChild.textContent = s.quickanswer
+		if (document.getElementById('details')) document.getElementById('details').firstChild.textContent = s.details
+		if (document.getElementById('additionalinfo')) document.getElementById('additionalinfo').firstChild.textContent = s.additionalinfo
 		if (document.getElementById('bytheway')) document.getElementById('bytheway').firstChild.textContent = s.byTheWay
 		if (document.getElementById('endlinks') && document.getElementById('endlinks').firstChild) document.getElementById('endlinks').firstChild.textContent = s.furtherReading
 		}
