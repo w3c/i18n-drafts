@@ -50,7 +50,7 @@ s.accessKeyN = 'La tecla de acceso "n" lleva a la navegación de la página. <a 
 s.examplesInAnotherScript = "Este documento contiene ejemplos en otros idiomas y escrituras."
 s.worldMap = "Mapa mundial"
 s.searchI18nSite = "Buscar en el sitio de internacionalización" 
-s.translationDisclaimer = 'Este documento es una traducción. En caso de discrepancias o errores, la única versión normativa es el <a href="'+f.filename+'.en">último original en inglés</a>. Los <a href="#copyright">derechos de autor originales</a> corresponden al W3C, como puede verse al final de la página.'
+s.translationDisclaimer = 'Este documento es una traducción realizada por un voluntario. En el caso de discrepancias o errores, la <a href="'+f.filename+'.en">última versión original en inglés</a> será considerada como fidedigna. Los <a href="#copyright">derechos de autor originales</a> pertenecen a W3C, tal como se indica al final de la página.'
 s.translator = "Traductor:"
 s.relatedLinks = "Enlaces relacionados"
 s.articles = "Artículos" // used in breadcrumbs, top right of page 
@@ -111,9 +111,9 @@ s.codedInUtf8 = "Codificado en UTF-8"
 
 s.translatedFromEnglishVer = "Traducido del inglés con fecha "+dt.enVersion+". Traducción modificada por última vez el "+dt.thisVersionPlain+" GMT."
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
-s.untranslatedChanges = '<strong>Nota:</strong> Desde la traducción de este documento se han producido modificaciones en el <a href="'+f.filename+'.en.php">original en inglés</a>. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
-s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
+s.historyOfDocumentChanges = 'Para el historial de cambios del documento, consultar la <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">fuente de noticias</a> para ver los cambios sustanciales, y la <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">lista de commits de Github</a> para ver todos los cambios desde enero 2016.'
+s.untranslatedChanges = '<strong>Nota:</strong> Desde la traducción de este documento se han producido modificaciones en el <a href="'+f.filename+'.en.php">original en inglés</a>. Los cambios se incorporaron en esta página, por lo cual es posible que vea algunas partes en inglés hasta que se actualice la traducción.'
+s.unlinkedTranslation = '<strong>Advertencia:</strong> Desde que se tradujo este documento, se introdujeron cambios sustanciales en la versión original en inglés. Le sugerimos leer <a href="'+f.filename+'.en">una versión en otro idioma</a> hasta que esta traducción haya sido actualizada.'
 s.new="¡Nuevo!"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="¡Actualizado!" // same as New
 s.translation_updated="Traducción actualizada el:" // date appears after colon 
@@ -124,11 +124,12 @@ s.status_draft="Este artículo es un borrador que todavía no se ha sometido a r
 s.status_review="En este momento, este artículo está expuesto para revisión pública. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
 s.status_published="El Grupo de Trabajo de Internacionalización de W3 ha revisado este artículo y se lo ha sometido a revisión pública para hacerlo tan preciso como sea posible. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
 s.status_notreviewed="Este artículo se publicó sin revisión pública. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
-s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
+s.status_obsolete="Este artículo ahora es obsoleto. Ya no recibe mantenimiento y es probable que no contenga información precisa. Para información más actualizada, vea la <a href='http://www.w3.org/International/'>página de Actividad de Internacionalización</a>."
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Respuesta rápida" // heading
 s.longeranswer = "Respuesta extensa" // heading
 s.details = "Detalles" // heading
-s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
+s.additionalinfo = "Información adicional" // heading that sometimes follows 'Details'
 s.acknowledgements = "Agradecemos también a las siguientes personas cuyas contribuciones y opiniones fueron incluidas:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Si permite que el navegador establezca una cookie, continuará viendo las páginas de Actividad de Internacionalización de W3C (si existieran) en el idioma de su elección. ¿Quiere establecer la cookie?" // this text is to be copied to another location
+s.supercededTranslation = '<strong>Advertencia:</strong> ¡Esta es una versión desactualizada de este documento! Le recomendamos leer  <a href="'+g.betterfilename+'.en">la última versión</a> et si vous le pouvez, y, si puede, cambiar la marca o el enlace que lo trajo aquí.'
