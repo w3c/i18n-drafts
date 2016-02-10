@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Setting language preferences in a browser</title>
+<meta name="description" content="How do I use the language settings of my browser to specify the language in which a server should send me pages" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-lang-priorities' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida &amp; Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-lang-priorities' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-10-30' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2011-03-22', time:'17:56'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-10', time:'17:08'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-lang-priorities-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Setting language preferences in a browser</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    users who want to configure their user agent/browser to automatically download pages in a given language when available (assuming that there are alternate pages on the server, and that the server is <a class="print" href="https://www.w3.org/International/questions/qa-apache-lang-neg">set up to negotiate between them</a>). </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">How do I use the language settings of my browser to specify the language in which a server should send me pages?</p>
+  </section>
+  
+ 
+
+<section id="nutshell">
+    <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>When your browser pulls a document from the Web, it sends a request to the server where the information is stored. This is known as an
+    HTTP request. With the request, the browser sends information about its <dfn>language preference settings</dfn>. These are preferences about the preferred
+    language of pages, not the user interface of the browser.</p>
+  <p>The part of the HTTP request that holds this language preference information is called the Accept-Language request-header. If the server
+    can return alternate versions of a page or resource in more than one language, the Accept-Language information can be used to retrieve the page in your
+    preferred language, if it is available, through a process known
+    as HTTP content negotiation. If there is only one version of a page on the server, that version will be retrieved. If the language you request is not available, the server should be set up to return a default language choice.</p>
+  <p>Mainstream browsers allow you to modify the language preferences expressed by your browser in the HTTP request. The value itself should conform to <a class="print" href="http://www.w3.org/International/articles/language-tags/">BCP 47</a> (<cite>Tags for the Identification of Languages</cite>). It is typically  a two- or three-letter
+    language code (eg. <code>fr</code> for French), followed by optional subcodes representing such things as country (eg. <code>fr-CA</code> represents
+    French as used in Canada).</p>
+  <p>In many cases, the initial browser setting will meet your needs. For example, if you have a Japanese version of a browser, the browser typically
+    assumes that you prefer pages in Japanese, and sends this information to the server. This article tells you how to discover and change the language preferences
+    expressed by your user agent.</p>
+  <p><strong>Note:</strong> Sometimes a server may determine which language to send to you in a way that doesn't rely on the Accept-Language information. For example, Google tends to use IP information to determine the language you will receive. The browser settings discussed here do not affect content negotiation based on this kind of mechanism.</p>
+</section>
+
+
+<section>
+  <h2 id="detail"><a href="#detail">Details</a></h2>
+  <p>To configure your browser to automatically download pages in a given language when available (assuming that there are alternate pages on the server, and that the server is <a class="print" href="https://www.w3.org/International/questions/qa-apache-lang-neg">set up to negotiate between them</a>), you need to control the information that is sent in the Accept-Language HTTP header when you request the page.</p>
+  <p>Most browsers have preferences or options that allow you to check or change the language preference settings. On a Mac OS X system, however, you may need to change the OS X system settings.</p>
+  <p>Most browsers will allow you to specify a list of languages, so that if your first choices are not available you can say what alternative languages to try, and in what order. Typically, when you have multiple languages, the browser will assign <span class="qterm">qvalues</span> (quality values) to the languages lower down the list. This is a kind of weighting system that is supposed to help the server understand the order in which you prefer the languages. Here is an example of an Accept-Language header with multiple languages. Danish is preferred. If that fails, British English is requested, and finally any type of English.</p>
+  <div class="example">
+    <pre>Accept-Language: da, en-gb;q=0.8, en;q=0.7</pre>
+  </div>
+  <p>If your current browser setting uses a language tag with a region subtag you should ensure that there is another language tag listed after it with just the language subtag (as shown for English in the example). See the notes below for more information.</p>
+  <p>Some browsers allow you to specify custom language tags, rather than just selecting from a pre-defined list. This can be useful when the browser doesn't provide what you need in its pre-defined lists.</p>
+  <p>The rest of this article provides more detailed information about these points. </p>
+  <p>You can use the <a class="print" href="http://validator.w3.org/i18n-checker/">Internationalization Checker</a> to find out what Accept-Language information is actually being sent by your browser. Run the checker on any page, then in the Information panel, look under Request Headers &gt; Accept-Language. (See <a class="print" href="http://validator.w3.org/i18n-checker/check?uri=www.w3.org%2FInternational%2Fquestions%2Fqa-lang-priorities.en.php#validate-by-uri+">an example</a> using this page.)</p>
+
+  <section>
+    <h3 id="changing"><a href="#changing">Changing your preferences</a></h3>
+    <div class="sidenoteGroup">
+      <p>Here is how you would change the language settings for recent versions of a number of popular browsers on Windows or Mac OS X platforms. Unless otherwise specified, we use the latest versions of those browsers at the time this article was written.</p>
+      <div class="sideinfonote"><p class="warning">These paths change from time to time as new versions of a browser are released. The data here was correct last time
+        we looked. Please let us know if the information is out of date.</p></div>
+    </div>
+    <div class="sidenoteGroup">
+      <p><strong class="leadin" id="important">Internet Explorer</strong>. When you install a copy of Internet Explorer version 7+, your preferences are automatically set according to the Windows user locale,
+        although you are given the opportunity to modify this when you first install.</p>
+      <div class="sideinfonote"><p class="warning">Note that, if you haven't customized your browser's language preferences, when you change the Windows user
+        locale the browser preferences get changed too. If you customize the browser settings, they no longer follow the changes in the Windows user locale.
+        (The Windows user locale settings allow you to switch formats, such as which character is used as the decimal separator, the order of date
+        information, etc. by selecting different locales.)</p></div>
+    </div>
+    <p>By default, the values sent in the Accept-Language request-header from IE7 onwards are typically of the form language-region. Typically no
+      language-only form is included. For example, if you are French your Accept-Language header will present fr-FR to the server. This has implications for some servers, particularly if you add other language tags. See the section below entitled <a href="#langtagdetail">Levels of detail in language tags</a> for more information.</p>
+    <p>To change your  language preferences go to <i class="command_path">Tools &gt; Internet Options &gt; General (tab) &gt; Languages &gt; Language preference</i>. In IE you can also specify your own customized language tags: click on the 'Add' button
+      in the language preferences dialog, and type your language tag into the 'User defined' field. </p>
+    <p><strong class="leadin" id="firefox">Firefox</strong>. To change your language preferences go to <i class="command_path">Tools &gt; Options</i> (Windows) or <i class="command_path">Firefox &gt; Preferences</i> (Mac OS X), and select <i class="command_path"> Content (tab) &gt; Languages &gt; Choose (button)</i>. </p>
+    <p> You can add languages to this from a (long) pre-defined set, and Firefox will send all the languages you choose with the Accept-Language header in the order in which you arrange them. </p>
+    <p>You can't create custom language tags using the standard interface. (You can, however, via about:config, using intl.accept_languages if you are geeky enough.)</p>
+    <p><strong class="leadin" id="safari">Safari</strong>. On Mac OS X the language sent is that specified in the OS X system language preferences. To change those preferences go to <i class="command_path">System  Preferences &gt; Language &amp; text &gt;  Language</i>. You can have a long list of languages in this dialog box, but Safari will only send the top item with the Accept-Language header. You can't create custom language tags.</p>
+    <p>On Windows, you can't change the language sent by Safari. The language sent with the Accept-Language header is derived from your system settings.</p>
+    <p><strong class="leadin" id="chrome">Google Chrome</strong>. To change your language preferences go to <i class="command_path">Options</i> (Windows) or <i class="command_path">Chrome &gt; Preferences</i> (Mac OS X), and select <i class="command_path">Under the Bonnet &gt; Web Content &gt; Languages &amp; Spellchecker settings</i>. </p>
+    <p>You can add languages to this from a pre-defined set, and Chrome will send all the languages you choose with the Accept-Language header in the order in which you arrange them. You can't create custom language tags.</p>
+    <p><strong class="leadin" id="opera">Opera</strong>. On Windows you can change your language preferences at <i class="command_path">Menu &gt; Settings &gt; Preferences &gt; General &gt; Language &gt; Details (button)</i>. </p>
+    <p>You can add languages  from a pre-defined set, or create a custom (<i class="command_path">User-defined</i>) language tag. Opera will send all the languages you choose with the Accept-Language header, in the order in which you list them in the dialog box.</p>
+    <p>On Mac OS X, Opera takes the list of languages to send with the Accept-Language header from the  OS X system language preferences. To change those preferences go to <i class="command_path">System  Preferences &gt; Language &amp; text &gt;  Language</i>. You can have a long list of languages in this dialog box, and, unlike Safari, Opera sends all of them with the Accept-Language header. </p>
+    <p>You can't create custom language tags using the standard interface. (Again, you can if you are  sufficiently technically aware  to  use opera:config and the <i class="command_path">Network &gt; HTTP Accept Language</i> setting.)</p>
+    <p>Command sequences for additional browsers can be found at <a
+				class="print" href="http://www.debian.org/intro/cn#mozilla">http://www.debian.org/intro/cn#mozilla</a>.</p>
+  </section>
+  
+  <section>
+    <h3 id="specifying"><a href="#specifying">Specifying alternatives</a></h3>
+    <p>You can typically specify several alternatives that will be treated in order of preference. The following example shows a setting in Firefox for someone who would prefer Swiss French pages, but if that is not available would settle for any French, German or English page, in that
+      order.</p>
+    <p><img src="qa-lang-priorities-data/fr-lang-settings.png" alt="A screen-grab of the Firefox dialog box for changing Language Preferences." /></p>
+    <p>Often browsers will allow you to select the languages you want from a list. You may also be able to specify custom language
+      preferences. If you do so, you need to use values that will be recognized by the server (see below). </p>
+    <p>To ensure success you should configure your browser to request both <code>fr-CH</code> and <code>fr</code>, in that order. (See the
+      following section.) This will cause the server to look for a Swiss French version first, but failing that, look for a French version.</p>
+    <p>If you if you list variants for a given language, your preferences for that language should always be ordered from most to least specific, top to bottom. This generally means, if you use multiple
+      subtags then include shorter tags lower down the list. For example, when specifying a preference for French and then English in Canada, you would order the list as follows: <code>fr-CA, fr, en-CA, en</code>.</p>
+  </section>
+  
+  <section>
+    <h3 id="langtagdetail"><a href="#langtagdetail">Levels of detail in language tags</a></h3>
+    <p>The basic rule here is that if your language preference list contains  a language tag containing a hyphen, such as <code>fr-CH</code> (French as spoken in Switzerland), you should consider adding an additional language tag without the hyphen, ie. <code>fr</code> (French) in this case, immediately after.</p>
+    <p>This is because if a server follows the HTTP/1.1 specification literally, it is unable to match <code>fr-CH</code> against a document labelled on the server as <code>fr</code>.</p>
+    <p>In practice, a server such as Apache will actually still produce a result in this case. This is because the server adds an implicit <code>fr</code> preference to the list. </p>
+    <p>This preference is, however, added with a very low priority. While Apache's workaround may solve the problem if your language preference list contains only a single language, you can run into problems if you have specified more than one. The <a class="print" href="http://httpd.apache.org/docs/2.2/content-negotiation.html">Apache documentation</a> explains this as follows:</p>
+    <blockquote>
+      <p>Implicitly, Apache will add the parent language to the client's acceptable language list with a very low quality value. But note that if the client requests "en-GB; q=0.9, fr; q=0.8", and the server has documents designated "en" and "fr", then the "fr" document will be returned. This is necessary to maintain compliance with the HTTP/1.1 specification and to work effectively with properly configured clients.</p>
+    </blockquote>
+    <p>Let's look at an example. The language preference list in the image in the previous section will always return a French document on an Apache server labeled as <code>fr</code>, because the <code>French [fr]</code> choice is explicitly listed, immediately after <code>French/Switzerland [fr-ch]</code>. If we remove <code>French [fr]</code> from the list, however, even though the Apache server adds an implicit <code>French [fr]</code> value, it has a lower quality value than the <code>German [de]</code>, and therefore a <em>German</em> version of the document will be returned if no Swiss-French version is available (even though a version labeled as French is available).</p>
+    <p><img src="qa-lang-priorities-data/fr-lang-settings-ok.png" alt="A screen-grab of the Firefox dialog box for changing Language Preferences." /></p>
+    <p>In a browser like Internet Explorer you may have to specify the simple language tag as a user-defined setting. Other browsers will have selections for these in their pre-defined lists.</p>
+  </section>
+  
+  <section>
+    <h3 id="finding"><a href="#finding">Finding and choosing custom tags</a></h3>
+    <div class="sidenoteGroup">
+      <p>You will normally be able to select the language tags you want from a list provided by your browser. This section tells you how to
+        create your own language tags if what you need is not available from the pre-defined list.</p>
+      <div class="sideinfonote"><p class="info">The information in this section should meet your needs most of the time. If you want to know more about the
+        syntax of language tags, see the articles <a class="print" href="https://www.w3.org/International/articles/language-tags/"><cite>Language tags in HTML and XML</cite></a> and <a class="print" href="https://www.w3.org/International/questions/qa-choosing-language-tags"><cite>Choosing a Language Tag</cite></a>.</p></div>
+    </div>
+    <p>Your language tag must start with a two- or three-letter code, called a subtag, from the list of languages specified in the <a class="print" href="http://www.iana.org/assignments/language-subtag-registry"><cite>IANA Language Subtag Registry</cite></a>. You may then add a second subtag to indicate a
+      country or region, if you need to. These subtags can also be found in the registry. The first and second subtags must be separated by a hyphen. </p>
+    <div class="sidenoteGroup">
+      <p><strong class="leadin">Language.</strong> The IANA Language Subtag Registry is a long text file. To find a language subtag, search for
+        the name of that language, in English. If we search for 'French', we find a record that looks like this:</p>
+      <div class="example">
+        <pre>Type: language
+Subtag: fr
+Description: French
+Added: 2005-10-16
+Suppress-Script: Latn
+</pre>
+      </div>
+      <p>Note that the type of this record is 'language'. You use the code nearby that is labelled 'Subtag', ie. 'fr'.</p>
+      <div class="sideinfonote"><p class="info">Rather than searching the registry file, you may prefer to use the <a class="print" href="http://r12a.github.io/utils/subtags/"><cite>Language Subtag Lookup</cite></a> tool. Type the name of the language or region you are looking for in the Find field and click on the button alongside.</p></div>
+    </div>
+    <p><strong class="leadin">Region.</strong> If you want to specify that you would prefer a specific type of French, if it is available, you could add a region subtag, such as CA for fr-CA (French as spoken in Canada). To find a region subtag search
+      for the name of the country or region. If you search for 'Canada' you will find a record like this:</p>
+    <div class="example">
+      <pre>Type: region
+Subtag: CA
+Description: Canada
+Added: 2005-10-16
+</pre>
+    </div>
+    <p>Note that this is a subtag of type 'region', which is what you want. Use the 'CA' subtag (to end up with fr-CA).</p>
+    <p><strong class="leadin">Subtags to avoid.</strong> You should avoid subtags that are described in the registry as redundant or
+      deprecated. There are other types of subtag available in the registry, but, generally speaking, it is very unlikely that you would need to use them
+      currently for this purpose (because people are unlikely to use the other subtags to label documents on the server). </p>
+    <p><strong class="leadin">Chinese.</strong> The registry also contains subtags for scripts, but these are not normally needed, and so
+      should normally be avoided. One example of an exception is the script subtag for Chinese. </p>
+    <p>Chinese people, though they may speak mutually unintelligible dialects or languages, typically write what they want to say in the same
+      way, distinguishing only between Simplified and Traditional forms of Chinese characters. If you are looking for Chinese information, therefore, you
+      may want to simply specify whether the text is in simplified or traditional script, rather than in a specific language. </p>
+    <p>Due to the absence in the past of a way to refer to script in language tags, servers tended to return text in traditional script if
+      your language setting said zh-TW (Chinese as spoken in Taiwan), and in simplified script if your settings said zh-CN (Chinese as spoken in Mainland
+      China). If your settings said zh-SG (Chinese as spoken in Singapore) or zh-HK (Chinese as spoken in Hong Kong), it is less clear that you would get
+      back what you expect (normally simplified and traditional Chinese, respectively).</p>
+    <p>The IANA registry now also contains subtags for scripts. The Hans and Hant script subtags in the registry allow you to specify
+      preferences for zh-Hans (simplified Chinese) or zh-Hant (traditional Chinese).</p>
+    <p>It may be worth doing this, as people begin to label their resources using these subtags on the server. However, you should also include
+      other alternatives, to catch older servers that still use the old approach. For example, if you are living in Taiwan you may want to set up a list of
+      preferences as follows:</p>
+    <div class="example">
+      <pre>zh-Hant
+zh-TW
+zh</pre>
+    </div>
+    <p>Note that you should generally avoid using script subtags for other languages in browser settings, especially where the Language Subtag Registry lists a Suppress-Script field for that language. If you do use a language tag with a script subtag,  say for Serbian, you should use it
+      as an alternative language tag, ie. alongside the simple language tag.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>A nice example of the use of language negotiation is the <a class="print" href="http://www.w3.org/2004/11/sptour-pressrelease">Press Release</a> of the
+    W3C Spanish Office’s Standards Tour in 2004, available in English, Spanish, Basque, Catalan, and Galician, as well as Japanese and French. To try this out,
+    set your preferences to each of the available Iberian peninsular languages in turn, and click on <a class="print" href="http://www.w3.org/2004/11/sptour-pressrelease">this link</a> after each change. The codes you need are <code>es</code> (<a
+				class="print" href="http://www.w3c.es/Prensa/2004/nota041027.html.es">Spanish</a>), <code>eu</code> (<a
+				class="print" href="http://www.w3c.es/Prensa/2004/nota041027.html.eu">Basque</a>), <code>ca</code> (<a
+				class="print" href="http://www.w3c.es/Prensa/2004/nota041027.html.ca">Catalan</a>) and <code>gl</code> (<a
+				class="print" href="http://www.w3c.es/Prensa/2004/nota041027.html.gl">Galician</a>).</p>
+  <p>You can also try language negotiation out with this example of a language-negotiated page: <a class="print" href="http://www.w3.org/Press/1998/CSS2-REC">The CSS2 Press Release</a> (available in <a
+				class="print" href="http://www.w3.org/Press/1998/CSS2-REC.html.nl">Dutch</a>, <a class="print" href="http://www.w3.org/Press/1998/CSS2-REC.html.en">English</a>, <a class="print" href="http://www.w3.org/Press/1998/CSS2-REC.html.de">German</a>, and <a class="print" href="http://www.w3.org/Press/1998/CSS2-REC.html.ja">Japanese</a>).</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a href="http://www.debian.org/intro/cn#mozilla">Command paths for additional browsers</a></p>
+    </li>
+    <li>
+      <p>Another service to <a href="http://www.cs.tut.fi/cgi-bin/run/~jkorpela/lang.cgi">test the language settings of your browser</a></p>
+    </li>
+    <li>
+      <p><a href="http://httpd.apache.org/docs/content-negotiation.html">Apache documentation on Content Negotiation</a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+      	<li><a href="https://www.w3.org/International/techniques/authoring-html?collapse&amp;open=language">Language</a></li>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#browserlanguage">Setting &amp; changing browser preferences</a></li>
+        </ul>
+    </li>
+    <li>
+      <p>Related links, <cite>Set up a Server</cite></p>
+      <ul>
+      	<li><a href="https://www.w3.org/International/techniques/server-setup?collapse&amp;open=language">Language</a></li>
+        <li><a href="https://www.w3.org/International/techniques/server-setup#multiviews">Setting up MultiViews language negotiation on Apache</a></li>
+        </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
