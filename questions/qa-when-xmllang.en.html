@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>xml:lang in XML document schemas</title>
+<meta name="description" content="When should I use xml:lang and when should I define my own element or attribute for passing language values in an XML document schema (DTD)?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-when-xmllang' // the file name WITHOUT extensions
+f.authors = 'Addison Phillips, Quest Software' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-when-xmllang' // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-11-24' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2011-07-07', time:'14:40'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-11', time:'09:40'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-when-xmllang-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>xml:lang in XML document schemas</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    schema developers (DTDs, XML Schema, RelaxNG, etc.) </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">When should I use <code class="kw" translate="no">xml:lang</code> and when should I define my own element or attribute for passing
+      language values in an XML document schema (DTD)?</p>
+  
+   <p>Sometimes documents contain or include different types of natural language content. Other times they  need to store a natural
+    language value as data or meta-data about something external to the document. Because these different applications use similar formats, schema
+    designers are sometimes confused about when they should use <code class="kw" translate="no">xml:lang</code> and when to define their own language-related element or attribute.</p>
+  <p>For example, in XHTML 1.0, there is an <code class="kw" translate="no">hreflang</code> attribute  and also an <code class="kw" translate="no">xml:lang</code> (or <code class="kw" translate="no">lang</code> attribute, in the case of HTML) for the content of the <code class="kw" translate="no">a</code> element:</p>
+  <div class="example">
+    <p>&lt;a xml:lang="en" href="xyz" hreflang="de"&gt;Click for German&lt;/a&gt;</p>
+  </div>
+  <p>The <code class="kw" translate="no">xml:lang</code> attribute describes the language contained by the <code class="kw" translate="no">a</code> element ("Click for
+    German"), while the <code class="kw" translate="no">hreflang</code> attribute is meta-data, in this case describing the language of some content external to this
+    Web page.</p>
+  </section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  
+  
+  <section>
+    <h3 id="when_use"><a href="#when_use">When to use <code class="kw" translate="no">xml:lang</code></a></h3>
+    <p>Content directly associated with the XML document (either contained within the document directly or considered part of the document
+      when it is processed or rendered) should use the <code class="kw" translate="no">xml:lang</code> attribute to indicate the language of that content. <code class="kw" translate="no">xml:lang</code> should be reserved for content
+      authors to directly label any natural language content they may have.</p>
+    <p><code class="kw" translate="no">xml:lang</code> is defined by XML 1.0 as a common attribute that can be used to indicate the language of any
+      element's contents. This includes any human readable text, as well as other content (such as embedded objects like images or sound files) contained
+      by the element in which it appears. The <code class="kw" translate="no">xml:lang</code> value applies to any sub-elements contained by the element. It also applies
+      to attribute values associated with the element and sub-elements (though using natural language in attributes is <em>not</em> best practice). The
+      value of the <code class="kw" translate="no">xml:lang</code> attribute is a language tag defined by BCP 47.</p>
+    <p>For example, here is <code class="kw" translate="no">xml:lang</code> on an element <code class="kw" translate="no">t</code>:</p>
+    <div class="example">
+      <p><code class="code1">&lt;t xml:lang="en"&gt;</code> <code class="code2">This is some text contained by the 't' element. The use
+        of the xml:lang attribute indicates the language so that, for
+        example, the correct font could be applied when rendered or
+        the correct spell-checker could be used when proofing the
+        document. If we didn't have xml:lang, we might have problems
+        with embedded content, such as the phrase &lt;span xml:lang="fr"&gt;
+        C'est la vie&lt;/span&gt;, which is in another language.</code> <code class="code2">&lt;/t&gt;</code></p>
+    </div>
+    <p>This example shows how <code class="kw" translate="no">xml:lang</code> applies to an attribute:</p>
+    <div class="example">
+      <p><code>&lt;para&gt;Il faut utiliser &lt;abbr title="Simple Object Access Protocol"
+        xml:lang="en"&gt;SOAP&lt;/abbr&gt;&lt;/para&gt;</code></p>
+    </div>
+  </section>
+  
+  <section>
+    <h3 id="stickyness"><a href="#stickyness">When to use your own element or attribute</a></h3>
+    <p>When the language value is really an attribute of or metadata about some external content, then <code class="kw" translate="no">xml:lang</code> is
+      not an appropriate choice. In these cases you want to store language information, but the language doesn't refer to the content of the XML document
+      (or included content, such as images, which are processed as part of the document) directly. In this case you should define an element or attribute
+      of using a different name and not use the <code class="kw" translate="no">xml:lang</code> attribute. The value of the element or attribute should use BCP 47, just like <code class="kw" translate="no">xml:lang</code>.</p>
+    <p>Some examples of this might include:</p>
+    <ul>
+      <li> an element in an XML document describing your DVD collection to indicate which languages are available on the soundtrack</li>
+      <li> an element in a customer database with a field for the customer's language preference</li>
+      <li>an attribute of a link element (such as <code class="kw" translate="no">a</code> in XHTML) pointing to a version of this document in another
+        language</li>
+    </ul>
+    <p>The reason you would choose to create your own element (or attribute) is to convey the language as a value (as part of a data
+      structure or as metadata about an external document) rather than to indicate the language of a specific piece of content. Avoiding the use of <code class="kw" translate="no">xml:lang</code> to describe external language values avoids creating problems for content authors who need to label content for
+      text-processing purposes.</p>
+    <p>For example, an XML document might look like this:</p>
+    <div class="example">
+      <pre>&lt;item type="DVD"&gt; 
+  &lt;title xml:lang="fr"&gt;Cyrano de Bergerac&lt;/title&gt;    
+  &lt;!-- indicates the language of the film title --&gt;
+  &lt;runningTime value="137" /&gt;                        
+  &lt;!-- not language affected --&gt;
+  &lt;dialogue&gt;en&lt;/dialogue&gt;                            
+  &lt;!-- indicates the language of the dialogue --&gt;
+  &lt;subtitles track="1" language="zh-Hant" /&gt;         
+  &lt;!-- this track contains Traditional Chinese subtitles --&gt;
+  &lt;subtitles track="2" language="zh-Hans" /&gt; 
+&lt;/item&gt;</pre>
+    </div>
+    <p>In this example, the <code class="kw" translate="no">xml:lang</code> attribute conveys information about the natural language of text appearing in
+      this document. The <code class="kw" translate="no">dialogue</code> element and the <code class="kw" translate="no">language</code> attribute of the <code class="kw" translate="no">subtitles</code> element are defined in the XML document schema and convey a natural
+      language value associated with these items. For example, it conveys the information that the subtitles on Track #1 are written or displayed in
+      Traditional Chinese ("zh-Hant").</p>
+  </section>
+  </section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>It's important to remember that <code class="kw" translate="no">xml:lang</code> has scope: lower-level elements inherit the language attribute. This can
+    be used to identify the language for a lot of content (without having redundant language tags on every element). For example, it is good practice to
+    put <code class="kw" translate="no">xml:lang</code> into your <code class="kw" translate="no">html</code> element at the start of an XHTML document and only reuse it where the
+    language of the text changes. For more information, see the article <a class="print" href="http://www.w3.org/International/articles/language-tags/">Language tags
+    in HTML and XML</a>.</p>
+  <p>Applying <code class="kw" translate="no">xml:lang</code> to an attribute is problematic: there is no way to:</p>
+  <ol>
+    <li>
+      <p>identify more than one language in the <code class="kw" translate="no">title</code> attribute</p>
+      <div class="example-wide" style="margin-left:0; margin-right:0"><code>&lt;p title="French (français)"&gt;Bonjour&lt;/p&gt;</code></div>
+    </li>
+    <li>
+      <p>separate the language used in the attribute from that used in the element.</p>
+      <div class="example-wide" style="margin-left:0; margin-right:0"><code>&lt;a title="anglais" href="qa-when-xmllang.en.html" lang="en"
+        xml:lang="en"&gt;English&lt;/a&gt;</code></div>
+    </li>
+  </ol>
+  <p>Note that the three schema languages (XML DTD, XML Schema, and RELAX NG) differ with respect to the question of whether a user has to
+    define <code class="kw" translate="no">xml:lang</code> before using it as an attribute. Specifically:</p>
+  <ul>
+    <li>
+      <p>XML DTDs require that any element that uses <code class="kw" translate="no">xml:lang</code> as an attribute must declare it in the DTD</p>
+    </li>
+    <li>
+      <p>XML Schema requires that the xml namespace be declared and imported before using <code class="kw" translate="no">xml:lang</code> (and other xml namespace values)</p>
+    </li>
+    <li>
+      <p>RELAX NG predeclares the xml namespace, as in XML, so no additional declaration is needed.</p>
+    </li>
+  </ul>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt"><cite>BCP 47, Tags for the Identifying Languages</cite></a> Specifies how to use language tags in <code class="kw" translate="no">xml:lang</code> values.</p>
+    </li>
+    <li>
+      <p><a href="/International/articles/language-tags/">Language tags in HTML and XML</a> Describes how to use language tags.</p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring XML</cite></p>
+      <ul><li><a href="/International/techniques/authoring-xml?collapse&amp;open=language">Language</a></li>
+      <li><a href="/International/techniques/authoring-xml#natlang">Specifying the language of content</a></li>
+      <li><a href="/International/techniques/authoring-xml#langvalues">Choosing language values</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

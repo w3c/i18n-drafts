@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>xml:lang в схемах XML документа</title>
+<meta name="description" content="Когда следует использовать xml:lang и когда нужно определить свой ​​собственный элемент или атрибут для передачи языковых значений в схему XML документа (DTD)?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-when-xmllang' // the file name WITHOUT extensions
+f.authors = 'Addison Phillips, Quest Software' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-when-xmllang' // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-11-24' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2011-07-07', time:'14:40'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-11', time:'09:40'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-when-xmllang-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>xml:lang в схемах XML документа</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    разработчики схем (DTDs, XML Schema, RelaxNG, и т.д.) </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Когда следует использовать <code class="kw" translate="no">xml:lang</code> и когда нужно определить свой ​​собственный элемент или атрибут для передачи
+      языковых значений в схему XML документа (DTD)?</p>
+
+  <p>Иногда документы содержат или включают различные типы естественного речевого контента. В других случаях они необходимы для хранения значения естественного
+    языка в качестве внешних по отношению к документу данных или meta данных. Так как различные приложения используют аналогичные форматы, дизайнеры схем
+    иногда путают, когда они должны использовать <code class="kw" translate="no">xml:lang</code> а, когда определять свой ​​собственный связанный с языком элемент или атрибут.</p>
+  <p>Например, в XHTML 1.0 есть атрибут <code class="kw" translate="no">hreflang</code> в <a> element <code class="kw" translate="no">a</code> (элементе) и также <code class="kw" translate="no">xml:lang</code> (или <code class="kw" translate="no">lang</code> атрибут, в случае с HTML 4.0) для контента element (елемента) <code class="kw" translate="no">a</code>:</a></p>
+  <div class="example">
+    <p>&lt;a xml:lang="en" href="xyz" hreflang="de"&gt;Click for German&lt;/a&gt;</p>
+  </div>
+  <p>Атрибут <code class="kw" translate="no">xml:lang</code> описывает язык, который содержится в element (элементе) <code class="kw" translate="no">a</code> ("Click for
+    German"), в то время как атрибут <code class="kw" translate="no">hreflang</code> это meta данные, в этом случае описывает язык некоторого внешнего по отношению к этой
+    Веб странице контента.</p>
+  </section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  
+  
+  <section>
+    <h3 id="when_use"><a href="#when_use">Когда использовать <code class="kw" translate="no">xml:lang</code></a></h3>
+    <p>Контент, непосредственно связанный с XML документом (или содержится непосредственно в документе или рассматривается как часть документа 
+      когда он обрабатывается или предоставляется) должен использовать атрибут <code class="kw" translate="no">xml:lang</code> для указания языка контента. <code class="kw" translate="no">xml:lang</code> имеет резервироваться для авторов 
+      контента для непосредственного обозначения любого естественного речевого контента, что они могут иметь.</p>
+    <p><code class="kw" translate="no">xml:lang</code> определяется в XML 1.0 как общий атрибут, который может использоваться для определения языка любого
+      контента element (елемента). Сюда включается как текст, который можно прочитать, так и другой контент (такой как встроенные объекты, такие как изображения и звуковые файлы), содержащийся
+      в element (элементе) в котором он появился. Значение <code class="kw" translate="no">xml:lang</code> применяется к любым sub-elements, содержащихся в element (элементе). Это также применяется
+      к значениям атрибута, которые связаны с element и sub-elements (Хотя использование естественного языка в атрибутах это <em>не</em> лучшая идея). Значение
+      атрибута <code class="kw" translate="no">xml:lang</code> - это language тэг, который определяется в BCP 47.</p>
+    <p>Например, вот <code class="kw" translate="no">xml:lang</code> в element (элементе) <code class="kw" translate="no">t</code>:</p>
+    <div class="example">
+      <pre>&lt;t xml:lang="en"&gt; 
+   This is some text contained by the 't' element. The use
+   of the xml:lang attribute indicates the language so that, for
+   example, the correct font could be applied when rendered or
+   the correct spell-checker could be used when proofing the
+   document. If we didn't have xml:lang, we might have problems
+   with embedded content, such as the phrase &lt;span xml:lang="fr"&gt;
+   C'est la vie&lt;/span&gt;, which is in another language.
+&lt;/t&gt;</pre>
+    </div>
+    <p>Этот пример показывает, как <code class="kw" translate="no">xml:lang</code> применяется к атрибуту:</p>
+    <div class="example">
+      <p><code>&lt;para&gt;Il faut utiliser &lt;abbr title="Simple Object Access Protocol"
+        xml:lang="en"&gt;SOAP&lt;/abbr&gt;&lt;/para&gt;</code></p>
+    </div>
+  </section>
+  
+  <section>
+    <h3 id="stickyness"><a href="#stickyness">Когда следует использовать свой ​​собственный element (элемент) или attribute (атрибут)</a></h3>
+    <p>Когда значение языка - на самом деле является атрибутом или meta данными для некоторого внешнего контента, тогда <code class="kw" translate="no">xml:lang</code> не следует
+      использовать. В этих случаях вы хотите сохранить информацию о языке, но язык непосредственно не относится к содержанию XML документа
+      (или содержит такой контент, как изображения, которые обрабатываются как часть документа). В этом случае вы должны определить элемент или атрибут
+      используя другое название и не следует использовать атрибут <code class="kw" translate="no">xml:lang</code>. Для выбора значения элемента или атрибута следует использовать BCP 47, так же, как для <code class="kw" translate="no">xml:lang</code>.</p>
+    <p>Некоторые примеры этого могут включать в себя:</p>
+    <ul>
+      <li> element (элемент) в XML документе описывает вашу коллекцию DVD для того, чтобы определить, какие языки доступны на звуковой дорожке</li>
+      <li> element (элемент) в клиентской базе данных с полем для языка которой пользователь предпочитает</li>
+      <li>attribute (атрибут) link element (элемента ссылки) (такой как <code class="kw" translate="no">a</code> в XHTML), что указывает на написанную на другом языке версию этого 
+        документа</li>
+    </ul>
+    <p>Вам следует создать ваш собственный element (элемент) (или attribute (атрибут)) тогда, когда есть необходимость передать значение языка (как часть структуры
+      данных или как meta данные для внешнего документа), а не чтобы указать язык конкретной части контента. Не используйте <code class="kw" translate="no">xml:lang</code> для описания значений внешне языка - это позволит избежать создания проблем для авторов контента, которым необходимо отмечать контент для
+      обработки текстов.</p>
+    <p>Например, документ XML может выглядеть так:</p>
+    <div class="example">
+      <pre>&lt;item type="DVD"&gt; 
+  &lt;title xml:lang="fr"&gt;Cyrano de Bergerac&lt;/title&gt;    
+  &lt;!-- indicates the language of the film title --&gt;
+  &lt;runningTime value="137" /&gt;                        
+  &lt;!-- not language affected --&gt;
+  &lt;dialogue&gt;en&lt;/dialogue&gt;                            
+  &lt;!-- indicates the language of the dialogue --&gt;
+  &lt;subtitles track="1" language="zh-Hant" /&gt;         
+  &lt;!-- this track contains Traditional Chinese subtitles --&gt;
+  &lt;subtitles track="2" language="zh-Hans" /&gt; 
+&lt;/item&gt;</pre>
+    </div>
+    <p>В этом примере атрибут <code class="kw" translate="no">xml:lang</code> передает информацию о естественном языке текста, который появляется в
+      этом документе. Элемент <code class="kw" translate="no">dialogue</code> (диалог) и атрибут <code class="kw" translate="no">language</code> (язык) элемента <code class="kw" translate="no">subtitles</code> (подзаголовки) определены в схеме XML документа и передают значение
+      естественного языка, который с ними связан. Например, он передает информацию, с subtitles (подзаголовки), что написанные на Track (запись) #1 или показанные на
+      Традиционном Китайском языке (<code class="kw" translate="no">zh-Hant</code>).</p>
+  </section>
+  </section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Важно помнить, что <code class="kw" translate="no">xml:lang</code> обладает свойством: элементы более низкого уровня наследуют language attribute (речевой атрибут). Это можно
+    использовать для того, чтобы определить язык для большинства контента (без redundant (избыточных) language тэгов для каждого element (элемента)). Например, это хорошая идея, чтобы
+    разместить <code class="kw" translate="no">xml:lang</code> в свой <code class="kw" translate="no">html</code> element (елемент) в начале своего XHTML документа и использовать его только там
+    где меняется язык текста. Дополнительную информацию смотрите в статье <a class="print" href="http://www.w3.org/International/articles/language-tags/">Language тэги
+    в HTML и XML</a>.</p>
+  <p>Проблематичным является приминення <code class="kw" translate="no">xml:lang</code> к атрибуту - нет никакого способа, чтобы:</p>
+  <ol>
+    <li>
+      <p>определить более чем один язык в title attribute (атрибуте заголовка)</p>
+      <div class="example-wide" style="margin-left:0; margin-right:0"><code>&lt;p title="French (français)"&gt;Bonjour&lt;/p&gt;</code></div>
+    </li>
+    <li>
+      <p>отделять язык, используемый в attribute (атрибуте) от того, что используется в element (элемент).</p>
+      <div class="example-wide" style="margin-left:0; margin-right:0"><code>&lt;a title="anglais" href="qa-when-xmllang.en.html" lang="en"
+        xml:lang="en"&gt;English&lt;/a&gt;</code></div>
+    </li>
+  </ol>
+  <p>Обратите внимание, что три языка схем (XML DTD, XML Schema, и RELAX NG) отличаются по вопросу: должен ли пользователь
+    определить <code class="kw" translate="no">xml:lang</code> перед использованием его в качестве attribute (атрибута)? Особенно:</p>
+  <ul>
+    <li>
+      <p>XML DTDs требует, чтобы любой элемент, который использует <code class="kw" translate="no">xml:lang</code> в качестве attribute (атрибута) назначал его в DTD</p>
+    </li>
+    <li>
+      <p>XML Schema требует чтобы xml namespace (пространство имен) было назначено и импортировано к использованию <code class="kw" translate="no">xml:lang</code> (и другие значения xml namespace (пространства имен))</p>
+    </li>
+    <li>
+      <p>RELAX NG предварительно назначает xml namespace (пространство имен), как в XML, поэтому не нужно никакого дополнительного назначения.</p>
+    </li>
+  </ul>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt"><cite>BCP 47, Тэги для Определения Языков</cite></a> Определяет, как использовать language тэги для значений <code class="kw" translate="no">xml:lang</code>.</p>
+    </li>
+    <li>
+      <p><a href="/International/articles/language-tags/">Language тэги в HTML и XML</a> Описывает как использовать language тэги.</p>
+    </li>
+    <li>
+      <p>Ссылки по теме, <cite>Разработка XML</cite></p>
+      <ul><li><a href="/International/techniques/authoring-xml?collapse&amp;open=language">Язык</a></li>
+      <li><a href="/International/techniques/authoring-xml#natlang">Установка языка контента</a></li>
+      <li><a href="/International/techniques/authoring-xml#langvalues">Выбор значений языка</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
