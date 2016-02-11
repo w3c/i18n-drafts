@@ -32,7 +32,8 @@ p, h2, h3, h4, dl, figure { margin-right: 7.5%; margin-left: 32%; }
 
 table { margin-right: 7.5%;  }
 table.inband { margin-left: 32%; }
-
+figure table { margin-left: 0; margin-right: 0; }
+figure.table { margin-right: 7.5%; margin-left: 32%; padding: 1em 0; }
 
 ul, ol { margin-right: 12.5%; margin-left: 34%; padding-right:0; }
 ul ul { margin-right: 2%; margin-left: 5%; }
@@ -144,7 +145,7 @@ header a {
 	background-repeat: no-repeat;
 	}
 #site-navigation:lang(ar), #site-navigation:lang(ar) {
-	background-image: url(standards-corner.he.png);
+	background-image: url(standards-corner-rtl.png);
 	}
 #site-navigation ul {
 	margin-right: 30px;
@@ -401,7 +402,9 @@ h2 code, h3 code, h4 code {
 	margin-right: 0;
 	margin-left: 0;
 	}
-
+#nutshell .insideinfonote {
+	margin-left: 0;
+	}
 
 
 #furtherreading h2 {
@@ -432,25 +435,28 @@ h2 code, h3 code, h4 code {
 	line-height: 1em;
 	/* text-align: left; */
 	}
-.sideinfonote {
+.sideinfonote, .implote {
 	position: absolute;
 	top: 0;	
 	left: 2em;
 	width: 24%;
 	font-size: 80%;
 	line-height: 1.2em;
-	color: #000066;
-	background-color:#FFF; 
-	background-color: #fdc3a7;
-	background-color: #ffdccb;
-	background-color:#eef; 
-	background-color:#f4f4fe; 
 	border: 1px solid #CCC; 
 	padding: 5px 15px 5px 10px; 
 	border-radius: 10px; 
 	}
 
-.info::before, .warning::before, .footnote::before { 
+.sideinfonote {
+	color: #000066;
+	background-color:#f4f4fe; 
+	}
+.implnote {
+	color: #666;
+	background-color:#ffeadd; 
+	}
+
+.info::before, .warning::before, .footnote::before, .impl::before  { 
 	float: right;
  	font-family: Old English, Georgia,serif;
  	font-size: 300%;
@@ -462,7 +468,12 @@ h2 code, h3 code, h4 code {
 .info::before { content: 'i'; }
 .warning::before { content: '!'; }
 .footnote::before { content: '*'; }
+.impl::before { content: '🛠'; }
 .sideinfonote p {
+	margin:0;
+	margin-bottom: .5em; 
+	}
+.implnote p {
 	margin:0;
 	margin-bottom: .5em; 
 	}
@@ -484,7 +495,7 @@ h2 code, h3 code, h4 code {
 	margin:0;
 	margin-bottom: .5em; 
 	}
-.insideinfonote {
+.insideinfonote, .insideimplnote {
 	float: left;
 	margin-left: 2em;
 	margin-right: 1.5em;
@@ -494,19 +505,28 @@ h2 code, h3 code, h4 code {
 	font-size: 80%;
 	z-index:-500;
 	line-height: 1.2em;
-	color: #000066;
-	background-color:#eef; 
-	background-color:#f4f4fe; 
 	border: 1px solid #CCC; 
 	padding: 5px 15px 5px 10px; 
 	border-radius: 10px; 
 	clear: none;
 	}
+.insideinfonote {
+	color: #000066;
+	background-color:#f4f4fe; 
+	}
+.insideimplnote {
+	color: #666;
+	background-color:#ffeadd; 
+	}
 .insideinfonote p {
 	margin:0;
 	margin-bottom: .5em; 
 	}
-
+.insideimplnote p {
+	margin:0;
+	margin-bottom: .5em; 
+	}
+	
 .note {
 	color: #000066;
 	margin: .25em 10% .25em 35%;
@@ -645,6 +665,10 @@ q	 { quotes: '"' '"' "'" "'"; }
 	font-size: 100%;
 	margin-right: 2px;
 	}
+.uname {
+	font-size: 85%;
+	letter-spacing: 0.05em;
+	}
 
 mark {
 	background-color: #EEE;
@@ -662,7 +686,7 @@ strong {
 	font-family: "Courier New", monospaced;
 	font-size: 100%;
 	}
-code {
+code, samp {
 	font-family: Monaco, "Andale Mono", Consolas, monospace;
 	font-weight: normal;
 	font-size: 13px;
@@ -877,35 +901,18 @@ span.surveyScale {
 table, td, th {
 	font-size: 1em;
 	}
-table.inband {
-	margin-top: 1em;
-	margin-bottom: 1em;
-	}
 table td { 
-	border: 1px solid teal; 
+	border: 1px solid #ccc; 
 	vertical-align: top; 
-	text-align: center; 
+	text-align: start; 
 	border-collapse: collapse; 
+	padding: 4px;
 	font-family: "Arial Unicode MS", "Lucida Sans Unicode", sans-serif; 
-	}
-table.inband td {
-	/* text-align: left; */
-	vertical-align: top;
-	border: 1px solid #000066;
-	padding: 0.2em;
 	}
 table th { 
 	font-size: 80%; 
-	text-align: left;
+	text-align: start;
 	padding: 4px;
-	}
-table.inband th {
-	text-align: right;
-	vertical-align: top;
-	border: 1px solid #000066;
-	font-weight: 400;
-	padding: 0.2em;
-	background-color: #f9f5de; 
 	}
 .uppercase {
 	text-transform: uppercase;
@@ -1121,7 +1128,7 @@ body {
 #siteicons {
 	background-color: #003163;
 	margin-left: 29%;
-	border-bottom-left-radius: 30px;
+	border-bottom-left-radius: 49px;
 	box-shadow: none; 
 	padding: 0; height: 49px;
 	}
