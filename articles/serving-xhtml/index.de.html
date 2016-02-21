@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>HTML und XHTML ausliefern</title>
+<meta name="description" content="Kurze Einführung zu: verschiedene Möglichkeiten, XHTML 1.0 auszuliefern; Standard- vs. Quirks-Modus; Probleme mit der XML-Deklaration." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/serving-xhtml'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-serving-xhtml' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-03-18' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-20', time:'07:40'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-21', time:'05:47'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://bittersmann.de/">Gunnar Bittersmann</a> mit <a href="http://julianewuensche.de/">Juliane Wünsche</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'other'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style>
+table td {
+	border: 0;
+}
+figure {
+	float: left;
+	clear: none;
+	margin-right: 0;
+	padding: 0;
+}
+figcaption {
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>HTML und XHTML ausliefern</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    XHTML/HTML-Autoren (die Web-Editoren/Texteditoren oder Scripte benutzen), CSS-Entwickler, Script-Entwickler (PHP, JSP u.a.), Webprojekt-Manager und alle, die eine kurze Einführung zu Standard- vs. Quirks-Modus und zu der Rolle von DOCTYPE- und XML-Deklaration benötigen. Es ist auch hilfreich für alle, die erfahren möchten, wie die Zeichencodierung ihrer Dokumente anzugeben ist.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <p>Dieser Artikel gibt eine kurze Einführung, wie Server HTML und XHTML an ein Nutzerprogramm (z.B. einen Browser) senden und wie gängige Nutzerprogramme den empfangenen Quelltext verarbeiten. Das Augenmerk liegt dabei eher auf Implementierungen als auf W3C-Standards.</p>
+  <p>Daraus ergibt sich, <a class="print" href="/International/questions/qa-html-encoding-declarations">wie die Zeichencodierung eines HTML- oder XHTML-Dokuments anzugeben ist</a>. Außerdem wird erklärt, warum einige CSS-Stil-Angaben nicht wie erwartet wirken und die Darstellung von Browser zu Browser variiert.</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="mime"><a href="#mime">Medientypen (MIME-Typen)</a></h2>
+  <p>Wenn ein Server ein Dokument an einen Browser ausliefert (sendet), dann sendet er auch zusätzliche Informationen mit – im sogenannten <a  href="/International/articles/definitions-characters/#httpheader" class="dfn print">HTTP-Header</a>.</p>
+  <p>Das Content-Type-Feld des HTTP-Headers gibt an, um welches Datenformat es sich handelt. Diese Infomation wird durch den <dfn>Medientypen (MIME-Typen)</dfn> augedrückt. Es folgt ein Beispiel eines HTTP-Headers einer HTML-Datei mit dem Medientypen <code class="kw" translate="no">text/html</code>. Die Content-Type-Angabe kann auch die Zeichencodierung des Dokuments enthalten.</p>
+  <div class="example">
+    <blockquote>
+      <pre>HTTP/1.1 200 OK
+Date: Wed, 05 Nov 2003 10:46:04 GMT
+Server: Apache/1.3.28 (Unix) PHP/4.2.3
+Content-Location: CSS2-REC.en.html
+Vary: negotiate,accept-language,accept-charset
+TCN: choice
+P3P: policyref=http://www.w3.org/2001/05/P3P/p3p.xml
+Cache-Control: max-age=21600
+Expires: Wed, 05 Nov 2003 16:46:04 GMT
+Last-Modified: Tue, 12 May 1998 22:18:49 GMT
+ETag: &quot;3558cac9;36f99e2b&quot;
+Accept-Ranges: bytes
+Content-Length: 10734
+Connection: close
+<span style="color: red;  font-weight: bold;" title="Diese Zeile gibt die Zeichencodierung des Dokuments an.">Content-Type: text/html; charset=utf-8</span>
+Content-Language: en</pre>
+    </blockquote>
+  </div>
+  <p>Der übliche Medientyp für HTML-Dateien ist <code class="kw" translate="no">text/html</code>. Ein Browser, der eine Datei mit diesem Medientypen empfängt, wird annehmen, dass das Markup der HTML-Syntax entspricht, und <em>einen HTML-Parser verwenden, um die Bedeutung des Markups zu interpretieren</em>.</p>
+  <p>Im Gegensatz zu HTML ist XHTML eine XML-basierte Auszeichnungssprache. Die Syntax von XML unterscheidet sich leicht von der von HTML, und XML-Prozessoren sind weniger fehlertolerant. Bei der XML-basierten Entwicklung von Inhalten wird großer Wert auf Wohlgeformtheit und Validität (Gültigkeit) gelegt und man hat Zugang zu allen Verarbeitungstools, Daten und Automatisierungen der XML-Welt. Viele Entwickler bevorzugen XHTML wegen der Vorteile, die die Strenge von XML beim Bearbeiten oder Verarbeiten der Dokumente mit sich bringt.</p>
+  <p>Um XHTML-Markup mit einem Medientypen, der angibt, dass es sich um XML handelt, an einen Browser zu senden, ist einer der folgenden Medientypen zu verwenden: <code class="kw" translate="no">application/xhtml+xml</code>, <code class="kw" translate="no">application/xml</code> oder <code class="kw" translate="no">text/xml</code>. Das W3C <a class="print" href="http://www.w3.org/TR/2002/NOTE-xhtml-media-types-20020801/">empfiehlt</a> zur Auslieferung von XHTML als XML nur den ersten dieser Medientypen zu verwenden, d.h. <code class="kw" translate="no">application/xhtml+xml</code>.</p>
+  <p>Wenn ein Browser XML verarbeitet, <em>verwendet er einen XML-Parser, keinen HTML-Parser</em>.</p>
+  <p> Leider unterstützt der Internet Explorer bis einschließlich Version 8 keine als XML ausgelieferten Dateien wie es eine Reihe anderer Browser tut. Um das Problem zu umgehen, dass nicht alle Browser als XML ausgelieferte Inhalte unterstützen, werden viele XHTML-1.0-Dateien mit dem Medientypen <code class="kw" translate="no">text/html</code> ausgeliefert. In diesem Fall <em>behandelt ein Nutzerprogramm die Datei wie HTML und nutzt den HTML-Parser</em>.</p>
+  <p>Wenn ein Browser XML als HTML ansieht, muss man beim Verfassen des XHTML-Codes einige Unterschiede zwischen den beiden Formaten beachten um sicherzugehen, dass die Syntax-Unterschiede zwischen XML und HTML den Browser nicht aus dem Konzept bringen. Dazu zählen die unterschiedlichen Arten der Angaben der Zeichencodierung und der Sprache im Dokument.</p>
+  <p><a class="print" href="http://www.edition-w3c.de/TR/2002/REC-xhtml1-20020801/#_Toc6101548">Anhang C</a> der XHTML-Spezifikation empfielt einige Kompatibilitäts-Richtlinien, wenn man XHTML als HTML ausliefert. Diese Kompatibilitäts-Richtlinien sind besonders wichtig für veraltete Browserversionen. Sie empfehlen u.a., ein Leerzeichen vor dem '/&gt;' im Tag eines leeren Elements (wie <code class="kw" translate="no">img</code>, <code class="kw" translate="no">hr</code> oder <code class="kw" translate="no">br</code>) zu setzen, sowohl das HTML-Attribut <code class="kw" translate="no">lang</code> als auch das XML-Attribut <code class="kw" translate="no">xml:lang</code> anzugeben und sowohl das <code class="kw" translate="no">id</code>- als auch das <code class="kw" translate="no">name</code>-Attribut bei Fragmentbezeichnern zu verwenden.</p>
+</section>
+
+
+<section>
+  <h2 id="quirks"><a href="#quirks">Standard- vs. Quirks-Modus</a></h2>
+  <p>Gegenwärtig gängige Browser können eine HTML-Datei im <dfn>Standard-Modus</dfn> oder im <dfn>Quirks-Modus</dfn> darstellen. Das bedeutet, dass verschiedene Regeln angewandt werden, um die Datei darzustellen: entweder konform zu dem erwarteten Verhalten nach den W3C-Standards oder konform zu den Erwartungen anhand des Nicht-Standard-Verhaltens von älteren Browsern.</p>
+  <p>Die neueren Versionen der gängigen Browser schalten bei einer vorhandenen <dfn><a class="print" href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">DOCTYPE-Deklaration</a></dfn> in den Standard-Modus. Ein fehlender DOCTYPE kann zu unterschiedlichem Rendering in verschiedenen Browsern führen.</p>
+  <p>Die folgenden Screenshots zeigen einige dieser Unterschiede auf:</p>
+   <figure><a class="print" href="index-data/standards.html"><img src="index-data/standards-scan.png" alt="Bild eines im Standard-Modus gerenderten Dokuments." /></a>
+      <figcaption>Ein im Standard-Modus gerendertes Dokument.</figcaption>
+  </figure>
+
+  <figure><a class="print" href="index-data/quirks.html"><img src="index-data/quirks-scan.png" alt="Bild desselben Dokuments im Quirks-Modus gerendert." /></a>
+      <figcaption>Dasselbe Dokument im Quirks-Modus gerendert.</figcaption>
+  </figure>
+    <div class="insideinfonote">
+      <p class="info">Clicken Sie auf die Bilder, um die HTML-Seiten zu öffnen. Im Internet Explorer sieht man den Effekt.</p>
+    </div>
+    <p style="clear:left;">Diese zwei Bilder zeigen dieselbe Seite mit exakt demselbem Markup und demselben Stylesheet. Der einzige Unterschied zwischen beiden Dateien besteht darin, dass in der linken ein DOCTYPE am Anfang des Quelltextes steht, in der rechten nicht. Eine Datei mit einer geeigneten DOCTYPE-Deklaration sollte in den neusten Versionen aller Browser im Standard-Modus gerendert werden. Kein DOCTYPE ergibt Quirks.</p>
+    <p>Die eben gezeigten Unterschiede resultieren aus unterschiedlichen Implementierungen in Browsern wie dem Internet Explorer:</p>
+    <ul>
+      <li>
+        <p>Im Standard-Modus schließt die für das div gesetzte Breite nicht die Breiten für Innenabstand (Polsterung, <span class="foreignphrase" lang="en">padding</span>) und Rahmen (<span class="foreignphrase" lang="en">border</span>) ein, im Quirks-Modus hingegen doch. Deshalb ist der große Kasten im linken Bild (im Standard-Modus) breiter.</p>
+      </li>
+      <li>
+        <p>Im Quirks-Modus erbt die Tabelle nicht die Schriftgröße vom body-Element, demzufolge erscheint der Text größer.</p>
+      </li>
+    </ul>
+  <p>Ursprünglich war der DOCTYPE lediglich dazu bestimmt, die Auszeichnungssprache anzugeben. Das folgende Beispiel zeigt einen Quelltext mit DOCTYPE-Deklaration am Anfang (rot und kursiv hervorgehoben):</p>
+  <div class="example-wide">
+    <pre><span style="color: red;  font-style: italic;">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+	  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</span>
+&lt;html xml:lang=&quot;en&quot; lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt; 
+&lt;head&gt; 
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt; 
+    &lt;title&gt;XHTML document&lt;/title&gt; 
+    &lt;style type=&quot;text/css&quot;&gt;
+    body { background: white; color: black; font-family: arial, sans-serif; font-size: 12px; }
+    p { font-size: 100%; }
+    h1 { font-size: 16px; }
+    div { margin: 20px; width: 170px; padding: 50px; border: 6px solid teal; }
+    table { border: 1px solid teal; }
+    &lt;/style&gt; 
+    &lt;/head&gt; 
+
+&lt;body&gt; 
+    &lt;h1&gt;Test file for Standards/Quirks&lt;/h1&gt; 
+    &lt;div&gt;
+        A div with CSS width:170px, margin:20px, padding:50px and border:6px.
+        &lt;/div&gt; 
+    &lt;p&gt;Text in a p element.&lt;/p&gt;
+    &lt;table&gt; 
+        &lt;tr&gt;&lt;td&gt;Text in a table.&lt;/td&gt;&lt;/tr&gt; 
+        &lt;/table&gt;
+    &lt;/body&gt; 
+&lt;/html&gt; 
+			</pre>
+  </div>
+  <p>Das Umschalten zwischen Standard- und Quirks-Modus nennt man auch <dfn>DOCTYPE-Switching</dfn>.</p>
+  <p>Es ist generell angebracht, die Seiten im Standard-Modus auszuliefern, also eine DOCTYPE-Deklaration einzufügen.</p>
+
+  <section>
+    <h3 id="declaration"><a href="#declaration">Die XML-Deklaration und DOCTYPEs</a></h3>
+    <p>Ein Punkt ist bei der Verwendung von DOCTYPEs besonders wichtig für die Angabe der Zeichencodierung und für vorhersehbare Darstellungsergebnisse.</p>
+    <p>Weil XHTML 1.0 auf XML basiert, ist es möglich, eine <a class="dfn print" href="/International/questions/qa-html-encoding-declarations#xmldeclaration">XML-Deklaration</a> am Dateianfang hinzuzufügen, auch wenn es als HTML ausgeliefert wird. Damit sieht der Anfang der obigen Datei so aus (XML-Deklaration rot und kursiv hervorgehoben):</p>
+    <blockquote>
+      <pre><span style="color: red;  font-style: italic;">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span>
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+	  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html xml:lang=&quot;en&quot; lang=&quot;en&quot; xml&lrm;ns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+...</pre>
+    </blockquote>
+    <p>In Browsern wie Internet Explorer 7, Firefox, Safari, Opera, Google Chrome u.a. wird eine Seite sowohl mit als auch ohne XML-Deklaration, jedoch mit DOCTYPE-Deklaration, im Standard-Modus gerendert.</p>
+    <p>Im Internet Explorer 6 jedoch wird, wenn vor der DOCTYPE-Deklaration noch irgendetwas anderes außer einem <a href="/International/questions/qa-byte-order-mark" class="dfn print">BOM</a> steht, die Seite im Quirks-Modus gerendert.</p>
+    <p>Wenn die Nutzer des Internet Explorer 6 immer noch einen signifikanten Anteil des Zielpublikums ausmachen könnten, sollte dieses Problem bedacht werden. Wenn alle Seiten genauso wie in allen anderen, standardkonformen Browsern dargestellt werden sollen, muss darüber nachgedacht werden, wie das zu lösen ist.</p>
+    <p>Wenn das Dokument keine Konstrukte enthält, die von den Unterschieden zwischen Standard- und Quirks-Modus beeinflusst werden, dann gibt es kein Problem. Wenn dies allerdings nicht der Fall ist, muss man Workarounds im CSS hinzufügen, um die Unterschiede auszugleichen; oder die XML-Deklaration weglassen.</p>
+    <p>Wenn man sich dafür entscheidet, die XML-Deklaration wegzulassen, sollte man als Zeichencodierung für die Seite entweder UTF-8 oder UTF-16 wählen. (Siehe <a class="print" href="/International/questions/qa-html-encoding-declarations"><cite>Angabe der Zeichencodierung in HTML</cite></a> für weitere Informationen zum Einfluss der Deklaration der Zeichencodierung.)</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a href="http://www.w3.org/TR/2002/NOTE-xhtml-media-types-20020801/"><cite>XHTML-Medientypen</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://www.edition-w3c.de/TR/2002/REC-xhtml1-20020801/#_Toc6101548"><cite>XHTML™ 1.0: Die Extensible HyperText Markup Language</cite>, Anhang C: Richtlinien zur HTML-Kompatibilität</a> </p>
+    </li>
+    <li>
+      <p><a href="http://www.w3.org/QA/2002/04/valid-dtd-list"><cite>Liste valider DTDs, die man in seinem Dokument verwenden kann</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnie60/html/cssenhancements.asp"><cite>DOCTYPE-Switching im
+        Internet Explorer</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://msdn2.microsoft.com/en-us/library/Bb250496.aspx"><cite>CSS-Kompatibilität im Internet Explorer 7</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://www.mozilla.org/docs/web-developer/quirks/"><cite>DOCTYPE-Switching in Mozilla</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://www.opera.com/docs/specs/doctype/index.dml"><cite>DOCTYPE-Switching in Opera</cite></a> </p>
+    </li>
+    <li>
+      <p>Tutorial: <a href="/International/tutorials/tutorial-char-enc/"><cite>Umgang mit Zeichencodierungen in HTML und CSS </cite></a> </p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

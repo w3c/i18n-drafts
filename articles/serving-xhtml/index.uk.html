@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<title>Обслуговування HTML та XHTML</title>
+<meta name="description" content="Короткий вступ до: альтернативні способи обслуговування XHTML 1.0; режим standards чи quirks; проблеми пов'язані з призначенням XML." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/serving-xhtml'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-serving-xhtml' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-03-18' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-20', time:'07:40'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-21', time:'05:47'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Олександр Шлапак' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'other'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-uk.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style>
+table td {
+	border: 0;
+}
+figure {
+	float: left;
+	clear: none;
+	margin-right: 0;
+	padding: 0;
+}
+figcaption {
+	text-align: center;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Обслуговування HTML та XHTML</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    шифрувальники XHTML/HTML (використовуючи редактори або скрипти), розробники скриптів (PHP, JSP, і т.д.), розробники CSS, менеджери Веб
+      проектів, і кожен, хто потребує інформацію про режими quirks чи standards, і як призначення DOCTYPE та XML впливають на це. Попереднє читання цієї статті також дуже корисне для тих, хто хоче знати, як призначити кодування символів своїх документів.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <p>У цій статті дуже коротко описуються деякі аспекти того, як XHTML надсилається з сервера до клієнтського додатку (наприклад, до браузера), і як поширені клієнтські додатки обробляють ту розмітку, яку вони отримують. Стаття описує рішення конкретних проблем, а не стандарти W3C.</p>
+  <p>Ці питання мають відношення до того <a class="print" href="/International/questions/qa-html-encoding-declarations">як призначити кодування символів HTML або XHTML документа.</a> Ця інформація буде також корисною при поясненні того, чому деякі аспекти стилізації CSS не з'являються такими, як їх очікують, або чому вони відрізняються в різних клієнтських додатках.</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="mime"><a href="#mime">MIME типи</a></h2>
+  <p>Коли сервер обслуговує (тобто відправляє) документ браузеру, він також з документом посилає деяку додаткову інформацію, яка називається <a href="/International/articles/definitions-characters/#httpheader" class="dfn print">HTTP заголовком</a>.</p>
+  <p>Поле Content-Type заголовку HTTP описує, який це є тип формату даних. Ця інформація виражається за допомогою
+    помітки <dfn>MIME media type</dfn> (MIME медіа тип). Ось приклад HTTP заголовку для HTML файлу, використовуючи MIME тип <code class="kw" translate="no">text/html</code>. Зверніть увагу, що запис Content-Type також може
+    виражати кодування символів документу.</p>
+  <div class="example">
+    <blockquote>
+      <pre>HTTP/1.1 200 OK
+Date: Wed, 05 Nov 2003 10:46:04 GMT
+Server: Apache/1.3.28 (Unix) PHP/4.2.3
+Content-Location: CSS2-REC.en.html
+Vary: negotiate,accept-language,accept-charset
+TCN: choice
+P3P: policyref=http://www.w3.org/2001/05/P3P/p3p.xml
+Cache-Control: max-age=21600
+Expires: Wed, 05 Nov 2003 16:46:04 GMT
+Last-Modified: Tue, 12 May 1998 22:18:49 GMT
+ETag: &quot;3558cac9;36f99e2b&quot;
+Accept-Ranges: bytes
+Content-Length: 10734
+Connection: close
+<span style="color: red;  font-weight: bold;" title="This line indicates the encoding of the document.">Content-Type: text/html; charset=utf-8</span>
+Content-Language: en</pre>
+    </blockquote>
+  </div>
+  <p>MIME тип <code class="kw" translate="no">text/html</code> є нормальним вибором для HTML файлів. Браузер, який отримує файл з цим MIME типом будемо вважати, що розмітка наслідує синтаксис HTML та <em>буде використовувати аналізатор (парсер) HTML для того, щоб інтерпретувати значення розмітки</em>. </p>
+  <p> На відміну від HTML, XHTML - це мова розмітки, яка базується на основі XML. Синтаксис XML трохи відрізняється від HTML, а також XML процесори будуть більш вимогливими, у тому разі, якщо ви зробите помилки. Розробка контенту на основі XML потребує коректності та достовірності, та може бути легко інтегрована з усіма інструментами обробки, даними і автоматизацією, які доступні в XML. Через менші вимоги до редагування та обробки документів, багато розробників вважають за краще використовувати XHTML, а не XML.</p>
+  <p>Для відправки до браузера розмітки XHTML з MIME типом, що вказує те, що це XML ви повинні використовувати один з наступних MIME типів: <code class="kw" translate="no">application/xhtml+xml</code>, <code class="kw" translate="no">application/xml</code> або <code class="kw" translate="no">text/xml</code>. W3C <a class="print" href="http://www.w3.org/TR/2002/NOTE-xhtml-media-types-20020801/">рекомендує</a>, щоб
+    ви обслуговували XHTML як XML використовуючи тільки перший з цих MIME типів – тобто <code class="kw" translate="no">application/xhtml+xml</code>.</p>
+  <p>Коли браузер читає XML <em>він використовує XML аналізатор (парсер), а не HTML аналізатор (парсер)</em>.</p>
+  <p> На жаль, Internet Explorer до 8-ї версії не підтримує файли, які обслуговуються, як XML, хоча й ряд інших браузерів підтримують. Щоб обійти той
+    факт, що не всі браузери підтримують контент, який обслуговуютєся як XML, зараз багато XHTML файлів обслуговуються із використанням такого MIME типу, як <code class="kw" translate="no">text/html</code>. У цьому випадку, <em>клієнтський
+    додаток буде читати файл, так ніби це HTML файл, а також буде використовувати аналізатор (парсер) HTML</em>.</p>
+  <p>Так як браузер вважає, що XML насправді має бути HTML, то при написанні коду XHTML, щоб гарантувати те, що відмінності між XML і HTML синтаксисом не зіб'ють з пантелику браузер ви повинні взяти до уваги деякі відмінності між цими двома форматами. Це включає в себе різні способи призначення кодування символів або призначення мови всередині документу.</p>
+  <p><a class="print" href="http://www.w3.org/TR/xhtml1/#guidelines">Appendix C</a> із XHTML специфікації надає трохи інформації, щодо забезпечення сумісності при
+    обслуговуванні XHTML як HTML. Ця інформація, щодо забезпечення сумісності особливо важлива для застарілих версій браузерів. Між іншим вони рекомендують, щоб ви залишали пробіл перед '/&gt;' в кінці
+    порожнього тегу (як наприклад <code class="kw" translate="no">img</code>, <code class="kw" translate="no">hr</code> або <code class="kw" translate="no">br</code>), щоб ви використовували HTML атрибут <code class="kw" translate="no">lang</code>, а також XML атрибут <code class="kw" translate="no">xml:lang</code>, щоб ви завжди використовувати обидва атрибути <code class="kw" translate="no">id</code> та <code class="kw" translate="no">name</code> для ідентифікаторів фрагменту і т.д.</p>
+</section>
+
+
+<section>
+  <h2 id="quirks"><a href="#quirks">Режим 'Standards' чи 'Quirks'</a></h2>
+  <p>Сучасні основні браузери можуть відображати HTML файл як в <dfn>режимі standards</dfn> так і в <dfn>режимі 
+    quirks</dfn>. Це означає, що для відображення файлу застосовуються різні правила: одне відповідає інтерпретації очікуваної поведінки відповідно до стандартів W3C, інше - очікуванням, які основані на нестандартній поведінці старих браузерів.</p>
+  <p>В останніх версіях основних браузерів, режим standards включений за рахунок наявності <dfn><a class="print" href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">призначення DOCTYPE</a></dfn>. Відсутність DOCTYPE може привести до різної видачі в різних браузерах.</p>
+  <p>Нижченаведені знімки екрану ілюструють деякі з цих відмінностей.</p>
+  <figure><a class="print" href="index-data/standards.html"><img src="index-data/standards-scan.png" alt="Зображення файлу, що відображається в режимі standards." /></a>
+      <figcaption>Документ, що виконується в режимі standards.</figcaption>
+  </figure>
+
+  <figure><a class="print" href="index-data/quirks.html"><img src="index-data/quirks-scan.png" alt="Зображення такого самого файлу, що відображається в режимі quirks." /></a>
+      <figcaption>Такий самий документ, що виконуються в режимі quirks.</figcaption>
+  </figure>
+    <div class="insideinfonote">
+      <p class="info">Натисніть на картинку, щоб побачити фактичну HTML сторінку. Якщо ви переглядаєте цю сторінку в Internet Explorer, то ви побачите такий самий ефект.</p>
+    </div>
+    <p style="clear:left;">Дві картини показують дві сторінки з однаковою розміткою і CSS стилізацією, за винятком однієї речі. Єдина відмінність між
+      цими двома файлами - зображення, що знаходиться ліворуч має тег DOCTYPE у верхній частині, а інше зображення його немає. Файл з відповідним призначенням DOCTYPE, у останніх версіях більшості браузерів, як правило, буде відображатися в режимі
+      standards. При відсутності DOCTYPE, ви отримаєте режим quirks.</p>
+    <p>Показані вище зовнішні відмінності випливають з наступних відмінностей в реалізації такого браузера, як Internet Explorer:</p>
+    <ul>
+      <li>
+        <p>В режимі standards налаштування ширини CSS, які застосовується до тегу div не охоплюють жоден набір ширин для налаштувань відступів (padding) і меж (border), в той час як в режимі quirks охоплюють - саме тому велике вікно на лівій картинці (режим standards) ширше.</p>
+      </li>
+      <li>
+        <p>В режимі quirks таблиця не успадковує налаштування розміру шрифту від елементу body, тому текст виглядає більшим.</p>
+      </li>
+    </ul>
+  <p>Початкова мета використання DOCTYPE - вказівка визначення мови розмітки. Нижче приведений вихідний текст із призначенням DOCTYPE у верхній частині (що виділено <span class="noprint">червоним </span> курсивом).</p>
+  <div class="example-wide">
+    <pre><span style="color: red;  font-style: italic;">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+	  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</span>
+&lt;html xml:lang=&quot;en&quot; lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt; 
+&lt;head&gt; 
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt; 
+    &lt;title&gt;XHTML document&lt;/title&gt; 
+    &lt;style type=&quot;text/css&quot;&gt;
+    body { background: white; color: black; font-family: arial, sans-serif; font-size: 12px; }
+    p { font-size: 100%; }
+    h1 { font-size: 16px; }
+    div { margin: 20px; width: 170px; padding: 50px; border: 6px solid teal; }
+    table { border: 1px solid teal; }
+    &lt;/style&gt; 
+    &lt;/head&gt; 
+
+&lt;body&gt; 
+    &lt;h1&gt;Тестовий файл для режимів Standards/Quirks&lt;/h1&gt; 
+    &lt;div&gt;
+        Тег div із CSS width:170px, margin:20px, padding:50px and border:6px.
+        &lt;/div&gt; 
+    &lt;p&gt;Текст в елементі p.&lt;/p&gt;
+    &lt;table&gt; 
+        &lt;tr&gt;&lt;td&gt;Текст в таблиці.&lt;/td&gt;&lt;/tr&gt; 
+        &lt;/table&gt;
+    &lt;/body&gt; 
+&lt;/html&gt; 
+			</pre>
+  </div>
+  <p>Браузери, які таким чином змінюють режими standards та quirks часто пропонують зробити <dfn>DOCTYPE перемикання</dfn>.</p>
+  <p>Як правило, це дуже добре завжди обслуговувати вашу сторінку в режимі standards - тобто завжди включати призначення DOCTYPE.</p>
+
+  <section>
+    <h3 id="declaration"><a href="#declaration">Призначення XML та DOCTYPEs</a></h3>
+    <p>Існує один аспект використання DOCTYPEs, що особливо важливий для призначення кодування символів та передбачуваних результатів моделювання. </p>
+    <p>Оскільки XHTML 1.0 грунтується на XML, то <a class="dfn print" href="/International/questions/qa-html-encoding-declarations#xmldeclaration">XML призначення</a> можна додати на початку розмітки, навіть якщо вона обслуговується як HTML.
+      Це зробило би верхню частину вищенаведеного файлу, схожим на це (XML призначення виділяється червоним курсивом):</p>
+    <blockquote>
+      <pre><span style="color: red;  font-style: italic;">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;</span>
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+	  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html xml:lang=&quot;en&quot; lang=&quot;en&quot; xml&lrm;ns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+...</pre>
+    </blockquote>
+    <p>У таких браузерах, як Internet Explorer 7, Firefox, Safari, Opera, Google Chrome, та інших, із або без XML призначення, сторінка, що обслуговується з
+      призначенням DOCTYPE буде відображатися в режимі standards.</p>
+    <p> Проте, в Internet Explorer 6, якщо перед призначенням DOCTYPE не з'являється нічого, окрім <a href="/International/questions/qa-byte-order-mark" class="dfn print">byte-order mark</a> (мітки порядку байтів), то сторінка відображається в режимі quirks. </p>
+    <p>Якщо користувачі Internet Explorer 6 і досі є значною частиною вашої цільової аудиторії, то це може бути проблемою. Якщо ви хочете
+      переконатися, що ваші сторінки в Internet Explorer 6 відображаються так само, як і у всіх інших standards-compliant (сумісних стандарту) браузерах, то ви повинні ретельно подумати над тим, як вам з цим 
+      справитися.</p>
+    <p> Очевидно те, що це не є проблемою тоді, коли документ не містить жодних конструкцій, які залежать від різниці між режимами 
+      standards та quirks. З іншого боку, якщо це не так, то для подолання відмінностей вам доведеться додати обхідні шляхи до вашої CSS, або
+      пропустити XML призначення.</p>
+    <p>Зауважимо, що якщо ви приймете рішення пропустити XML призначення, то в якості кодування сторінки ви повинні вибрати або UTF-8 або UTF-16. (Для отримання додаткової інформації про вплив на призначення кодування дивіться <a class="print" href="/International/questions/qa-html-encoding-declarations"><cite>Призначення кодування символів в HTML</cite></a> .)</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a href="http://www.w3.org/TR/2002/NOTE-xhtml-media-types-20020801/"><cite>Медіа Типи XHTML</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://www.w3.org/TR/xhtml1/#guidelines"><cite>XHTML™ 1.0 Розширювана Мова Розмітки Гіпертексту</cite>, C. HTML Керівництво Сумісності</a> </p>
+    </li>
+    <li>
+      <p><a href="http://www.w3.org/QA/2002/04/valid-dtd-list"><cite>Список дійсних DTDs (Визначень Типів Документу), які ви можете використовувати у вашому документі</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnie60/html/cssenhancements.asp"><cite>Перемикання Doctype в
+        Internet Explorer</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://msdn2.microsoft.com/en-us/library/Bb250496.aspx"><cite>Сумісність Каскадних Таблиць Стилів із Internet Explorer 7</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://www.mozilla.org/docs/web-developer/quirks/"><cite>Перемикання Doctype в Mozilla</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://www.opera.com/docs/specs/doctype/index.dml"><cite>Перемикання Doctype в Opera</cite></a> </p>
+    </li>
+    <li>
+      <p>Посібник – <a href="/International/tutorials/tutorial-char-enc/"><cite>Обробка кодувань символів в HTML та CSS </cite></a> </p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
