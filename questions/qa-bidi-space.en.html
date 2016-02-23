@@ -16,11 +16,11 @@ f.modifiers = '' // people making substantive changes, and their affiliation
 f.searchString = 'qa-bidi-space' // blog search string - usually the filename without extensions
 f.firstPubDate = '2003-07-04' // date of the first publication of the document (after review)
 f.lastSubstUpdate = { date:'2016-02-07', time:'22:47'}  // date and time of latest substantive changes to this document
-f.status = 'draft'  // should be one of draft, review, published, notreviewed or obsolete
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-02-07', time:'22:47'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2016-02-22', time:'18:23'} // date and time of latest edits to this document/translation
 f.contributors = '' // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
@@ -42,6 +42,20 @@ f.additionalLinks = ''
 <link rel="stylesheet" href="filename-data/local.css" type="text/css" />
 <link rel="copyright" href="#copyright"/>
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style>
+.el { color: #D61B1B; font-size: 100%; font-weight: 300; margin: 0 2px; }
+</style>
+<script>
+function highlightCode () {
+	var examples = document.querySelectorAll('figure.example, div.example')
+	for (var i=0;i<examples.length;i++) {
+		var re = /&lt;([^&]+)&gt;/
+		var content = examples[i].innerHTML
+		out = content.replace(/&lt;([^&]+)&gt;/g,'<span class="el">&lt;$1&gt;</span>')
+		examples[i].innerHTML = out
+		}
+	}
+</script>
 </head>
 
 <body>
@@ -71,11 +85,11 @@ f.additionalLinks = ''
   <h3 id="cause"><a href="#cause">A likely cause</a></h3>
   <p>Spaces between Latin and Arabic/Hebrew text may appear to collapse if text is followed by white space inside an inline element that
     includes a <code class="kw" translate="no">dir</code> attribute.</p>
-    <p>Here is an example, where the colored rectangle indicates the problem space.</p>
+    <p>In the following code pattern the colored rectangle indicates the problem space. (The uppercase letters represent RTL text, and the lowercase content is LTR.)</p>
     <figure class="example">
-      <p><code>&lt;p dir="rtl"&gt;rtl text&lt;span dir="ltr"&gt;ltr text<span style="background-color: orange;">&nbsp;</span>&lt;/span&gt;&nbsp;rtl text&lt;/p&gt; </code></p>
+      <p><code>&lt;p dir="rtl"&gt;RTL_TEXT&lt;span dir="ltr"&gt;ltr_text<span style="background-color: orange;">&nbsp;</span>&lt;/span&gt;&nbsp;RTL_TEXT&lt;/p&gt; </code></p>
 </figure>
-    <p>Code such as the above would produce the following result.</p>
+    <p>Code such as the above would produce the following result, if we substitute Arabic and English for the content.</p>
     <figure class="example" dir="rtl">
     <img src="qa-bidi-space-data/missing-space-1.png" alt="Picture of the result, showing no space to left of Latin text." />
   </figure>
@@ -86,11 +100,11 @@ f.additionalLinks = ''
     <h3 id="whattodo"><a href="#whattodo">How to fix it</a></h3>
     <p>If the previous section describes the look of your code, the solution is to remove all space before the end tag of the inline element, or
       remove the <code class="kw" translate="no">dir</code> attribute (if appropriate).</p>
-      <p>For example, moving the space after <span class="qterm">W3C</span> outside the <code class="kw" translate="no">span</code>, like this</p>
+      <p> Here is the new pattern:</p>
     <figure class="example">
-        <p><code>&lt;p dir="rtl"&gt;rtl text&lt;span dir="ltr"&gt;ltr text&lt;/span&gt;<span style="background-color: orange;">&nbsp;</span>rtl text&lt;/p&gt; </code></p>
+        <p><code>&lt;p dir="rtl"&gt;RTL_TEXT&lt;span dir="ltr"&gt;ltr_text&lt;/span&gt;<span style="background-color: orange;">&nbsp;</span>RTL_TEXT&lt;/p&gt; </code></p>
     </figure>
-    <p>would produce a result that looks as expected.</p>
+    <p>For example, moving the space after <span class="qterm">W3C</span> outside the <code class="kw" translate="no">span</code> in the real example above would produce a result that looks as expected.</p>
       <figure class="example">
       <p dir="rtl"><img src="qa-bidi-space-data/missing-space-2.png" alt="Picture of the result, showing space on both sides of Latin text." /></p>
       <!--<p dir="rtl"> العالمية (W3C) تخلق قواعد</p>--> 
@@ -137,34 +151,34 @@ f.additionalLinks = ''
   <section>
   <h3 id="test"><a href="#test">What happens in my browser?</a></h3>
   <p>The following boxes show code samples followed by an implementation of that code on this page, so that you can test the behavior of your
-    current browser. The surrounding context is right-to-left for all examples.</p>
+    current browser. The surrounding context is right-to-left for all examples. The vertical orange bar indicates the location of space characters.</p>
   <figure>
   	<div class="example" style="margin-left:0; margin-right: 0;">
-  	  <p>arabic<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;W3C<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;arabic</p>
+  	  <p>ARABIC<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;latin<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;ARABIC</p>
       <p dir="rtl">صفحة الترجمة لموقع <span dir="ltr">W3C </span>على الرابط</p>
       </div>
   </figure>
   <figure>
     <div class="example" style="margin-left:0; margin-right: 0;">
-      <p>arabic<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;W3C<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;<span style="background-color:orange;">&nbsp;</span>arabic</p>
+      <p>ARABIC<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;latin<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;<span style="background-color:orange;">&nbsp;</span>ARABIC</p>
       <p dir="rtl">صفحة الترجمة لموقع <span dir="ltr">W3C </span> على الرابط</p>
     </div>
   </figure>
   <figure>
     <div class="example" style="margin-left:0; margin-right: 0;">
-      <p>arabic<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;W3C&lt;/span&gt;<span style="background-color:orange;">&nbsp;</span>arabic</p>
+      <p>ARABIC<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;latin&lt;/span&gt;<span style="background-color:orange;">&nbsp;</span>ARABIC</p>
       <p dir="rtl">صفحة الترجمة لموقع <span dir="ltr">W3C</span> على الرابط</p>
       </div>
 </figure>
   <figure>
     <div class="example" style="margin-left:0; margin-right: 0;">
-      <p>arabic<span style="background-color:orange;">&nbsp;</span>&lt;span&gt;W3C<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;arabic</p>
+      <p>ARABIC<span style="background-color:orange;">&nbsp;</span>&lt;span&gt;latin<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;ARABIC</p>
       <p dir="rtl">صفحة الترجمة لموقع <span>W3C </span>على الرابط</p>
     </div>
   </figure>
   <figure>
     <div class="example" style="margin-left:0; margin-right: 0;">
-      <p>arabic&lt;span dir=&quot;ltr&quot;&gt;<span style="background-color:orange;">&nbsp;</span>W3C&lt;/span&gt;<span style="background-color:orange;">&nbsp;</span>arabic</p>
+      <p>ARABIC&lt;span dir=&quot;ltr&quot;&gt;<span style="background-color:orange;">&nbsp;</span>latin&lt;/span&gt;<span style="background-color:orange;">&nbsp;</span>ARABIC</p>
       <p dir="rtl">صفحة الترجمة لموقع<span> W3C</span> على الرابط</p>
     </div>
   </figure>
@@ -187,6 +201,6 @@ f.additionalLinks = ''
 </section>
 
 <footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<script type="text/javascript">completePage(); highlightCode();</script>
 </body>
 </html>
