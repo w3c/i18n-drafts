@@ -1,9 +1,9 @@
 var trans = { }
 
-trans.versions = ['de','en','es','pl','ru','uk'];
+trans.versions = ['en']
 
-trans.outofdatetranslations = [];
+trans.outofdatetranslations = []
 
 trans.updatedtranslations = [];
 
-trans.unlinkedtranslations = [];
+trans.unlinkedtranslations = []
