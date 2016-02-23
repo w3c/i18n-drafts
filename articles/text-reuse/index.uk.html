@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<title>Повторне Використання Рядків в Скриптовому Контенті</title>
+<meta name="description" content="Це не обов'язково погано повторно використовувати рядки. Деколи дуже добре попросити перекладача перекласти рядок відразу, а не 50 разів потім. Хитрість в тому щоб знати, що є гарним прикладом для повторного використання, а що ні." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/text-reuse'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-text-reuse' // blog search string - usually the filename without extensions
+f.firstPubDate = '2006-03-30' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2006-03-30', time:'11:37'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-23', time:'09:25'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = 'This article is derived from <a href="https://multilingual.com/issue-preview/?art_id=594">Text Fragmentation and Reuse in User Interfaces</a>, an article written by Richard Ishida in 2001 while working for Xerox Global Services and published by MultiLingual Computing, Inc. Duplicate material is republished here by kind permission of both Xerox and MLC.' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak (Олександр Шлапак)' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'markup'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-uk.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Повторне Використання Рядків в Скриптовому Контенті</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    шифрувальники XML та XHTML/HTML (використовуючи редактори або скрипти), розробники скриптів (PHP, JSP, і т.д.), дизайнери сайтів, та інші програмісти. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+    <p>У цій статті ми розглянемо особливості проектування та розробки, які можуть викликати серйозні проблеми для перекладу контенту. Багато
+      програмістів і дизайнерів вирішили, що якщо певний рядок використовується в багатьох місцях, то вони будуть використовувати копії одного і того ж рядка, а не реалізовувати
+      багато однакових рядків. Відчутною перевагою цього є заощадження пам'яті, для забезпечення узгодженості в джерелі й, іноді, щоб зекономити на
+      вартості перекладу.</p>
+    <p>Це не обов'язково погано повторно використовувати рядки. Деколи дуже добре попросити перекладача перекласти рядок відразу, 
+      а не 50 разів потім. Хитрість в тому щоб знати, що є гарним прикладом для повторного використання, а що ні.</p>
+    <p>Якщо ви помилитеся, ви можете створити нездоланні перешкоди для хорошої локалізації.</p>
+  </section>
+  
+
+<section>
+  <h2 id="problem"><a href="#problem">Проблема</a></h2>
+  <p>У прикладі, наведеному нижче, дизайнер вирішив скопіювати один рядок Англійською <code>On</code> для кількох різних місць в
+    користувацькому інтерфейсі,  а не створювати три окремі екземпляри рядка.</p>
+  <p><img src="index-data/on.gif" height="169" width="313"
+				alt="Діаграма, що показує слово 'On' вставлене у 3 панелі, що містять текст 'Printer', 'Stacker', та 'Stapler options'." /></p>
+  <p>На іспанській мові, в той час як printer, як правило, це <code lang="es">encendida</code>, stacker буде <code lang="es">encendido</code> і stapler options буде <code lang="es">activadas</code>. </p>
+  <p>Якщо є тільки єдиний доступний варіант вираження Англійського рядка <span class="qterm">On</span>, то ці варіації
+    не можна буде виразити. Тому неможливо отримати правильний переклад, і якість Іспанських користувальницьких інтерфейсів серйозно
+    порушена.</p>
+  <p>Ці відмінності виникають через спосіб домовленості і зміну концепції відображення в перекладі та їх не можна уникнути. Іспанське слово для <code>On</code> можна перекласти принаймні 12 способами: <span lang="es">activado, conectado, encendido, activada, conectada, encendida,
+    activados, conectados, encendidos, activadas, conectadas</span> та <span lang="es">encendidas</span>.</p>
+</section>
+
+
+<section>
+  <h2 id="examples"><a href="#examples">Приклади хорошого і поганого повторного використання рядка</a></h2>
+  <p>Ключ до вирішення питання, чи варто повторно використовувати рядок - знання того факту, чи буде чи не буде рядок використовуватися в різних
+    контекстах.</p>
+  <p>У багатьох мовах такий прикметник, як <code>none</code> (жодний) зазвичай погоджується з його темою. Давайте припустимо, наприклад, що слово <code>none</code> використовується три рази в тексті повідомлення. Якщо кожне використання відноситься до одного з варіантів: тіні, лінії й колір фону, то він використовується в трьох
+    різних контекстах  і тому повинно бути три різних рядки. Проте, якщо три використання коли-небудь використовувалися тільки для позначення тіней, це мало б
+    тільки один контекст і тому буде гарним кандидатом для повторного використання.</p>
+    
+  <section>
+  <h3 id="bad"><a href="#bad">Погані кандидати для повторного використання</a></h3>
+    <p>Наступні приклади взяті з реального продукту. Команда продукту розробила набір повідомлень представлений списком рядків, вони
+      думали про повторне використання для групи локалізації, яка представила такі відгуки.</p>
+    <p>Будь-яке слово, яке змінить свою форму через домовленість є поганим кандидатом — наприклад, всі прикметники. Наступні рядки в
+      наборі повідомлень, що містять тільки прикметники:</p>
+    <ul>
+      <li>Передовий</li>
+      <li>Випадковий</li>
+      <li>Співставлений</li>
+      <li>Присвячений</li>
+      <li>Високий</li>
+      <li>Низький</li>
+      <li>Середній</li>
+      <li>Метричний</li>
+      <li>Змішаний</li>
+      <li>Той самий</li>
+      <li>Стандартний</li>
+      <li>Неспівставлений</li>
+    </ul>
+    <p>Багато звичайних слів, також піддаються відмінностям в перекладі згідно до контексту через різне відображення концепції
+      між мовами. Ось деякі приклади рядків, які були поганими кандидатами для повторного використання:</p>
+    <ul>
+      <li>Жодний</li>
+      <li>Назад</li>
+      <li>Вниз</li>
+      <li>Передній</li>
+      <li>Вставити до того як почнеться робота</li>
+      <li>Віддалений</li>
+      <li>На</li>
+      <li>Вихідний</li>
+      <li>Скидання</li>
+      <li>Час</li>
+      <li>Вверх</li>
+    </ul>
+    <p>Ось кілька пояснень того, чому існують проблеми з цими непридатних умовами.</p>
+    <p><span class="leadin">Час</span> в Німецькій може виражатися як <span class="qterm" lang="de">Uhr</span> для поточного
+      часу - дев'яти годин, але, як <span class="qterm" lang="de">Dauer</span> для тривалості, коли файл завантажувався дев'ять
+      годин.</p>
+    <p><span class="leadin">Скидання</span> з'являється у якості технічного слова, але це особливий випадок. Воно має два переклади на Голландську мову. Загальний
+      переклад для цього терміну - <span class="qterm" lang="nl">Herstel</span>. Проте, коли мова йде про <span class="qterm">Скидання
+      Системи</span>, відповідний переклад буде <span class="qterm" lang="nl">Herstarten</span> або <span class="qterm" lang="nl">Herstart</span>. Це ілюструє корисність мати групу локалізації, яка розглядає рядки, які ви
+      запропонували для повторного використання, оскільки для розробника, який не розмовляє цією мовою було б важко виконати це.</p>
+    <p><span class="leadin">Низький</span> матиме різні закінчення в Французькій і Німецькій мовах в залежності від того чи він посилається на щось єдине
+      або множинне і щось чоловіче, жіноче або (в Німецькій мові) середнього роду. Це стосується більшості прикметників. </p>
+    <p><span class="leadin">Жодний</span> Не забувайте, що це, як правило, погоджується з предметом по роду і числу.</p>
+    <p><span class="leadin">Вставити до того як почнеться робота</span> не має об'єкта, тобто, він не встановлює те, що ви вставляєте. В
+      таких мовах, як Японська і Німецька “what” може привести до різних перекладів вставки слова.</p>
+  </section>
+  
+  <section>
+  <h3 id="good"><a href="#good">Хорошиі кандидати для повторного використання</a></h3>
+    <p>Більшість технічних слів є достатньо безпечними кандидатами(але дивіться попередній приклад <span class="qterm">Скидання</span>).</p>
+    <p>Будь-яка окрема фраза така як закінчене речення або заголовок, ймовірно, буде безпечним.</p>
+    <p>Будь-яке слово — навіть прикметник — є гарним кандидатом, поки воно завжди використовується тільки в одному контексті.</p>
+    <p>Ось кілька прикладів хороших кандидатів для повторного використання з того самого огляду продукту.</p>
+    <p><span class="leadin">Скасування</span> Використане 48 разів, але завжди щоб скасувати діалогове вікно в цьому продукті. (Якби воно було використане, щоб скасувати
+      якусь операцію, необхідні були б додаткові рядки.)</p>
+    <p><span class="leadin">Відкрийте передні двері</span> Використане 16 разів, але окреме речення.</p>
+    <p><span class="leadin">Застряглий оригінал</span> Використане 14 разів, але, хоча <span class="qterm">оригінал</span> є прикметником, він завжди
+      відноситься до <span class="qterm">оригінала документа</span> в цьому продукті.</p>
+    <p><span class="leadin">Подача паперу</span> Використане 4 рази, але досить технічне і специфічне, щоб мати один переклад.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="recommendations"><a href="#recommendations">Рекомендації</a></h2>
+  <p><mark>Рядки повинні повторно використовуватися там, де текст завжди використовується в однаковому контексті або там, де рядок
+    є окремим, незалежним реченням або фразою.</mark></p>
+  <p><mark>Повторно використані рядки не повинні посилатися на більше ніж один текстовий, графічний або концептуальний контекст.</mark></p>
+  <p><mark>Якщо ви сумніваєтесь щодо того, чи рядок є гарним кандидатом для повторного використання, не використовуйте його.</mark> Краще створіть окремі рядки. Якщо
+    маєте попросити пораду експертів із локалізації, то знайте, що це часто може бути корисним.</p>
+  <p><mark>Якщо повторне використання рядка відображатиметься різними розмірами в відображувачах фіксованого розміру, переконайтесь що весь переклад буде
+    вписуватися в вікно відображення найменшого розміру.</mark> Пам'ятайте також, що текст, ймовірно, зростатиме при перекладі з Англійської та Китайської мов на інші
+    мови.</p>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Повторне використання рядка дуже часто спостерігається спільно з <a class="print" href="/International/articles/composite-messages/">складеними повідомленнями</a>. 
+    Це, як правило, може буди проблемою коли змінні підрядки в складених повідомленнях використовуються спільно з більш ніж одним батьківським рядком.</p>
+  <p>Оптимізація використання пам'яті за рахунок зниження кількох зразків того ж самого рядка до одного, що можна застосувати для всіх рядків - навіть прикметники, але
+    це повинно бути зроблено після перекладу, а не до. Крім того, це слід зробити на основі принципу: мова відповідна до мови. Це означало б, наприклад, що слово <span class="qterm">On</span> оптимізоване для одного рядка на Англійській, але для трьох чи більше рядків на Іспанській мові.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/articles/composite-messages/">Робота зі складеними повідомленнями</a> Повторне використання рядка, часто виникає при роботі з складеними
+        повідомленнями.</p>
+    </li>
+  <li>
+    <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+    <ul>
+      <li><a href="/International/techniques/authoring-html?collapse&amp;open=markup">Markup &amp; text</a></li>
+      <li><a href="/International/techniques/authoring-html#strings">Working with composite strings and string re-use </a></li>
+    </ul>
+  </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Re-using Strings in Scripted Content</title>
+<meta name="description" content="String reuse is not necessarily a bad thing. It sometimes makes very good sense to ask the translator to translate a string once rather than 50 times. The trick is to know what constitutes a good candidate for reuse and what does not." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/text-reuse'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-text-reuse' // blog search string - usually the filename without extensions
+f.firstPubDate = '2006-03-30' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2006-03-30', time:'11:37'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-23', time:'09:25'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = 'This article is derived from <a href="https://multilingual.com/issue-preview/?art_id=594">Text Fragmentation and Reuse in User Interfaces</a>, an article written by Richard Ishida in 2001 while working for Xerox Global Services and published by MultiLingual Computing, Inc. Duplicate material is republished here by kind permission of both Xerox and MLC.' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'markup'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Re-using Strings in Scripted Content</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    script developers (PHP, JSP, etc.), XHTML/HTML coders (using editors or scripting), site designers, and other programmers. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+    <p>In this article we look at a particular design and development practise that can cause major problems for translation of content. Many
+      programmers and designers decide that if a particular string is used in many places, they will use copies of the same string rather than implement
+      many identical strings. The perceived advantages to this are to save on memory, to promote consistency in the source and, sometimes, to save on
+      translation cost.</p>
+    <p>String reuse is not necessarily a bad thing. It sometimes makes very good sense to ask the translator to translate a string once
+      rather than 50 times. The trick is to know what constitutes a good candidate for reuse and what does not.</p>
+    <p>If you get it wrong, you can be creating an insuperable obstacle to good localization.</p>
+  </section>
+  
+
+<section>
+  <h2 id="problem"><a href="#problem">The problem</a></h2>
+  <p>In the example below, the designer has decided to copy the single English string <code>On</code> to several different locations on the
+    user interface, rather than create three separate instances of the string.</p>
+  <p><img src="index-data/on.gif" height="169" width="313"
+				alt="A diagram showing the word 'On' being inserted into 3 panels containing the text 'Printer', 'Stacker', and 'Stapler options'." /></p>
+  <p>In Spanish, whereas the printer would normally be <code lang="es">encendida</code>, that is, on-line, the stacker would be <code lang="es">encendido</code> and the stapler options would be <code lang="es">activadas</code>, that is, enabled. </p>
+  <p>If there is only a single available instance of the string expressing the English idea <span class="qterm">On</span>, these variations
+    cannot be expressed. It is therefore impossible to obtain a correct translation, and the quality of the Spanish user interface is seriously
+    impaired.</p>
+  <p>These differences arise out of the way agreement and concept mappings change in translation and cannot be avoided. The Spanish word for <code>On</code> can be translated in at least 12 ways: <span lang="es">activado, conectado, encendido, activada, conectada, encendida,
+    activados, conectados, encendidos, activadas, conectadas</span> and <span lang="es">encendidas</span>.</p>
+</section>
+
+
+<section>
+  <h2 id="examples"><a href="#examples">Examples of good and bad string re-use</a></h2>
+  <p>The key to deciding whether or not it is appropriate to reuse a string is knowing whether or not the string will be used in different
+    contexts.</p>
+  <p>In many languages an adjective like <code>none</code> usually agrees with its subject. Let's suppose, as an example, that the word <code>none</code> is used three times in the message text. If each use refers to one of shading, line and background color, it is used in three
+    different contexts and so there should be three different strings. If, however, the three uses were only ever used to refer to shading, it would have
+    only one context and would therefore be a good candidate for reuse.</p>
+    
+  <section>
+  <h3 id="bad"><a href="#bad">Bad candidates for reuse</a></h3>
+    <p>The following examples are taken from a real product. The product team who developed a message set submitted a list of strings they
+      were thinking of reusing to the localization group, who provided the following feedback.</p>
+    <p>Any word that will change its shape through agreement is a bad candidate — for example, all adjectives. The following strings in the
+      message set just contained adjectives:</p>
+    <ul>
+      <li>Advanced</li>
+      <li>Casual</li>
+      <li>Collated</li>
+      <li>Dedicated</li>
+      <li>High</li>
+      <li>Low</li>
+      <li>Medium</li>
+      <li>Metric</li>
+      <li>Mixed</li>
+      <li>Same</li>
+      <li>Standard</li>
+      <li>Uncollated</li>
+    </ul>
+    <p>Many ordinary words are also subject to differences in translation according to the context because of different concept mappings
+      between languages. Here are some examples of strings that were bad candidates for reuse:</p>
+    <ul>
+      <li>None</li>
+      <li>Back</li>
+      <li>Down</li>
+      <li>Front</li>
+      <li>Insert before job is in progress</li>
+      <li>Off</li>
+      <li>On</li>
+      <li>Output</li>
+      <li>Reset</li>
+      <li>Time</li>
+      <li>Up</li>
+    </ul>
+    <p>Here are a few explanations of why there are issues with these unsuitable terms.</p>
+    <p><span class="leadin">Time</span> in German can be expressed as <span class="qterm" lang="de">Uhr</span> for current
+      time, that is, nine o'clock, but as <span class="qterm" lang="de">Dauer</span> for duration, that is, the file was downloading for nine
+      hours.</p>
+    <p><span class="leadin">Reset</span> appears to be a technical word, but is a special case. It has two translations in Dutch. The general
+      translation for this term is <span class="qterm" lang="nl">Herstel</span>. However, when talking about a <span class="qterm">System
+      Reset</span>, the appropriate translation is <span class="qterm" lang="nl">Herstarten</span> or <span class="qterm" lang="nl">Herstart</span>. This illustrates the usefulness to have the localization group review the strings you
+      propose to reuse, since it would be difficult for a developer who doesn't speak the language to spot this.</p>
+    <p><span class="leadin">Low</span> will have different endings in French and German according to whether it refers to something singular
+      or plural and something masculine, feminine or (in German) neuter. This is the case for most adjectives. </p>
+    <p><span class="leadin">None</span> Don't forget that this also tends to agree with the subject in gender and number.</p>
+    <p><span class="leadin">Insert before job is in progress</span> has no object, that is, it doesn't state what you are inserting. In
+      languages like Japanese and German the “what” may lead to different translations of the word insert.</p>
+  </section>
+  
+  <section>
+  <h3 id="good"><a href="#good">Good candidates for re-use</a></h3>
+    <p>Most technical words are reasonably safe candidates (but see the previous example of <span class="qterm">Reset</span>).</p>
+    <p>Any self-contained phrase such as a complete sentence or a heading is likely to be safe.</p>
+    <p>Any word — even an adjective — is a good candidate as long as it is always used in exactly one context.</p>
+    <p>Here are some examples of good candidates for reuse from the same product review.</p>
+    <p><span class="leadin">Cancel</span> Used 48 times, but always in this product to cancel a dialog box. (If it had been used to cancel an
+      operation of some kind, an additional string would be needed.)</p>
+    <p><span class="leadin">Open the front door</span> Used 16 times, but a self-contained sentence.</p>
+    <p><span class="leadin">Misfed original</span> Used 14 times, but although <span class="qterm">original</span> is an adjective, it always
+      refers to the <span class="qterm">original document</span> in this product.</p>
+    <p><span class="leadin">Paper supply</span> Used 4 times, but sufficiently technical and specific to have a single translation.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="recommendations"><a href="#recommendations">Recommendations</a></h2>
+  <p><mark>Strings should be reused where text is always used in exactly the same context, or where the string is a
+    self-contained, independent sentence or phrase.</mark></p>
+  <p><mark>Reused strings must not refer to more than one text, graphic or conceptual context.</mark></p>
+  <p><mark>If in doubt as to whether a string is a good candidate for re-use, don't.</mark> Create separate strings instead. If
+    you are in a position to ask advice of localization experts, that can often be helpful.</p>
+  <p><mark>If re-used strings will be displayed in fixed-sized displayers of varying sizes, ensure that the translation will
+    all fit in the smallest sized display box.</mark> Remember, also, that text is likely to grow in translation from English and Chinese into other
+    languages.</p>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>String re-use is very commonly seen in association with <a class="print" href="/International/articles/composite-messages/">composite messages</a>. It
+    tends to be a problem when variable substrings in a composite message are shared with more than one parent string.</p>
+  <p>Optimizing memory usage by reducing multiple instances of the same string to one can still be done for all strings - even adjectives, but
+    it should be done after translation, not before. It should also be done on a language by language basis. This would mean, for example, that the word <span class="qterm">On</span> is optimized to one string in English, but three or more strings in Spanish.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/articles/composite-messages/">Working with Composite Messages</a> String re-use often crops up when dealing with composite
+        messages.</p>
+    </li>
+  <li>
+    <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+    <ul>
+      <li><a href="/International/techniques/authoring-html?collapse&amp;open=markup">Markup &amp; text</a></li>
+      <li><a href="/International/techniques/authoring-html#strings">Working with composite strings and string re-use </a></li>
+    </ul>
+  </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
