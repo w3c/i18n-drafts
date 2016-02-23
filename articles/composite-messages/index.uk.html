@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<title>Робота зі Складеними Повідомленнями</title>
+<meta name="description" content="Дизайнери повинні враховувати мовні відмінності при реалізації повідомлень, які складаються з декількох рядків і/або змінних, які будуть переведені." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/composite-messages'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-composite-messages' // blog search string - usually the filename without extensions
+f.firstPubDate = '2006-03-30' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2006-03-30', time:'11:36'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-23', time:'05:49'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = 'This article is derived from <a href="https://multilingual.com/issue-preview/?art_id=594">Text Fragmentation and Reuse in User Interfaces</a>, an article written by Richard Ishida in 2001 while working for Xerox Global Services and published by MultiLingual Computing, Inc. Duplicate material is republished here by kind permission of both Xerox and MLC.' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak (Олександр Шлапак)' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'markup'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-uk.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css" media="all">
+#compositeString {
+	border: 0;
+}
+#compositeString td {
+	border: 0;
+	vertical-align: middle;
+	line-height: 1;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Робота зі Складеними Повідомленнями</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    розробники скриптів (PHP, JSP, і т.д.), шифрувальники XML та XHTML/HTML (використовуючи редактори або скрипти), дизайнери сайтів та
+      інші програмісти. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <p>У цій статті ми подивимося на методи проектування і розробки, які можуть викликати серйозні проблеми для перекладу. Дизайнери мають бути дуже
+      обережними з тим як вони розділяють і повторно використовують текст на екрані, тому що лінгвістичні відмінності між мовами можуть призвести до проблем для
+      локалізаторів і в деяких випадках можуть унеможливити нормальний переклад.</p>
+    <p>Після розгляду концепцій та питань, пов'язаних із фрагментацією тексту і повторним використанням рядка, ми розглянемо що працює, а що
+      не працює.</p>
+  </section>
+
+<section>
+  <h2 id="composite"><a href="#composite">Складені Повідомленням</a></h2>
+  <p><span class="newterm">Складені Повідомленням</span> динамічно складають одне повідомлення більш ніж з одного рядка тексту. Звичайною причиною для
+    створення складених повідомлень є те що одна або більше частин складених повідомлень буде змінюватиметься відповідно до контексту.</p>
+  <p>Складені повідомлення, як правило, організовані за допомогою одного або двох способів: перший - механізм <span class="newterm">sentence-like</span>; 
+    другий - механізм <span class="newterm">topic-comment</span>.</p>
+  <p>Частини складеного повідомлення які змінюються, розглядаються тут як <span class="newterm">підрядки</span>. </p>
+    
+  <section>
+    <h3 id="sentential"><a href="#sentential">Механізми sentence-like</a></h3>
+    <p>Наприклад нижче зображене складене повідомлення типу sentence-like. Цей механізм виражає ідею використання плинного sentence-like синтаксису.
+      Як правило, це найбільш проблемний підхід.</p>
+    <div class="example">
+       <table id="compositeString">
+        <tbody>
+          <tr>
+            <td></td>
+            <td style="font-size: 3em; line-height: .8em; padding: 0;" rowspan="3">{</td>
+            <td><samp>printer</samp></td>
+            <td style="font-size: 3em; line-height: .8em; padding: 0;" rowspan="3">}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><samp>The</samp></td>
+            <td><samp>stacker</samp></td>
+            <td><samp>has been disabled.</samp></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><samp>stapler options</samp></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>У цьому прикладі, дизайнер створив один рядок, для обслуговування спільних частин трьох речень, тобто <code>The ... has been
+      disabled.</code>. Також були створені три змінні підрядки, і один відповідний підставляється під час виконання, щоб створити відповідні
+      повідомлення для контексту.</p>
+    <p>Як правило, це популярна дія серед дизайнерів, оскільки зменшення ідентичних частин ряду повідомлень з'являється в одному рядку, щоб
+      зменшити роботу авторів тексту, поліпшити узгодженість повідомлення та оптимізацію оперативної пам'яті.</p>
+    <p>На жаль, навіть якщо це працює в одній мові, це може виявитися складним або неможливим створити такі складені повідомлення в
+      інших мовах через різні правила для структури речення, узгодження і так далі.</p>
+    <p>Проблема узгодження вже показана на Англійському прикладі. Якщо альтернативний рядок <code>stapler options</code> використовується
+      під час виконання, то слово <code>has</code> буде неправильним - повинно бути <code>have</code>.</p>
+    <p>Ключовим питанням є те, що, оскільки в даний час тільки один рядок містить слово <code>has</code>, він не може читати <code>have</code> коли це необхідно.</p>
+    <p>Часто це стає ще складнішою задачею, коли ми переводимо на інші мови. Наприклад, у Французькій мові слово <code>the</code> буде переведено як <code lang="fr">le</code>, <code lang="fr">la</code>, <code lang="fr">les</code>, або <code lang="fr">l'</code>, в залежності від того, що відразу слідує. Крім того, слово <code>disabled</code> необхідно буде <code lang="fr">désactivé</code>, <code lang="fr">désactivés</code>, <code lang="fr">désactivée</code>, <code lang="fr">désactivées</code>, в залежності від статі і число суб'єкта. Навіть якщо б <code>stapler options</code> не
+      був одним із варіантів, і всі складені повідомлення виглядали би добре на Англійській, Французький перекладач зіткнувся би із нездійсненним завданням.</p>
+  </section>
+    
+  <section>
+    <h3 id="subjpred"><a href="#subjpred">Механізми topic-comment</a></h3>
+    <p>Механізми topic-comment встановлюють тему (subject) і потім встановлюють щось про неї (comment), як правило, коротко. 
+      Наприклад: <code>Printer: enabled</code>. Зверніть увагу, що в цьому механізмі двокрапка дуже широко використовується, щоб відокремити тему і коментар.</p>
+    <p>Ось приклад, який показує деякі варіації на тему механізма topic-comment.</p>
+    <p><img src="index-data/image1.gif" alt="Екран показує описаний текст." width="500" height="304" /></p>
+    <p> Теми - незмінні рядки, такі як: <code>2-sided printing</code>, [Tray] <code>1</code>, та <code>Binder</code>. Кожна тема
+      супроводжується одним із набору альтернативних (і попередньо визначених) рядків для коментарів. Наприклад, тема <code>2-sided printing</code> супроводжується
+      коментарем <code>On</code>. Зверніть увагу, що тема та коментар знаходяться тут в <em>окремих</em> областях екрану, хоча це не завжди так. </p>
+    <p>Більшість вищенаведених повідомлень розділені на дві області відображення тексту. Однак, повідомлення з посиланням на binder, розділене на <em>три</em> області відображення - тобто, тема має два коментарі: binder є одночасно <code>Enabled</code> та <code>On</code>. Це цілком 
+      допустимий підхід і він не становить жодної проблеми для перекладу.</p>
+    <p>Ось ще декілька прикладів topic-comment складених повідомлень.</p>
+    <div class="example">
+      <p>Коментарі тут є також замінюваними текстовими підрядками, хоча в цьому випадку всі коментарі видно в той же час — тобто,
+        це приклад списку підрядків. У багатьох мовах такі слова як <code>lighter</code> та <code>darker</code> доведеться узгоджувати 
+        з темою (<code>Image quality</code>) за родом.</p>
+      <form action="none" method="post">
+        <fieldset>
+          <legend>Image quality</legend>
+          <p>Lighter/darker<br />
+            <input type="radio" id="lighter" />
+            <label for="lighter">Lighter</label>
+            <br />
+            <input type="radio" checked="checked" id="normal" />
+            <label for="normal">Normal</label>
+            <br />
+            <input type="radio"
+								id="darker" />
+            <label for="darker">Darker</label>
+          </p>
+        </fieldset>
+      </form>
+    </div>
+    <div class="example">
+      <p>Тут ми маємо справу з випадаючим меню, але концепції залишилися тими ж самими. Слова <code>Left</code>, <code>Centre</code> та <code>Right</code> є замінюваними текстовими підрядками та в багатьох мовах при перекладі мають узгоджуватися по темі <code>Alignment</code>.</p>
+      <p><img src="index-data/pulldown.gif"
+						alt="Зображення випадаючого списку, що показує послідовність команд: Format > Alignment > Left/Centre/Right" width="203" height="136" /></p>
+    </div>
+    <div class="example">
+      <p>Повідомлення в цьому наборі реалізовані у вигляді вбудованих змінних в батьківських рядках. Проте вони зберігають механізм 
+        topic-comment. Зверніть увагу, що в останньому рядку теми знову є два коментарі - тест як completed так і passed.</p>
+      <pre>Directory: C:/Workgroup/Scan
+File name: MyFile.tif
+Image Quality: Text
+Original Size: Auto
+Resolution: 300 dpi
+Communication Test: Completed: Passed</pre>
+    </div>
+  </section>
+    
+  <section>
+    <h3 id="substrings"><a href="#substrings">Типи підрядків</a></h3>
+    <p>Є декілька типів підрядка, кожен з яких вводить трохи різні вимоги до можливості перекладу. У цій статті ми
+      будемо посилатися на наступні види підрядка:</p>
+    <p><span class="leadinHeader">Заздалегідь визначений, замінюваний текст.</span> Заздалегідь визначені слова або фрази в наборі повідомлень що треба буде
+      перекласти, такі як слова <code>printer</code>, <code>stacker</code> або <code>binder</code> в прикладі вище.</p>
+    <p><span class="leadinHeader">Незамінюваний, визначений при виконанні текст.</span> Незамінюваний і нечисловий рядок що створений
+      користувачем при виконанні або незамінювана назва, як у <code>Помилка виникла при виконанні роботи %s</code>, де %s - назва роботи як
+      зазначено користувачем.</p>
+    <p><span class="leadinHeader">Числовий.</span> Числовий рядок що створений продуктом при виконанні або є одним із набору таких фіксованих
+      значень як <code>Надруковані сторінки: %d</code>, де %d кількість сторінок, які машина вже нарахувала до сих пір.</p>
+    <p><span class="leadinHeader">Графічний.</span> Графічний обраний з числа альтернатив як частина складеного повідомлення,
+      наприклад, символ лотка паперу, який вбудований в текст що пов'язаний з лотками для паперу. Він не є строго підрядком, але ми можемо розглядати його як такий, оскільки він
+      може використовуватися аналогічним чином.</p>
+  </section>
+  </section>
+
+<section>
+  <h2 id="issues"><a href="#issues">Проблеми інтернаціоналізації</a></h2>
+
+  <section>
+    <h3 id="syntax"><a href="#syntax">Жорсткий синтаксис</a></h3>
+    <p>Наступні проблеми є спільною властивістю для sentence-like складних повідомлень. Оригінальний текст припускає звичайний порядок 
+      слів в реченні, і що порядок можливо доведеться змінити в іншій мові.</p>
+    <div class="h4">
+      <h4>Через розділені області відображення.</h4>
+      <p>Одна спільна проблема виникає, коли компоненти складених повідомлень розкидані по різним областям
+      відображення, що ускладнює легку зміну порядку цих компонентів.</p></div>
+    <p>Наступні приклади показують, складене повідомлення, частини якого для компоновки розділені між різними клітинками таблиці. (Пунктирна
+      лінія показує межі клітинок.)</p>
+    <div class="example">
+      <table style="width:auto;">
+        <tbody>
+          <tr>
+            <td style="white-space:nowrap; border: 1px dotted gray;">Return web pages updated</td>
+            <td style="text-align: left; border: 1px dotted gray; "><select style="margin:0; padding: 0;">
+                <option value="all">anytime</option>
+                <option value="m3">past 3 months</option>
+                <option value="m6">past 6 months</option>
+                <option value="y">past year</option>
+              </select></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Щоб добре перекласти текст, перекладач можете переміщати його з однієї клітинки таблиці в іншу. Це може змінити
+      початкове розташування встановлене дизайнером, який реалізував цю таблицю. Наприклад, порядок слів в Німецькій мові може привести до наступного
+      перекладу:</p>
+    <div class="example">
+      <table lang="de">
+        <tbody>
+          <tr>
+            <td style="border: 1px dotted gray; text-align: left;"><select>
+                <option value="all">Jederzeit</option>
+                <option value="m3">Innerhalb von drei Monaten</option>
+                <option value="m6">Innerhalb von sechs Monaten</option>
+                <option value="y">Innerhalb einen Jahres</option>
+              </select></td>
+            <td style="white-space:nowrap; text-align: right; border: 1px dotted gray;">veränderte Webseiten abrufen. </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Якщо перекладач не в змозі змінити порядок повідомлення таким чином, то, можливо, для вирішення цієї проблеми він зможе використати механізм 
+      topic-comment. В іншому випадку, ймовірно, найкращим результатом буде дуже поганий переклад. Наприклад, текст може бути змінений в цільову мову
+      для позначення:</p>
+    <div class="example">
+      <table>
+        <tbody>
+          <tr>
+            <td style="white-space:nowrap; border: 1px dotted gray;">Time period for returned web pages:</td>
+            <td style="text-align: right; border: 1px dotted gray;"><select>
+                <option value="all">anytime</option>
+                <option value="m3">past 3 months</option>
+                <option value="m6">past 6 months</option>
+                <option value="y">past year</option>
+              </select></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="h4">
+      <h4>Змінні, чий порядок не можна змінити.</h4>
+      <p>Повинна бути можливість змінювати порядок змінних в механізмах sentence-like і переміщати їх будь-яким чином по відношенню до тексту.</p>
+    </div>
+    <p>Наприклад, при програмуванні на PHP таким чином можна закодувати рядок "There were &lt;number&gt; spelling mistakes in file
+      &lt;filename&gt;.":</p>
+    <div class="example">
+      <p><code>printf( "There were %d spelling mistakes in file %s.", spellerrors, filename)</code></p>
+    </div>
+    <p>На жаль, якщо ви це зробите, і якщо перекладач робить переклад на Німецьку мову: "<span lang="de">Datei
+      &lt;filename&gt; enthält &lt;number&gt; Rechtschreibfehler.</span>" це, ймовірно, призведе до помилки в коді. Це тому, що PHP не
+      дозволяє переставляти місцями значення змінних <code>%d</code> та <code>%s</code>.</p>
+    <p>Замість цього вам слід закодувати текст наступним чином:</p>
+    <div class="example">
+      <p><code>printf( "There were %1\$d spelling mistakes in file %2\$s.", spellerrors, filename)</code></p>
+    </div>
+    <p>Це тепер дозволить перекладачеві, змінювати порядок змінних без введення потенційної помилки.</p>
+    <p>Змінний рядок, повторно інтегрований в код, читатиметься як:</p>
+    <div class="example">
+      <p lang="de"><code>printf( "Datei %2\$s enthält %1\$d Rechtschreibfehler.", spellerrors, filename)</code></p>
+    </div>
+    <p>Це питання аж ніяк не є характерним для PHP. Багато мов програмування дозволяють вам додавати унікальний ідентифікатор змінної, так що
+      немає ніякої двозначності, коли змінні переміщуються. Ви повинні намагатися завжди користуватися перевагою цієї функції.</p>
+    <div class="h4">
+      <h4 style="display: inline;">Складені повідомлення, що є неповними рядками.</h4>
+      <p>Може виникнути набагато серйозніша ситуація, наприклад, як наводиться далі:</p>
+    </div>
+    <div class="example">
+      <pre>print( "Retrieving last " );
+print( desiredEntries );
+print( " of " );
+print( totalEntries );
+print( " total log entries." );</pre>
+    </div>
+    <p>Японський переклад поставить <code>total log entries</code> (записи в загальний журнал) на початку речення і <code>last retrieving</code> (останнє одержання) в
+      кінці. Набагато важливіше те, що було б необхідно змінити порядок <code>print(desiredEntries)</code> і <code>print(totalEntries)</code>. (У наведеному нижче прикладі додані переклади, щоб допомогти вам побачити, як саме необхідно змінити порядок тексту.)</p>
+    <div class="example">
+      <pre lang="ja">print( "エラーログ" );        // translation: 'error log'
+print( totalEntries );
+print( "件から最新" );        // translation: 'from last'
+print( desiredEntries );
+print( "件を取り出します。" ); // translation: 'retrieving'</pre>
+    </div>
+    <p>Проблема в тому, що перекладачі, як правило, намагаються з вагомої причини нічого не змінювати окрім рядків в коді. В іншому випадку
+      випадкове редагування можна спричинити серйозну помилку. Таким чином, перекладачеві, ймовірно, буде представлений наступний текст для перекладу:</p>
+    <div class="example">
+      <pre>1: "Retrieving last "
+2: " of "
+3: " total log entries."</pre>
+    </div>
+    <p>Основним питанням тут є те, що перекладачеві <em>необхідно</em> буде редагувати код щоб розробити найбільш адекватний переклад на
+      Японську мову. Це вкрай небажано. Крім того, існує також ризик того, що перекладач намагатиметься визначити початок і кінець таких
+      повідомлень, особливо, якщо рядки йому дали окремо і не по порядку.</p>
+    <p>Відзначимо, що аналогічні проблеми виникають і в коді, який виглядає як наступний приклад. Навіть якщо це в одному друкованому реченні,
+      це не покращує справи.</p>
+    <div class="example">
+      <p><code>print( "Retrieving last " + requiredEntries + " of " + totalEntries + " total log entries." );</code></p>
+    </div>
+    <p>Кращим підходом було б використовувати функцію друку, що дозволяє визначити змінні, як частину рядка для друку. 
+      Наприклад:</p>
+    <div class="example">
+      <p><code>print( "Retrieving last $requiredEntries of $totalEntries total log entries." );</code></p>
+    </div>
+  </section>
+    
+  <section>
+    <h3 id="ling-concat"><a href="#ling-concat">Узгодження та відображення по типу слово/концепція</a></h3>
+    <div class="h4">
+      <h4>Узгодження роду.</h4>
+      <p>Заздалегідь визначені, змінювані текстові підрядки в механізмі sentence-like можуть створити непереборні труднощі для перекладача
+        через лінгвістичні властивості багатьох мовах.</p>
+    </div>
+    <p>Наступний приклад показує sentence-like батьківський рядок в який відповідний заздалегідь визначений підрядок буде вставлений під час 
+      виконання.</p>
+    <div class="example">
+      <p>The %s has been disabled.</p>
+    </div>
+    <p>Під час виконання %s буде замінений на один із:</p>
+    <div class="example">
+      <p>printer</p>
+      <p>stacker</p>
+      <p>stapler options</p>
+    </div>
+    <p>Проблему тут видно навіть Англійською мовою, оскільки слово <code>has</code> повинно бути <code>have</code> поряд з
+      підрядком <code>stapler options</code>. На Французькій, вищезазначені підрядки є, відповідно, жіночої однини, чоловічої однини і жіночої множини,
+      і потребуватимуть три різних переклади батьківського рядка:</p>
+    <div class="example" lang="fr">
+      <p>L'imprimante a été désactivée.</p>
+      <p>Le module de reception a été désactivé.</p>
+      <p>Les options d'agrafage ont été désactivées.</p>
+    </div>
+    <p>Слово <code>the</code> також може бути <code lang="fr">la</code> у Французькій мові якщо наступне слово жіночого роду і починається з
+      приголосної літери, а слово <code>disabled</code> потрібно перекласти <code lang="fr">désactivés</code> для чоловічого множинного
+      іменника. Такі узгодження є надзвичайно поширеними в інших мовах, окрім Англійської або Японської та часто можуть бути більш складними, ніж у Французькій мові.</p>
+    <p>Ключовим питанням тут є те, що, оскільки у нас для перекладу є тільки один рядок, то не можливо застосовувати різні відповідні переклади в
+      Французькій мові для батьківського рядка.</p>
+    <p>Така реалізація, ймовірно, виникла через спроби дизайнерів або розробників поліпшити ситуацію, але, на жаль відсутність
+      знань про те, що трапилося б у перекладі, створило серйозну проблему для іноземних версій продукту.</p>
+    <p>Кращим підходом тут буде або використовувати окремі рядки, або використовувати такий механізм topic-comment, як <code>Disabled
+      function: printer</code>, і т.д. Відзначимо, що в останньому випадку слово <code>disabled</code> відноситься до <code>function</code>, і, отже, є
+      незмінним.</p>
+    <div class="h4">
+      <h4>Відображення слова і концепції.</h4>
+      <p>Відображення слова і концепції також можуть викликати проблеми. Візьмемо, наприклад, послідовність:</p>
+    </div>
+    <div class="example">
+      <p><code>Turn on the %s.</code></p>
+    </div>
+    <p>Під час виконання %s буде замінений на один із:</p>
+    <div class="example">
+      <p>printer</p>
+      <p>stacker</p>
+      <p>stapler options</p>
+    </div>
+    <p>У деяких мовах, відповідний переклад <code>Turn on</code> може змінюватись в залежності від того, що turned on (увімкнено). Наприклад,
+      в Іспанській мові його можна перекласти як такі різні терміни, як <span class="qterm" lang="es">conectar</span>, <span class="qterm" lang="es">encender</span> або <span class="qterm" lang="es">activar</span>. Там також буде чотири
+      можливих переклади слова <code>the</code>. Оскільки існує тільки один екземпляр початкового рядка, тому знову неможливо забезпечити
+      якісний переклад.</p>
+    <p>Ви завжди повинні намагатися забезпечити, щоб незмінюванна частина виражалася в якості теми.</p>
+    <div class="h4">
+      <h4>Узгодження роду і підрядки що визначаються під час виконання.</h4>
+      <p>Тут ми маємо на увазі конкретно текст, переданий під час виконання - такий, як назва файлу, назва завдання, ім'я людини і так далі - або
+        неперекладні назви. Це не попередньо визначені замінювані підрядки.</p>
+    </div>
+    <p>Як правило, навіть в механізмах sentence-like, ці типи підрядка не викликають проблем із інтернаціоналізацією. Наприклад,
+      перекладені нижче речення не потрібно узгоджувати з текстовим підрядком оскільки тема речення (тобто в даному випадку <code>file</code> або <code>section</code>) вже визначена або чітко видно що вона відрізняється від підрядка.</p>
+    <div class="example">
+      <p>The file &lt;file_name&gt; has been scanned.</p>
+      <p>The section &lt;section_title&gt; gives further information.</p>
+    </div>
+    <p>У лінгвістичних умовах, це працює тому, що текст змінної забезпечується <em>в якості додатку</em> до теми.</p>
+    <p>Рекомендується такі слова, як section та file додавати, а не виводити їх. Це допомагає перекладачеві зрозуміти сенс
+      повідомлення.</p>
+    <p>Однак, існують винятки з цього правила. Якщо текстова змінна відноситься до <em>person</em> (людина), а не до object (об'єкт), то багато мов 
+      як і раніше потребуватимуть внесення змін до інших частин речення, в залежності від статі людини. Наприклад:</p>
+    <div class="example">
+      <p>The patient &lt;person's_name&gt; is ready.</p>
+    </div>
+    <p>Іспанські переклади цього рядка можуть мати слідуючий вигляд:</p>
+    <div class="example">
+      <p lang="es">El enfermo Richard está listo.</p>
+    </div>
+    <p>або</p>
+    <div class="example">
+      <p lang="es">La enferma Julia está lista.</p>
+    </div>
+    <p>Інакше кажучи, вбудовані підрядки визначені під час виконання працюють в механізмах sentence-like тільки, якщо вони не відображають належний іменник. 
+      Для цих типів повідомлення краще використовувати механізми topic-comment.</p>
+    <div class="h4">
+      <h4>Числове узгодження.</h4>
+      <p>Числові підрядки погано працюють в механізмах sentence-like.</p>
+    </div>
+    <p>У багатьох мовах слово, яке кваліфікується рядом змін, згідно з тим, як багато ми говоримо про нього. Візьміть, наприклад,
+      повідомлення <code>%d pages were printed</code> (сторінки були надруковані).</p>
+    <p>В Англійській мові, у разі, якщо тільки одна сторінка була надрукована <code>pages were</code> повинно стати <code>page was</code>. Іноді, вказавши <code>%d page(s) printed</code> автори намагаються обійти цю проблему.</p>
+    <p>На жаль, в інших мовах все не так просто. Наприклад, в Арабській мові є різні закінчення дієслова і іменника для однієї сторінки, двох
+      сторінок і більше двох сторінок, тобто, вони мають два різних типи множини.</p>
+    <p>Російська мова ще складніша. Наведена нижче таблиця показує закінченнями для слова <span class="qterm">page</span> в Російській мові
+      , коли це пов'язано з різними номерами.</p>
+    <table>
+      <tr>
+        <th>Номера сторінок</th>
+        <th>Російське слово для 'page'</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td lang="ru">страниц<strong class="russian-highlight">а</strong></td>
+      </tr>
+      <tr>
+        <td>2-4</td>
+        <td lang="ru">страниц<strong class="russian-highlight">ы</strong></td>
+      </tr>
+      <tr>
+        <td>5-10</td>
+        <td lang="ru">страниц</td>
+      </tr>
+      <tr>
+        <td>11-20 (не завжди)</td>
+        <td lang="ru">страниц</td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td lang="ru">страниц<strong class="russian-highlight">а</strong></td>
+      </tr>
+      <tr>
+        <td>22-24</td>
+        <td lang="ru">страниц<strong class="russian-highlight">ы</strong></td>
+      </tr>
+      <tr>
+        <td>25-30</td>
+        <td lang="ru">страниц</td>
+      </tr>
+      <tr>
+        <td>&gt; 30</td>
+        <td>Повторіть модель закінчень: від 1 до 10.</td>
+      </tr>
+    </table>
+    <p>В результаті, це дуже важко мати справу з такими повідомленнями, що виражені механізмом sentence-like. Тому краще, 
+      завжди виражати повідомлення, що містять числа, в якості механізму topic-comment. У механізмі topic-comment, слово <span
+					class="qterm">pages</span> залишається незмінним. Еквівалентне значення <code>Pages printed: %d</code> на Російській мові наведене нижче.</p>
+    <div class="example">
+      <p lang="ru">Отпечатано страниц: %d</p>
+    </div>
+  </section>
+    
+  <section>
+    <h3 id="indistinguishable"><a href="#indistinguishable">Підрядки які не можна розрізнити</a></h3>
+    <p>Якщо перекладач хоче змінити порядок розташування підрядків у повідомленні, має бути чітко зрозуміло який новий порядок встановлено.</p>
+    <p>Розглянемо наступний приклад:</p>
+    <div class="example">
+      <p>%s near '%s' at line %d</p>
+    </div>
+    <p>Японський переклад цього може бути таким: </p>
+    <div class="example">
+      <p lang="ja">%d 行の％s近くに％s</p>
+    </div>
+    <p>Що не ясно, дивлячись на цей приклад - це те, що перекладач призначив заміну на протилежну двох змінних, що названі %s. Це,
+      звичайно, не зрозуміло, для програмного забезпечення.</p>
+    <p>Тому є сенс використовувати унікальний ідентифікатор для кожної змінної в рядку. Ми вже бачили, що в PHP, наприклад, ви
+      могли б одержати це кодуючи Англійську як:</p>
+    <div class="example">
+      <p>%1\$s near '%2\$s' at line %3\$d</p>
+    </div>
+    <p>У Японській мові це:</p>
+    <div class="example">
+      <p lang="ja">%3\$d 行の％2\$s近くに％1\$s</p>
+    </div>
+  </section>
+    
+  <section>
+    <h3 id="context"><a href="#context">Потреба в контексті</a></h3>
+    <p>Для перекладу перекладач повинен бути забезпечений значеннями, щоб асоціювати коментар із його темою.</p>
+    <p>Для багатьох мов, як правило, не можливо перекласти частину коментаря topic-comment повідомлення, якщо ви не знаєте що це за 
+      тема. Слово <code>enabled</code> у Французькій мові перекладається одним з чотирьох різних способів, залежно від того, чи тема є чоловічого, жіночого роду,
+      одниною чи множиною:</p>
+    <table>
+      <tr>
+        <th>Topic (Тема)</th>
+        <th>Частина мови</th>
+        <th>Переклад слова 'enabled'</th>
+      </tr>
+      <tr>
+        <td>stacker</td>
+        <td>чоловічий, однина</td>
+        <td lang="fr">activé</td>
+      </tr>
+      <tr>
+        <td>printer</td>
+        <td>жіночий, однина</td>
+        <td lang="fr">activée</td>
+      </tr>
+      <tr>
+        <td>bar codes</td>
+        <td>чоловічий, множина</td>
+        <td lang="fr">activés</td>
+      </tr>
+      <tr>
+        <td>stapler options</td>
+        <td>жіночий, множина</td>
+        <td lang="fr">activées</td>
+      </tr>
+    </table>
+    <p>В інших мовах є багато інших можливостей, оскільки є більш двох родів і можуть бути відмінкові закінчення.</p>
+    <p>Якщо перекладачу потрібно перекласти саме по собі слово <code>enabled</code>, він або вона поняття не мають, як його
+      потрібно перекласти. Наприклад, з представленим перекладачу текстом в наступному порядку буде дуже важко впоратися.</p>
+    <div class="example">
+      <pre>enabled
+disabled
+enabled
+enabled
+disabled
+stacker
+printer
+enabled
+bar codes
+stacker
+disabled
+etc.
+</pre>
+    </div>
+    <p>Єдиний спосіб вирішити це дозволить перекладачеві, подивитися на результат в завершеному інтерфейсі, а потім зробити зворотний переклад як
+      необхідно. Це трудомісткий процес. Було б набагато краще переконатися, що перекладач може бачити відразу, як виглядають
+      ці речі.</p>
+    <p>Є декілька способів, щоб цього досягнути:</p>
+    <ul>
+      <li>
+        <p>Текст може бути впорядкований таким чином, що інтуїтивно було б ясно що і чому відповідає.</p>
+        <div class="example">
+          <pre>stacker
+enabled
+disabled
+stacker
+enabled
+disabled
+printer
+enabled
+disabled
+etc.
+</pre>
+        </div>
+      </li>
+      <li>
+        <p>Відповідність можна вказати за допомогою ідентифікаторів повідомлення.</p>
+      </li>
+      <li>
+        <p>Дизайнери можуть використовувати якісь анотації, щоб надати цю інформацію.</p>
+      </li>
+    </ul>
+    <p>Відмінності можуть бути також семантичного характеру. Наприклад, якщо тут використали слово <code>on</code>, а не <code>enabled</code>,
+      відповідний переклад на Іспанську мову може бути наступним <code lang="es">encendida</code> для printer, але <code lang="es"
+					xml:lang="es">activadas</code> для stapler options. <code lang="es">conectado</code> - інший переклад слова <code>on</code>. Кожне з цих трьох слів також має чотири форми узгодження. Це дає 12 можливих варіантів перекладу.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="recommendations"><a href="#recommendations">Рекомендації</a></h2>
+  <p><mark>Там де це можливо використовуйте підхід topic-comment.</mark> Topic-comment складені повідомлення добре працюють незалежно від того чи частини
+    знаходяться на одному чи на декількох екранах, і з будь-яким типом підрядка.</p>
+  <p><mark>Уникайте механізмів sentence-like, коли вони містять підрядки, що заздалегідь визначені як замінюваний текст або числових
+    текст.</mark></p>
+  <p><mark>Якщо ви маєте нечислові і незмінні текстові підрядки, то будьте обережні при використанні механізмів sentence-like</mark> (тобто
+    текст створений під час виконання). Не використовуйте, якщо підрядок є належним іменником. Окрім того, приміняйте такі sentence-like повідомлення в яких в процесі перекладу 
+    можна легко переміщати в будь-якому порядку текст і підрядки. При написанні програмного коду, для цього зазвичай використовують рядки форматування для виводу
+    таким чином, що кожна змінна ідентифікована однозначно.</p>
+  <p><mark>Там де частини складеного повідомлення з'являються в окремих місцях, забезпечте перекладача контекстною
+    інформацією, щоб показати, як різні частини складеного повідомлення відносяться одна до одної</mark> - особливо до яких інших складових частин повідомлення
+    відносяться які підрядки. Складові частини повідомлення, яким віддають перевагу повинні бути згруповані разом для доставки їх перекладачеві.</p>
+  <p><mark>Там де це необхідно, забезпечте перекладачів інформацією, щоб уточнити, що собою представляє підрядок</mark> (наприклад щось
+    схоже на "%s near '%s' at line %d" може створити проблему для перекладача).</p>
+  <p><mark>На прохання групи локалізації, надати інформацію про розмір кожного підрядка</mark>, щоб допомогти протестувати
+    чи вписується переклад у фіксований розмір простору.</p>
+  <p>В іншій статті ми обговоримо ряд важливих речей, які слід мати на увазі, з точки зору <a class="print" href="/International/articles/text-reuse/">повторного використання текстових рядків</a>.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/articles/text-reuse/">Повторне використання Рядків в Скриптовому Контенті</a> Додаткові проблеми можуть виникнути, якщо підрядки повторно використовуються в більше ніж одному з батьківських
+        рядків.</p>
+    </li>
+    <li>
+      <p><a href="https://msdn.microsoft.com/en-us/goglobal/bb688118.aspx">Глобалізація Крок за Кроком, Обробка Рядків</a> Специфічна стаття Microsoft про обробку складених повідомлень в Win32 та .NET.</p>
+    </li>
+  <li>
+    <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+    <ul>
+      <li><a href="/International/techniques/authoring-html?collapse&amp;open=markup">Markup &amp; text</a></li>
+      <li><a href="/International/techniques/authoring-html#strings">Working with composite strings and string re-use </a></li>
+    </ul>
+  </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

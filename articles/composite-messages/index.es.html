@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Cómo trabajar con mensajes compuestos</title>
+<meta name="description" content="Los diseñadores deben tener en cuenta las diferencias lingüísticas cuando implementan mensajes compuestos de varias cadenas o variables que luego deberán traducirse." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/composite-messages'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-composite-messages' // blog search string - usually the filename without extensions
+f.firstPubDate = '2006-03-30' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2006-03-30', time:'11:36'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-23', time:'05:49'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = 'This article is derived from <a href="https://multilingual.com/issue-preview/?art_id=594">Text Fragmentation and Reuse in User Interfaces</a>, an article written by Richard Ishida in 2001 while working for Xerox Global Services and published by MultiLingual Computing, Inc. Duplicate material is republished here by kind permission of both Xerox and MLC.' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.spanishtranslation.us/english-to-spanish-translation.html">Spanish Translation</a> Team, Spanish Translation US' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'markup'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css" media="all">
+#compositeString {
+	border: 0;
+}
+#compositeString td {
+	border: 0;
+	vertical-align: middle;
+	line-height: 1;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Cómo trabajar con mensajes compuestos</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    desarrolladores script (PHP, JSP, etc.), codificadores XHTML/HTML (que usan editores o lenguaje de script), diseñadores de sitios y otros programadores. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <p>En este artículo examinamos las prácticas de diseño y desarrollo que pueden generar problemas importantes en la traducción. Los diseñadores deben ser muy cuidadosos cuando dividen y reutilizan texto en pantalla, debido a que las diferencias lingüísticas entre los idiomas pueden provocar verdaderos dolores de cabeza para los localizadores y, en algunos casos, pueden hacer que sea imposible lograr una traducción razonable.</p>
+    <p>Después de revisar los conceptos y las cuestiones relativas a la fragmentación de texto y reutilización de cadenas, examinaremos lo que funciona y lo que no funciona.</p>
+  </section>
+
+<section>
+  <h2 id="composite"><a href="#composite">Mensajes compuestos</a></h2>
+  <p>Los <span class="newterm">mensajes compuestos</span> forman dinámicamente un solo mensaje a partir de más de una cadena de texto. La razón habitual para crear mensajes compuestos es que una o más partes del mensaje compuesto cambiarán según el contexto.</p>
+  <p>Los mensajes compuestos normalmente adoptan uno de estos dos tipos de disposición: la primera es una disposición <span class="newterm">tipo oración</span>; la segunda, es una disposición <span class="newterm">tema-comentario</span>.</p>
+  <p>Las partes de un mensaje compuesto que varían se denominarán aquí <span class="newterm">subcadenas</span>. </p>
+    
+  <section>
+    <h3 id="sentential"><a href="#sentential">Disposición tipo oración</a></h3>
+    <p>El ejemplo que se incluye a continuación pertenece a un mensaje compuesto tipo oración. Esta disposición expresa una idea usando una sintaxis similar a la de una oración. Generalmente es el enfoque más problemático.</p>
+    <div class="example">
+       <table id="compositeString">
+        <tbody>
+          <tr>
+            <td></td>
+            <td style="font-size: 3em; line-height: .8em; padding: 0;" rowspan="3">{</td>
+            <td><samp>printer</samp></td>
+            <td style="font-size: 3em; line-height: .8em; padding: 0;" rowspan="3">}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><samp>The</samp></td>
+            <td><samp>stacker</samp></td>
+            <td><samp>has been disabled.</samp></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><samp>stapler options</samp></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>En este ejemplo, el diseñador ha creado una sola cadena que sirve para las partes comunes de tres oraciones, es decir <code>The ... has been disabled.</code>. Se han creado también tres subcadenas alternativas y se sustituye la adecuada en tiempo de ejecución para crear el mensaje adecuado para el contexto.</p>
+    <p>Por lo general ésta es una idea popular entre los diseñadores, ya que reducir las partes idénticas de una serie de mensajes a una sola cadena parece ofrecer una forma de reducir el trabajo del autor de texto, mejorar la coherencia de los mensajes y optimizar la memoria.</p>
+    <p>Desafortunadamente, incluso cuando funciona para un idioma, puede resultar difícil o imposible trabajar con tales mensajes compuestos en otros idiomas, debido a las distintas reglas que existen para la estructura de las oraciones y la concordancia, entre otras cuestiones.</p>
+    <p>El problema de la concordancia ya quedó ilustrado en el ejemplo en inglés. Si se usara la cadena alternativa <code>stapler options</code> en tiempo de ejecución, la palabra <code>has</code> estaría incorrecta - debería decir<code> have</code>.</p>
+    <p>El problema fundamental es que, dado que en este momento solamente existe una sola cadena que contiene la palabra <code>has</code>, no se podrá leer <code>have</code> cuando sea necesario.</p>
+    <p>Esto a menudo se vuelve incluso más complicado cuando lo traducimos a otros idiomas. Por ejemplo, en francés la palabra para <code>the</code> debería traducirse como <code lang="fr">le</code>, <code lang="fr">la</code>, <code lang="fr">les</code> o <code lang="fr">l'</code>, según lo que le sigue inmediatamente. De modo similar, la palabra <code>disabled</code> debería traducirse como <code lang="fr">désactivé</code>, <code lang="fr">désactivés</code>, <code lang="fr">désactivée</code>, <code lang="fr">désactivées</code>, según el género y número del sujeto. Aun si <code>stapler options</code> no hubiese sido una opción, y los mensajes compuestos hubiesen parecido adecuados en inglés, el traductor de francés se hubiera encontrado frente a un trabajo imposible.</p>
+  </section>
+    
+  <section>
+    <h3 id="subjpred"><a href="#subjpred">Disposición tema-comentario</a></h3>
+    <p>La disposición tema-comentario indica un tema (el sujeto) y luego indica algo acerca de él (el comentario), generalmente de manera concisa. Por ejemplo: <code>Impresora: activada</code>. Observe que los dos puntos se usan comúnmente para separar el tema y el comentario en este tipo de disposición.</p>
+    <p>A continuación, se incluye un ejemplo que muestra algunas variaciones en el tema de la disposición tipo tema-comentario.</p>
+    <p><img src="index-data/image1.gif" alt="Pantalla que muestra el texto descrito." width="500" height="304" /></p>
+    <p> Los temas son cadenas que no cambian, tales como <code>impresión doble faz</code>, [Bandeja] <code>1</code> y <code>Encuadernador</code>. A cada tema le sigue al menos un conjunto de cadenas de comentarios alternativos (y predefinidos). Por ejemplo, al tema <code>impresión doble faz</code> le sigue el comentario <code>Encendido</code>. Observe cómo el tema y el comentario se encuentran en <em>distintas</em> áreas de visualización, a pesar de que este no siempre es el caso. </p>
+    <p>La mayoría de los mensajes anteriores se dividen en dos áreas de visualización de texto. El mensaje que se refiere al encuadernador, sin embargo, se divide en <em>tres</em> áreas de visualización, es decir, el tema tiene dos comentarios: El encuadernador está <code>Activado</code> y <code>Encendido</code>. Este es un enfoque perfectamente válido y no plantea problemas de traducción.</p>
+    <p>Estos son algunos otros ejemplos de mensajes compuestos con disposición tema-comentario.</p>
+    <div class="example">
+      <p>Los comentarios que se presentan aquí también son subcadenas de texto que pueden traducirse, aunque en este caso, todos los comentarios pueden verse al mismo tiempo, es decir, este es un ejemplo de una lista de subcadenas. En muchos idiomas, las palabras tales como <code>lighter</code> y <code>darker</code> tienen que concordar en género con el tema (<code>Image quality</code>).</p>
+      <form action="none" method="post">
+        <fieldset>
+          <legend>Calidad de la imagen</legend>
+          <p>Más claro/ más oscuro<br />
+            <input type="radio" id="lighter" />
+            <label for="lighter">Más claro</label>
+            <br />
+            <input type="radio" checked="checked" id="normal" />
+            <label for="normal">Normal</label>
+            <br />
+            <input type="radio"
+								id="darker" />
+            <label for="darker">Más oscuro</label>
+          </p>
+        </fieldset>
+      </form>
+    </div>
+    <div class="example">
+      <p>En este caso, estamos trabajando con un menú que fluye hacia abajo, pero los conceptos permanecen iguales. Las palabras <code>Left</code>, <code>Centre</code> y <code>Right</code> son subcadenas de texto que pueden traducirse y en muchos idiomas deben concordar con el tema <code>Alignment</code> en la traducción.</p>
+      <p><img src="index-data/pulldown.gif" 						alt="Imagen de una lista desplegable, que muestra la secuencia de comandos, Formato > Alineación > Izquierda/ Centro/ Derecha" width="203" height="136" /></p>
+    </div>
+    <div class="example">
+      <p>Los mensajes de este conjunto se implementan como variables integradas en cadenas padre. De todos modos, conservan la disposición tema-comentario. Observe que en la última línea, el tema nuevamente tiene dos comentarios: la prueba ha sido completada y aprobada.</p>
+      <pre>Directorio: C:/Workgroup/Scan
+Nombre del archivo: MyFile.tif
+Calidad de la imagen: Texto
+Tamaño original: Auto
+Resolución: 300 dpi
+Prueba de comunicación: Completada: Aprobada</pre>
+    </div>
+  </section>
+    
+  <section>
+    <h3 id="substrings"><a href="#substrings">Tipos de subcadenas</a></h3>
+    <p>Existen diversos tipos de subcadenas, cada uno de las cuales introduce requisitos ligeramente distintos para la traducción. En este artículo, nos referiremos a los siguientes tipos de subcadena:</p>
+    <p><span class="leadinHeader">Texto predefinido, que puede traducirse.</span> Las palabras o frases predefinidas en el conjunto del mensaje que deberán traducirse, tales como las palabras <code>printer</code>, <code>stacker</code> o <code>binder</code> incluidas en el ejemplo anterior.</p>
+    <p><span class="leadinHeader">Texto definido en tiempo de ejecución, que no puede traducirse.</span> Una cadena que no puede traducirse y que no es numérica, generada por el usuario en tiempo de ejecución, o un nombre que no puede traducirse, como en <code>Se produjo un error al procesar la tarea %s</code>, donde %s es el nombre de la tarea según la suministró el usuario.</p>
+    <p><span class="leadinHeader">Cadenas numéricas.</span> Una cadena numérica que es generada en tiempo de ejecución por el producto o pertenece a un conjunto de valores fijos, tales como <code>Páginas impresas: %d</code>, donde %d es la cantidad de páginas que contó hasta el momento la máquina.</p>
+    <p><span class="leadinHeader">Gráfico.</span> Un gráfico seleccionado de una serie de alternativas como parte de un mensaje compuesto, por ejemplo un símbolo de una bandeja de papel incorporado en un texto relacionado con bandejas de papel. Ésta no es estrictamente una subcadena, aunque podemos considerarla como tal, dado que puede usarse de modo similar.</p>
+  </section>
+  </section>
+
+<section>
+  <h2 id="issues"><a href="#issues">Problemas relativos a la internacionalización</a></h2>
+
+  <section>
+    <h3 id="syntax"><a href="#syntax">Sintaxis inflexible</a></h3>
+    <p>Los siguientes problemas son una característica común de los mensajes compuestos tipo oración. El texto original adopta un orden en particular para las palabras de una oración y es posible que ese orden deba ser diferente en otro idioma.</p>
+    <div class="h4">
+      <h4>En distintas áreas de visualización.</h4>
+      <p>Un problema común surge cuando los componentes de un mensaje compuesto se distribuyen en distintas áreas de visualización, lo que hace difícil volver a ordenarlos fácilmente.</p></div>
+    <p>El siguiente ejemplo muestra un mensaje compuesto cuyas partes se distribuyen en distintas celdas de la tabla debido a la disposición. (Una línea de puntos muestra los límites de la celda).</p>
+    <div class="example">
+      <table style="width:auto;">
+        <tbody>
+          <tr>
+            <td style="white-space:nowrap; border: 1px dotted gray;">Regresar a páginas web actualizadas</td>
+            <td style="text-align: left; border: 1px dotted gray; "><select style="margin:0; padding: 0;">
+                <option value="all">cualquier período</option>
+                <option value="m3">los últimos tres meses</option>
+                <option value="m6">los últimos seis meses</option>
+                <option value="y">el último año</option>
+              </select></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Para lograr una traducción efectiva, el traductor deberá correr el texto de una celda de la tabla hacia otra. Esto puede cambiar la disposición que el diseñador que implementó la tabla pretendía tener originalmente. Por ejemplo, el orden de palabras en alemán puede dar lugar a una traducción como la siguiente:</p>
+    <div class="example">
+      <table lang="de">
+        <tbody>
+          <tr>
+            <td style="border: 1px dotted gray; text-align: left;"><select>
+                <option value="all">Jederzeit</option>
+                <option value="m3">Innerhalb von drei Monaten</option>
+                <option value="m6">Innerhalb von sechs Monaten</option>
+                <option value="y">Innerhalb einen Jahres</option>
+              </select></td>
+            <td style="white-space:nowrap; text-align: right; border: 1px dotted gray;">veränderte Webseiten abrufen. </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Si un traductor no puede ordenar nuevamente el mensaje de este modo, es posible que pueda usar una disposición tema-comentario para resolver este problema. De lo contrario, es muy probable que el resultado sea, en el mejor de los casos, una muy mala traducción. Por ejemplo, el texto puede redactarse de otra manera en el idioma de llegada para que indique:</p>
+    <div class="example">
+      <table>
+        <tbody>
+          <tr>
+            <td style="white-space:nowrap; border: 1px dotted gray;">Período de tiempo para páginas web encontradas:</td>
+            <td style="text-align: right; border: 1px dotted gray;"><select>
+                <option value="all">cualquier período</option>
+                <option value="m3">los últimos tres meses</option>
+                <option value="m6">los últimos seis meses</option>
+                <option value="y">el último año</option>
+              </select></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="h4">
+      <h4>Variables que no pueden volver a ordenarse.</h4>
+      <p>Debe ser posible poder volver a ordenar las variables de la disposición tipo oración así como volver a colocarlas de cualquier forma en relación con el texto.</p>
+    </div>
+    <p>Por ejemplo, al programar en PHP es posible codificar la cadena "Hubo &lt;número&gt; errores de ortografía en el archivo &lt;nombre del archivo&gt;." de la siguiente manera:</p>
+    <div class="example">
+      <p><code>printf( "Hubo %d errores de ortografía en el archivo %s.", spellerrors, filename)</code></p>
+    </div>
+    <p>Desafortunadamente, si lo hace, y si el traductor traduce al alemán "<span lang="de">Datei &lt;nombre del archivo&gt; enthält &lt;número&gt; Rechtschreibfehler.</span>" es probable que se introduzca así un error en el código. Esto se debe a que PHP no le permite volver a ordenar los valores de las variables <code>%d</code> y <code>%s</code>.</p>
+    <p>En su lugar, deberá codificar el texto de la siguiente manera:</p>
+    <div class="example">
+      <p><code>printf( "Hubo %1\$d errores de ortografía en el archivo %2\$s.", spellerrors, filename)</code></p>
+    </div>
+    <p>Esto le permitirá al traductor volver a ordenar las variables evitando posiblemente introducir un error.</p>
+    <p>La cadena traducida, integrada nuevamente en el código, se leerá de la siguiente manera:</p>
+    <div class="example">
+      <p lang="de"><code>printf( "Datei %2\$s enthält %1\$d Rechtschreibfehler.", spellerrors, filename)</code></p>
+    </div>
+    <p>Este problema no es en absoluto específico de PHP. Muchos lenguajes de programación permiten colocarle a una variable un identificador exclusivo, de modo que no se genere ambigüedad cuando se muevan las variables. Debe intentar aprovechar esta ventaja en todo momento.</p>
+    <div class="h4">
+      <h4 style="display: inline;">Mensajes compuestos que son cadenas incompletas.</h4>
+      <p>Una situación mucho más seria puede surgir con un ejemplo como el que se presenta a continuación:</p>
+    </div>
+    <div class="example">
+      <pre>print( "Recuperando últimas " );
+print( entradasDeseadas);
+print( " de " );
+print( totalEntradas);
+print( " total de entradas del registro." );</pre>
+    </div>
+    <p>La traducción al japonés colocaría <code>Total de entradas en el registro</code> al inicio de la oración y <code>recuperando últimas</code> al final. Lo que sería más importante aún, es que sería necesario invertir el orden de <code>print(entradasDeseadas)</code> e <code>print(totalEntradas)</code>. (En el ejemplo que se incluye a continuación, agregué las traducciones para ilustrar cómo debería ordenarse nuevamente el texto).</p>
+    <div class="example">
+      <pre lang="ja">print( "エラーログ" );        // traducción: 'registro de errores'
+print( totalEntradas);
+print( "件から最新" );        // traducción: 'de las últimas'
+print( entradasDeseadas);
+print( "件を取り出します。" ); // traducción: 'recuperando'</pre>
+    </div>
+    <p>El problema es que habitualmente se les impide a los traductores, con mucha razón, cambiar cualquier cosa salvo las cadenas en código. De lo contrario una edición accidental podría introducir un error grave. Por lo tanto, es probable que un traductor se encuentre con el siguiente texto para traducir:</p>
+    <div class="example">
+      <pre>1: "Recuperando últimas"
+2: " de "
+3: " total de entradas del registro."</pre>
+    </div>
+    <p>El principal problema aquí es que el traductor <em>debería</em> editar el código para lograr la traducción más adecuada al japonés. Se debe tratar por todos los medios de evitar esto. Además, se corre el riesgo de que el traductor tenga dificultad para identificar el comienzo y el final de tales mensajes, especialmente si no se le proporcionan al traductor las cadenas juntas y en orden.</p>
+    <p>Observe que pueden surgir problemas similares en un código parecido al ejemplo, que se presenta a continuación. Aunque se trata una declaración de impresión única, esto no mejora las cosas.</p>
+    <div class="example">
+      <p><code>print( "Recuperando últimas " + entradasRequeridas + " de " + totalEntradas + " total de entradas del registro." );</code></p>
+    </div>
+    <p>Un mejor enfoque sería usar una función de impresión que permita especificar las variables como parte de la cadena para imprimir. Por ejemplo:</p>
+    <div class="example">
+      <p><code>print( "Recuperar últimas $entradasRequeridas de $totalEntradas total de entradas del registro." );</code></p>
+    </div>
+  </section>
+    
+  <section>
+    <h3 id="ling-concat"><a href="#ling-concat">Concordancia y mapeos de palabras/ conceptos</a></h3>
+    <div class="h4">
+      <h4>Concordancia en género.</h4>
+      <p>Las subcadenas de texto predefinido que pueden traducirse presentadas con una disposición tipo oración pueden crear dificultades imposibles de superar para el traductor debido a las propiedades lingüísticas de muchos idiomas.</p>
+    </div>
+    <p>El siguiente ejemplo muestra una cadena padre tipo oración en la cual se insertará una subcadena predefinida adecuada, en tiempo de ejecución.</p>
+    <div class="example">
+      <p>The %s has been disabled.</p>
+    </div>
+    <p>Se reemplazará %s en tiempo de ejecución con una de las siguientes opciones:</p>
+    <div class="example">
+      <p>printer</p>
+      <p>stacker</p>
+      <p>stapler options</p>
+    </div>
+    <p>El problema aquí ya puede verse incluso en inglés, dado que la palabra <code>has</code> debería cambiar por <code>have</code> con la subcadena <code>stapler options</code>. En francés, las subcadenas anteriores son, respectivamente, femenino singular, masculino singular y femenino plural, y requerirían tres traducciones muy diferentes de la cadena padre:</p>
+    <div class="example" lang="fr">
+      <p>L'imprimante a été désactivée.</p>
+      <p>Le module de reception a été désactivé.</p>
+      <p>Les options d'agrafage ont été désactivées.</p>
+    </div>
+    <p>La palabra <code>the</code> también puede ser <code lang="fr">la</code> en francés si la siguiente palabra es de género femenino y comienza con una consonante; y la palabra <code>disabled</code> debería traducirse como <code lang="fr">désactivés</code> para un sustantivo masculino plural. Este tipo de concordancia es sumamente común en otros idiomas que no sean el inglés o el japonés, y puede ser a menudo, más complicado que en francés.</p>
+    <p>El problema clave aquí es que, dado que únicamente tenemos una cadena para traducir, es imposible aplicar las diversas traducciones adecuadas en francés para la cadena padre.</p>
+    <p>Esta implementación probablemente surgió de los intentos del diseñador o del desarrollador para mejorar la situación, pero desafortunadamente la falta de conocimiento acerca de lo que sucedería en la traducción, creó un problema importante para las versiones extranjeras del producto.</p>
+    <p>Un mejor enfoque en este caso sería usar cadenas distintas, o bien, usar una disposición tema-comentario como <code>Función desactivada: impresora</code>, etc. Observe que en el último caso, la palabra <code>desactivada</code> se refiere a la <code>función</code> y por lo tanto no cambia.</p>
+    <div class="h4">
+      <h4>Mapeos de palabras y conceptos.</h4>
+      <p>Los mapeos de palabras y conceptos también pueden plantear problemas. Tome, por ejemplo, la secuencia:</p>
+    </div>
+    <div class="example">
+      <p><code>Turn on the %s.</code></p>
+    </div>
+    <p>Se reemplazará %s en tiempo de ejecución con una de las siguientes opciones:</p>
+    <div class="example">
+      <p>printer</p>
+      <p>stacker</p>
+      <p>stapler options</p>
+    </div>
+    <p>En algunos idiomas, la traducción adecuada de <code>Turn on</code> puede variar según lo que se deba encender. Por ejemplo, en español puede traducirse esta idea con distintos términos, tales como <span class="qterm" lang="es">conectar</span>, <span class="qterm" lang="es">encender</span> o <span class="qterm" lang="es">activar</span>. Asimismo, habría cuatro traducciones posibles para la palabra <code>the</code>. Dado que solo hay una versión de la cadena inicial, nuevamente es imposible brindar una traducción de calidad.</p>
+    <p>Siempre debe asegurarse de que la parte invariable se exprese como un tema.</p>
+    <div class="h4">
+      <h4>Subcadenas con tiempo de ejecución definido y concordancia en género.</h4>
+      <p>En este caso, nos referimos específicamente al texto suministrado en tiempo de ejecución — como nombre de un archivo, nombre de una tarea, nombre de una persona, entre otros — o a los nombres que no pueden traducirse. No son subcadenas predefinidas que pueden traducirse.</p>
+    </div>
+    <p>Habitualmente, incluso en una disposición tipo oración, estos tipos de subcadenas no generan problemas de internacionalización. Por ejemplo, las oraciones que se tradujeron más adelante no necesitan concordar con la subcadena de texto, debido a que el sujeto de la oración (es decir, en este caso <code>archivo</code> o <code>sección</code>) ya está definido o se infiere claramente como algo distinto de la subcadena en sí misma.</p>
+    <div class="example">
+      <p>El archivo &lt;nombre_de_archivo&gt; ha sido escaneado.</p>
+      <p>La sección &lt;título_de_sección&gt; brinda más información.</p>
+    </div>
+    <p>En términos lingüísticos, esto funciona debido a que el texto de la variable se proporciona <em>en aposición </em> del sujeto.</p>
+    <p>Se recomienda usar palabras como sección y archivo, en lugar de inferirlas. Esto le ayuda al traductor a comprender el significado del mensaje.</p>
+    <p>Sin embargo, hay una excepción a esta regla. Si la variable de texto se refiere a una <em>persona</em> en lugar de un objeto, en muchos idiomas será necesario realizar cambios de todas formas, a otras partes de la oración según el sexo de la persona. Por ejemplo:</p>
+    <div class="example">
+      <p>The patient &lt;person's_name&gt; is ready.</p>
+    </div>
+    <p>Las traducciones al español para este texto podrían ser:</p>
+    <div class="example">
+      <p lang="es">El paciente Richard está listo.</p>
+    </div>
+    <p>o</p>
+    <div class="example">
+      <p lang="es">La paciente Julia está lista.</p>
+    </div>
+    <p>En otras palabras, las subcadenas incorporadas con tiempo de ejecución definido solo funcionan con una disposición tipo oración si no se refieren a un sustantivo propio. Es mejor usar una disposición tema-comentario para estos tipos de mensaje.</p>
+    <div class="h4">
+      <h4>Concordancia en número.</h4>
+      <p>Las subcadenas numéricas no funcionan bien con la disposición tipo oración.</p>
+    </div>
+    <p>En muchos idiomas, la palabra que está calificada por un número cambia según la cantidad de la que hablemos. Veamos por ejemplo el mensaje <code>%d pages were printed</code>.</p>
+    <p>En inglés, <code>pages were</code> debería cambiar a <code>page was</code> si solamente se imprimiera una página. A veces, los autores tratan de resolver este problema diciendo <code>%d page(s) printed</code>.</p>
+    <p>Desafortunadamente, no es tan simple en otros idiomas. Por ejemplo, el árabe tiene terminaciones distintas para verbos y sustantivos cuando se trata de una página, dos páginas y más de dos páginas, es decir, tienen dos tipos distintos de plural.</p>
+    <p>El ruso es aún más complicado. La tabla que se incluye a continuación indica las terminaciones distintas para la palabra <span class="qterm">página</span> en ruso, cuando se la asocia con distintos números.</p>
+    <table>
+      <tr>
+        <th>Cantidad de páginas</th>
+        <th>Palabra en ruso para 'página'</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td lang="ru">страниц<strong class="russian-highlight">а</strong></td>
+      </tr>
+      <tr>
+        <td>2-4</td>
+        <td lang="ru">страниц<strong class="russian-highlight">ы</strong></td>
+      </tr>
+      <tr>
+        <td>5-10</td>
+        <td lang="ru">страниц</td>
+      </tr>
+      <tr>
+        <td>11-20 (irregular)</td>
+        <td lang="ru">страниц</td>
+      </tr>
+      <tr>
+        <td>21</td>
+        <td lang="ru">страниц<strong class="russian-highlight">а</strong></td>
+      </tr>
+      <tr>
+        <td>22-24</td>
+        <td lang="ru">страниц<strong class="russian-highlight">ы</strong></td>
+      </tr>
+      <tr>
+        <td>25-30</td>
+        <td lang="ru">страниц</td>
+      </tr>
+      <tr>
+        <td>&gt; 30</td>
+        <td>Repetir el patrón de terminaciones del 1 al 10.</td>
+      </tr>
+    </table>
+    <p>Como resultado, es sumamente difícil trabajar con un mensaje de esta naturaleza expresado en una disposición tipo oración. Por lo tanto, es mejor expresar siempre los mensajes que contienen números como el anterior con una disposición tema-comentario. En una disposición tema-comentario, la palabra <span 					class="qterm">páginas</span> permanece sin variaciones. El equivalente en ruso que significa <code>Páginas impresas: %d</code>, se muestra a continuación.</p>
+    <div class="example">
+      <p lang="ru">Отпечатано страниц: %d</p>
+    </div>
+  </section>
+    
+  <section>
+    <h3 id="indistinguishable"><a href="#indistinguishable">Subcadenas que no pueden distinguirse</a></h3>
+    <p>Si un traductor debe cambiar el orden de las subcadenas en un mensaje, debe quedar claro cuál es el nuevo orden previsto.</p>
+    <p>Analicemos el siguiente ejemplo:</p>
+    <div class="example">
+      <p>%s cerca de '%s' en la línea %d</p>
+    </div>
+    <p>Una traducción al japonés sería </p>
+    <div class="example">
+      <p lang="ja">%d 行の％s近くに％s</p>
+    </div>
+    <p>Lo que no queda claro al mirar el ejemplo es que el traductor pretendió invertir las dos variables denominadas %s. Esto, por supuesto, no quedó claro para el software tampoco.</p>
+    <p>Por lo tanto, conviene usar un identificador único para cada variable en una cadena. Hemos visto anteriormente que, en PHP por ejemplo, se podría lograr esto si de codifica el inglés de la siguiente manera:</p>
+    <div class="example">
+      <p>%1\$s cerca de '%2\$s' en la línea %3\$d</p>
+    </div>
+    <p>En japonés quedaría así:</p>
+    <div class="example">
+      <p lang="ja">%3\$d 行の％2\$s近くに％1\$s</p>
+    </div>
+  </section>
+    
+  <section>
+    <h3 id="context"><a href="#context">La necesidad de contexto</a></h3>
+    <p>El traductor debe contar con una forma de asociar un comentario con su tema, para poder lograr una traducción.</p>
+    <p>Para muchos idiomas, generalmente no es posible traducir la parte del comentario de un mensaje tipo tema-comentario, salvo que se conozca cuál es el tema. La palabra <code>enabled</code> en francés se traduce en una de cuatro maneras distintas, teniendo en cuenta si el tema es masculino, femenino, singular o plural:</p>
+    <table>
+      <tr>
+        <th>Tema</th>
+        <th>Parte del lenguaje</th>
+        <th>Traducción de 'enabled'</th>
+      </tr>
+      <tr>
+        <td>apilador</td>
+        <td>masculino, singular</td>
+        <td lang="fr">activé</td>
+      </tr>
+      <tr>
+        <td>impresora</td>
+        <td>femenino, singular</td>
+        <td lang="fr">activée</td>
+      </tr>
+      <tr>
+        <td>bar codes</td>
+        <td>masculino, plural</td>
+        <td lang="fr">activés</td>
+      </tr>
+      <tr>
+        <td>opciones de la engrapadora</td>
+        <td>femenino, plural</td>
+        <td lang="fr">activées</td>
+      </tr>
+    </table>
+    <p>En otros idiomas existen muchas otras posibilidades, dado que hay más de dos géneros y pueden tener inflexiones.</p>
+    <p>Si el traductor tuviera que traducir la palabra inglès <code>enabled</code> por sí sola, no tendría idea de cómo debería traducirla. Por ejemplo, si se presenta al traductor un texto con el siguiente orden, sería muy difícil para el traductor trabajar con él.</p>
+    <div class="example">
+      <pre>enabled
+disabled
+enabled
+enabled
+disabled
+stacker
+printer
+enabled
+bar codes
+stacker
+disabled
+etc.
+				</pre>
+    </div>
+    <p>La única forma para resolverlo sería intentar una traducción, ver el resultado en una interfaz completada y luego volver a traducir según sea necesario. Este es un proceso que demanda mucho tiempo. Sería mucho mejor asegurarse de que el traductor pueda ver directamente cómo se relacionan estos elementos.</p>
+    <p>Hay varias formas de lograr esto:</p>
+    <ul>
+      <li>
+        <p>Se puede ordenar el texto de manera tal que se pueda intuir qué va en cada lugar.</p>
+        <div class="example">
+          <pre>stacker
+enabled
+disabled
+stacker
+enabled
+disabled
+printer
+enabled
+disabled
+etc.
+						</pre>
+        </div>
+      </li>
+      <li>
+        <p>Las correspondencias podrían indicarse con identificadores en el mensaje.</p>
+      </li>
+      <li>
+        <p>Los diseñadores podrían usar algún tipo de anotaciones para proporcionar esta información.</p>
+      </li>
+    </ul>
+    <p>Las diferencias también pueden ser de características semánticas. Por ejemplo, si se usara la palabra <code>on</code> en lugar de <code>enabled</code>, la traducción adecuada en español sería <code lang="es">encendida</code> para la impresora, pero <code lang="es" 					xml:lang="es">activadas</code> para las opciones de la engrapadora. <code lang="es">conectado</code> es otra traducción para la palabra <code>on</code>. Cada una de estas tres palabras tiene cuatro formas de concordancia. Como resultado tenemos 12 traducciones posibles.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="recommendations"><a href="#recommendations">Recomendaciones</a></h2>
+  <p><mark>Se debe usar un enfoque tema-comentario siempre que sea posible.</mark> Los mensajes compuestos tipo tema-comentario funcionan bien ya sea que las partes estén en un sólo visor o en varios y con cualquier tipo de subcadena.</p>
+  <p><mark>Se debe evitar la disposición tipo oración cuando contiene subcadenas que son texto predefinido que puede traducirse o texto numérico.</mark></p>
+  <p><mark>Se debe usar la disposición tipo oración con cuidado, si hay subcadenas de texto que no es numérico y que no puede traducirse</mark> (por ejemplo, texto creado en tiempo de ejecución). No se debe usar si la subcadena se refiere a un sustantivo propio. Además, se deben implementar mensajes tipo oración en los que el texto y las subcadenas puedan cambiar de posición en cualquier orden durante la traducción. Al escribir el código de un programa, esto generalmente significa utilizar cadenas de formato para salida de tal manera que cada variable pueda identificarse de manera única.</p>
+  <p><mark>Cuando las partes de un mensaje compuesto aparecen en distintas ubicaciones, se le debe proporcionar al traductor información sobre el contexto para que pueda ver cómo se relacionan entre sí las distintas partes del mensaje compuesto,</mark> especialmente qué subcadenas se relacionan con qué otras partes del mensaje compuesto. Preferentemente, las partes del mensaje compuesto deben agruparse para enviárselas al traductor.</p>
+  <p><mark>Se debe proporcionar información al traductor, cuando sea necesario, para aclarar a qué se refiere una subcadena </mark> (por ejemplo, un texto como "%s cerca de '%s' en la línea %d" puede representar un desafío para el traductor).</p>
+  <p><mark>Cuando el grupo de localización así lo solicite, se le debe proporcionar información acerca del tamaño de cada subcadena</mark> para ayudarle a comprobar si la traducción encaja en un espacio de tamaño fijo.</p>
+  <p>En otro artículo, también analizamos una serie de cuestiones importantes para recordar con respecto a la <a class="print" href="/International/articles/text-reuse/">reutilización de cadenas de texto</a>.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/articles/text-reuse/">Reutilización de cadenas en contenido en script </a> Pueden surgir otros problemas si se reutilizan las subcadenas en más de una cadena padre.</p>
+    </li>
+    <li>
+      <p><a href="https://msdn.microsoft.com/en-us/goglobal/bb688118.aspx">Globalización paso a paso, cómo trabajar con cadenas</a> Artículo específico para Microsoft acerca de cómo trabajar con mensajes compuestos en Win32 y .NET.</p>
+    </li>
+  <li>
+    <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+    <ul>
+      <li><a href="/International/techniques/authoring-html?collapse&amp;open=markup">Markup &amp; text</a></li>
+      <li><a href="/International/techniques/authoring-html#strings">Working with composite strings and string re-use </a></li>
+    </ul>
+  </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
