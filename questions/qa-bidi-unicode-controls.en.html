@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Using Unicode controls for bidi text</title>
+<meta name="description" content="If I'm unable to use markup to correctly order bidirectional text, what can I do?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-bidi-unicode-controls' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-unicode-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2009-07-10' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2009-07-10', time:'11:49'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-34', time:'16:09'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-bidi-unicode-controls-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css" media="all">
+.visualascii {
+	font-weight: bold;
+	font-size: 80%;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Using Unicode controls for bidi text</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    content authors for HTML or XML-based languages (using editors or scripting), script developers (PHP, JSP, etc.),  and anyone who is wondering how to to achieve proper text flow for right-to-left scripts where appropriate markup is not available.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">If I'm unable to use markup to correctly order bidirectional text, what can I do?</p>
+</section>
+
+
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>All text should be stored in '<a class="print" href="/International/questions/qa-visual-vs-logical#term_logicalordering" class="termref">logical order</a>', ie. characters in memory progress in a single direction based on the pronunciation of the text. When text is displayed, however, even on the same line, characters used for right-to-left scripts such as Arabic, Hebrew, Thaana, Urdu, etc., need to progress from right-to-left, whereas characters from other scripts, such as the Latin script, and any numbers will progress from left-to-right. To achieve this visual reordering the Unicode bidirectional (bidi) algorithm is used.</p>
+  <p>The bidi algorithm affects the direction of text by taking into account the directional properties of each character.
+    Occasionally, however, when scripts are mixed the algorithm needs a little help to determine how parts of the text should be positioned when displayed. For example:</p>
+  <div class="insideinfonote">
+    <p class="noprint info">Some examples in this document  are shown as images to ensure that you see what was intended.</p>
+    <p class="noprint">Click on the nearby <img src="../icons/codelink.gif" alt="View code."> image to see  how it looks in your browser, and to see the actual text. From the page that opens you can also view the source code for the example.</p>
+    <!--p>Code samples containing Arabic and Hebrew text <a href="http://www.w3.org/TR/i18n-html-tech-bidi/#bidisource"> may be displayed  in different ways</a> depending on which editor is used. In this article right-to-left text in code samples is represented by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase. All text in code samples reflects the direction of characters <em>as stored in memory</em>, rather than the displayed result. The original version of text in uppercase translations would be read from right-to-left.</p-->
+    <p>As you mouse over them, images may show in a tooltip a Latin transcription of what you are expected to see. Right-to-left text in code samples is represented by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase. The ordering and position of the characters in the transcription reflects that of the original, You can see this information, if available, by moving your mouse over the image.</p>
+  </div>
+  <figure class="example">
+    <p>This sample sentence shows what you get if you rely solely on the bidirectional algorithm. This is incorrect. Because the whole quote
+      is in Hebrew, the text &quot;W3C&quot; and the comma should appear to the left of (ie. at the end of) the Hebrew text.</p>
+    <blockquote>
+      <p><a href="qa-bidi-unicode-controls-egs?test=1" target="text"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/bidi-unicode-controls-1.png" alt="Incorrectly nested phrases." title='the title says "YTIVITCA NOITAZILANOITANRETNI, w3c" in hebrew.' /></a></p>
+    </blockquote>
+    <p>The correct result when displayed should look like this:</p>
+    <blockquote>
+      <p><a href="qa-bidi-unicode-controls-egs?test=2" target="text"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/bidi-unicode-controls-2.png" alt="Correctly nested phrases."  title='the title says "w3c, YTIVITCA NOITAZILANOITANRETNI" in hebrew.' /></a></p>
+    </blockquote>
+  </figure>
+  <p> In other cases you might want to override (ie. disable) the effect of the bidirectional algorithm altogether.</p>
+  <p>Normally you would use markup to control this, but in some cases (hopefully mostly legacy markup where the need for bidi support was not completely thought through) markup is not available. This article looks at how you can use Unicode control characters for those cases.</p>
+  <p>For more information about how the bidi algorithm works and where it needs help, read <cite><a class="print" href="/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline markup</a></cite>.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+
+  <section>
+    <h3 id="reasons"><a href="#reasons">Use cases</a></h3>
+    <p>It is important to start out by saying that for those developing content there are some advantages to using markup, if available, to control bidirectional (bidi) behavior rather than Unicode control characters (see <cite><a class="print" href="/International/questions/qa-bidi-controls">Unicode controls vs. markup for bidi support</a></cite>). If you are designing or updating a schema or specification, you really should implement markup to control bidi behaviour rather than rely on Unicode control characters, and avoid creating contexts where markup cannot be used (for example, natural language text in attribute values). For more information see <cite><a class="print" href="http://www.w3.org/TR/xml-i18n-bp/#DevDir">Best Practices for XML Internationalization</a></cite>.</p>
+    <p>Unicode control characters can, however, be useful  in situations where markup is unavailable. Examples include legacy markup such as HTML <code class="kw" translate="no">text/html</code> elements and any HTML attribute value containing natural language text.</p>
+    <p>If Unicode control characters are used, they should only be used for inline controls. Bidi character controls that span paragraphs or list items, etc., don't work well for block level markup because of the way white space is handled in source text, and because of the requirement to manage inheritance and scoping through the markup hierarchy.</p>
+  </section>
+  
+  <section>
+    <h3 id="pairedcontrols"><a href="#pairedcontrols">Paired control characters</a></h3>
+    <p>Unicode provides special, invisible formatting codes to set the base direction for or to override the bidirectional algorithm in plain text.
+      These are the following:</p>
+    <ul>
+      <li> U+202A:   LEFT-TO-RIGHT EMBEDDING (LRE)</li>
+      <li>U+202B:   RIGHT-TO-LEFT EMBEDDING (RLE)</li>
+      <li>U+202D:   LEFT-TO-RIGHT OVERRIDE (LRO)</li>
+      <li>U+202E:   RIGHT-TO-LEFT OVERRIDE (RLO)</li>
+      <li>U+202C:   POP DIRECTIONAL FORMATTING (PDF)</li>
+    </ul>
+    <p>These characters are used in pairs. One of the first four characters mentioned above is used to indicate the start of a range of
+      text;  in each case the range is terminated by the last (PDF) character. </p>
+    <div class="sidenoteGroup">
+      <p>The embedding control characters set the base direction for the text they surround. The override characters disable the bidi algorithm altogether for the text they surround.<a href="#bytheway"></a></p>
+      <div class="sideinfonote"><p class="info">If you don't understand when it is important to set the base direction, read <cite><a class="print" href="/International/articles/inline-bidi-markup/#how">What you need to know about the bidi algorithm and inline markup</a></cite>.</p></div>
+    </div>
+    <p>The following example shows how these control characters could be used in
+      plain text:</p>
+    <div class="example">
+      <p>The following shows a tooltip in HTML that includes the title of the document linked to, plus some text indicating the language of the destination document. Note how the text '(FAQ)' appears to the right of the Persian text. This is incorrect.</p>
+      <blockquote>
+        <p><a href="qa-bidi-unicode-controls-egs?test=3" target="text"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/persian-link-wrong.png" alt="A tooltip without control characters." title="'SNOITSEUQ DEKSA YLTNEUQERF (faq)' [in persian]" /></a></p>
+      </blockquote>
+      <p> The correct title has the text '(FAQ)' to the left of the Persian text, as shown here.</p>
+      <blockquote>
+        <p><a href="qa-bidi-unicode-controls-egs?test=4" target="text"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/persian-link-right.png" alt="A tooltip with control characters." title="'(faq) SNOITSEUQ DEKSA YLTNEUQERF' [in persian]" /></a></p>
+      </blockquote>
+      <p>To achieve the correct effect we added two invisible control characters, U+202B, <span class="uname" style="color: green;">RIGHT-TO-LEFT EMBEDDING</span> (RLE), and U+202C, <span class="uname" style="color: red;">POP DIRECTIONAL FORMATTING</span> (PDF), represented in the code snippet below as numeric character entities: </p>
+      <blockquote><code>
+        <bdo dir="ltr">title=&quot;'&amp;<span style="color: green;" title="RLE">#x202B;</span>...&amp;<span style="color: red;" title="PDF">#x202C;</span>' [in Persian]&quot;</bdo>
+        </code></blockquote>
+      <p>(To compare this with how to achieve the same result if markup is available, see the section below entitled <a href="#correspondance">Correspondences.</a>)</p>
+    </div>
+  </section>
+  
+  <section>
+    <h3 id="exceptions"><a href="#exceptions">RLM and LRM characters</a></h3>
+    <p>Two other invisible directional control characters provided by Unicode do not usually have corresponding markup and
+      should be used either in character or escaped form. They are less problematic because they are used singly, ie. they are not used in pairs to delimit ranges
+      of text like the other control characters we have discussed. Their use is also likely to be far more common than that of the stateful controls described above.</p>
+    <ul>
+      <li>U+200E:   LEFT-TO-RIGHT MARK </li>
+      <li>U+200F:   RIGHT-TO-LEFT MARK </li>
+    </ul>
+    <div class="example">
+      <p>For example, the picture below shows what you are likely to see when relying solely on the bidirectional algorithm to display a MAC address number in a right-to-left context.</p>
+      <blockquote style="text-align:right;"><a href='qa-bidi-unicode-controls-egs?test=5' target="text"><img class="codelinkl" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/mac-wrong.png" alt="MAC address incorrectly ordered." /></a></blockquote>
+      <p>The next picture shows the expected result.</p>
+      <blockquote style="text-align:right;"><a href='qa-bidi-unicode-controls-egs?test=6' target="text"><img class="codelinkl" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/mac-right.png" alt="MAC address correctly ordered." /></a></blockquote>
+      <p>To achieve the correct effect we simply added two invisible control characters, U+200E, <span class="uname">LEFT-TO-RIGHT MARK</span> (RLM) immediately before the start of the number.</p>
+      <p>(We could have achieved the same result using the stateful codes mentioned earlier, but this is simpler, and therefore recommended by the Unicode Standard.<a href="#correspondance"></a>)</p>
+    </div>
+    <p>For more information about how to use these two characters, read <cite><a class="print" href="/International/articles/inline-bidi-markup/#how">What you need to know about the bidi algorithm and inline markup</a></cite>.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  
+  <section>
+    <h3 id="correspondance"><a href="#correspondance">Correspondences</a></h3>
+    <p>Where directional markup exists and can be used, these control codes should be equivalent in	behavior to that of the markup. The following table (adapted from <cite><a class="print" href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup Languages</a></cite>) gives the
+      appropriate markup to replace each set of codes in HTML.</p>
+    <table class="inband">
+      <tbody>
+        <tr>
+          <th>Character</th>
+          <th>Code</th>
+          <th>Equivalent markup</th>
+          <th>Comment</th>
+        </tr>
+        <tr>
+          <td>LRE</td>
+          <td>U+202A</td>
+          <td>dir = &quot;ltr&quot;</td>
+          <td>attribute on block or inline element</td>
+        </tr>
+        <tr>
+          <td>RLE</td>
+          <td>U+202B</td>
+          <td>dir = &quot;rtl&quot;</td>
+          <td>attribute on block or inline element</td>
+        </tr>
+        <tr>
+          <td> LRO </td>
+          <td>U+202D</td>
+          <td>&lt;bdo dir = &quot;ltr&quot;&gt;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td> RLO </td>
+          <td>U+202E</td>
+          <td>&lt;bdo dir = &quot;rtl&quot;&gt;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td rowspan="2">PDF</td>
+          <td rowspan="2">U+202C</td>
+          <td>nothing</td>
+          <td>when used to terminate RLE or LRE (closure is provided by end tag of the element carrying the dir attribute)</td>
+        </tr>
+        <tr>
+          <td>&lt;/bdo&gt;</td>
+          <td>when used to terminate RLO or LRO</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Using HTML, in a context that allows the use of markup, the  corresponding approach to rendering the text in the example in the section &quot;Paired control characters&quot;, above, would be coded as:</p>
+    <div class="example">
+      <blockquote><code>
+        <bdo dir="ltr">See '&lt;a dir=&quot;rtl&quot; lang=&quot;fa&quot; href=&quot;...&quot;&gt;...&lt;/a&gt;' [in Persian].</bdo>
+        </code></blockquote>
+      <p>That would yield this result:</p>
+      <p><a href="qa-bidi-unicode-controls-egs?test=7" target="text"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/persian-link-markup-right.png" alt="Correctly ordered text."  title="see '(faq) SNOITSEUQ DEKSA YLTNEUQERF' [in persian]" /></a></p>
+    </div>
+    <p>For XML you would have to use the bidi markup provided in the DTD or Schema, and <a class="print" href="/International/questions/qa-bidi-css-markup">apply directionality using CSS</a>.</p>
+    <p>Note how the markup used to support the <code class="kw" translate="no">text/html</code> attribute is also used to support language information. It is common to find markup already in place where a <code class="kw" translate="no">text/html</code> attribute is needed. (Language information cannot be expressed using control characters.)</p>
+    <p>Note  that a significant difference between markup and control codes is that a single <code class="kw" translate="no">text/html</code> attribute may apply to a whole page or section of a page, whereas the effect of LRE/RLE is terminated at the paragraph end.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Tutorial, <cite><a href="/International/tutorials/bidi-xhtml/">Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts</a></cite></p>
+    </li>
+    <li>
+      <p><cite><a href="/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline markup</a></cite></p>
+    </li>
+    <li>
+      <p><cite><a href="http://www.w3.org/TR/i18n-html-tech-bidi/">Best Practices for HTML Authoring: Handling Right-to-left Scripts</a></cite></p>
+    </li>
+    <li>
+      <p><cite><a href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup Languages</a></cite></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite> – <a href="/International/techniques/authoring-html#direction">Text direction</a></p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
