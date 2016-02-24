@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>CSS vs. markup for bidi support</title>
+<meta name="description" content="Should I use CSS or markup to correctly format Unicode-based bidi text in HTML and XML-based markup languages?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-bidi-css-markup' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-css-markup' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-07-13' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-08-29', time:'12:27'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-24', time:'06:01'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-bidi-css-markup-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css" media="all">
+.visualascii {
+	font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>CSS vs. markup for bidi support</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, schema developers (DTDs, XML Schema, RelaxNG, etc.), and anyone who implements HTML using right-to-left scripts.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Should I use CSS or markup to correctly format Unicode-based bidirectional (bidi) text in HTML and XML-based markup
+      languages?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Text in written in Arabic or Hebrew scripts flows predominantly from right to left (RTL), whereas text in other scripts flows left to
+    right (LTR). Much of the time the Unicode bidi algorithm takes care of the directionality of text, based on the properties of the characters used.
+    However, there needs to be some way of indicating:</p>
+  <ul>
+    <li>
+      <p>that the overall orientation of content and layout (such as table cell direction) should be RTL (LTR is the default) because the
+        document is mainly written in a script such as Arabic or Hebrew</p>
+    </li>
+    <li>
+      <p>that part of a LTR document should be treated as RTL, and vice versa</p>
+    </li>
+    <li>
+      <p>what is the expected flow of text when the <a class="print" href="http://www.unicode.org/reports/tr9/">Unicode bidirectional algorithm</a> is
+        insufficient to correctly order adjacent runs of mixed direction text</p>
+    </li>
+    <li>
+      <p>that the inherent directionality provided by the Unicode bidi algorithm should be overridden.</p>
+    </li>
+  </ul>
+  <div class="insideinfonote">
+    <p class="info">We show examples using text in real right-to-left scripts and as an  ASCII-only, visually ordered version immediately afterwards that shows  English text in lower case and Hebrew or Arabic in upper case. The  ordering and position of the characters reflects that of the original.</p>
+  </div>
+  <div class="example">
+    <div class="box-header">Example:</div>
+    <p>To clarify the third point above, this sample sentence provides an example of what you may get if you rely solely on the bidirectional
+      algorithm. This is incorrect. Because the whole quote is in Hebrew, and therefore runs right to left, the text "W3C" and the comma should appear to
+      the left of (ie. after) the Hebrew text. </p>
+    <blockquote>
+      <p>The title says "פעילות הבינאום, W3C" in Hebrew.</p>
+      <p><span class="visualascii">ASCII version:</span> <br />
+        The title says "YTIVITCA NOITAZILANOITANRETNI, w3c" in Hebrew.</p>
+    </blockquote>
+    <p>The correct result when displayed would look like this:</p>
+    <blockquote>
+      <p>The title says "<span dir="rtl">פעילות הבינאום, W3C</span>" in Hebrew. </p>
+      <p><span class="visualascii">ASCII version:</span> <br />
+        The title says "w3c ,YTIVITCA NOITAZILANOITANRETNI" in Hebrew.</p>
+    </blockquote>
+  </div>
+  <p>XHTML/HTML provides markup to fulfill these purposes. These include the following:</p>
+  <table class="inband">
+    <tbody>
+      <tr>
+        <th>Markup</th>
+        <th>Effect</th>
+      </tr>
+      <tr>
+        <td><code>dir</code> attribute</td>
+        <td>Sets the directionality for the element to which it is attached and below. Possible values include <code>rtl</code> and <code>ltr</code>. </td>
+      </tr>
+      <tr>
+        <td><code>bdo</code> element</td>
+        <td>Overrides the directionality of text as defined by the Unicode bidi algorithm.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>CSS also provides support for text direction as follows:</p>
+  <table class="inband">
+    <tbody>
+      <tr>
+        <th>Property</th>
+        <th>Values</th>
+        <th>Effect</th>
+      </tr>
+      <tr>
+        <td rowspan="2"><code>unicode-bidi</code></td>
+        <td><code>embed</code></td>
+        <td>The text to which this is applied will assume the directional flow indicated by the <code>direction</code> property. </td>
+      </tr>
+      <tr>
+        <td><code>bidi-override</code></td>
+        <td>The text to which this is applied will override the Unicode bidi algorithm according to the directional flow indicated by the <code>direction</code> property. </td>
+      </tr>
+      <tr>
+        <td rowspan="2"><code>direction</code></td>
+        <td><code>ltr</code></td>
+        <td>Sets a base direction of LTR for the text to which the <code>unicode-bidi</code> property is applied.</td>
+      </tr>
+      <tr>
+        <td><code>rtl</code></td>
+        <td>Sets a base direction of RTL for the text to which the <code>unicode-bidi</code> property is applied.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p> The question is about whether you should use the markup or the CSS for indicating directionality in XML-based markup languages and
+    HTML.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <div class="sidenoteGroup">
+    <p>You should always use dedicated bidi markup to describe your content, where markup is available. Then CSS may or may not also be
+      needed to describe the meaning of that markup. This depends on whether you are dealing with content that is handled by the user-agent as HTML or XML.
+      (Note that <a class="print" href="/International/articles/serving-xhtml/#mime">XHTML may be served as either</a>!) </p>
+    <div class="sideinfonote"><p class="warning">Always bear in mind that neither markup nor CSS should be used <a class="print" href="http://www.w3.org/TR/i18n-html-tech-bidi/#ri20030726.132037950">unless they are needed</a>. Our question relates to situations where the
+      Unicode bidi algorithm is not sufficient on its own, or <code>&amp;lrm;</code> and <code>&amp;rlm;</code> cannot be used to resolve
+      directionality.</p></div>
+  </div>
+  <p>Let's look at this in a little more detail.</p>
+    
+  <section>
+    <h3 id="markup"><a href="#markup">Use dedicated markup</a></h3>
+    <p>Because directionality is an integral part of the document structure, <strong>markup</strong> should be used to set the directionality
+      for a document or chunk of information, or to identify places in the text where the Unicode bidirectional algorithm alone is insufficient to achieve
+      desired directionality.</p>
+    <p>To produce the desired right-to-left or bidirectional effect, some people simply apply CSS to whatever general paragraph or inline
+      elements surround the relevant text. However, styling applied by CSS is not permanent. It may be turned off, be overridden, go unrecognised, or be
+      changed/replaced in different contexts. Although bidi markup is only needed for the visual rendering of a text it is not purely decorative in
+      function. Markup remains integrated with the document content in a persistent fashion. It also lends significant clarity to the content if you use
+      dedicated bidi markup.</p>
+    <p>You should therefore use dedicated bidi markup whenever it is available. Do not simply attach CSS styling to a general element to
+      achieve the effect.</p>
+    <p>Note that this presupposes that documents written in markup languages always have recourse to markup specifically dedicated to the
+      support of mixed direction text. People designing a DTD or Schema should be encouraged to add elements or attributes for that purpose.</p>
+  </section>
+    
+  <section>
+    <h3 id="html"><a href="#html">HTML or XHTML served as <code>text/html</code></a></h3>
+    <p>Use <strong>markup</strong> only. The CSS2 recommendation recommends the use of markup for bidi text in HTML. In fact it goes as far
+      as to say that conforming HTML user agents may ignore CSS bidi properties. This is because the HTML specification clearly defines the expected
+      behaviour of user agents with respect to the bidi markup.</p>
+  </section>
+    
+  <section>
+    <h3 id="xhtml"><a href="#xhtml">XHTML served as <code>application/xhtml+xml</code></a></h3>
+    <p>XHTML 1.0 served as <code>application/xhtml+xml</code> is expected to use the same semantics as HTML. Therefore, it also makes sense
+      to use markup only and no CSS for this.</p>
+  </section>
+    
+  <section>
+    <h3 id="xml"><a href="#xml">General XML markup and XHTML served as <code>application/xml</code> or <code>text/xml</code></a></h3>
+    <p>Normally a user agent will not automatically recognize or know what to do with any bidi markup you use in XML documents. <strong>CSS</strong> properties should therefore be used to indicate the expected visual behaviour of text in your document.</p>
+    <p>The CSS, however, should always be linked to dedicated bidi markup in the text.</p>
+    <p>XHTML served as <code>application/xml</code> or <code>text/xml</code> is treated by user agents as XML, not HTML.</p>
+    <p>The following shows the CSS that would be appropriate for the set of markup available in XHTML:</p>
+    <div class="example">
+      <p><code>*[dir="ltr"] { direction: ltr; unicode-bidi: embed } </code></p>
+      <p><code>*[dir="rtl"] { direction: rtl; unicode-bidi: embed } </code></p>
+      <p><code>bdo[dir="ltr"] { direction: ltr; unicode-bidi: bidi-override }</code></p>
+      <p><code>bdo[dir="rtl"] { direction: rtl; unicode-bidi: bidi-override } </code></p>
+    </div>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>There are situations in XHTML/HTML and possibly other XML-based markup languages where text appears in an attribute or an element that
+    only supports character data. Neither markup nor CSS can be used to modify directionality of either attribute text or <em>part of the text</em> in an
+    element that supports only character data. In these cases you will need to resort to the use of Unicode directional formatting codes. (See the FAQ <a class="print" href="/International/questions/qa-bidi-controls.html">(X)HTML &amp; bidi formatting codes vs. markup</a> for more details.)</p>
+  <p>For XML-based markup languages, bidi styling should be defined in a separate style sheet, and that style sheet included in your other
+    style sheets or in your document. This simplifies the development of style sheets and reinforces the difference between bidi and other styling. Think
+    about the bidi style sheet as a part of the schema information that defines the meaning of specific bidi markup, rather than as the decorative
+    styling that can exist in various variants.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/TR/html40/struct/dirlang.html#h-8.2">HTML 4 specification, section 8.2, Specifying the direction of text and tables: the
+        dir attribute</a></p>
+    </li>
+    <li>
+      <p><a href="/TR/REC-CSS2/visuren.html#direction">Cascading Style Sheets, level 2 (CSS2) Specification, section 9.10, Text direction:
+        the 'direction' and 'unicode-bidi' properties</a></p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-bidi-controls">FAQ: (X)HTML &amp; bidi formatting codes vs. markup</a></p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
