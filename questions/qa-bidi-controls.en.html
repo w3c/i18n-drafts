@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Unicode controls vs. markup for bidi support</title>
+<meta name="description" content="To correctly format bidi text in (X)HTML or XML content, should I use Unicode control codes or markup?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-bidi-controls' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-06-13' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-11-22', time:'15:33'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-25', time:'13:31'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-bidi-controls-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css" media="all">
+.visualascii {
+	font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Unicode controls vs. markup for bidi support</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), schema developers
+      (DTDs, XML Schema, RelaxNG, etc.), Web project managers, and anyone who is wondering whether they should use Unicode control characters in markup to
+      achieve proper text flow for right-to-left scripts. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+  
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">To correctly format bidi text in (X)HTML or XML content, should I use Unicode control codes or markup?</p>
+</section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>The Unicode bidirectional algorithm determines the directionality of text on the basis of the directional properties of each character.
+    Occasionally the algorithm needs a little help to determine the flow of objects in the text that mixes Arabic or Hebrew characters with those of
+    other scripts. In other cases you might want to override the effect of the bidirectional algorithm altogether. For example:</p>
+  <div class="insideinfonote">
+    <p class="info">We show examples of displayed text using  real right-to-left scripts. We also show an ASCII-only version immediately afterwards that
+      shows Latin characters in lower case and Hebrew or Arabic in upper case. Although the ASCII text is a translation of the original, the ordering and position of the characters reflects the text of the original.</p>
+  </div>
+  <div class="example">
+    <p>This sample sentence shows what you get if you rely solely on the bidirectional algorithm. This is incorrect. Because the whole quote
+      is in Hebrew, the text "W3C" and the comma should appear to the left of (ie. after) the Hebrew text.</p>
+    <blockquote>
+      <p>The title says "פעילות הבינאום, W3C" in Hebrew. </p>
+      <p>ASCII version: <br />
+        the title says "YTIVITCA NOITAZILANOITANRETNI, w3c" in hebrew.</p>
+    </blockquote>
+    <p>The correct result when displayed should look like this:</p>
+    <blockquote>
+      <p>The title says "<span dir="rtl">פעילות הבינאום, W3C</span>" in Hebrew. </p>
+      <p>ASCII version: <br />
+        the title says "w3c ,YTIVITCA NOITAZILANOITANRETNI" in hebrew.</p>
+    </blockquote>
+  </div>
+  <p>Unicode provides special, invisible formatting codes to build on or override the outcome of the bidirectional algorithm in plain text.
+    These include the following:</p>
+  <ul>
+    <li> U+202A:   LEFT-TO-RIGHT EMBEDDING (LRE)</li>
+    <li>U+202B:   RIGHT-TO-LEFT EMBEDDING (RLE)</li>
+    <li>U+202D:   LEFT-TO-RIGHT OVERRIDE (LRO)</li>
+    <li>U+202E:   RIGHT-TO-LEFT OVERRIDE (RLO)</li>
+    <li>U+202C:   POP DIRECTIONAL FORMATTING (PDF)</li>
+  </ul>
+  <p>These characters are used in pairs. One of the first four characters mentioned above is used first and indicates the start of a range of
+    text; the range is terminated by the last (PDF) character in each case. The following example shows how these control characters could be used in
+    plain text:</p>
+  <div class="sidenoteGroup">
+    <div class="example">
+      <p>The following shows the <em>order of characters in memory</em>, and adds two control characters represented here as superscripts:
+        U+202B, RIGHT-TO-LEFT EMBEDDING (<sup style="color: green;" title="RLE">RLE</sup>), and U+202C, POP DIRECTIONAL FORMATTING (<sup style="color: red;"
+					title="POP">PDF</sup>).</p>
+      <p><code>
+        <bdo dir="ltr">The title says "<sup style="color: green;" title="RLE">RLE</sup>פעילות הבינאום, W3C<sup
+					style="color: red;" title="POP">PDF</sup>" in Hebrew.</bdo>
+        </code></p>
+      <p><code><span class="visualascii">ASCII version:</span> <br />
+        the title says "<sup style="color: green;" title="RLE">RLE</sup>INTERNATIONALIZATION ACTIVITY, w3c<sup style="color: red;"
+					title="POP">PDF</sup>" in hebrew.</code></p>
+      <p> This produces the correct result (see above) when displayed.</p>
+    </div>
+    <p>The HTML4 standard introduced markup to produce exactly the same effects as these Unicode characters.</p>
+    <div class="example">
+      <p>Using XHTML, the earlier example would be coded as:</p>
+      <p><code>
+        <bdo dir="ltr">The title says "&lt;span dir="rtl"&gt;פעילות הבינאום, W3C&lt;/span&gt;" in
+        Hebrew.</bdo>
+        </code></p>
+      <p><code><span class="visualascii">ASCII version:</span> <br />
+        the title says "&lt;span dir="rtl"&gt;INTERNATIONALIZATION ACTIVITY, w3c&lt;/span&gt;" in hebrew.</code></p>
+    </div>
+    <div class="sideinfonote"><p class="info">For simplicity, code examples show characters in the order in which they are stored in memory - not the order in which they are displayed in an editor.</p></div>
+  </div>
+  <p>It is recommended by the W3C that XML-based markup languages also provide dedicated markup for managing direction. (See the markup
+    proposed by the <a class="print" href="http://www.w3.org/TR/its/#directionality">International Tag Set Recommendation</a>.)</p>
+  <p> The question is about whether you should use the markup or the Unicode control characters.</p>
+</section>
+
+
+<section>
+<h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>In (X)HTML and XML do not use the paired Unicode bidi formatting code characters where equivalent markup is available.</p>
+  
+  <section>
+    <h3 id="reasons"><a href="#reasons">Reasons</a></h3>
+    <p>When control characters are used in free-flowing content there is always a likelihood of overlapping or unterminated ranges -
+      especially because the characters themselves have no visible form. If attributes are used, this is not an issue in well-formed markup. </p>
+    <p>It is also much easier to manage inheritance and the effects of paragraph separators with markup. Using Unicode controls results in a
+      lot more work to achieve the same result. Also it is difficult to know how to achieve effects like reversing table columns and right-aligning text
+      with just Unicode control codes.</p>
+    <p>The <a class="print" href="http://www.w3.org/TR/unicode-xml/#HTML4.0-8.2">HTML 4 specification</a> specifically warns against mixing the two
+      approaches because of the increased likelihood of improper nesting. It also recommends the use of markup because it "offers a better guarantee of
+      document structural integrity and alleviates some problems when editing bidirectional HTML text with a simple text editor". It does not proscribe the
+      use of Unicode bidi formatting codes.</p>
+    <p>The joint Unicode Technical Report #20 and W3C Note, <a class="print" href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup
+      Languages</a> goes further. It explicitly recommends that <em>only</em> the markup be used. It also recommends that the Unicode bidi formatting codes
+      should be ignored if detected in a browser context, and replaced by appropriate markup when received in an editing context.</p>
+  </section>
+  
+  <section>
+    <h3 id="correspondance"><a href="#correspondance">Correspondances</a></h3>
+    <p>The following table (adapted from <a class="print" href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup Languages</a>) gives the
+      appropriate markup to replace each code.</p>
+    <table class="inband">
+      <tbody>
+        <tr>
+          <th>Character</th>
+          <th>Code</th>
+          <th>Equivalent markup</th>
+          <th>Comment</th>
+        </tr>
+        <tr>
+          <td>LRE</td>
+          <td>U+202A</td>
+          <td>dir = &quot;ltr&quot;</td>
+          <td>attribute on block or inline element</td>
+        </tr>
+        <tr>
+          <td>RLE</td>
+          <td>U+202B</td>
+          <td>dir = &quot;rtl&quot;</td>
+          <td>attribute on block or inline element</td>
+        </tr>
+        <tr>
+          <td> RLO </td>
+          <td>U+202E</td>
+          <td>&lt;bdo dir = &quot;rtl&quot;&gt;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td> LRO </td>
+          <td>U+202D</td>
+          <td>&lt;bdo dir = &quot;ltr&quot;&gt;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td rowspan="2">PDF</td>
+          <td rowspan="2">U+202C</td>
+          <td>nothing</td>
+          <td>when used to terminate RLE or LRE (closure is provided by end tag of the element carrying the dir attribute)</td>
+        </tr>
+        <tr>
+          <td>&lt;/bdo&gt;</td>
+          <td>when used to terminate RLO or LRO</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  
+  <section>
+    <h3 id="problems"><a href="#problems">Problem cases</a></h3>
+    <p>There may be places in an HTML or XML file where markup cannot be used, and the Unicode formatting code characters are therefore
+      appropriate. </p>
+    <p>It is not possible to apply directional markup to attribute values, so any text in attributes will need to use Unicode characters to
+      control direction. Having said that, the <a class="print" href="http://www.w3.org/TR/xml-i18n-bp/#DevAttributes">W3C recommends that</a> XML schema developers
+      avoid creating situations where content authors will use natural language text in attribute values. There may be legacy markup, however, such as <code class="kw" translate="no">alt</code> attributes in HTML, where this is unavoidable.</p>
+    <p>Other situations where control characters may provide the only resort are elements that only allow character content or that omit
+      support for directional attributes. An example is the <code class="kw" translate="no">title</code> element in HTML. Again, such situations should be avoided in new
+      XML formats. (They limit not only the application of directional text, but also application of language and other meta information.)</p>
+  </section>
+  
+<section>
+    <h3 id="exceptions"><a href="#exceptions">RLM and LRM characters</a></h3>
+    <p>Two other invisible but non-embedding directional control characters provided by Unicode do not usually have corresponding markup and
+      should be used either in character or escaped form. Note that they are less problematic because they are used singly, not in pairs to delimit ranges
+      of text like the other control characters we have discussed. </p>
+    <ul>
+      <li>U+200E:   LEFT-TO-RIGHT MARK </li>
+      <li>U+200F:   RIGHT-TO-LEFT MARK </li>
+    </ul>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>The document <a class="print" href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup Languages</a> provides guidance for the use of a
+    wide range of Unicode characters vs. markup, not just these bidi controls.</p>
+  <p>For XML you would have to create your own bidi markup in the DTD or Schema, and apply directionality using CSS.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup Languages</a></p>
+    </li>
+    <li>
+      <p><a href="/TR/REC-CSS2/visuren.html#direction">Cascading Style Sheets, level 2 (CSS2) Specification, section 9.10, Text direction:
+        the 'direction' and 'unicode-bidi' properties</a></p>
+    </li>
+    <li>
+      <p><a href="http://www.unicode.org/reports/tr9/tr9-11.html#Directional_Formatting_Codes">Unicode 4.0, Bidirectional Algorithm, Section
+        2, Directional Formatting Codes</a></p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
