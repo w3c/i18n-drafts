@@ -43,6 +43,11 @@ if (f.clang != 'en') { g.isTranslation = true } else { g.isTranslation = false }
 // when clicking on a language selector, ask the user if they want to set cookie to remember that language - cookie is read by /International/.htaccess
 
 
+function showExample (path) {
+	var exampleWindow = window.open(path, 'exampleWindow'); 
+	exampleWindow.focus();
+	}
+
 
 function stickyConneg (filename, cLang, targetLang) {
 	var response = false
