@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Checking the character encoding using the validator</title>
+<meta name="description" content="How can I check that the character encoding of my document is correct using the W3C HTML Validator?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-validator-charset-check' // the file name WITHOUT extensions
+f.authors = 'Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-validator-charset-check' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-10-22' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-10-22', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-25', time:'22:14'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-validator-charset-check-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Checking the character encoding using the validator</h1>
+</header>
+
+
+<section id="sidebarExtras">
+  <section>
+<h2 id="links" class="notoc"><a href="#links">Related links</a></h2>
+<p><a class="print" href="http://validator.w3.org/">W3C Markup Validation Service</a></p>
+<p><a class="print" href="http://validator.w3.org/i18n-checker/">Internationalization Checker</a></p>
+  </section>
+</section>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    users, XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), Web project managers, and anyone who needs to know how to check the character encoding of a document.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">How can I check that the character encoding of my document is correct using the W3C HTML Validator?</p>
+  </section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>To make sure all recipients of a document can display and interpret it properly, it is very important to correctly indicate the character
+    encoding ('charset'). One way to check this is to use the <a class="print" href="http://validator.w3.org/">W3C Markup Validation Service</a>. The validator usually
+    detects the character encoding from the HTTP headers and information in the document. If the validator fails to detect the encoding, it can be
+    selected on the validator result page via the 'Encoding' pulldown menu (<a
+				class="print" href="http://validator.w3.org/check?uri=http://www.w3.org/2003/10/empty/emptydoc.html">example</a>).</p>
+  <p>But often, the validator does not complain even if a wrong encoding is detected or selected. The reason for this is that many encodings
+    are very similar, and the validator only checks the markup syntax and cannot decide whether the decoded text makes sense or not. To make sure that
+    you have the correct encoding, which means that the document will be displayed correctly to readers, the following points will help:</p>
+  <ul>
+    <li>
+      <p>If the encoding selected or detected is <code>US-ASCII</code>, <code>UTF-8</code>, <code>UTF-16</code>, or <code>iso-2022-jp</code> (Japanese JIS), and the validator does not complain about encoding problems, there is an extremely high probability that the selected encoding is
+        correct. Note that <code>US-ASCII</code> is a strict subset of <code>UTF-8</code>, and so if <code>US-ASCII</code> works, <code>UTF-8</code> will
+        work, too.</p>
+    </li>
+    <li>
+      <p>For any other encoding, visual checking is necessary. Select the <em>Show Source</em> option from the <a class="print" href="http://validator.w3.org/detailed">Extended Interface</a> of the validator, and check that the non-ASCII characters in the text are displayed
+        correctly. For pages in foreign languages, this can usually be established quickly. For pages in English with just a few non-ASCII characters, this
+        can be more difficult.</p>
+      <p>For example, if you tried to interpret the <a class="print" href="http://www.w3.org/">W3C home page</a> as <a
+						 class="print" href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.w3.org&amp;charset=iso-8859-1+%28Western+Europe%29&amp;doctype=%28detect+automatically%29&amp;ss=1&amp;verbose=1">iso-8859-1</a>,
+        you may have to go almost to the end of the source to find text such as '©' and '®' to see that this is the wrong choice. (Of course, that page tells
+        the validator from the beginning that it is encoded in UTF-8, and so you don't actually have to check anything else.)</p>
+    </li>
+    <li>
+      <p>In some cases, more than one encoding will adequately represent the characters in a document. For example, there is quite some
+        overlap between <code>iso-8859-1</code> (Latin-1, Western Europe) and <code>iso-8859-2</code> (Latin-2, Eastern Europe), and other encodings in this
+        series. If after careful checking, you cannot find a difference, then either choice is fine. The close similarity of these encodings in terms of byte
+        patterns and in terms of actually encoded characters explains why only visual inspection can make sure that the encoding is correct.</p>
+    </li>
+    <li>
+      <p>If none of the encodings offered by the validator works, then you either have a page in an encoding that the validator does not
+        (yet) support, or somehow, text in several different encodings got mixed up in the page. In the former case, write to the <a class="print" href="mailto:www-validator@w3.org">validator mailing list</a> (<a class="print" href="http://lists.w3.org/Archives/Public/www-validator/">public archive</a>) to
+        have your character encoding added. In the later case, you have to fix your page, because each Web page can only use a single character encoding.</p>
+    </li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>The validator does not work without information about character encoding because SGML or XML validation is based on checking the
+    sequences of characters in the document, but what the validator receives as input is just a sequence of bytes. Knowing the character encoding allows
+    the validator to convert from bytes to characters. In general, this is the same for all other kinds of receivers, including browsers. If the right
+    characters are not identified, a Web browser may display garbage.</p>
+  <p>The validator does this by converting from the encoding indicated to UTF-8, and using UTF-8 internally. If the conversion to UTF-8 fails
+    because a particular byte sequence cannot appear in the input encoding, the validator produces an error message. For UTF-8 input, the validator
+    checks to make sure that only valid UTF-8 byte sequences are used.</p>
+  <p>Note that visually inspecting a Web page with a browser without using the validator may fail, because:</p>
+  <ul>
+    <li>Some browsers use non-standard ways to detect the character encoding.</li>
+    <li>Each browser has a setting used for unlabeled pages; if that setting by chance is the correct encoding for the page, you will not see
+      that the page does not come with proper encoding information.</li>
+    <li>Besides the text in the page, there is text in attributes (e.g. alt text in <code>&lt;img&gt;</code>) that should be checked.</li>
+  </ul>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/questions/qa-headers-charset"><cite>Checking HTTP Headers</cite></a></p>
+    </li>
+    <li>
+      <p><a href="http://validator.w3.org/i18n-checker/"><cite>Internationalization (i18n) Checker</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a></p>
+    </li>
+    <li>
+      <p><a href="http://www.iana.org/assignments/character-sets">Registered character encodings</a> (charsets) at <a href="http://www.iana.org/">IANA</a> (the validator supports only a subset that is in wide use, and only supports the preferred name, no aliases)</p>
+    </li>
+    <li>
+      <p>Related links, <cite>Setting up a server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#checkhttp">Checking the HTTP header</a></li>
+      <li><a href="/International/techniques/server-setup#setting">Setting the HTTP charset parameter</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring SVG</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-svg#charset">Characters</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
