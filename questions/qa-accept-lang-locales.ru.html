@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Использование Accept-Language для настройки локали</title>
+<meta name="description" content="Хорошо ли использовать заголовок HTTP Accept-Language для определения локали?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-accept-lang-locales' // the file name WITHOUT extensions
+f.authors = 'Lloyd Honomichl, Lionbridge' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-accept-lang-locales' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-17' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-17', time:'12:15'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-26', time:'22:42'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-accept-lang-locales-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Использование Accept-Language для настройки локали</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    разработчики скриптов (PHP, JSP, и т.д.), менеджеры веб проектов, и каждый, кто хочет использовать информацию о локали.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Хорошо ли использовать заголовок HTTP Accept-Language для определения локали пользователя?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>По ряду вполне уважительных причин некоторые веб-приложения, хотели бы связывать локаль с каждым пользователем, который заходит на сайт. Эта
+    локаль позволит им предоставлять информацию в местном формате. Часть этой информации является общей для такого традиционного программного обеспечения локалей, как:</p>
+  <ul>
+    <li>Какие числовые форматы ожидает пользователь?</li>
+    <li>Как будут отформатированы дата и время?</li>
+  </ul>
+  <p>В других случаях, другую информацию можно получить на основе информации локали плюс таких дополнительных знаний, как:</p>
+  <ul>
+    <li>Должна ли быть метрической система мер (сантиметры, километры, литры) или imperial (Великобритания) (дюймы, мили, галлоны)?</li>
+    <li>Какой часовой пояс пользователя?</li>
+    <li>Использует ли пользователь бумагу формата листа или A4?</li>
+    <li>Какие системы размеров обуви и одежды должны использоваться?</li>
+    <li>Где физически находится пользователь?</li>
+  </ul>
+  <p> Поскольку ни один из них не включен в протокол HTTP многие веб-разработчиков используют Accept-Language заголовок, чтобы сделать выводы о
+    локали пользователя.</p>
+  <p>Заголовок Accept-Language - это информация о языке, которому отдает предпочтение пользователь которая при запросе документа передается через HTTP.
+    Основные браузеры позволяют <a class="print" href="/International/questions/qa-lang-priorities">пользователю изменять</a> эти языковые предпочтения.
+    Значение, само по себе, определенное <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP&nbsp;47</a>, обычно как <a class="print" href="/International/articles/language-tags/">двух- или трехбуквенный код</a> (например <code>fr</code> для Французского языка), за которым следуют
+    дополнительные subcodes, которые отображают такие вещи как страна (например <code>fr-CA</code> отображает Французский на котором говорят в Канаде).</p>
+  <p> Вопрос в том подходит ли эта информация для определения локали пользователя.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Сначала заголовок HTTP Accept-Language был предназначен только для указания языка пользователя. Однако, поскольку многие приложения должны
+    знать локали, обычно практикуется использование Accept-Language, чтобы определить эту информацию. Это не хорошо использовать <strong>только</strong> HTTP
+    Accept-Language заголовок для того, чтобы определить локаль пользователя. Если вы используете исключительно Accept-Language, то вы можете ограничить пользователя
+    в выборе вариантов языков, которые ему нравятся.</p>
+  <p>Во-первых хорошим началом может стать использование значения Accept-Language для определения региональных настроек, но убедитесь, что вы позволили
+    при необходимости изменять язык и точнее указывать культурные настройки. Сохраняйте результаты в базе данных или в cookie для позднейших
+    посещений. </p>
+  <p>Некоторые из потенциальных проблем включают следующее:</p>
+  <ul>
+    <li>Многие пользователи никогда не меняют настройки по умолчанию для Accept-Language. Они устанавливаются, при установке клиентских приложений. Они могут говорить на разных языках
+      или иметь какие-то другие причины для настройки языковых предпочтений, они могут даже не знать о существовании таких настроек. Таким образом, пользователь может даже и не иметь утвержденных
+      Accept-Language настроек.</li>
+    <li>Клиентское приложение может послать запрос, который определяет только язык, а не регион, например, вы можете получить заголовок без <code><abbr title="German - Germany">de-DE</abbr></code>, <code><abbr title="German - Switzerland">de-CH</abbr></code> или <code><abbr
+					title="German - Austria">de-AT</abbr></code>, чтобы указать Немецкий язык на котором говорят в Германии, Швейцарии или Австрии, соответственно. Кроме того, вы
+      можете получить только <code>de</code>, что указывает на, то что предпочтение отдают Немецкому. Если вы планируете использовать регион для того чтобы решить, какую валюту использовать вам в данной
+      ситуации, то ваши конкретные обстоятельства могут позволить вам сделать такие предположения, как "<em>В Германии проживает 83 миллионов человек, 7 миллионов в Швейцарии,
+      но только 63% говорят Немецкой, в Австрии проживает 8 миллионов, так что пользователь, вероятно, использует евро. Если мы ошибаемся то это затронет лишь 4.6% наших германоязычных
+      клиентов или только более 4 миллионов человек.</em>" Не стесняйтесь делать такие предположения, если такой риск для вас приемлем. Гораздо проще спросить у пользователя для
+      получения дополнительной информации. Кроме того, расчеты становятся все труднее, например для Испанского или Английского языка.</li>
+    <li>Люди заходят на сайты от друзей, или из интернет кафе. В таких случаях определение локали может быть неуместным, и
+      следует позаботиться, чтобы пользователи могли выбрать соответствующий язык и локаль на любой странице, которую они просматривают.</li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Использование заголовка Accept-Language это хорошая отправная точка для определения <strong>языка</strong> пользователя, а не
+    локали, но даже тогда вы должны знать его ограничения и дать пользователю некий способ чтобы поменять предположения, которые вы сделали. Многие из перечисленных выше
+    потенциальных проблем применяются и здесь.</p>
+  <p>Даже если вы делаете предположения о локали или регионе наугад, вы должны знать, что ваша программная среда может
+    сделать такие предположения за вас. Многие Веб сервера, скриптовые языки на сервере, и операционные среды, по умолчанию, анализируют и предполагают
+    их собственные объекты локали с Accept-Language. Например, .NET использует Accept-Language для определения по умолчанию таких параметров: CultureInfo, Java Servlet
+    обеспечивает getLocale() и getLocales() пара методов, которые анализируют Accept-Language и т.д. Эти объекты очень полезны при получении 
+    ресурсов и другого материала, касающегося "языковых предпочтений". Как отмечалось выше, они менее полезны при определении многих атрибутов пользователей 
+    или в проектировании международного поведения сайта. Это не обязательно означает, что когда пользователь предпочитает es-MX, то форма почтового адреса должна
+    форматироваться или проверяться по Мексиканских адресам. Пользователь может по-прежнему жить в США (или в другом месте).</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4">Что говорит спецификация HTTP о Accept-Language</a> </p>
+    </li>
+    <li>
+      <p><a href="/International/techniques/authoring-html#language">Другие ресурсы W3C I18N, связанные с языком</a> </p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Accept-Language für Regionaleinstellungen verwenden</title>
+<meta name="description" content="Ist es eine gute Idee, den HTTP-Accept-Language-Header zu verwenden, um die Regionaleinstellungen des Nutzers zu bestimmen?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-accept-lang-locales' // the file name WITHOUT extensions
+f.authors = 'Lloyd Honomichl, Lionbridge' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-accept-lang-locales' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-17' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-17', time:'12:15'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-26', time:'22:42'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://bittersmann.de/">Gunnar Bittersmann</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-accept-lang-locales-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Accept-Language für Regionaleinstellungen verwenden</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    Script-Entwickler (PHP, JSP u.a.), Webprojekt-Manager und alle, die Informationen über Regionaleinstellungen verwenden möchten</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Ist es eine gute Idee, den HTTP-Accept-Language-Header zu verwenden, um die Regionaleinstellungen des Nutzers zu bestimmen?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Aus völlig legitimen Gründen möchten einige Webanwendungen Regionaleinstellungen für jeden Nutzer vornehmen, der die Website besucht.
+    Durch diese Einstellungen können Informationen im jeweiligen Format angegeben werden. Einige dieser Regionaleinstellungen für Informationen treten häufig in Software auf, z.B.:</p>
+  <ul>
+    <li>Welches Zahlenformat erwartet der Nutzer?</li>
+    <li>Wie sollten Datum und Uhrzeit formatiert sein?</li>
+  </ul>
+  <p>In anderen Fällen können weitere Informationen aus den Regionaleinstellungen und zusätzlichem Hintergrund&shy;wissen gewonnen werden, z.B.:</p>
+  <ul>
+    <li>Sollten Maßangaben im metrischen (Zentimeter, Kilometer, Liter) oder im US-amerikanischen System (Zoll, Meilen, Gallonen) erfolgen?</li>
+    <li>Was ist die Zeitzone des Nutzers?</li>
+    <li>Verwendet der Nutzer Papier der Größe A4 oder US-Letter?</li>
+    <li>Welches System sollte für Schuhgrößen und Konfektionsgrößen verwendet werden?</li>
+    <li>Wo befindet sich der Nutzer?</li>
+  </ul>
+  <p>Weil nichts davon im HTTP-Protokoll enthalten ist, benutzen viele Webentwickler den Accept-Language-Header, um auf Regionaleinstellungen des Nutzers zu
+    schließen.</p>
+  <p>Der Accept-Language-Header enthält die Information über die vom Nutzer bevorzugten Sprachen, die per HTTP übermittelt wird, wenn ein Dokument angefordert wird.
+    Gängige Browser erlauben es dem Nutzer, <a class="print" href="http://www.w3.org/International/questions/qa-lang-priorities">seine bevorzugten Sprachen einzustellen</a>. Der
+    Wert für diese Angabe wird definiert durch <a class="print" href="http://www.ietf.org/rfc/bcp/bcp47.txt">BCP&nbsp;47</a>, üblicherweise als ein <a class="print" href="http://www.w3.org/International/articles/language-tags/">zwei- oder dreibuchstabiger Sprachcode</a> (z.B. <code>fr</code> für
+    Französisch), gefolgt von optionalen Kürzeln für Länder o.a. (z.B. <code>fr-CA</code> steht für
+    Französisch, wie es in Kanada gesprochen wird).</p>
+  <p>Die Frage ist, ob diese Information dazu geeignet ist, die Regionaleinstellungen des Nutzers zu bestimmen.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Der HTTP-Accept-Language-Header ist ursprünglich nur dafür gedacht, die Sprache des Nutzers anzugeben. Weil aber viele Anwendungen Regionaleinstellungen benötigen,
+    ist es gängige Praxis, diese Information aus Accept-Language zu gewinnen. Es ist aber keine gute Idee,
+    den Accept-Language-Header <strong>allein</strong> zu verwenden, um die Regionaleinstellungen des Nutzers zu bestimmen. Wenn man ausschließlich Accept-Language verwendet, drängt man dem Nutzer womöglich
+    Einstellungen auf, die er nicht will.</p>
+  <p>Fürs erste mag Accept-Language ein guter Ausgangspunkt für Regionaleinstellungen sein. Man sollte dem Nutzer aber erlauben, die Sprache zu wechseln und
+    seine Einstellungen bei Bedarf anzupassen. Für spätere Besuche der Webseite können die Daten in einer Datenbank oder einem Cookie gespeichert werden.</p>
+  <p>Mögliche Probleme sind u.a.:</p>
+  <ul>
+    <li>Viele Nutzer ändern niemals die Voreinstellung für Accept-Language, die bei der Browser&shy;installation gesetzt wurde. Wenn sie nicht mehrsprachig sind
+      oder andere Gründe haben, die Spracheinstellung zu ändern, wissen viele Nutzer vermutlich gar nicht, dass es diese Möglichkeit überhaupt gibt.
+      Sie haben womöglich niemals ihre Accept-Language-Einstellung bestätigt.</li>
+    <li>Ein Nutzerprogramm (Browser) könnte eine Anfrage senden, in der nur die Sprache, aber keine Region angegeben ist. Bspw. kein Header mit <code><abbr title="Deutsch/Deutschland">de-DE</abbr></code>, <code><abbr title="Deutsch/Schweiz">de-CH</abbr></code> oder <code><abbr
+					title="Deutsch/Österreich">de-AT</abbr></code> für Deutsch, wie es in Deutschland, der Schweiz bzw. Österreich gesprochen wird, sondern man könnte nur <code>de</code> erhalten, was Deutsch als bevorzugte Sprache angibt. Wenn man gedacht hatte, die Region zu nutzen um zu entscheiden, welche Währung man verwenden sollte, steckt man in der Klemme.
+      Die jeweiligen Umstände mögen es erlauben, solche Annahmen zu treffen wie: <em>Deutschland hat 83&nbsp;Millionen Einwohner, die Schweiz hat 7&nbsp;Millionen,
+      von denen nur 63% deutsch sprechen, Österreich hat 8&nbsp;Millionen, also verwendet dieser Nutzer wahrscheinlich den Euro. Dass dies nicht immer so ist, betrifft nur 4,6% unserer deutschsprachigen
+      Kunden bzw. nur knapp über 4&nbsp;Millionen Menschen.</em> Machen Sie solche Annahmen, wenn Sie das Risiko tragen können. Es ist weitaus einfacher, den Nutzer
+      nach weiteren Informationen zu fragen. Die Abschätzung wird auch schwieriger für bspw. Spanisch oder Englisch.</li>
+    <li>Menschen borgen sich Computer von Freunden oder sie benutzen Computer in Internetcafés. In diesen Fällen kann die ermittelte Regionaleinstellung unpassend sein, und
+      man sollte dem Nutzer die Möglichkeit geben, Sprache und Region auf der betreffenden Webseite selbst zu wählen.</li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Der Accept-Language-Header ist auch ein guter Ausgangspunkt, um die <strong>Sprache</strong> des Nutzers zu bestimmen, mehr noch als die
+    Region. Aber auch dann muss man dessen Grenzen kennen und dem Nutzer die Möglichkeit geben, die getroffenen Annahmen zu ändern. Viele der oben angeführten möglichen Probleme
+    treffen auch hier zu.</p>
+  <p>Auch wenn man nicht bewusst Annahmen zu Regionaleinstellungen des Nutzers macht, sollte man sich bewusst sein, dass die Softwareumgebung möglicherweise
+    solche Annahmen trifft. Viele Webserver, serverseitige Scriptsprachen und Systemumgebungen befüllen ihre Regionaleinstellungs-Objekte anhand
+    Accept-Language. .NET bspw. verwendet Accept-Language für die Grundeinstellung von CultureInfo, Java Servlet
+    bietet das Methodenpaar getLocale() und getLocales(), die Accept-Language auswerten, usw. Diese Objekte sind sehr nützlich bei
+    Ressourcen und anderen Materialien, bei denen Spracheinstellungen eine Rolle spielen. Sie sind, wie oben gesagt, weniger brauchbar zur Feinbestimmung vieler Nutzereinstellungen
+    oder zur Bestimmung des Verhaltens einer internationalen Website. Wenn es-MX als bevorzugte Sprache eingestellt ist, heißt das nicht zwangsläufig, dass eine Postadresse als
+    mexikanische Adresse formatiert oder geprüft werden soll. Der Nutzer kann dennoch in den USA (oder sonstwo) leben.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4">Was die HTTP-Spezifikation zu Accept-Language sagt</a> </p>
+    </li>
+    <li>
+      <p><a href="/International/techniques/authoring-html#language">Andere W3C-I18n-Ressourcen zum Thema Sprache</a> </p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

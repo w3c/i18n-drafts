@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Encabezado Accept-Language utilizado para ubicar la configuración</title>
+<meta name="description" content="¿Es una buena idea utilizar el encabezado Accept-Language HTTP para determinar la ubicación del usuario?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-accept-lang-locales' // the file name WITHOUT extensions
+f.authors = 'Lloyd Honomichl, Lionbridge' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-accept-lang-locales' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-17' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-17', time:'12:15'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-26', time:'22:42'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.spanishtranslation.us/">Spanish Translation</a> Team, Spanish Translation US' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-accept-lang-locales-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Encabezado Accept-Language utilizado para ubicar la configuración</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    script developers (PHP, JSP, etc.), Web project managers, and anyone who wants to use locale information.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">¿Es una buena idea utilizar el encabezado Accept-Language (aceptar el idioma) de HTTP para determinar la ubicación del usuario?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Debido a una serie de razones perfectamente válidas, sería deseable que algunas aplicaciones web estuvieran asociadas a una ubicación para cada usuario que visite el sitio. Esta ubicación las habilitaría para suministrar información en el formato local. Parte de esta información es común a ubicaciones de software tradicionales, por ejemplo:</p>
+  <ul>
+    <li>¿Qué formatos numéricos espera encontrar el usuario?</li>
+    <li>¿Cómo deberían estar formateadas las fechas y las horas?</li>
+  </ul>
+  <p>En otros casos, puede extraerse otro tipo de información de la información de la ubicación, además de conocimientos adicionales, por ejemplo:</p>
+  <ul>
+    <li>¿Las medidas deben estar expresadas según el sistema métrico (centímetros, kilómetros, litros) o según el sistema imperial (pulgadas, millas, galones)?</li>
+    <li>¿Cuál es la zona horaria del usuario?</li>
+    <li>¿El usuario emplea papel de tamaño carta o A4?</li>
+    <li>¿Qué sistemas de talles de vestimenta y calzado deberían utilizarse?</li>
+    <li>¿Cuál es la ubicación física del usuario?</li>
+  </ul>
+  <p> Dado que ninguno de estos datos están incluidos en el protocolo HTTP, muchos desarrolladores web han empleado el encabezado Accept-Language para hacer inferencias acerca de la ubicación del usuario.</p>
+  <p>El encabezado Accept-Language es información acerca de las preferencias de idioma del usuario que se envían mediante HTTP cuando se solicita un documento. Los navegadores predominantes permiten que estas preferencias de idioma sean <a class="print" href="/International/questions/qa-lang-priorities">modificadas por el usuario</a>. El valor en sí mismo está definido por <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>, normalmente como un <a class="print" href="/International/articles/language-tags/">código de idioma de dos o tres letras</a> (por ejemplo: <code>fr</code> para francés), seguido por subcódigos opcionales que representan elementos tales como el país (por ejemplo: <code>fr-CA</code> representa francés tal como se habla en Canadá).</p>
+  <p> La pregunta es si esta información es adecuada para determinar la ubicación del usuario.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Originalmente, el encabezado Accept-Language de HTTP estaba destinado a especificar el idioma del usuario. Sin embargo, dado que muchas aplicaciones necesitan saber la ubicación del usuario, en la práctica común, se ha empleado Accept-Language para determinar esta información. No es una buena idea utilizar el encabezado Accept-Language <strong>solo</strong> para determinar la ubicación del usuario. Si utiliza exclusivamente Accept-Language, es posible que deje al usuario sin otra alternativa entre una serie de opciones que no son de su agrado.</p>
+  <p>Para un primer contacto, emplear el valor Accept-Language para inferir configuraciones regionales puede ser un buen punto de partida, pero asegúrese de que puedan modificar el idioma según sea necesario y especificar sus configuraciones culturales con más exactitud, si se requiere. Almacene los resultados en una base de datos o en una cookie para futuras visitas. </p>
+  <p>Algunas de las dificultades potenciales incluyen las siguientes:</p>
+  <ul>
+    <li>Muchos usuarios nunca cambian las configuraciones predeterminadas para Accept-Language. Éstas se establecen cuando se instala el agente de usuario. A menos que sean multilingües o que haya alguna otra razón para ajustar las preferencias de idioma, es posible que los usuarios ni siquiera sepan que existen tales configuraciones. Por lo tanto, es posible que el usuario nunca haya ratificado la configuración Accept-Language.</li>
+    <li>Un agente de usuario puede enviar una solicitud que especifique sólo un idioma y no una región, por ejemplo, probablemente no reciba un encabezado con <code><abbr title="alemán - Alemania">de-DE</abbr></code>, <code><abbr title="German - Switzerland">de-CH</abbr></code> o <code><abbr
+					title="German - Austria">de-AT</abbr></code> para indicar que es alemán tal como se habla en Alemania, Suiza o Austria, respectivamente. Por otra parte, podría recibir sólo <code>de</code>, que indica una preferencia por el alemán. Si estuviera planificando emplear la región para decidir qué unidad monetaria utilizar, tendrá problemas. Sus circunstancias particulares podrían llevarlo a hacer suposiciones tales como "<em>Alemania tiene 83 millones de habitantes y Suiza tiene 7 millones, pero sólo el 63% habla alemán; Austria tiene 8 millones de habitantes; de modo que este usuario probablemente emplee el euro. Si estuviéramos equivocados, sólo ofenderíamos al 4,6% de nuestros clientes hablantes de alemán, es decir, a sólo 4 millones de personas</em>". No dude en asumir esto si acepta correr el riesgo. Es mucho más simple solicitar más información al usuario. Además, los cálculos se dificultan para español o para inglés, por ejemplo.</li>
+    <li>La gente pide máquinas prestadas a amigos, o las alquila en cibercafés. En estos casos, la ubicación inferida puede ser inadecuada, y debe tenerse cuidado de permitir al usuario seleccionar el idioma y la ubicación adecuados desde cualquier página que esté mirando.</li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Emplear el encabezado Accept-Language también es un buen punto de partida para determinar el <strong>idioma</strong> del usuario, en lugar de la ubicación, pero aun en ese caso, usted debe saber sus limitaciones y proporcionar al usuario alguna forma de invalidar los supuestos que haga. Muchos de los problemas potenciales arriba enumerados también se aplican aquí.</p>
+  <p>Aunque no esté haciendo suposiciones de manera intencional acerca de la ubicación o la región, debe ser consciente de que su entorno de programación puede estar haciendo las mismas suposiciones. De manera predeterminada, muchos servidores web, lenguajes de secuencia de comandos del área del servidor y entornos operativos analizan e infieren su ubicación nativa a partir de Accept-Language. Por ejemplo, .NET utiliza Accept-Language para determinar la CultureInfo (información cultural) predeterminada, Java Servlet proporciona un par de métodos getLocale() y getLocales() que analizan Accept-Language, y así sucesivamente. Estos objetos son muy útiles para obtener recursos y otros materiales sobre "preferencia de idioma". Son menos útiles, como se señaló anteriormente, para determinar muchos de los detallados atributos de los usuarios o para designar el comportamiento internacional de un sitio. Una preferencia de idioma de es-MX no significa necesariamente que debe formatearse o validarse un formulario de dirección postal para las direcciones de México. Aun así, es posible que el usuario viva en EE. UU. (o en otro lugar).</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4">Qué dice la especificación HTTP acerca de Accept-Language</a> </p>
+    </li>
+    <li>
+      <p><a href="/International/techniques/authoring-html#language">Otros recursos de W3C I18N relacionados con el idioma</a> </p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

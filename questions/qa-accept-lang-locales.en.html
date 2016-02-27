@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Accept-Language used for locale setting</title>
+<meta name="description" content="Is it a good idea to use the HTTP Accept-Language header to determine the locale of the user?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-accept-lang-locales' // the file name WITHOUT extensions
+f.authors = 'Lloyd Honomichl, Lionbridge' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-accept-lang-locales' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-17' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-17', time:'12:15'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-26', time:'22:42'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-accept-lang-locales-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Accept-Language used for locale setting</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    script developers (PHP, JSP, etc.), Web project managers, and anyone who wants to use locale information.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Is it a good idea to use the HTTP Accept-Language header to determine the locale of the user?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>For a number of perfectly valid reasons some web applications would like to associate a locale with each user that visits the site. This
+    locale would enable them to provide information in the local format. Some of this information is common to traditional software locales, such as:</p>
+  <ul>
+    <li>What numeric formats does the user expect?</li>
+    <li>How should dates and times be formatted?</li>
+  </ul>
+  <p>In other cases, other information may be derived from the locale information plus additional knowledge, such as:</p>
+  <ul>
+    <li>Should measurements be metric (centimeters, kilometers, liters) or imperial (inches, miles, gallons)?</li>
+    <li>What is the user's time zone?</li>
+    <li>Does the user use Letter size paper, or A4?</li>
+    <li>What shoe and clothing sizing systems should be used?</li>
+    <li>What is the user's physical location?</li>
+  </ul>
+  <p> Since none of these are included in the HTTP protocol many web developers have used the Accept-Language header to make inferences about
+    the user's locale.</p>
+  <p>The Accept-Language header is information about the user's language preferences that is passed via HTTP when a document is requested.
+    Mainstream browsers allow these language preferences to be <a class="print" href="/International/questions/qa-lang-priorities">modified by the user</a>. The
+    value itself is a defined by <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP&nbsp;47</a>, typically as a <a class="print" href="/International/articles/language-tags/">two or three letter language code</a> (eg. <code>fr</code> for French), followed by
+    optional subcodes representing such things as country (eg. <code>fr-CA</code> represents French as spoken in Canada).</p>
+  <p> The question is about whether this information is appropriate for determining the locale of the user.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>The HTTP Accept-Language header was originally only intended to specify the user's language. However, since many applications need to
+    know the locale of the user, common practice has used Accept-Language to determine this information. It is not a good idea to use the HTTP
+    Accept-Language header <strong>alone</strong> to determine the locale of the user. If you use Accept-Language exclusively, you may handcuff the user
+    into a set of choices not to his liking.</p>
+  <p>For a first contact, using the Accept-Language value to infer regional settings may be a good starting point, but be sure to allow them
+    to change the language as needed and specify their cultural settings more exactly if necessary. Store the results in a database or a cookie for later
+    visits. </p>
+  <p>Some of the potential issues include the following:</p>
+  <ul>
+    <li>Many users never change the defaults for Accept-Language. They are set when the user agent is installed. Unless they are multilingual
+      or have some other reason to adjust language preferences they may not even know such settings exist. Hence, the user may not have ever ratified the
+      Accept-Language setting.</li>
+    <li>A user agent may send a request that specifies only a language and not a region, for example you may not get a header with <code><abbr title="German - Germany">de-DE</abbr></code>, <code><abbr title="German - Switzerland">de-CH</abbr></code> or <code><abbr
+					title="German - Austria">de-AT</abbr></code> to indicate German as spoken in Germany, Switzerland or Austria, respectively. On the other hand, you
+      might only get <code>de</code> indicating a preference for German. If you were planning to use the region to decide what currency to use you are now
+      in a bind. Your particular circumstances might allow you to make assumptions such as "<em>Germany has 83 million people, Switzerland has 7 million
+      but only 63% speak German, Austria has 8 million, so this user probably uses the Euro. If we're wrong we'll only offend 4.6% of our German speaking
+      customers or just over 4 million people.</em>" Feel free to make such an assumption, if you can accept the risk. Its a lot simpler to ask the user
+      for more information. Also, the math gets more difficult for Spanish or English, for instance.</li>
+    <li>People borrow machines from friends, they rent them from internet cafes. In these cases the inferred locale may be inappropriate, and
+      care should be taken to allow the user to select the appropriate language and locale from whatever page they are looking at.</li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Using the Accept-Language header is also a good starting point for determining the <strong>language</strong> of the user, rather than the
+    locale, but even then you must know its limitations and give the user some way to override the assumptions you make. Many of the potential issues
+    listed above apply here too.</p>
+  <p>Even if you aren't intentionally making assumptions about locale or region, you should be aware that your programming environment may be
+    making such assumptions on your behalf. Many Web servers, server side scripting languages, and operating environments, by default, parse and infer
+    their native locale objects from Accept-Language. For example, .NET uses the Accept-Language to determine the default CultureInfo, Java Servlet
+    provides a getLocale() and getLocales() pair of methods that parse Accept-Language, and so forth. These objects are very useful in obtaining
+    resources and other "language preference" material. They are less useful, as pointed out above, in determining many of the fine grained attributes of
+    users or in designing the international behavior of a site. A language preference of es-MX doesn't necessarily mean that a postal address form should
+    be formatted or validated for Mexican addresses. The user might still live in the USA (or elsewhere).</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4">What the HTTP specification says about Accept-Language</a></p>
+    </li>
+    <li>
+      <p><a href="/International/techniques/authoring-html#language">Other W3C I18N resources relating to language</a></p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
