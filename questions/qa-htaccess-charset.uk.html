@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<title>Налаштування charset інформації в .htaccess</title>
+<meta name="description" content="Як я маю використовувати директиви .htaccess на сервері Apache для обслуговування файлів із специфічним кодуванням?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-htaccess-charset' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-htaccess-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-07-02' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-07-09', time:'16:27'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-01', time:'04:26'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak (Александр Шлапак)' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-htaccess-charset-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-uk.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Налаштування charset інформації в .htaccess</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    вебмайстри і всі, хто потребує керівництва в тому, як змінити серверні директиви на сервері Apache, щоб встановити кодування символів, що відправляється у заголовку HTTP. Зверніть увагу, ви повинні мати певні права і доступ до сервера, щоб зробити ці зміни. Користувачі, які є новачками в даному питанні повинні поговорити зі своїм провайдером або людиною, що керує сервером. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Як я маю використовувати директиви .htaccess на сервері Apache для обслуговування файлів із специфічним кодуванням?</p>
+  </section>
+
+
+<section>
+  <h2 id="background"><a href="#background">Ввідна інформація</a></h2>
+  <p>Важливо забезпечити, щоб будь-яка інформація про кодування символів, відправлена сервером була правильною, тому що інформація в HTTP
+    заголовоку перевизначає інформацію в самому документі.</p>
+  <p>Багато серверів Apache налаштовані, щоб відправляти файли з використанням кодування ISO-8859-1 (Latin-1). У прикладах в цьому документі, ми будемо вважати, що
+    ви хочете обслуговувати ваш файл або файли, використовуючи інші кодування, ніж вказано в конфігурації за замовчуванням. (Для отримання консультації з вибору кодування 
+    дивіться <a class="print" href="/International/questions/qa-choosing-encodings"><cite>Вибір і застосування кодування</cite></a>.)</p>
+  <p>Нижче наведено приклад HTTP заголовку, який супроводжує надісланий до клієнтського додатку файл. У цьому випадку інформація про кодування символів
+    міститься в заголовку Content-Type в другому рядку знизу.</p>
+  <div class="example">
+    <pre>HTTP/1.1 200 OK
+Date: Wed, 05 Nov 2003 10:46:04 GMT
+Server: Apache/1.3.28 (Unix) PHP/4.2.3
+Content-Location: CSS2-REC.en.html
+Vary: negotiate,accept-language,accept-charset
+TCN: choice
+P3P: policyref=http://www.w3.org/2001/05/P3P/p3p.xml
+Cache-Control: max-age=21600
+Expires: Wed, 05 Nov 2003 16:46:04 GMT
+Last-Modified: Tue, 12 May 1998 22:18:49 GMT
+ETag: "3558cac9;36f99e2b"
+Accept-Ranges: bytes
+Content-Length: 10734
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Language: en</pre>
+  </div>
+  <p>У прикладі заголовок Content-Type виражає як MIME тип файлу так і кодування символів. MIME тип описує
+    формат файлу, що обслуговувався. HTML файли , як правило, обслуговуються, як text/html. Кодування символів (або '<span class="qterm">charset</span>') 
+    цього файлу - UTF-8.</p>
+  <p>Щоб дізнатися, як переглянути HTTP заголовок файлу дивіться статтю <a class="print" href="/International/questions/qa-headers-charset"><cite>Перевірка HTTP Заголовків</cite></a>.</p>
+  <p>Файли на сервері Apache можуть обслуговуватися з кодуванням символів за замовчуванням в HTTP заголовку, що конфліктує з фактичним
+    кодуванням файлу. Кодування символів, що посилається сервером може бути новим кодуванням за замовчуванням, встановлене за замовчуванням адміністратором сервера, або
+    результатом виконання різних директив Apache. В інших випадках ніякої інформації про кодування символів сервером не відправляється, коли вона дійсно 
+    необхідна.</p>
+  <p>Якщо сервер налаштований так, що дозволяє користувачам або адміністраторам змінювати інформацію в .htaccess файлах, це може забезпечити спосіб перевизначити
+    налаштування за замовчуванням. Цей розділ показує вам, як це зробити.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Майте на увазі, що є декілька різних сценаріїв. У першу чергу, ви можливо захочете змінити в директорії значення за замовчуванням для всіх файлів
+    з однаковим розширенням. Крім того, ви можливо захочете змінити значення за замовчуванням для одного файлу або невеликого числа файлів. Ми дослідимо це
+    по черзі.</p>
+  <p>У наших прикладах ми будемо вважати, що сервер за замовчуванням налаштований обслуговувати файли в кодуванні ISO-8859-1, але ви хочете, щоб він обслуговував ваш файл або 
+    файли використовуючи кодування UTF-8 (дуже розумна стратегія!).</p>
+  
+  <section>
+    <h3 id="scope"><a href="#scope">Чи підходить вам ця відповідь?</a></h3>
+    <p>Ця стаття написана для авторів контенту, а не для системних адміністраторів. Налаштування кодування серверу за замовчуванням виходить за
+      рамки цієї статті.</p>
+    <p>Ця порада підходить тільки тоді, коли ви згодні проголосити кодування символів документа за допомогою HTTP заголовка. У деяких випадках
+      ви <a class="print" href="/International/questions/qa-html-encoding-declarations#httpheadwhat">можете цього не захотіти</a>.</p>
+    <p>Зауважимо, що ці FAQ (Часто Задавані Питання) також припускають, що ваш сервер налаштований на використання <a
+					class="print" href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">.htaccess файлів,</a> і, що директиви, описані нижче <a class="print" href="http://httpd.apache.org/docs/mod/core.html#allowoverride">працюють</a> в .htaccess файлах на вашому сервері. Передбачається також, що не
+      достатньо просто змінити налаштування за замовчуванням на сервері. Якщо ви не впевнені, зверніться до адміністратора сервера.</p>
+    <p>Ви також повинні знати про конвенції, які використовуються на сервері для об'єднання інформації про кодування символів із розширеннями.
+      У деяких випадках сервер може бути настроєний в очікуванні того, що кодування символів визначені специфічними розширеннями кодування, наприклад 
+      example.html.utf8 де .utf8 те, що повинно бути пов'язане з кодуванням символів, а не .html (те, що може бути пов'язане з
+      типом файла).</p>
+    <p>Якщо такі підходи зазнають невдачі, то ви повинні переглянути керівництва Apache (дивіться прикладені <a href="#endlinks">посилання</a>) або звернутися до адміністратора
+      вашого сервера.</p>
+  </section>
+  
+  <section>
+    <h3 id="extension"><a href="#extension">Специфікація по розширенню</a></h3>
+    <p>Використовуйте директиву <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a> щоб пов'язати кодування 
+      символів із усіма файлами, які мають певне розширення в поточному каталозі <em>і його підкаталогах</em>. Наприклад, щоб обслуговувати всі файли з
+      розширенням .html як UTF-8, відкрийте .htaccess файл у текстовому редакторі і введіть наступний рядок:</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .html
+</pre>
+      </blockquote>
+    </div>
+    <p>Розширення може бути зазначено з або без початкової точки. Ви можете додати кілька розширень до одного і того ж рядка. Це все одно буде працювати,
+      якщо ви маєте такі назви файлів, як example.en.html або example.html.en.</p>
+    <p>Приклад змусить усі файли з розширенням .html обслуговуватися як UTF-8. Заголовок HTTP Content-Type міститиме рядок, який
+      закінчується 'charset' інформацією, як показано в наступному прикладі.</p>
+    <div class="example">
+      <blockquote>
+        <pre>Content-Type: text/html; charset=UTF-8
+</pre>
+      </blockquote>
+    </div>
+    <p><strong>Примітка:</strong> Всі файли з таким розширенням у всіх підкаталогах поточного місця розташування будуть також обслуговуватися як UTF-8. Якщо,
+      з деяких причин, ви повинні обслужити певний файл із іншим кодуванням вам необхідно переназначити його, використовуючи додаткові директиви.</p>
+    <p><strong>Примітка:</strong> Ви можете зв'язати кодування символів з будь-яким розширенням, що додається до вашого файлу. Наприклад, припустимо, що ви зробили
+      переклад на іншу мову і ви маєте сторінки на двох мовах, що виглядають наступним чином example.en.html та example.ja.html. Давайте також припустимо, що вам
+      зручно обслуговувати Англійські сторінки використовуючи кодування ISO-8859-1 вашого сервера за замовчуванням, але ви хочете обслуговувати Японські файли в UTF-8. Щоб це зробити, ви можете зв'язати
+      кодування символів із розширенням мови, як показано у наступному прикладі:</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .ja
+</pre>
+      </blockquote>
+    </div>
+    <p>Однак, візьміть до відома, якщо ви можете, то кращим рішенням буде змінити налаштування сервера за замовчуванням на UTF-8, або обслуговувати всі файли в нових
+      каталогах як UTF-8.</p>
+    <p><strong>Примітка:</strong> Для досягнення того ж результату можна також використовувати директиву <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addtype">AddType</a>, хоча це і одночасно призначає як кодування символів так і
+      MIME тип. Рішення про те, що є найбільш відповідним, частково буде залежати від того, як ви використовуєте розширення для обговорення контенту.
+      Менш імовірно, що це буде доречно, якщо ви використовуєте різні розширення для вираження типу документа і кодування символів.</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddType 'text/html; charset=UTF-8' html
+</pre>
+      </blockquote>
+    </div>
+  </section>
+  
+  <section>
+    <h3 id="odd"><a href="#odd">Зміна випадкового файлу</a></h3>
+    <p>Давайте тепер припустимо, що ви хочете обслуговувати тільки один файл як UTF-8 у великому каталозі, де всі інші старі файли правильно
+      обслуговуються як ISO-8859-1. Файл, що ви хочете обслуговувати як UTF-8 має назву example.html. Відкрийте .htaccess файл у текстовому редакторі і введіть 
+      наступне:</p>
+    <div class="example">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+AddCharset UTF-8 .html
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p>Те, що ми зробили тут, обернуло директиву, про яку говорилося в попередньому розділі в деяку <a class="print" href="http://httpd.apache.org/docs/mod/core.html#files">розмітку</a>, яка ідентифікує конкретний файл з яким ми маємо справу. Якщо вас необхідно, то
+      існує також дещо інший синтаксис, який дозволяє вказати декілька імен файлів за допомогою регулярних виразів.</p>
+    <p><strong>Примітка:</strong> Можливо також досягнути того ж результату, використовуючи показану вище директиву AddType, або, в даному випадку, директиву <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html">ForceType</a> , хоча і вона одночасно призначає, як кодування символів  так і MIME
+      тип.</p>
+    <div class="example">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+ForceType 'text/html; charset=UTF-8'
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p><strong>Примітка:</strong> Будь-які файли з однаковою назвою в підкаталозі поточного місця розташування будуть також обслуговуватися як UTF-8, хіба що ви
+      створите протилежну директиву у відповідному каталозі.</p>
+  </section>
+  
+  <section>
+    <h3 id="more"><a href="#more">Більш комплексні сценарії</a></h3>
+    <p>Коли два правила розширення застосовується до одного і того ж документу важливим є порядок розташування розширень. Так, як в наступному прикладі</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .utf8
+AddCharset windows-1252 .html
+</pre>
+      </blockquote>
+    </div>
+    <p>файл 'example.utf8.html' буде обслуговуватися як "windows-1252" та 'example.html.utf8' як UTF-8.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/questions/qa-headers-charset"><cite>Перевірка HTTP заголовків</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="qa-apache-lang-neg"><cite> Налаштування відображення MultiViews language на Apache</cite></a> </p>
+    </li>
+    <li>
+      <p>Документація Apache модуля mod_mime <a href="http://httpd.apache.org/docs/mod/mod_mime.html">v1</a> ; <a href="http://httpd.apache.org/docs-2.0/mod/mod_mime.html">v2</a> </p>
+    </li>
+    <li>
+      <p>Apache 1-ша версія <a href="http://httpd.apache.org/docs/howto/htaccess.html">.htaccess</a>  та <a
+						href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">allowOverride</a>  документація</p>
+    </li>
+    <li>
+      <p>Apache 2-га версія <a href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">.htaccess</a>  та <a
+						href="http://httpd.apache.org/docs-2.0/mod/core.html#allowoverride">allowOverride</a>  документація</p>
+    </li>
+    <li>
+      <p>Посібник – <a href="/International/tutorials/tutorial-char-enc/"><cite>Обробка кодування символів в HTML і CSS</cite></a> </p>
+    </li>
+      <li>
+      <p>Посилання по темі – <cite>Налаштування сервера</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#characters">Символи</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

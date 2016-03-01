@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Configuración de información charset en .htaccess</title>
+<meta name="description" content="¿Cómo utilizo las directivas de .htaccess en un servidor Apache para ejecutar archivos con una codificación específica?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-htaccess-charset' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-htaccess-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-07-02' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-07-09', time:'16:27'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-01', time:'04:26'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.spanishtranslation.us/">Spanish Translation</a> Team, Spanish Translation US' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-htaccess-charset-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Configuración de información charset en .htaccess</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    los administradores de sitios web y cualquier persona que requiera orientación sobre cómo cambiar las directivas que se ejecutan en el servidor de Apache a fin de configurar la codificación de caracteres enviada al encabezado HTTP. Tenga en cuenta que necesita tener ciertos derechos y acceso al servidor para efectuar estos cambios. Los usuarios no técnicos deben consultar con su ISP (Proveedor de Servicios de Internet) o con la persona que administra el servidor. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">¿Cómo utilizo las directivas de .htaccess en un servidor Apache para ejecutar archivos con una codificación específica?</p>
+  </section>
+
+
+<section>
+  <h2 id="background"><a href="#background">Información preliminar</a></h2>
+  <p>Es importante asegurarse de que toda información sobre la codificación de caracteres enviada por el servidor sea correcta, dado que la información incluida en el encabezado HTTP anula la información que contiene el documento mismo.</p>
+  <p>Numerosos servidores Apache están configurados para enviar archivos utilizando la codificación ISO-8859-1 (Latin-1). En los ejemplos mencionados en estas preguntas frecuentes, vamos a suponer que usted desea ejecutar el(los) archivo(s) utilizando una codificación diferente a la especificada en la configuración predeterminada. (Para obtener orientación acerca de cómo elegir una codificación, consulte el tutorial <a class="print" href="/International/questions/qa-choosing-encodings"><cite>Choosing &amp; applying a character encoding</cite></a>).</p>
+  <p>A continuación, se muestra un ejemplo de un encabezado HTTP que acompaña a un archivo enviado por un agente de usuario. En este caso, la información sobre la codificación de caracteres se incluye en el encabezado Content-Type que aparece en la segunda línea desde la parte inferior.</p>
+  <div class="example">
+    <pre>HTTP/1.1 200 OK
+Date: Wed, 05 Nov 2003 10:46:04 GMT
+Server: Apache/1.3.28 (Unix) PHP/4.2.3
+Content-Location: CSS2-REC.en.html
+Vary: negotiate,accept-language,accept-charset
+TCN: choice
+P3P: policyref=http://www.w3.org/2001/05/P3P/p3p.xml
+Cache-Control: max-age=21600
+Expires: Wed, 05 Nov 2003 16:46:04 GMT
+Last-Modified: Tue, 12 May 1998 22:18:49 GMT
+ETag: "3558cac9;36f99e2b"
+Accept-Ranges: bytes
+Content-Length: 10734
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Language: en</pre>
+  </div>
+  <p>En el ejemplo, el encabezado Content-Type expresa tanto el tipo MIME del archivo como la codificación de caracteres. El tipo MIME describe el formato del archivo que está ejecutando. Los archivos HTML generalmente se ejecutan como text/html. La codificación de caracteres (o '<span class="qterm">charset</span>') de este archivo es UTF-8.</p>
+  <p>Para saber cómo visualizar el encabezado HTTP para un archivo, consulte el artículo <a class="print" href="/International/questions/qa-headers-charset"><cite>Verificación de los encabezados HTTP</cite></a>.</p>
+  <p>Los archivos en el servidor Apache puede ejecutarse con una declaración predeterminada de codificación de caracteres en el encabezado HTTP que sea opuesta a la codificación real del archivo. Es posible que la codificación de caracteres enviada por el servidor sea la configuración predeterminada disponible para su uso inmediato, una configuración predeterminada establecida por el administrador del sistema o derivada de la implementación de varias directivas de Apache. En otros casos, el servidor no envía ninguna información de codificación de caracteres cuando realmente se la desea obtener.</p>
+  <p>Si el servidor se configura para permitirles a los usuarios o a los administradores cambiar la información en los archivos .htaccess, éstos pueden proporcionar una forma de anular las configuraciones predeterminadas. Estas preguntas frecuentes le muestran cómo hacerlo.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Hay un par de escenarios distintos que deben tenerse en cuenta. En primer lugar, es posible que quiera cambiar la opción predeterminada para todos los archivos de un directorio con la misma extensión. De manera alternativa, puede que quiera cambiar la opción predeterminada para un solo archivo o para una pequeña cantidad de archivos. Analizaremos tales escenarios de a uno por vez.</p>
+  <p>En nuestros ejemplos, asumiremos que la configuración predeterminada del servidor ejecuta archivos como ISO-8859-1, pero que usted desea ejecutar su(s) archivo(s) utilizando UTF-8 (¡una estrategia muy sensata!).</p>
+  
+  <section>
+    <h3 id="scope"><a href="#scope">¿Esta respuesta es pertinente para usted?</a></h3>
+    <p>Este artículo está escrito por autores de contenido y no por administradores de sistemas. Configurar la codificación predeterminada del servidor es una cuestión que excede el alcance de dicho artículo.</p>
+    <p>Este consejo sólo es pertinente si usted está de acuerdo con el hecho de declarar la codificación de caracteres de su documento mediante el encabezado HTTP. En algunos casos, <a class="print" href="/International/tutorials/tutorial-char-enc/#declaring">es posible que no desee hacerlo</a>.</p>
+    <p>Tenga en cuenta que estas preguntas frecuentes también dan por sentado que su servidor está configurado para utilizar <a class="print" href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">archivos .htaccess,</a> y que las directivas descritas a continuación <a class="print" href="http://httpd.apache.org/docs/mod/core.html#allowoverride">funcionan</a> en los archivos .htaccess de su servidor. También se da por sentado que no es correcto simplemente cambiar la configuración predeterminada del servidor. Si no está seguro, contáctese con el administrador de su servidor.</p>
+    <p>También debe tener en cuenta las convenciones en uso sobre su servidor respecto de la asociación de la información de codificación de caracteres a las extensiones. En algunos casos, el servidor puede estar configurado con la expectativa de que las codificaciones de caracteres se indiquen mediante extensiones específicas de codificación, por ejemplo, example.html.utf8, donde .utf8 es lo que debe estar asociado a la codificación de caracteres, y no .html (que puede estar asociado al tipo de archivo).</p>
+    <p>Si estos enfoques no son suficientes, deberá remitirse a los manuales de Apache (consulte los <a href="#endlinks">enlaces</a>) o al administrador de su servidor.</p>
+  </section>
+  
+  <section>
+    <h3 id="extension"><a href="#extension">Especificación por extensión</a></h3>
+    <p>Utilice la directiva <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a> para asociar la codificación de caracteres a todos los archivos que tienen una extensión en particular en el directorio actual <em>y sus subdirectorios</em>. Por ejemplo, para ejecutar todos los archivos con la extensión .html como UTF-8, abra el archivo .htaccess en un editor de texto plano e ingrese la siguiente línea:</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .html</pre>
+      </blockquote>
+    </div>
+    <p>La extensión puede especificarse con o sin el punto inicial. Puede agregar extensiones múltiples a la misma línea. Esto funcionará incluso si tiene nombres de archivos como example.en.html o example.html.en.</p>
+    <p>El ejemplo hará que todos los archivos con la extensión .html se ejecuten como UTF-8. El encabezado Content-Type de HTTP contendrá una línea que finaliza con la información 'charset', como se muestra en el ejemplo que sigue.</p>
+    <div class="example">
+      <blockquote>
+        <pre>Content-Type: text/html; charset=UTF-8</pre>
+      </blockquote>
+    </div>
+    <p><strong>Nota:</strong> todos los archivos con esta extensión en todos los subdirectorios de la ubicación actual también se ejecutarán como UTF-8. Si por alguna razón usted necesitara ejecutar el archivo dispar con una codificación distinta, deberá anular esto mediante las otras directivas.</p>
+    <p><strong>Nota:</strong> puede asociar la codificación de caracteres a cualquier extensión que se adjunte a su archivo. Por ejemplo, supongamos que usted efectúa la negociación de idioma y que tiene páginas en dos idiomas que siguen el modelo example.en.html y example.ja.html. También supongamos que está de acuerdo con el hecho de ejecutar páginas en inglés mediante la opción predeterminada ISO-8859-1 de su servidor, pero desea ejecutar archivos en japonés en UTF-8. Para hacerlo, puede asociar la codificación de caracteres a la extensión del idioma, como se muestra a continuación:</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .ja</pre>
+      </blockquote>
+    </div>
+    <p>Sin embargo, tenga en cuenta que, en caso de que pueda, el hecho de cambiar la opción predeterminada del servidor por UTF-8 o de ejecutar todos los archivos en directorios nuevos como UTF-8 podría ser una mejor solución.</p>
+    <p><strong>Nota:</strong> también es posible obtener el mismo resultado mediante la directiva <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addtype">AddType</a>, aunque esto declara la codificación de caracteres y el tipo MIME al mismo tiempo. La decisión acerca de qué es lo más adecuado dependerá, en parte, de cómo esté utilizando las extensiones para la negociación de contenido. Si utiliza diferentes extensiones para expresar el tipo de documento y la codificación de caracteres, es menos probable que esto sea adecuado.</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddType 'text/html; charset=UTF-8' html
+</pre>
+      </blockquote>
+    </div>
+  </section>
+  
+  <section>
+    <h3 id="odd"><a href="#odd">Cambio del archivo ocasional</a></h3>
+    <p>Vamos a suponer que usted desea ejecutar sólo un archivo como UTF-8 en un directorio grande, donde los demás archivos más antiguos se ejecutan correctamente como ISO-8859-1. El archivo que desea ejecutar como UTF-8 se denomina example.html. Abra el archivo .htaccess en un editor de texto plano e ingrese lo siguiente:</p>
+    <div class="example">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+AddCharset UTF-8 .html
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p>Lo que hicimos aquí fue englobar la directiva analizada en la sección anterior en alguna <a class="print" href="http://httpd.apache.org/docs/mod/core.html#files">etiqueta</a> que identifique el archivo específico que nos ocupa. Si lo necesita, también existe una sintaxis ligeramente distinta que le permite especificar una serie de nombres de archivos mediante una expresión regular.</p>
+    <p><strong>Nota:</strong> también es posible obtener el mismo resultado mediante la directiva AddType que se muestra más arriba o, en este caso, la directiva <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html">ForceType</a>, aunque esto declara la codificación de caracteres y el tipo MIME al mismo tiempo.</p>
+    <div class="example">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+ForceType 'text/html; charset=UTF-8'
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p><strong>Nota:</strong> los archivos que tengan el mismo nombre en un subdirectorio de la ubicación actual también serán ejecutados como UTF-8, a menos que cree una directiva contraria en el directorio pertinente.</p>
+  </section>
+  
+  <section>
+    <h3 id="more"><a href="#more">Escenarios más complejos</a></h3>
+    <p>Cuando se aplican dos reglas de extensión al mismo documento, el orden de las extensiones es importante. Por lo tanto, en el siguiente ejemplo:</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .utf8
+AddCharset windows-1252 .html
+</pre>
+      </blockquote>
+    </div>
+    <p>el archivo 'example.utf8.html' se ejecutará como"windows-1252" y el 'example.html.utf8' como UTF-8.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/questions/qa-headers-charset"><cite>Verificación de encabezados HTTP</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="qa-apache-lang-neg"><cite> Configuración de la negociación de idioma con la opción Multivistas de Apache</cite></a> </p>
+    </li>
+    <li>
+      <p>Documentación mod_mime del módulo Apache <a href="http://httpd.apache.org/docs/mod/mod_mime.html">v1</a> ; <a href="http://httpd.apache.org/docs-2.0/mod/mod_mime.html">v2</a> </p>
+    </li>
+    <li>
+      <p>Documentación <a href="http://httpd.apache.org/docs/howto/htaccess.html">.htaccess</a>  y <a href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">allowOverride</a>  de la versión 1 de Apache.</p>
+    </li>
+    <li>
+      <p>Documentación <a href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">.htaccess</a>  y <a href="http://httpd.apache.org/docs-2.0/mod/core.html#allowoverride">allowOverride</a>  de la versión 2 de Apache.</p>
+    </li>
+    <li>
+      <p>Tutorial – <a href="/International/tutorials/tutorial-char-enc/"><cite>Codificaciones &amp; sets de caracteres en XHTML, HTML y CSS</cite></a> </p>
+    </li>
+    <li>
+      <p>Enlaces relacionados – <cite>Setting up a server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#characters">Characters</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

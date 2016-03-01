@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<title>Att ange 'charset'-information i .htaccess</title>
+<meta name="description" content="Hur kan jag anv&auml;nda .htaccess f&ouml;r att leverera filer med en viss kodning?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-htaccess-charset' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-htaccess-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-07-02' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-07-09', time:'16:27'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-01', time:'04:26'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Olle Olsson, SICS' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-htaccess-charset-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-sv.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Att ange 'charset'-information i .htaccess</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    webmasters and anyone who needs guidance on how to change server-side directives in Apache to set the character encoding sent in the HTTP header. Note, you need certain rights and access to the server to make these changes. Non-technical users should talk to their ISP or the person who manages the server. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Hur kan jag använda .<span lang="en">htaccess</span>-direktiv i en <span
+					lang="en">Apache</span>-server för att leverera filer med en speciell kodning</p>
+  </section>
+
+
+<section>
+  <h2 id="background"><a href="#background">Bakgrundsinformation</a></h2>
+  <p> Det är viktigt att säkerställa att den information om teckenkodning som servern sänder är korrekt, eftersom informationen i HTTP-headern
+    har högre prioritet än informationen i själva dokumentet. </p>
+  <p> Många <span lang="en">Apache</span>-servrar konfigureras för att sända filer kodade i ISO-8859-1 (Latin-1). I de exempel
+    som ges i denna FAQ antar vi att du vill leverera dina filer i en annan kodning än den som angivits i standardkonfigurationen. (Råd om hur man väljer
+    en kodning ges i tutorialen <a class="print" href="/International/questions/qa-choosing-encodings"><cite lang="en">Choosing &amp; applying a character encoding</cite></a>.) </p>
+  <p> Nedan följer ett exempel på en HTTP-header som åtföljer en fil levererad till ett användarprogram. I detta fall inkluderas
+    kodningsinformationen i <span lang="en">Content-Type-headern</span> på andra raden från slutet. </p>
+  <div class="example" lang="en">
+    <pre>HTTP/1.1 200 OK
+Date: Wed, 05 Nov 2003 10:46:04 GMT
+Server: Apache/1.3.28 (Unix) PHP/4.2.3
+Content-Location: CSS2-REC.en.html
+Vary: negotiate,accept-language,accept-charset
+TCN: choice
+P3P: policyref=http://www.w3.org/2001/05/P3P/p3p.xml
+Cache-Control: max-age=21600
+Expires: Wed, 05 Nov 2003 16:46:04 GMT
+Last-Modified: Tue, 12 May 1998 22:18:49 GMT
+ETag: "3558cac9;36f99e2b"
+Accept-Ranges: bytes
+Content-Length: 10734
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Language: en</pre>
+  </div>
+  <p> I exemplet anger <span lang="en">Content-Type-headern</span> såväl filens <span lang="en">MIME</span>-typ
+    som dess teckenkodning. <span lang="en">MIME</span>-typen beskriver formatet på den levererade filen. HTML-filer levereras vanligtvis
+    som text/html. Den här filens teckenkodningen (eller '<span class="qterm">charset</span>') är UTF-8. </p>
+  <p> Information om hur man kan få reda på vilka HTTP-headers som levereras med en fil fås i artikeln <a class="print" href="/International/questions/qa-headers-charset"><cite>Kontrollera HTTP-headers</cite></a>. </p>
+  <p> Filer på en <span lang="en">Apache</span>-server kan levereras med en teckenkodningsdeklaration, enligt serverns
+    normalfallsinställning ("<span lang="en">default</span>"), i HTTP-headern som inte stämmer överens med filens verkliga kodningen. Den
+    information om teckenkodning som servern sänder kan vara den normalfallsinställning som kommer med installationen, kan vara en normalfallsinställning
+    satt av systemadministratören, eller kan vara en effekt av diverse <span lang="en">Apache</span>-direktiv. Annars sänder inte servern
+    någon information om teckenkodning. </p>
+  <p> Om servern har konfigurerats så att användare eller administratörer kan ändra information i .<span
+				lang="en">htaccess</span>-filer, så kan dessa filer erbjuda ett sätt att ersätta normalfallsinställningarna. Denna FAQ visar hur man gör detta. </p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p> Det finns några olika scenarier som man bör skilja åt. Å ena sidan så kanske du vill ändra normalfallsinställningen för alla filer i en
+    folder, filer vars namn har ett visst suffix. Å andra sidan kanske du vill ändra inställningen för en enda fil eller för ett litet antal filer. Vi
+    beskriver dessa fall i tur och ordning. </p>
+  <p> Exempeln nedan förutsätter att servern levererar filer, enligt normalfallsinställningen, som ISO-8859-1, men att du vill få din fil
+    (eller filer) levererad som UTF-8 (vilket är ett förnuftigt val!) </p>
+  
+  <section>
+    <h3 id="scope"><a href="#scope">Är detta svar meningfullt för dig?</a></h3>
+    <p> Denna artikel har skrivits för innehållsförfattare snarare än för systemadministratörer. Hur man sätter serverns
+      normalfallsinställning för teckenkodning, det ligger bortom vad denna artikel försöker beskriva. </p>
+    <p> Dessa råd är relevanta bara om det räcker med att ange dina filers teckenkodning genom HTTP-headern. I vissa fall kanske du <a class="print" href="/International/tutorials/tutorial-char-enc/#declaring">inte vill göra på det sättet</a>. </p>
+    <p> Lägg märke till att denna FAQ förutsätter att din server har konfigurerats för att använda <a class="print" href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">.<span lang="en">htaccess</span>-filer</a>, och att direktivet som
+      beskrivs nedan <a class="print" href="http://httpd.apache.org/docs/mod/core.html#allowoverride">fungerar</a> i .<span lang="en">htaccess</span>-filer
+      på din server. Vi förutsätter även att det är olämpligt att helt enkelt ända standardkonfigurationen på servern. Om du inte är helt säker på vad som
+      gäller för din server, kontakta då din systemadministratör. </p>
+    <p> Du måste också vara medveten om vilka konventioner som din server använder, konventioner som beskriver hur filnamnssuffix relateras
+      till teckenkodningar. I vissa fall kan servern ha konfigurerats under antagandet att teckenkodningen av en fil indikeras av kodningsspecifika suffix.
+      T.ex. kan för dokument.html.utf8 gälla att suffixet .utf8 associeras till en teckenkodning, medan .html associeras till en filtyp. </p>
+    <p> Om ingen av dessa ansatser fungerar, så tag del av innehållet i <span lang="en">Apache</span>-dokumentationen (se nedan
+      angivna <a href="#endlinks">länkar</a>) eller kontakta din systemadministratör. </p>
+  </section>
+  
+  <section>
+    <h3 id="extension"><a href="#extension">Ange med suffix</a></h3>
+    <p> Använd <span lang="en">Apache</span>-direktivet <a
+					class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset"><span lang="en">AddCharset</span></a> för att knyta en teckenkodning
+      till alla filer vars namn har ett visst suffix, i den aktuella foldern <em>och alla dess underfoldrar</em>. Om man vill leverera alla filer vars namn
+      har suffix .html som UTF-8, skriv då in i .<span lang="en">htaccess</span>-filen följande rad: </p>
+    <div class="example" lang="en">
+      <blockquote>
+        <pre>AddCharset UTF-8 .html
+
+</pre>
+      </blockquote>
+    </div>
+    <p> Suffixet kan anges med eller utan inledande punkt. Du kan lägga till ytterligare suffix på samma rad. Detta fungerar även om du har
+      filnamn som example.en.html eller example.html.en. </p>
+    <p> Detta exempel medför att alla filer med suffix .html kommer att levereras som UTF-8. HTTP <span
+					lang="en">Content-Type-headern</span> kommer att innehålla en rad som slutar med '<span lang="en">charset</span>'-information enligt
+      följande exempel. </p>
+    <div class="example" lang="en">
+      <blockquote>
+        <pre>Content-Type: text/html; charset=UTF-8
+</pre>
+      </blockquote>
+    </div>
+    <p> <strong>Anm:</strong> Alla filer med detta suffix, i alla underfoldrar av aktuell folder, kommer också att levereras som UTF-8. Om
+      du, av någon anledning, behöver få en speciell fil levererad med annan kodning, så behöver du ange ytterligare direktiv. </p>
+    <p> <strong>Anm:</strong> Du kan knyta en teckenkodning till godtyckligt suffix på filnamn. Antag t.ex. att du vill stödja
+      språkförhandling och att du har två sidor i två olika språk som namngivits enligt principen example.en.html och example.ja.html. Antag dessutom att
+      det går bra att leverera de engelska sidorna med serverns normalfallsinställning som ISO-8859-1, men de japanska filerna måste levereras som UTF-8.
+      För att åstadkomma detta kan du knyta teckenkodning till språk-suffix på följande sätt: </p>
+    <div class="example" lang="en">
+      <blockquote>
+        <pre>AddCharset UTF-8 .ja
+
+</pre>
+      </blockquote>
+    </div>
+    <p> Lägg dock märke till att det faktiskt är bättre att ändra serverns normalfallsinställning till UTF-8, och leverera alla filer i nya
+      foldrar som UTF-8. </p>
+    <p> <strong>Anm:</strong> Det är också möjligt att uppnå samma resultat genom att använda <span
+					lang="en">Apache</span>-direktivet <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addtype"><span lang="en">AddType</span></a>,
+      även om detta direktiv anger både teckenkodning och <span lang="en">MIME</span>-typ på samma gång. Vilket alternativ som är mest
+      lämpligt kan till del bero på hur du använder suffix för innehållsförhandling. Om du använder olika suffix för att uttrycka dokumenttyp och
+      teckenkodning, så kan detta senare alternativ vara mindre lämpligt. </p>
+    <div class="example" lang="en">
+      <blockquote>
+        <pre>AddType 'text/html; charset=UTF-8' html
+</pre>
+      </blockquote>
+    </div>
+  </section>
+  
+  <section>
+    <h3 id="odd"><a href="#odd">Hantering av enstaka fil</a></h3>
+    <p> Låt oss anta att du vill leverera en enda fil i en folder som UTF-8, medan de många övriga filerna i denna folder skall levereras som
+      ISO-8859-1. Filen du skall få levererad som UTF-8 heter example.html. Konstruera din .<span lang="en">htaccess</span>-fil som på
+      följande sätt: </p>
+    <div class="example" lang="en">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+AddCharset UTF-8 .html
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p> Det vi gjorde här var att bädda in det direktiv som nämndes i föregående sektion i en <a class="print" href="http://httpd.apache.org/docs/mod/core.html#files">uppmärkning</a> som identifierar den specifika fil vi är intressade av. Det finns även en
+      annan syntax för detta direktiv som gör det möjligt att ange ett antal olika filnamn med hjälp av ett s.k. reguljärt uttryck. </p>
+    <p> <strong>Anm:</strong> Man kan också få samma effekt genom att använda det tidigare illustrerade <span
+					lang="en">AddType</span>-direktivet, eller, i detta fall, ett <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html"><span
+					lang="en">ForceType</span></a>-direktiv, även om dessa anger både teckenkodning och <span lang="en">MIME</span>-typ. </p>
+    <div class="example" lang="en">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+
+ForceType 'text/html; charset=UTF-8'
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p> <strong>Anm:</strong> Alla filer, i denna folder eller i underfoldrar, som har samma namn kommer att levereras som UTF-8, om du inte
+      definierar ett annat direktiv i en underfolder. </p>
+  </section>
+  
+  <section>
+    <h3 id="more"><a href="#more">Mer komplexa fall</a></h3>
+    <p> Om två suffix-regler kan tillämpas på ett och samma dokument, då är det viktigt i vilken ordning suffixen angetts. Med följande
+      .<span lang="en">htaccess</span> </p>
+    <div class="example" lang="en">
+      <blockquote>
+        <pre>AddCharset UTF-8 .utf8
+AddCharset windows-1252 .html
+
+</pre>
+      </blockquote>
+    </div>
+    <p> så kommer filen 'example.utf8.html' att levereras som "windows-1252" och 'example.html.utf8' som UTF-8. </p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p> <a href="/International/questions/qa-headers-charset"><cite> Att kontrollera HTTP-headers</cite></a>  </p>
+    </li>
+    <li>
+      <p> <a href="qa-apache-lang-neg"><cite lang="en">Apache MultiViews language negotiation set up</cite></a>  </p>
+    </li>
+    <li>
+      <p> Dokumentation om <span lang="en">Apache</span>-modulen mod_mime <a href="http://httpd.apache.org/docs/mod/mod_mime.html">v1</a> ; <a href="http://httpd.apache.org/docs-2.0/mod/mod_mime.html">v2</a>  </p>
+    </li>
+    <li>
+      <p> <span lang="en">Apache</span> version 1 <a href="http://httpd.apache.org/docs/howto/htaccess.html">.<span
+						xml:lang="en" lang="en">htaccess</span></a>  och <a href="http://httpd.apache.org/docs-2.0/howto/htaccess.html"><span lang="en">allowOverride</span></a>  documentation </p>
+    </li>
+    <li>
+      <p> Apache version 2 <a href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">.<span lang="en">htaccess</span></a>  och <a href="http://httpd.apache.org/docs-2.0/mod/core.html#allowoverride"><span lang="en">allowOverride</span></a>  documentation </p>
+    </li>
+    <li>
+      <p>Tutorial – <a href="/International/tutorials/tutorial-char-enc/#declaring"><cite lang="en">Handling character encodings in HTML and CSS</cite></a> </p>
+    </li>
+      <li>
+      <p>Näraliggande länkar – <cite>Setting up a server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#characters">Characters</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

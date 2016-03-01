@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Setting charset information in .htaccess</title>
+<meta name="description" content="How do I  use .htaccess directives on an Apache server to serve files with a specific encoding?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-htaccess-charset' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-htaccess-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-07-02' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-07-09', time:'16:27'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-01', time:'04:26'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-htaccess-charset-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Setting charset information in .htaccess</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    webmasters and anyone who needs guidance on how to change server-side directives in Apache to set the character encoding sent in the HTTP header. Note, you need certain rights and access to the server to make these changes. Non-technical users should talk to their ISP or the person who manages the server. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">How do I use .htaccess directives on an Apache server to serve files with a specific encoding?</p>
+  </section>
+
+
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>It is important to ensure that any information about character encoding sent by the server is correct, since information in the HTTP
+    header overrides information in the document itself.</p>
+  <p>Many Apache servers are configured to send files using the ISO-8859-1 (Latin-1) encoding. In the examples in this FAQ, we'll assume that
+    you want to serve your file or files using a different encoding than that specified in the default configuration. (For advice on choosing an encoding
+    see <a class="print" href="/International/questions/qa-choosing-encodings"><cite>Choosing &amp; applying a character encoding</cite></a>.)</p>
+  <p>The following shows an example of an HTTP header that accompanies a file sent to a user agent. In this case the character encoding
+    information is included in the Content-Type header on the second line from the bottom.</p>
+  <div class="example">
+    <pre>HTTP/1.1 200 OK
+Date: Wed, 05 Nov 2003 10:46:04 GMT
+Server: Apache/1.3.28 (Unix) PHP/4.2.3
+Content-Location: CSS2-REC.en.html
+Vary: negotiate,accept-language,accept-charset
+TCN: choice
+P3P: policyref=http://www.w3.org/2001/05/P3P/p3p.xml
+Cache-Control: max-age=21600
+Expires: Wed, 05 Nov 2003 16:46:04 GMT
+Last-Modified: Tue, 12 May 1998 22:18:49 GMT
+ETag: "3558cac9;36f99e2b"
+Accept-Ranges: bytes
+Content-Length: 10734
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Language: en</pre>
+  </div>
+  <p>In the example the Content-Type header expresses both the MIME type of the file and the character encoding. The MIME type describes the
+    format of the file being served. HTML files are typically served as text/html. The character encoding (or '<span class="qterm">charset</span>') of
+    this file is UTF-8.</p>
+  <p>To learn how to view the HTTP header for a file see the article <a class="print" href="/International/questions/qa-headers-charset"><cite>Checking HTTP Headers</cite></a>.</p>
+  <p>Files on an Apache server may be served with a default character encoding declaration in the HTTP header that conflicts with the actual
+    encoding of the file. The character encoding sent by the server may be the out-of-the-box default, a default set by the system administrator, or a
+    result of implementing various Apache directives. In other cases no character encoding information is sent by the server when it is actually
+    desired.</p>
+  <p>If the server is set up to allow users or administrators to change information in .htaccess files, these can provide a way to override
+    default settings. This FAQ shows you how.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>There are a couple of different scenarios to bear in mind. In the first instance, you may want to change the default for all the files in
+    a directory with the same extension. Alternatively, you may want to change the default for a single file or small number of files. We will explore
+    these in turn.</p>
+  <p>In our examples we will assume that the default server configuration serves files as ISO-8859-1, but that you want to serve your file or
+    files using UTF-8 (a very sensible strategy!).</p>
+  
+  <section>
+    <h3 id="scope"><a href="#scope">Is this answer relevant to you?</a></h3>
+    <p>This article is written for content authors, rather than system administrators. Setting the server's default encoding is beyond the
+      scope of this article.</p>
+    <p>This advice is only relevant if you are happy to declare the character encoding of your document via the HTTP header. In some cases
+      you <a class="print" href="/International/questions/qa-html-encoding-declarations#httpheadwhat">may not want that</a>.</p>
+    <p>Note that this FAQ also assumes that your server is set up to use <a
+					class="print" href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">.htaccess files,</a> and that the directives described below <a class="print" href="http://httpd.apache.org/docs/mod/core.html#allowoverride">work</a> in .htaccess files on your server. It is also assumed that it is not
+      appropriate to simply change the default configuration of the server. If you are not sure, contact your server administrator.</p>
+    <p>You should also be aware of the conventions in use on your server for association of character encoding information with extensions.
+      In some cases the server may be set up in the expectation that character encodings are indicated by encoding-specific extensions, eg.
+      example.html.utf8 where it is the .utf8 that needs to be associated with a character encoding, rather than the .html (which may be associated with
+      the file type).</p>
+    <p>If these approaches fail, you should consult the Apache manuals (see attached <a href="#endlinks">links</a>) or your server
+      administrator.</p>
+  </section>
+  
+  <section>
+    <h3 id="extension"><a href="#extension">Specifying by extension</a></h3>
+    <p>Use the <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a> directive to associate the character
+      encoding with all files having a particular extension in the current directory <em>and its subdirectories</em>. For example, to serve all files with
+      the extension .html as UTF-8, open the .htaccess file in a plain text editor and type the following line:</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .html
+</pre>
+      </blockquote>
+    </div>
+    <p>The extension can be specified with or without a leading dot. You can add multiple extensions to the same line. This will still work
+      if you have file names such as example.en.html or example.html.en.</p>
+    <p>The example will cause all files with the extension .html to be served as UTF-8. The HTTP Content-Type header will contain a line that
+      ends with the 'charset' information as shown in the example that follows.</p>
+    <div class="example">
+      <blockquote>
+        <pre>Content-Type: text/html; charset=UTF-8
+</pre>
+      </blockquote>
+    </div>
+    <p><strong>Note:</strong> All files with this extension in all subdirectories of the current location will also be served as UTF-8. If,
+      for some reason, you need to serve the odd file with a different encoding you will need to override this using additional directives.</p>
+    <p><strong>Note:</strong> You can associate the character encoding with any extension attached to your file. For example, suppose you do
+      language negotiation and you have pages in two languages that follow the model example.en.html and example.ja.html. Let's also suppose that you are
+      happy to serve English pages using your server's ISO-8859-1 default, but want to serve Japanese files in UTF-8. To do this, you can associate the
+      character encoding with the language extension, as follows:</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .ja
+</pre>
+      </blockquote>
+    </div>
+    <p>Take note, however, that, if you can, it might be a better solution to change the server default to UTF-8, or serve all files in new
+      directories as UTF-8.</p>
+    <p><strong>Note:</strong> It is also possible to achieve the same result using the <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addtype">AddType</a> directive, although this declares both the character encoding and the
+      MIME type at the same time. The decision as to which is most appropriate will depend in part on how you are using extensions for content negotiation.
+      If you are using different extensions to express the document type and the character encoding, this is less likely to be appropriate.</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddType 'text/html; charset=UTF-8' html
+</pre>
+      </blockquote>
+    </div>
+  </section>
+  
+  <section>
+    <h3 id="odd"><a href="#odd">Changing the occasional file</a></h3>
+    <p>Let's now assume that you want to serve only one file as UTF-8 in a large directory where all the other older files are correctly
+      served as ISO-8859-1. The file you want to serve as UTF-8 is called example.html. Open the .htaccess file in a plain text editor and type the
+      following:</p>
+    <div class="example">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+AddCharset UTF-8 .html
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p>What we did here was wrap the directive discussed in the previous section in some <a class="print" href="http://httpd.apache.org/docs/mod/core.html#files">markup</a> that identifies the specific file we are concerned with. If you have the need,
+      there is also a slightly different syntax that allows you to specify a number of file names using a regular expression.</p>
+    <p><strong>Note:</strong> It is also possible to achieve the same result using the AddType directive shown above, or, in this case, the <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html">ForceType</a> directive, although these declare both the character encoding and the MIME
+      type at the same time.</p>
+    <div class="example">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+ForceType 'text/html; charset=UTF-8'
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p><strong>Note:</strong> Any files with the same name in a subdirectory of the current location will also be served as UTF-8, unless you
+      create a counter directive in the relevant directory.</p>
+  </section>
+  
+  <section>
+    <h3 id="more"><a href="#more">More complex scenarios</a></h3>
+    <p>When two extension rules apply to the same document the order of extensions is important. Thus, in the following example</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .utf8
+AddCharset windows-1252 .html
+</pre>
+      </blockquote>
+    </div>
+    <p>the file 'example.utf8.html' will be served as "windows-1252" and 'example.html.utf8' as UTF-8.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/questions/qa-headers-charset"><cite>Checking HTTP Headers</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="qa-apache-lang-neg"><cite> Apache MultiViews language negotiation set up</cite></a> </p>
+    </li>
+    <li>
+      <p>Apache module mod_mime documentation <a href="http://httpd.apache.org/docs/mod/mod_mime.html">v1</a> ; <a href="http://httpd.apache.org/docs-2.0/mod/mod_mime.html">v2</a> </p>
+    </li>
+    <li>
+      <p>Apache version 1 <a href="http://httpd.apache.org/docs/howto/htaccess.html">.htaccess</a>  and <a
+						href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">allowOverride</a>  documentation</p>
+    </li>
+    <li>
+      <p>Apache version 2 <a href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">.htaccess</a>  and <a
+						href="http://httpd.apache.org/docs-2.0/mod/core.html#allowoverride">allowOverride</a>  documentation</p>
+    </li>
+    <li>
+      <p>Tutorial – <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a> </p>
+    </li>
+    <li>
+      <p>Related links – <cite>Setting up a server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#characters">Characters</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
