@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Пропущенные символы и глифы</title>
+<meta name="description" content="Unicode содержит огромное количество символов, охватывающих широкий диапазон скриптов и языков. Однако, в некоторых случаях, что-то может отсутствовать. В данной статье рассматриваются возможные решения." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/missing-char-glyph'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Martin J. Dürst' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'o-misscharglyph' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-10-24' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-10-24', time:'20:45'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-29', time:'20:46'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak (Александр Шлапак)' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Пропущенные символы и глифы</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    шифровальщики XHTML/HTML (используя редакторы или скрипты).</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+   </section>
+   
+    
+<section>
+  <h2 id="Problem"><a href="#Problem">Описание проблемы</a></h2>
+    <p>Веб технология базируется на таком наборе символов <a class="print" href="http://www.unicode.org/standard/standard.html">Unicode</a>/ISO 10646 (смотрите <a class="print" href="http://www.w3.org/TR/charmod/#sec-RefProcModel">Модель Символа</a>). Unicode содержит огромное количество символов, охватывающих широкий спектр
+      скриптов и языков. Однако, в некоторых случаях кое-что может отсутствовать:</p>
+    <ol>
+      <li>Символ не существует. Предлагаемые решения включают в себя <a href="#Encoding">кодирование символа</a>, <a href="#Markup">разметка для
+        отдельных символов</a>, та <a href="#Private">Закрытое использование Codepoints</a>.</li>
+      <li>Символ существует, но вы хотите <a href="#GlyphVariant">выбрать конкретный вариант глифа</a>.</li>
+      <li>Символ существует, но глиф для его отображения не доступен. Это может быть решено с помощью таких технологий, как <a class="print" href="http://www.w3.org/TR/REC-CSS2/fonts.html#font-descriptions">Веб шрифты</a> и <a class="print" href="http://www.w3.org/TR/SVG/fonts.html">SVG
+        шрифты</a>.</li>
+      <li>Символ существует в Unicode/ISO 10646, но не в кодировке символов, используемой для документа. В этом случае используйте Numeric Character
+        References (числовые ссылки) (NCRs, например: &amp;#x5678;).</li>
+      <li>Символ существует в Unicode/ISO 10646, но вы непосредственно хотите использовать для него имя, а не код. Вы можете использовать именованные множества 
+        указанные в DTD (например &amp;eacute; в (X)HTML). Было предложенное такое решение, как <a class="print" href="http://xmlchar.sourceforge.net/">xmlchar</a>,
+        которое использует элемент на символ и XSLT, чтобы конвертировать их.</li>
+    </ol>
+    <p>Пункт 1 и 2 часто называют термином '<a href="#Gaiji">иероглифная</a> проблема'.</p>
+</section>
+
+
+<section>
+  <h2 id="Cases"><a href="#Cases">Варианты использования</a></h2>
+  <p>Иероглифы Восточной Азии (смотрите также <a href="#Gaiji">иероглифы</a>), математические символы, специальные лигатуры,...</p>
+</section>
+
+
+<section>
+  <h2 id="GlyphVariant"><a href="#GlyphVariant">Выбор Вариантов Глифов</a></h2>
+  <p>Часто это важно, чтобы отдельный <a class="print" href="http://www.w3.org/TR/charmod/#sec-VisualRenderingUnits">иероглиф</a> отображался для
+    определенного символа. Стилизация с использованием CSS или XSL может позаботиться о размере, стиле шрифта, а также некоторые другие свойства. Но иногда, существует потребность в более
+    специфических вариантах глифов. Есть различные предложения, чтобы это сделать:</p>
+  <ul>
+    <li>Unicode/ISO 10646 обеспечивает <a class="print" href="http://www.unicode.org/reports/tr28/index.html#13_7_variation_selectors">изменение селекторов</a> чтобы
+      выбрать конкретный вариант (диапазон) глифа (ов). Проверьте <a class="print" href="http://www.unicode.org/Public/UNIDATA/StandardizedVariants.html">список 
+      стандартизированных вариантов</a> чтобы увидеть, доступный вариант который вам нужен. В противном случае, предложите свой вариант. Обратите внимание, что все изменения
+      електоров зарезервированы для стандартного использования.</li>
+    <li><a class="print" href="http://www.w3.org/TR/SVG/">SVG</a> элемент <a class="print" href="http://www.w3.org/TR/SVG/text.html#AlternateGlyphs">&lt;altglyph&gt;</a> обеспечивает контроль над глифами, которые используется в частности для отображения символьных данных.</li>
+    <li><a class="print" href="/TR/EGIX/">Подача EGIX</a> предлагает использовать атрибут, определенный namespace (пространством имен), чтобы определить глифы в различных XML
+      форматах.</li>
+    <li>JIS X 4052:2000 (日本語文書の組版指定交換形式, Формат обмена для Японских документов со сложенной на Японской языке разметкой): <code>&lt;ch&gt;</code> элемент ссылается на файл изображения, содержащий изображение глифа. Атрибуты используются для точного позиционирования. Содержание
+      элемента - это сам символ, который может служить в качестве запасного варианта.</li>
+  </ul>
+  <p>Селекторы вариантов глифа в Unicode</p>
+</section>
+
+
+<section>
+  <h2 id="Markup"><a href="#Markup">Разметка для Отдельных Знаков и Символов</a></h2>
+  <p>Идея заключается в определении специального элемента с атрибутами, которые предоставляют или указывают на информацию, необходимую для обработки или предоставления
+    символа. Это приводит к крайне локализованным, и поэтому чрезвычайно гибким и устойчивым решением. Фактическая разметка может выглядеть очень похожей на
+    ту, что используется для <a href="#GlyphVariant">выбора вариантов глифа</a>, основное отличие состоит в том, что нет содержания символа, который служит
+    резервом (в некоторых случаях элемент контент может быть примитивным резервом таким, как &lt;html:img&gt;, или используется codepoint (точка кода) закрытого использования).</p>
+  <p>Примеры, которые определяют разметку для отдельных символов:</p>
+  <ul>
+    <li><a class="print" href="http://www.w3.org/TR/SVG/">SVG 1.0</a> (Рекомендация W3C): Элемент <a class="print" href="http://www.w3.org/TR/SVG/text.html#AltGlyphElement"><code>&lt;altglyph&gt;</code></a> обеспечивает детальный контроль над глифами, которые использовались, в частности,
+      для предоставления символьных данных.</li>
+    <li><a class="print" href="/TR/MathML2/">MathML 2.0</a> (Рекомендация W3C): Элемент <a class="print" href="http://www.w3.org/TR/MathML2/chapter3.html#presm_mglyph"><code>&lt;msymbol&gt;</code></a> имеет атрибут <code>alt</code> для
+      резервного текста, атрибут fontfamily, чтобы указать шрифт, и атрибут index, чтобы указать положение глифа в шрифте.</li>
+    <li>В Японии, INSTAC XML WG2 определена некоторая разметка для символов ссылки (JIS TR X 0047:2001, Обмен Фото Ссылками 
+      XML).</li>
+    <li><a class="print" href="http://www.wapforum.org/">WAPForum</a>: <a class="print" href="http://www1.wapforum.org/tech/terms.asp?doc=WAP-213-WAPInterPic-20010406-a.pdf">спецификация пиктограмм</a> предназначена для передачи на Веб-телефоны небольших символических
+      изображений (в Японской языке называемых emoji (絵文字)).</li>
+  </ul>
+  <p>Есть ли необходимость в общем элементе или атрибуте, который может широко использоваться? Помогает ли определение общего типа anchestor для таких элементов?
+    Также необходимо описывать свойства символа. Смотрите например, <a class="print" href="http://kanji.zinbun.kyoto-u.ac.jp/projects/chise/index.html.en#topicmaps">проект CHISE</a>, использующий тематические карты.</p>
+</section>
+
+
+<section>
+  <h2 id="Encoding"><a href="#Encoding">Кодировка Символов</a></h2>
+  <p>Есть возможность <a class="print" href="http://www.unicode.org/pending/proposals.html">представить предложения</a> для кодирования некоторых символов в Технический Комитет Unicode
+    и ISO/IEC SC2 WG2. Это требует тщательной подготовки и занимает много времени, но во многих случаях, это правильный поступок. С другой стороны,
+    некоторые вещи, которые воспринимаются как символы не пригодны для кодирования, или, возможно, символ уже закодирован, но вы хотите
+    особый <a href="#GlyphVariant">вариант глифа</a>.</p>
+</section>
+
+
+<section>
+  <h2 id="Private"><a href="#Private">Закрытое использование Codepoints (точек кода)</a></h2>
+  <p>Unicode/ISO 10646 резервирует Область Закрытого Использования в BMP (U+E000-U+F8FF), а также 15 и 16 грани для закрытого использования. Это означает, что эти
+    codepoints (точки кода) навсегда останутся неопределенными, но могут быть использованы любыми двумя сторонами с предварительного согласия.</p>
+  <p>Основная проблема с закрытым использованием мест кода - то, что должно быть понимание того, для чего используются эти местам кода. Но частные
+    соглашения имеют малый вес в Интернете. Различные предложения были сделаны, чтобы связать дополнительную информацию с типом документа (DTD/XML Схема),
+    с документом, или с какой то частью документа.</p>
+  <p>Однако во всех случаях редактировать и обрабатывать документы с такой информацией станет очень сложно. Кроме того,
+    информация о символах сохранится только если все операции, которые обрабатывают ее правильно сохранят связанную с ними информацию. Потому что пропущенные символы - 
+    не очень частая проблема, вполне необоснованным является то, что, например каждый скрипт Perl, что имеет дело с XML будет правильно работать. Использование <a href="#Markup">разметки для отдельных недостающих символов</a> является гораздо более стабильным.</p>
+</section>
+
+
+<section>
+  <h2 id="Gaiji"><a href="#Gaiji">Иероглифы</a></h2>
+  <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <p>Иероглифы (外字, иностранные/посторонние символы) - термин, часто используется в Японии для обозначения как незакодованих символов так и пропущенных вариантов 
+    глифов.</p>
+</section>
+
+
+<section>
+  <h2 id="History"><a href="#History">История</a></h2>
+  <p>Обсуждение на <a class="print" href="http://www.unicode.org/iuc/iuc12/">12-ой Международной Unicode Конференции</a> в Токио, Япония, в Апреле 1998: <a class="print" href="http://www.w3.org/People/D%C3%BCrst/Talks/19980409/">Изучение Потенциалов Веб-технологий для Обработки Редких Иероглифов и
+    Вариантов Иероглифов</a>.</p>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
