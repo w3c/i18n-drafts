@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8" />
+<title>Setarea parametrului HTTP set de caractere</title>
+<meta name="description" content="Trucuri de a trimite informatii de codificarea a caracterelor folosind parametrul HTTP set de caractere. Include indicatii despre cum sa iti setezi serverul sau sa trimiti antetul potrivit prin scripting." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/http-charset'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'article-o-http-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '1999-09-22' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2006-07-14', time:'15:39'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-29', time:'16:58'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Echipa <a href="http://www.traduceri-w3.org">Traduceri-w3</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-ro.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Setarea parametrului HTTP set de caractere</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    dezvoltatori de script (PHP, JSP, etc.), webmasteri, manageri de proiecte web, si oricine vrea sa inteleaga cum se seteaza informatia HTTP set de caractere.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <p>Cand un server trimite un document catre un agent de utilizare (browser) acesta trimite informatiile despre formatul datelor din campul Content-type din antetul HTTP. Aceste informatie este exprimata cu ajutorul unei etichete de tip MIME. Acest articol reprezinta un punct de plecare pentru  
+    cei care trebuie sa seteze informatiile de codificare din antetul HTTP.</p>
+  <p>Pentru infromatii legate de <a class="print" href="http://www.w3.org/International/tutorials/tutorial-char-enc/">cum sa declari codificarea caracterelor in paginile HTML</a>,e necesar sa va informati din alte surse. Acest lucru e valabil si pentru <a class="print" href="http://www.w3.org/International/questions/qa-headers-charset">verificarea informatiei legate de codificarea caracterelor trimisa intr-un antet HTTP</a>.</p>
+</section>
+
+
+<section>
+  <h2 id="charset"><a href="#charset">Parametrul set de caracter</a></h2>
+  <!-- the text in the following sections illustrates some available features of the template -->
+  <p>Documentele transmise prin HTTP, de genul textelor tiparite, ca de exemplu text/html, text/plain, pot trimite un <a class="print" href="../Protocols/rfc2068/rfc2068.txt">charset parameter</a> in antetul HTTP pentru a specifica tipul de codificare de caractere din document. </p>
+  <p>E <strong>foarte important</strong> sa etichetati intotdeauna cat mai explicit documentele Web. HTTP 1.1 spune ca codul standard  charset este
+    ISO-8859-1. Totusi exista foarte multe documente neetichetate construite in alte tipuri de codificari, asa ca browsere-le utilizeaza genul de codificare preferata de catre cititor atunci cand nu exista un parametru explicit de set de caractere. </p>
+  <p>Linia din antetul HTTP arata de obicei asa:</p>
+  <blockquote> Content-Type: text/html; charset=utf-8</blockquote>
+  <p>In teorie, orice forma de codificare a caracterelor <a class="print" href="http://www.iana.org/assignments/character-sets">care a fost inregistrata cu IANA</a> poate fi
+    folosita, dar nu exista nici un browser care sa fie capabil sa le inteleaga pe toate. Cu cat o forma de codificare a caracterelor e folosita la o scara mai larga, cu atat se maresc sansele ca un browser sa o recunoasca.
+    . O codificare de tip Unicode ca de exemplu UTF-8 reprezinta o alegere potrivita avand in vedere <a
+				class="print" href="http://www.w3.org/International/questions/qa-choosing-encodings">mai multe motive</a>.</p>
+</section>
+
+
+<section>
+  <h2 id="server"><a href="#server">Setarea serverului</a></h2>
+  <p>Modul in care server-ul poate transmite cea mai potrivita informatie charset depinde de server. Veti avea nevoie de drepturile de administrare aferente pentru a putea modifica setarile serverului. </p>
+  <p><strong class="leadin"><a class="print" href="http://httpd.apache.org/">Apache</a>.</strong> Aceasta operatiune se poate efectua cu ajutorul <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a> (Apache 1.3.10 si versiuni mai recente) sau cu directive <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addtype">AddType</a> pentru directoare si resurse individuale ( fisiere ). Folosind optiunea <a class="print" href="http://httpd.apache.org/docs-2.0/mod/core.html#adddefaultcharset">AddDefaultCharset</a> (Apache 1.3.12 sau versiuni mai noi), exista posibilitatea sa setati optiunea charset by default pentru intreg serverul. Pentru mai multe informatii, cititi articolul despre <a class="print" href="http://www.w3.org/International/questions/qa-htaccess-charset">Setarea setului de caractere in .htaccess</a>.</p>
+  <p><strong class="leadin"><a class="print" href="http://www.w3.org/Jigsaw/">Jigsaw</a>.</strong> Foloseste un <a class="print" href="http://www.w3.org/Jigsaw/Doc/User/JigAdmin/indexers.html">indexer</a> in <a class="print" href="http://www.w3.org/Jigsaw/Doc/User/JigAdmin/">JigAdmin</a> pentru a asocia extensiile cu seturile de caractere, sau pentru a seta setul de caractere direct la <a class="print" href="http://www.w3.org/Jigsaw/Doc/User/JigAdmin/edit.html">resource</a>.</p>
+  <p><strong class="leadin">IIS 5 and 6.</strong> In zona Internet Services Manager, faceti click-dreapta pe "Default Web Site" ( ori pe site-ul pe care doriti sa-l configurati) sau mergeti la  "Properties" =&gt; "HTTP Headers" =&gt; "File Types..." =&gt; "New Type...". Adaugati extensia pe care doriti s-o afisati, separat pentru fiecare extensie in parte; utilizatorii de IIS vor dori cel mai probabil sa se afiseze map .htm, .html,... Apoi, pentru Content type, adaugati "<code>text/html;charset=utf-8</code>" (fara ghilimele
+    ; inlocuiti setul de caractere dorit cu utf-8; nu lasati spatii nicaieri pentru ca  IIS ignora tot textul dupa spatii ). Pentru IIS 4, e posibil sa fie nevoie sa
+    folositi "HTTP Headers" =&gt; "Creating a Custom HTTP Header" daca metoda anterioara nu functioneaza.</p>
+</section>
+
+
+<section>
+  <h2 id="scripting"><a href="#scripting">Scriptarea antetului</a></h2>
+  <p>Antetul care se potriveste poate fi setat de asemenea in limbaje ce pot fi schimbate din server. De exemplu:</p>
+  <p><strong class="leadin">Perl.</strong> Configurati antetul corect inainte de va ocupa de orice alta parte a paginii. Dupa ce terminati cu ultimul antet, lasati un spatiu de doua randuri, e.g.:<br />
+    <code>print "Content-Type: text/html; charset=utf-8\n\n";</code></p>
+  <p><strong class="leadin">Python.</strong> Procedati la fel si pentru Perl ( cu diferenta ca, in acest caz, nu mai aveti nevoie de punct si virgula la final).</p>
+  <p><strong class="leadin">PHP.</strong> Folositi functia <a class="print" href="http://www.php.net/header">header()</a> inainte de a crea orice tip de continut,
+    ex.: <br />
+    <code>header('Content-type: text/html; charset=utf-8');</code></p>
+  <p><strong class="leadin">Java Servlets.</strong> Utilizati metoda <a class="print" href="http://java.sun.com/products/servlet/2.1/api/javax.servlet.ServletResponse.html#setContentType%28javax.servlet.String%29">setContentType</a> pentru <a class="print" href="http://java.sun.com/products/servlet/2.1/api/javax.servlet.ServletResponse.html">ServletResponse</a> inainte de a obtine
+    orice obiect (Stream sau Writer) folosit pentru output, e.g.:<br />
+    <code>resource.setContentType ("text/html;charset=utf-8");</code><br />
+    Daca lucrati cu Writer, Servlet se ocupa automat de conversia din Java Strings in tipul de codificare selectat.</p>
+  <p><strong class="leadin">JSP.</strong> Utilizati instructiunea <code>page</code> ex.: <br />
+    <code>&lt;%@ page contentType="text/html; charset=UTF-8" %&gt;</code><br />
+    Rezultatul din <code>out.println()</code> sau elementele de expresie (<code>&lt;%= object%&gt;</code>) este transformat
+    automat in felul de codificare selectata. De asemenea, pagina insasi este interpretata ca fiind codificata in acest mod.</p>
+  <p><strong class="leadin">ASP si ASP.Net.</strong> ContentType si charset sunt configurate independent, si sunt metode pe obiectul de raspuns.
+    Pentru a seta setul de caractere, puteti prooceda in acest mod, de ex.: <br />
+    <code>&lt;%Response.charset="utf-8"%&gt;</code><br />
+    In ASP.Net, Configurarea <a
+				class="print" href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemWebHttpResponseClassContentEncodingTopic.asp">Response.ContentEncoding</a> va
+    actiona atat la nivelul parametrului charset-ului din HTTP Content-Type cat si la nivelul tipului de codificare a documentului trimis. ( care, bineinteles, trebuie sa
+    fie acelasi). Optiunea de default trebuie sa fie configurata in elementul <a
+				class="print" href="http://msdn.microsoft.com/library/en-us/cpgenref/html/gngrfglobalizationsection.asp"><code>globalization</code></a> in <code>Web.config</code> (sau <code>Machine.config</code>, care e initial setat pentru UTF-8).</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p> <a href="/International/questions/qa-htaccess-charset"><cite>Setarea setului de caractere in .htaccess</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-headers-charset"><cite>Verificarea Antetelor HTTP</cite></a> </p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Manipularea codificarii caracterelor in HTML si CSS </cite></a> </p>
+    </li>
+    <li>
+      <p>Legaturi asemanatoare, <cite>Setare unui server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#charset">Caractere</a></li>
+      <li><a href="/International/techniques/server-setup#setting">Setarea parametrului set de caractere HTTP</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Legaturi asemanatoare, <cite>Autorizarea HTML &amp; CSS</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-html#charset">Caractere</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Legaturi asemanatoare, <cite>Autorizarea SVG</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-svg#charset">Caractere</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Configuración del parámetro charset de HTTP</title>
+<meta name="description" content="Indicaciones sobre el envío de información relativa a las codificaciones de caracteres por medio del parámetro charset de HTTP. Incluye sugerencias sobre cómo configurar su servidor o enviar el encabezado adecuado mediante una secuencia de comandos." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/http-charset'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'article-o-http-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '1999-09-22' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2006-07-14', time:'15:39'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-29', time:'16:58'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.spanishtranslation.us/">Spanish Translation</a> Team, Spanish Translation US' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Configuración del parámetro charset de HTTP</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    desarrolladores script (PHP, JSP, etc.), administradores del sitio web, jefes de proyectos web y cualquier otra persona que desee comprender cómo configurar el envío de información charset de HTTP. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <p>Cuando el servidor envíe un documento a un agente de usuario (por ejemplo, un explorador), también enviará información en el campo Content-Type del encabezado adjunto de HTTP sobre el tipo de formato de datos del que se trata. Esta información se expresa mediante una etiqueta del tipo MIME. Este artículo ofrece un punto de partida para aquellos que necesiten configurar la información de codificación en el encabezado de HTTP.</p>
+  <p>Debe consultar cualquier otra sección para obtener información sobre <a class="print" href="http://www.w3.org/International/tutorials/tutorial-char-enc/">cómo declarar la codificación de caracteres en las páginas HTML</a> o la forma de encontrar <a class="print" href="http://www.w3.org/International/questions/qa-headers-charset">cómo verificar la información sobre codificación de caracteres que se está enviando en el encabezado de HTTP</a>.</p>
+</section>
+
+
+<section>
+  <h2 id="charset"><a href="#charset">El parámetro charset</a></h2>
+  <!-- the text in the following sections illustrates some available features of the template -->
+  <p>Los documentos transmitidos con HTTP que son de tipo texto, como text/html, text/plain, etc., pueden enviar un <a class="print" href="../Protocols/rfc2068/rfc2068.txt">parámetro charset</a> en el encabezado de HTTP para especificar la codificación de caracteres del documento. </p>
+  <p>Es <strong>muy importante</strong> etiquetar siempre los documentos web en forma explícita. HTTP 1.1 dice que el charset predeterminado es ISO-8859-1. Sin embargo, existen demasiados documentos sin etiquetar en otras codificaciones. Por lo tanto, los exploradores utilizan la codificación preferida del lector cuando no exista ningún parámetro charset explícito.</p>
+  <p>Por lo general, la línea del encabezado de HTTP se ve de la siguiente manera:</p>
+  <blockquote> Content-Type: text/html; charset=utf-8</blockquote>
+  <p>En teoría, se puede utilizar toda codificación de caracteres que haya sido <a class="print" href="http://www.iana.org/assignments/character-sets">registrada por la Autoridad de Asignación de Cifras en Internet (IANA)</a>, pero no existe explorador alguno que comprenda todas las codificaciones. Cuanto más extenso sea el uso de una codificación de caracteres, mayor será la probabilidad de que el explorador la comprenda. La codificación Unicode, como UTF-8, es una buena opción debido a <a 				class="print" href="http://www.w3.org/International/questions/qa-choosing-encodings">varios motivos</a>.</p>
+</section>
+
+
+<section>
+  <h2 id="server"><a href="#server">Configuración del servidor</a></h2>
+  <p>La forma de hacer que el servidor envíe la información charset adecuada depende del servidor. Necesitará los derechos administrativos correspondientes para poder cambiar la configuración del servidor.</p>
+  <p><strong class="leadin"><a class="print" href="http://httpd.apache.org/">Apache</a>.</strong> Esto puede realizarse mediante las directivas <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a> (Apache 1.3.10 y versiones posteriores) o <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addtype">AddType</a>, para el caso de directorios o de recursos individuales (archivos). Con <a class="print" href="http://httpd.apache.org/docs-2.0/mod/core.html#adddefaultcharset">AddDefaultCharset</a> (Apache 1.3.12 y versiones posteriores), es posible configurar el charset predeterminado para un servidor completo. Para obtener más información, consulte el artículo que aparece en <a class="print" href="http://www.w3.org/International/questions/qa-htaccess-charset">Configuración de información 'charset' en .htaccess</a>.</p>
+  <p><strong class="leadin"><a class="print" href="http://www.w3.org/Jigsaw/">Jigsaw</a>.</strong> Use un <a class="print" href="http://www.w3.org/Jigsaw/Doc/User/JigAdmin/indexers.html">indexer</a> en <a class="print" href="http://www.w3.org/Jigsaw/Doc/User/JigAdmin/">JigAdmin</a> para asociar las extensiones a los charsets o configure el charset directamente en un <a class="print" href="http://www.w3.org/Jigsaw/Doc/User/JigAdmin/edit.html">resource</a>.</p>
+  <p><strong class="leadin">IIS 5 y 6.</strong> En el Administrador de Servicios de Internet, haga clic con el botón derecho en "Default Web Site" (o en el sitio que desea configurar) y vaya a "Properties" =&gt; "HTTP Headers" =&gt; "File Types..." =&gt; "New Type...". Ingrese la extensión que desea mapear, en forma separada para cada extensión; es probable que los usuarios de IIS deseen mapear .htm, .html,... Luego, para Content type, agregue "<code>text/html;charset=utf-8</code>" (sin las comillas; reemplace el charset que desee por utf-8; no deje ningún espacio en ningún lugar, dado que IIS ignora todo tipo de texto que se encuentre después de los espacios). En el caso de IIS 4, es posible que deba usar "HTTP Headers" =&gt; "Creating a Custom HTTP Header" si lo que se indica precedentemente no funciona.</p>
+</section>
+
+
+<section>
+  <h2 id="scripting"><a href="#scripting">Secuencia de comandos del encabezado</a></h2>
+  <p>El encabezado adecuado también puede configurarse en los lenguajes de secuencia de comandos del lado servidor. Por ejemplo:</p>
+  <p><strong class="leadin">Perl.</strong> Salida del encabezado correcto antes de cualquier otra parte de la página real. Después del último encabezado, use un doble corte de líneas, por ejemplo:<br />
+    <code>print "Content-Type: text/html; charset=utf-8\n\n";</code></p>
+  <p><strong class="leadin">Python.</strong> Use la misma solución que utilizó para Perl (a excepción de que no es necesario que el punto y coma que aparezca al final).</p>
+  <p><strong class="leadin">PHP.</strong> Use la función de <a class="print" href="http://www.php.net/header">header()</a> antes de generar cualquier tipo de contenido, por ejemplo: <br />
+    <code>header ('Content-type: text/html; charset=utf-8');</code></p>
+  <p><strong class="leadin">Java Servlets.</strong> Use el método <a class="print" href="http://java.sun.com/products/servlet/2.1/api/javax.servlet.ServletResponse.html#setContentType%28javax.servlet.String%29">setContentType</a> que aparece en el <a class="print" href="http://java.sun.com/products/servlet/2.1/api/javax.servlet.ServletResponse.html">ServletResponse</a> antes de obtener cualquier objeto (Stream o Writer) que se utilice para la salida, por ejemplo:<br />
+    <code>resource.setContentType ("text/html;charset=utf-8");</code><br />
+    Si utiliza un Writer, el Servlet automáticamente se hace cargo de la conversión desde Java Strings hasta la codificación seleccionada.</p>
+  <p><strong class="leadin">JSP.</strong> Use la directiva <code>page</code>, por ejemplo: <br />
+    <code>&lt;%@ page contentType="text/html; charset=UTF-8" %&gt;</code><br />
+    La salida del <code>out.println()</code> o los elementos de expresión (<code>&lt;%= object%&gt;</code>) se convierten automáticamente a la codificación seleccionada. Además, la página en sí misma se interpreta como parte de este codificación.</p>
+  <p><strong class="leadin">ASP y ASP.Net.</strong> ContentType y charset se configuran por separado y consisten en métodos del objeto Response. Para configurar el charset use, por ejemplo, <br />
+    <code>&lt;%Response.charset="utf-8"%&gt;</code><br />
+    En ASP.Net, la configuración de <a 				class="print" href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemWebHttpResponseClassContentEncodingTopic.asp">Response.ContentEncoding</a> se hará cargo tanto del parámetro charset del Content-Type de HTTP como de la codificación real del documento que se envía (la cual debe, por supuesto, ser la misma). El valor predeterminado puede configurarse en el elemento <a 				class="print" href="http://msdn.microsoft.com/library/en-us/cpgenref/html/gngrfglobalizationsection.asp"><code>globalization</code></a> en <code>Web.config</code> (o <code>Machine.config</code>, que, originariamente, se configura en UTF-8).</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p> <a href="/International/questions/qa-htaccess-charset"><cite>Configuración de información charset en .htaccess</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-headers-charset"><cite>Verificación de encabezados HTTP</cite></a> </p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS </cite></a> </p>
+    </li>
+    <li>
+      <p>Enlaces relacionados, <cite>Setting up a server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#charset">Characters</a></li>
+      <li><a href="/International/techniques/server-setup#setting">Setting the HTTP charset parameter </a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Enlaces relacionados, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Enlaces relacionados, <cite>Authoring SVG</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-svg#charset">Characters</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

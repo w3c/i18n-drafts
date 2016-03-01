@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<title>Att sätta charset-parametern i HTTP</title>
+<meta name="description" content="Tips om hur man kan skicka information om teckenkodning genom att använda charset-parametern i HTTP. Här ingår bl.a. pekare om hur du sätter upp din server eller sänder lämpliga HTTP-huvuden genom skriptning." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/http-charset'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'article-o-http-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '1999-09-22' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2006-07-14', time:'15:39'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-29', time:'16:58'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Olle Olsson, SICS/W3CSweden' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-sv.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Att sätta charset-parametern i HTTP</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    skriptutvecklare (PHP, JSP, etc.), webbansvariga, projektledare för webbprojekt, och alla som vill förstå hur man anger eller skickar charset-information i HTTP. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <p>När en server sänder ett dokument till en
+    webbklient (t.ex.  en webbläsare) så skickar
+    den även information, i <span lang="en">Content-Type</span>-fältet 
+    i ett HTTP-huvud, om vilken typ av dataformat som används.
+    Denna information anges som en MIME-typ-etikett.
+    Denna artikel ger översiktlig information
+    som kan användas av de som behöver ange kodningsinformation i ett HTTP-huvud.</p>
+  <p>Du bör titta på andra dokument om <a class="print" href="http://www.w3.org/International/tutorials/tutorial-char-enc/">hur man deklarerar teckenkodning i HTML-sidor</a>, 
+    eller hur man tar reda på <a class="print" href="http://www.w3.org/International/questions/qa-headers-charset">hur man kan inspektera information om teckenkodning som sänds i ett HTTP-huvud</a>.</p>
+</section>
+
+
+<section>
+  <h2 id="charset"><a href="#charset"><span lang="en">charset</span>-parametern</a></h2>
+  <!-- the text in the following sections illustrates some available features of the template -->
+  <p>Dokument som sänds med HTTP och är av typ
+    text, såsom text/html, text/plain, etc., kan
+    levereras med en <a class="print" href="../Protocols/rfc2068/rfc2068.txt"><span lang="en">charset</span>-parameter</a> i ett HTTP-huvud som specificerar dokumentets
+    teckenkodning. </p>
+  <p>Det är <strong>mycket viktigt</strong> att
+    webbdokument etiketteras explicit.
+    Specifikationen för HTTP 1.1 säger att standardvärdet för <span lang="en">charset</span> är ISO-8859-1. 
+    Men det finns alltför många dokument utan
+    etikett, men som har annan kodning, vilket
+    medför att webbläsaren utnyttjar den kodning
+    som användaren har angett, i de fall att
+    dokumentet inte har en explicit angiven <span lang="en">charset</span>-parameter.</p>
+  <p>Den relevanta raden i HTTP-huvudet ser typiskt ut som följer:</p>
+  <blockquote> Content-Type: text/html; charset=utf-8</blockquote>
+  <p>I teorin kan man använda vilken som helst
+    kodning som har <a class="print" href="http://www.iana.org/assignments/character-sets">registrerats hos IANA</a>,
+    men det finns ingen webbläsare som kan hantera
+    alla dessa.
+    Ju mer använd en kodning är, desto bättre
+    chans att webbläsaren kan hantera den.
+    En <span lang="en">Unicode</span>-kodning
+    som UTF-8 är ett bra val, av <a class="print" href="http://www.w3.org/International/questions/qa-choosing-encodings">många skäl</a>.</p>
+</section>
+
+
+<section>
+  <h2 id="server"><a href="#server">Att sätta upp en server</a></h2>
+  <p>Hur man får servern att skicka ut lämplig
+    information om <span lang="en">charset</span> beror på vilken server det är.
+    Du behöver ha lämpliga
+    administratörsrättigheter för att kunna ända
+    serverns inställningar.</p>
+  <p><strong class="leadin"> <a class="print" href="http://httpd.apache.org/">Apache</a>.</strong> Detta kan göras genom att använda direktivet <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a> (Apache 1.3.10 och senare) eller <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addtype">AddType</a>,
+    för mappar eller individuella resurser (filer).
+    Med <a class="print" href="http://httpd.apache.org/docs-2.0/mod/core.html#adddefaultcharset">AddDefaultCharset</a> (Apache 1.3.12 och senare),
+    kan man sätta ett standardvärde för <span lang="en">charset</span>,
+    som gäller för hela servern.
+    Mer information om detta finns i artikeln <a class="print" href="http://www.w3.org/International/questions/qa-htaccess-charset">Att ange '<span lang="en">charset</span>'-information i .htaccess</a>.</p>
+  <p><strong class="leadin"> <a class="print" href="http://www.w3.org/Jigsaw/">Jigsaw</a>.</strong> Använd en <a class="print" href="http://www.w3.org/Jigsaw/Doc/User/JigAdmin/indexers.html">indexer</a> i <a class="print" href="http://www.w3.org/Jigsaw/Doc/User/JigAdmin/">JigAdmin</a> för att knyta filnamnssuffix till <span lang="en">charsets</span>,
+    eller ange <span lang="en">charset</span> direkt för en <a class="print" href="http://www.w3.org/Jigsaw/Doc/User/JigAdmin/edit.html">resurs</a>.</p>
+  <p><strong class="leadin">IIS 5 och 6.</strong> I <span lang="en">Internet Services Manager</span> ska du högerklicka på
+    "<span lang="en">Default Web Site</span>"
+    (eller den webbplats du vill konfigurera) och gå till 
+    "<span lang="en">Properties</span>" =&gt; "HTTP <span lang="en">Headers</span>" =&gt; "<span lang="en">File Types</span>..." =&gt; "<span lang="en">New Type</span>...".
+    Ange det filnamnssuffix du vill knyta information
+    till, separat för varje suffix;
+    IIS-användare vill troligen ange detta för 
+    .htm, .html,... 
+    För <span lang="en">Content type</span> ska du sedan lägga till "<code>text/html;charset=utf-8</code>" 
+    (utan citationstecken; ersätt "utf-8" med den <span lang="en">charset</span> som du vill ha; skriv inte in några
+    blanktecken eftersom IIS ignorerar all text
+    efter blanktecken).
+    För IIS 4 kanske du måste använda
+    "HTTP <span lang="en">Headers</span>" =&gt; "<span lang="en">Creating a Custom HTTP Header</span>" 
+    om det som beskrevs ovan inte fungerar.</p>
+</section>
+
+
+<section>
+  <h2 id="scripting"><a href="#scripting">Att ange huvud med skript</a></h2>
+  <p>Ett lämpligt HTTP-huvud kan även skapas med
+    hjälp av skripts på servern.
+    Till exempel:</p>
+  <p><strong class="leadin">Perl.</strong> Skriv ut ett korrekt HTTP-huvud innan någon
+    del av sidans innehåll skrivs ut.
+    Efter det sista HTTP-huvudet så ska två radslut
+    skrivas ut, t.ex. som:<br />
+    <code>print "Content-Type: text/html; charset=utf-8\n\n";</code></p>
+  <p><strong class="leadin">Python.</strong> Använd samma lösning som för Perl (förutom att
+    du inte behöver ange semikolon i slutet av
+    kodraden).</p>
+  <p><strong class="leadin">PHP.</strong> Använd funktionen <a class="print" href="http://www.php.net/header"><span lang="en">header</span>()</a> innan något sidinnehåll genereras, t.ex. som:<br />
+    <code>header('<span lang="en">Content-type</span>: text/html; <span lang="en">charset</span>=utf-8');</code></p>
+  <p><strong class="leadin">Java <span lang="en">Servlets</span>.</strong> Använd metoden <a class="print" href="http://java.sun.com/products/servlet/2.1/api/javax.servlet.ServletResponse.html#setContentType%28javax.servlet.String%29">setContentType</a> på <a class="print" href="http://java.sun.com/products/servlet/2.1/api/javax.servlet.ServletResponse.html">ServletResponse</a> innan du skapar något objekt
+    (<span lang="en">Stream</span> eller <span lang="en">Writer</span>)
+    som ska användas vid utskrift, t.ex. som:<br />
+    <code>resource.setContentType ("text/html;charset=utf-8");</code><br />
+    Om du använder objekt av typ <span lang="en">Writer</span> så kommer objektet <span lang="en">Servlet</span> automatiskt att ta hand om konvertering av 
+    Java <span lang="en">Strings</span> till den valda kodningen.</p>
+  <p><strong class="leadin">JSP.</strong> Använd direktivet <code><span lang="en">page</span></code>, t.ex. som:<br />
+    <code>&lt;%@ page contentType="text/html; charset=UTF-8" %&gt;</code><br />
+    Det som skriv ut från <code><span lang="en">out</span>.<span lang="en">println</span>()</code> eller från uttryckselement
+    (<code>&lt;%= object%&gt;</code>)
+    blir automatiskt konverterat till den valda kodningen.
+    Dessutom kommer sidan själv att tolkas som om den är i denna kodning.</p>
+  <p><strong class="leadin">ASP och ASP.Net.</strong> <span lang="en">ContentType</span> och <span lang="en">charset</span> sätts oberoende av varandra, och är metoder i svarsobjektet.
+    För att sätta <span lang="en">charset</span>,
+    använd t.ex.:<br />
+    <code>&lt;%Response.charset="utf-8"%&gt;</code><br />
+    I ASP.Net, om man sätter <a class="print" href="http://msdn.microsoft.com/library/en-us/cpref/html/frlrfSystemWebHttpResponseClassContentEncodingTopic.asp">Response.ContentEncoding</a> så sätts såväl <span lang="en">charset</span>-parametern 
+    för <span lang="en">Content-Type</span> i HTTP, som den konkreta kodningen av
+    dokumentet som sänds ut (som naturligtvis
+    skall vara identiska).
+    Standardvärde kan sättas i elementet <a class="print" href="http://msdn.microsoft.com/library/en-us/cpgenref/html/gngrfglobalizationsection.asp"><code>globalization</code></a> i <code>Web.config</code> (eller <code>Machine.config</code>,
+    som initialiserats till UTF-8).</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p> <a href="/International/questions/qa-htaccess-charset"><cite>Att ange 'charset'-information i .htaccess</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-headers-charset"><cite>Att granska HTTP-headers</cite></a> </p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite><span lang="en">Handling character encodings in HTML and CSS</span></cite></a> </p>
+    </li>
+    <li>
+      <p>Relaterade länkar, <cite>Att sätta upp en server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#charset">Tecken</a></li>
+      <li><a href="/International/techniques/server-setup#setting">Att sätta <span lang="en">charset</span>-parametern i HTTP</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Relaterade länkar, <cite>Att skapa HTML &amp; CSS</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-html#charset">Tecken</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Relaterade länkar, <cite>Att skapa SVG</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-svg#charset">Tecken</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
