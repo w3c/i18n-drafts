@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>HTTP 헤더 확인</title>
+<meta name="description" content="웹 문서의 HTTP 헤더에서 문자 인코딩 정보를 확인하려면 어떻게 합니까?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-headers-charset' // the file name WITHOUT extensions
+f.authors = 'Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'qa-headers-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-06-16' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-28', time:'07:29'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-01', time:'10:16'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.wintranslation.com/translation-services/website-translation/">Website translation</a>, wintranslation' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-headers-charset-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ko.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>HTTP 헤더 확인</h1>
+</header>
+
+
+<section id="sidebarExtras">
+  <section>
+    <h2 id="links" class="notoc"><a href="#links">관련 링크</a></h2>
+    <p><a class="print" href="http://qa-dev.w3.org/i18n-checker/">i18n Checker</a></p>
+    <p><a class="print" href="http://webtools.mozilla.org/web-sniffer/">Mozilla Web-sniffer</a></p>
+    <p><a class="print" href="http://www.delorie.com/web/headers.html">Delorie HTTP Header Viewer</a></p>
+    <p><a class="print" href="http://www.rexswain.com/httpview.html">Rex Swain&#x27;s HTTP Viewer</a></p>
+    <p><a class="print" href="http://validator.w3.org/#validate_by_uri+with_options">W3C Markup Validator [확장 인터페이스]</a></p>
+  </section>
+</section>
+
+
+<section>
+<div id="audience">
+  <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+  사용자, XHTML/HTML 코딩 작업자(편집기 또는 스크립팅 사용), 스크립트 개발자(PHP, JSP 등), 웹 프로젝트 매니저, 그리고 HTTP에 사용되는 문자 인코딩 확인 방법을 알고 싶어 하는 사람.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+<h2 id="question"><a href="#question">Question</a></h2>
+<p class="question">웹 문서의 HTTP 헤더에서 문자 인코딩 정보를 확인하려면 어떻게 합니까?</p>
+
+  <p>웹에서 제공되는 문서의 <a class="print" href="/International/articles/definitions-characters/#charsets">문자 인코딩</a>(charset)을 명확히 지정하는 것이 중요합니다. 그렇지 않을 경우, 수신인이 문서를 제대로 해석하지 못할 수 있습니다. 예를 들어, 웹 브라우저가 판독 가능한 텍스트 대신 임의의 문자를 표시할 수 있습니다. 웹 문서의 문자 인코딩을 지정하는 한 가지 방법은 <code>Content-Type</code> 헤더의 <code>charset</code> 매개변수에 이 정보를 넣는 것입니다.</p>
+  <p>특히, HTTP 헤더에 선언된 인코딩이 HTML 및 CSS 파일의 모든 문서내 인코딩 선언을 덮어쓰는 것이 중요합니다.</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>헤더를 포함하여, 제공되는 실제 웹 문서를 확인하는 방법은 여러 가지가 있습니다.</p>
+
+  <section>
+    <h3 id="i18nchecker"><a href="#i18nchecker">i18n Checker</a></h3>
+    <p>W3C에서 개발한 <a class="print" href="http://qa-dev.w3.org/i18n-checker/">Internationalization Checker 도구</a>는 웹 페이지의 다양한 국제화 문제를 확인합니다. 문자 인코딩, 언어 선언 등 페이지에 대한 주요 국제화 관련 정보가 요약된 정보 섹션도 있습니다. 그러한 섹션에서는 인코딩 선언이 HTTP 헤더에 사용되는지 여부, 사용된다면 어떤 인코딩인지 등이 설명됩니다.</p>
+    <p>i18n checker 도구는 문서에 사용된 다른 인코딩 선언을 보여주고, 차이가 있을 경우 플래그를 달아주기 때문에 상당히 유용합니다.</p>
+  </section>
+  
+  <section>
+    <h3 id="webbased"><a href="#webbased">웹 기반 서비스 사용</a></h3>
+    <p>관심 있는 문서의 주소를 입력한 후 서버에서 보내오는 문서의 (HTML/XHTML) 소스와 모든 HTTP 헤더를 보여주는 서비스도 여러 가지가 있습니다.</p>
+    <ul>
+      <li><a class="print" href="http://www.delorie.com/web/headers.html">Delorie HTTP Header Viewer</a></li>
+      <li><a class="print" href="http://www.rexswain.com/httpview.html">Rex Swain's HTTP Viewer</a></li>
+    </ul>
+    <p>참고: W3C는 이러한 서비스와 무관합니다.</p>
+    <p>HTTP 헤더에서, <code class="kw" translate="no">Content-Type</code> 헤더, 특히 <code class="kw" translate="no">charset</code> 매개변수를 찾으십시오.</p>
+    <blockquote> <code>Content-Type: text/html; charset=utf-8</code></blockquote>
+    <p>참고: <code class="kw" translate="no">charset</code> 매개변수는 없을 수도 있습니다. 문서 자체가 해당 문자 인코딩을 지정하는 경우에는 이 매개변수가 없어도 무방합니다.</p>
+  </section>
+  
+  <section>
+    <h3 id="validator"><a href="#validator">W3C 마크업 검증 서비스 사용</a></h3>
+    <p>마크업을 확인하려면 <a class="print" href="http://validator.w3.org/">마크업 검증 서비스</a>가 확인 대상 서비스를 올바르게 디코딩해야 합니다. 인코딩 관련 정보를 찾을 수 없거나 구성 정보를 찾은 경우 또는 찾은 정보에 따라 문서를 디코딩할 수 없는 경우에는 오류 메시지가 표시됩니다.</p>
+    <p>검증에서 발견된 인코딩을 알아보려면 <a class="print" href="http://validator.w3.org/#validate_by_uri+with_options">확장 인터페이스</a>를 사용할 수 있습니다. 이 인터페이스에서 <span class="ui-text">show source</span> 옵션을 선택한 후 소스가 올바르게 해석되었는지 <em>시각적으로</em> 확인할 수 있습니다. 이 방법은 실제로 정확한 인코딩을 사용하는지 확인할 수 있어 유용합니다. <code>iso-8859-1</code>이 사용되었다고 간주되는 문서가 실제로는 <code>iso-8859-2</code> 또는 기타 다른 인코딩을 사용하여 인코딩되어 있는지 등을 항상 <em>기계적으로</em> 확인할 수 있는 것은 아닙니다.</p>
+  </section>
+  
+  <section>
+    <h3 id="telnet"><a href="#telnet"><code>telnet</code> 또는 다른 명령줄 도구 사용</a></h3>
+    <p>이 경우, 약간 더 전문성이 필요하지만, 자동화하기는 더 쉬울 수 있습니다. 또 다른 명령줄 도구는 <code>wget</code>(<code>-S</code> 또는 <code>-s</code> 옵션 포함)이 있습니다.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>일부 서버는 클라이언트마다 다른 문자 인코딩을 제공하는 웹 문서를 트랜스코딩합니다. 러시아에 소재하고 있는 일부 서버 등이 여기에 해당합니다. Mac 또는 Windows 시스템에서 실행되는 브라우저가 웹 기반 서비스 또는 W3C 마크업 검증 서비스(대부분 UNIX 시스템 기반)가 제공하는 인코딩이 아닌 다른 문자 인코딩을 사용한다고 지정할 수도 있기 때문에 이 경우 특별한 주의가 필요합니다.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>튜토리얼, <a href="/International/tutorials/tutorial-char-enc/"><cite>HTML 및 CSS의 문자 인코딩 취급</cite></a> </p>
+    </li>
+    <li>
+      <p>관련 링크, <cite>서버 설정</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#checkhttp">HTTP 헤더 확인</a></li>
+      <li><a href="/International/techniques/server-setup#setting">HTTP charset 매개변수 설정</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>관련 링크, <cite>HTML &amp; CSS 제작</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-html#charset">문자</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>관련 링크, <cite>SVG 제작</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-svg#charset">문자</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
