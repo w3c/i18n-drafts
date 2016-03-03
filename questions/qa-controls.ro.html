@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8" />
+<title>HTML, XHTML, XML si Coduri de Control</title>
+<meta name="description" content="Cum folosesc codurile de control (ie. the 'C0' U+0000-U+001F and 'C1' U+007F-U+009F ranges) in XML, XHTML si HTML?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-controls' // the file name WITHOUT extensions
+f.authors = 'Tex Texin, XenCraft, François Yergeau, Alis Technologies' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-06' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-06', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-03', time:'05:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.costeamarian.com">Costea Marian</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-controls-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ro.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>HTML, XHTML, XML si Codurile de Control</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    programatori HTML  (folosind editoare si scripturi), dezvoltatori de scripturi (PHP, JSP, etc.) </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Cum folosesc codurile de control (ie. the 'C0' U+0000-U+001F and 'C1' U+007F-U+009F ranges) in XML, XHTML si HTML?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Aplicatii adiacente creaza uneori coduri de control care incorporeaza date. De aceea este important uneori sa intelegem cum controalele sunt suportate in limbajele de marcare, cand aceste aplicatii sau datele lor migreaza spre web.</p>
+  <p>exista doua game ale Unicode Character Set care sunt atribuite ca si coduri de control.Standardul Unicode nu foloseste in mod special aceste controale si lasa definitiile lor in seama aplicatiei. Daca aplicatia nu specifica utilizarea lor, atunci ele sunt interpretate in conformitate cu semanticile ISO/IEC 6429. Cei mai multi dintre voi vor recunoaste multe din cele 6429 de controale: ACK, NAK, BEL, LF, FF, VT, CR, et al. Familia de standarde ISO 8859 si alte standarde de caractere isi bazeaza codurile de control pe standardul ISO 6429.</p>
+  <p>Codurile de control in segmentul <strong>U+0000-U+001F</strong> sunt cunoscute ca <a href="#further">segmentul "C0" </a>. Acest segment incepe cu controlul	the NUL (Null) <strong>U+0000</strong> . Codurile de control din segmentul <strong>U+0080-U+009F</strong> sunt cunoscute ca si <a
+				href="#further">segmentul "C1"</a>. DEL (Delete) <strong>U+007F</strong> este de asemenea un control si este adiacent cu inceputul segmentului C1.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+    
+  <section>
+    <h3 id="handling"><a href="#handling">Cum folosim codurile de control</a></h3>
+    <p>Codurile de control ar trebui inlocuite cu <a href="#further">marcaj corespunzator</a>. Cum XML ofera o cale standard de a coda datele structurale, interpretarea codurilor de control altfel decat ca si marcaj ar anula avantajele folosirii XML. Folosirea codurilor de control in HTML si XHTML nu este niciodata adecvata, avand in vedere ca aceste limbaje de marcare reprezinta text, nu date. Singura ocazie cu care aceasta informatie ar trebui folosita este in rarul caz in care datele in format vechi care contin coduri de control nu pot fi curatate.</p>
+    <p>Daca datele nu sunt de tip text, ci binare, atunci ar fi mult mai practica codarea lor, de exemplu folosind base64 ca valori hexazecimale, pentru a fi sigur ca numai caracterele suportate sunt folosite in textul limbajului de marcare. (Si binenteles, decodarea textului cand fisierele sunt citite.) Notati ca XML Schema ofera tipuri de date pentru aceste codari.</p>
+    <p>Alta alternativa este stocarea datelor intr-un document extern si referinta catre el din documentul XML.</p>
+    <p>In XML 1.1, daca e nevoie sa reprezentam un cod de control, cea mai simpla alternativa explicita este sa folosim un NCR(referinta numerica de caracter). De exemplu, codul de control ESC (Escape) <strong>U+001B</strong> ar fi reprezentat fie ca  &amp;#x1B; (hexadecimal) ori &amp;#27; (decimal) Referinta Numerica de Caracter.</p>
+  </section>
+    
+  <section>
+    <h3 id="support"><a href="#support">Suport pentru codurile de control</a></h3>
+    <p>Urmatorul tabel rezuma care limbaje de marcaj suporta codurile de control:</p>
+    <table>
+      <tbody>
+        <tr class="toprow">
+          <th>Controale</th>
+          <th>Segment</th>
+          <th>HTML 4</th>
+          <th>XHTML 1.0</th>
+          <th>XML 1.0</th>
+          <th>XML 1.1</th>
+        </tr>
+        <tr>
+          <th rowspan="2">C0,cu exceptia HT, LF, CR</th>
+          <td>U+0000 (NUL)</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+        </tr>
+        <tr>
+          <td>U+0001-U+001F</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>HT, LF, CR</th>
+          <td>U+0009, U+000A, U+000D</td>
+          <td>Suportat</td>
+          <td>Suportat</td>
+          <td>Suportat</td>
+          <td>Suportat</td>
+        </tr>
+        <tr>
+          <th>DEL + C1</th>
+          <td>U+007F-U+009F</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>Suportat</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>NEL</th>
+          <td>U+0085</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>(permis)</td>
+          <td>Suportat</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>
+        <p>Controlul NUL (Null) este ilegal si nu poate fi reprezentat de NCR sau codat direct in limbajul de marcare.</p>
+      </li>
+      <li>
+        <p>HTML, XHTML si XML 1.0 nu suporta segmentul C0 , cu exceptia HT (Tabulare Orizontala) <strong>U+0009</strong>, LF (Line	Feed) <strong>U+000A</strong>, si CR (Carriage Return) <strong>U+000D</strong>. Segmentul C1 este suportat, i.e. puteti coda controalele direct sau sa le reprezentati ca NCRs(Referinte de Caracter Numeric).</p>
+      </li>
+      <li>
+        <p>XML 1.1 restrictioneaza segmentul C1, cu exceptia NEL <strong>U+0085</strong> (Linia noua EBCDIC), ca si segmentul C0. Totusi, XML 1.1 permite controalelor sa fie reprezentate de NCRs(Referinte de Caracter Numeric).</p>
+      </li>
+    </ul>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Intrucat familia ISO 8859 rezerva segmentul C1 pentru controale,seturile de caractere Microsoft(e.g. 1250-1258) plaseaza caracterele in acest segment.
+    Uneori autorii de continut folosesc gresit punctele de caracter de cod Microsoft in crearea de NCR in loc sa foloseasca valori Unicode.  Datorita raspandirii acestei greseli, multe browsere afiseaza caracterele Microsoft in acest segment. Acesta este un comportament incorect si induce in eroare dezvoltatorul confirmand incorect valoarea gresita. Problema poate fi descoperita cand datele sunt folosite de o apliactie, sau cand un browser in conformitate cu standardele nu reuseste sa afiseze caracterele propuse spre afisare.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Mai multe detalii referitoare la segmentul C0 sunt disponibile in <a href="http://www.unicode.org/charts/PDF/U0000.pdf">Unicode Code Chart: C0
+        Controls and Basic Latin</a></p>
+    </li>
+    <li>
+      <p>Mai multe detalii referitoare la segmentul C1 sunt disponibile in <a href="http://www.unicode.org/charts/PDF/U0080.pdf">Unicode Code Chart: C1
+        Controls and Latin-1 Supplement</a></p>
+    </li>
+    <li>Documentul <a href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup Languages</a> contine ghidul de utilizare al Unicode Standard coroborat cu limbaje de marcare ca XML.</li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

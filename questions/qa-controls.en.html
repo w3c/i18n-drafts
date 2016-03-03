@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>HTML, XHTML, XML and Control Codes</title>
+<meta name="description" content="How do I handle control codes (ie. the 'C0' U+0000-U+001F and 'C1' U+007F-U+009F ranges) in XML, XHTML and HTML?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-controls' // the file name WITHOUT extensions
+f.authors = 'Tex Texin, XenCraft, François Yergeau, Alis Technologies' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-06' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-06', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-03', time:'05:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-controls-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>HTML, XHTML, XML and Control Codes</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.) </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">How do I handle control codes (ie. the 'C0' U+0000-U+001F and 'C1' U+007F-U+009F ranges) in XML, XHTML and HTML?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Legacy applications sometimes create data incorporating control codes. It can therefore sometimes be important to understand how controls
+    are supported in markup languages, when migrating these applications or their data to the web.</p>
+  <p>There are two ranges of the Unicode Character Set that are assigned as control codes. The Unicode Standard makes no particular use of
+    these controls and leaves their definition up to the application. If the application does not specify their use, then they are to be interpreted
+    according to the semantics of ISO/IEC 6429. Most of you will recognize many of the 6429 controls: ACK, NAK, BEL, LF, FF, VT, CR, et al. The ISO 8859
+    family and other character standards base their control codes on the ISO 6429 standard.</p>
+  <p>The control codes in the range <strong>U+0000-U+001F</strong> are known as the <a href="#further">"C0" range</a>. This range begins with
+    the NUL (Null) <strong>U+0000</strong> control. The control codes in the range <strong>U+0080-U+009F</strong> are known as the <a href="#further">"C1" range</a>. DEL (Delete) <strong>U+007F</strong> is also a control and is adjacent to the beginning of the C1 Range.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+    
+  <section>
+    <h3 id="handling"><a href="#handling">Handling control codes</a></h3>
+    <p>Control codes should be replaced with <a href="#further">appropriate markup</a>. Since XML provides a standard way of encoding
+      structured data, representing control codes other than as markup would undo the actual advantages of using XML. Use of control codes in HTML and
+      XHTML is never appropriate, since these markup languages are for representing text, not data. The only time the following information should be
+      needed is in the rare case where legacy data containing control codes cannot be cleaned up.</p>
+    <p>If the data is not really textual, but binary, then it may be more practical to encode it, for example using base64 or as hexadecimal
+      values, to ensure only supported characters are used in the markup language text. (And of course, decoding the text when reading the files.) Note
+      that XML Schema provides data types for these encodings.</p>
+    <p>Another alternative is to store the data in an external document and reference it from the XML document.</p>
+    <p>In XML 1.1, if you need to represent a control code explicitly the simplest
+      alternative is to use an NCR (numeric character reference). For example, the control code ESC (Escape) <strong>U+001B</strong> would be represented
+      by either the &amp;#x1B; (hexadecimal) or &amp;#27; (decimal) Numeric Character References.</p>
+  </section>
+    
+  <section>
+    <h3 id="support"><a href="#support">Support for control codes</a></h3>
+    <p>The following table summarizes which markup languages support the control codes:</p>
+    <table>
+      <tbody>
+        <tr class="toprow">
+          <th>Controls</th>
+          <th>Range</th>
+          <th>HTML 4</th>
+          <th>XHTML 1.0</th>
+          <th>XML 1.0</th>
+          <th>XML 1.1</th>
+        </tr>
+        <tr>
+          <th rowspan="2">C0, except HT, LF, CR</th>
+          <td>U+0000 (NUL)</td>
+          <td>Illegal</td>
+          <td>Illegal</td>
+          <td>Illegal</td>
+          <td>Illegal</td>
+        </tr>
+        <tr>
+          <td>U+0001-U+001F</td>
+          <td>Illegal</td>
+          <td>Illegal</td>
+          <td>Illegal</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>HT, LF, CR</th>
+          <td>U+0009, U+000A, U+000D</td>
+          <td>Supported</td>
+          <td>Supported</td>
+          <td>Supported</td>
+          <td>Supported</td>
+        </tr>
+        <tr>
+          <th>DEL + C1</th>
+          <td>U+007F-U+009F</td>
+          <td>Illegal</td>
+          <td>Illegal</td>
+          <td>Supported</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>NEL</th>
+          <td>U+0085</td>
+          <td>Illegal</td>
+          <td>Illegal</td>
+          <td>(allowed)</td>
+          <td>Supported</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>
+        <p>The NUL (Null) control is illegal and cannot be represented by NCR or encoded directly in markup languages.</p>
+      </li>
+      <li>
+        <p>HTML, XHTML and XML 1.0 do not support the C0 range, except for HT (Horizontal Tabulation) <strong>U+0009</strong>, LF (Line
+          Feed) <strong>U+000A</strong>, and CR (Carriage Return) <strong>U+000D</strong>. The C1 range is supported, i.e. you can encode the controls directly
+          or represent them as NCRs (Numeric Character References).</p>
+      </li>
+      <li>
+        <p>XML 1.1 restricts the C1 range, except for NEL <strong>U+0085</strong> (the EBCDIC New line), as well as the C0 range. However,
+          XML 1.1 allows the controls to be represented by NCRs (Numeric Character References).</p>
+      </li>
+    </ul>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Whereas the ISO 8859 family reserves the C1 range for controls, Microsoft character sets (e.g. 1250-1258) place characters in this range.
+    Sometimes content authors mistakenly use the Microsoft character code points in creating NCRs instead of using the Unicode values. Because of the
+    prevalence of this mistake, many browsers display the Microsoft characters in this range. This is incorrect behavior and further misleads the
+    developer by incorrectly confirming the mistaken value. The problem may eventually be discovered when the data is treated by some application, or when a standards-conforming browser fails to display the intended character.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>More details on the C0 range are available in the <a href="http://www.unicode.org/charts/PDF/U0000.pdf">Unicode Code Chart: C0
+        Controls and Basic Latin</a></p>
+    </li>
+    <li>
+      <p>More details on the C1 range are available in the <a href="http://www.unicode.org/charts/PDF/U0080.pdf">Unicode Code Chart: C1
+        Controls and Latin-1 Supplement</a></p>
+    </li>
+    <li>
+      <p>The document <a href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup Languages</a> contains guidelines on the use of the Unicode Standard in conjunction with markup languages such
+        as XML.</p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

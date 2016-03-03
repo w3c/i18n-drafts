@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>HTML, XHTML, XML и Управляющие Коды</title>
+<meta name="description" content="Как работать с управляющими кодами (то есть 'C0' U+0000-U+001F и 'C1' U+007F-U+009F диапазоны) в XML, XHTML и HTML?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-controls' // the file name WITHOUT extensions
+f.authors = 'Tex Texin, XenCraft, François Yergeau, Alis Technologies' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-06' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-06', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-03', time:'05:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak (Александр Шлапак)' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-controls-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>HTML, XHTML, XML и Управляющие Коды</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    шифровальщики HTML (используя редакторы или скрипты), разработчики скриптов (PHP, JSP, и т.д.) </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Как работать с управляющими кодами (то есть 'C0' U+0000-U+001F и 'C1' U+007F-U+009F диапазоны) в XML, XHTML и HTML?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Устаревшие программы иногда создают данные, которые отображают управляющие коды. Поэтому иногда может быть важным понять, как поддерживаются контрольные коды
+    в языках разметки, при переносе таких приложений или их данных в Интернет.</p>
+  <p>Есть два диапазона Unicode Character Set (Набора Символов), предназначенные как управляющие коды. Стандарт Unicode не позволяет особого использования этих
+    управляющих кодов и оставляет их определение для приложения. Если программа не определяет их использования, то они должны быть интерпретированы
+    согласно семантики ISO/IEC 6429. Большинство из вас узнают многие из 6429 управляющих кодов: ACK, NAK, BEL, LF, FF, VT, CR, и другие. ISO 8859
+    и другие символьные стандарты базируют свои управляющие коды на стандарте ISO 6429.</p>
+  <p>Управляющие коды в диапазоне <strong>U+0000-U+001F</strong> известны как <a href="#further">"C0" диапазон</a>. Этот диапазон начинается с
+    NUL (Null) <strong>U+0000</strong>. Управляющие коды в диапазоне <strong>U+0080-U+009F</strong> известны как <a
+				href="#further">"C1" диапазон</a>. DEL (Delete) <strong>U+007F</strong> также управляющий код и примыкает к началу Диапазона C1.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+    
+  <section>
+    <h3 id="handling"><a href="#handling">Обработка управляющих кодов</a></h3>
+    <p>Управляющие коды должны быть заменены на <a href="#further">соответствующую разметку</a>. Поскольку XML обеспечивает стандартный способ кодирования
+      структурированных данных, при представлении управляющих кодов отличающихся от разметки будут отменены фактические преимущества использования XML. Не нужно использовать управляющие коды в HTML и
+      XHTML, так как эти языки разметки созданные для представления текста, а не данных. Такая информация должна пригодиться лишь в одном редком случае, 
+      когда устаревшие данные, содержащие управляющие коды нельзя очистить.</p>
+    <p>Если данные в действительности не текстовые, а бинарные, то более практичным может быть, закодировать их, например, с использованием base64 (позиционная система исчисления с основой 64) или шестнадцатеричных
+      значений, для обеспечения использования только поддерживаемых символов в тексте языка разметки. (И, конечно, декодирование текста при чтении файлов.) Обратите внимание, что
+      Схема XML обеспечивает типы данных для этих кодировок.</p>
+    <p>Другая альтернатива - сохранять данные во внешнем документе и ссылаться на него из документа XML.</p>
+    <p>Если вам необходимо представить контрольный код в XML 1.1, то явно простейшей
+      альтернативой является использование NCR (числовая ссылка). Например, управляющий код ESC (Escape) <strong>U+001B</strong> будет представлен
+      или &amp;#x1B; (шестнадцатеричными) или &amp;#27; (десятичными) Числовыми Ссылками.</p>
+  </section>
+    
+  <section>
+    <h3 id="support"><a href="#support">Поддержка Управляющих Кодов</a></h3>
+    <p>Ниже приводится таблица, которая суммирует какие языки разметки поддерживают управляющие коды:</p>
+    <table>
+      <tbody>
+        <tr class="toprow">
+          <th>Управляющие коды</th>
+          <th>Диапазон</th>
+          <th>HTML 4</th>
+          <th>XHTML 1.0</th>
+          <th>XML 1.0</th>
+          <th>XML 1.1</th>
+        </tr>
+        <tr>
+          <th rowspan="2">C0, за исключением HT, LF, CR</th>
+          <td>U+0000 (NUL)</td>
+          <td>Не разрешено</td>
+          <td>Не разрешено</td>
+          <td>Не разрешено</td>
+          <td>Не разрешено</td>
+        </tr>
+        <tr>
+          <td>U+0001-U+001F</td>
+          <td>Не разрешено</td>
+          <td>Не разрешено</td>
+          <td>Не разрешено</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>HT, LF, CR</th>
+          <td>U+0009, U+000A, U+000D</td>
+          <td>Поддерживается</td>
+          <td>Поддерживается</td>
+          <td>Поддерживается</td>
+          <td>Поддерживается</td>
+        </tr>
+        <tr>
+          <th>DEL + C1</th>
+          <td>U+007F-U+009F</td>
+          <td>Не разрешено</td>
+          <td>Не разрешено</td>
+          <td>Поддерживается</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>NEL</th>
+          <td>U+0085</td>
+          <td>Не разрешено</td>
+          <td>Не разрешено</td>
+          <td>(допускается)</td>
+          <td>Поддерживается</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>
+        <p>Управляющий код NUL (Null) не разрешен и не может быть представлен NCR или закодирован прямо в языках разметки.</p>
+      </li>
+      <li>
+        <p>HTML, XHTML и XML 1.0 не поддерживают диапазон C0, за исключением HT - Horizontal Tabulation (горизонтальная табуляция) <strong>U+0009</strong>, LF - Line
+          Feed (разрыв строки) <strong>U+000A</strong>, и CR - Carriage Return (возврат в начало строки) <strong>U+000D</strong>. Диапазон C1 поддерживается, то есть вы можете кодировать непосредственно управляющие коды
+          или представлять их как NCRs (Числовые Ссылки).</p>
+      </li>
+      <li>
+        <p>XML 1.1 ограничивает диапазон C1, за исключением NEL <strong>U+0085</strong> (Новой линии EBCDIC), так же, как диапазон C0. Однако,
+          XML 1.1 позволяет представлять управляющие коды при помощи NCRs (Числовых Ссылок).</p>
+      </li>
+    </ul>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>В то время как ISO 8859 зарезервировала диапазон C1 для управляющих кодов, наборы символов Microsoft (например 1250-1258) поставили символы в этот диапазон.
+    Иногда авторы контента ошибочно используют code points (точки кода) символов Microsoft при создании NCRs вместо того, чтобы использовать значение Unicode. Из-за распространенности 
+    данной ошибки, многие браузеры отображают символы Microsoft в этом диапазоне. Это некорректное поведение и в дальнейшем вводит
+    разработчика в заблуждение неправильным подтверждением ошибочного значения. В конечном итоге проблему можно обнаружить, когда данные обрабатываются некоторыми программами, или когда отвечающий стандартам браузер не может отобразить назначенный символ.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Более подробная информация о диапазоне C0 доступна в <a href="http://www.unicode.org/charts/PDF/U0000.pdf">Unicode Таблица Кодирования: C0
+        Управляющие коды и Основной Латинский Язык</a> </p>
+    </li>
+    <li>
+      <p>Более подробная информация о диапазоне C1 доступна в <a href="http://www.unicode.org/charts/PDF/U0080.pdf">Unicode Таблица Кодирования: C1
+        правляющие коды и Дополнения Latin-1</a> </p>
+    </li>
+    <li>
+      <p>Документ <a href="http://www.w3.org/TR/unicode-xml/">Unicode в XMLи других Языках Разметки</a>  содержит указания по использованию стандарта Unicode в сочетании с такими языками разметки,
+        как XML.</p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

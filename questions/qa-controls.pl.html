@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<title>HTML, XHTML, XML i kody kontroli</title>
+<meta name="description" content="Jak radzić sobie z kodami kontroli ( np.:zakres 'C0' U+0000-U+001F i 'C1' U+007F-U+009F) w XML, XHTML i HTML?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-controls' // the file name WITHOUT extensions
+f.authors = 'Tex Texin, XenCraft, François Yergeau, Alis Technologies' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-06' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-06', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-03', time:'05:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'A.Osobka, N.Fabisz, <a href="http://www.tlumaczenia-angielski.info">Angielski</a> Team' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-controls-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-pl.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>HTML, XHTML, XML i kody kontroli</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.) </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Jak radzić sobie z kodami kontroli ( np.:zakres 'C0' U+0000-U+001F i 'C1' U+007F-U+009F) w XML, XHTML i HTML?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Starsze programy czasami tworzą dane z zawiartymi już kodami kontroli. Z tego też powodu może okazać się istotnym zrozumienie jak kontrole są wspierane przez języki znaczników kiedy takie dane lub  aplikacje są importowane do internetu. </p>
+  <p>Istnieją dwa zakresy znaków  Unicode, które funkcjonują jako kontrole. Standard Unicode nie ma żadnego konkretnego zastosowania dla tych kontroli, pozostawiając ich definicje aplikacjom. Jeśli aplikacje nie określają ich konkretnego zastosowania, wtedy interpretowane są one według semantyki  ISO/IEC 6429. Większość ludzi rozpoznaje kotrole  6429: ACK, NAK, BEL, LF, FF, VT, CR, etc.  ISO 8859
+    i inne standardy opierają swoje kody kontroli o standard  ISO 6429.</p>
+  <p>Kody kontroli w zakresie <strong>U+0000-U+001F</strong> są znane jako <a href="#further">zakres "C0"</a>. Zakres ten zaczyna się od kontroli NUL (Null) <strong>U+0000.</strong> Kody kontroli w zakresie <strong>U+0080-U+009F</strong> znane są jako <a
+				href="#further">zakres "C1"</a>. DEL (Delete) <strong>U+007F</strong> jest także kontrolą i znajduje się na początku zasięgu C1.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+    
+  <section>
+    <h3 id="handling"><a href="#handling">Obsługiwanie kodów kontroli</a></h3>
+    <p>Kody kontroli powinny być zastąpione <a href="#further">odpowiednimi znacznikami</a>. Ponieważ  XML zapewnia standardowy sposób kodowania danych strukturalnych, używanie kodów kontroli innych niż znaczników negatywnie wpłynęłoby na korzyści płynące z zastosowania XML. Używanie kodów kontroli w  HTML oraz
+      XHTML nie jest zalecane, ponieważ owe języki znaczników są stosowane do prezentacji tekstu a nie danych. Jedynym przypadkiem zastosowania jest sytuacja, w której zastosowano dane zawierające kody kontroli, których nie można usunąć. </p>
+    <p>Jeśli dane nie są tekstowe, a binarne, bardziej praktycznym może okazać się zakodowanie ich, np. używając  base64 lub jako wartości w systemie szesnastkowym aby zastosować jedynie znaki, które są wspierane przez język znaczników. Pamiętaj, że Schemat XML dostarcza typów danych dla takich kodowań. </p>
+    <p>Następną alternatywą jest przechowywanie danych w oddzielnym dokumencie oraz wskazanie takiego dokumentu w dokumencie XML. </p>
+    <p>W XML 1.1 (które nadal jest na etapie kandydata do rekomendacji) jeśli chce się przedstawić kod kontroli w wyraźny sposób, najprostszą alternatywą jest używanie NCR (numeric character reference). Na przykład, kod kontroli ESC (Escape) <strong>U+001B</strong> będzie przedstawiony przez &amp;#x1B; (hexadecimal) lub &amp;#27; (decimal) Numeric Character References.</p>
+  </section>
+    
+  <section>
+    <h3 id="support"><a href="#support">Wsparcie dla kodów kontroli</a></h3>
+    <p>Poniższa tabela podsumowuje które języki znaczników  wspierają kody kontroli: </p>
+    <table>
+      <tbody>
+        <tr class="toprow">
+          <th>Kontrole</th>
+          <th>Zasięg</th>
+          <th>HTML 4</th>
+          <th>XHTML 1.0</th>
+          <th>XML 1.0</th>
+          <th>XML 1.1</th>
+        </tr>
+        <tr>
+          <th rowspan="2">C0, except HT, LF, CR</th>
+          <td>U+0000 (NUL)</td>
+          <td>Brak obsługi </td>
+          <td>Brak obsługi </td>
+          <td>Brak obsługi </td>
+          <td>Brak obsługi </td>
+        </tr>
+        <tr>
+          <td>U+0001-U+001F</td>
+          <td>Brak obsługi </td>
+          <td>Brak obsługi </td>
+          <td>Brak obsługi </td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>HT, LF, CR</th>
+          <td>U+0009, U+000A, U+000D</td>
+          <td>Z obsługą </td>
+          <td>Z obsługą </td>
+          <td>Z obsługą </td>
+          <td>Z obsługą </td>
+        </tr>
+        <tr>
+          <th>DEL + C1</th>
+          <td>U+007F-U+009F</td>
+          <td>Brak obsługi </td>
+          <td>Brak obsługi </td>
+          <td>Z obsługą </td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>NEL</th>
+          <td>U+0085</td>
+          <td>Brak obsługi </td>
+          <td>Brak obsługi </td>
+          <td>(dozwolone)</td>
+          <td>Z obsługą </td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>
+        <p>Kontrola NUL (Null) nie ma wsparcia i nie może byc reprezentowana przez  NCR lub kodowana bezpośrednio w języki znaczników.</p>
+      </li>
+      <li>
+        <p>HTML, XHTML oraz XML 1.0 nie wspierają zasięgu  C0 z wyjątkiem  HT (Horizontal Tabulation) <strong>U+0009</strong>, LF (Line
+          Feed) <strong>U+000A</strong> oraz CR (Carriage Return) <strong>U+000D</strong>. Zasięg C1 ma wsparcie np.: można kodować kontrole bezpośrednio lub przedstawiać je jako NCRs (Numeric Character References).</p>
+      </li>
+      <li>
+        <p>XML 1.1 ogranicza zasięg  C1 z wyjątkiem  NEL <strong>U+0085</strong> (the EBCDIC New line) oraz zasięg  C0. Jednakże,
+          XML 1.1 zezwala na reprezentacje kontroli poprzez  NCRs (Numeric Character References).</p>
+      </li>
+    </ul>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Podczas gdy rodzina ISO 8859 rezerwuje zasięg C1 dla kontroli, zbiory znaków Microsoftu (np.:. 1250-1258) umieszczają znaki w tym zasięgu. Czasami autorzy stron używają przez pomyłkę znaków Microsoftu przy tworzeniu NCRs zamiast wartości  Unicode. Z powodu szerokiego ropowszechnienia tego błędu wiele przeglądarek wyświetla znaki Microsoftu w tym zasięgu. Jest to nieprawidłowe zachowanie, które utwierdza autorów co do słuszności niewłaściwej wartości. Problem ten może się ujawnić kiedy jakaś aplikacja przetworzy dane jako kontrole a nie jako niewłaściwe znaki lub kiedy przeglądarka przestrzegająca standardów nie wyświetli ich. </p>
+  <p>&nbsp; </p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Więcej szczegółów na temat zasięgu  C0: <a href="http://www.unicode.org/charts/PDF/U0000.pdf">Unicode Code Chart: C0
+        Controls and Basic Latin</a> </p>
+    </li>
+    <li>
+      <p>Więcej szczegółów na temat zasięgu C1: <a href="http://www.unicode.org/charts/PDF/U0080.pdf">Unicode Code Chart: C1
+        Controls and Latin-1 Supplement</a> </p>
+    </li>
+    <li>
+      <p>Dokument <a href="http://www.w3.org/TR/unicode-xml/">Unicode in XML and other Markup Languages</a>  zawiera wytyczne dotyczące zastosowania standardu Unicode w połaczeniu z językami znaczników np.: XML.</p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

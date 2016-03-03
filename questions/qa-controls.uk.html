@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8" />
+<title>HTML, XHTML, XML та Керуючі Коди</title>
+<meta name="description" content="Як працювати з керуючими кодами (тобто 'C0' U+0000-U+001F та 'C1' U+007F-U+009F діапазони) в XML, XHTML та HTML?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-controls' // the file name WITHOUT extensions
+f.authors = 'Tex Texin, XenCraft, François Yergeau, Alis Technologies' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-06' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-06', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-03', time:'05:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak (Александр Шлапак)' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-controls-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-uk.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>HTML, XHTML, XML та Керуючі Коди</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    шифрувальники HTML (використовуючи редактори або скрипти), розробники скриптів (PHP, JSP, і т.д.) </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Як працювати з керуючими кодами (тобто 'C0' U+0000-U+001F та 'C1' U+007F-U+009F діапазони) в XML, XHTML та HTML?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Застарілі програми іноді створюють дані, що відображають керуючі коди. Тому іноді може бути важливим зрозуміти, як підтримуються контрольні коди
+    в мовах розмітки, при перенесенні таких додатків або їхніх даних в Інтернет.</p>
+  <p>Є два діапазони Unicode Character Set (Набору Символів), що призначені як керуючі коди. Стандарт Unicode не дозволяє особливого використання цих
+    керуючих кодів і залишає їх визначення для додатку. Якщо програма не визначає їх використання, то вони повинні бути інтерпретовані
+    відповідно до семантики ISO/IEC 6429. Більшість з вас дізнаються чимало з 6429 керуючих кодів: ACK, NAK, BEL, LF, FF, VT, CR, та інші. ISO 8859
+    та інші символьні стандарти базують свої керуючі коди на стандарті ISO 6429.</p>
+  <p>Керуючі коди в діапазоні <strong>U+0000-U+001F</strong> відомі як <a href="#further">"C0" діапазон</a>. Цей діапазон починається з
+    NUL (Null) <strong>U+0000</strong>. Керуючі коди в діапазоні <strong>U+0080-U+009F</strong> відомі як <a
+				href="#further">"C1" діапазон</a>. DEL (Delete) <strong>U+007F</strong> також керуючий код і примикає до початку Діапазону C1.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+    
+  <section>
+    <h3 id="handling"><a href="#handling">Обробка керуючих кодів</a></h3>
+    <p>Керуючі коди повинні бути замінені на <a href="#further">відповідну розмітку</a>. Оскільки XML забезпечує стандартний спосіб кодування
+      структурованих даних, при представленні керуючих кодів відмінних від розмітки будуть скасовані фактичні переваги використання XML. Не потрібно використовувати керуючі коди в HTML та
+      XHTML, так як ці мови розмітки створені для представлення тексту, а не даних. Така інформація повинна знадобитися лише в одному рідкісному випадку, 
+      коли застарілі дані, які містять керуючі коди не можна очистити.</p>
+    <p>Якщо дані в дійсності не текстові, а бінарні, то більш практичним може бути, закодувати їх, наприклад, з використанням base64 (позиційна система числення з основою 64) або шістнадцяткових
+      значень, для забезпечення використання тільки підтримуваних символів в тексті мови розмітки. (І, звичайно, декодування тексту при читанні файлів.) Зверніть увагу, що
+      Схема XML забезпечує типи даних для цих кодувань.</p>
+    <p>Інша альтернатива - зберігати дані у зовнішньому документі і посилатися на нього з документа XML.</p>
+    <p>Якщо вам необхідно представити контрольний код в XML 1.1, то явно найпростішою
+      альтернативою є використання NCR (числове посилання). Наприклад, керуючий код ESC (Escape) <strong>U+001B</strong> буде представлений
+      або &amp;#x1B; (шістнадцятковими) або &amp;#27; (десятковими) Числовими Посиланнями.</p>
+  </section>
+    
+  <section>
+    <h3 id="support"><a href="#support">Підтримка керуючих кодів</a></h3>
+    <p>Нижче наводиться таблиця, що підсумовує які мови розмітки підтримують керуючі коди:</p>
+    <table>
+      <tbody>
+        <tr class="toprow">
+          <th>Керуючі коди</th>
+          <th>Діапазон</th>
+          <th>HTML 4</th>
+          <th>XHTML 1.0</th>
+          <th>XML 1.0</th>
+          <th>XML 1.1</th>
+        </tr>
+        <tr>
+          <th rowspan="2">C0, за винятком HT, LF, CR</th>
+          <td>U+0000 (NUL)</td>
+          <td>Не дозволено</td>
+          <td>Не дозволено</td>
+          <td>Не дозволено</td>
+          <td>Не дозволено</td>
+        </tr>
+        <tr>
+          <td>U+0001-U+001F</td>
+          <td>Не дозволено</td>
+          <td>Не дозволено</td>
+          <td>Не дозволено</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>HT, LF, CR</th>
+          <td>U+0009, U+000A, U+000D</td>
+          <td>Підтримується</td>
+          <td>Підтримується</td>
+          <td>Підтримується</td>
+          <td>Підтримується</td>
+        </tr>
+        <tr>
+          <th>DEL + C1</th>
+          <td>U+007F-U+009F</td>
+          <td>Не дозволено</td>
+          <td>Не дозволено</td>
+          <td>Підтримується</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>NEL</th>
+          <td>U+0085</td>
+          <td>Не дозволено</td>
+          <td>Не дозволено</td>
+          <td>(допускається)</td>
+          <td>Підтримується</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>
+        <p>Керуючий код NUL (Null) не дозволений і не може бути представлений ​​NCR або закодований прямо в мовах розмітки.</p>
+      </li>
+      <li>
+        <p>HTML, XHTML та XML 1.0 не підтримують діапазон C0, за винятком HT - Horizontal Tabulation (горизонтальна табуляція) <strong>U+0009</strong>, LF - Line
+          Feed (розрив рядка) <strong>U+000A</strong>, та CR - Carriage Return (повернення на початок рядка) <strong>U+000D</strong>. Діапазон C1 підтримується, тобто ви можете кодувати безпосередньо керуючі коди
+          або представляти їх як NCRs (Числові Посилання).</p>
+      </li>
+      <li>
+        <p>XML 1.1 обмежує діапазон C1, за винятком NEL <strong>U+0085</strong> (Нової лінії EBCDIC), так само, як діапазон C0. Однак,
+          XML 1.1 дозволяє представляти керуючі коди за допомогою NCRs (Числових Посилань).</p>
+      </li>
+    </ul>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>У той час як ISO 8859 зарезервувала діапазон C1 для керуючих кодів, набори символів Microsoft (наприклад 1250-1258) поставили символи у цей діапазон.
+    Іноді автори контенту помилково використовують code points (місця коду) символів Microsoft при створенні NCRs замість того, щоб використовувати значення Unicode. Через поширеність 
+    даної помилки, багато браузери відображають символи Microsoft у цьому діапазоні. Це некоректна поведінка і в подальшому вводить
+    розробника в оману неправильним підтвердженням помилкового значення. В кінцевому підсумку проблему можна виявити, коли дані обробляються деякими програмами, або коли відповідаючий стандартам браузер не може відобразити призначений символ.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Більш детальна інформація про діапазон C0 доступна в <a href="http://www.unicode.org/charts/PDF/U0000.pdf">Unicode Таблиця Кодування: C0
+        Керуючі коди та Основна Латинська Мова</a> </p>
+    </li>
+    <li>
+      <p>Більш детальна інформація про діапазон C1 доступна в <a href="http://www.unicode.org/charts/PDF/U0080.pdf">Unicode Таблиця Кодування: C1
+        Керуючі коди та Доповнення Latin-1</a> </p>
+    </li>
+    <li>
+      <p>Документ <a href="http://www.w3.org/TR/unicode-xml/">Unicode в XML та інших Мовах Розмітки</a>  містить вказівки щодо використання стандарту Unicode в поєднанні з такими мовами розмітки,
+        як XML.</p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

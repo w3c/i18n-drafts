@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>HTML, XHTML, XML y códigos de control</title>
+<meta name="description" content="¿Cómo manejo los códigos de control (es decir, la extensión 'C0' U+0000-U+001F y 'C1' U+007F-U+009F) en XML, XHTML y HTML?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-controls' // the file name WITHOUT extensions
+f.authors = 'Tex Texin, XenCraft, François Yergeau, Alis Technologies' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-06' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-09-06', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-03', time:'05:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.spanishtranslation.us/">Spanish Translation</a> Team, Spanish Translation US' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-controls-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>HTML, XHTML, XML y códigos de control</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.) </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">¿Cómo manejo los códigos de control (es decir, la extensión 'C0' U+0000-U+001F y 'C1' U+007F-U+009F) en XML, XHTML y HTML?</p>
+  </section>
+  
+ 
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>A veces, las aplicaciones preexistentes crean datos e incorporan códigos de control. Por lo tanto, a veces es importante comprender de qué manera son compatibles los controles en lenguajes de etiquetas, al migrar estas aplicaciones o sus datos a la Web.</p>
+  <p>Existen dos extensiones de juego de caracteres Unicode que están asignadas como códigos de control. El estándar Unicode no utiliza estos controles en particular y hace que su definición dependa de la aplicación. Si la aplicación no especifica su utilización, deberán ser interpretados conforme a la semántica de ISO/IEC 6429. La mayoría reconocerá muchos de los 6429 controles: ACK, NAK, BEL, LF, FF, VT, CR y otros. La familia ISO 8859 y otros estándares de caracteres basan sus códigos de control en el estándar ISO 6429.</p>
+  <p>Los códigos de control de la extensión <strong>U+0000-U+001F</strong>se denominan <a href="#further">extensión "C0"</a>. Esta extensión comienza con el control NUL (Nulo) <strong>U+0000</strong>. Los códigos de control de la extensión <strong>U+0080-U+009F</strong>se denominan <a 				href="#further">extensión "C1"</a>. DEL (Eliminar) <strong>U+007F</strong> también es un control y se encuentra junto al comienzo de la Extensión C1.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+    
+  <section>
+    <h3 id="handling"><a href="#handling">Manejo de códigos de control</a></h3>
+    <p>Los códigos de control se deben reemplazar con el <a href="#further">etiquetado apropiado</a>. Debido a que XML proporciona una manera estándar de codificar los datos estructurados, la representación de los códigos de control en lugar del etiquetado además revertiría las ventajas reales derivadas de la utilización de XML. La utilización de los códigos de control en HTML y XHTML nunca es apropiada, debido a que estos idiomas de etiquetado se utilizan para representar texto y no datos. La única vez que se podría necesitar la siguiente información sería en el hipotético caso en el que no se pudieran limpiar los datos preexistentes que contengan códigos de control.</p>
+    <p>Si los datos no son realmente textuales y son binarios, sería más práctico codificarlos, por ejemplo, mediante base64 o como valores hexadecimales, a fin de garantizar que sólo los caracteres compatibles se utilizan en el texto del idioma de etiquetado. (Y, por supuesto, mediante la decodificación del texto cuando se leen los archivos). Se debe tener en cuenta que el esquema XML proporciona tipos de datos para estas codificaciones.</p>
+    <p>Otra alternativa es almacenar los datos en un documento externo y hacer referencia a ellos desde el documento XML.</p>
+    <p>En XML 1.1, si es necesario representar el código de control de manera explícita, la alternativa más sencilla es utilizar una NCR (referencia de caracteres numéricos). Por ejemplo, el código de control ESC (Escape) <strong>U+001B</strong> estaría representado por las referencias de caracteres numéricos&amp;#x1B; (hexadecimal) o &amp;#27; (decimal).</p>
+  </section>
+    
+  <section>
+    <h3 id="support"><a href="#support">Compatibilidad con códigos de control</a></h3>
+    <p>La siguiente tabla resume los idiomas de etiquetado que son compatibles con los códigos de control:</p>
+    <table>
+      <tbody>
+        <tr class="toprow">
+          <th>Controles</th>
+          <th>Extensión</th>
+          <th>HTML 4</th>
+          <th>XHTML 1.0</th>
+          <th>XML 1.0</th>
+          <th>XML 1.1</th>
+        </tr>
+        <tr>
+          <th rowspan="2">C0, excepto HT, LF, CR</th>
+          <td>U+0000 (NUL)</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+        </tr>
+        <tr>
+          <td>U+0001-U+001F</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>HT, LF, CR</th>
+          <td>U+0009, U+000A, U+000D</td>
+          <td>Compatible</td>
+          <td>Compatible</td>
+          <td>Compatible</td>
+          <td>Compatible</td>
+        </tr>
+        <tr>
+          <th>DEL + C1</th>
+          <td>U+007F-U+009F</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>Compatible</td>
+          <td>NCR</td>
+        </tr>
+        <tr>
+          <th>NEL</th>
+          <td>U+0085</td>
+          <td>Ilegal</td>
+          <td>Ilegal</td>
+          <td>(permitido)</td>
+          <td>Compatible</td>
+        </tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>
+        <p>El control NUL (Nulo) es ilegal y, por lo tanto, no puede estar representado por NCR ni codificado directamente en idiomas de etiquetado.</p>
+      </li>
+      <li>
+        <p>HTML, XHTML y XML 1.0 no son compatibles con la extensión C0, excepto el caso de HT (Tabulación horizontal) <strong>U+0009</strong>, LF (Salto de línea) <strong>U+000A</strong> y CR (Retorno de carro) <strong>U+000D</strong>. Es compatible con la extensión C1; es decir, los controles se pueden codificar directamente o se pueden representar como NCR (referencias de caracteres numéricos).</p>
+      </li>
+      <li>
+        <p>XML 1.1 restringe la extensión C1, excepto en el caso de NEL <strong>U+0085</strong> (la nueva línea de EBCDIC), además de la extensión C0. Sin embargo, XML 1.1 permite que los controles estén representados por NCR (referencias de caracteres numéricos).</p>
+      </li>
+    </ul>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Mientras que la familia ISO 8859 reserva la extensión C1 para los controles, los juegos de caracteres de Microsoft (por ejemplo, 1250-1258) colocan los caracteres en esta extensión. A veces, los autores de contenidos utilizan los puntos de codificación de caracteres de Microsoft por error al crear NCR en lugar de utilizar valores Unicode. Debido a la prevalencia de este error, existen diversos exploradores que muestran los caracteres de Microsoft en esta extensión. Es un comportamiento incorrecto y engaña aún mas al desarrollador de contenidos al confirmar de manera incorrecta el valor equivocado. Finalmente, el problema podrá descubrirse cuando alguna aplicación utilice los datos o cuando el explorador que cumple con los estándares no muestre el carácter que se desee.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Para obtener más información acerca de la extensión C0, consultar la <a href="http://www.unicode.org/charts/PDF/U0000.pdf">Tabla de códigos Unicode: Controles C0 y latín básico</a> </p>
+    </li>
+    <li>
+      <p>Para obtener más información acerca de la extensión C1, consultar la <a href="http://www.unicode.org/charts/PDF/U0080.pdf">Tabla de códigos Unicode: Controles C1 y suplemento de latin-1</a> </p>
+    </li>
+    <li>
+      <p>El documento denominado<a href="http://www.w3.org/TR/unicode-xml/">Unicode en XML y otros idiomas de etiquetas</a>  contiene pautas relacionadas con la utilización del estándar Unicode en conjunto con los idiomas de etiquetado tales como XML.</p>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
