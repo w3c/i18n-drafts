@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Einrichtung von MultiViews-Sprachvereinbarung auf Apache</title>
+<meta name="description" content="Wie setze ich MultiViews auf einem Apache-Webserver ein, um Ressourcen automatisch in der per HTTP-Request angefragten Sprache auszuliefern?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-apache-lang-neg' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida and Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-apache-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-01-14' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2009-03-05', time:'10:26'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-03', time:'13:08'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://bittersmann.de/">Gunnar Bittersmann</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-apache-lang-neg-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Einrichtung von MultiViews-Sprachvereinbarung auf Apache</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    Webmaster, Server-Administratoren und alle, die besser verstehen möchten, wie Inhaltsvereinbarung (Sprachvereinbarung) auf dem Apache-Server gemacht wird</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Wie setze ich MultiViews auf einem Apache-Webserver ein, um Ressourcen automatisch in der per HTTP-Request angefragten Sprache auszuliefern?</p>
+  </section>
+
+
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Wenn ein Browser ein Dokument von einem Server anfragt, wird üblicherweise die Information über die vom Nutzer bevorzugten Sprachen im
+    HTTP-Accept-Language-Header zum Server geschickt. Wenn der Server eine Webseite in mehr als einer Sprachversion vorrätig hat, kann diese HTTP-Information dazu benutzt werden,
+    dass der Nutzer die Webseite in seiner bevorzugten Sprache erhält, wenn diese verfügbar ist. Wenn es nur eine Version auf dem Server gibt, wird diese ausgeliefert.</p>
+  <p>Der Mechanismus, dem Nutzer anhand der Accept-Language-Information im HTTP-Request die für ihn relevante Seite auszuliefern, wird <dfn>Sprachvereinbarung</dfn> (engl. <dfn lang="en">language negotiation</dfn>) genannt.</p>
+  <p>In vielen Fällen ist die initiale Browsereinstellung in Ordnung. Wenn Sie bspw. eine japanische Browserversion haben, nimmt der Browser üblicherweise an, dass Sie Webseiten auf japanisch bevorzugen und sendet diese Information an den Server.
+    Gängige Browser erlauben Ihnen, die bevorzugten Sprachen zu ändern. Weitere Informationen dazu finden Sie im Artikel <a class="print" href="/International/questions/qa-lang-priorities"><cite>Einstellung der bevorzugten Sprachen im Browser</cite></a>.</p>
+  <p>Es gibt zwei verschiedene Ansätze für Inhaltsvereinbarung auf Apache. Der erste beinhaltet die Verwendung einer <dfn>Typenzuordnungsdatei</dfn> (.var-Datei),
+    welche die Dateien mit den Varianten explizit benennt; der zweite beinhaltet die Verwendung einer <dfn>'MultiViews'</dfn>-Suche, wobei der Server einen impliziten
+    Mustervergleich von Dateinamen durchführt und aus den Resultaten auswählt. Die MultiViews-Option kann auch für einzelne Verzeichnisse gesetzt werden, wenn der
+    Serveradministrator das zugelassen hat.</p>
+  <p>Dieser Artikel behandelt die Frage, wie man beim MultiViews-Ansatz Dokumente auf einem Apache-Server einrichtet, damit Sprachvereinbarung funktioniert.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Bedenken Sie zuerst, dass Sprachvereinbarung der beste Ansatz sein kann oder auch nicht, um Ihre mehrsprachigen Inhalte an Ihre Leser zu bringen.
+    In einigen Fällen können lokalisierte Websites bspw. am besten gehandhabt werden, indem man die übersetzten Versionen einer Website in verschiedenen Verzeichnissen voneinander getrennt hält
+    oder indem man beide Ansätze kombiniert. Welcher Ansatz der jeweils passende ist, wird Thema eines zukünftigen Artikels sein.</p>
+  <p>Die Einrichtung von Sprachvereinbarung beinhaltet</p>
+  <ol>
+    <li>eine Namenskonvention für die Dateien der verschiedenen Sprachversionen zu entwerfen,</li>
+    <li>sich eine Strategie zu überlegen, auf welche Sprache zurückgegriffen werden soll, wenn Sprachen angefordert werden, die Sie nicht unterstützen, und</li>
+    <li>die richtigen serverseitigen Direktiven einzurichten, damit alles funktioniert.</li>
+  </ol>
+  <p>Es gibt mehr als einen Weg, Sprachvereinbarung auf Apache-Servern einzurichten, und richtige Ansatz hängt von den Einstellungen auf höherer Ebene
+    und den vom Serveradministrator erteilten oder nicht erteilten Rechten ab. Kontaktieren Sie Ihren Serveradministrator um zu erfahren,
+    welcher Ansatz möglich ist und welche Rechte Sie haben.</p>
+  <p>Weil sich Server-Konfigurationen auf vielfältige Weise unterscheiden können, ist es schwer, eine einfache definitive Beschreibung zu geben, wie man Sprachvereinbarung
+    einrichtet. Was nun folgt, ist eine Beschreibung eines üblichen Ansatzes. Wir setzen voraus, dass <code class="kw" translate="no">MultiViews</code> angeschaltet ist (das ist die Voreinstellung) und
+    dass der Anwender bestimmte Direktiven in <code class="kw" translate="no">.htaccess</code>-Dateien ändern kann (das sind kleine Textdateien in der Verzeichnisstruktur). <code class="kw" translate="no">AllowOverride</code> muss vom Serveradministrator entsprechend gesetzt sein, damit .htaccess-Dateien Wirkung zeigen. Fragen Sie Ihren Serveradministrator,
+    ob dieser Ansatz in Ihrem Fall machbar ist.</p>
+  <p>Wir verwenden folgendes Beispiel: Ein Dokument example.html sei in 3 Sprachen verfügbar: englisch, französisch und deutsch, die
+    Voreinstellung sei englisch. Obwohl sich das Beispiel auf .html-Dateien beschränkt, kann Sprachvereinbarung auch bei anderen Dateitypen angewandt werden.</p>
+
+  <section>
+    <h3 id="naming"><a href="#naming">Dateinamen</a></h3>
+    <p>Jede Sprache wird durch eine spezielle Dateiendung angezeigt, die vor oder nach der Endung .html stehen kann. Bei der Anwendung muss man
+      einige Überlegungen zur Position dieser Dateiendung anstellen.</p>
+    <p>Wenn die Sprach-Endung als letztes steht, kann die Datei mit oder ohne .html-Endung angefordert werden. Das kann es allerdings erschweren,
+      die Dateien zu lesen oder zu editieren, wenn sie nicht auf einem Apache-Server sind (sondern bspw. von einem anderen Server, einer CD oder der Harddisk gelesen werden).
+      Das kommt daher, dass die meisten Editoren und Browser nur anhand der letzten Dateiendung den Dateitypen bestimmen und wie mit diesem zu verfahren ist.
+      In unserem Beispiel wären die Namen der englischen, französischen und deutschen Dateien wie folgt:</p>
+    <ul>
+      <li>example.html.en</li>
+      <li>example.html.fr</li>
+      <li>example.html.de</li>
+    </ul>
+    <p>Wenn die .html-Endung als letztes steht, ist es leichter, die Dateien zu lesen oder zu editieren, wenn sie nicht auf einem Apache-Server sind.
+      Um die Ressource von einem Apache-Server abzurufen, muss der Dateiname immer <strong>ohne die Dateiendungen</strong> in der Adresszeile im Browser eingegeben
+      bzw. in einem Hyperlink angegeben werden (d.h. <code>&lt;a href="example"&gt;...&lt;/a&gt;</code>). In unserem Beispiel wären die Dateinamen:</p>
+    <ul>
+      <li>example.en.html</li>
+      <li>example.fr.html</li>
+      <li>example.de.html</li>
+    </ul>
+    <p>Die Sprach-Endungen können beliebige Strings sein, solange ihre Bedeutung auf dem Server definiert wird (siehe unten). Der Server wird
+      vermutlich schon einige zweibuchstabige Sprach-Endungen aus den globalen Einstellungen in seiner httpd.conf-Datei erkennen. Wir empfehlen die Verwendung der
+      ISO-Sprach- und -Ländercodes wie in <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP&nbsp;47</a> definiert, denn das gewährleistet
+      bessere Konsistenz und einfache Wiedererkennbarkeit der Sprachkennzeichnungen.</p>
+    <p>Bei einigen Dateiendungen ist Vorsicht geboten. Die Verwendung des ISO-Codes .pl für Polnisch würde mit der Endung kollidieren,
+      die typischerweise für Perl-Dokumente verwendet wird. Verwenden Sie deshalb pl-PL für Polnisch.</p>
+    <p>Nutzer können eine spezielle Datei referenzieren, indem sie den vollen Dateinamen angeben, z.B. example.fr.html fordert die französische Version an,
+      unabhängig von den Spracheinstellungen des Nutzers.</p>
+  </section>
+
+  <section>
+    <h3 id="directives"><a href="#directives">Server-Direktiven</a></h3>
+    <p>Normalerweise verwendet man die <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_mime.html#addlanguage">AddLanguage</a></span>-Direktive um
+      anzugeben, welche Dateiendung mit welcher per HTTP für den Inhalt angegebenen Sprache verknüpft ist.</p>
+    <p>Die folgene Direktive verknüpft z.B. den HTTP-Request nach Inhalt auf Französisch mit der Dateiendung .fr: </p>
+    <blockquote>
+      <p><code> AddLanguage fr .fr</code></p>
+    </blockquote>
+    <p>Es gibt verschiedene Stellen, wo man dies angeben kann. Es kann bereits durch einen Eintrag in der httpd.conf-Datei des Servers global spezifiziert sein
+      oder ein Serveradministrator kann es dort hinzufügen. Als Alternative dazu kann ein Anwender, der Inhalte hochladen kann, dies in einer Datei in der Verzeichnisstruktur angeben.
+      Solch eine Datei heißt üblicherweise <code class="kw" translate="no">.htaccess</code>.</p>
+  </section>
+
+  <section>
+    <h3 id="defaults"><a href="#defaults">Default-Dateien</a></h3>
+    <div class="sidenoteGroup">
+      <p>Es ist wichtig, eine Default-Datei festzulegen, denn Nutzer, die weder Englisch noch Französisch noch Deutsch in der Liste ihrer
+        bevorzugten Sprachen haben (z.B. ein spanischer Nutzer), oder deren Nutzerprogramm (Browser) keine Inhaltsvereinbarung unterstützt, würden sonst einen HTTP-Fehler 406
+        (<span lang="en">NOT ACCEPTABLE</span>) anstelle einer Datei erhalten.</p>
+      <aside class="sideinfonote">
+        <p class="info">Eine Default-Datei ist diejenige Sprachversion, auf die zurückgegriffen wird, wenn Sprachvereinbarung keine Übereinstimmung liefert. (Anmerkung des Übersetzers)</p>
+        <p>Beachten Sie, dass einige gängige Browser die Voreinstellung für Nutzer aus den USA auf <code>en-us</code> setzen. Das ergibt keine Übereinstimmung
+          mit <code>en</code> auf dem Server. Sie sollten also sicherstellen, dass diese Nutzer ein englisches Dokument erhalten.</p>
+      </aside>
+    </div>
+    <p>Wie man am besten eine Default-Datei festlegt, hängt davon ab, ob die Sprach-Endung vor oder hinter der .html-Endung steht
+      und welche Apache-Version verwendet wird. In den nachfolgenden Beispielen nehmen wir Englisch als Default an (oft die beste
+      Wahl für einen Default angesichts dessen, wie weit verbreitet Englisch ist).</p>
+  </section>
+
+  <section>
+    <h3 id="specdef2"><a href="#specdef2">Default-Dateien in Apache ab 2.0.30 festlegen</a> </h3>
+    <p>Ab Version 2.0.30 gibt es auf Apache-Servern eine saubere Lösung, um eine Default-Datei festzulegen: die Direktiven <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_negotiation.html#forcelanguagepriority">ForceLanguagePriority</a></span> und <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_negotiation.html#languagepriority">LanguagePriority</a></span>. (Folgen Sie den Links
+      zu ausführlichen Beschreibungen, wie diese Direktiven arbeiten).</p>
+    <p>Für das obige Beispiel können wir durch folgende zwei Zeilen den Default auf Englisch setzen:</p>
+    <blockquote>
+      <p><code> LanguagePriority en fr de</code><br />
+        <code>ForceLanguagePriority Fallback</code></p>
+    </blockquote>
+    <p>Wenn nun ein spanischer Nutzer ein spanisches Dokument im Kontext unseres Beispiels anfordert, bekommt er stattdessen das englische Dokument
+      ausgeliefert, d.h. das, was als erstes in der <code class="kw" translate="no">LanguagePriority</code>-Liste steht.</p>
+  </section>
+
+  <section>
+    <h3 id="specdef1"><a href="#specdef1">Default-Dateien in Apache 1.3.4 bis 2.0.29 festlegen</a></h3>
+    <p>Wenn die Server-Version älter als 2.0.30 ist, hat man mehr Arbeit damit, die Default-Datei festzulegen, denn die <code class="kw" translate="no">ForceLanguagePriority</code>-Direktive steht nicht zur Verfügung. Das Vorgehen hängt dann davon ab, ob die Sprach-Endung vor oder hinter der .html-Endung
+      steht.</p>
+    <p>Betrachten wir zuerst den Fall, dass die Sprach-Endung vor der .html-Endung steht (die Ressource also immer ohne die .html-Endung
+      in der Adresszeile im Browser eingegeben bzw. in einem Hyperlink angegeben werden muss). Um Englisch als Default zu setzen, kann man in dem Verzeichnis eine Kopie der englischen Datei
+      unter folgendem Namen erstellen:</p>
+    <blockquote>
+      <p>example.html</p>
+    </blockquote>
+    <p>Wenn die Sprach-Endung nach der .html-Endung steht (die Datei also mit oder ohne .html-Endung angefordert werden kann),
+      muss die Kopie der englischen Datei so benannt werden:</p>
+    <blockquote>
+      <p>example.html.html</p>
+    </blockquote>
+    <p>Die Endung der Default-Datei ist .html.html, denn wenn die Datei example.html hieße und ein Nutzer sie als
+      example.html anfordern würde, fände keine Inhaltsvereinbarung statt (weil eine exakte Übereinstimmung gefunden wird).</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Wenn es in einem Verzeichnis nur eine Datei mit einem bestimmten Namen gibt und sie keine Sprach-Endung hat, dann wird diese ausgeliefert,
+    unabhängig von den bevorzugten Sprachen des Nutzers.</p>
+  <p>Diese Technik kann auch für andere Dateitypen als HTML angewandt werden. Wir haben HTML hier als Beispiel verwendet, weil dies ein oft auftretender Fall
+    ist.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/questions/qa-when-lang-neg"><cite>Wann es angebracht ist, Sprachvereinbarung (<span lang="en">language negotiation</span>) einzusetzen</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-lang-priorities"><cite>Einstellung der bevorzugten Sprachen im Browser</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://httpd.apache.org/docs/content-negotiation.html">Apache Version 1: Dokumentation zu Inhaltsvereinbarung (<span lang="en">content negotiation</span>)</a> </p>
+    </li>
+    <li>
+      <p><a href="http://httpd.apache.org/docs-2.0/content-negotiation.html">Apache Version 2: Dokumentation zu Inhaltsvereinbarung (<span lang="en">content negotiation</span>)</a> </p>
+    </li>
+    <li>
+      <p>Verwandte Links: <cite>Server-Konfiguration</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#language">Sprache</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">Einrichtung von MultiViews-Sprachvereinbarung auf Apache</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">Sprachkennzeichnungen wählen</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

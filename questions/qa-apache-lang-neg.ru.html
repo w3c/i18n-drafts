@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Настройка отображения языка с помощью Apache MultiViews</title>
+<meta name="description" content="Как я могу использовать подход MultiViews на веб сервере Apache для автоматического обслуживания ресурсов на том языке, к которому был отправлен HTTP запрос?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-apache-lang-neg' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida and Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-apache-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-01-14' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2009-03-05', time:'10:26'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-03', time:'13:08'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Александр Шлапак' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-apache-lang-neg-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Настройка отображения языка с помощью Apache MultiViews</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    Веб-мастера, администраторы серверов, а также те, кто хочет лучше понять, как отображать язык контента на сервере Apache.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Как я могу использовать подход MultiViews на веб сервере Apache для автоматического обслуживания ресурсов на том языке, к которому
+      был отправлен HTTP запрос?</p>
+  </section>
+
+
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>Клиентское приложение запрашивает документ с сервера, информация о языковых предпочтениях пользователя, как правило, передается на сервер
+    через заголовок HTTP Accept-Language. Если сервер сохраняет страницы на более чем одном языке, то эта HTTP информация может быть использована для получения
+    страницы на том языке, который пользователь предпочитает, если тот язык доступен. Если на сервере есть только одна версия страницы, то она и будет
+    получена.</p>
+  <p>Механизм выбора соответствующей страницы для возвращения пользователю, основанный на Accept-Language информации в HTTP запросе, и он
+    называется <dfn>согласование языка</dfn>.</p>
+  <p> Во многих случаях клиентское приложение имеет правильные исходные настройки. Например, если у вас есть Японская версия браузера, то браузер обычно
+    предполагает, что вы предпочитаете страницам на Японском языке, и отправляет эту информацию на сервер. Основные браузеры позволяют изменять эти языковые
+    предпочтения. Для получения дополнительной информации смотрите <a class="print" href="/International/questions/qa-lang-priorities"><cite>Установка языковых
+    предпочтений в браузере</cite></a>.</p>
+  <p>В Apache есть два различных подхода к согласованию ресурса. Первый предполагает использование <dfn>файла типа map</dfn> (например, .var файл)
+    который называет файлы, содержащие ожидаемые варианты, второй предполагает использование <dfn>'MultiViews'</dfn> поиска, где сервер делает неявное
+    сопоставление имени файла шаблона и выбирает из числа результатов. Опция MultiViews также может быть установлена ​​для каждой папки, если это разрешил
+    администратор сервера.</p>
+  <p>В данной статье рассматривается вопрос о том, как настроить документы на сервере Apache, используя подход MultiViews, так чтобы работало
+    согласование языка.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Во-первых, обратите внимание, что согласование языка как может быть лучшим способом для обслуживания вашего многоязычного контента для ваших читателей, так может и не быть. В некоторых
+    случаях, например, локализованные сайты могут лучше поддерживаться путем сохранения переведенных версий страницы в папки с соответствующими языками или путем смешивания
+    вышеупомянутых двух подходов. Какой подход является более целесообразным, и в какой ситуации, будет рассматриваться в следующей статье.</p>
+  <p>Настройка согласования языка включает в себя:</p>
+  <ol>
+    <li>разработку стратегии для обозначения различных языковых версий файла,</li>
+    <li>планирование резервной стратегии действий при запросе языков, которые вы не поддерживаете, и</li>
+    <li>установление соответствующих серверных директив, чтобы все работало.</li>
+  </ol>
+  <p>Существует несколько способов настроить согласования языка на серверах Apache, и правильный подход будет зависеть от настроек более высокого уровня
+    и от включенных или отключенных администратором сервера привилегий. Возможно, вам придется обратиться к администратору сервера, чтобы проверить, какой
+    подход доступен и какие вы имеете привилегии.</p>
+  <p>Учитывая несколько путей, по которым настройки сервера могут меняться, трудно просто и окончательно описать, как настроить
+    согласование языка. Далее приведено описание типового подхода. Будем считать, что опция <code class="kw" translate="no">MultiViews</code> включена (по умолчанию) и
+    , что пользователь может изменить некоторые директивы файлов <code class="kw" translate="no">.htaccess</code> (небольшие текстовые файлы в структуре папки). Для того чтобы подход с .htaccess файлом работал,  
+    директива <code class="kw" translate="no">AllowOverride</code> должна быть правильно настроена администратором сервера. Вам необходимо обратиться к администратору сервера, чтобы узнать
+    подходит для вас такой подход.</p>
+  <p>Мы предлагаем использовать следующий пример: документ под названием example.html доступен на 3-х языках: Английском, Французском и Немецком, а
+    по умолчанию используется Английский язык. Несмотря на то, что пример ограничивает себя .html файлами, согласования языка может быть применено к другим типам файлов.</p>
+
+  <section>
+    <h3 id="naming"><a href="#naming">Наименование файлов</a></h3>
+    <p>Каждая языковая версия указывается специальным расширения, которое может появляться до или после .html расширения. На практике, есть
+      некоторые соображения относительно размещением этого расширения, которые нужно иметь в виду.</p>
+    <p>Если вы поставите расширение языка в конце, то .html расширения могут быть включены или исключены при обращении к файлу. Тем не менее, эта стратегия может
+      сделать файлы более трудными для чтения или редактирования, если они не находятся на сервере Apache (например, читать с другого сервера, компакт-диска или жесткого диска).
+      Это потому, что большинство редакторов и обозревателей, чтобы определить какой это тип файла и как с ним обращаться просто смотрят на последнее расширение. Для нашего
+      примера Английский, Французский и Немецкий файлы будут названы, соответственно, таким образом:</p>
+    <ul>
+      <li>example.html.en</li>
+      <li>example.html.fr</li>
+      <li>example.html.de</li>
+    </ul>
+    <p>Если в конце вы поставите .html расширение, вы облегчите чтения и редактирования файлов, если они не находятся на сервере Apache, но для доступа к
+      ресурсу на сервере Apache имя должно всегда быть набрано в адресной строке браузера или указанное в гиперссылке и т.д., <strong>без
+      расширений</strong> (например <code>&lt;a href="example"&gt;...&lt;/a&gt;</code>). В нашем примере, имена файлов будут такие:</p>
+    <ul>
+      <li>example.en.html</li>
+      <li>example.fr.html</li>
+      <li>example.de.html</li>
+    </ul>
+    <p>В действительности приведенные языковые метки могут быть любыми, такой длины, которую вы для них определите на сервере (см. ниже). Сервер
+      скорее всего, уже определяет 2-х буквенные расширения языка из глобальных настроек в его файле httpd.conf. Мы рекомендуем использовать ISO
+      коды языков и стран, так как указано в <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>, поскольку это обеспечивает большую
+      последовательность и легкое распознавание меток языка.</p>
+    <p>Вы должны быть осторожны с некоторыми расширениями. Например, использование кода ISO .pl для Польского языка, будет путать его с расширением, что
+      обычно используется для обозначения Perl документов. Таким образом, если вы хотите, то для польского языка вы можете использовать следующее обозначение pl-PL.</p>
+    <p>Обратите внимание, что пользователи могут обращаться к конкретному файлу, введя полное имя файла, например example.fr.html будет загружаться на французском языке,
+      независимо от языковых настроек.</p>
+  </section>
+
+  <section>
+    <h3 id="directives"><a href="#directives">Директивы сервера</a></h3>
+    <p>Вы обычно используете директиву <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_mime.html#addlanguage">AddLanguage</a></span>, чтобы
+      указать, какие расширения указаны для определенного языка контента в входном HTTP.</p>
+    <p>Например, следующая директива направляет HTTP запрос контента, что написанный на Французском языке на расширение .fr: </p>
+    <blockquote>
+      <p><code> AddLanguage fr .fr</code></p>
+    </blockquote>
+    <p>Есть несколько мест, где вы это можете указать. Это, возможно, уже отмечено в глобальном масштабе за счет записи в файл сервера httpd.conf,
+      или администратор сервера может ее туда добавить. Кроме того, при загрузке контента пользователем он может указываться в файле в иерархии папок. Такой
+      файл, как правило, называется <code class="kw" translate="no">.htaccess</code>.</p>
+  </section>
+
+  <section>
+    <h3 id="defaults"><a href="#defaults">Файлы по умолчанию</a></h3>
+    <div class="sidenoteGroup">
+      <p>Важно указать файл по умолчанию, так что пользователь, не имеющий Английского, Французского или Немецкого языка в своем списке
+        предпочитаемых языков (скажем, например, Испанский пользователь), или чье клиентское приложение не поддерживает согласование контента, или в противном случае вы получите не файл, а HTTP 406
+        результат (НЕ ПРИЕМЛЕМЫЙ).</p>
+      <aside class="sideinfonote"><p class="info">Отметим также, что некоторые основные браузеры могут для пользователей из США устанавливать язык пользователя по умолчанию <code>en-us</code>. Это не 
+        будет совпадать с <code>en</code>, которая установлена на сервере, поэтому вы должны убедиться, что вы предоставили пользователям возможность получить Английский документ.</p></aside>
+    </div>
+    <p>Лучший способ указать файл по умолчанию будет меняться, в зависимости от вашего расширения языка - то ли оно предшествует, то ли оно следует за .html
+      расширением, и от того какую версию Apache вы используете. В приведенных ниже примерах будем считать, что по умолчанию установлен ​​Английский язык (вероятно, чаще всего он может быть лучшим
+      выбором по умолчанию, с учетом широкого распространения Английского языка).</p>
+  </section>
+
+  <section>
+    <h3 id="specdef2"><a href="#specdef2">Указание файлов по умолчанию на Apache 2.0.30 и выше</a> </h3>
+    <p>В версиях 2.0.30 и выше на сервере Apache используя директивы <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_negotiation.html#forcelanguagepriority">ForceLanguagePriority</a></span> и <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_negotiation.html#languagepriority">LanguagePriority</a></span> вы довольно четко можете указать файл по умолчанию (для получения детального описания
+      работы этих директив пройдите по ссылке).</p>
+    <p>Для нашего примера, мы могли бы установить Английский язык по умолчанию, используя следующие две строки:</p>
+    <blockquote>
+      <p><code> LanguagePriority en fr de</code><br />
+        <code>ForceLanguagePriority Fallback</code></p>
+    </blockquote>
+    <p>Теперь, если Испанские пользователи будут запрашивать Испанский документ в контексте нашего примера, то вместо Испанского они получат
+      Английский документ. То есть первый пункт из списка <code class="kw" translate="no">LanguagePriority</code>.</p>
+  </section>
+
+  <section>
+    <h3 id="specdef1"><a href="#specdef1">Указание файлов по умолчанию Apache от 1.3.4 до 2.0.29</a></h3>
+    <p>Если версия вашего сервера предыдущая к 2.0.30, то вам придется сделать очень много работы, чтобы указать файл по умолчанию, поскольку здесь не доступна директива <code class="kw" translate="no">ForceLanguagePriority</code>. Кроме того, подход будет зависеть от того где стоит расширение языка: до или после .html
+      расширения.</p>
+    <p>Сначала давайте рассмотрим случай, когда расширение языка стоит до .html расширения (то есть ресурсы всегда должны быть набраны в
+      адресной строке браузера или указанные в гиперссылке и т.д., без .html расширения). Для установки Английского языка по умолчанию можно создать копию
+      Английского файла в папке с последующим именем:</p>
+    <blockquote>
+      <p>example.html</p>
+    </blockquote>
+    <p>Если ваше расширение языка находится после .html (то есть .html расширения могут быть включены или исключены при обращении к файлу), тогда
+      необходимо назвать свою копию Английского файла следующим образом:</p>
+    <blockquote>
+      <p>example.html.html</p>
+    </blockquote>
+    <p>Файл по умолчанию имеет такое расширение .html.html потому что, если файл по умолчанию был назван example.html и пользователь запросил файл, как
+      example.html, то согласование контента никогда не состоится (потому что не сможет найти точного соответствия).</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Если в папке есть только один файл с заданным именем и нет расширения языка, то он будет обслуживаться независимо от
+    языковых предпочтений клиента.</p>
+  <p>Эта техника может быть применена к другим типам файлов, кроме HTML. Мы просто использовали HTML пример здесь, поскольку это общее
+    требование.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/questions/qa-when-lang-neg"><cite>Когда использовать согласование языка</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-lang-priorities"><cite>Настройка языковых предпочтений в браузере</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="http://httpd.apache.org/docs/content-negotiation.html">Документация Apache о Согласовании Контента, 1-я версия</a> </p>
+    </li>
+    <li>
+      <p><a href="http://httpd.apache.org/docs-2.0/content-negotiation.html">Документация Apache о Согласовании Контента, 2-я версия</a> </p>
+    </li>
+    <li>
+      <p>Ссылки по теме, <cite>Настройка сервера</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#language">Язык</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">Настройка согласования языка MultiViews на Apache</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">Выбор языковых значений</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

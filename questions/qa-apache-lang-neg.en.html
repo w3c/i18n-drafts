@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Apache MultiViews language negotiation set up</title>
+<meta name="description" content="How do I use the MultiViews approach on an Apache Web server to automatically serve resources in the language requested by an HTTP request?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-apache-lang-neg' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida and Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-apache-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-01-14' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2009-03-05', time:'10:26'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-03', time:'13:08'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-apache-lang-neg-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Apache MultiViews language negotiation set up</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    Webmasters, server administrators, and anyone who wants to better understand how to do language content negotiation on the Apache server.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">How do I use the MultiViews approach on an Apache Web server to automatically serve resources in the language
+      requested by an HTTP request?</p>
+  </section>
+
+
+<section>
+  <h2 id="background"><a href="#background">Background</a></h2>
+  <p>When a user agent requests a document from a server, information about the user's language preferences is typically passed to the server
+    via the HTTP Accept-Language header. If the server stores versions of a page in more than one language, this HTTP information can be used to retrieve
+    the page in the user's preferred language, if it is available. If there is only one version of a page on the server, that version will be
+    retrieved.</p>
+  <p>The mechanism of choosing the relevant page to return to the user, based on the Accept-Language information in the HTTP request, is
+    referred to as <dfn>language negotiation</dfn>.</p>
+  <p> In many cases, the initial user agent setting is okay. For example, if you have a Japanese version of a browser, the browser typically
+    assumes that you prefer pages in Japanese, and sends this information to the server. Mainstream browsers allow you to modify these language
+    preferences. For more information see <a class="print" href="/International/questions/qa-lang-priorities"><cite>Setting language
+    preferences in a browser</cite></a>.</p>
+  <p>There are two different approaches to resource negotiation in Apache. The first involves the use of a <dfn>type map file</dfn> (i.e., a .var file)
+    which names the files containing the variants explicitly; the second involves the use of a <dfn>'MultiViews'</dfn> search, where the server does an implicit
+    filename pattern match and chooses from among the results. The MultiViews option can also be set on a per directory basis, if the server
+    administrator has allowed it.</p>
+  <p>This article addresses the question of how to set up the documents on an Apache server, using the MultiViews approach, so that language
+    negotiation works.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Note, first, that language negotiation may or may not be the best approach for serving your multilingual content to your readers. In some
+    cases, for example, localized sites may be best maintained by keeping the translated versions of a page in language-specific directories, or by mixing
+    the two approaches. Which approach is appropriate, and when, will be the topic of a future article.</p>
+  <p>Setting up language negotiation involves</p>
+  <ol>
+    <li>developing a convention for naming the different language versions of your file,</li>
+    <li>planning a fallback strategy to deal with requested languages that you don't support, and</li>
+    <li>setting the appropriate server-side directives to make it all work.</li>
+  </ol>
+  <p>There is more than one way to set up language negotiation on Apache servers, and the right approach will depend on the higher level
+    settings and the privileges enabled or disabled by the server administrator. You may need to contact your server administrator to check which
+    approach is available and what privileges you have.</p>
+  <p>Given the number of ways in which server set up can vary, it is difficult to provide a simple definitive description of how to set up
+    language negotiation. What follows is a description of a typical approach. We will assume that <code class="kw" translate="no">MultiViews</code> is enabled (the default) and
+    that the user can change certain directives in <code class="kw" translate="no">.htaccess</code> files (small text files in the directory structure). <code class="kw" translate="no">AllowOverride</code> has to be properly set by the server administrator for the .htaccess file approach to work. You will need to check with your server administrator
+    whether this approach is workable for your own circumstances.</p>
+  <p>We will use the following example: a document called example.html is available in 3 languages, English, French and German, and the
+    default is English. Although the example limits itself to .html files, language negotiation can be applied to other types of file.</p>
+
+  <section>
+    <h3 id="naming"><a href="#naming">File naming</a></h3>
+    <p>Each language version is indicated by a special extension, which can appear before or after the .html extension. In practice, there
+      are some considerations to bear in mind with regard to the placement of this extension.</p>
+    <p>If you put the language extension last, the .html extension can be included or excluded when requesting the file. This strategy may,
+      however, make it more difficult to read or edit the files if they are not on an Apache server (eg. read from another server, a CD, or a hard drive).
+      This is because most editors and browsers just look at the last extension to determine what type of file this is and how to handle it. For our
+      example the English, French and German files would be named, respectively, as follows:</p>
+    <ul>
+      <li>example.html.en</li>
+      <li>example.html.fr</li>
+      <li>example.html.de</li>
+    </ul>
+    <p>If you put the .html extension last you make it easier to to read or edit the files if they are not on an Apache server, but to access
+      the resource on the Apache server the name must always be typed in a browser address bar or identified in a hyperlink, etc., <strong>without the
+      extensions</strong> (eg. <code>&lt;a href="example"&gt;...&lt;/a&gt;</code>). For our example, the filenames would be:</p>
+    <ul>
+      <li>example.en.html</li>
+      <li>example.fr.html</li>
+      <li>example.de.html</li>
+    </ul>
+    <p>The language labels shown can actually be any strings, as long as you define their meaning on the server (see below). The server is
+      likely to already recognize a number of 2-letter language extensions from global settings in its httpd.conf file. We recommend that you use ISO
+      language and country codes in the way defined by <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>, since this provides for greater
+      consistency and easy recognition of language labels.</p>
+    <p>You should be careful with a few extensions. For example, using the ISO code for Polish, .pl, would confuse it with the extension
+      typically used to indicate Perl documents. You may therefore want to use pl-PL for Polish.</p>
+    <p>Note that users can refer to a specific file by typing in the full file name, eg. example.fr.html will retrieve the French version,
+      regardless of the user's language settings.</p>
+  </section>
+
+  <section>
+    <h3 id="directives"><a href="#directives">Server directives</a></h3>
+    <p>You would normally use the <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_mime.html#addlanguage">AddLanguage</a></span> directive to
+      specify which extension maps to which content language specified in the incoming HTTP.</p>
+    <p>For example, the following directive maps the HTTP content language request for French to the extension .fr: </p>
+    <blockquote>
+      <p><code> AddLanguage fr .fr</code></p>
+    </blockquote>
+    <p>There are a number of places you can specify this. It may already be specified globally by an entry in the server's httpd.conf file,
+      or a server administrator may add it there. Alternatively, a user uploading content might specify it in a file in the directory hierarchy. Such a
+      file would typically be called <code class="kw" translate="no">.htaccess</code>.</p>
+  </section>
+
+  <section>
+    <h3 id="defaults"><a href="#defaults">Default files</a></h3>
+    <div class="sidenoteGroup">
+      <p>It is important to specify a default file, since a user who doesn't have either English, French or German in their list of
+        preferred languages (say for example a Spanish user), or who's user agent doesn't support content negotiation, would otherwise receive a HTTP 406
+        result (NOT ACCEPTABLE) rather than a file.</p>
+      <aside class="sideinfonote"><p class="info">Note also that some major browsers may set the user default to <code>en-us</code> for US users. This will not
+        match against <code>en</code> on the server, so you should be sure you provide a way for them to reach an English document.</p></aside>
+    </div>
+    <p>The best way to specify a default file will vary, depending on whether your language extension precedes or follows the .html
+      extension, and on what version of Apache you are using. In the examples below we will assume that the default is English (likely to often be the best
+      choice for a default, given the widespread nature of English).</p>
+  </section>
+
+  <section>
+    <h3 id="specdef2"><a href="#specdef2">Specifying default files in Apache 2.0.30 and above</a></h3>
+    <p>On versions 2.0.30 and above of the Apache server you can specify a default file quite cleanly using the <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_negotiation.html#forcelanguagepriority">ForceLanguagePriority</a></span> and <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_negotiation.html#languagepriority">LanguagePriority</a></span> directives (follow the links for
+      detailed descriptions of how these directives work).</p>
+    <p>Given our example above, we could set the default to be English using the following two lines:</p>
+    <blockquote>
+      <p><code> LanguagePriority en fr de</code><br />
+        <code>ForceLanguagePriority Fallback</code></p>
+    </blockquote>
+    <p>Now if a Spanish user were to request a Spanish document in the context of our example they would be served the English document
+      instead, ie. the first item in the <code class="kw" translate="no">LanguagePriority</code> list.</p>
+  </section>
+
+  <section>
+    <h3 id="specdef1"><a href="#specdef1">Specifying default files in Apache 1.3.4 to 2.0.29</a></h3>
+    <p>If your server version is earlier than 2.0.30 you will have to do a lot more work to specify the default file, since the <code class="kw" translate="no">ForceLanguagePriority</code> directive is not available. Also, the approach will depend on whether the language extension comes before or after the .html
+      extension.</p>
+    <p>First let's look at the case where your language extension comes before the .html extension (ie. the resource must always be typed in
+      a browser address bar or identified in a hyperlink, etc., without the .html extension). To set the default to English you can create a copy of the
+      English file in the directory with the following name:</p>
+    <blockquote>
+      <p>example.html</p>
+    </blockquote>
+    <p>If your language extension comes after the .html (ie. the .html extension can be included or excluded when requesting the file) you
+      will need to name your copy of the English file:</p>
+    <blockquote>
+      <p>example.html.html</p>
+    </blockquote>
+    <p>The default file name ends in .html.html because if the default file were named example.html and the user requested the file as
+      example.html no content negotiation would ever take place (because an exact match can be found).</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>If there is only one file with a given name in a directory and it has no language extension, that will be served whatever the client's
+    language preference.</p>
+  <p>This technique can be applied to other types of file besides HTML. We just used an HTML example here because it is a common
+    requirement.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/questions/qa-when-lang-neg"><cite>When to use language negotiation</cite></a></p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-lang-priorities"><cite>Setting language preferences in a browser</cite></a></p>
+    </li>
+    <li>
+      <p><a href="http://httpd.apache.org/docs/content-negotiation.html">Apache documentation on Content Negotiation, version 1</a></p>
+    </li>
+    <li>
+      <p><a href="http://httpd.apache.org/docs-2.0/content-negotiation.html">Apache documentation on Content Negotiation, version 2</a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Setting up a server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#language">Language</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">Setting up MultiViews language negotiation on Apache</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">Choosing language values</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
