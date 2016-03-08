@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8" />
+<title>Mikor használjunk nyelvi egyeztetést</title>
+<meta name="description" content="Mikor helyénvaló és mikor nem nyelvi egyeztetést használni?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-when-lang-neg' // the file name WITHOUT extensions
+f.authors = 'François Yergeau' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-when-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-02-26' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-02-26', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-04', time:'16:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Dénes Kohn, <a href="http://www.metaphraser.com/" target="_blank" title="translation company">Metaphraser - Translation Company</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'navigation'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-when-lang-neg-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-hu.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Mikor használjunk nyelvi egyeztetést</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    webmasters, server administrators, and anyone who wants to better understand language-based content negotiation.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Mikor helyénvaló és mikor nem nyelvi egyeztetést használni?</p>
+  
+  <p>A nyelvi egyeztetés a HTTP protokoll egy funkciója, amely hagyja hogy egy szerver kiválasszon egy oldalt a különböző nyelvű verziók közül az URL alapján illetve 
+    a böngésző által küldött beállításokkal kapcsolatos információ alapján (kimondottan az <code class="kw" translate="no">Accept-Language</code> fejlécben).	Ez különbözik a böngésző IP címén 
+    alapuló oldalválasztástól vagy a felhasználó általi választástól a nyelvválasztó oldalon. Ha nincs egyezés a böngésző által küldött beállítás és a szerveren elérhető 
+    nyelvek között, akkor vagy egy nyelvválasztó oldalt jelenít meg a szerver vagy az alapértelmezett nyelven jeleníti meg az oldalt.</p>
+  <p>Sok esetben a rendben van a kezdeti böngésző beállítás a nyelvi tulajdonságokhoz. Például ha a böngészőnk japán, akkor az feltételezi hogy japánul nézzük az oldalakat, ezért ezt az információt 
+    küldi a szervernek. A népszerűbb böngészők lehetővé teszik számunkra hogy módosítsuk ezeket a nyelvi beállításokat. További információkért tekintse meg a GYIK <a class="print" href="qa-lang-priorities.html"><cite>Nyelvi tulajdonságok beállítása a böngészőben</cite></a> című leírását.</p>
+  <p>Ez a GYIK megválaszolja a kérdést, hogy mikor helyénvaló (vagy nem) nyelvi egyeztetést beállítani a szerveren.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>A rövid válasz: <em>mindig</em>.</p>
+  <p>A kevésbé hosszú válasz: <em>majdnem</em> mindig, <em>de nem kizárólag</em>.</p>
+  <p>A nyelvi egyeztetés <a href="#shortcomings">nem mindig úgy működik ahogy eltervezzük</a>; vannak módszerek hogy <a href="#overrides">pótoljuk a 
+    hiányosságokat</a>; az egyik ilyen gondoskodik a <a href="#stickyness">kellemetlenségről a navigációban</a>.</p>
+    
+  <section>
+    <h3 id="shortcomings"><a href="#shortcomings">A nyelvi egyeztetés hiányosságai</a></h3>
+    <p>A nyelvi egyeztetés nyílvánvalóan egy hasznos dolog de mielőtt elkezdenénk használni, fontos hogy megértsük a határait. Hogy ezt illusztráljuk, egy www.example.be című oldalt fogunk használni példának, 
+      ami a tartalmát flamandul, franciául és németül kínálja. Az oldal használja a nyelvi egyeztetést és az alapértelmezett a flamand nyelv minden oldalon. A látogatónk, Szilvia, olaszul beszél de elboldogul a némettel. 
+      Számos szituáció adódhat:</p>
+    <ol>
+      <li>Szilvia böngészője rendesen van beállítva, elsőként az olaszt preferálja, másodsorban a németet. Az olasz nem elérhető a www.example.be-n, az oldalak így németül jelennek meg, a látogató 
+        egész boldog. Ez az amiért a nyelvi egyeztetés létrejött!</li>
+      <li>Szilvia nem szakember, sosem hallott a HTTP nyelvi egyeztetésről és sosem érezte szükségét hogy átállítsa a böngészője beállításait. A böngészője olasz verziójú, 
+        ami alapértelmezett nyelvnek (helyesen) az olaszt veszi. Amikor ellátogat Szilvia a www.example.be-re, az olasz nem elérhető és az oldal flamand nyelven jelenik meg, holott a német is elérhető lenne. Rossz.</li>
+      <li>Szilvia nem a saját böngészőjét használja, egy internetkávézóban ül moszkvában. A böngésző oroszra van állítva. Ismét flamand nyelven látja az oldalt. Rossz.</li>
+    </ol>
+    <p>Remélhetőleg most már tiszta a kép: a nyelvi egyeztetés nem mindig a tervezett eredményt adja.</p>
+    <p id="equivalence">Tovább a nyelvi egyeztetés nem is <em>odavaló</em> amikor az oldalak nem egyenértékűek, 
+      azaz nincs meg ugyanaz az alapvető tartalom külöböző nyelveken. A GYIK: <a class="print" href="qa-mono-multilingual"><cite>Egynyelvű és Többnyelvű Weboldalak</cite></a> megvilágítja ezt a kérdést, különösen 
+      a "<em>Többnyelvű, azonos tartalom</em>" és "<em>Többnyelvű, változott tartalom</em>" részek. Jegyezzük meg azonban hogy a kulturális adaptáció néhány lépése (pl. a pénznem 
+      változtatása) nem feltétlenül teszi nem-egyenértékűvé az oldalakat. A nem-egyenértékű limitáció a nyelvi egyeztetésnél akkor merül fel valójában, amikor egy <em>weboldal</em> úgy 
+      van adaptálva, hogy a különböző nyelvű oldalak nem felelnek meg egy másiknak.</p>
+  </section>
+    
+  <section>
+    <h3 id="overrides"><a href="#overrides">A hiányosságok pótlása</a></h3>
+    <p>A korlátozások ellenére a nyelvi egyeztetés egy hasznos funkció és jó lenne a többnyelvű weboldalakba implementálni. De hiányosságokat is kezelni kell. Röviden fontos 
+      hogy a látogatóknak biztosítsuk a lehetőséget, hogy <em>felülírhassák</em> az automata nyelvválasztást, ha az rossz. Ez azt jelenti, hogy érdemes egy olyan elemet betenni az oldalra 
+      (nyelvválasztást) ami más elérhető nyelvekre mutat. Ezeknek az elemeknek természetesen tisztán láthatónak és érthetőnek kell lennie azoknak a látogatóknak is, akik nem járatosak 
+      az éppen megjelenített oldal nyelvében.</p>
+    <p>Felmerül egy kérdés: a nyelvi egyeztetést és a 'kézi' nyelvválasztást az összes oldalra implementálni kéne vagy csak a főoldalra? A legjobb válasz az "összes oldalra", kivéve 
+      azokat az oldalakat amelyek nem <a href="#equivalence">eléggé egyenértékűek</a>. A nyelvi egyeztetés jó mert ha Jaap elküld Pierre-nek egy linket ami az www.example.be-re mutat, Pierre 
+      örülni fog, hogy a francia változatot látja, még ha Jaap a flamandot is olvasta. Nyelvválasztókat szintén kell biztosítani, akár használunk nyelvi egyeztetést akár nem. Ha az egyeztetés 
+      hiányzik, Pierre-nek szüksége lesz a nyelvváltoztatóra hogy a francia változatot kapja meg Jaap linkjéből.</p>
+    <p>Mellesleg néhány weboldal visszaküldi egy nyelvválasztó oldalra a felhasználót, ha nincs egyezés a látogató beállításai és az elérhető nyelvek között (www.example.be csinálhatná 
+      ezt is ahelyett, hogy a flamand oldalt mutatja). Megvan az előnye hogy tisztázzuk a szituációt és nem adunk elsőbbséget egy nyelvnek a többi helyett, amely politikailag érzékeny probléma is lehet. 
+      Sajnos néhány weboldal mindig erre a külön nyelvválasztó oldalra visz vissza <em>ahelyett</em> hogy a nyelvi egyeztetést implementálná. Ez mindenkit arra kényszerít, hogy mindig 
+      menjen keresztül azon az oldalon, miközben nincs látható előnye.</p>
+  </section>
+    
+  <section>
+    <h3 id="stickyness"><a href="#stickyness">Navigáció</a></h3>
+    <p>Tételezzük fel hogy Szilvia meglátogatja a www.example.be-t és flamand nyelv fogadja. Ő azután kattint a német nyelvre a választóban és tovább olvassa. Semmi gond. 
+      De aztán kattint egy linkre ami egy érdekes oldalra viszi a weboldalon. Upsz, flamand nyelv megint! Szerencsére a nyelvválasztó még mindig ott van, de néhány ilyen 
+      kitérő után kezd frusztrálttá válni érthető okokból. Nem tudna a www.example.be emlékezni, hogy Szilvia nem tud flamandul?</p>
+    <p>Számos módja van hogy a www.example.be megjegyezze a választott nyelvet. Az, hogy melyik választjuk majd, attól függ, hogy milyen technológia 
+      érhető el a szerveren illetve hogy mennyi erőfeszítést áldozunk bele</p>
+    <p>Ha a weboldal <em>session</em>-t használ (például <a	class="print" href="ftp://ftp.rfc-editor.org/in-notes/rfc2965.txt">sütiket</a>), akkor egyszerű dolog elintézni, hogy a 
+      nyelv a session része legyen. Amint Szivlia a németre kattint a nyelvválasztón, az tárolásra kerül (vagy a sütiben vagy a szerveren) és onnantól a német oldalakat fogja 
+      látni amíg a weboldalon navigál. A sütit beállíthatjuk állandóra (bár ez a biztonsági problémákat növeli), így Szilvia automatikusan németül látja az oldalt következő 
+      alkalommal is, amikor visszatér a www.example.be-re. A weboldalak amik bejelentkezést használnak, szintén tárolhatják a nyelvi beállításokat a felhasználó profiljában és 
+      ennek megfelelően jeleníthetik meg az oldalakat. A nyelvi egyeztetés ilyenkor csak azoknak a felhasználóknál van használva, akik még nem jelentkeztek be.</p>
+    <div class="sidenoteGroup">
+      <p>A másik mód hogy csökkentsük a frusztrációt, hogy minden belső linket a weboldalon belül <em>nyelv-specifikussá</em> teszünk. A német főoldalon a linkek a mélyebb oldalakra 
+        így néznének ki: <code>href="company/about<b>.de</b>.html"</code> (ahelyett hogy <code>company/about.html</code>, ami nyelv-generikus lenne)*. A navigáció kényszerítve 
+        van hogy maradjon német, amíg nem lesz felülírva speciális nyelvválasztóval. Ennek van néhány rossz tulajdonsága is azonban. Az egyik, hogy minden belső link lefordítandó 
+        anyaggá válik, növelve a fordítás költségét, nem beszélve a lehetséges hibákról. A másik, hogy ha Jaap küld egy  linket Pierre-nek, az URL nyelv-specifikus lesz; 
+        Pierre a flamand nyelvű oldalt fogja látni. Egyik rossz tulajdonság sem vészes azonban. Ha a sessionnel vagy a profillal nem biztosítható a nyelv megjegyzése, akkor a nyelv-specifikus 
+        linkek használata a megfelelő mód erre.</p>
+      <div class="sideinfonote"><p class="footnote">Jegyezzük meg, hogy bizonyos formái a nyelv-specifikus és nyelv-generikus URL-eknek amiket mutattunk (company/about<b>.de</b>.html és company/about.html) attól függnek, 
+        hogy milyen technológiát használunk a szerver oldalon, hogy a nyelvi egyeztetést implementáljuk. Az <a class="print" href="/International/questions/qa-apache-lang-neg">Apache MultiViews</a>-t használva inkább a 
+        company/about.html<b>.de</b> és company/about.html amit szívesebben lát a szerver.</p></div>
+    </div>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>A HTTP <code class="kw" translate="no">Accept-Language</code> fejléc nem az egyetlen nyelvi információ ami elérhető. Minden böngésző küld egy <code class="kw" translate="no">User-agent</code> fejlécet ami azonosítja a böngészőt, a verzió számát és néhány 
+    esetben a nyelvét is. Ezt fel lehet használni hogy megtippeljük a felhasználó által preferált nyelvet ha az <code class="kw" translate="no">Accept-Language</code> fejléc hiányzik, de ez kevésbé megbízható és többnyire 
+    korlátozott (egy nyelvre kizárólag) mint az Accept-Language. Különös odafigyeléssel használjuk.</p>
+  <p>A nyelvi egyeztetés csak egy aspektusa a HTTP tartalom egyeztetésnek. Más aspektusok amik automatikusan egyeztetve lehetnek például a formátum (HTML, PDF vagy sima szöveg), a 
+    karakterkódolás és az átvitel kódolása (kódolt, tömörített, stb.). A nyelvi egyeztetés a leghasznosabb és a legtöbbet használt.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="qa-lang-priorities"><cite> Nyelvi tulajdonságok beállítása a böngészőben</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="qa-apache-lang-neg"><cite> Apache MultiViews nyelvi egyeztetés beállítása</cite></a> </p>
+    </li>
+    <li>
+      <p>Kapcsolódó linkek, <cite>Setting up a server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#language">Language</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">Setting up MultiViews language negotiation on Apache</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">Choosing language values</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

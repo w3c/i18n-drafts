@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>When to use language negotiation</title>
+<meta name="description" content="When is it appropriate, or not, to use language negotiation?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-when-lang-neg' // the file name WITHOUT extensions
+f.authors = 'François Yergeau' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-when-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-02-26' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-02-26', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-04', time:'16:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'navigation'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-when-lang-neg-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>When to use language negotiation</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    webmasters, server administrators, and anyone who wants to better understand language-based content negotiation.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">When is it appropriate, or not, to use language negotiation?</p>
+  
+  <p>Language negotiation is a function of the HTTP protocol which lets a server choose among several language versions of a page, based on
+    the URL and on preference information sent by the browser (specifically in the <code class="kw" translate="no">Accept-Language</code> header). This is distinct from page
+    selection based on the IP address of the browser or from a manual selection by the user on a language-selection page. If there is no match between
+    the preferences expressed by the browser and the languages available on the server, either a language-selection page is shown or a default language
+    is served.</p>
+  
+  <p>In many cases, the initial user agent setting for language preferences is okay. For example, if you have a Japanese version of a browser,
+    the browser typically assumes that you prefer pages in Japanese, and sends this information to the server. Mainstream browsers allow you to modify
+    these language preferences. For more information see <a class="print" href="qa-lang-priorities.html"><cite>Setting language preferences in a browser</cite></a>.</p>
+  <p>This article addresses the question of when it is appropriate (or not) to set up language negotiation on the server.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>The short answer is: <em>always</em>.</p>
+  <p>A slightly longer answer is: <em>almost</em> always, <em>but not alone</em>.</p>
+  <p>Language negotiation <a href="#shortcomings">does not always work as intended</a>; there are techniques to <a href="#overrides">make up
+    for the shortcomings</a>; one should also provide for <a href="#stickyness">stickyness in navigation</a>.</p>
+    
+  <section>
+    <h3 id="shortcomings"><a href="#shortcomings">Shortcomings of language negotiation</a></h3>
+    <p>Language negotiation is evidently a useful thing, but before implementing it across the board, it is important to understand its
+      limits. To illustrate these, we will use the example of a site, www.example.be, that offers its content in Flemish, French and German, implements
+      language negotiation and defaults to Flemish for all pages. Our visitor, Sylvia, will be Italian-speaking, but able to deal with German. Several
+      situations may arise:</p>
+    <ol>
+      <li>Sylvia's browser is correctly configured, expressing preferences for Italian first, German second. Italian is not available at
+        www.example.be, the pages are returned in German, the visitor is fairly happy, all is well. This is what language negotiation is for!</li>
+      <li>Sylvia is a non-technical person who has never heard of HTTP language negotiation and has never felt a need to alter the settings
+        of her browser. The latter is an Italian version which (correctly) defaults to expressing a preference for Italian. Hitting www.example.be, Italian
+        is not available and the site-default Flemish is returned, even though German is available. Bad.</li>
+      <li>Sylvia is not using her own browser, she's sitting in an Internet café in Moscow. The browser there was configured for (or
+        defaulted to) Russian. She gets Flemish again. Bad.</li>
+    </ol>
+    <p>Hopefully the picture is now clear: language negotiation does not always give the intended result.</p>
+    <p id="equivalence">Additionally, language negotiation is not even <em>relevant</em> when pages are not
+      equivalent, i.e. do not have essentially the same content in different languages. The article <a class="print" href="/International/questions/qa-mono-multilingual"><cite>Monolingual vs. multilingual
+      Web sites</cite></a> sheds some light on this, see in particular the "<em>Multilingual, same content</em>" and "<em>Multilingual, changed content</em>"
+      sub-sections. Note however than some measure of cultural adaptation (e.g. changing the currency) does not necessarily make pages non-equivalent; the
+      non-equivalence limitation to language negotiation really exists when a <em>site</em> is adapted so that pages in different languages do not
+      correspond to one another any more.</p>
+  </section>
+    
+  <section>
+    <h3 id="overrides"><a href="#overrides">Making up for the shortcomings</a></h3>
+    <p>Despite its limitations, language negotiation is a useful function and it is desirable to implement it in multilingual sites. But the
+      shortcomings must be addressed. In short, it is important to provide means for visitors to <em>override</em> the automatic choice of language when it
+      is wrong. This means putting some interface elements in the page (we'll call them <em> language controls</em> here) that link to the other available
+      languages. These controls must of course be clearly visible and understandable by a visitor who has no familiarity with the language of the currently
+      displayed page.</p>
+    <p>One question that arises is: should language negotiation and manual language controls be implemented for all pages, or only for the
+      home page? The best answer is "all pages", except those sets of pages that are not <a href="#equivalence">sufficiently equivalent</a>. Language
+      negotiation is good because, if Jaap emails a link inside www.example.be to Pierre, Pierre will be happy to get the French version, even though Jaap
+      read the Flemish one. Language controls must also be provided, whether negotiation is implemented or not. If negotiation is absent, Pierre will need
+      controls to get the French version from Jaap's link; even if it is there, Sylvia will need to switch to German manually in situations 2 and 3
+      above.</p>
+    <p>By the way, some sites choose to return a special-purpose language selection page when there is no match between the visitor's
+      preferences and the available languages (www.example.be could do that instead of returning Flemish). This has the advantages of making the situation
+      clear and of not giving one language precedence over the others, which may be a politically sensitive issue. Unfortunately, some sites always return
+      this special page (for the home page) <em>instead of</em> implementing language negotiation. This forces everyone to always go through that page
+      while offering no apparent advantage. Bad human factors design.</p>
+  </section>
+    
+  <section>
+    <h3 id="stickyness"><a href="#stickyness">Navigation</a></h3>
+    <p>Suppose Sylvia visits www.example.be and gets Flemish (situation 2 or 3). She then clicks on the German control and reads on, no real
+      trouble. But she then clicks on a link to get to an interesting page within the site. Oops, Flemish again! Fortunately, the German control is still
+      there, but after a couple of such detours she's getting understandably frustrated. Can't www.example.be just remember that she can't read Flemish?
+      What is needed here is some <em>stickyness</em> of the explicit language selection.</p>
+    <p>There are a couple of ways that www.example.be can provide this stickyness. Which one to choose will depend on the underlying
+      technology available on the server and on the level of effort that can be expended.</p>
+    <p>If the site implements a <em>session</em> mechanism (for instance using <a class="print" href="ftp://ftp.rfc-editor.org/in-notes/rfc2965.txt">cookies</a>), then it is a fairly simple matter to arrange for language to be part of the
+      session state. Once Sylvia clicks on the German control, this gets stored (either in the cookie itself or in the server, to be matched by a <em>session number</em> in the cookie) and from then on she gets German when navigating the site. The cookie can even be made persistent (although
+      this makes privacy issues more acute), so that Sylvia gets German pages automatically the next time she returns to www.example.be. Sites that provide
+      a login mechanism can also store language preferences as part of each user's profile, and serve pages accordingly. Language negotiation is then used
+      only for users that have not yet logged in.</p>
+    <div class="sidenoteGroup">
+      <p>Another way to diminish frustration is to make all internal links within the site be <em>language-specific</em>. In the German home
+        page, links to deeper pages would be of the form <code>href="company/about<b>.de</b>.html"</code> (instead of <code>company/about.html</code>, which
+        would be <em>language-generic</em>)*. Navigation is then constrained to remain in German, until overriden by the special language controls. This has
+        a couple of downsides, however. One is that all internal links become translatable material, increasing the cost of translation as well as the
+        potential for errors. Another is that if Jaap sends a link to Pierre, the URL (picked up from the browser's address bar) will be language-specific;
+        Pierre will then get the Flemish page. Neither of these downsides are horrible, however, so using language-specific links is probably the way to go
+        if stickyness cannot be provided through a session state or profile mechanism.</p>
+      <aside class="sideinfonote"><p class="footnote">Note that the particular forms of language-specific and language-generic URLs shown here
+        (company/about<b>.de</b>.html vs company/about.html) depend on the technology used on the server side to implement language negotiation. Using <a class="print" href="/International/questions/qa-apache-lang-neg">Apache MultiViews</a>, one would rather see company/about.html<b>.de</b> and company/about.html or, forgoing the
+        .html extension entirely, company/about<b>.de</b> and company/about.</p></aside>
+    </div>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>The HTTP <code class="kw" translate="no">Accept-Language</code> header is not the only source of language information available. All browsers also send a <code class="kw" translate="no">User-Agent</code> header identifying the browser's make, version number and in some cases language version. This can be used to guess at the
+    user's preferred language if the <code class="kw" translate="no">Accept-Language</code> header is missing, but it is less reliable and more limited (one language only) than
+    Accept-Language. Use with extreme care.</p>
+  <p>Language negotiation is only one aspect of HTTP content negotiation. Other aspects that can be automatically negotiated are the media
+    type (i.e. the format: HTML, PDF or plain text for instance), the character encoding and the transfer encoding (encrypted, compressed, etc.).
+    Language negotiation is the most useful and most used.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="qa-lang-priorities"><cite> Setting language preferences in a browser</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="qa-apache-lang-neg"><cite> Apache MultiViews language negotiation set up</cite></a> </p>
+    </li>
+    <li>
+      <p>Related links, <cite>Setting up a server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#language">Language</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">Setting up MultiViews language negotiation on Apache</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">Choosing language values</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

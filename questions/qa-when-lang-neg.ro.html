@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8" />
+<title>Cand sa folosim negocierea limbajului</title>
+<meta name="description" content="Cand este in regula, sau nu, sa folosim negocierea limbajului?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-when-lang-neg' // the file name WITHOUT extensions
+f.authors = 'François Yergeau' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-when-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-02-26' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-02-26', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-04', time:'16:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.costeamarian.com">Costea Marian</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'navigation'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-when-lang-neg-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ro.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Cand sa folosim negocierea limbajului</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    webmasteri, administratori de server, si oricine doreste sa inteleaga mai bine negocierea de continut bazata pe limbaj.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Cand este in regula, sau nu, sa folosim negocierea limbajului?</p>
+  
+  <p>Negocierea limbajului este o functie a protocolulul HTTP protocol care permite serverului sa aleaga intre mai multe versiuni de limbaj a unei pagini, bazat pe URL-ul si preferintele de informatii trimise de browser(mai exact in headerul <code class="kw" translate="no">Accept-Language</code> ). Acesta este diferit de selectarea paginii in functie de adresa IP a browserului sau de selectarea manuala de catre utilizator pe o pagina de selectare limba. Daca nu exista nici o potrivire intre preferintele exprimate de browser si limbajele disponibile pe server, va aparea o pagina de selectare a limbajului sau se va servi un limbaj implicit.</p>
+  <p>In multe cazuri,setarea utilizatorul initial pentru preferintele de limba este buna. De exemplu, daca aveti o versiune japoneza de browser, browserul presupune ca preferati paginile in japoneza, si trimite aceasta informatie catre server. Browserele mainstrean iti permit sa modifici preferintele de limbaj.Pentru mai multe informatii vezi <a class="print" href="qa-lang-priorities.html"><cite>Setarea limbajului preferat intr-un browser</cite></a>.</p>
+  <p>Acest articol pune sub semnul intrebarii cand este potrivit (sau nu) sa configuram negocierea de limbaj pe server. </p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Raspunsul scurt este: <em>intotdeauna</em>.</p>
+  <p>Un răspuns ceva mai lung este: <em>aproape </em> întotdeauna, <em>dar nu singur</em>.</p>
+  <p>Negocierea de limbaj <a href="#shortcomings">nu functioneaza mereu cum ne dorim</a>; sunt anumite tehnici pentru a <a href="#overrides">compensa lipsurile</a>; Una ar trebui sa prevada <a href="#stickyness">fluenta in navigare</a>.</p>
+    
+  <section>
+    <h3 id="shortcomings"><a href="#shortcomings">Lipsurile negocierii de limbaj</a></h3>
+    <p>Negocierea de limbaj este evident un lucru bun, dar inainte de a o implementa la scara larga, este important sa ii intelegem limitele. Pentru a ilustra acestea, vom folosi exemplu unui site, www.example.be, care ofera continut in Flamanda, Franceza si Germana, care implementeaza negocierea de limbaj implicit in Flamanda pentru toate paginile. Vizitatorul nostry, Sylvia, va fi vorbitoare de limba italiana, dar se descurca si cu Germana. Se pot ivi mai multe situatii:</p>
+    <ol>
+      <li>Browserul Sylviei este configurat corect, exprimand prima data preferinta pentru Italiana , iar pentru Germana  a doua. Italiana nu este disponibila la www.example.be, paginile sunt afisate in Germana , vizitatorul este in general multumit, totul este bine. Acesta este motivul pentru care exista negocierea de limbaj!</li>
+      <li>Sylvia este o persoana fara cunostinte tehnice care nu a auzit niciodata de negocierea de limbaj HTTP si care nu a simtit niciodata nevoia de a modifica setarile browserului ei. Cea din urma este o versiune Italiana care (in mod corect) exprima in mod implicit o preferinta pentru Italiana. Accesand www.example.be, limba Italiana nu este disponibila si limba Flamanda implicita este afisata, chiar daca Germana este disponibila. Rau.</li>
+      <li>Sylvia nu foloseste propriul ei browser, foloseste un computer dintr-un internet cafe din Moscova. Browserul de acolo este configurat pentru (sau implicit) in Rusa. Pagina este returnata in Flamanda din nou. Rau.</li>
+    </ol>
+    <p>Speram ca imaginea este acum clara: Negocierea de limbaj nu returneaza tot timpul rezultatul dorit.</p>
+    <p id="equivalence">In plus, negocierea de limbaj nu este nici macar <em>relevanta</em> cand paginile nu sunt echivalente, i.e. nu au in esenta acelasi continut in diferite limbaje. Articolul<a class="print" href="/International/questions/qa-mono-multilingual"><cite>Websituri Monolingve vs. multilingve</cite></a> lamureste putin acest lucru, a sevedea in special "<em>Multilingv, acelasi continut</em>" si "<em>Multilingv, continut schimbat</em>"	sub-sectiuni. Notam totusi ca anumite masuri de adaptare culturala (e.g. schimbarea monedei) nu fac neaparat paginile does nonechivalente; Limitarea nonechivalentei negocierii limbajului exista cu adevarat atunci cand un <em>site</em> este adaptat astfel incat paginile in limbaje diferite nu  mai corespund unele cu altele .</p>
+  </section>
+    
+  <section>
+    <h3 id="overrides"><a href="#overrides">Cum compensam limitarile</a></h3>
+    <p>In ciuda limitarilor, negocierea de limbaj este o functie folositoare si este preferabil sa fie implementata in situri multilingve. Dar carentele trebuiesc remediate. Pe scurt, este important sa se ofere mijloace vizitatorilor sa<em>suprascrie</em> alegerea automata de limbaj cand acesta este gresit. Asta inseamna implementarea unor elemente de interfata in pagina (le vom numi<em>controale de limbaj</em> aici) care se leaga cu alte limbaje disponibile. Aceste controale trebuie sa fie in mod evident vizibile si pe intelesul unui vizitator care nu este familiarizat cu limbajul afisat implicit de site.</p>
+    <p>O intrebare care se ridica este: Ar trebui ca negocierea de limbaj si controalele de limbaj manuale sa fie implementate pentru toate paginile, sau doar pentru pagina principala? Cel mai bun raspuns este "toate paginile", cu exceptia acelora care nu sunt <a href="#equivalence">echivalente suficient</a>. Negocierea de limbaj este buna deoarece, daca Jaap trimite un link intr-un email din www.example.be lui Pierre, Pierre va fi fericit sa primeasca versiunea Franceza, chiar daca Jaap a citit versiunea Flamanda. Controalele de limbaj trebuiesc de asemenea oferite, chiar daca negocierea este implementata sau nu. Daca negocierea este absenta, Pierre va avea nevoie de controale pentru a primi versiunea Franceza de la link-ul lui Jaap; chiar daca este acolo, Sylvia va trebui sa treaca manual pe Germana in situatiile 2 si 3 de mai sus.</p>
+    <p>Apropo, anumite situri aleg sa redea o pagina de selectie de limbaj cu scop special cand nu este nici o potrivire intre preferintele vizitatorului si limbajele disponibile (www.example.be ar putea face acest lucru in loc sa redea Flamanda). Aceasta are avantajul de a face situatia clara si de a nu oferi intaietate unui limbaj fata de restul, lucru care ar fi o problema sensibila politic. Din pacate, unele situri redau aceasta pagina speciala(ca si pagina principala) <em>in loc sa</em> implementeze negocierea de limbaj. Acest lucru forteaza pe toata lumea sa treaca prin acea pagina fara sa ofere nici un avantaj vizibil. Factori rai de design umani.</p>
+  </section>
+    
+  <section>
+    <h3 id="stickyness"><a href="#stickyness">Navigare</a></h3>
+    <p>Sa presupunem ca Sylvia viziteaza www.example.be si i se returneaza Flamanda(situatia 2 sau 3). Ea va da click apoi pe controlul German si va citi fara vreo problema reala. Dar apoi da click pe un link pentru a intra pe o pagina interesanta de pe site.. Oops, din nou Flamanda! Din fericire, controlul German este inca acolo, dar dupa cateva plimbari pe siteincepe sa devina frustrata. Nu poate www.example.be sa tina minte ca ea nu stie sa citeasca Flamanda ? Ce avem nevoie aici este putina <em>persistenta</em> a selectie de limbaj.</p>
+    <p>Sunt cateva metode ca www.example.be sa ofere aceasta persistenta. Ce sa alegem va depinde de ce sta la baza tehnologiei disponibile pe server si de nivelul de efort care poate fi depus.</p>
+    <p>Daca situl implementeaza un mecanism de <em>sesiune</em> (de exemplu folosind<a
+					class="print" href="ftp://ftp.rfc-editor.org/in-notes/rfc2965.txt">cookies</a>), atunci este o problema simple sa aranjam ca limbajul sa fie parte din sesiune. Odata ce Sylvia da click pe controlul German, acesta este stocat(ori in cookie ori pe server, pentru a fi comparat cu un <em>numar de sesiune</em> in cookie) si din acel moment ea va beneficia de pagini in Germana cand navigheaza pe site. Cookie-ul poate fi facut chiar si persistent(chiar daca aceasta face chestiunea de securitate mai acuta), astfel incat Sylvia sa beneficieze automat de pagini in Germanadata viitoare cand se va intoarce pe www.example.be. Situri care ofera un mecanisg de logare pot sa stocheze preferinte de limbaj ca parte a profilului utilizatorului, si sa ofere pagini in functie de preferinte. Negocierea de limbaj este apoi folosita numai pentru utilizatorii care nu s-au logat inca.</p>
+    <div class="sidenoteGroup">
+      <p>Alta cale de a diminua frustrarea este acea de a face toate paginile interne <em>specifice limbii</em>. In pagina principala Germana , linkurile catre alte pagini ar trebui sa fie de forma <code>href="company/about<b>.de</b>.html"</code> (in loc de <code>company/about.html</code>, care ar fi <em>generice limbii</em>)*. Navigarea este apoi fortata sa ramana in Germana, pana cand va fi suprascrisa de controalele de limbaj. Aceasta are cateva dezavantaje totusi. Unul este acela ca toate linkurile interne devin material de tradus, crescand astfel costul traducerii ca si potentialul pentru erori. Altul este ca daca Jaap trimite un link lui Pierre, URL-ul (luat din bara de adresa a browserului) va fi specifica limbajului; Pierre va primi atunci pagina in Flamanda. Nici unul din aceste dezavantaje nu sunt grave, totusi, deci folosirea linkurilor specifice limbii este probabil cea mai buna solutie daca persistenta nu poate fi oferita prin sesiuni sau mecanisme de profil.</p>
+      <div class="sideinfonote"><p class="footnote">Retineti ca forme particulare de limbaj specifice si URL-uri de limbaj generic aratate aici(company/about<b>.de</b>.html vs company/about.html) depind de tehnologia folosita pe partea de server pentru implementarea negocierii de limbaj. Folosind <a class="print" href="/International/questions/qa-apache-lang-neg">Apache MultiViews</a>, am prefera sa vedem company/about.html<b>.de</b> si company/about.html sau, renuntand la extensia .html complet, company/about<b>.de</b> si company/about.</p></div>
+    </div>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>Headerul HTTP <code class="kw" translate="no">Accept-Language</code> nu este singura sursa de informatie de limbaj disponibila. Toate browserele trimit de asemenea un header <code class="kw" translate="no">User-Agent</code> identificand antetul browserului, numarul versiunii si in unele cazuri versiunea limbajului. Aceasta poate fi folosita pentru a ghici la limbajul preferat al utilizatorului daca headerul <code class="kw" translate="no">Accept-Language</code> lipseste, dar este mai putin practica si mult mai limitata(un singur limbaj) decat Accept-Language. A se folosi cu mare grija.</p>
+  <p>Negocierea de limbaj este doar un aspect al negocierii de continut HTTP. Alte aspecte care pot fi automat negociate sunt tipurile media (i.e. formatul: HTML, PDF sau text simplu), criptarea de caractere si transferul criptarii (criptat, comprimat, etc.).
+    Negocierea de limbaj este cea mai folositoare si mai folosita.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="qa-lang-priorities"><cite> Aplicarea preferintelor de limbaj intr-un browser</cite></a></p>
+    </li>
+    <li>
+      <p><a href="qa-apache-lang-neg"><cite>Configurarea negocierii de limbaj Apache MultiViews</cite></a></p>
+    </li>
+    <li>
+      <p>Linkuri conexe, <cite>Configurarea unui server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#language">Limbaj</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">Configurarea negocierii de limbaj MultiViews pe Apache</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">Alegerea valorilor de limbaj</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

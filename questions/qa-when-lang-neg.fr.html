@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Quand faut-il utiliser la négociation de langue ?</title>
+<meta name="description" content="Quand est-ce une bonne idée (ou non) d'utiliser la négociation de langue ?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-when-lang-neg' // the file name WITHOUT extensions
+f.authors = 'François Yergeau' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-when-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-02-26' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-02-26', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-04', time:'16:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'François Yergeau' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'navigation'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-when-lang-neg-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-fr.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Quand faut-il utiliser la négociation de langue&nbsp;?</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    webmasters, server administrators, and anyone who wants to better understand language-based content negotiation.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Quand est-ce une bonne idée (ou non) d'utiliser la négociation de langue&nbsp;?</p>
+  
+  <p>La négociation de langue est une fonction du protocole HTTP qui permet à un serveur de choisir parmi plusieurs versions linguistiques
+    d'une page, en se basant sur l'URL et sur des préférences exprimées par le fureteur (précisément dans l'en-tête <code class="kw" translate="no">Accept-Language</code>). On la
+    distingue d'un choix de page fondé sur l'adresse IP du fureteur ou encore d'un choix manuel par le visiteur dans une page de sélection de langue.
+    S'il n'y a pas de correspondance entre les préférences exprimées par le fureteur et les langues disponibles sur le serveur, soit une page de
+    sélection de langue est montrée, soit une langue par défaut est choisie.</p>
+  
+  <p>Dans bien des cas, le réglage initial du fureteur est adéquat. Une version japonaise d'un fureteur, par exemple, supposera que vous
+    préférez le japonais et communiquera cette préférence au serveur. Tel que mentionné dans l'article <a class="print" href="qa-lang-priorities.html"><cite>Ajuster les
+    préférences linguistiques d'un fureteur</cite></a>, les fureteurs grand public permettent d'ajuster ce réglage.</p>
+  <p>Cette FAQ aborde la question de savoir quand il faut (ou non) implanter la négociation de langue.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Réponse courte&nbsp;: <em>toujours</em>.</p>
+  <p>Réponse un peu plus longue&nbsp;: <em>presque</em> toujours, <em>mais pas toute seule</em>.</p>
+  <p>La négociation de langue <a href="#shortcomings">ne donne pas toujours le résultat escompté</a>; il y a moyen de <a
+				href="#overrides">pallier les imperfections</a>; il importe aussi de fournir <a href="#stickyness">de l'adhérence dans la navigation</a>.</p>
+    
+  <section>
+    <h3 id="shortcomings"><a href="#shortcomings">Imperfections de la négociation de langue</a></h3>
+    <p>La négociation de langue est clairement une chose utile, mais avant de l'implanter partout il convient de bien comprendre ses limites.
+      Pour les illustrer, nous prendrons l'exemple du site www.exemple.be, qui offre son contenu en flamand, en français et en allemand, qui implante la
+      négociation de langue et qui choisit de servir les pages en flamand par défaut. Notre visiteuse, Sylvia, parle italien mais se débrouille en
+      allemand. Plusieurs cas peuvent se présenter&nbsp;:</p>
+    <ol>
+      <li>Le fureteur de Sylvia est bien configuré, exprimant ses préférences pour l'italien suivi de l'allemand. L'italien n'est pas
+        disponible sur www.exemple.be, les pages apparaissent en allemand, Sylvia est plutôt contente, tout va bien. C'est à ça que sert la négociation de
+        langue&nbsp;!</li>
+      <li>Sylvia n'est pas une personne technique, elle n'a jamais entendu parler de négociation de langue ni senti le besoin de tripoter
+        les réglages de son fureteur. Celui-ci est une version italienne qui est implicitement réglé pour exprimer une préférence pour l'italien (comme il se
+        doit). En arrivant sur www.exemple.be, l'italien n'est pas disponible et le flamand (langue par défaut du site) est rendu, même si l'allemand est
+        disponible. Mauvais.</li>
+      <li>Sylvia n'utilise pas son propre fureteur, elle navigue depuis un café internet à Moscou. Le fureteur est configuré pour demander
+        du russe. Sylvia obtient encore du flamand. Mauvais.</li>
+    </ol>
+    <p>Conclusion&nbsp;: la négociation de langue ne donne pas toujours le résultat escompté.</p>
+    <p id="equivalence">De plus, la négociation de langue n'est même pas <em>pertinente</em> quand les pages ne
+      sont pas équivalentes, c'est à dire quand elles n'ont pas essentiellement le même contenu en des langues différentes. On pourra consulter l'article <a class="print" href="qa-mono-multilingual"><cite>Les sites web unilingues et multilingues</cite></a> à ce sujet, notamment les sous-sections «&nbsp;<em>Multilingue, même
+      contenu</em>&nbsp;» et «&nbsp;<em>Multilingue, contenu changé</em>&nbsp;». Notons toutefois qu'une certaine mesure d'adaptation culturelle (changer
+      la devise par ex.) ne rend pas nécessairement les pages non-équivalentes&nbsp;; ce cas se présente vraiment lorsqu'un <em>site</em> est adapté de
+      façon à ce que les pages en différentes langues ne correspondent plus.</p>
+  </section>
+    
+  <section>
+    <h3 id="overrides"><a href="#overrides">Pallier les imperfections</a></h3>
+    <p>Malgré ses limites, la négociation de langue est une fonction utile et il est souhaitable de l'implanter dans les sites multilingues.
+      Mais il faut pallier les imperfections. En bref, il faut permettre au visiteur de <em>prévaloir</em> sur le choix automatique de langue, lorsque ce
+      dernier est erroné. Pour ce faire, on incluera dans la page des éléments de navigation (qu'on appellera <em>contrôles de langue</em> ici) menant aux
+      autres langues. Ces contrôles doivent être bien visibles et de plus compréhensibles par un visiteur qui ne connaît pas la langue de la page
+      présentement affichée.</p>
+    <p>Une question se pose&nbsp;: est-ce qu'on doit implanter la négociation automatique et fournir des contrôles de langue dans toutes les
+      pages, ou seulement la page d'accueil&nbsp;? La meilleure réponse est «&nbsp;toutes les pages&nbsp;», sauf celles qui ne sont pas <a href="#equivalence">suffisamment equivalentes</a>. La négociation de langue est utile parce que, si Jaap envoie un lien pointant dans
+      www.exemple.be à Pierre, Pierre sera content de voir la page en français, même si Jaap a lu la version flamande. Les contrôles de langues doivent
+      aussi être implantés, même si la négociation de langue ne l'est pas. Sans négociation, Pierre aura besoin d'un contrôle pour atteindre la version
+      française du lien de Jaap&nbsp;; même avec négociation, Sylvia devra passer manuellement à l'allemand dans les cas 2 et 3 ci-dessus.</p>
+    <p>En passant, certains sites présentent une page spéciale de choix de langue quand il n'y a pas correspondance entre les préférences du
+      visiteur et les langues disponibles (ce que pourrait faire www.exemple.be au lieu de rendre la page en flamand). Une telle page a l'avantage de
+      rendre la situation claire et de ne pas donner préséance à une langue plutôt qu'une autre, ce qui peut être politiquement délicat. Malheureusement,
+      certains sites présentent toujours une telle page (pour la page d'accueil), <em>au lieu</em> d'implanter la négociation de langue. On force ainsi
+      tout le monde à toujours transiter par cette page, sans avantage apparent. Mauvaise ergonomie.</p>
+  </section>
+    
+  <section>
+    <h3 id="stickyness"><a href="#stickyness">Navigation</a></h3>
+    <p>Sylvia visite www.example.be and obtient du flamand (cas 2 ou 3). Elle clique alors sur le contrôle «&nbsp;allemand&nbsp;» et continue
+      à lire, pas de grand malheur. Mais elle suit alors un lien vers une page qui l'intéresse dans le site&nbsp;: oups&nbsp;! encore du flamand&nbsp;! Le
+      contrôle «&nbsp;allemand&nbsp;» est toujours là, mais après quelques uns de ces détours inutiles, la frustration s'installe. Est-ce que
+      www.exemple.be ne pourrait pas se rappeler qu'elle ne lit pas le flamand, nom d'une pipe&nbsp;? Ce qu'il faut ici, c'est un peu d'adhérence de son
+      choix explicite de langue.</p>
+    <p>www.example.be peut fournir cette adhérence de deux ou trois manières. Le bon choix dépend de la technologie disponible sur le serveur
+      et de l'effort qu'on veut y mettre.</p>
+    <p>Si le site implante un mécanisme de <em>session</em> (par exemple en utilisant des <a class="print" href="ftp://ftp.rfc-editor.org/in-notes/rfc2965.txt">témoins</a>), il est assez simple de s'arranger pour que le choix de langue fasse partie de
+      l'état de la session. Quand Sylvia clique sur le contrôle «&nbsp;allemand&nbsp;», ce choix est stocké (soit dans le témoin lui-même, soit dans le
+      serveur, en correspondance avec un numéro de session stocké dans le témoin) et par la suite elle obtient de l'allemand en naviguant dans le site. Le
+      témoin peut même être rendu persistant (mais attention aux problèmes de vie privée), auquel cas Sylvia verra de l'allemand automatiquement lors de sa
+      prochaine visite à www.exemple.be. Les sites qui ont un mécanisme d'enregistrement (<em>login</em>) peuvent aussi stocker des préférences de langue
+      dans le profil de chaque utilisateur et présenter les pages en conséquence. La négociation de langue n'est alors utilisée que pour les visiteurs qui
+      ne sont pas encore identifiés.</p>
+    <div class="sidenoteGroup">
+      <p>Un autre moyen d'éviter la frustration est de rendre tous les liens à l'intérieur d'un site <em>spécifiques à la langue</em>. Dans
+        la page d'accueil en allemand, tous les liens seraient de la forme <code>href="compagnie/a_propos<b>.de</b>.html"</code> (au lieu de <code>compagnie/a_propos.html</code>, qui serait la version <em>générique</em>)*. La navigation est alors restreinte à l'allemand, sauf bien sûr les
+        contrôles de langue. Cette méthode a toutefois quelques désavantages. D'une part, tous les liens internes deviennent matière à traduction, ce qui
+        augmente le coût de la traduction et les occasions d'erreurs. D'autre part, si Jaap envoie un lien à Pierre, l'URL (pris dans la barre d'adresse du
+        fureteur) sera spécifique à la langue&nbsp;; Pierre verra alors la page en flamand. Ces désavantages sont réels mais nullement catastrophiques. Il
+        convient donc d'utiliser des liens spécifiques si l'adhérence ne peut être implantée par un mécanisme de sessions ou de profil.</p>
+      <div class="sideinfonote"><p class="footnote">Les formes particulières des URL spécifiques et génériques montrés ici (compagnie/a_propos<b>.de</b>.html vs
+        compagnie/a_propos.html) dépendent de la technologie utilisée sur le serveur pour implanter la négociation de langue. Avec <a href="/International/questions/qa-apache-lang-neg">Multiviews sur Apache</a>, on verrait plutôt compagnie/a_propos.html<b>.de</b> et compagnie/a_propos.html ou encore, en
+        se débarrassant de l'extension .html, compagnie/a_propos<b>.de</b> et compagnie/a_propos.</p></div>
+    </div>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>L'en-tête HTTP <code class="kw" translate="no">Accept-Language</code> n'est pas la seule source d'information sur la langue du visiteur. Tous les fureteurs
+    envoient aussi un en-tête <code class="kw" translate="no">User-Agent</code> qui renseigne sur la marque du fureteur, sa version et parfois sa langue. On peut s'en servir pour
+    deviner la langue du visiteur si l'en-tête <code class="kw" translate="no">Accept-Language</code> n'est pas présent, mais il est moins fiable et plus limité (une seule langue)
+    que ce dernier. À manipuler avec grand soin.</p>
+  <p>La négociation de langue n'est qu'une des facettes de la négociation de contenu HTTP. Les autres facettes pouvant faire l'objet de
+    négociation automatique sont le type de média (c. à d. le format&nbsp;: HTML, PDF ou texte brut par exemple), le codage des caractères et le codage
+    de transfert (chiffré, compressé, etc.). La négociation de langue est la plus utile et la plus utilisée.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="qa-lang-priorities"> <cite>Ajuster les préférences linguistiques d'un fureteur</cite> [<em>en anglais</em>]</a> </p>
+    </li>
+    <li>
+      <p><a href="qa-apache-lang-neg"> <cite>Mettre en place la négociation de langue par MultiViews sur Apache</cite> [<em>en
+        anglais</em>]</a> </p>
+    </li>
+    <li>
+      <p>Liens utiles, <cite>Setting up a server</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#language">Language</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">Setting up MultiViews language negotiation on Apache</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">Choosing language values</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
