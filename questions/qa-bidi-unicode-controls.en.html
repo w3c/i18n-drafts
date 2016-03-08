@@ -167,7 +167,7 @@ f.additionalLinks = ''
         <tr>
           <td>PDI</td>
           <td>POP DIRECTIONAL ISOLATE</td>
-          <td>U+202C</td>
+          <td>U+2069</td>
           <td>end tag</td>
           <td>used for RLI, LRI or FSI</td>
         </tr>
@@ -198,7 +198,7 @@ f.additionalLinks = ''
   
 <section>
     <h2 id="wrapping"><a href="#wrapping">Tightly wrapping opposite-direction phrases</a></h2>
-    <p>In some cases the bidi algorithm copes fine with bidirectional text, and in others it needs some help. In <a href="/International/articles/inline-bidi-markup/"><cite>Inline markup and bidirectional text in HTML</cite></a><cite> </cite>we make the case that the easiest approach to marking up bidirectional text is to put markup at the start and end of each directional change in the text. This doesn't do any harm, it avoids the likelihood of missing a situation where markup it needed, and it makes the life of the content author much simpler.</p>
+    <p>In some cases the bidi algorithm copes fine with bidirectional text, and in others it needs some help. In <a href="/International/articles/inline-bidi-markup/"><cite>Inline markup and bidirectional text in HTML</cite></a><cite> </cite>we make the case that the easiest approach to marking up bidirectional text is to put markup at the start and end of each directional change in the text. This doesn't do any harm, it avoids the likelihood of missing a situation where markup is needed, and it makes the life of the content author much simpler.</p>
     <p>A similar recommendation is valid when dealing with Unicode control characters.</p>
     <p>Another thing to bear in mind is that ranges need to be nested appropriately. If you have an embedded LTR range in a RTL context, and that LTR range has some RTL text inside it, it won't produce the right result if your ranges are side by side rather than nested. Note how the direction changes are embedded in the following example, rather than side by side.</p>
     <figure class="example">
@@ -237,14 +237,14 @@ f.additionalLinks = ''
         <tr>
           <td>RLM</td>
           <td>RIGHT-TO-LEFT MARK</td>
-          <td>U+202E</td>
+          <td>U+202F</td>
           <td>none</td>
           <td>strongly typed RTL character</td>
         </tr>
         <tr>
           <td>LRM</td>
           <td>LEFT-TO-RIGHT MARK</td>
-          <td>U+202F</td>
+          <td>U+202E</td>
           <td>none</td>
           <td>strongly typed LTR character</td>
         </tr>
@@ -281,7 +281,7 @@ f.additionalLinks = ''
       <p><img src="qa-bidi-unicode-controls-data/comma-wrong.gif" alt="Bahrain appears to the left of Egypt." /></p>
     </figure>
     <p>The reason for the failure is that, with a strongly typed right-to-left (RTL) character on either side, the bidirectional algorithm
-      sees the neutral comma as part of the Arabic text. It is interpreting the first two Arabic words and the comma as a single directional run in Arabic. In fact the comma is part of the English text, and should mark the boundary between the two separate right-to-left directional runs in
+      sees the neutral comma and space as part of the Arabic text. It is interpreting the first two Arabic words and the comma and space  as a single directional run in Arabic. In fact the comma  and space are part of the English text, and should mark the boundary between the two separate right-to-left directional runs in
       Arabic. </p>
     <p>The solution for this use case is to break the first two items of the list apart by inserting the strong LTR-typed LRM character.</p>
     <figure class="example">
@@ -307,8 +307,13 @@ f.additionalLinks = ''
       between the last RTL letter 'ب' (on the left)‌ and the LTR letter 'i' (of the word 'in') its directionality is determined by the base direction of
       the paragraph, ie. LTR in this case. Because the exclamation mark is seen as LTR it joins the directional run that includes the text
       'in Arabic'.</p>
+    <p>We can fix this easily in one of two ways. We can simply <span style="clear: both;">add an RLM/LRM character after the exclamation mark. You need to choose the character that has the same directionality as the preceding phrase, thereby extending the length of the directional run to include the punctuation.</span></p>
+    <figure class="example">
+      <div><a href="qa-bidi-unicode-controls-data/eg-punctuation-rlm" onclick="showExample('qa-bidi-unicode-controls-data/eg-punctuation-rlm'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <p><code>the title is &quot;INTERNATIONALIZATION ACTIVITY!<span style="color:red;">&amp;rlm;</span>&quot; in arabic.</code></p>
+    </figure>
 
-    <p style="clear: both;">In the absence of RLI/LRI control codes, you would fix this by adding an RLM/LRM character after the exclamation mark. You need to choose the character that has the same directionality as the preceding phrase, thereby extending the length of the directional run to include the punctuation.</p>
+    <p style="clear: both;">Alternatively, you could wrap the opposite-direction phrase in paired controls, in this case RLE followed by PDF. Ideally, of course, you would use RLI+PDI, so that the phrase is also isolated. That would protect it from future edits that might add something problematic alongside. In the meantime, adding an additional RLM after the embedding controls will help.</p>
     <figure class="example">
       <div><a href="qa-bidi-unicode-controls-data/eg-punctuation-ok" onclick="showExample('qa-bidi-unicode-controls-data/eg-punctuation-ok'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
       <p><code>the title is &quot;<span style="color:red;">&amp;#x202B;</span>INTERNATIONALIZATION ACTIVITY!<span style="color:red;">&amp;#x202C;&amp;rlm;</span>&quot; in arabic.</code></p>
