@@ -167,6 +167,9 @@ if (outOfDateTranslation) g.updated += "<p class='outofdate'>"+s.untranslatedCha
 else if (unlinkedTranslation) g.updated += "<p class='unlinked'>"+s.unlinkedTranslation+" </p>" 
 else if (g.isTranslation && updatedTranslation) {g.updated ="<p class='updated'>"+s.translation_updated+" <time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></p>" }
 
+if (f.status === 'draft') {
+	g.updated += '<p class="note" style="clear:none; font-size: 120%; margin-top: 2em;"><b>NOTE!</b>This article is in development and is using a temporary URL. It is not safe to refer to it or use the information it contains.</p>'
+	}
 
 // SURVEY
 
