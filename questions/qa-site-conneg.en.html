@@ -9,14 +9,14 @@ var f = { }
 
 // AUTHORS should fill in these assignments:
 f.directory = 'questions'+'/'; // the name of the directory this file is in
-f.filename = 'site-conneg'; // the file name WITHOUT extensions
+f.filename = 'qa-site-conneg'; // the file name WITHOUT extensions
 f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
 f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'qa-site-conneg'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2015-06-25'; // date of the first publication of the document (after review)
 f.lastSubstUpdate = { date:'2015-06-25', time:'14:14'}  // date and time of latest substantive changes to this document
-f.status = 'draft';  // should be one of draft, review, published, or notreviewed
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
@@ -43,7 +43,7 @@ f.breadcrumb = 'navigation';
 <header> 
   <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
 
-  <h1>Guiding users to translated pages (draft!)</h1>
+  <h1>Guiding users to translated pages</h1>
 </header>
 
 
@@ -99,9 +99,9 @@ f.breadcrumb = 'navigation';
     <h3 id="yyyshortcomings"><a href="#yyyshortcomings">Links on the page</a></h3>
     <p>As we mentioned above, there may be times when the language requested by the user's browser is not the language they actually prefer when reading that particular page. This may be because they prefer reading technical information in English, or they prefer reading the original rather than a translation, or perhaps they are using a colleague's computer or working from a cyber-café in a foreign country and therefore don't control the browser language preferences.</p>
     <p>For these reasons it is always best to add links to alternate language versions, and to do so on every page. </p>
-    <p>On the page you are currently reading, you'll find them at the top right corner of the page. <span class="ed">Prepare some translations before publishing this article! </span>We put them there to make it easy to spot them  as soon as you arrive at the page. Such information should not be hidden, since the user may be looking at a page full of text that means nothing to them. The easier it is to discover those links, the better.</p>
+    <p>On the page you are currently reading, you'll find them at the top right corner of the page. We put them there to make it easy to spot them  as soon as you arrive at the page. Such information should not be hidden, since the user may be looking at a page full of text that means nothing to them. The easier it is to discover those links, the better.</p>
     <p>It's true that if a link brings you into the middle of the page you won't see the language selectors, but at least they should be easy to find, if needed.</p>
-    <p>If you look at the links at the top of this page, you'll notice that they are in the language of the page they point to. This again is to help users find what they need. If you were English and faced with a Persian page, and if the link to the English page was written in Arabic, you might not find it easily!</p>
+    <p>If you look at the links at the top of this page, you'll notice that they are in the language of the page they point to. This again is to help users find what they need. If you were English and faced with a Persian page, and if the link to the English page was written in the Arabic script, you might not find it easily!</p>
     <p>Since we have the space for it, all the links are visible at once. If you have a long list of alternatives, you may prefer to use a pull-down or pop-out list. There can be significant drawbacks with that approach, however. The main one being how to indicate, in a language neutral but clearly recognisable way, what the selection control does. The article <a href="http://www.w3.org/International/questions/qa-navigation-select">Using <code class="kw" translate="no">select</code> to link to localized content</a> goes into greater detail about things you should consider when using a pull-down list.</p>
     <p>Another key recommendation is to resist the temptation to use country flags to identify languages. Some countries have more than one language, and some languages are spoken in more than one country. Although flags may be suitable to link to <em>geographically</em> tailored versions of a page, such as a UK vs. a Canadian vs. an Australian retail site, they are not appropriate for linking to pages that are simply translations.</p>
     <p>You may also want to show the meaning of the language links using <em>the language of the current page</em>. For instance, on an English page you could include the English version of the language alongside each native version, eg. <samp>français (French)</samp>. We don't do this for the page you are reading, partly due to lack of space, and partly because it doesn't seem necessary. We do, however, produce an English version in a tooltip, which you will see if you mouse over the links. This leads to a slight complication since  it isn't possible to use a <code class="kw" translate="no">lang</code> attribute on a single element to indicate that the <code class="kw" translate="no">title</code> text is in one language and the element content in another. Therefore we use two nested elements as described in the article <a href="https://www.w3.org/International/questions/qa-html-language-declarations#usingspan">Declaring language in HTML</a>.</p>
@@ -112,7 +112,7 @@ f.breadcrumb = 'navigation';
     <h3 id="stickiness"><a href="#stickiness">Overriding the language negotiation</a></h3>
     <p>Suppose your native language is Spanish and so your browser is set to receive content in Spanish most of the time, but suppose also that you understand English and you prefer to read technical articles such as W3C pages in the English original.</p>
     <p>If you are redirected to a Spanish page every time you follow a link and have to manually move to the English page, this can quickly become tiresome. You need some way to indicate that you want to stay in English while reading pages on the site, and a mechanism that ensures that you do.</p>
-    <p>The page you are reading enables this by allowing  you to set a cookie any time you click on the language links at the top right of the page. Every time they load one of these pages,	the server checks whether the cookie is set and active, and if so, serves them the language version they last viewed.</p>
+    <p>The page you are reading enables this by allowing  you to set a cookie any time you click on the language links at the top right of the page. Every time you link to one of these pages,	the server checks whether a cookie is set and active, and if so, serves the page in the language in which you last viewed it.</p>
     <p>You can do the same thing with <code class="kw" translate="no">localStorage</code>, if you prefer that to cookies.</p>
   </section>
 </section>
@@ -128,7 +128,7 @@ f.breadcrumb = 'navigation';
   <section>
     <h3 id="varFiles"><a href="#varFiles">Using type maps for language negotiation</a></h3>
     <p>What follows are some brief notes about using the type map approach for language negotiation on a Apache server. See <a href="http://httpd.apache.org/docs/2.4/mod/mod_negotiation.html">the Apache documentation</a> for full details of how to use this approach.</p>
-    <p>To use type maps you create a file in the same directory as the main file, with the same name, but with the extension <code class="kw" translate="no">.var</code>. This file is invoked by the server when a file of that name is requested without a language extension (ie. .en, or .de). The file tells the server where to look for the specific language version.</p>
+    <p>To use type maps you create a file in the same directory as the main file, with the same name, but with the extension <code class="kw" translate="no">.var</code>. This file is invoked by the server when a file of that name is requested without a language extension (ie. .en, or .de). The file tells the server where to look for a specific language version.</p>
     <p>You also need to configure your server to use type maps content negotiation by adding an <a href="http://httpd.apache.org/docs/2.4/mod/mod_mime.html#addhandler">AddHandler directive</a>. For example, we use:</p>
     <figure class="example">
     <pre translate="no">AddHandler type-map .var</pre>
