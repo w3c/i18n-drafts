@@ -53,7 +53,7 @@ s.accessKeyN = 'Använd accesskey \'n\' för att hoppa till de interna navigatio
 s.examplesInAnotherScript = "Detta dokument innehåller exempel uttryckta i andra språk/skript."
 s.worldMap = "Världskarta"
 s.searchI18nSite = "Sök på I18n:s webbplats" 
-s.translationDisclaimer = 'Detta dokument är en översättning av ett engelskt orginal, utfört av frivilliga. Om det finns tveksamheter eller fel i detta dokument, så är <a href="'+f.filename+'.en">senaste version av det engelska orginalet</a> den auktoritativa versionen. <a href="#copyright">Copyright</a> tillhör W3C, enligt nedan.'
+s.translationDisclaimer = 'Detta dokument är en översättning av ett engelskt original, utfört av frivilliga. Om det finns tveksamheter eller fel i detta dokument, så är <a href="'+f.filename+'.en">senaste version av det engelska originalet</a> den auktoritativa versionen. <a href="#copyright">Copyright</a> tillhör W3C, enligt nedan.'
 s.translator = "Översättare:"
 s.relatedLinks = "Näraliggande länkar"
 s.articles = "Artiklar" // used in breadcrumbs, top right of page 
@@ -77,9 +77,9 @@ s.resources = "Resurser"
 s.newsFiltersAndFeeds = "Information om nyhetsfilter och RSS-kanaler för W3C:s internationaliseringsarbete."
 s.news = "Nyheter"
 s.onThisPage = "På denna sida"
-s.questionAlt = "Frågor"
-s.questionLink = "Frågor"
-s.question = "Frågor"
+s.questionAlt = "Fråga"
+s.questionLink = "Fråga"
+s.question = "Fråga"
 s.backgroundAlt = "Bakgrundsinformation"
 s.backgroundLink = "Bakgrundsinformation"
 s.background = "Bakgrundsinformation"
@@ -122,7 +122,7 @@ s.updated="Uppdaterad" // same as New
 s.translation_updated="Översättning uppdaterad:" // date appears after colon
 
 s.aboutThisArticle="Om denna artikel" // title in the right column near the top of the page
-s.status_draft="Denna artikel är ett utkast som ännu genomgått en öppen granskning. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
+s.status_draft="Denna artikel är ett utkast som ännu inte genomgått en öppen granskning. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
 s.status_review="Denna artikel är nu publicerad för öppen granskning. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
 s.status_published="Denna artikel har granskats av W3C:s arbetsgrupp för internationalisering, och har genomgått öppen granskning, för att säkerställa att den är så korrekt som möjligt. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
 s.status_notreviewed="Denna artikel publicerades utan att ha blivit granskad. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
