@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<title>Att vägleda användare till översatta sidor</title>
+<meta name="description" content="Om min webbplats tillhandahåller alternativa språkversioner av samma sida, hur kan jag hjälpa användaren att se sidan i de språk hen föredrar?" />
+<script type="application/javascript">
+var f = { }
+//OLLE: ("qa-site-conneg.en.html" 2049 9428)
+//   10:50 - 11:16 11:32 - 12:16 13:20 - 14:19 11:30 - 12:20 13:30 - 16:00 13:30 - 
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-site-conneg'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-site-conneg'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2015-06-25'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-06-25', time:'14:14'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-09', time:'17:45'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Olle Olsson, SICS'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'navigation';
+</script>
+<script type="text/javascript" src="qa-site-conneg-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-sv.js"> </script><!--TRANSLATORS must change -en to the subtag for their language! -->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Att vägleda användare till översatta sidor</h1>
+</header>
+
+
+<section>
+<div id="audience">
+  <p><span id="intendedAudience" class="leadin">Avsedd läsekrets:</span> 
+   HTML-utvecklare (arbetar med textredigerare eller skript),  
+   projektledare för webbprojekt, och alla som är intresserade av 
+   förhandling och språkbyte för innehåll.
+  </p>
+  <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script></div>
+
+  <h2 id="question"><a href="#question">Fråga</a></h2>
+  <p class="question">
+   Om min webbplats innehåller alternativa språkversioner av samma sida, 
+   hur kan jag hjälpa användaren att få sidan i det språk hen föredrar?
+  </p>
+  <p>
+   Denna artikel innehåller information som är relevant för konstruktion
+   av sidor för vilka det finns fullständiga översättningar av innehåll.
+
+   Om dina alternativa sidor har olika innehåll, eller är regionala varianter snarare än 
+   översättningar, så kanske du ska göra på annat sätt.
+  </p>
+</section>
+
+
+<section id="nutshell">
+  <h2 id="quickanswer"><a href="#quickanswer">Snabbt svar</a></h2>
+  <p>
+   Använd språkorienterad innehållsförhandling 
+   (<span xml:lang="en" lang="en">language-related content negotiation</span>)
+   på servern för att vägleda användaren till den sida som bäst svarar mot
+   de preferenser som är inställda i webbläsaren, men <em>se även till</em>
+   att lägga till länkar till alla sidor, så att användaren lätt kan byta 
+   språk om hen så önskar.
+  </p>
+  <p>
+   Fundera på hur du kan få användaren att uppfatta var i aktuell sida 
+   hen hittar länkar till andra språkversioner, och, om det finns ett otal 
+   andra språkversioner av sidan, grunna på om det är lämpligt att använda en ansats 
+   med styrning via
+   <code class="kw" translate="no"><span xml:lang="en" lang="en">select</span></code>-funktionalitet
+   (och, om denna ansats väljs, hur man tydliggör dess funktion).
+  </p>
+  <p>
+   Om användaren byter till ett annat språk, ge hen en möjlighet att spara detta
+   val, och framöver leverera i detta språk, även om det avviker från inställningarna
+   i webbläsaren.
+  </p>
+</section>
+
+
+<section>
+  <h2 id="detail"><a href="#detail">Detaljer</a></h2>
+  
+  <section>
+    <h3 id="bom"><a href="#bom">Innehållsförhandling</a></h3>
+    <p>
+      Det är ofta praktiskt att med automatik leda användaren till en sida
+      uttryckt i ett språk som hen föredrar, om sådan sida finns tillgänglig.
+
+      Detta kallas innehållsförhandling
+      (<dfn id="def_content_negotiation"><span xml:lang="en" lang="en">content negotiation</span></dfn>),
+      och den utförs av webbservern när en sida efterfrågas.
+
+      Det finns olika typer av innehållsförhandling.
+
+      Här tar vi upp språkorienterad innehållsförhandling, 
+      vilket vi kallar <span class="newterm">språkförhandling</span>.
+    </p>
+    <p>
+      Det blir då lättare för användaren att snabbt komma åt innehållet i det
+      språk hen föredrar.
+
+      I vissa fall kan detta resultera i att en sida levereras i ett språk 
+      som användaren faktiskt inte vill ha, men det finns metoder för att
+      avhjälpa detta, vilket vi beskriver längre ned.
+    </p>
+    <p>
+      Vad gäller den sida du just nu läser, så inspekterar servern 
+      HTTP-huvudet 
+      <code class="kw" translate="no"><span xml:lang="en" lang="en">Accept-Language</span></code>,
+      vilket sänds när din webbläsare (via HTTP) begär en sida.
+    </p>
+    <div class="sidenoteGroup">
+     <p>
+       HTTP-huvudet
+       <code class="kw" translate="no"><span xml:lang="en" lang="en">Accept-language</span></code>
+       representerar en inställning angiven i webbläsaren 
+       eller angiven i det underliggande systemet.
+ 
+       När du installerar en webbläsare så ges dessa inställningar (preferenser) 
+       med automatik alltid vissa normalvärden, 
+       men i de flesta (bords- eller bärbara) datorer kan man även
+       <a href="http://www.w3.org/International/questions/qa-lang-priorities">ändra eller lägga till språkpreferenser</a>. 
+
+       Du kan även ange en prioritetsordnad lista av språk, vilken kan användas 
+       av servern för att hitta bästa innehåll att leverera, om innehåll inte 
+       finns uttryckt i det språk som är du angivit som mest prioriterat 
+       (dvs, överst i listan).
+     </p>
+     <aside class="sideinfonote">
+      <p>
+       <a target="_blank" href="http://validator.w3.org/i18n-checker/check?uri=www.w3.org%2FInternational%2Fquestions%2Fqa-translate-flag#validate-by-uri+">Se vilken information din webbläsare sänder till webbservern</a>
+       när den skall hämta denna sida (efter att ha klickat på länken, se vad som anges för
+       <span xml:lang="en" lang="en">Accept-language</span> nederst i den tabell som visas).
+      </p>
+    </aside>
+
+    </div>
+    <p>
+     Undvik att använda IP-adresser eller andra positionstjänster för att 
+     gissa vilket språk användaren vill ha. 
+
+     Sådana ansatser kan vara praktiska för att komma åt regionspecifika 
+     tjänster, hitta lokal information, etc., men det kan skapa problem 
+     vid språkorienterad förhandling, eftersom användarens plats i geografin 
+     inte nödvändigtvis korrelerar mot det språk i vilket hen vill läsa en webbsida.
+    </p>
+    <p>
+     Oavsett vilken metod som används för språkförhandling, så bör du
+     försäkra dig om att det finns ett normalval för ditt innehåll,
+     vilket kommer att användas när det inte finns innehåll i något av
+     de önskade språken.
+
+     För den sida du nu läser, så är reservalternativet att använda den 
+     engelska versionen, därför att den är ursprungsversionen, den har
+     senaste uppdateringar, och den har genomgått grundlig granskning.
+
+     Ännu ett skäl till detta val är att W3C anser att engelska
+     är det bästa alternativet när andra språk inte kan erbjudas
+     (lingua franca).
+    </p>
+    <p>
+     Naturligtvis kan en användare vilja använda något annat språk som de har
+     tillräcklig förståelse för, istället för att använda engelska.
+
+     Detta har att göra med personliga preferenser.
+
+     Om de skulle vilja se innehåll i ett annat språk, innan de
+     hänvisas till den engelska versionen, så kan de åstadkomma detta genom att
+     <a href="http://www.w3.org/International/questions/qa-lang-priorities">göra lämpliga inställningar av språkpreferenser i webbläsaren eller det underliggande systemet</a>
+     i form av en prioritetslista, som nämndes ovan.
+
+     Om språkförhandling inte lyckas för deras högst prioriterade språk,
+     så kan webbservern söka efter innehåll i de andra angivna språken, i prioritetsordning.
+    </p>
+    <p>
+     Du kan hitta mer nyttig information i artikeln
+     <a class="print" href="/International/questions/qa-when-lang-neg"><span xml:lang="en" lang="en">When to use language negotiation</span></a>. 
+
+     Där diskuteras i mer detalj när det är lämpligt, respektive olämpligt, att 
+     använda språkorienterad förhandling om innehåll.
+    </p>
+  </section>
+    
+  <section>
+    <h3 id="genericLinks"><a href="#genericLinks">Länkar i källkod</a></h3>
+    <p>
+     Om man stöder språkförhandling så blir det mycket enklare att 
+     hantera översättningar, och att vidaredistribuera innehållslänkar till andra.
+    </p>
+    <p>
+     Utan språkförhandling är en sidas källkod full av explicita länkar 
+     till specifika språkversioner av sidoinnehåll, såsom
+     <code class="kw" translate="no">qa-site-conneg.en.html</code>. 
+
+     Med innehållsförhandling kan en sådan länk enkelt representeras
+     som 
+     <code class="kw" translate="no">qa-site-conneg</code>.
+    </p>
+    <p>
+     Med en sådan ansats blir översättningsarbete enklare, mängden fel
+     minskar, och det blir lättare att hantera ändringar då nya språkversioner 
+     läggs till och gamla tas bort.
+
+     Det minimerar även potentiella problem som kan uppstå om en användare vill
+     skicka en länk till någon annan, eftersom mottagaren av denna länk
+     automatiskt kan få se webbsidan i det språk hen föredrar.
+    </p>
+    <p>
+     Det enda fall där du meningsfullt vill använda alternativet
+     <code class="kw" translate="no">qa-site-conneg.en</code>
+     är när du faktiskt vill referera till den engelskspråkiga
+     versionen.
+    </p>
+  </section>
+  
+  <section>
+    <h3 id="yyyshortcomings"><a href="#yyyshortcomings">Länkar på sidan</a></h3>
+    <p>
+     Som nämnts ovan, så kan det finnas fall där det språk som användarens 
+     webbläsare efterfrågar inte är det språk som användaren i själva verket 
+     skulle vilja ha den sidan i.
+
+     Skäl till detta kan vara att användaren föredrar att läsa teknisk 
+     information på engelska, eller föredrar att läsa en originaltext istället
+     för en översättning, eller använder en kollegas dator eller befinner sig
+     på ett Internetkafé i ett främmande land och då inte kan/bör styra om 
+     webbläsarens språkinställningar.
+    </p>
+    <p>
+     Av dessa skäl är det bäst att lägga till länkar till de olika alternativa
+     språkversionerna, och göra detta på alla sidor.
+    </p>
+    <p>
+     På den sida du nu läser finner du sådana länkar i sidans övre högra hörn.
+
+     Vi har placerat länkarna där med avsikten att det skall vara lätt att upptäcka dem 
+     när du just kommit till denna sida.
+
+     Denna typ av information bör inte döljas, eftersom en användare kanske tittar på
+     vad hen ser som en mängd text som inte går att förstå.
+
+     Ju enklare det är att upptäcka länkarna, desto bättre.
+    </p>
+    <p>
+     Visserligen är det sant att om du råkar använda en länk som placerar dig 
+     mitt i ett dokument, så kanske du inte ser vilka andra språkversioner
+     som finns åtkomliga, men det blir i alla fall enklare att hitta dem när du 
+     söker efter dem.
+    </p>
+    <p>
+     Om du tittar på länkarna högst upp på sidan, så ser du att de är formulerade 
+     i samma språk som sidorna vilka länkarna pekar på.
+
+     Det är gjort på detta sätt för att hjälpa användare att hitta vilket
+     alternativ de skulle vilja läsa.
+
+     Om du är engelskspråkig och konfronteras av en sida uttryckt i
+     persiska, och om texten för länken till den engelska versionen
+     formulerats på persiska, så kanske du inte skulle förstå att det
+     är den du skall använda!
+    </p>
+
+    <p>
+     Eftersom denna sida inte har utrymmesbrist, så kan alla länkarna presenteras samtidigt.
+
+     Om du har en lång lista med alternativa versioner, så kan det
+     vara bättre att använda nedrullningslista eller popup-lista.
+
+     Det kan dock finnas kritiska nackdelar med en sådan ansats.
+
+     En viktig svårighet är att det kan vara svårt att ange vad denna
+     valmöjlighet handlar om, på ett språkneutralt men ändå tydligt sätt.
+
+     Artikeln 
+     <a href="http://www.w3.org/International/questions/qa-navigation-select"><span xml:lang="en" lang="en">Using <code class="kw" translate="no">select</code> to link to localized content</span></a>
+     ger mer information om vad du bör tänka på när du använder en nedrullningslista.
+    </p>
+    <p>
+     En annan viktig rekommendation är att motstå frestelsen att
+     använda landsflaggor för att identifiera språk.
+
+     I vissa länder förekommer fler än ett språk, och vissa språk
+     talas i fler än ett land.
+
+     Fastän flaggor kan vara användbara för länkar till 
+     <em>geografiskt</em> anpassade versioner av en sida - såsom länkar
+     till en brittisk webbhandel, till en kanadensisk, till en
+     australiensisk, etc. - så är de inte lämpade för att länka till
+     sidor som bara är språkliga varianter av samma innehåll.
+    </p>
+    <p>
+     Du kan även antyda betydelsen av språkspecifika länkar genom att använda
+     <em>det språk som den aktuella sidan är uttryckt i</em>.
+
+     Till exempel kan man på en engelskspråkig sida ange det engelska
+     namnet på språket i anslutning till var och en av de alternativa
+     versionerna, såsom
+     <samp><span xml:lang="fr" lang="fr">français</span> (<span xml:lang="en" lang="en">French</span>)</samp>.
+
+     För den sida du nu läser gör vi inte så, delvis av utrymmesskäl,
+     och delvis eftersom det inte verkar ge något konkret mervärde.
+
+     Men vi anger det engelska namnet på språket i en
+     knappbeskrivning (<span xml:lang="en" lang="en">tooltip</span>),
+     som du kan se om du flyttar musen till länken.
+
+     Detta medför en mindre komplikation, eftersom det inte är möjligt
+     att använda
+     <code class="kw" translate="no">lang</code>-attributet
+     på ett enstaka element för att ange att 
+     <code class="kw" translate="no">title</code>-texten är i ett språk och
+     elementinnehållet i ett annat.
+
+     Därför använder vi två nästlade element, som beskrivet i artikeln
+     <a href="https://www.w3.org/International/questions/qa-html-language-declarations#usingspan"><span xml:lang="en" lang="en">Declaring language in</span> HTML</a>.
+    </p>
+    <p>
+     Det kan vara värt att påpeka att vi automatiserar skapandet av
+     dessa länkar till alternativa språkversioner, och lagrar data om
+     detta i en extern fil.
+
+     Då blir det lättare att hantera tillägg och borttag av
+     språkversioner, eftersom man då inte behöver manuellt modifiera
+     länkarna i de olika alternativa sidorna.
+  </p>
+  </section>
+  
+  <section>
+    <h3 id="stickiness"><a href="#stickiness">Att frångå språkförhandling</a></h3>
+    <p>
+     Antag att ditt naturliga språk är spanska, och att din webbläsare
+     är inställd på att ta emot spanskspråkigt innehåll, men antag
+     även att du kan förstå engelska, och att du föredrar att läsa
+     tekniska artiklar (t.ex. W3C:s sidor) i engelskt original.
+    </p>
+    <p>
+     Om du omdirigeras till en spanskspråkig sida varje gång du följer
+     en länk, och du då måste explicit hämta den engelska versionen av
+     sidan, så kan dessa repetitiva handgrepp upplevas som
+     irriterande.
+
+     Du behöver i så fall något sätt att ange att du vill fortsätta
+     läsa engelska sidor på denna webbplats, och det behövs en mekanism
+     som stöder detta beteende.
+    </p>
+    <p>
+     Den sida du nu läser möjliggör detta, genom att låta dig
+     sätta en kaka
+     (<span xml:lang="en" lang="en">cookie</span>)
+     varje gång du klickar på en länk i sidans övre högra hörn.
+     
+     Varje gång du laddar en av dessa sidor, så kontrollerar servern om
+     denna kaka är satt och är aktiverad, och om detta är fallet så
+     levereras den språkversion som du senast hämtat.
+    </p>
+    <p>
+     Du kan även åstadkomma detta beteende genom att använda
+     <code class="kw" translate="no"><span xml:lang="en" lang="en">localStorage</span></code>,
+     om du föredrar detta framför användning av kakor.
+    </p>
+  </section>
+</section>
+
+<section>
+<h2 id="additional"><a href="additional">Ytterligare information</a></h2>
+  
+  <section>
+    <h3 id="apacheConneg"><a href="#apacheConneg">Vilken typ av innehållsförhandling kan man använda på Apache?</a></h3>
+    <p>
+     Den sida du nu läser levereras av en 
+     <span xml:lang="en" lang="en">Apache</span>-server.
+
+     Det finns två vanliga sätt för <span xml:lang="en"
+     lang="en">Apache</span> att utföra innehållsförhandling genom
+     omdirigering: 
+     <dfn><span xml:lang="en" lang="en">multiviews</span></dfn> 
+     och <dfn>type maps</dfn> (typavbildningar).
+
+     Vi <a href="#varFiles">använder typavbildningar</a>, eftersom
+     vi anser att det ger oss mer flexibilitet i omdirigering av 
+     en hämtningsbegäran, men det kan finnas andra avvägningar för dig.
+
+     Nackdelen är att denna ansats kräver några extra filer på
+     servern, och dessa filer behöver redigeras när en översatt sida
+     läggs till eller tas bort.
+
+     I nästa avsnitt ges en kort översikt över typavbildningar.
+
+     Vi har även en artikel som beskriver
+     <a href="http://www.w3.org/International/questions/qa-apache-lang-neg">hur man kan använda<span xml:lang="en" lang="en"> multiviews</span></a>,
+     vilken du kan använda om den ansatsen passar dig bättre.
+
+</p>
+  </section>
+
+  <section>
+    <h3 id="varFiles"><a href="#varFiles">Att använda typavbildningar för språkförhandling</a></h3>
+    <p>
+     Nedan ges några kortare tips om användning av
+     typavbildningar för språkförhandling på en 
+     <span xml:lang="en" lang="en">Apache</span>-server.
+
+     Titta i 
+     <a href="http://httpd.apache.org/docs/2.4/mod/mod_negotiation.html"><span xml:lang="en" lang="en">Apache</span>-dokumentationen</a>,
+     där detaljerad information ges om denna ansats.
+    </p>
+    <p>
+     För att använda typavbildningar så måste du skapa en fil i samma
+     mapp som huvudfilen, med samma namn, men med namnsuffix
+     <code class="kw" translate="no">.<span xml:lang="en" lang="en">var</span></code>.
+
+     Den filen används av servern då en fil med det namnet begärs, och
+     då denna begäran inte anger ett sidonamn med ett suffix vilket
+     indikerar ett språk (t.ex. .en eller .de).
+
+     Denna extra fil ger information till servern om var filer för
+     specifika språkversioner finns.
+    </p>
+    <p>
+     Du behöver även konfigurera din server så att den använder
+     innehållsförhandling medelst typavbildningar, genom att lägga
+     till ett
+     <a href="http://httpd.apache.org/docs/2.4/mod/mod_mime.html#addhandler"><span xml:lang="en" lang="en">AddHandler</span> direktiv</a>.
+
+     Vi använder detta på följande sätt:
+    </p>
+    <figure class="example">
+    <pre translate="no"><span xml:lang="en" lang="en">AddHandler type-map .var</span></pre>
+    </figure>
+    <p>
+     Här följer ett exempel på en 
+     <code class="kw" translate="no">.var</code>-fil:
+    </p>
+    <figure class="example">
+    <pre translate="no">URI: qa-lang-priorities
+
+Content-language: de
+Content-type: text/html
+URI: qa-lang-priorities.de.php
+
+Content-language: en
+Content-type: text/html
+URI: qa-lang-priorities.en.php
+
+Content-language: es
+Content-type: text/html
+URI: another-file-with-long-name-so-you-notice.php
+
+Content-language: uk
+Content-type: text/html
+URI: qa-lang-priorities.uk.php
+
+URI: qa-lang-priorities.en.php
+Content-type: text/html
+</pre>
+</figure>
+    <p>
+     När servern får en hämtningsbegäran av resursen
+     <a href="http://www.w3.org/International/questions/qa-lang-priorities">http://www.w3.org/International/questions/qa-lang-priorities</a>, 
+     så inspekterar servern det HTTP-huvud
+     <code class="kw" translate="no"><span xml:lang="en" lang="en">Accept-Language</span></code>
+     som sänts av webbläsaren.
+    
+     Om detta anger  
+     <code class="kw" translate="no">de</code> (tyska), 
+     så kommer servern att söka i listan ovan och returnera filen
+     <code class="kw" translate="no">qa-lang-priorities.de.php</code>.
+    </p>
+    <p>
+     Lägg märke till att om ett 
+     <code class="kw" translate="no"><span xml:lang="en" lang="en">Accept-Language</span></code>-huvud
+     anger koden <code class="kw" translate="no">es</code> (spanska), 
+     så kommer servern att omdirigera filhämtning till en fil med ett
+     helt annat namn.
+
+     En sådan fil kan även finnas i en helt annan mapp.
+    </p>
+    <p>
+     Slutligen kan du se att de sista två raderna definierar ett standardval:
+     om en angiven kod för
+     <code class="kw" translate="no"><span xml:lang="en" lang="en">Accept-Language</span></code>
+     inte matchar något av alternativen högre upp i listan, så kommer servern
+     att returnera den utpekade filen (i detta fall den engelska
+     versionen med namn
+     <code class="kw" translate="no">qa-lang-priorities.en.php</code>).
+    </p>
+  </section>
+</section>
+<section> 
+  <h2 id="endlinks"><a href="#endlinks">Att läsa mer</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Relaterade länkar, <cite>att konstruera HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#navigation">Navigering</a></li>
+        <li><a href="/International/techniques/authoring-html#contentneg">Att använda språkförhandling</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
