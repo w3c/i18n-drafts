@@ -114,8 +114,8 @@ s.codedInUtf8 = "Kodiert in UTF-8!"
 s.translatedFromEnglishVer = "Übersetzung der englischen Version vom "+dt.enVersion+". Letzte Änderung der übersetzten Version am "+dt.thisVersionPlain+" UTC."
 
 s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
-s.untranslatedChanges = '<strong>Hinweis:</strong> Das  <a href="'+f.filename+'.en">englische Original</a> wurde aktualisiert since this document was translated. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
-s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
+s.untranslatedChanges = '<strong>Hinweis:</strong> Das <a href="'+f.filename+'.en">englische Original</a> wurde nach dieser Übersetzung aktualisiert. Die Änderungen wurden in diese Seite übernommen, so dass evtl. einige Abschnitte auf englisch erscheinen, bis die Übersetzung aktualisiert wird.'
+s.unlinkedTranslation = '<strong>Achtung!</strong> Das englische Original wurde nach dieser Übersetzung in wesentlichen Punkten aktualisiert. Wir raten Ihnen, die <a href="'+f.filename+'.en">englische Version</a> zu lesen, bis die Übersetzung aktualisiert wird.'
 s.new="Neu"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Aktualisiert" // same as New
 s.translation_updated="Übersetzung aktualisiert am" // date appears after colon 
