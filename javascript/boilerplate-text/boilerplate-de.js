@@ -100,7 +100,7 @@ s.newResourcesAlt = "Sie werden benachrichtigt, wenn ein neues Dokument zum erst
 s.newResources = "Neue Ressourcen"
 s.homePageNewsAlt = "Alle Nachrichten, die auf der Startseite gezeigt werden."
 s.homePageNews = "News auf der Startseite"
-s.followOurNews = "Follow our news feed."
+s.followOurNews = "Folgen Sie unserem Newsfeed."
 s.sentenceDelimiter = "."
 
 s.author = "Autor:" // followed by name of author(s)
@@ -113,7 +113,7 @@ s.codedInUtf8 = "Kodiert in UTF-8!"
 
 s.translatedFromEnglishVer = "Übersetzung der englischen Version vom "+dt.enVersion+". Letzte Änderung der übersetzten Version am "+dt.thisVersionPlain+" UTC."
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.historyOfDocumentChanges = 'Zur Änderungshistorie dieser Seite siehe <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">Newsfeed</a> für wesentliche Änderungen und <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github-Commit-Liste</a> für alle Änderungen ab Januar 2016.'
 s.untranslatedChanges = '<strong>Hinweis:</strong> Das <a href="'+f.filename+'.en">englische Original</a> wurde nach dieser Übersetzung aktualisiert. Die Änderungen wurden in diese Seite übernommen, so dass evtl. einige Abschnitte auf englisch erscheinen, bis die Übersetzung aktualisiert wird.'
 s.unlinkedTranslation = '<strong>Achtung!</strong> Das englische Original wurde nach dieser Übersetzung in wesentlichen Punkten aktualisiert. Wir raten Ihnen, die <a href="'+f.filename+'.en">englische Version</a> zu lesen, bis die Übersetzung aktualisiert wird.'
 s.new="Neu"// placed alongside new articles at http://www.w3.org/International/articlelist 
@@ -125,10 +125,10 @@ s.status_draft="Dieser Artikel ist ein Entwurf und wurde noch nicht öffentlich 
 s.status_review="Dieser Artikel wird zur Zeit gerade öffentlich diskutiert. Wenn Sie Anmerkungen haben, senden Sie uns diese bitte über <a href='#survey'>den Link am Ende der Seite</a>."
 s.status_published="Dieser Artikel wurde von der Arbeits&shygruppe Inter&shynationali&shysierung des W3C geprüft und öffentlich diskutiert, damit er so korrekt wie möglich ist. Wenn Sie Anmerkungen haben, senden Sie uns diese bitte über <a href='#survey'>den Link am Ende der Seite</a>."
 s.status_notreviewed="Dieser Artikel wurde ohne vorherige öffentliche Diskussion veröffentlicht. Wenn Sie Anmerkungen haben, senden Sie uns diese bitte über <a href='#survey'>den Link am Ende der Seite</a>."
-s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
+s.status_obsolete="Dieser Artikel ist veraltet. Er wird nicht mehr gepflegt und ist womöglich stellenweise falsch. Aktuelle Informationen finden Sie auf der <a href='http://www.w3.org/International/'>Startseite der Internationalisierungstätigkeit</a>."
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Kurze Antwort" // heading
 s.longeranswer = "Details" // heading
 s.additionalinfo = "Weitere Informationen" // heading that sometimes follows 'Details'
 s.acknowledgements = "Vielen Dank für die Beiträge und Kommentare zu diesem Artikel an:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
-s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.cookieMsg = "Wenn Sie der Verwendung eines Cookies zustimmen, werden Ihnen die Seiten der W3C-Internationalisierungstätigkeit (sofern verfügbar) in Ihrer gewählten Sprache angezeigt. Möchten Sie den Cookie setzen?" // this text is to be copied to another location
