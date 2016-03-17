@@ -52,7 +52,7 @@ s.accessKeyN = 'Accesskey n springt zur Seitennavigation. <a href="#contentstart
 s.examplesInAnotherScript = "Dieses Dokument enthält Beispiele in einer anderen Sprache/Schrift."
 s.worldMap = "Weltkarte"
 s.searchI18nSite = "I18n-Suche" 
-s.translationDisclaimer = 'Dieses Dokument ist eine Übersetzung. Im Falle von Abweichungen oder Fehlern sollte das <a href="'+f.filename+'.en">aktuelle englische Original</a> als maßgeblich angenommen werden. Das W3C besitzt das <a href="#copyright">Copyright am Original</a>, wie unten beschrieben.'
+s.translationDisclaimer = 'Dieses Dokument ist eine ehrenamtlich angefertigte Übersetzung. Im Falle von Abweichungen oder Fehlern sollte das <a href="'+f.filename+'.en">aktuelle englische Original</a> als maßgeblich angenommen werden. Das W3C besitzt das <a href="#copyright">Copyright am Original</a>, wie unten beschrieben.'
 s.translator = "Übersetzer:"
 s.relatedLinks = "Verwandte Links"
 s.articles = "Artikel" // used in breadcrumbs, top right of page 
