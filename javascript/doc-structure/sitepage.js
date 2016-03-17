@@ -1,6 +1,9 @@
 var g = { }
 
-
+var base = '' 
+if (! window.location.href.match('www.w3.org') && ! window.location.href.match('localhost')) {
+		 base = 'https://www.w3.org'
+		}
 
 // LANGUAGE RELATED STUFF
 
@@ -75,11 +78,11 @@ function stickyConneg (filename, cLang, targetLang) {
 // MAIN NAVIGATION
 
 g.siteSearch = '<div class="noprint"><form method="get" action="/International/site-search.php" enctype="application/x-www-form-urlencoded"><div id="searchSite" class="topRight">'+s.searchI18nSite+'<br/><input name="q" type="text" size="15" id="searchField" accesskey="E" maxlength="255"/></div></form></div>'+
-'<div class="noprint"> <a href="/International/log/description"><span class="topRight">&nbsp;RSS Feeds&nbsp;</span><img src="../icons/rssLink.gif" alt="RSS feed"/></a></div></div>'
+'<div class="noprint"> <a href="'+base+'/International/log/description"><span class="topRight">&nbsp;RSS Feeds&nbsp;</span><img src="../icons/rssLink.gif" alt="RSS feed"/></a></div></div>'
 
-g.breadcrumbs = "<a href='/International/'>"+s.home+"</a> &gt; <a href='/International/resources'>"+s.resources+"</a> &gt; "
-if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='/International/tests/'>"+s.tests+"</a>" 
-else g.breadcrumbs += "<a href='/International/articlelist#"+f.breadcrumb+"'>"+s.articles+"</a>"
+g.breadcrumbs = "<a href='"+base+"/International/'>"+s.home+"</a> &gt; <a href='"+base+"/International/resources'>"+s.resources+"</a> &gt; "
+if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='"+base+"/International/tests/'>"+s.tests+"</a>" 
+else g.breadcrumbs += "<a href='"+base+"/International/articlelist#"+f.breadcrumb+"'>"+s.articles+"</a>"
 
 g.about = "<h2 id='abouthead' class='notoc'>"+s.aboutThisArticle+"</h2>\n"
 if (f.status == "draft") { g.about += "<p style='color:red;'>"+s.status_draft+"</p>" }
@@ -109,19 +112,19 @@ else g.disclaimer = ''
 
 var mainNavigation = '<div id="search">'+g.siteSearch+'</div>'+
 '<div  style="float:left;"><a href="http://www.w3.org/"><img src="http://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72" /></a></div>'+
-'<div id="banner" style="float:left; margin-left:10px;"><a href="/International"><p id="sitename" style="font-family: Arial, Helvetica, sans-serif; font-size: 22px; border-bottom: 2px solid brown; color: #4c5c9c; margin:0;">Internationalization (i18n) Activity</p>'+
+'<div id="banner" style="float:left; margin-left:10px;"><a href="'+base+'/International"><p id="sitename" style="font-family: Arial, Helvetica, sans-serif; font-size: 22px; border-bottom: 2px solid brown; color: #4c5c9c; margin:0;">Internationalization (i18n) Activity</p>'+
 '	<p id="subtitle" style="margin:0; font-size:12px; font-style:italic; color: #4c5c9c;">Making the World Wide Web worldwide!</p></a></div>'+
 '   <br style="clear:both;" />'+
 '	<nav id="boilerplate">'+
-//'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'/icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
+//'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'/icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="'+base+'/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
 //s.internationalizationTitle+'</a></div>'+
-'	<div id="sitelinks" class="noprint"><a href="/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a>&#xA0;'+s.rlm+
-'	<a href="/International/resources" title="'+s.informationResources+'">'+s.resources+'</a>&#xA0;'+s.rlm+
-'	<a href="/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a>&#xA0;'+s.rlm+
-'	<a href="/International/resource-index" title="'+s.topicIndexForInformation+'">'+s.topics+'</a>&#xA0;'+s.rlm+ 
-'	<a href="/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a>&#xA0;'+s.rlm+
-'	<a href="/International/about#scope" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a>&#xA0;'+s.rlm+ 
-'	<a href="/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a>&#xA0;'+s.rlm+ 
+'	<div id="sitelinks" class="noprint"><a href="'+base+'/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a>&#xA0;'+s.rlm+
+'	<a href="'+base+'/International/resources" title="'+s.informationResources+'">'+s.resources+'</a>&#xA0;'+s.rlm+
+'	<a href="'+base+'/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a>&#xA0;'+s.rlm+
+'	<a href="'+base+'/International/resource-index" title="'+s.topicIndexForInformation+'">'+s.topics+'</a>&#xA0;'+s.rlm+ 
+'	<a href="'+base+'/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a>&#xA0;'+s.rlm+
+'	<a href="'+base+'/International/about#scope" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a>&#xA0;'+s.rlm+ 
+'	<a href="'+base+'/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a>&#xA0;'+s.rlm+ 
 '	&#xA0; </div><div id="line">&#xA0;</div>'+
 '	</nav>'+
 '	<div class="directory"><div id="site-navigation">'+
