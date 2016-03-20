@@ -131,5 +131,5 @@ s.quickanswer = "Kurze Antwort" // heading
 s.longeranswer = "Details" // heading
 s.additionalinfo = "Weitere Informationen" // heading that sometimes follows 'Details'
 s.acknowledgements = "Vielen Dank für die Beiträge und Kommentare zu diesem Artikel an:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
-s.translationAcknowledgements = "Thanks also to the following people whose contribution or feedback was included in this translation:" // used at bottom of page to list people who provided feedback to the translation. The list comes after this text. 
+s.translationAcknowledgements = "Vielen Dank für die Beiträge und Kommentare zu dieser Übersetzung an:" // used at bottom of page to list people who provided feedback to the translation. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
