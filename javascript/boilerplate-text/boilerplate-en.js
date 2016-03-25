@@ -129,5 +129,6 @@ s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.translationAcknowledgements = "Thanks also to the following people whose contribution or feedback was included in this translation:" // used at bottom of page to list people who provided feedback to the translation. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 //s.supercededTranslation = '<strong>Avertissement :</strong> Ceci est une version dépassée de ce document! Il est recommandé de lire <a href="'+g.betterfilename+'.en">la dernière version</a> et si vous le pouvez, de modifier le marque-page ou le lien qui vous a redirigé ici.'
