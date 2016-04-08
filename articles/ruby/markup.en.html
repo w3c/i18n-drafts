@@ -76,8 +76,7 @@ function highlightCode () {
     </div>
     
   <p>Ruby is the name given to the small annotations in Japanese and Chinese content that are rendered alongside base text, usually to provide phonetic information, but sometimes to provide other information. We will assume that you are familiar with how you want your ruby to look. (If not,  <a class="print" href="/International/articles/ruby/">see the short overview</a> of how ruby works.)</p>
-  <p>This article will only discuss how to use HTML5 <em>markup</em> for ruby text. The aim of markup is principally to establish the relationships between the <dfn>base text</dfn> and the <dfn>ruby text</dfn> (the annotations). </p>
-  <p>For information about how to then apply adjustments to the default styling of ruby text, see <a href="/International/articles/ruby/styling" class="print">Ruby Styling</a>.</p>
+  <p>This article will only discuss how to use HTML5 <em>markup</em> for ruby text. The aim of markup is principally to establish the relationships between the <dfn>base text</dfn> and the <dfn>ruby text</dfn> (the annotations). For information about how to then apply adjustments to the default <em>styling</em> of ruby text, see <a href="/International/articles/ruby/styling" class="print">Ruby Styling</a>.</p>
 </section>
 
 
@@ -85,14 +84,15 @@ function highlightCode () {
   <h2 id="Slide0090"><a href="#Slide0090">A simple example</a></h2>
   <p>Let's start out with a simple example, then we can discuss more detailed aspects later. Let's suppose we want to produce the following:</p>
   <figure>
-  <p lang="ja" class="rubyExample">これは<ruby><rb>日</rb><rt>に</rt><rb>本</rb><rt>ほん</rt><rb>語</rb><rt>ご</rt></ruby>です。</p>
+  	<p lang="ja" class="rubyExample">これは<ruby><rb>日</rb><rt>に</rt><rb>本</rb><rt>ほん</rt><rb>語</rb><rt>ご</rt></ruby>です。</p>
   </figure>
   <p>There are a number of ways to use  HTML markup to produce even this simple example. What follows uses opening and closing tags, and uses tags for <code class="kw" translate="no">rb</code> elements, but we'll see in a moment that there are alternative approaches that use less markup, or move the markup around.</p>
   <figure class="example">
+  <div><a href="markup-data/eg_simple" onclick="showExample('markup-data/eg_simple'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
   <p><code>これは&lt;ruby&gt;    <span class="nowrap">&lt;rb&gt;日&lt;/rb&gt;&lt;rt&gt;に&lt;/rt&gt;</span>    <span class="nowrap">&lt;rb&gt;本&lt;/rb&gt;&lt;rt&gt;ほん&lt;/rt&gt;</span>    <span class="nowrap">&lt;rb&gt;語&lt;/rb&gt;&lt;rt&gt;ご&lt;/rt&gt;</span>    <span class="nowrap">&lt;/ruby&gt;です。</span></code></p>
   </figure>
-  <p>The <code class="kw" translate="no">rb</code> element has the ruby base, and the following <code class="kw" translate="no">rt</code> element has the associated ruby text. </p>
-  <p>The example shows gaps between each <code class="kw" translate="no">rb</code>+<code class="kw" translate="no">rt</code> pair – in principle, this is just to improve the readability of the example. It should make no difference to the result as long as you are using both start and end tags. Unfortunately, at the time of writing, Microsoft Edge doesn't ignore the spaces, so actually you need to eliminate any gaps in your code.</p>
+  <p>The <code class="kw" translate="no">rb</code> element holds the ruby base, and the following <code class="kw" translate="no">rt</code> element holds the associated ruby text. </p>
+  <p>The example shows gaps between each <code class="kw" translate="no">rb</code>+<code class="kw" translate="no">rt</code> pair –  this is just to improve the readability of the example. In principle, it should make no difference to the result as long as you are using both start and end tags. Unfortunately, at the time of writing, Microsoft Edge doesn't ignore the spaces, so actually you need to eliminate any gaps in your code.</p>
   <p>Browsers will automatically position the annotations above the base characters in horizontal writing mode, and to the right in vertical writing mode. To change that you will need to use CSS (<code class="kw" translate="no">ruby-position</code>). That and other ways to alter the rendering of the ruby are discussed in the companion article, <a href="/International/articles/ruby/styling" class="print">Ruby Styling</a>.</p>
   </section>
   
@@ -102,17 +102,18 @@ function highlightCode () {
 <p>Before going further, let's look at some general patterns for markup that are defined as valid in HTML. This is about how much markup you need, and the order in which marked up items appear.</p>
   <section>
     <h3 id="inter"><a href="#inter">Interleaved markup</a></h3>
-    <p>In the previous example we used <code class="kw" translate="no">rb</code> tags, and we opened and closed each element. If you feel that this makes it harder to read the source code and to create things manually, then the HTML5 specification allows a number of alternative approaches. Both of the following alternatives are also valid. Note that the basic pattern here is <code class="kw" translate="no">rb&#x202F;rt&#x202F;rb&#x202F;rt&#x202F;...</code>, which we'll refer to as <span class="qterm">interleaved</span>.</p>
+    <p>In the previous example we used <code class="kw" translate="no">rb</code> tags, and we opened and closed each element. If you feel that this makes it harder to read the source code or to create things manually, then the HTML5 specification allows a number of alternative approaches. Both of the following alternatives are also valid. Note that the basic pattern here is <code class="kw" translate="no">rb&#x202F;rt&#x202F;rb&#x202F;rt&#x202F;...</code>, which we'll refer to as <span class="qterm">interleaved</span>.</p>
     <figure class="example">
-      <p><code>これは<span class="nowrap">&lt;ruby&gt;日&lt;rt&gt;に&lt;/rt&gt;本&lt;rt&gt;ほん&lt;/rt&gt;語&lt;rt&gt;ご&lt;/rt&gt;</span>&lt;/ruby&gt;です。</code></p>
+       <div><a href="markup-data/eg_interleaved1" onclick="showExample('markup-data/eg_interleaved1'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+     <p><code>これは<span class="nowrap">&lt;ruby&gt;日&lt;rt&gt;に&lt;/rt&gt;本&lt;rt&gt;ほん&lt;/rt&gt;語&lt;rt&gt;ご&lt;/rt&gt;</span>&lt;/ruby&gt;です。</code></p>
 </figure>
     <figure class="example">
+      <div><a href="markup-data/eg_interleaved2" onclick="showExample('markup-data/eg_interleaved2'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
       <p><code>これは<span class="nowrap">&lt;ruby&gt;&lt;rb&gt;日&lt;rt&gt;に&lt;rb&gt;本&lt;rt&gt;ほん&lt;rb&gt;語&lt;rt&gt;ご&lt;/ruby&gt;</span>です。</code></p>
     </figure>
     <p>The first of the above examples drops the <code class="kw" translate="no">rb</code> tag, and is the style you will see in the examples in the HTML5 specification. The lower example drops the closing tags, resulting in the same simplification of markup, but making the <code class="kw" translate="no">rb</code> content directly selectable for styling or scripting.</p>
     <p>It is important to note, by the way, that you can no longer allow extra spaces to appear inside the <code class="kw" translate="no">ruby</code> element, since they will be produced in the output. You need to take care to ensure that your editor doesn't split the sequence across two or more lines while applying automatic source formatting!</p>
-    <p>HTML allows you to style <code class="kw" translate="no">rb</code> content in a number of ways. One way is to style the <code class="kw" translate="no">ruby</code> element, then style the <code class="kw" translate="no">rt</code> tags differently. Another is to surround the <code class="kw" translate="no">rb</code> content with a <code class="kw" translate="no">span</code> element. </p>
-    <p>Note, however, that if the <code class="kw" translate="no">rb</code> content is not tagged, it is more difficult to apply certain styling effects, which you may actually need until a later date. </p>
+    <p>HTML allows you to style <code class="kw" translate="no">rb</code> content in a number of ways if you don't use <code class="kw" translate="no">rb</code> tags. One way is to style the <code class="kw" translate="no">ruby</code> element, then style the <code class="kw" translate="no">rt</code> tags differently. Another is to surround the <code class="kw" translate="no">rb</code> content with a <code class="kw" translate="no">span</code> element. However, be aware that if the <code class="kw" translate="no">rb</code> content is not tagged, it is more difficult to apply certain styling effects (which you may not actually need until a later date).</p>
 <p>For example, research for elementary and junior-high students by the Japanese government in 2010 indicated that 0.2% of them have difficulty reading hiragana, and 6.9% have difficulty with kanji. Kanji dyslexia is related to difficulty in visual recognition of complex drawings, and therefore adding ruby adds complexity and makes them even harder to read. The researchers tried several methods to improve readability and found that the best method was to replace kanji with hiragana (ie. the <code class="kw" translate="no">rt</code> text).  Using CSS a user or alternate style sheet can replace kanji with its annotation without having to change the markup (by hiding the <code class="kw" translate="no">rb</code> tags and making the <code class="kw" translate="no">rt</code> tags inline and full-size), but only if the <code class="kw" translate="no">rb</code> content is selectable.</p>
   </section>
   
@@ -130,28 +131,38 @@ function highlightCode () {
     </figure>
     <p> To achieve that, you can use the different approach  shown below.</p>
     <figure class="example">
-      <p><code>これは&lt;ruby&gt;&lt;rb&gt;日&lt;rb&gt;本&lt;rb&gt;語&lt;rtc&gt;&lt;rt&gt;に&lt;rt&gt;ほん&lt;rt&gt;ご&lt;/rtc&gt;&lt;/ruby&gt;です。</code></p>
+   <div><a href="markup-data/eg_tabular" onclick="showExample('markup-data/eg_tabular'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+     <p><code>これは&lt;ruby&gt;&lt;rb&gt;日&lt;rb&gt;本&lt;rb&gt;語&lt;rt&gt;に&lt;rt&gt;ほん&lt;rt&gt;ご&lt;/ruby&gt;です。</code></p>
 </figure>
-<p>Each ruby base is now mapped to the same ruby text, but the order of elements has changed to be more like a tabular effect. Note the introduction of the <code class="kw" translate="no">rtc</code> element, to hold the 'row' of <code class="kw" translate="no">rt</code> elements.</p>
+<p>Each ruby base is now mapped to the same ruby text, but the order of elements has changed to be more like a tabular effect. You could visualise the markup like this:</p>
+<figure>
+<pre>[ruby]
+[rb][rb][rb]
+[rt][rt][rt]
+[ruby]
+</pre>
+</figure>
+<p>If you wanted, you could surround  the sequence of <code class="kw" translate="no">rt</code> elements with an <code class="kw" translate="no">rtc</code> element, but that is mostly needed when working with double-sided ruby (see below).</p>
     <!--p class="note"><strong>Note:</strong> It may appear that you could produce a similar effect by using group ruby, ie. by having a single annotation that reads <span lang="ja">にほんご</span> mapped to the whole word <span lang="ja">日本語</span>.  This would however be disadvantageous in at least a couple ways. You would lose the detailed semantics, you would severely limit your flexibility to style the ruby text, and you would encounter difficulties when justifying text. You would normally expect a sequence of annotated base characters to wrap  in the middle of a word when the end of the line is reached, but group ruby has to wrap as a single unit.</p-->
   </section>
  </section> 
 
 <section>
 <h2 id="single"><a href="#single">Producing single-sided ruby</a></h2>
-<p>This section tells you how to produce various types of single-sided ruby annotation, and covers various things to bear in mind.</p>
+<p>This section tells you how to produce various types of single-sided ruby annotation, and covers various things to bear in mind. As mentioned above, there is more than one way to apply the markup – we will use one, minimal approach here.</p>
 
 <section>
     <h3 id="mono_group_etc"><a href="#mono_group_etc">Mono vs. group vs. jukugo</a></h3>
-    <p>The most common approach for ruby annotation is to associate each base character with a single ruby text, ie. <a class="termref print" href="index#def_mono_ruby">mono ruby</a>. All of the earlier examples illustrate mono ruby.</p>
+    <p>The most common approach when creating ruby  is to associate each base character with a single ruby annotation, ie. <a class="termref print" href="index#def_mono_ruby">mono ruby</a>. (All of the earlier examples illustrate mono ruby.)</p>
     <p>Mono ruby makes it easy to handle line breaks when justifying text, since the browser can split the line between any two base characters. It also maps base characters and annotations precisely, and allows styling to apply the fine rendering control you may need. </p>
     <p><a class="termref print" href="index#def_group_ruby">Group ruby</a>, on the other hand, assigns a single annotation to a sequence of base characters, and these base characters can no longer be split at the end of a line. Situations where group ruby is appropriate include sequences of base characters that are associated with a single phonetic sound, or semantic ruby that applies to a whole word, or even a phrase. </p>
-    <p>Here is an example that shows group ruby on the left, and mono-ruby on the right. Note the difference in how the annotations are distributed in relation to the base characters.</p>
+    <p>Here is an example that shows group ruby on the left, and mono-ruby on the right. The two characters on the left are pronounced <span class="qterm">kyō</span>, which is an indivisible sound. Note the difference in how the annotations are distributed in relation to the base characters.</p>
     <figure>
       <p lang="ja" class="rubyExample"><ruby><rb>今日</rb><rt>きょう</rt></ruby>の<ruby><rb>会</rb><rt>かい</rt><rb>議</rb><rt>ぎ</rt></ruby></p>
     </figure>
     <p>To mark up group ruby you simply put more than one base character in the <code class="kw" translate="no">rb</code> tag, as shown in the following code sample.</p>
     <figure class="example">
+		<div><a href="markup-data/eg_group_ruby" onclick="showExample('markup-data/eg_group_ruby'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
       <p><code>&lt;ruby&gt;&lt;rb&gt;今日&lt;rt&gt;きょう&lt;/ruby&gt;の&lt;ruby&gt;&lt;rb&gt;会&lt;rt&gt;かい&lt;rb&gt;議&lt;rt&gt;ぎ&lt;/ruby&gt;。</code></p>
     </figure>
     <p>If you want to apply <a class="termref print" href="index#def_jukugo_ruby">jukugo</a> rules to your ruby text, you should just mark  up the content in the same way as mono ruby. You don't need to worry about the overlaps in the markup. That will be taken care of by CSS. As previously mentioned, the markup simply estabishes the correspondances between base characters and annotations.</p>
@@ -168,7 +179,8 @@ function highlightCode () {
   </div>
   <p>Again, the markup merely establishes the relationships between the base characters and the ruby text. The positioning of the phonetic characters and tone marks to the right of the base character is achieved by styling. For example, the markup needed for the characters just above is as follows.</p>
   <figure class="example">
-  <p lang="zh-hant"><code>&lt;ruby&gt;&lt;rb&gt;第&lt;rt&gt;ㄉㄧˋ&lt;rb&gt;十&lt;rt&gt;ㄕˊ&lt;rb&gt;屆&lt;rt&gt;ㄐㄧㄝˋ&lt;/ruby&gt;</code></p>
+		<div><a href="markup-data/eg_bopomofo_ruby" onclick="showExample('markup-data/eg_bopomofo_ruby'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+	  <p lang="zh-hant"><code>&lt;ruby&gt;&lt;rb&gt;第&lt;rt&gt;ㄉㄧˋ&lt;rb&gt;十&lt;rt&gt;ㄕˊ&lt;rb&gt;屆&lt;rt&gt;ㄐㄧㄝˋ&lt;/ruby&gt;</code></p>
   </figure>
   </section>
   
@@ -180,10 +192,12 @@ function highlightCode () {
   </figure>
   <p>One way to do this would be to use an empty <code class="kw" translate="no">rt</code> element after り. </p>
   <figure class="example">
+		<div><a href="markup-data/eg_gaps1" onclick="showExample('markup-data/eg_gaps1'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
   <p lang="ja"><code>&lt;ruby&gt;&lt;rb&gt;振&lt;rt&gt;ふ&lt;rb&gt;り&lt;rt&gt;&lt;rb&gt;仮&lt;rt&gt;が&lt;rb&gt;名&lt;rt&gt;な&lt;/ruby&gt;</code></p>
   </figure>
   <p>However, if you were to render the annotation inline, it would now be missing a character. You would see <span lang="ja">振り仮名（ふがな）</span>, instead of <span lang="ja">振り仮名（ふりがな）</span>. An alternative would be to repeat the character in both the base and ruby text, and rely on CSS to automatically hide the annotation when both base and ruby text are the same.</p>
   <figure class="example">
+		<div><a href="markup-data/eg_gaps2" onclick="showExample('markup-data/eg_gaps2'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
   <p><code>&lt;ruby&gt;&lt;rb&gt;振&lt;rt&gt;ふ&lt;rb&gt;り&lt;rt&gt;り&lt;rb&gt;仮&lt;rt&gt;が&lt;rb&gt;名&lt;rt&gt;な&lt;/ruby&gt;</code></p>
   </figure>
   </section>
@@ -200,14 +214,16 @@ function highlightCode () {
     </figure>
     <p>And here is one way to code it.</p>
     <figure class="example">
+		<div><a href="markup-data/eg_words_il" onclick="showExample('markup-data/eg_words_il'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
       <p><code>&lt;ruby&gt;&lt;rb&gt;常&lt;rt&gt;じょう&lt;rb&gt;用&lt;rt&gt;よう&lt;/ruby&gt;<br>
       &lt;ruby&gt;&lt;rb&gt;漢&lt;rt&gt;かん&lt;rb&gt;字&lt;rt&gt;じ&lt;/ruby&gt;<br>
       &lt;ruby&gt;&lt;rb&gt;表&lt;rt&gt;ひょう&lt;/ruby&gt;</code></p>
 </figure>
 <p>If you wanted  inlined annotations appear on a word by word basis you would want to code using the tabular method. That would look like this.</p>
     <figure class="example">
-      <p><code>&lt;ruby&gt;&lt;rb&gt;常&lt;rb&gt;用&lt;rtc&gt;&lt;rt&gt;じょう&lt;rt&gt;よう&lt;/rtc&gt;&lt;/ruby&gt;<br>
-      &lt;ruby&gt;&lt;rb&gt;漢&lt;rb&gt;字&lt;rtc&gt;&lt;rt&gt;かん&lt;rt&gt;じ&lt;/rtc&gt;&lt;/ruby&gt;<br>
+		<div><a href="markup-data/eg_words_tab" onclick="showExample('markup-data/eg_words_tab'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+      <p><code>&lt;ruby&gt;&lt;rb&gt;常&lt;rb&gt;用&lt;rt&gt;じょう&lt;rt&gt;よう&lt;/ruby&gt;<br>
+      &lt;ruby&gt;&lt;rb&gt;漢&lt;rb&gt;字&lt;rt&gt;かん&lt;rt&gt;じ&lt;/ruby&gt;<br>
       &lt;ruby&gt;&lt;rb&gt;表&lt;rt&gt;ひょう&lt;/ruby&gt;</code></p>
 </figure>
   </section>
@@ -224,16 +240,24 @@ function highlightCode () {
     <figure>
       <p lang="ja" class="rubyExample"><img src="markup-data/double-mono.png" alt="東南(とうなん)(tounan)の方角" /></p>
     </figure>
-    <p>One approach to coding this would be to use the tabular markup, but with two <code class="kw" translate="no">rtc</code> elements. The following example  is laid out, you can see how the related components are mapped together in a table-like way.</p>
+    <p>One approach to coding this would be to use the tabular markup, but an <code class="kw" translate="no">rtc</code> element around the second set of <code class="kw" translate="no">rt</code>s. You can visualize this as adding an additional row to the table, and the <code class="kw" translate="no">rtc</code> element shows where that starts.</p>
+    <figure>
+      <pre>[ruby]
+[rb][rb][rb]
+[rt][rt][rt]
+[rt][rt][rt]  &lt;-- rtc around this
+[ruby]
+      </pre>
+    </figure>
+    <p>Here is the actual code.</p>
     <figure class="example">
-      <p><code>&lt;ruby&gt;&lt;rb&gt;東&lt;/rb&gt;&lt;rb&gt;南&lt;/rb&gt;<br>
-      &lt;rtc&gt;&lt;rt&gt;とう&lt;rt&gt;なん&lt;/rtc&gt;<br>
-      &lt;rtc&gt;&lt;rt&gt;tou&lt;rt&gt;nan&lt;/rtc&gt;&lt;/ruby&gt;の方角 </code></p>
+ 		<div><a href="markup-data/eg_dbl_mono" onclick="showExample('markup-data/eg_dbl_mono'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+     <p><code>&lt;ruby&gt;&lt;rb&gt;東&lt;rb&gt;南&lt;rt&gt;とう&lt;rt&gt;なん&lt;rtc&gt;&lt;rt&gt;tou&lt;rt&gt;nan&lt;/rtc&gt;&lt;/ruby&gt;の方角 </code></p>
     </figure>
     <p>An alternative is to nest the <code class="kw" translate="no">ruby</code> elements. This would yield code like the following.</p>
     <figure class="example">
-      <p><code>&lt;ruby&gt;&lt;ruby&gt;東&lt;rt&gt;とう&lt;/rt&gt;&lt;/ruby&gt;&lt;rt&gt;tou&lt;/rt&gt;<br>
-      &lt;ruby&gt;南&lt;rt&gt;なん&lt;/rt&gt;&lt;/ruby&gt;&lt;rt&gt;nan&lt;/rt&gt;&lt;/ruby&gt;の方角 </code></p>
+		<div><a href="markup-data/eg_dbl_mono_nested" onclick="showExample('markup-data/eg_dbl_mono_nested'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+      <p><code>&lt;ruby&gt;&lt;ruby&gt;東&lt;rt&gt;とう&lt;/ruby&gt;&lt;rt&gt;tou&lt;rb&gt;&lt;ruby&gt;南&lt;rt&gt;なん&lt;/ruby&gt;&lt;rt&gt;nan&lt;/ruby&gt;の方角 </code></p>
     </figure>
     </section>
     
@@ -245,14 +269,13 @@ function highlightCode () {
     </figure>
     <p>When using the tabular approach, you can just use a single span in the <code class="kw" translate="no">rtc</code> element containing the group ruby.</p>
     <figure class="example">
-      <p><code>&lt;ruby&gt;&lt;rb&gt;東&lt;/rb&gt;&lt;rb&gt;南&lt;/rb&gt;<br>
-      &lt;rtc&gt;&lt;rt&gt;とう&lt;rt&gt;なん&lt;/rtc&gt;<br>
-      &lt;rtc&gt;たつみ&lt;/rtc&gt;&lt;/ruby&gt;の方角 </code></p>
+		<div><a href="markup-data/eg_dbl_mixed" onclick="showExample('markup-data/eg_dbl_mixed'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+      <p><code>&lt;ruby&gt;&lt;rb&gt;東&lt;/rb&gt;&lt;rb&gt;南&lt;rt&gt;とう&lt;rt&gt;なん&lt;rtc&gt;たつみ&lt;/rtc&gt;&lt;/ruby&gt;の方角 </code></p>
     </figure>
 <p>When nesting, you bring more into the first <code class="kw" translate="no">ruby</code> element.</p>
     <figure class="example">
-      <p><code>&lt;ruby&gt;&lt;ruby&gt;東&lt;rt&gt;とう&lt;/rt&gt;南&lt;rt&gt;なん&lt;/rt&gt;&lt;/ruby&gt;<br>
-      &lt;rt&gt;たつみ&lt;/rt&gt;&lt;/ruby&gt;の方角 </code></p>
+		<div><a href="markup-data/eg_dbl_mixed_nested" onclick="showExample('markup-data/eg_dbl_mixed_nested'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+      <p><code>&lt;ruby&gt;&lt;ruby&gt;東&lt;rt&gt;とう&lt;rb&gt;南&lt;rt&gt;なん&lt;/ruby&gt;&lt;rt&gt;たつみ&lt;/ruby&gt;の方角 </code></p>
     </figure>
     </section>
     
@@ -270,13 +293,13 @@ function highlightCode () {
   </figure-->
     <p>This is relatively straightforward when using the tabular approach, since it allows you to leave blank <code class="kw" translate="no">rt</code> elements where needed.</p>
     <figure class="example">
-      <p><code>&lt;ruby&gt;&lt;rb&gt;護&lt;/rb&gt;&lt;rb&gt;れ&lt;/rb&gt;<br>
-      &lt;rtc&gt;&lt;rt&gt;まも&lt;rt&gt;&lt;/rt&gt;&lt;/rtc&gt;<br>
-      &lt;rtc&gt;プロテゴ&lt;/rtc&gt;&lt;/ruby&gt;の方角 </code></p>
+ 		<div><a href="markup-data/eg_dbl_mismatch" onclick="showExample('markup-data/eg_dbl_mismatch'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+     <p><code>&lt;ruby&gt;&lt;rb&gt;護&lt;/rb&gt;&lt;rb&gt;れ&lt;rt&gt;まも&lt;rt&gt;&lt;/rt&gt;&lt;rtc&gt;プロテゴ&lt;/rtc&gt;&lt;/ruby&gt;！ </code></p>
     </figure>
 <p>When nesting, you can also achieve the effect required for the example above, but if group ruby were supposed to be on the top you would have to use CSS to reverse the normal positions of the annotations so that you could make the markup work. If the two annotations started and ended at different places, this would be much more difficult to manage.</p>
     <figure class="example">
-      <p><code>&lt;ruby&gt;&lt;ruby&gt;&lt;rb&gt;護&lt;/rb&gt;&lt;rt&gt;まも&lt;/rt&gt;&lt;rb&gt;れ&lt;/rb&gt;&lt;rt&gt;&lt;/rt&gt;&lt;/ruby&gt;<br>        &lt;rt&gt;プロテゴ&lt;/rt&gt;&lt;/ruby&gt;！ </code></p>
+		<div><a href="markup-data/eg_dbl_mismatch_nested" onclick="showExample('markup-data/eg_dbl_mismatch_nested'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+      <p><code>&lt;ruby&gt;&lt;ruby&gt;&lt;rb&gt;護&lt;rt&gt;まも&lt;rb&gt;れ&lt;rt&gt;&lt;/rt&gt;&lt;/ruby&gt;&lt;rt&gt;プロテゴ&lt;/ruby&gt;！ </code></p>
     </figure>
     </section>
 </section>
