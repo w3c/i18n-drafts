@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Floating times</title>
+<meta name="description" content="What is a 'floating time' and how do I handle floating times in my Web application?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-floating-times' // the file name WITHOUT extensions
+f.authors = 'Addison Phillips, Amazon' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-floating-times' // blog search string - usually the filename without extensions
+f.firstPubDate = '2016-04-08' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2016-04-08', time:'21:18'}  // date and time of latest substantive changes to this document
+f.status = 'draft'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-04-08', time:'21:18'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'cultural'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-floating-times-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Floating times</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    users, HTML coders, script developers (PHP, JSP, etc.), CSS coders, schema developers (DTDs, XML Schema, RelaxNG, etc.), XSLT developers, Web project managers, and anyone who is new to internationalization and needs guidance on topics to consider and ways to get into the material on the site. yyy adapt this to describe the intended reader of the article.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">What is a <span class="qterm">floating time</span> and how do I handle floating times in my Web application?</p>
+</section>
+  
+ 
+
+<section id="nutshell">
+  <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>A <dfn id="def_floating_time">floating time</dfn> or a <dfn id="dfn_floating_date">floating date</dfn> is a time value that isn't tied to a specific time zone. </p>
+</section>
+
+
+<section>
+  <h2 id="detail"><a href="#detail">Details</a></h2>
+  <p>The <a rel="nofollow" href="http://www.w3.org/TR/timezone/">Working with Timezones</a> WG Note says:</p>
+<blockquote>
+<p>Some observed time values are not related to a specific moment in incremental time. Instead, they need to be combined with local information to determine a range of acceptable incremental time values. We refer to these sorts of time values as "floating times" because they are not fixed to a specific incremental time value. Floating times are not attached and should never be attached to a particular time zone.</p>
+</blockquote>
+<p>A common example of a floating time value would be a publication date. The January 30, 2013, issue of a newspaper, magazine, or blog posting does not depend on the current local time of the person reading the document. For example, a document might describe its publication date this way: </p>
+<figure class="example">
+<p> &lt;p&gt;Publication Date: &lt;time datetime=&quot;2013-01-30&quot;&gt;January 30, 2013&lt;/time&gt;&lt;/p&gt;</p>
+</figure>
+  <p>Problems can arise, however, if Web developers and content authors are not aware of the ways that servers or local JavaScript applications handle date values. For example, the JavaScript Date object is a form of <em>incremental</em> time: it represents the number of milliseconds since an <span class="qterm">epoch date</span>. In the case of JavaScript, the epoch data is the same as that used by Unix, the Java programming language, and many other systems: it's defined as midnight, January 1, 1970 <strong>in the UTC time zone</strong>. </p>
+  <p>The range of incremental times that describe <samp>2016-01-30</samp> turns out to span as many as fifty hours. Depending on the time zone used to create and display an incremental time value, the same floating date value could be as much as two days off. </p>
+  <p>That's because, while a floating time is not tied to a specific time zone, any incremental time values depend on time zone for their display and processing. Since data formats for time values in both server-side (such as Java) and client-side languages (such as JavaScript) are always incremental times, this can lead to issues. For example, you can easily have code in your Web page that looks like this: </p>
+  <figure class="example">
+    <pre>var date = new Date(myPubDateElement.value);
+var target = document.getElementById(&quot;date_target&quot;);
+target.appendChild(document.createTextNode(date.toDateString()));</pre>
+  </figure>
+  <p>Suppose your element <code class="kw" translate="no">myPubDateElement</code> contained the value above (2013-01-30). You'd expect the element <code class="kw" translate="no">date_target</code> contain a string representing that date. However, if you live in a time zone west of UTC (for example, in the <code class="kw" translate="no">America/Los_Angeles</code> time zone), you'll get a surprise. It says: </p>
+  <figure class="example">
+    <pre>Tue Jan 29 2013</pre>
+  </figure>
+  <p>The problem here is that many of the <code class="kw" translate="no">Date</code> methods in JavaScript are sensitive to the local system's time zone and they try to present the value using local time zone rules. In the case of a system running in the <code class="kw" translate="no">America/Los_Angeles</code> time zone, which has an offset from UTC of either -8 hours or -7 hours (depending on whether or not daylight savings time is in effect) the value presented to the user from the JavaScript is incorrect because the the <code class="kw" translate="no">time</code> portion of the publication date is zeroed out. Subtracting eight hours from the <code class="kw" translate="no">Date</code> object results in a presentation string that is on the <span class="qterm">previous</span> day. That day might be in the wrong month or even the wrong year.</p>
+  <p>One way to work around this it to always use UTC (there are methods in JavaScript, for example, that allow one to work strictly in UTC) for floating time values.</p>
+  <h3 id="yyyshortcomings2"><a href="#yyyshortcomings">Storing, Retrieving, and Aggregating Time Data</a></h3>
+  <p>Another way that floating times are used is in the aggregation of data. For example, suppose you want to track the number of downloads that a user made on a daily basis. If you journal each download, it's easy to reconstruct the list of downloads. Consider: </p>
+  <figure class="example">
+    <pre>{
+    &quot;item&quot;: &quot;http://www.example.com/downloadMe&quot;,
+    &quot;date&quot;: &quot;2013-10-02T13:17:00Z&quot;
+},</pre>
+  </figure>
+  <p>However, this might be cumbersome as the number of downloads grow. You might want to create summary statistics: </p>
+  <figure class="example">
+    <pre>{
+    &quot;date&quot;: &quot;2013-10-02&quot;,
+    &quot;numDownloaded&quot;: 10
+},</pre>
+  </figure>
+  <p>In this particular case, you <em>do</em> want to use local time (non-floating time) to compute the value of <code class="kw" translate="no">date</code> when the user starts a download (that is, when you add information to the data). But you'll want to use a consistent (or <span class="qterm">floating</span>) frame of reference when retrieving the record. </p>
+</section>
+<section>
+  <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+  <li>
+    <p>Getting started? <a href="/International/getting-started/characters"><cite>Introducing Character Sets and Encodings</cite></a></p>
+  </li>
+  <li>
+    <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a></p>
+  </li>
+  <li>
+    <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+    <ul>
+      <li><a href="/International/techniques/authoring-html?collapse&amp;open=charset">Characters</a></li>
+      <li><a href="/International/techniques/authoring-html#indoc">Declaring the character encoding for HTML</a></li>
+    </ul>
+  </li>
+  <li>
+    <p>Related links, <cite>Setting up a server</cite></p>
+    <ul>
+      <li><a href="/International/techniques/server-setup?collapse&amp;open=charset">Characters</a></li>
+    </ul>
+  </li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
