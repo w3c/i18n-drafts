@@ -7,7 +7,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:8' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:27' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:44:37' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:44' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:44' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:34:34' }
 	],
 'ruby-styling-002.html': [
 	{browser:'Firefox', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:52:48' }, 
@@ -22,7 +23,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:12' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:30' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:44:44' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:48' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:48' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:34:37' }
 	],
 'ruby-styling-004.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:52:53' }, 
@@ -30,7 +32,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:14' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:31' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:44:47' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:52' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:52' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:34:52' }
 	],
 'ruby-styling-005.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:52:54' }, 
@@ -38,7 +41,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:15' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:31' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:44:49' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:54' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:54' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:34:56' }
 	],
 'ruby-styling-006.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:52:56' }, 
@@ -46,7 +50,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:16' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:32' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:44:52' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:58' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:2:58' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:34:59' }
 	],
 'ruby-styling-007.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:52:57' }, 
@@ -54,7 +59,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:17' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:33' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:44:53' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:0' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:0' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:4' }
 	],
 'ruby-styling-008.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:52:58' }, 
@@ -62,7 +68,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:18' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:34' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:44:57' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:6' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:6' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:7' }
 	],
 'ruby-styling-009.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:52:59' }, 
@@ -70,7 +77,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:18' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:34' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:44:59' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:10' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:10' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:8' }
 	],
 'ruby-styling-010.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:53:2' }, 
@@ -78,7 +86,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:19' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:35' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:0' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:13' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:13' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:11' }
 	],
 'ruby-styling-011.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:53:4' }, 
@@ -86,7 +95,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:20' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:36' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:1' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:16' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:16' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:15' }
 	],
 'ruby-position-001.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:53:19' }, 
@@ -94,7 +104,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:23' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:37' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:4' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:24' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:24' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:21' }
 	],
 'ruby-position-002.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:53:23' }, 
@@ -102,7 +113,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:25' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:38' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:5' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:26' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:26' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:25' }
 	],
 'ruby-position-003.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:53:26' }, 
@@ -110,7 +122,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:25' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:39' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:8' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:31' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:31' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:32' }
 	],
 'ruby-position-004.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:53:29' }, 
@@ -118,7 +131,8 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:27' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:41' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:16' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:54' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:54' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:48' }
 	],
 'ruby-position-005.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:53:31' }, 
@@ -126,7 +140,8 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:28' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:41' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:19' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:58' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:3:58' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:50' }
 	],
 'ruby-double-001.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:53:50' }, 
@@ -134,7 +149,8 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:30' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:42' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:20' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:5' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:5' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:55' }
 	],
 'ruby-double-002.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:53:53' }, 
@@ -142,7 +158,8 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:31' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:43' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:21' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:7' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:7' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:56' }
 	],
 'ruby-double-003.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:54:9' }, 
@@ -150,7 +167,8 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:33' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:44' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:22' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:12' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:12' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:57' }
 	],
 'ruby-double-004.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:54:13' }, 
@@ -158,7 +176,8 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:34' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:45' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:23' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:14' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:14' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:35:58' }
 	],
 'ruby-double-005.html': [
 	{browser:'Firefox', status:'partial', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:54:25' }, 
@@ -166,7 +185,8 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:35' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:45' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:24' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:18' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:18' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:36:1' }
 	],
 'ruby-double-006.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:54:33' }, 
@@ -174,7 +194,8 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:36' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:46' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:25' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:19' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:19' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:36:2' }
 	],
 'ruby-double-007.html': [
 	{browser:'Firefox', status:'partial', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:54:47' }, 
@@ -182,7 +203,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:43' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:49' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:29' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:24' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:24' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:36:10' }
 	],
 'ruby-double-008.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:54:56' }, 
@@ -190,7 +212,8 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:46' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:51' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:30' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:27' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:27' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:36:14' }
 	],
 'ruby-gaps-001.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:55:1' }, 
@@ -198,7 +221,8 @@ var testresults = {
 	{browser:'Safari', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:48' }, 
 	{browser:'Opera', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:53' }, 
 	{browser:'Internet Explorer', status:'pass', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:33' }, 
-	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:33' }
+	{browser:'Edge', status:'pass', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:33' }, 
+	{browser:'Canary', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:36:20' }
 	],
 'ruby-gaps-002.html': [
 	{browser:'Firefox', status:'pass', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:38.0) Gecko/20100101 Firefox/38.0', date:'22-5-2015  18:55:3' }, 
@@ -206,6 +230,7 @@ var testresults = {
 	{browser:'Safari', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/600.6.3 (KHTML, like Gecko) Version/8.0.6 Safari/600.6.3', date:'22-5-2015  20:14:50' }, 
 	{browser:'Opera', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.115 Safari/537.36 OPR/27.0.1689.76', date:'22-5-2015  20:16:56' }, 
 	{browser:'Internet Explorer', status:'fail', ua:'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; rv:11.0) like Gecko', date:'22-5-2015  20:45:39' }, 
-	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:40' }
+	{browser:'Edge', status:'fail', ua:'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36 Edge/12.10240', date:'2-8-2015  7:4:40' }, 
+	{browser:'Canary', status:'fail', ua:'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2705.0 Safari/537.36', date:'11-4-2016  15:36:22' }
 	]
 }
