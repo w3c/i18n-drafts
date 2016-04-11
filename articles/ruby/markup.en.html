@@ -70,13 +70,16 @@ function highlightCode () {
 <section>
   <div id="audience">
     <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, and
-      anyone who wants to know how to use ruby annotations. </p>
+    HTML coders, script developers (PHP, JSP, etc.), CSS coders, and
+      anyone who wants to know how to mark up ruby annotations. </p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
   <p>Ruby is the name given to the small annotations in Japanese and Chinese content that are rendered alongside base text, usually to provide phonetic information, but sometimes to provide other information. We will assume that you are familiar with how you want your ruby to look. (If not,  <a class="print" href="/International/articles/ruby/">see the short overview</a> of how ruby works.)</p>
-  <p>This article will only discuss how to use HTML5 <em>markup</em> for ruby text. The aim of markup is principally to establish the relationships between the <dfn>base text</dfn> and the <dfn>ruby text</dfn> (the annotations). For information about how to then apply adjustments to the default <em>styling</em> of ruby text, see <a href="/International/articles/ruby/styling" class="print">Ruby Styling</a>.</p>
+    <aside class="insideimplnote">
+  <p class="impl">For a brief overview of what to expect when the browser renders the markup without CSS support, see the section <a href="#visual">What can I expect to see?</a> below.</p>
+    </aside>
+  <p>This article will only discuss how to use HTML5 <em>markup</em> for ruby text. The aim of markup is principally to establish the relationships between the <dfn>base text</dfn> and the <dfn>ruby text</dfn> (the annotations). For information about how to then apply adjustments to the default <em>styling</em> of ruby text, see <a href="/International/articles/ruby/styling" class="print"><cite>Ruby Styling</cite></a>.</p>
 </section>
 
 
@@ -87,12 +90,14 @@ function highlightCode () {
   	<p lang="ja" class="rubyExample">これは<ruby><rb>日</rb><rt>に</rt><rb>本</rb><rt>ほん</rt><rb>語</rb><rt>ご</rt></ruby>です。</p>
   </figure>
   <p>There are a number of ways to use  HTML markup to produce even this simple example. What follows uses opening and closing tags, and uses tags for <code class="kw" translate="no">rb</code> elements, but we'll see in a moment that there are alternative approaches that use less markup, or move the markup around.</p>
+  <p>The <code class="kw" translate="no">rb</code> element holds the ruby base, and the following <code class="kw" translate="no">rt</code> element holds the associated ruby text. </p>
+ <aside class="insideimplnote">
+  <p class="impl">The example shows gaps between each <code class="kw" translate="no">rb</code>+<code class="kw" translate="no">rt</code> pair –  this is just to improve the readability of the example. In principle, it should make no difference to the result as long as you are using both start and end tags. Unfortunately, at the time of writing, Microsoft Edge doesn't ignore the spaces, so actually you need to eliminate any gaps in your code.</p>
+</aside>
   <figure class="example">
   <div><a href="markup-data/eg_simple" onclick="showExample('markup-data/eg_simple'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
   <p><code>これは&lt;ruby&gt;    <span class="nowrap">&lt;rb&gt;日&lt;/rb&gt;&lt;rt&gt;に&lt;/rt&gt;</span>    <span class="nowrap">&lt;rb&gt;本&lt;/rb&gt;&lt;rt&gt;ほん&lt;/rt&gt;</span>    <span class="nowrap">&lt;rb&gt;語&lt;/rb&gt;&lt;rt&gt;ご&lt;/rt&gt;</span>    <span class="nowrap">&lt;/ruby&gt;です。</span></code></p>
   </figure>
-  <p>The <code class="kw" translate="no">rb</code> element holds the ruby base, and the following <code class="kw" translate="no">rt</code> element holds the associated ruby text. </p>
-  <p>The example shows gaps between each <code class="kw" translate="no">rb</code>+<code class="kw" translate="no">rt</code> pair –  this is just to improve the readability of the example. In principle, it should make no difference to the result as long as you are using both start and end tags. Unfortunately, at the time of writing, Microsoft Edge doesn't ignore the spaces, so actually you need to eliminate any gaps in your code.</p>
   <p>Browsers will automatically position the annotations above the base characters in horizontal writing mode, and to the right in vertical writing mode. To change that you will need to use CSS (<code class="kw" translate="no">ruby-position</code>). That and other ways to alter the rendering of the ruby are discussed in the companion article, <a href="/International/articles/ruby/styling" class="print">Ruby Styling</a>.</p>
   </section>
   
@@ -131,10 +136,10 @@ function highlightCode () {
     </figure>
     <p> To achieve that, you can use the different approach  shown below.</p>
     <figure class="example">
-   <div><a href="markup-data/eg_tabular" onclick="showExample('markup-data/eg_tabular'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
+      <div><a href="markup-data/eg_tabular" onclick="showExample('markup-data/eg_tabular'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
      <p><code>これは&lt;ruby&gt;&lt;rb&gt;日&lt;rb&gt;本&lt;rb&gt;語&lt;rt&gt;に&lt;rt&gt;ほん&lt;rt&gt;ご&lt;/ruby&gt;です。</code></p>
 </figure>
-<p>Each ruby base is now mapped to the same ruby text, but the order of elements has changed to be more like a tabular effect. You could visualise the markup like this:</p>
+    <p>Each ruby base is now mapped to the same ruby text, but the order of elements has changed to be more like a tabular effect. You could visualise the markup like this:</p>
 <figure>
 <pre>[ruby]
 [rb][rb][rb]
@@ -148,8 +153,19 @@ function highlightCode () {
  </section> 
 
 <section>
+<h2 id="visual"><a href="#visual">What can I expect to see?</a></h2>
+<p>As mentioned above, this article is concerned with how you should mark up content to correctly establish relationships between ruby base and ruby text components, rather than how to lay it out when the page is rendered, and the  HTML5 specification's recommendations for the default style sheet don't go as far as indicating how to position ruby text relative to the base text. That is left to CSS, and we explore it further in the article <cite><a href="styling">Ruby Styling</a></cite>.</p>
+<p>Having said that, however, you would expect the browser to be able to arrange the items visually in some sensible, albeit basic way, without you applying CSS properties.</p>
+<p>All major browsers (by which read Chrome, Safari, Firefox, Edge and Internet Explorer) do position ruby text above horizontal base text when dealing with the simplest case, but handling varies when you move away from that.</p>
+<p>At the time of writing, Firefox is by far the most advanced in this regard. It will produce sensible results for all the markup descriptions in this page. When two ruby texts are associated with a single base text, however, it displays both one one side. You are expected to indicate alternative positions using the CSS <code class="kw" translate="no">ruby-position</code> property. It also has a bug when 'double-sided' ruby uses nested markup, and overlaps the two ruby texts.</p>
+<p>The other browsers fail to produce a useful layout when dealing with 'double-sided' ruby, except that Chrome and Safari do something sensible with nested markup. They also fail to position items appropriately when tabular markup is used, even for simple cases (although they parse the markup correctly).</p>
+<p>Finally, Edge and IE currently break down if you use only start tags inside the <code class="kw" translate="no">ruby</code> element.</p>
+<p>The Internationalization Working Group has produced a set of <a href="/International/tests/repo/results/ruby-html">tests with results</a> for  major browsers, covering the scenarios described in this page. The results are updated from time to time as browsers add more support.</p>
+</section>
+
+<section>
 <h2 id="single"><a href="#single">Producing single-sided ruby</a></h2>
-<p>This section tells you how to produce various types of single-sided ruby annotation, and covers various things to bear in mind. As mentioned above, there is more than one way to apply the markup – we will use one, minimal approach here.</p>
+<p>This section tells you how to use markup for various types of single-sided ruby annotation, and covers various things to bear in mind. As mentioned above, there is more than one way to apply the markup – we will use a minimal approach here with <code class="kw" translate="no">rb</code> tags, in order  to make  the examples clearer.</p>
 
 <section>
     <h3 id="mono_group_etc"><a href="#mono_group_etc">Mono vs. group vs. jukugo</a></h3>
@@ -177,7 +193,7 @@ function highlightCode () {
   <aside class="sideinfonote">
     <p class="info">The red coloring of the ruby text here is just to better show the position of the annotations in this example. There would not normally be a color difference. Note, in particular, how the tone marks appear to the right of the other bopomofo characters, even though they are not combining characters.</p></aside>
   </div>
-  <p>Again, the markup merely establishes the relationships between the base characters and the ruby text. The positioning of the phonetic characters and tone marks to the right of the base character is achieved by styling. For example, the markup needed for the characters just above is as follows.</p>
+    <p> You cannot expect bopomofo ruby to be aligned by default to the right of the base character. You will need to apply the appropriate CSS property. The markup merely establishes the relationships between the base characters and the ruby text. The positioning of the phonetic characters and tone marks to the right of the base character is achieved by styling. For example, the markup needed for the characters just above is as follows.</p>
   <figure class="example">
 		<div><a href="markup-data/eg_bopomofo_ruby" onclick="showExample('markup-data/eg_bopomofo_ruby'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
 	  <p lang="zh-hant"><code>&lt;ruby&gt;&lt;rb&gt;第&lt;rt&gt;ㄉㄧˋ&lt;rb&gt;十&lt;rt&gt;ㄕˊ&lt;rb&gt;屆&lt;rt&gt;ㄐㄧㄝˋ&lt;/ruby&gt;</code></p>
@@ -195,7 +211,7 @@ function highlightCode () {
 		<div><a href="markup-data/eg_gaps1" onclick="showExample('markup-data/eg_gaps1'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
   <p lang="ja"><code>&lt;ruby&gt;&lt;rb&gt;振&lt;rt&gt;ふ&lt;rb&gt;り&lt;rt&gt;&lt;rb&gt;仮&lt;rt&gt;が&lt;rb&gt;名&lt;rt&gt;な&lt;/ruby&gt;</code></p>
   </figure>
-  <p>However, if you were to render the annotation inline, it would now be missing a character. You would see <span lang="ja">振り仮名（ふがな）</span>, instead of <span lang="ja">振り仮名（ふりがな）</span>. An alternative would be to repeat the character in both the base and ruby text, and rely on CSS to automatically hide the annotation when both base and ruby text are the same.</p>
+  <p>However, if you were to render the annotation inline, it would now be missing a character. You would see <span lang="ja">振り仮名（ふがな）</span>, instead of <span lang="ja">振り仮名（ふりがな）</span>. An alternative would be to repeat the character in both the base and ruby text, and rely on CSS to automatically hide the annotation when both base and ruby text are the same. See <cite><a href="styling">Ruby Styling</a></cite> for details.</p>
   <figure class="example">
 		<div><a href="markup-data/eg_gaps2" onclick="showExample('markup-data/eg_gaps2'); return false;"><img class="codelink" src="../../icons/codelink.gif" alt="See it live." title="See it live." /></a></div>
   <p><code>&lt;ruby&gt;&lt;rb&gt;振&lt;rt&gt;ふ&lt;rb&gt;り&lt;rt&gt;り&lt;rb&gt;仮&lt;rt&gt;が&lt;rb&gt;名&lt;rt&gt;な&lt;/ruby&gt;</code></p>
@@ -233,6 +249,7 @@ function highlightCode () {
     <h2 id="double_sided"><a href="#double_sided">Producing double-sided ruby</a></h2>
     <p>Occasionally it is necessary to run annotations along two sides of the base text. This would be the case where there is both a phonetic and a semantic annotation, or where there are two types of phonetic annotation (such as bopomofo and pinyin as shown in the top left of the following screen grab).</p>
     <p><img src="markup-data/moedict-zi.png" width="430" height="271" alt=""/></p>
+    <p class="note" style="clear: none;"><b>Note:</b> In this article we are concerned with how to mark up the content. In order to display the two sets of ruby text on either side of the base text you will  have to use the <code class="kw" translate="no">ruby-position</code> property in CSS, since the HTML5 spec doesn't specify how to handle double-sided ruby by default. For more information, see the <a href="styling"><cite>Ruby Styling</cite></a> article.</p>
     
     <section>
     <h3 id="mono_only"><a href="#mono_only">Using mono ruby only</a></h3>
