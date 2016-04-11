@@ -81,6 +81,18 @@ f.additionalLinks = ''
 	<p>These tests check whether user agents support styling and basic default positioning of markup based on ruby markup, including the elements <code class="kw" translate="no">ruby</code>, <code class="kw" translate="no">rb</code>, <code class="kw" translate="no">rt</code>, and <code class="kw" translate="no">rtc</code>.&nbsp; They do not test&nbsp;the features of the CSS Ruby module, just whether the structure of the ruby markup is recognised by the browsers, and whether those minimal features needed to position the ruby text are available without CSS styling.</p>
 	<p>To see the test, click on the link in the left-most column. To see detailed results for a single test, click on the link in the Details column and look just above the table. The detailed results show the date(s) the test result was recorded, and the version of the browser&nbsp;tested. </p>
 <p>Any dependencies are shown in notes above the table, and notes below the table will usually provide any additional useful information, including an explanation&nbsp;of why a result was marked as 'partially successful'.</p>
+<p><strong>Key:</strong> Digits represent numbers of <span style="white-space:nowrap;">passes/partial passes/fails</span>. Colours indicate:</p>
+<table class="results" style="margin-right: 32%;">
+  <tbody>
+    <tr>
+      <td class="pass">all results pass</td>
+      <td class="pass fail">pass reported but also other results</td>
+      <td class="fail">all results fail</td>
+      <td class="fail uncertain">fail reported but also other success</td>
+      <td class="uncertain">all results partially successful</td>
+    </tr>
+  </tbody>
+</table>
 
 			</section>
 		</section>
@@ -89,15 +101,6 @@ f.additionalLinks = ''
 <section>
 <h2 id="results"><a href="#results">Results</a></h2>
 <p>Note that these test results are for released versions of the browsers tested. Versions that are still in development may provide better support for these features.</p>
-<p><strong>Key:</strong> Digits represent numbers of <span style="white-space:nowrap;">passes/partial passes/fails</span>. Colours indicate:</p>
-<table class="results" style="margin-right: 32%;"><tbody><tr>
-<td class="pass">all results pass</td>
-<td class="pass fail">pass reported but also other results</td>
-<td class="fail">all results fail</td>
-<td class="fail uncertain">fail reported but also other success</td>
-<td class="uncertain">all results partially successful</td>
-</tr></tbody></table>
-
 <br style="clear:both;"/>
 
 <section>
@@ -217,7 +220,7 @@ f.additionalLinks = ''
 		<li>
 		  <p><a href="/International/tests/">i18n test suite home</a></p>
 	  </li>
-	</ul>
+  </ul>
 </section>
 
 <footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
