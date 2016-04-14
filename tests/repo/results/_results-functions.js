@@ -21,7 +21,7 @@ function getStatus (score) {
 
 
 
-function generateStuffInPage (data) { 	
+function generateStuffInPage () { 	
 	var tables, rows, testname, t, i, td, tr, th
 	//var ffp, fff, ffpl, ffscore, cp, cf, cpl, cscore, sp, sf, spl, sscore
 	var ffscore, fnscore, cscore, gcscore, sscore, wkscore, oscore, escore, iescore, ascore, cmscore, smscore, ucscore
@@ -34,7 +34,6 @@ function generateStuffInPage (data) {
 		
 		// establish which browsers have results
 		for (i= 1;i<rows.length;i++) {
-			//testname = rows[i].querySelector('td').firstChild.title
 			testname = rows[i].title
 			if (testresults[testname]) {
 				for (r=0;r<testresults[testname].length;r++) {
@@ -61,10 +60,8 @@ function generateStuffInPage (data) {
 			
 		for (i= 1;i<rows.length;i++) {
 			// get the test name
-			//testname = rows[i].querySelector('td').firstChild.title
 			testname = rows[i].title
-			console.log(testname)
-			
+							
 			// get the scores
 			if (testresults[testname]) {
 				//console.log(testresults[testname])
@@ -322,3 +319,55 @@ function closedetail (sectionid) {
 	document.getElementById(sectionid).innerHTML='';
 	}
 
+
+
+// indexing constants
+var assertion = 2
+var title = 0
+var help = 1
+
+
+function drawResults (sectionid, base, batch, specsection, uri, related, results) {
+	// GLOBAL tests
+
+	var out = ''
+	out += '<div id="'+sectionid+'-detail"></div>'
+
+	out += '<table class="results">'
+    out += '<tr>'
+    out += '<th class="topleft">Test link</th>'
+   	out += '<th>Assertion</th>'
+	out += '</tr>'      
+
+	for (var row=0; row<results.length; row++) {
+		var tname = results[row]
+		//testlist[testlist.length] = tname
+		var exp = ''
+		if (tests[tname][assertion].substr(1,4) === 'Exlp') exp = 'exp'
+		
+		out += '<tr title="'+tname+'" onClick="showdetail(\''+tname+"','"+sectionid+'\');">\n'
+		var nameparts = tests[tname][title].split(': ')
+		var shortname = '';
+		if (nameparts.length>1) {
+			shortname += nameparts[1]
+			for (var n=2;n<nameparts.length;n++) shortname += ': '+nameparts[n]
+			} 
+		else shortname = nameparts[0] 
+		var pathparts = tname.split('/')
+		var simplefilename = pathparts[pathparts.length-1]
+		out += '<th class="side title"><a href="/International/tests/repo/run?base='+base+'&batch='+batch+'&test='+tname+'" target="_blank">'+shortname+"</a><br/><span class='testName'>"+simplefilename+	"</span></th>\n"
+		out += '<th class="side assert '+exp+'">'
+		//if (exp == 'exp') { echo '[Exploratory test] '; }
+		out += tests[tname][assertion]+"</th>\n"
+	
+		out += "</tr>\n"
+		}
+
+   out += '</table>'
+  
+  out += '<p class="testLink"><strong>Links</strong>:  <a href="'+uri+'">Section '+specsection+'</a> &bull; <a href="/International/tests/#'+related+'">Related tests</a></p>'
+
+	//console.log(out)
+	console.log(sectionid+'-data')
+	document.getElementById(sectionid+'-data').innerHTML = out
+	}
