@@ -1,18 +1,3 @@
-<?php 
-$fp = fopen( 'ruby-html-data/manifest.txt', "r") or die("Couldn't open $manifest");
-$tests = array();
-$ptr = 0;
-while (! feof($fp)) {
-	$line = trim(fgets( $fp, 1024 ));
-	$linerecord = explode("\t", $line);
-	$tests[$linerecord[0]] = $linerecord;
-	$ptr++;
-	}
-
-include('_commoncode.php');
-
-$testlist = array();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +42,8 @@ f.additionalLinks = ''
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <link rel="stylesheet" href="_results.css" type="text/css" />
 <script src="ruby-html-data/data.js"></script>
-<script src="_results-functions.js"></script>
+<script src="ruby-html-data/manifest.js"></script>
+<script src="results-functions.js"></script>
 </head>
 
 <body>
@@ -72,22 +58,22 @@ f.additionalLinks = ''
 <section>
   <div id="audience">
     <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    users, XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, Web project managers, and anyone who wants to know whether the CSS property hyphens works as specified.</p>
+    users, HTML coders, script developers (PHP, JSP, etc.),  Web project managers, and anyone who wants to know how browsers render ruby text.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
 
 <section> 
 	<p>These tests check whether user agents support styling and basic default positioning of markup based on ruby markup, including the elements <code class="kw" translate="no">ruby</code>, <code class="kw" translate="no">rb</code>, <code class="kw" translate="no">rt</code>, and <code class="kw" translate="no">rtc</code>.&nbsp; They do not test&nbsp;the features of the CSS Ruby module, just whether the structure of the ruby markup is recognised by the browsers, and whether those minimal features needed to position the ruby text are available without CSS styling.</p>
-	<p>To see the test, click on the link in the left-most column. To see detailed results for a single test, click on the row of results and look just above the table. The detailed results show the date(s) the test result was recorded, and the version of the browser&nbsp;tested. </p>
+	<p>To see the test, click on the link in the left-most column. To see detailed results for a single test, click on a row and look just above the table. The detailed results show the date(s) the test result was recorded, and the version of the browser tested. The tables only show the results of the latest test. The detailed results may show additional tests on earlier versions of the same browser.</p>
 <p>Any dependencies are shown in notes above the table, and notes below the table will usually provide any additional useful information, including an explanation&nbsp;of why a result was marked as 'partially successful'.</p>
 <p><strong>Key:</strong></p>
 <table class="results" style="margin-right: 32%;">
   <tbody>
     <tr>
-      <td class="pass" style="min-width:8em; padding: .5em"> pass</td>
-      <td class="fail" style="min-width:8em; padding: .5em"> fail</td>
-      <td class="uncertain" style="min-width:8em; padding: .5em"> partially successful</td>
+      <td class="pass" style="min-width:8em; padding: .5em">pass</td>
+      <td class="fail" style="min-width:8em; padding: .5em">fail</td>
+      <td class="partial" style="min-width:8em; padding: .5em">partially successful</td>
     </tr>
   </tbody>
 </table>
@@ -101,53 +87,21 @@ f.additionalLinks = ''
 <p>Note that these test results are for released versions of the browsers tested. Versions that are still in development may provide better support for these features.</p>
 <br style="clear:both;"/>
 
+
+<!-- SECTION CONTAINERS GO HERE -->
+
+
+
 <section>
   <h3 id="styling"><a href="#styling">Ruby markup styling</a></h3>
-  
-  <?php 	drawResults('html/semantics/text-level-semantics/the-ruby-element', # $base
-					'ruby-html', # $batch
-					'', # $tname
-					'4.5.21', # $specsection
-					'http://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element', # $uri 
-					'html', # $related 
-					'styling', # $sectionid 
-					 array(
-						'ruby-styling-001.html',
-						#'ruby-styling-002.html',
-						'ruby-styling-003.html',
-						'ruby-styling-004.html',
-						'ruby-styling-005.html',
-						'ruby-styling-006.html',
-						'ruby-styling-007.html',
-						'ruby-styling-008.html',
-						'ruby-styling-009.html',
-						'ruby-styling-010.html',
-						'ruby-styling-011.html',
-						)
-					 );
-		 ?>
+  <div id="styling-data"></div>
 </section>
     <!-- ··············································· -->
 
 
 <section>
   <h3 id="position"><a href="#position">Single-sided ruby position</a></h3>
-  <?php 	drawResults('html/semantics/text-level-semantics/the-ruby-element', # $base
-					'ruby-html', # $batch
-					'', # $tname
-					'4.5.21', # $specsection
-					'http://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element', # $uri 
-					'html', # $related 
-					'position', # $sectionid 
-					 array(
-						'ruby-position-001.html',
-						'ruby-position-002.html',
-						'ruby-position-003.html',
-						'ruby-position-004.html',
-						'ruby-position-005.html',
-						)
-					 );
-		 ?>
+  <div id="position-data"></div>
 </section>
   
 <!-- ·········································································· -->
@@ -155,25 +109,7 @@ f.additionalLinks = ''
 
 <section>
   <h3 id="double"><a href="#double">Double-sided ruby</a></h3>
-  <?php 	drawResults('html/semantics/text-level-semantics/the-ruby-element', # $base
-					'ruby-html', # $batch
-					'', # $tname
-					'4.5.21', # $specsection
-					'http://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element', # $uri 
-					'html', # $related 
-					'double', # $sectionid 
-					 array(
-						'ruby-double-001.html',
-						'ruby-double-002.html',
-						'ruby-double-003.html',
-						'ruby-double-004.html',
-						'ruby-double-005.html',
-						'ruby-double-006.html',
-						'ruby-double-007.html',
-						'ruby-double-008.html',
-						)
-					 );
-		 ?>
+  <div id="double-data"></div>
   <section class="notes">
   <p class="notesheader">Notes</p>
   <ol>
@@ -188,24 +124,88 @@ f.additionalLinks = ''
 
 <section>
 <h3 id="gaps"><a href="#gaps">Ruby annotation gaps</a></h3>
-<?php 	drawResults('html/semantics/text-level-semantics/the-ruby-element', # $base
-					'ruby-html', # $batch
-					'', # $tname
-					'4.5.21', # $specsection
-					'http://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element', # $uri 
-					'html', # $related 
-					'gaps', # $sectionid 
-					 array(
-						'ruby-gaps-001.html',
-						'ruby-gaps-002.html',
-						)
-					 );
-		 ?>
+  <div id="gaps-data"></div>
 </section>
  
 </section>
 
 
+
+
+<script> 	// DRAW THE TABLES
+
+drawResults(
+    'styling', // sectionid 
+	'html/semantics/text-level-semantics/the-ruby-element', // base
+    'ruby-html', // batch
+    '4.5.21', // specsection
+    'http://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element', // uri 
+    'html', // related 
+     [
+        'ruby-styling-001.html',
+        //'ruby-styling-002.html',
+        'ruby-styling-003.html',
+        'ruby-styling-004.html',
+        'ruby-styling-005.html',
+        'ruby-styling-006.html',
+        'ruby-styling-007.html',
+        'ruby-styling-008.html',
+        'ruby-styling-009.html',
+        'ruby-styling-010.html',
+        'ruby-styling-011.html',
+        ]
+     )
+
+drawResults(
+    'position', // sectionid 
+	'html/semantics/text-level-semantics/the-ruby-element', // base
+    'ruby-html', // batch
+    '4.5.21', // specsection
+    'http://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element', // uri 
+    'html', // related 
+     [
+        'ruby-position-001.html',
+        'ruby-position-002.html',
+        'ruby-position-003.html',
+        'ruby-position-004.html',
+        'ruby-position-005.html',
+        ]
+     )
+
+drawResults(
+    'double', // sectionid 
+	'html/semantics/text-level-semantics/the-ruby-element', // base
+    'ruby-html', // batch
+    '4.5.21', // specsection
+    'http://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element', // uri 
+    'html', // related 
+     [
+        'ruby-double-001.html',
+        'ruby-double-002.html',
+        'ruby-double-003.html',
+        'ruby-double-004.html',
+        'ruby-double-005.html',
+        'ruby-double-006.html',
+        'ruby-double-007.html',
+        'ruby-double-008.html',
+        ]
+     )
+
+drawResults(
+    'gaps', // sectionid 
+	'html/semantics/text-level-semantics/the-ruby-element', // base
+    'ruby-html', // batch
+    '4.5.21', // specsection
+    'http://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element', // uri 
+    'html', // related 
+     [
+        'ruby-gaps-001.html',
+        'ruby-gaps-002.html',
+        ]
+     )
+
+
+</script>
 
 <section>
 <h2 id="endlinks"><a href="#endlinks">Links</a></h2>
@@ -225,16 +225,7 @@ f.additionalLinks = ''
 <script type="text/javascript">completePage()</script>
 
 <script type="text/javascript">  
-var testlist = [
- 	<?php 
-	for ($i=0; $i<count($testlist)-1;$i++) {
-		echo "'".$testlist[$i]."',";
-		}
-	echo "'".$testlist[count($testlist)-1]."'";
-	?>
-			];
-
-generateStuffInPage(testlist);
+generateStuffInPage()
 </script>
 </body>
 </html>
