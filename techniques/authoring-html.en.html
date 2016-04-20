@@ -107,10 +107,10 @@ function toggleExtra (trigger, target) {
         <li><a href="#css">Declaring the character encoding for a CSS style sheet</a></li>
         <li><a href="#escapes">Using escapes to represent characters</a></li>
         <li><a href="#checkenc">Checking the encoding of a document</a></li>
-        <li><a href="#bomhandling">Working with the byte-order mark (BOM)</a></li>
-        <li><a href="#normalization">Handling normalization</a></li>
+        <li><a href="#bomhandling">Handling the byte-order mark (BOM)</a></li>
+        <li><a href="#normalization">Handling character normalization</a></li>
         <li><a href="#formencoding">Handling encoding issues in forms</a></li>
-        <li><a href="#controlcodes">Using Unicode control codes in text</a></li>
+        <li><a href="#controlcodes">Using Unicode control codes</a></li>
         <li><a href="#missingchars">Working around unavailable characters/glyphs</a></li>
         <li><a href="#iris">Using non-ASCII web addresses</a></li>
       </ul>
@@ -481,12 +481,12 @@ function toggleExtra (trigger, target) {
         <h5 class="best">Best practices checklist</h5>
         <ul>
           <li class="bp">Avoid using escapes whenever possible. When you use UTF-8 it supports all the characters you need. <a href="/International/questions/qa-escapes#not">more</a></li>
-          <li class="bp">Use escapes for invisible or ambiguous characters. <a href="/International/questions/qa-escapes#use">more</a></li>
+          <li class="bp">Use escapes for invisible or ambiguous characters. <a href="/International/questions/qa-escapes#invisible">more</a></li>
           <li class="bp"> Use CSS escapes for CSS embedded in HTML, rather than HTML escapes. <a href="/International/questions/qa-escapes#styleattr">more</a></li>
-          <li class="bp"> Always use Unicode codepoints for the numeric part of a character escape. Do not use  codepoint values of  non-Unicode encodings. <a href="/International/questions/qa-escapes#what">more</a></li>
-          <li class="bp"> Use a single escape  (representing the Unicode codepoint value) for supplementary characters. Do not escape surrogate character pairs. <a href="/International/questions/qa-escapes#bytheway">more</a></li>
-          <li class="bp"> Ensure that all <code class="kw" translate="no">href</code> attribute values have escaped ampersands in query parameters, ie. <code>&amp;amp;</code> rather than just <code>&amp;</code>. <a href="/International/questions/qa-escapes#bytheway">more</a></li>
-          <li class="bp">Avoid named character entities in XHTML. <a href="/International/questions/qa-escapes#not">more</a></li>
+          <li class="bp"> Always use Unicode codepoints for the numeric part of a character escape. Do not use  codepoint values of  non-Unicode encodings. <a href="/International/questions/qa-escapes#cpnumbers">more</a></li>
+          <li class="bp"> Use a single escape  (representing the Unicode codepoint value) for supplementary characters. Do not escape surrogate character pairs. <a href="/International/questions/qa-escapes#suppchars">more</a></li>
+          <li class="bp"> Ensure that all <code class="kw" translate="no">href</code> attribute values have escaped ampersands in query parameters, ie. <code>&amp;amp;</code> rather than just <code>&amp;</code>. <a href="/International/questions/qa-escapes#ampersands">more</a></li>
+          <li class="bp">Avoid named character entities in XHTML. <a href="/International/questions/qa-escapes#useinxhtml">more</a></li>
         </ul>
       </div>
       <div>
@@ -595,29 +595,13 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_editorencoding">
-      <h3 id="editorencoding">Changing the encoding of a page in an editor</h3>
-      <div class="checklist"> </div>
-      <div>
-        <h5 class="howto">How to's</h5>
-        <ul>
-          <li class="w3">
-            <p class="link"><a href="/International/questions/qa-setting-encoding-in-applications">Setting encoding in web authoring applications</a></p>
-            <p class="desc">How do I set character encoding in my web authoring application?</p>
-          </li>
-        </ul>
-      </div>
-      <div class="goto">
-        <h5>Go to:</h5>
-        <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
-    </div>
     <div class="resource-box" id="sec_bomhandling">
-      <h3 id="bomhandling">Working with the byte-order mark (BOM)</h3>
+      <h3 id="bomhandling">Handling the byte-order mark (BOM)</h3>
       <div class="checklist">
         <h5 class="best">Best practices checklist</h5>
         <ul>
-          <li class="bp">If you use the byte-order mark with UTF-8, check that any scripts and back-end processes can handle the BOM. <a href="/International/questions/qa-byte-order-mark#problems">more</a></li>
-          <li class="bp">If your page is encoded as UTF-16, always ensure that it starts with a BOM. <a href="/International/questions/qa-byte-order-mark#bytheway">more</a></li>
+          <li class="bp">If you use the byte-order mark with UTF-8-encoded pages, check that any scripts and back-end processes can handle the BOM. <a href="/International/questions/qa-byte-order-mark#problems">more</a></li>
+          <li class="bp">If you ignored the advice above and encoded your page as UTF-16, always ensure that it starts with a BOM. <a href="/International/questions/qa-byte-order-mark#bytheway">more</a></li>
         </ul>
       </div>
       <div>
@@ -640,10 +624,6 @@ function toggleExtra (trigger, target) {
             <p class="link"><a href="http://rishida.net/blog/?p=102">Perl script code for removing the BOM</a></p>
             <p class="desc">External link .</p>
           </li>
-          <li class="nonw3">
-            <p class="link"><a href="http://rishida.net/utils/bomtester/">UTF-8 BOM tester</a></p>
-            <p class="desc">Tells you whether a page starts with a BOM.</p>
-          </li>
         </ul>
       </div>
       <div>
@@ -654,17 +634,21 @@ function toggleExtra (trigger, target) {
             <p class="desc">How HTML5 detects the character encoding of a page, and mentions how browsers should handle BOM detection.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/CSS21/syndata.html#charset">CSS 2.1, 4.4 CSS style sheet representation</a></p>
-            <p class="desc">Character encoding information in the CSS 2.1 spec. Mentions how browsers should handle the BOM.</p>
+            <p class="link"><a href="http://www.w3.org/TR/css-syntax-3/#input-byte-stream">CSS Syntax  Level 3, 3.2. The input byte stream</a></p>
+            <p class="desc">Character encoding information in  CSS. Mentions how browsers should handle the BOM.</p>
           </li>
         </ul>
       </div>
       <div>
-        <h5 class="otherlinks">Other links</h5>
-        <ul>
+        <h5 id="bomhandling_trigger" class="otherlinks" onClick="toggleExtra('bomhandling_trigger','bomhandling_list');">Show more links</h5>
+        <ul id="bomhandling_list" class="extraLinks">
           <li class="w3">
             <p class="link"><a href="/International/tutorials/tutorial-char-enc">Handling character encodings in HTML and CSS</a></p>
             <p class="desc">Tutorial style article that gathers together and organizes pointers to articles that, taken  together, help you understand how to handle the essential aspects of  authoring HTML and CSS related to characters and character encodings.</p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="http://www.w3.org/TR/CSS21/syndata.html#charset">CSS 2.1, 4.4 CSS style sheet representation</a></p>
+            <p class="desc">Character encoding information in the CSS 2.1 spec. Mentions how browsers should handle the BOM.</p>
           </li>
         </ul>
       </div>
@@ -673,11 +657,11 @@ function toggleExtra (trigger, target) {
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
     <div class="resource-box" id="sec_normalization">
-      <h3 id="normalization">Handling normalization</h3>
+      <h3 id="normalization">Handling character normalization</h3>
       <div class="checklist">
         <h5 class="best">Best practices checklist</h5>
         <ul>
-          <li class="bp">Save all HTML and CSS code using Unicode normalization form C (NFC). <a href="/International/questions/qa-html-css-normalization#n11nhow">more</a></li>
+          <li class="bp">Ensure that  all HTML class names and CSS selectors are saved using the same Unicode normalization form (NFC is recommended). <a href="/International/questions/qa-html-css-normalization#n11nhow">more</a></li>
         </ul>
       </div>
       <div>
@@ -704,7 +688,13 @@ function toggleExtra (trigger, target) {
     </div>
     <div class="resource-box" id="sec_formencoding">
       <h3 id="formencoding">Handling encoding issues in forms</h3>
-      <div class="checklist"> </div>
+      <div class="checklist">
+        <h5 class="best">Best practices checklist</h5>
+        <ul>
+          <li class="bp">Use UTF-8 for the character encoding of your page. <a href="/International/questions/qa-forms-utf-8">more</a></li>
+          <li class="bp">Consider checking on the server that form data is arriving in UTF-8. <a href="/International/questions/qa-forms-utf-8">more</a></li>
+        </ul>
+</div>
       <div>
         <h5 class="howto">How to's</h5>
         <ul>
@@ -719,15 +709,16 @@ function toggleExtra (trigger, target) {
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
     <div class="resource-box" id="sec_controlcodes">
-      <h3 id="controlcodes">Using Unicode control codes in text</h3>
+      <h3 id="controlcodes">Using Unicode control codes</h3>
       <div class="checklist">
         <h5 class="best">Best practices checklist</h5>
         <ul>
           <li class="bp">Don't use Unicode characters if there is markup to do the same job. <a href="/International/questions/qa-chars-vs-markup#not">more</a></li>
+          <li class="bp">Use character escapes to represent control codes, so that they are visible. <a href="/International/questions/qa-escapes#invisible">more</a></li>
         </ul>
         <div class="xref">
           <h5>See also</h5>
-          <p>You may want to represent control codes using character escapes. See <span class="link"><a href="#escapes">Using escapes to represent characters</a></span> for more information on that.</p>
+          <p>If you represent control codes using character escapes, see also <span class="link"><a href="#escapes">Using escapes to represent characters</a></span> for more information.</p>
         </div>
       </div>
       <div>
@@ -884,12 +875,12 @@ function toggleExtra (trigger, target) {
       <div class="checklist">
         <h5 class="best">Best practices checklist</h5>
         <ul>
-          <li class="bp">Always declare the default language for text in the page using attributes on the <code class="kw">html</code> tag, unless the document contains content aimed at speakers of more than one language. <a href="/International/questions/qa-html-language-declarations#basics">more</a></li>
+          <li class="bp">Always declare the default language for text in the page using attributes on the <code class="kw">html</code> tag. <a href="/International/questions/qa-html-language-declarations#basics">more</a></li>
           <li class="bp">Do NOT use the <code class="kw">meta</code> element with the <code class="kw">content</code> attribute set to <code class="kw">Content-Language</code>. <a href="/International/questions/qa-html-language-declarations#metadata">more</a></li>
-          <li class="bp">Use language attributes rather than HTTP  to declare the default language for text processing. <a href="/International/questions/qa-http-and-lang">more</a></li>
+          <li class="bp">Use language attributes rather than HTTP  to declare the default language for 'text processing' (ie. when  language needs to be known for things such as font choice, styling, spell-checking, hyphentation, quote mark styling, etc.). <a href="/International/questions/qa-http-and-lang">more</a></li>
           <li class="bp">Do not declare the default language of a document in the <code class="kw">body</code> element, use the <code class="kw">html</code> element. <a href="/International/questions/qa-html-language-declarations#basics">more</a></li>
-          <li class="bp">Where a document contains content aimed at speakers of more than one language, decide whether you want to declare one language in the <code class="kw">html</code> tag, or leave the languages undefined until later. <a href="http://www.w3.org/TR/i18n-html-tech-lang/#ri20040728.121403792">more</a></li>
-          <li class="bp">Where a document contains content aimed at speakers of more than one language, try to divide the document linguistically at the highest possible level, and declare the appropriate language for each of those divisions. <a href="http://www.w3.org/TR/i18n-html-tech-lang/#ri20040721.18455302">more</a></li>
+          <li class="bp">Where a document contains content aimed at speakers of more than one language, decide whether you want to declare one language in the <code class="kw">html</code> tag, or leave the languages undefined until later. </li>
+          <li class="bp">Where a document contains content aimed at speakers of more than one language, try to divide the document linguistically at the highest possible level, and declare the appropriate language for each of those divisions. </li>
           <li class="bp">For HTML use the <code class="kw">lang</code> attribute only, for XHTML 1.0 served as <code class="kw">text/html</code> use the <code class="kw">lang</code> and <code class="kw">xml:lang</code> attributes, and for XHTML served as XML use the <code class="kw">xml:lang</code> attribute only. <a href="/International/questions/qa-html-language-declarations#attributes">more</a></li>
         </ul>
         <div class="xref">
@@ -908,27 +899,6 @@ function toggleExtra (trigger, target) {
         </ul>
       </div>
       <div>
-        <h5 class="specs">Spec links</h5>
-        <ul>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 3.2.3.3 The lang and xml:lang attributes</a></p>
-            <p class="desc">The language attributes in HTML5.</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 4.2.5.3 Pragma directives</a></p>
-            <p class="desc">How HTML5 deals with a meta element with http-equiv set to Content-Language.</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#language-attributes">Polyglot markup, 7.2 Language Attributes</a></p>
-            <p class="desc">Using lang and xml:lang in HTML5 polyglot documents.</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#content-language">Polyglot markup, 6.5.1.1 Content-Language</a></p>
-            <p class="desc">Content-Language and HTML5 polyglot documents.</p>
-          </li>
-        </ul>
-      </div>
-      <div>
         <h5 class="background">Background reading</h5>
         <ul>
           <li class="w3">
@@ -936,14 +906,40 @@ function toggleExtra (trigger, target) {
             <p class="desc">Why should I use the language attribute in web pages? A number of useful reasons.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="/International/questions/qa-http-and-lang#answer">HTTP headers, meta elements and language information</a></p>
+            <p class="link"><a href="/International/questions/qa-http-and-lang">HTTP headers, meta elements and language information</a></p>
             <p class="desc">For HTML, should we put language declarations in HTTP headers and meta elements, and how are they different from those in language attributes? </p>
           </li>
         </ul>
       </div>
       <div>
-        <h5 class="otherlinks">Other links</h5>
+        <h5 class="specs">Spec links</h5>
         <ul>
+          <li class="w3">
+            <p class="link"><a href="http://www.w3.org/TR/html5/">HTML5</a></p>
+            <ul>
+            <li class="w3">
+            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"> 3.2.3.3 The lang and xml:lang attributes</a></p>
+            <p class="desc">The language attributes in HTML5.</p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"> 4.2.5.3 Pragma directives</a></p>
+            <p class="desc">How HTML5 deals with a meta element with http-equiv set to Content-Language.</p>
+          </li>
+          </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="tests">Tests</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="/International/tests/repo/results/the-lang-attribute#basics">HTML5, the lang attribute</a></p>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h5 id="sec_textprocessing_trigger" class="otherlinks" onClick="toggleExtra('sec_textprocessing_trigger','sec_textprocessing_list');">Show more links</h5>
+        <ul id="sec_textprocessing_list" class="extraLinks">
           <li class="w3">
             <p class="link"><a href="http://www.w3.org/TR/html401/struct/dirlang.html#h-8.1">HTML4.01, 8.1 Specifying the language of
               content: the lang attribute</a></p>
@@ -974,17 +970,12 @@ function toggleExtra (trigger, target) {
             <p class="desc">Content-Language definition in HTTP 1.1.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1">HTML 4.01, 8.1 Specifying the language of
-              content: the lang attribute</a></p>
-            <p class="desc">HTML on Content-Language, only says that the HTML language attribute has a higher precedence.</p>
+            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#language-attributes">Polyglot markup, 7.2 Language Attributes</a></p>
+            <p class="desc">Using lang and xml:lang in HTML5 polyglot documents.</p>
           </li>
-        </ul>
-      </div>
-      <div>
-        <h5 class="tests">Tests</h5>
-        <ul>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-lang-attribute/results-lang#basics">HTML5, the lang attribute</a></p>
+            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#content-language">Polyglot markup, 6.5.1.1 Content-Language</a></p>
+            <p class="desc">Content-Language and HTML5 polyglot documents.</p>
           </li>
         </ul>
       </div>
@@ -997,7 +988,7 @@ function toggleExtra (trigger, target) {
       <div class="checklist">
         <h5 class="best">Best practices checklist</h5>
         <ul>
-          <li class="bp">Use the <code class="kw">lang</code> and/or <code class="kw">xml:lang</code> attributes around text to indicate any changes in language. <a href="/International/questions/qa-html-language-declarations#basics">more</a></li>
+          <li class="bp">When the page contains content in another language, add a language attribute to an element surrounding that content. <a href="/International/questions/qa-html-language-declarations#basics">more</a></li>
           <li class="bp">For HTML use the <code class="kw">lang</code> attribute only, for XHTML 1.0 served as <code class="kw">text/html</code> use the <code class="kw">lang</code> and <code class="kw">xml:lang</code> attributes, and for XHTML served as XML use the <code class="kw">xml:lang</code> attribute only. <a href="/International/questions/qa-html-language-declarations#attributes">more</a></li>
           <li class="bp">If the text in attribute values and element content is in different languages, consider using a nested approach. <a href="/International/questions/qa-html-language-declarations#contentvsattribute">more</a></li>
         </ul>
@@ -1017,19 +1008,6 @@ function toggleExtra (trigger, target) {
         </ul>
       </div>
       <div>
-        <h5 class="specs">Spec links</h5>
-        <ul>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 3.2.3.3 The lang and xml:lang attributes</a></p>
-            <p class="desc">The language attributes in HTML5.</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#language-attributes">Polyglot markup, 7.2 Language Attributes</a></p>
-            <p class="desc">Using lang and xml:lang in HTML5 polyglot documents.</p>
-          </li>
-        </ul>
-      </div>
-      <div>
         <h5 class="background">Background reading</h5>
         <ul>
           <li class="w3">
@@ -1039,8 +1017,17 @@ function toggleExtra (trigger, target) {
         </ul>
       </div>
       <div>
-        <h5 class="otherlinks">Other links</h5>
+        <h5 class="specs">Spec links</h5>
         <ul>
+          <li class="w3">
+            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 3.2.3.3 The lang and xml:lang attributes</a></p>
+            <p class="desc">The language attributes in HTML5.</p>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h5 id="sec_indoclang_trigger" class="otherlinks" onClick="toggleExtra('sec_indoclang_trigger','sec_indoclang_list');">Show more links</h5>
+        <ul id="sec_indoclang_list" class="extraLinks">
           <li class="w3">
             <p class="link"><a href="http://www.w3.org/TR/html401/struct/dirlang.html#h-8.1">HTML4.01, 8.1 Specifying the language of
               content: the lang attribute</a></p>
@@ -1067,8 +1054,8 @@ function toggleExtra (trigger, target) {
             <p class="desc">Recommendation to use lang attribute when language changes in a document, in Web Content Accessibility Techniques for HTML.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/xhtml1/#C_7">XHTML 1.0, C.7 The lang and xml:lang Attributes</a></p>
-            <p class="desc">xml:lang and lang attribute definitions in XHTML 1.0.</p>
+            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#language-attributes">Polyglot markup, 7.2 Language Attributes</a></p>
+            <p class="desc">Using lang and xml:lang in HTML5 polyglot documents.</p>
           </li>
         </ul>
       </div>
@@ -1081,11 +1068,12 @@ function toggleExtra (trigger, target) {
       <div class="checklist">
         <h5 class="best">Best practices checklist</h5>
         <ul>
-          <li class="bp">Use subtags as defined by BCP 47 for language attribute values. <a href="/International/questions/qa-choosing-language-tags#background">more</a></li>
+          <li class="bp">Use subtags as defined by BCP 47 for language attribute values. <a href="/International/questions/qa-choosing-language-tags#subtagregistry">more</a></li>
           <li class="bp">Use the shortest possible language tag values. <a href="/International/questions/qa-choosing-language-tags#langsubtag">more</a></li>
-          <li class="bp">Where possible, use the codes zh-Hans and zh-Hant to refer to Simplified and Traditional Chinese, respectively. <a href="/International/articles/language-tags/Overview.var#script">more</a></li>
+          <li class="bp">Where possible, use the codes zh-Hans and zh-Hant to refer to Simplified and Traditional Chinese, respectively. <a href="/International/articles/language-tags/#script">more</a></li>
           <li class="bp">Use the subtag zxx when the text is <em>known to be</em> not in any language. <a href="/International/questions/qa-no-language#nonlinguistic">more</a></li>
-          <li class="bp">If the XML format you are using supports it, use xml:lang="", otherwise use xml:lang="und" when the language is undetermined <em>and you have to label it</em>. <a href="/International/questions/qa-no-language#undetermined">more</a></li>
+          <li class="bp">When the language is undetermined <em>and you have to label it</em>, use lang="". <a href="/International/questions/qa-no-language#undetermined">more</a></li>
+          <li class="bp">If you are serving XML, and the format you are using supports it, use xml:lang="", otherwise use xml:lang="und" when the language is undetermined <em>and you have to label it</em>. <a href="/International/questions/qa-no-language#undetermined">more</a></li>
         </ul>
       </div>
       <div>
@@ -1122,14 +1110,14 @@ function toggleExtra (trigger, target) {
             <p class="desc">This is the official location where you will find all subtags available for use in language tags.</p>
           </li>
           <li class="nonw3">
-            <p class="link"><a href="http://rishida.net/utils/subtags/">Language Subtag Lookup tool</a></p>
+            <p class="link"><a href="http://r12a.github.io/apps/subtags/">Language Subtag Lookup tool</a></p>
             <p class="desc">User friendly interface to IANA's language tag registry. Provides for checking of subtags as well as lookup. Up-to-date with latest version of BCP 47.</p>
           </li>
           <li class="nonw3">
             <p class="link"><a href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">Internet-Draft: BCP 47</a></p>
             <p class="desc">Points to a document containing both RFC 5646 (Tags for the Identification of Languages) and RFC 4647 (Matching
               Language Tags)</p>
-          </li>
+          <ul>
           <li class="nonw3">
             <p class="link"><a href="http://www.rfc-editor.org/rfc/rfc4646.txt">RFC 5646 Tags for the Identification of Languages</a></p>
             <p class="desc">The specification that describes language tag syntax.</p>
@@ -1137,6 +1125,8 @@ function toggleExtra (trigger, target) {
           <li class="nonw3">
             <p class="link"><a href="http://www.rfc-editor.org/rfc/rfc4647.txt">RFC 4647 Matching of Language Tags</a></p>
             <p class="desc">The specification that describes alternative ways of matching language tags.</p>
+          </li>
+</ul>
           </li>
           <li class="nonw3">
             <p class="link"><a href="http://www.langtag.net/">Language Tags</a></p>
@@ -1154,8 +1144,8 @@ function toggleExtra (trigger, target) {
         </ul>
       </div>
       <div>
-        <h5 class="otherlinks">Other links</h5>
-        <ul>
+        <h5 id="langvalues_trigger" class="otherlinks" onClick="toggleExtra('langvalues_trigger','langvalues_list');">Show more links</h5>
+        <ul id="langvalues_list" class="extraLinks">
           <li class="w3">
             <p class="link"><a href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1">Specifying the language of content: the lang attribute</a></p>
             <p class="desc">lang in the HTML 4.01 spec (section 8.1)</p>
