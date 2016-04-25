@@ -128,6 +128,7 @@ s.status_notreviewed="Este artigo foi publicado sem ter sido submetido à revis�
 s.status_obsolete="Este artigo está agora obsoleto. Ele não recebe mais novas atualizações e provavelmente está impreciso. Para mais informações atualizadas, veja o <a href='http://w1ww.w3.org/International/'>Página principal de atividades de internacionalização</a>."
 s.tests="Testes" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Resposta resumida" // heading
+s.details = "Detalhes" // heading
 s.longeranswer = "Detalhes" // heading
 s.additionalinfo = "Informações adicionais" // heading that sometimes follows 'Details'
 
