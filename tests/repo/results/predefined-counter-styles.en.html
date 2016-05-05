@@ -1,395 +1,417 @@
-<?php 
-$fp = fopen( 'predefined-counter-styles-manifest.txt', "r") or die("Couldn't open $manifest");
-$tests = array();
-$ptr = 0;
-while (! feof($fp)) {
-	$line = trim(fgets( $fp, 1024 ));
-	$linerecord = explode("\t", $line);
-	$tests[$linerecord[0]] = $linerecord;
-	$ptr++;
-	}
-
-// AUTHORS should fill in these assignments (use the date formats shown):
-$directory = 'tests/repo/results/'; // the directory path below /International up to but not including the file name: must end in a slash! 
-$filename = 'predefined-counter-styles'; // the file name WITHOUT extensions
-$authors = 'Richard Ishida, W3C'; // author(s) and affiliations
-$previousauthors = ''; // as above
-$modifiers = ''; // people making substantive changes, and their affiliation
-$searchString = 'results-predefined-counter-styles'; // blog search string - usually the filename without extensions
-$firstPubDate = '2015-03-25'; // date of the first publication of the document (after review)
-$lastSubstUpdate = '2015-03-25T11:35:00Z';  // date of latest substantive changes to this document (UTC/GMT)
-$pathtophp = '../../../php'; // authors should check that the following points to /International/php - must be relative path
-$status = 'notreviewed';  // should be one of draft, review, published, or notreviewed
-
-// AUTHORS AND TRANSLATORS should fill in these assignments:
-$clang = 'en'; // the language extension for articles in this language (use 'en' for English)
-$thisVersion = '2015-03-25T11:35:00Z'; // date and UTC/GMT time of latest edits to this document/translation
-
-// TRANSLATORS should fill in these assignments:
-$translators = 'yyyNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
-$translatorContact=""; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
-
-$breadcrumb = 'tests';
-
-$additionalLinks = <<<eot
-eot;
-
-include('_commoncode.php');
-
-include($pathtophp.'/structure/html5.php');
-
-$testlist = array();
-?>
 <!DOCTYPE html>
-<html <?php echo "lang='$clang'";?>>
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <title>CSS3 Counter Styles, predefined styles: Summarized test results</title>
 <meta name="description" content="Summary of results of CSS3 Counter Styles module tests." />
-<link rel="stylesheet" href="/International/style/article-display-html5.css" type="text/css" />
-<?php echo $headincludes;?>
+<script type="text/javascript">
+var f = { }
 
+// AUTHORS should fill in these assignments:
+f.directory = 'tests/repo/results'+'/' // the path to this file, not including /International or the file name
+f.filename = 'predefined-counter-styles' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'results-predefined-counter-styles' // blog search string - usually the filename without extensions
+f.firstPubDate = '2015-03-25' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-03-25', time:'11:35'}  // date and time of latest substantive changes to this document
+f.status = 'notreviewed'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-05-05', time:'07:50'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'tests'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="predefined-counter-styles-data/translation.js"> </script>
+<script type="text/javascript" src="../../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <link rel="stylesheet" href="_results.css" type="text/css" />
-<script src="predefined-counter-styles-data.js"></script>
-<script src="_results-functions.js"></script>
+<script src="predefined-counter-styles-data/data.js"></script>
+<script src="predefined-counter-styles-data/manifest.js"></script>
+<script src="results-functions.js"></script>
 </head>
 
 <body>
-
 <header>
-<?php echo $mainNavigation; ?>
-<?php echo $topOfPage; ?>
-
-<h1>Summarized test results: <br>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Summarized test results: <br>
   CSS3 Counter Styles, predefined styles</h1>
 </header>
 
 
-		<section> 
-	  <div id="audience"> 
-				<p><?php echo $intendedAudience?> users, XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, Web project managers, and anyone who wants to know whether user agents correctly apply predefined counter styles to list-style-type.</p>
-			<?php echo $updated; ?>
-			</div>
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    users, HTML coders, script developers, CSS coders, Web project managers, and anyone who wants to know whether user agents correctly apply predefined counter styles to list-style-type.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
 
-
-			<section> 
-                <p>These tests check whether user agents natively support predefined counter styles in the CSS3 Counter Styles specification. To do so, the tests use <code class="kw">list-style-type</code> without any counter-style declarations.</p>
-              <p>To see the test, click on the link in the left-most column. To see detailed results for a single test, click on the link in the Details column and look just above the table. The detailed results show the date(s) the test result was recorded, and the version of the browser&nbsp;tested. </p>
+			<section>
+			  <p>These tests check whether user agents natively support predefined counter styles in the CSS3 Counter Styles specification. To do so, the tests use <code class="kw">list-style-type</code> without any counter-style declarations.</p>
+			  <p>To see the test, click on the link in the left-most column. To see detailed results for a single test, click on a row and look just above the table. The detailed results show the date(s) the test result was recorded, and the version of the browser&nbsp;tested. </p>
 <p>Any dependencies are shown in notes above the table, and notes below the table will usually provide any additional useful information, including an explanation&nbsp;of why a result was marked as 'partially successful'.</p>
+<p><strong>Key:</strong></p>
+<table class="results" style="margin-right: 32%;">
+  <tbody>
+    <tr>
+      <td class="pass" style="min-width:8em; padding: .5em">pass</td>
+      <td class="fail" style="min-width:8em; padding: .5em">fail</td>
+      <td class="partial" style="min-width:8em; padding: .5em">partially successful</td>
+    </tr>
+  </tbody>
+</table>
 			</section>
 		</section>
 		
 
 <section>
 <h2 id="results"><a href="#results">Results</a></h2>
-<p>Note that these test results are for released versions of the browsers tested. Versions that are still in development may provide better support for these features. The tests do not use any vendor prefixes. Tests that do show support for vendor prefixes are listed in the next section.</p>
+<p>Note that these test results are for released versions of the browsers tested. Versions that are still in development may provide better support for these features. The tests do not use any vendor prefixes. Tests that do show support for vendor prefixes are listed further down this page.</p>
 <p>You will need local fonts for the scripts in these tests.</p>
-  <br style="clear:both;"/>
+
+<!-- ·········································································· -->
+<br style="clear:both;"/>
+
+<!-- SECTION CONTAINERS GO HERE -->
 
 <section>
   <h3 id="simplenumeric"><a href="#simplenumeric">Simple numeric</a></h3>
-  
-  <?php 	drawResults('css-counter-styles-3/i18n', # $base
-					'predefined-counter-styles', # $batch
-					'', # $tname
-					'6.1', # $specsection
-					'http://www.w3.org/TR/css-counter-styles-3/#simple-numeric', # $uri 
-					'css3-counter-styles', # $related 
-					'simplenumeric', # $sectionid 
-					 array(
-						'css3-counter-styles-101.html',
-						'css3-counter-styles-102.html',
-						'css3-counter-styles-103.html',
-						'css3-counter-styles-006.html',
-						'css3-counter-styles-007.html',
-						'css3-counter-styles-008.html',
-						'css3-counter-styles-009.html',
-						'css3-counter-styles-107.html',
-						'css3-counter-styles-108.html',
-						'css3-counter-styles-109.html',
-						'css3-counter-styles-110.html',
-						'css3-counter-styles-111.html',
-						'css3-counter-styles-112.html',
-						'css3-counter-styles-114.html',
-						'css3-counter-styles-115.html',
-						'css3-counter-styles-116.html',
-						'css3-counter-styles-117.html',
-						'css3-counter-styles-118.html',
-						'css3-counter-styles-158.html',
-						'css3-counter-styles-159.html',
-						'css3-counter-styles-160.html',
-						'css3-counter-styles-161.html',
-						'css3-counter-styles-162.html',
-						'css3-counter-styles-163.html',
-						'css3-counter-styles-001.html',
-						'css3-counter-styles-004.html',
-						'css3-counter-styles-005.html',
-						'css3-counter-styles-119.html',
-						'css3-counter-styles-120.html',
-						'css3-counter-styles-121.html',
-						'css3-counter-styles-010.html',
-						'css3-counter-styles-011.html',
-						'css3-counter-styles-012.html',
-						'css3-counter-styles-014.html',
-						'css3-counter-styles-122.html',
-						'css3-counter-styles-123.html',
-						'css3-counter-styles-124.html',
-						'css3-counter-styles-125.html',
-						'css3-counter-styles-126.html',
-						'css3-counter-styles-127.html',
-						'css3-counter-styles-015.html',
-						'css3-counter-styles-016.html',
-						'css3-counter-styles-016a.html',
-						'css3-counter-styles-017.html',
-						'css3-counter-styles-128.html',
-						'css3-counter-styles-129.html',
-						'css3-counter-styles-130.html',
-						'css3-counter-styles-131.html',
-						'css3-counter-styles-132.html',
-						'css3-counter-styles-133.html',
-						'css3-counter-styles-134.html',
-						'css3-counter-styles-135.html',
-						'css3-counter-styles-136.html',
-						'css3-counter-styles-137.html',
-						'css3-counter-styles-138.html',
-						'css3-counter-styles-139.html',
-						'css3-counter-styles-140.html',
-						'css3-counter-styles-141.html',
-						'css3-counter-styles-142.html',
-						'css3-counter-styles-143.html',
-						'css3-counter-styles-144.html',
-						'css3-counter-styles-145.html',
-						'css3-counter-styles-104.html',
-						'css3-counter-styles-105.html',
-						'css3-counter-styles-106.html',
-						'css3-counter-styles-146.html',
-						'css3-counter-styles-147.html',
-						'css3-counter-styles-148.html',
-						'css3-counter-styles-149.html',
-						'css3-counter-styles-150.html',
-						'css3-counter-styles-151.html',
-						'css3-counter-styles-152.html',
-						'css3-counter-styles-153.html',
-						'css3-counter-styles-154.html',
-						'css3-counter-styles-155.html',
-						'css3-counter-styles-156.html',
-						'css3-counter-styles-157.html',
-						'css3-counter-styles-019.html',
-						'css3-counter-styles-020.html',
-						'css3-counter-styles-021.html',
-						'css3-counter-styles-022.html',
-						'css3-counter-styles-023.html',
-						'css3-counter-styles-024.html',
-						'css3-counter-styles-025.html',
-						'css3-counter-styles-026.html',
-						)
-					 );
-		 ?>
-<section class="notes">
+  <div id="simplenumeric-data"></div>
+</section>
+
+<section>
+  <h3 id="simplealphabetic"><a href="#simplealphabetic">Simple alphabetic</a></h3>
+  <div id="simplealphabetic-data"></div>
+  <section class="notes">
   <p class="notesheader">Notes</p>
   <ol>
     <li><strong>css3-counter-styles-016</strong>, Chrome 41.0, Opera 27.0: directionality issues and possibly one character substitution. </li>
   </ol>
-</section>
-  
-
-<section>
-<h3 id="simplealphabetic"><a href="#simplealphabetic">Simple alphabetic</a></h3>
-  
-  <?php 	drawResults('css-counter-styles-3/i18n', # $base
-					'predefined-counter-styles', # $batch
-					'', # $tname
-					'6.2', # $specsection
-					'http://www.w3.org/TR/css-counter-styles-3/#simple-alphabetic', # $uri 
-					'css3-counter-styles', # $related 
-					'simplealphabetic', # $sectionid 
-					 array(
-						'css3-counter-styles-201.html',
-						'css3-counter-styles-202.html',
-						'css3-counter-styles-203.html',
-						'css3-counter-styles-204.html',
-						'css3-counter-styles-205.html',
-						'css3-counter-styles-206.html',
-						'css3-counter-styles-027.html',
-						'css3-counter-styles-028.html',
-						'css3-counter-styles-029.html',
-						'css3-counter-styles-030.html',
-						'css3-counter-styles-031.html',
-						'css3-counter-styles-032.html',
-						'css3-counter-styles-033.html',
-						'css3-counter-styles-034.html',
-						'css3-counter-styles-035.html',
-						'css3-counter-styles-036.html',
-						'css3-counter-styles-037.html',
-						'css3-counter-styles-038.html',
-						'css3-counter-styles-039.html',
-						'css3-counter-styles-040.html',
-						'css3-counter-styles-041.html',
-						)
-					 );
-		 ?>
-<section>
-<h3 id="complexlimited"><a href="#complexlimited">Limited range Asian</a></h3>
-  
-<section>
-  <h4 id="japanese">Japanese</h4>
-  <?php 	drawResults('css-counter-styles-3/i18n', # $base
-					'predefined-counter-styles', # $batch
-					'', # $tname
-					'7.1.1', # $specsection
-					'http://www.w3.org/TR/css-counter-styles-3/#limited-japanese', # $uri 
-					'css3-counter-styles', # $related 
-					'japanese', # $sectionid 
-					 array(
-						'css3-counter-styles-042.html',
-						'css3-counter-styles-043.html',
-						'css3-counter-styles-045.html',
-						'css3-counter-styles-046.html',
-						'css3-counter-styles-047.html',
-						'css3-counter-styles-048.html',
-						'css3-counter-styles-050.html',
-						'css3-counter-styles-051.html',
-						)
-					 );
-		 ?>
- </section>
-   
-<section>
-  <h4 id="korean">Korean</h4>
-  <?php 	drawResults('css-counter-styles-3/i18n', # $base
-					'predefined-counter-styles', # $batch
-					'', # $tname
-					'7.1.2', # $specsection
-					'http://www.w3.org/TR/css-counter-styles-3/#limited-korean', # $uri 
-					'css3-counter-styles', # $related 
-					'korean', # $sectionid 
-					 array(
-						'css3-counter-styles-052.html',
-						'css3-counter-styles-053.html',
-						'css3-counter-styles-055.html',
-						'css3-counter-styles-056.html',
-						'css3-counter-styles-057.html',
-						'css3-counter-styles-058.html',
-						'css3-counter-styles-060.html',
-						'css3-counter-styles-061.html',
-						'css3-counter-styles-062.html',
-						'css3-counter-styles-063.html',
-						'css3-counter-styles-065.html',
-						'css3-counter-styles-066.html',
-						)
-					 );
-		 ?>
+  </section>
 </section>
 
-   
-     <section>
-  <h4 id="chinese">Chinese</h4>
-  <?php 	drawResults('css-counter-styles-3/i18n', # $base
-					'predefined-counter-styles', # $batch
-					'', # $tname
-					'7.1.3', # $specsection
-					'http://www.w3.org/TR/css-counter-styles-3/#limited-chinese', # $uri 
-					'css3-counter-styles', # $related 
-					'chinese', # $sectionid 
-					 array(
-						'css3-counter-styles-071.html',
-						'css3-counter-styles-072.html',
-						'css3-counter-styles-074.html',
-						'css3-counter-styles-075.html',
-						'css3-counter-styles-076.html',
-						'css3-counter-styles-077.html',
-						'css3-counter-styles-079.html',
-						'css3-counter-styles-080.html',
-						'css3-counter-styles-081.html',
-						'css3-counter-styles-082.html',
-						'css3-counter-styles-084.html',
-						'css3-counter-styles-085.html',
-						'css3-counter-styles-086.html',
-						'css3-counter-styles-087.html',
-						'css3-counter-styles-089.html',
-						'css3-counter-styles-090.html',
-						)
-					 );
-		 ?>
-  <section>
-  <h4 id="outsiderange">Outside range</h4>
-  <p>The specification says: &quot;Because opinions differ on how best to represent numbers 10k or greater using the longhand CJK styles, all of the counter styles defined in this section are defined to have a range of -9999 to 9999, but implementations may support a larger range. Outside the implementation-supported range, the fallback is cjk-decimal.&quot;</p>
-  <p>These exploratory tests look to see whether the browser applies the fallback encoding after 9999 or not. The&nbsp;pass and fail relates solely to the assertion – it does not indicate a correct or incorrect outcome. A pass (green) indicates that the browser tries to represent numbers after 9999 without resorting to&nbsp;the fallback. A partial pass (orange) indicates that the fallback was used. The tests can only pass if 9999 is supported as per the spec.</p>
-  <?php 	drawResults('css-counter-styles-3/i18n', # $base
-					'predefined-counter-styles', # $batch
-					'', # $tname
-					'7.1.3', # $specsection
-					'http://www.w3.org/TR/css-counter-styles-3/#limited-chinese', # $uri 
-					'css3-counter-styles', # $related 
-					'outsiderange', # $sectionid 
-					 array(
-						'css3-counter-styles-044.html',
-						'css3-counter-styles-049.html',
-						'css3-counter-styles-054.html',
-						'css3-counter-styles-059.html',
-						'css3-counter-styles-064.html',
-						'css3-counter-styles-073.html',
-						'css3-counter-styles-078.html',
-						'css3-counter-styles-083.html',
-						'css3-counter-styles-088.html',
-						)
-					 );
-		 ?>
-<section class="notes">
-  <p class="notesheader">Notes</p>
-  <ol>
-    <li> Chrome 41.0, Safari 8.0.4, Opera 27.0, IE11: all tests failed because 9999 is not correctly rendered. </li>
-  </ol>
+ <section>
+  <h3 id="complexlimited"><a href="#complexlimited">Limited range Asian</a></h3>
+  
+	<section>
+	<h4 id="japanese"><a href="#japanese">Japanese</a></h4>
+	<div id="japanese-data"></div>
+	</section>
+        
+	<section>
+	<h4 id="korean"><a href="#korean">Korean</a></h4>
+	<div id="korean-data"></div>
+	</section>
+        
+	<section>
+	<h4 id="chinese"><a href="#chinese">Chinese</a></h4>
+	<div id="chinese-data"></div>
+	</section>
 </section>
+        
+	<section>
+	<h3 id="outsiderange"><a href="#outsiderange">CJK outside range</a> (exploratory tests)</h3>
+	<p>The specification says: &quot;Because opinions differ on how best to represent numbers 10k or greater using the longhand CJK styles, all of the counter styles defined in this section are defined to have a range of -9999 to 9999, but implementations may support a larger range. Outside the implementation-supported range, the fallback is cjk-decimal.&quot;</p>
+	<p>These exploratory tests look to see whether the browser applies the fallback encoding after 9999 or not. The&nbsp;pass and fail relates solely to the assertion – it does not indicate a correct or incorrect outcome. A pass (green) indicates that the browser tries to represent numbers after 9999 without resorting to&nbsp;the fallback. A partial pass (orange) indicates that the fallback was used. The tests can only pass if 9999 is supported as per the spec.</p>
+	<div id="outsiderange-data"></div>
+    <section class="notes">
+      <p class="notesheader">Notes</p>
+      <ol>
+        <li>Chrome 41.0, Safari 8.0.4, Opera 27.0, IE11: all tests failed because 9999 is not correctly rendered. </li>
+      </ol>
+    </section>
+	</section>
+
+
+    <section>
+      <h3 id="ethiopic"><a href="#ethiopic">Ethiopic</a></h3>
+      <div id="ethiopic-data"></div>
+    </section>
+
 </section>
+
+
+
+<!-- ·········································································· -->
+
+<script> 	// DRAW THE TABLES
+  
+drawResults(
+	'simplenumeric', // sectionid 
+	'css-counter-styles-3/i18n', // base
+	'predefined-counter-styles', // batch
+	'6.1', // specsection
+	'http://www.w3.org/TR/css-counter-styles-3/#simple-numeric', // uri 
+	'css3-counter-styles', // related 
+	 [
+		'css3-counter-styles-101.html',
+		'css3-counter-styles-102.html',
+		'css3-counter-styles-103.html',
+		'css3-counter-styles-006.html',
+		'css3-counter-styles-007.html',
+		'css3-counter-styles-008.html',
+		'css3-counter-styles-009.html',
+		'css3-counter-styles-107.html',
+		'css3-counter-styles-108.html',
+		'css3-counter-styles-109.html',
+		'css3-counter-styles-110.html',
+		'css3-counter-styles-111.html',
+		'css3-counter-styles-112.html',
+		'css3-counter-styles-114.html',
+		'css3-counter-styles-115.html',
+		'css3-counter-styles-116.html',
+		'css3-counter-styles-117.html',
+		'css3-counter-styles-118.html',
+		'css3-counter-styles-158.html',
+		'css3-counter-styles-159.html',
+		'css3-counter-styles-160.html',
+		'css3-counter-styles-161.html',
+		'css3-counter-styles-162.html',
+		'css3-counter-styles-163.html',
+		'css3-counter-styles-001.html',
+		'css3-counter-styles-004.html',
+		'css3-counter-styles-005.html',
+		'css3-counter-styles-119.html',
+		'css3-counter-styles-120.html',
+		'css3-counter-styles-121.html',
+		'css3-counter-styles-010.html',
+		'css3-counter-styles-011.html',
+		'css3-counter-styles-012.html',
+		'css3-counter-styles-014.html',
+		'css3-counter-styles-122.html',
+		'css3-counter-styles-123.html',
+		'css3-counter-styles-124.html',
+		'css3-counter-styles-125.html',
+		'css3-counter-styles-126.html',
+		'css3-counter-styles-127.html',
+		'css3-counter-styles-015.html',
+		'css3-counter-styles-016.html',
+		'css3-counter-styles-016a.html',
+		'css3-counter-styles-017.html',
+		'css3-counter-styles-128.html',
+		'css3-counter-styles-129.html',
+		'css3-counter-styles-130.html',
+		'css3-counter-styles-131.html',
+		'css3-counter-styles-132.html',
+		'css3-counter-styles-133.html',
+		'css3-counter-styles-134.html',
+		'css3-counter-styles-135.html',
+		'css3-counter-styles-136.html',
+		'css3-counter-styles-137.html',
+		'css3-counter-styles-138.html',
+		'css3-counter-styles-139.html',
+		'css3-counter-styles-140.html',
+		'css3-counter-styles-141.html',
+		'css3-counter-styles-142.html',
+		'css3-counter-styles-143.html',
+		'css3-counter-styles-144.html',
+		'css3-counter-styles-145.html',
+		'css3-counter-styles-104.html',
+		'css3-counter-styles-105.html',
+		'css3-counter-styles-106.html',
+		'css3-counter-styles-146.html',
+		'css3-counter-styles-147.html',
+		'css3-counter-styles-148.html',
+		'css3-counter-styles-149.html',
+		'css3-counter-styles-150.html',
+		'css3-counter-styles-151.html',
+		'css3-counter-styles-152.html',
+		'css3-counter-styles-153.html',
+		'css3-counter-styles-154.html',
+		'css3-counter-styles-155.html',
+		'css3-counter-styles-156.html',
+		'css3-counter-styles-157.html',
+		'css3-counter-styles-019.html',
+		'css3-counter-styles-020.html',
+		'css3-counter-styles-021.html',
+		'css3-counter-styles-022.html',
+		'css3-counter-styles-023.html',
+		'css3-counter-styles-024.html',
+		'css3-counter-styles-025.html',
+		'css3-counter-styles-026.html',
+		]
+	 )
+
+drawResults(
+	'simplealphabetic', // sectionid 
+	'css-counter-styles-3/i18n', // base
+	'predefined-counter-styles', // batch
+	'6.2', // specsection
+	'http://www.w3.org/TR/css-counter-styles-3/#simple-alphabetic', // uri 
+	'css3-counter-styles', // related 
+	 [
+		'css3-counter-styles-201.html',
+		'css3-counter-styles-202.html',
+		'css3-counter-styles-203.html',
+		'css3-counter-styles-204.html',
+		'css3-counter-styles-205.html',
+		'css3-counter-styles-206.html',
+		'css3-counter-styles-027.html',
+		'css3-counter-styles-028.html',
+		'css3-counter-styles-029.html',
+		'css3-counter-styles-030.html',
+		'css3-counter-styles-031.html',
+		'css3-counter-styles-032.html',
+		'css3-counter-styles-033.html',
+		'css3-counter-styles-034.html',
+		'css3-counter-styles-035.html',
+		'css3-counter-styles-036.html',
+		'css3-counter-styles-037.html',
+		'css3-counter-styles-038.html',
+		'css3-counter-styles-039.html',
+		'css3-counter-styles-040.html',
+		'css3-counter-styles-041.html',
+		]
+	 )
+
+drawResults(
+	'japanese', // sectionid 
+	'css-counter-styles-3/i18n', // base
+	'predefined-counter-styles', // batch
+	'7.1.1', // specsection
+	'http://www.w3.org/TR/css-counter-styles-3/#limited-japanese', // uri 
+	'css3-counter-styles', // related 
+	 [
+		'css3-counter-styles-042.html',
+		'css3-counter-styles-043.html',
+		'css3-counter-styles-045.html',
+		'css3-counter-styles-046.html',
+		'css3-counter-styles-047.html',
+		'css3-counter-styles-048.html',
+		'css3-counter-styles-050.html',
+		'css3-counter-styles-051.html',
+		]
+	)
+
+drawResults(
+	'korean', // sectionid 
+	'css-counter-styles-3/i18n', // base
+	'predefined-counter-styles', // batch
+	'7.1.2', // specsection
+	'http://www.w3.org/TR/css-counter-styles-3/#limited-korean', // uri 
+	'css3-counter-styles', // related 
+	 [
+		'css3-counter-styles-052.html',
+		'css3-counter-styles-053.html',
+		'css3-counter-styles-055.html',
+		'css3-counter-styles-056.html',
+		'css3-counter-styles-057.html',
+		'css3-counter-styles-058.html',
+		'css3-counter-styles-060.html',
+		'css3-counter-styles-061.html',
+		'css3-counter-styles-062.html',
+		'css3-counter-styles-063.html',
+		'css3-counter-styles-065.html',
+		'css3-counter-styles-066.html',
+		]
+	)
+
+drawResults(
+	'chinese', // sectionid 
+	'css-counter-styles-3/i18n', // base
+	'predefined-counter-styles', // batch
+	'7.1.3', // specsection
+	'http://www.w3.org/TR/css-counter-styles-3/#limited-chinese', // uri 
+	'css3-counter-styles', // related 
+	 [
+		'css3-counter-styles-071.html',
+		'css3-counter-styles-072.html',
+		'css3-counter-styles-074.html',
+		'css3-counter-styles-075.html',
+		'css3-counter-styles-076.html',
+		'css3-counter-styles-077.html',
+		'css3-counter-styles-079.html',
+		'css3-counter-styles-080.html',
+		'css3-counter-styles-081.html',
+		'css3-counter-styles-082.html',
+		'css3-counter-styles-084.html',
+		'css3-counter-styles-085.html',
+		'css3-counter-styles-086.html',
+		'css3-counter-styles-087.html',
+		'css3-counter-styles-089.html',
+		'css3-counter-styles-090.html',
+		]
+	)
+
+drawResults(
+	'outsiderange', // sectionid 
+	'css-counter-styles-3/i18n', // base
+	'predefined-counter-styles', // batch
+	'7.1.3', // specsection
+	'http://www.w3.org/TR/css-counter-styles-3/#limited-chinese', // uri 
+	'css3-counter-styles', // related 
+	 [
+		'css3-counter-styles-044.html',
+		'css3-counter-styles-049.html',
+		'css3-counter-styles-054.html',
+		'css3-counter-styles-059.html',
+		'css3-counter-styles-064.html',
+		'css3-counter-styles-073.html',
+		'css3-counter-styles-078.html',
+		'css3-counter-styles-083.html',
+		'css3-counter-styles-088.html',
+		]
+	)
+
+drawResults(
+	'ethiopic', // sectionid 
+	'css-counter-styles-3/i18n', // base
+	'predefined-counter-styles', // batch
+	'7.2', // specsection
+	'http://www.w3.org/TR/css-counter-styles-3/#ethiopic-numeric-counter-style', // uri 
+	'css3-counter-styles', // related 
+	 [
+		'css3-counter-styles-068.html',
+		'css3-counter-styles-069.html',
+		'css3-counter-styles-070.html',
+		]
+	)
+
+
+
+
+</script>
+
+
+
+
 
 <section>
-  <h3 id="ethiopic"><a href="#ethiopic">Ethiopic</a></h3>
-  
-  <?php 	drawResults('css-counter-styles-3/i18n', # $base
-					'predefined-counter-styles', # $batch
-					'', # $tname
-					'7.2', # $specsection
-					'http://www.w3.org/TR/css-counter-styles-3/#ethiopic-numeric-counter-style', # $uri 
-					'css3-counter-styles', # $related 
-					'ethiopic', # $sectionid 
-					 array(
-						'css3-counter-styles-068.html',
-						'css3-counter-styles-069.html',
-						'css3-counter-styles-070.html',
-						)
-					 );
-		 ?>
+<h2 id="endlinks"><a href="#endlinks">Links</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
-  <!-- ·········································································· -->
-
-
-<!-- ·········································································· --><!-- ·········································································· --></section>
-<?php echo $survey;?>
-<div class="section noprint">
-<h2 id="links"><a href="#links">Links</a></h2>
-	<ul id="full-links">
+<ul id="full-links">
 		<li>
-			<p><a href="http://dev.w3.org/csswg/css-text/#text-transform-property">CSS Text Level 3, 2.1 Case Transforms: the text-transform property</a> (editor's copy)</p>
+			<p><a href="https://www.w3.org/TR/css-counter-styles-3/">CSS Counter Styles Level 3</a> (CR copy)</p>
 		</li>
 		<li>
 		  <p><a href="/International/tests/">i18n test suite home</a></p>
 	  </li>
 	</ul>
-</div>
-<?php echo $bottomOfPage; ?>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
 
 <script type="text/javascript">  
-var testlist = [
- 	<?php 
-	for ($i=0; $i<count($testlist)-1;$i++) {
-		echo "'".$testlist[$i]."',";
-		}
-	echo "'".$testlist[count($testlist)-1]."'";
-	?>
-			];
-
-generateStuffInPage(testlist);
+generateStuffInPage();
 </script>
 </body>
 </html>
