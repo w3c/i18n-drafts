@@ -220,7 +220,7 @@ figure:lang(mn) {
 </div>
 
 <section>
-<h3 id="other-orientation"><a href="#other-orientation">Other values of <code class="kw" translate="no">writing-mode</code></a></h3>
+<h3 id="other-wmode"><a href="#other-wmode">Other values of <code class="kw" translate="no">writing-mode</code></a></h3>
 <div class="sidenoteGroup">
 <p>In addition to <code class="kw" translate="no">horizontal-tb</code>, which is the normal setting for horizontal text, there are two additional property values for writing-mode, and these produce vertical text.</p>
 <p>The value <code class="kw" translate="no">sideways-rl</code> makes all characters to which it is applied lie on their right side, including Han characters. The text runs from top to bottom, and lines progress from right to left.</p>
@@ -338,13 +338,13 @@ figure:lang(mn) {
 <div class="sidenoteGroup">
 <p>When used with <code class="kw" translate="no">writing-mode: vertical-lr/rl</code> the value <code class="kw" translate="no">sideways</code> makes all characters to which it is applied lie on their right side, including Han characters.</p>
 <figure>
-<img src="vertical-text-data/sideways-right.png" alt="sideways-right" />
- <div class="demolink">See live demo: <a href="vertical-text-data/sideways-right.html" target="text">standard syntax</a> &bull; <a href="vertical-text-data/sideways-right-pref.html" target="text">prefixed, etc.</a></div>
+<img src="vertical-text-data/sideways-right.png" alt="sideways" />
+ <div class="demolink">See live demo: <a href="vertical-text-data/sideways.html" target="text">standard syntax</a> &bull; <a href="vertical-text-data/sideways-pref.html" target="text">prefixed, etc.</a></div>
 </figure>
 <p>This value only works with the values of <code class="kw" translate="no">writing-mode</code> that begin with <code class="kw" translate="no">vertical-</code>. </p>
 <p>It is more likely that you will use the <code class="kw" translate="no">sideways-rl</code> and <code class="kw" translate="no">sideways-lr</code> values of <code class="kw" translate="no">writing-mode</code> to achieve this kind of effect (see above), since it is equivalent to a simple rotation of horizontal text.</p>
 <aside class="implnote">
-  <p class="impl">Currently only Gecko browsers support the <code class="kw" translate="no">sideways</code> value for <code class="kw" translate="no">text-orientation</code>.</p>
+  <p class="impl">All major browsers support the <code class="kw" translate="no">sideways</code> value for <code class="kw" translate="no">text-orientation</code>, or it's prefixed variant.</p>
 </aside>
 </div>
 </section>
@@ -361,37 +361,40 @@ figure:lang(mn) {
   <div class="sidenoteGroup">
   <p>The easiest approach to apply this to numeric digits is to use <code class="kw" translate="no">text-combine-upright</code> with a <code class="kw" translate="no">digits x</code> value.</p>
   <aside class="implnote">
-  <p class="impl">In Internet Explorer this property is called <code class="kw" translate="no">-ms-text-combine-horizontal</code>.</p>
-    <p>Gecko, Webkit and Blink browsrs do not yet support this property for the <code class="kw" translate="no">digits</code> value, but Blink browsers do support the <code class="kw" translate="no">all</code> value, and so do Firefox (Gecko) nightlies.</p>
+  <p class="impl">In Internet Explorer and Edge this property is called <code class="kw" translate="no">-ms-text-combine-horizontal</code>, however that property doesn't appear to be able to pick the digits out of a sequence of characters when using the <code class="kw" translate="no">digits</code> value. It makes the all the content of the element horizontal (see the demos).</p>
+    <p>Gecko, Webkit and Blink browsrs do not yet support this property for the <code class="kw" translate="no">digits</code> value.</p>
   </aside>
   </div>
   <p>It only works for digits in the ASCII range, and full-width Unicode codepoints are automatically converted to ASCII codepoints during the process.  It doesn't work for other numbering systems, such as Arabic, Bengali, etc.</p>
   <p>The  example below uses the following CSS</p>
-  <blockquote>
+  <figure>
   <pre translate="no">time {
       text-combine-upright: digits 2; 
       }</pre>
-  </blockquote>
+  </figure>
   <p>This makes any double-digit numbers in the text run horizontally, but doesn't affect anything else. (If you only want 2-digit numbers to run horizontally, you can just use the shortcut value, ie. <code> digits</code> without a following number.)</p>
-<p><img src="vertical-text-data/digit2.png" alt="text-combine-upright: digit 2" /></p>
-  <!--figure class="example" lang="ja" style="height: 215px; width: 250px;">
-    <p>今日は<date>2015年5月22日</date>です。</p>
-  </figure-->
+<figure>
+<img src="vertical-text-data/digit2.png" alt="two-digit upright spans" />
+ <div class="demolink">See live demo: <a href="vertical-text-data/digits.html" target="text">standard syntax</a> &bull; <a href="vertical-text-data/digits-pref.html" target="text">prefixed, etc.</a></div>
+</figure>
   <p>To fit longer numbers horizontally, change the number after <code class="kw" translate="no">digits</code>. In the above example the 2013 will not be horizontal. You could make it horizontal using <code>text-combine-upright: digits 4</code>. Then any numeric sequence up to four digits long will be horizontal. Four is the maximum number of digits you can layout horizontally in vertical text using this style.</p>
-<p><img src="vertical-text-data/digit4.png" alt="text-combine-upright: digit 4" /></p>
-  <!--figure class="example" lang="ja" style="height: 200px; width: 250px;">
-    <p>今日は
-      <date class="width4">2015年5月22日</date>
-      です。</p>
-  </figure-->
+<figure>
+<img src="vertical-text-data/digit4.png" alt="four-digit upright spans" />
+ <div class="demolink">See live demo: <a href="vertical-text-data/digits4.html" target="text">standard syntax</a> &bull; <a href="vertical-text-data/digits4-pref.html" target="text">prefixed, etc.</a></div>
+</figure>
+
   <p>If you'd like the unaffected numbers to be full-width, you can use the following styling. Full-width characters are displayed upright by default.</p>
-  <blockquote>
+  <figure>
   <pre>time { 
     text-combine-<code>upright</code>: digits 2; 
     text-transform: full-width; 
     }</pre>
-  </blockquote>
-<p><img src="vertical-text-data/fullwidth.png" alt="fullwidth upright characters" /></p>
+  </figure>
+<figure>
+<img src="vertical-text-data/fullwidth-digits.png" alt="fullwidth upright characters" />
+ <div class="demolink">See live demo: <a href="vertical-text-data/fullwidth-digits.html" target="text">standard syntax</a> &bull; <a href="vertical-text-data/fullwidth-digits-pref.html" target="text">prefixed, etc.</a></div>
+</figure>
+
 <p>Use dedicated markup where necessary. For example, for dates and times, you could just apply the style to the <code class="kw" translate="no">time</code> element.</p>
 <p>You can set this style on block elements such as <code class="kw" translate="no">p</code> or <code class="kw" translate="no">section</code> and the style will only be applied to runs of numbers. Be aware, however, that you may need to correct the behavior if you set <code class="kw" translate="no">text-combine-horizontal</code> for a whole paragraph or more if that content contains numbers like 10,000, since the comma interrupts the sequence of digits; the result will be 10 set horizontally, and ,000 set running down the page.  </p>
 <!--figure class="example" lang="ja" style="height: 200px; width: 250px;">
@@ -401,38 +404,41 @@ figure:lang(mn) {
 
 <section>
 <h3 id="tcy_other"><a href="#tcy_other">Making non-digit inline text run horizontally</a></h3>
-<p>If you want to apply horizontal layout to non-digit text, you have to use <code>text-combine-upright: all;</code> and surround the text you want to be horizontal with markup.  You can still use the <code class="kw" translate="no">digits</code> value for the numbers, but you'll need to use <code class="kw" translate="no">all</code> for the other stuff.</p>
+<div class="sidenoteGroup"><p>If you want to apply horizontal layout to non-digit text, you have to use <code>text-combine-upright: all;</code> and surround the text you want to be horizontal with markup.  You can still use the <code class="kw" translate="no">digits</code> value for the numbers, but you'll need to use <code class="kw" translate="no">all</code> for the other stuff.</p>
+  <aside class="implnote">
+  <p class="impl">Blink browsers  support the <code class="kw" translate="no">all</code> value, and so do Firefox (Gecko) nightlies.</p>
+  </aside>
+  </div>
 <p>Example:</p>
-<blockquote>
+<figure>
   <pre>.tcy { 
     text-combine-upright: all; 
     }
 
-&lt;p&gt;...是有&lt;span class=&quot;tcy&quot;&gt;50&lt;/span&gt;&lt;span class=&quot;tcy&quot;&gt;GI&lt;/span&gt;的話、...&lt;/p&gt;</pre>
-</blockquote>
-<p>Note how we used two spans, in order to clearly indicate the boundaries of the horizontal text.</p>
+&lt;p&gt;...是有&lt;span class=&quot;tcy&quot;&gt;5012&lt;/span&gt;&lt;span class=&quot;tcy&quot;&gt;GI&lt;/span&gt;的話、...&lt;/p&gt;</pre>
+</figure>
+<p>Note how we used two <code class="kw" translate="no">spans</code>, in order to clearly indicate the boundaries of the horizontal text.</p>
 <p>The browser will try to squeeze the horizontal text into the width of a single character, so don't be too ambitious about how many characters you do this to. It is likely to be hard to read if you have more than three characters side-by-side.</p>
-<p><img src="vertical-text-data/tcu-all.png" alt="text-combine-upright: all" /></p>
-<!--figure class="example"lang="ja" style="height: 200px; width: 250px;">
-  <p>...是有<span class="tcyAll">50</span><span class="tcyAll">GI</span>的話、...</p>
-</figure-->
+<figure>
+<img src="vertical-text-data/tcu-all.png" alt="text-combine-upright:all" style="width: 284px; height: 220px;" />
+ <div class="demolink">See live demo: <a href="vertical-text-data/tcu-all.html" target="text">standard syntax</a> &bull; <a href="vertical-text-data/tcu-all-pref.html" target="text">prefixed, etc.</a></div>
+</figure>
 </section>
 
 <section>
 <h3 id="tcy_prevention"><a href="#tcy_prevention">Preventing inline text from running horizontally</a></h3>
 <p>Suppose you applied the <code class="kw" translate="no">digit</code> styling to a whole section, and there's a number 10,000 in that section that you don't want to be affected. Use markup to apply the <code class="kw" translate="no">none</code> value to that bit.</p>
 <p>Example:</p>
-<blockquote>
+<figure>
   <pre>.no-tcy { 
     text-combine-upright: none; 
-    }
+    }</pre>
+</figure>
+<figure>
+<img src="vertical-text-data/tcu-none.png" alt="text-combine-upright:all" />
+ <div class="demolink">See live demo: <a href="vertical-text-data/tcu-none.html" target="text">standard syntax</a> &bull; <a href="vertical-text-data/tcu-none-pref.html" target="text">prefixed, etc.</a></div>
+</figure>
 
-&lt;p&gt;昨日は&lt;span class=&quot;no-tcy&quot;&gt;10,000&lt;/span&gt;円でした。&lt;/p</pre>
-</blockquote>
-<p><img src="vertical-text-data/tcu-none.png" alt="text-combine-upright: none" /></p>
-<!--figure class="example" lang="ja" style="height: 200px; width: 250px;">
-  <p class="tcy">昨日は<span class="noTcy">10,000</span>円でした。</p>
-</figure-->
 <p>(This example is perhaps a little contrived, since, actually, you would probably want to write that number in ideographic characters.)</p>
 </section>
 
