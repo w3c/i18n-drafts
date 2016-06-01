@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Time &amp; date: Essential concepts</title>
+<meta name="description" content="What is a 'floating time' and how do I handle floating times in my Web application?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/definitions-time'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-definitions-time' // blog search string - usually the filename without extensions
+f.firstPubDate = '2016-06-01' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2016-06-01', time:'16:04'}  // date and time of latest substantive changes to this document
+f.status = 'draft'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-06-01', time:'16:04'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'cultural'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Time &amp; date: Essential concepts</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    users, HTML coders, script developers (PHP, JSP, etc.),  schema developers (DTDs, XML Schema, RelaxNG, etc.),  Web project managers, and anyone who is new to time and date terminology and wants to understand the basics.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <p>This article introduces a number of basic concepts needed to understand other articles that deal with time zones and handling of dates and times on the Web.</p>
+    <p>Much of the content is taken from the document <a href="https://www.w3.org/TR/timezone/">Working with Time Zones</a>, which provides greater detail on each of these topics, as well as guidelines on handling of times and dates on the Web.</p>
+</section>
+  
+ 
+
+
+  
+  <section>
+  <h2 id="incremental_time">Incremental time</h2>
+  <p>Incremental time is based on a monotonic progression of fixed integer units that increase monotonically from a specific point in time (called the &quot;epoch&quot;). </p>
+  <p>Most programming languages and operating environments provide or use incremental time for working with time values. Incremental time is not usually seen directly by users, but is mapped to observed time for human consumption.</p>
+</section>
+
+  
+  <section>
+  <h2 id="observed_time">Observed/wall/local time</h2>
+  <p> A specific moment in time that can be mapped to incremental time, given a knowledge of applicable time zone rules, but that corresponds to what a person would recognise the time to be if they looked at a clock and/or calendar mounted on a wall in a particular place. In other words, these are timekeeping units based on observation, which is why they are called &quot;observed time&quot; or &quot;wall time&quot;.</p>
+  </section>
+  
+  
+  <section>
+  <h2 id="floating_time">Floating time</h2>
+  <p>Some  time values are not mapped to a specific moment in incremental time. Instead, when they are combined with time zone information they produce <em>a range of acceptable incremental time values</em>. We refer to these sorts of time values as &quot;floating times&quot; because they are not fixed to a specific incremental time value. </p>
+  <p>Floating times are not attached and should never be attached to a particular time zone. </p>
+  <p>Some examples of floating time events include a user’s birth date, a document's publication date, a list of official holidays, or the expiration date for an offer (if not tied explicitly to a time zone).</p>
+  </section>
+  
+  
+  <section>
+  <h2 id="utc">UTC</h2>
+  <p>Universal Coordinated Time (UTC) is the basis for modern timekeeping. Among other things, it provides a common baseline for converting between incremental and observed time. UTC is also known as GMT (Greenwich Mean Time). There are some subtle differences between the two, but none that affect the average person.</p>
+  </section>
+  
+  
+  <section>
+  <h2 id="dst">Daylight Saving (Summer) Time</h2>
+  <p>&quot;Daylight Saving Time&quot; (DST) or &quot;Summer Time&quot; was adopted as a way of allowing people more sunlight hours in the evening. </p>
+  <p>DST varies from country to country (not to mention locality-to-locality) and often has &quot;special one-off&quot; changes to accommodate special events. Not all regions observe DST: usually those closer to the equator do not need it.</p>
+  <p>In converting times it is also important to know when DST was introduced, and sometimes abandoned, for the local area. For example, Korea Standard Time and Japan Standard Time currently use the same UTC offset and neither uses daylight saving. However, Japan abandoned DST in 1951, while South Korea used it last in 1988, so an application that tracks time values that reach back that far might need to track these time zones separately.</p>
+  </section>
+  
+  
+  <section>
+  <h2 id="time_zone">Time Zone Rules</h2>
+  <p>A time zone is a set of rules for determining the local observed time (wall time) as it relates to incremental time (as used in most computing systems) for a particular geographical region, and vice versa.</p>
+  <p>Time zone rules have to take into account UTC offset plus any DST modifications to wall time that apply.</p>
+  </section>
+  
+  
+  <section>
+  <h2 id="time_zone_ids">Time Zone Identifiers</h2>
+  <p>The most definitive reference for identifying sets of time zone rules is the TZ database (also known as the &quot;Olson time zone database&quot;), which is used by systems such as various commercial UNIX operating systems, Linux, Java, CLDR, ICU, and many other systems and libraries. Other systems exist: for example, Microsoft Windows uses its own data set and identifiers.</p>
+  <p>In the TZ database, time zones are given IDs that typically consist of a region and exemplar city. An exemplar city is a city in the time zone in question that should be well-known to people using the time zone. For example, the U.S. Pacific time zone has a TZ database ID of &quot;America/Los_Angeles&quot;. The TZ database also supplies aliases for many IDs; for example, &quot;Asia/Ulan Bator&quot; is equivalent to &quot;Asia/Ulaanbaatar&quot;.</p>
+  <p>The Common Locale Data Repository (CLDR) can be used to provide a localized form for the IDs. Note: some systems, such as Apple Inc.'s MacOS, provide additional exemplar cities.</p>
+  </section>
+  
+  
+  <section>
+  <h2 id="field_based_time">Field-Based Time</h2>
+  <p>Field-based time divides observed or wall time into separate field values such as year, month, day, hour, minute, second, etc. Field-based times may or may not be tied to either UTC or the local time zone—or may be indeterminate. Field-based times are also typically tied to a specific calendar (such as the Gregorian calendar). The formats described by the ISO 8601 standard are field-based.</p>
+  </section>
+  
+  
+  <section>
+  <h2 id="html5_terms">HTML5 terms</h2>
+  <p>The following show examples of field-based times for terms used in the HTML5 spec.</p>
+  
+  <dl>
+  <dt>global date and time</dt>
+  <dd>A 6-digit date, either T or space, a 4-9 digit time (required), a time-zone offset (required) that is Z or +/-2 digits, with optional seconds</dd>
+  <dd>2016-05-25T21:19:47.123+08</dd>
+  <dd>2016-05-25 21:19:47-08</dd>
+  <dd>2016-05-25 21:19:47Z</dd>
+  <dd>2016-05-25 21:19:00.123+23:45</dd>
+
+  <dt>normalized global date and time</dt>
+  <dd>Same as above, except that T is required, 00 is omitted in the seconds field, and the time-zone offset can only be Z.</dd>
+  <dd>2016-05-25T21:19:47.123Z</dd>
+  <dd>2016-05-25T21:19Z</dd>
+  
+  <dt>floating date and time</dt>
+  <dd>Same as global date and time, but no time-zone offset information</dd>
+  <dd>2016-05-25T21:19:47.123</dd>
+  <dd>2016-05-25 21:19:00</dd>
+  
+  <dt>normalized floating date and time</dt>
+  <dd>Same as above, except that T is required, and 00 is omitted in the seconds field.</dd>
+  <dd>2016-05-25T21:19:47.123</dd>
+  <dd>2016-05-25T21</dd>
+  </dl>
+  </section>
+
+
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
