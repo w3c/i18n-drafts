@@ -21,7 +21,7 @@ f.path = '../../' // what you need to prepend to a URL to get to the /Internatio
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2016-06-01', time:'16:04'} // date and time of latest edits to this document/translation
-f.contributors = '' // people providing useful contributions or feedback during review or at other times
+f.contributors = 'Addison Phillips (especially since many of these definitions were originally based on text in his document, Working with Time Zones).' // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
 
@@ -53,7 +53,7 @@ f.additionalLinks = ''
 <section>
   <div id="audience">
     <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    users, HTML coders, script developers (PHP, JSP, etc.),  schema developers (DTDs, XML Schema, RelaxNG, etc.),  Web project managers, and anyone who is new to time and date terminology and wants to understand the basics.</p>
+    users, HTML coders, script developers (PHP, JSP, etc.),  schema developers (DTDs, XML Schema, RelaxNG, etc.),  specification developers, Web project managers, and anyone who is new to time and date terminology and wants to understand the basics.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
 
@@ -66,64 +66,92 @@ f.additionalLinks = ''
 
   
   <section>
+  <h2 id="utc">UTC</h2>
+  <p><dfn id="def_utc">UTC</dfn> is also known as GMT (Greenwich Mean Time). There are some subtle differences between the two, but none that affect the average person.</p>
+  <p>Universal Coordinated Time (UTC) is the basis for modern timekeeping. Among other things, it provides a common baseline for converting between <a href="#incremental_time" class="termref">incremental</a> and <a href="#local_time" class="termref">local</a> time. </p>
+  <p>The time zone offset for UTC is 0. UTC is often indicated in <a href="#field_based_time" class="termref">field-based formats</a> using <code class="kw" translate="no">Z</code>.</p>
+  </section>
+  
+  
+  <section>
+  <h2 id="field_based_time">Field-based time formats</h2>
+  <p>When you write a time using a <dfn id="def_field_based_format">field-based format</dfn> you divide the date and/or time into separate field values such as year, month, day, hour, minute, second, etc. such as <samp>2016-09-11T06:10:32</samp>. Contrast this with an alternative way to express the same time, <samp>1465621816590</samp>, which is not field-based and is rather hard to read.</p>
+  <p>Field-based times may or may not be tied to either <a href="#utc" class="termref">UTC</a> or the local time zone – or they may be indeterminate. Field-based times are also typically tied to a specific calendar (such as the Gregorian calendar). </p>
+  <p>The formats described by the ISO 8601 standard are field-based.</p>
+  </section>
+
+
+  <section>
   <h2 id="incremental_time">Incremental time</h2>
-  <p>Incremental time is based on a monotonic progression of fixed integer units that increase monotonically from a specific point in time (called the &quot;epoch&quot;). </p>
-  <p>Most programming languages and operating environments provide or use incremental time for working with time values. Incremental time is not usually seen directly by users, but is mapped to observed time for human consumption.</p>
+  <p><dfn id="def_incremental_time">Incremental time</dfn> is a way of representing time in computers that is based on a  progression of fixed integer units that increase monotonically from a specific point in time (called the &quot;epoch&quot;). </p>
+  <p> Java (and many other systems) count time as the number of milliseconds since midnight (00:00 a.m.) on January 1, 1970 in <a href="#utc" class="termref">UTC</a> (less all of the intervening leap seconds). Other systems use different units and/or epochs. </p>
+  <p>For example, at one point while writing this paragraph the incremental time for JavaScript in my browser was <samp>1465621816590</samp> (ie. 11 June, 2016 at 6.10am BST).</p>
+  <p>Most programming languages and operating environments provide or use incremental time for working with time values. However, incremental time is not usually seen directly by users, but is mapped to a <a href="#field_based_time" class="termref">field-based time format</a> for human consumption.</p>
 </section>
 
   
   <section>
-  <h2 id="observed_time">Observed/wall/local time</h2>
-  <p> A specific moment in time that can be mapped to incremental time, given a knowledge of applicable time zone rules, but that corresponds to what a person would recognise the time to be if they looked at a clock and/or calendar mounted on a wall in a particular place. In other words, these are timekeeping units based on observation, which is why they are called &quot;observed time&quot; or &quot;wall time&quot;.</p>
+  <h2 id="local_time">Wall/local time</h2>
+  <div class="sidenoteGroup">
+  <p> <dfn id="def_wall_time">Wall time</dfn> or <dfn id="def_local_time">local time</dfn> is a  moment in time, that can be mapped to a specific point in incremental time if you apply any relevant time zone information, but it corresponds to what a person would recognise the time to be if they looked at a clock and/or calendar mounted on a wall in a particular place.</p>
+  <aside class="sideinfonote">
+  <p class="info">The use of the word <span class="qterm">local</span> in HTML doesn't refer to wall time  – instead a time described as <code class="kw" translate="no">datetime-local</code> is really a <a href="#floating_time" class="termref">floating time</a>.</p>
+  </aside></div>
+  <div class="sidenoteGroup">
+  <p>So, for example, while writing the previous section I may have glanced at the time displayed by my computer and seen <samp>Sat 11 Jun 06:10</samp>. If I apply knowledge about how that time relates to <a href="utc" class="termref">UTC</a> (in my case, adjusting by one hour to account for British Summer Time) I can convert that to the incremental time <samp>1465621816590</samp>.</p>
+  <p>It's also possible to convert that to a wall time in another location, such as San Francisco, where someone  looking at their computer's time display at the same time would have seen <samp>Fri 10 Jun 22:10</samp>.</p>
+  <aside class="sideinfonote">
+  <p class="info">The term <dfn id="def_observed_time">observed time</dfn> refers to a different method of ascertaining the time that relies on physical observation of things such as the sun, moon or stars, and is not really used these days. Observed time of noon is when the sun is at its highest point in the sky. The actual moment in time of noon indicated in this way will vary for people only a few miles apart.</p>
+  </aside></div>
   </section>
   
   
   <section>
   <h2 id="floating_time">Floating time</h2>
-  <p>Some  time values are not mapped to a specific moment in incremental time. Instead, when they are combined with time zone information they produce <em>a range of acceptable incremental time values</em>. We refer to these sorts of time values as &quot;floating times&quot; because they are not fixed to a specific incremental time value. </p>
+  <p>Some  time values are not mapped to a specific moment in <a href="incremental_time" class="termref">incremental time</a>. Instead, they represent a nominal time which is described in the same way in all time zones around the world.</p>
+  <p>For example, Saturday 11 June 2016 happens to be the date of the British Queen's official 90th birthday. Although, in some parts of the world, the British 11th June starts or ends on what would be Friday or Sunday in Britain, the date given for the event is always Saturday 11 June.</p>
+  <p>We refer to these sorts of time values as <dfn id="def_floating_time">floating times</dfn> because they are not fixed to a specific <a href="#incremental_time" class="termref">incremental time</a> value. When you apply time zone information to floating times  they produce <em>a range of acceptable incremental time values</em>.</p>
   <p>Floating times are not attached and should never be attached to a particular time zone. </p>
-  <p>Some examples of floating time events include a user’s birth date, a document's publication date, a list of official holidays, or the expiration date for an offer (if not tied explicitly to a time zone).</p>
+  <p>Other examples of floating time events include  the  publication date for an issue of a newspaper, the date the Rio Olympics starts, the time the New Year starts, an announcement for a meeting start time where the wall time stays the same regardless of <a href="#dst">DST</a>, etc.</p>
   </section>
   
   
-  <section>
-  <h2 id="utc">UTC</h2>
-  <p>Universal Coordinated Time (UTC) is the basis for modern timekeeping. Among other things, it provides a common baseline for converting between incremental and observed time. UTC is also known as GMT (Greenwich Mean Time). There are some subtle differences between the two, but none that affect the average person.</p>
+<section>
+  <h2 id="time_zone">Time Zone rules</h2>
+  <p>A <dfn id="def_time_zone">time zone</dfn> is a set of rules for determining the local  time (wall time) as it relates to incremental time (as used in most computing systems) for a particular geographical region, and vice versa.</p>
+  <p>Time zone rules have to take into account <a href="#time_zone_offset" class="termref"> zone offsets</a> <em>plus</em> any <a href="#dst" class="termref">daylight savings</a> modifications to wall time that apply.</p>
   </section>
   
   
-  <section>
-  <h2 id="dst">Daylight Saving (Summer) Time</h2>
-  <p>&quot;Daylight Saving Time&quot; (DST) or &quot;Summer Time&quot; was adopted as a way of allowing people more sunlight hours in the evening. </p>
-  <p>DST varies from country to country (not to mention locality-to-locality) and often has &quot;special one-off&quot; changes to accommodate special events. Not all regions observe DST: usually those closer to the equator do not need it.</p>
-  <p>In converting times it is also important to know when DST was introduced, and sometimes abandoned, for the local area. For example, Korea Standard Time and Japan Standard Time currently use the same UTC offset and neither uses daylight saving. However, Japan abandoned DST in 1951, while South Korea used it last in 1988, so an application that tracks time values that reach back that far might need to track these time zones separately.</p>
+<section>
+  <h2 id="zone_offset"> Zone offset</h2>
+  <p>A <dfn id="def_zone_offset"> zone offset</dfn> is an amount that is added to or subtracted from <a href="utc" class="termref">UTC</a> based on the location of the event around the world relative to the prime meridian. Usually offsets are at one-hour intervals, but offsets can also include 30 or 45 minute differences.</p>
+  <p>A common way to express a zone offset in field-based formats is with +/- followed by the offset. So for example, Japan is 9 hours ahead of UTC, so you may see a time written as <samp>2016-06-11 05:10+09:00</samp>.</p>
+  <p>Note, importantly, that the zone offset does not help you convert times to wall time where <a href="#dst" class="termref">daylight savings time</a> is in force.</p>
   </section>
   
   
-  <section>
-  <h2 id="time_zone">Time Zone Rules</h2>
-  <p>A time zone is a set of rules for determining the local observed time (wall time) as it relates to incremental time (as used in most computing systems) for a particular geographical region, and vice versa.</p>
-  <p>Time zone rules have to take into account UTC offset plus any DST modifications to wall time that apply.</p>
+ <section>
+  <h2 id="dst">Daylight Saving Time</h2>
+  <p><dfn id="def_dst">Daylight Saving Time</dfn> (DST) or &quot;Summer Time&quot; was adopted as a way of allowing people more sunlight hours in the evening. </p>
+  <p>DST varies from country to country (not to mention locality-to-locality) and often has special one-off changes to accommodate special events. Not all regions observe DST: usually those closer to the equator do not need it.</p>
+  <p>In converting times it is  important to know when DST was introduced, and sometimes abandoned, for the local area, as well as on <span class="ednote">what dates DST starts and ends (which can vary from year to year)</span>. </p>
+  <p>For example, Korea Standard Time and Japan Standard Time currently use the same <a href="#zone_offset" class="termref">zone offset</a> and neither uses daylight saving. However, Japan abandoned DST in 1951, while South Korea used it last in 1988, so an application that tracks time values that reach back that far might need to track these time zones separately.</p>
   </section>
   
   
   <section>
   <h2 id="time_zone_ids">Time Zone Identifiers</h2>
-  <p>The most definitive reference for identifying sets of time zone rules is the TZ database (also known as the &quot;Olson time zone database&quot;), which is used by systems such as various commercial UNIX operating systems, Linux, Java, CLDR, ICU, and many other systems and libraries. Other systems exist: for example, Microsoft Windows uses its own data set and identifiers.</p>
-  <p>In the TZ database, time zones are given IDs that typically consist of a region and exemplar city. An exemplar city is a city in the time zone in question that should be well-known to people using the time zone. For example, the U.S. Pacific time zone has a TZ database ID of &quot;America/Los_Angeles&quot;. The TZ database also supplies aliases for many IDs; for example, &quot;Asia/Ulan Bator&quot; is equivalent to &quot;Asia/Ulaanbaatar&quot;.</p>
-  <p>The Common Locale Data Repository (CLDR) can be used to provide a localized form for the IDs. Note: some systems, such as Apple Inc.'s MacOS, provide additional exemplar cities.</p>
-  </section>
-  
-  
-  <section>
-  <h2 id="field_based_time">Field-Based Time</h2>
-  <p>Field-based time divides observed or wall time into separate field values such as year, month, day, hour, minute, second, etc. Field-based times may or may not be tied to either UTC or the local time zone—or may be indeterminate. Field-based times are also typically tied to a specific calendar (such as the Gregorian calendar). The formats described by the ISO 8601 standard are field-based.</p>
+  <p><dfn id="def_time_zone_id">Time zone identifiers</dfn> allow you to refer to a particular difference from <a href="utc" class="termref">UTC</a> that includes both <a href="#time_zone_offset" class="termref"> zone offsets</a> and <a href="#dst" class="termref">daylight savings time</a>.</p>
+  <p>The most definitive reference for identifying sets of time zone rules is the <a href="http://www.twinsun.com/tz/tz-link.htm">TZ database</a> (also known as the Olson time zone database), which is used by systems such as various commercial UNIX operating systems, Linux, Java, CLDR, ICU, and many other systems and libraries. Other systems exist: for example, Microsoft Windows uses its own data set and identifiers.</p>
+  <p>In the TZ database, time zones are given IDs that typically consist of a region and exemplar city. An exemplar city is a city in the time zone in question that should be well-known to people using the time zone. For example, the U.S. Pacific time zone has a TZ database ID of <code class="kw" translate="no">America/Los_Angeles</code>. The TZ database also supplies aliases for many IDs; for example, <code class="kw" translate="no">Asia/Ulan Bator</code> is equivalent to <code class="kw" translate="no">Asia/Ulaanbaatar</code>.</p>
+  <p>The Common Locale Data Repository (CLDR) can be used to provide a localized form for the IDs. Note that some systems, such as Apple's Mac OS, provide additional exemplar cities.</p>
   </section>
   
   
   <section>
   <h2 id="html5_terms">HTML5 terms</h2>
-  <p>The following show examples of field-based times for terms used in the HTML5 spec.</p>
+  <p>The following show examples of field-based times for terms used in the HTML5 spec, as a handy reference.</p>
   
   <dl>
   <dt>global date and time</dt>
@@ -150,6 +178,28 @@ f.additionalLinks = ''
   </dl>
   </section>
 
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+  <li><p><cite><a href="https://www.w3.org/TR/timezone/">Working with Time Zones</a></cite></p></li>
+  <li>
+    <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+    <ul>
+      <li><a href="/International/techniques/authoring-html#localdata">Working with data formats</a></li>
+      </ul>
+  </li>
+  <li>
+    <p>Related links, <cite>Developing specifications</cite></p>
+    <ul>
+      <li><a href="/International/techniques/developing-specs#loc_time">Working with time</a></li>
+    </ul>
+  </li>
+</ul>
+</section>
 
 
 <footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
