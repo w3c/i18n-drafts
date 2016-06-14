@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Visual vs. logical ordering of text</title>
+<meta name="description" content="What is the difference between visual and logical ordering of text, and which should I use?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-visual-vs-logical' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-visual-vs-logical' // blog search string - usually the filename without extensions
+f.firstPubDate = '2011-08-12' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2013-04-19', time:'13:04'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-06-10', time:'17:33'} // date and time of latest edits to this document/translation
+f.contributors = 'Mati Allouche, Aharon Lanin, Norbert Lindenberg, Tomer Mahlin' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-visual-vs-logical-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Visual vs. logical ordering of text</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), Web project managers, and anyone who needs to better understand the difference between visual and logical storage of bidirectional text..</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">What is the difference between visual and logical ordering of text, and which should I use?</p>
+
+  <p><a href="/International/tutorials/bidi-xhtml/#term_bidirectional" class="termref print">Bidirectional text</a> is commonplace in right-to-left scripts such as Arabic, Hebrew, Syriac, and Thaana. Numerous different languages are written with these scripts, including Arabic, Hebrew, Pashto, Persian, Sindhi, Syriac, Dhivehi, Urdu, Yiddish, etc.</p>
+  <p>When bidirectional text is displayed, any embedded text from a left-to-right script and all numbers progress visually <em>left-to-right</em> within the general right-to-left
+    visual flow of the aforementioned scripts. (Of course, the English text on this page also contains bidirectional text where it includes Arabic and Hebrew examples.)</p>
+  </section>
+  
+ 
+
+<section id="nutshell">
+    <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>You should always create HTML (and any other type of markup) using logical ordering, and never use visual.</p>
+  <p><dfn id="term_visualordering"> Visual ordering</dfn> of text was a common way of representing Hebrew in HTML on old user agents that didn't support the <a href="/International/tutorials/bidi-xhtml/#term_uba" class="termref print">Unicode bidirectional algorithm</a>. Relatively little persists  today. Characters making up the text were stored in the source code in the same order you would see them displayed on screen when looking from left to right.</p>
+  <p>(Visual ordering less common for Arabic. Since the Arabic letters are all joined up there was a stronger motivation on the
+    part of Arabic implementers to enable the logical ordering approach. Visually ordered Arabic text may use separate code points for each shaped glyph.)</p>
+  <p>With <dfn id="term_logicalordering">logical ordering</dfn>, text is stored in memory in the order in which it would normally be typed (and usually pronounced). The Unicode bidirectional algorithm is then applied by the browser, at display time, to produce the correct visual display.</p>
+</section>
+
+
+<section>
+  <h2 id="detail"><a href="#detail">Details</a></h2>
+
+  <section>
+    <h3 id="shortcomings"><a href="#shortcomings">Visual ordering and its shortcomings</a></h3>
+    <p>The following picture  shows the bidirectional phrase <span lang="he" translate="no" dir="rtl">פעילות הבינאום, W3C</span> at the top in blue, as it would normally appear
+      when displayed in a right-to-left paragraph. The numbered arrows show the reading direction. You read the sequences in the order of the numbers below the arrows. </p>
+    <p>The second and third lines (green text) show the order in which characters are stored in memory (from left to right in the visualization) for logical and visual encoded text, respectively. The logical order also reflects the order in which you would type the text as a content author. The same is true of the visual line, ie. you type the text backwards (unless you have an editing tool that automatically rearranges logical input to visual storage order for you).</p>
+    <figure>
+      <p><img src="qa-visual-vs-logical-data/directions.gif" alt=" " /></p>
+    </figure>
+    <p>The following image shows an example of visually ordered source code in HTML.</p>
+    <figure>
+      <p><img src="qa-visual-vs-logical-data/visual-example.png" alt=" " /></p>
+    </figure>
+    <p>To make visual ordering work, in addition to writing the text backwards, you must also do such things as disable any line wrapping,
+      explicitly right-align text in paragraphs and table cells, add explicit line breaks, and, when translating from a language that uses a
+      left-to-right script, manually reverse the order of table columns. You  also have to add and maintain separate spans of link or emphasis markup for any marked up text that wraps onto another line.</p>
+    <p>(This is actually a fairly clean implementation. For example you can also find such things as right-aligned paragraphs with &lt;nobr&gt;..&lt;/nobr&gt; tags around each line. If your window is too narrow, the beginning of each line disappears off the right side of the browser.)</p>
+    <p>A key issue relates to maintenance. For example, apart from the difficulty of typing the Hebrew backwards, if you want to add a few words in the middle of a paragraph of visually ordered text, you would have to move text to
+      and from every line that followed it in the paragraph in order to reset the line breaks. You would also have to manually rearrange any inline markup that spans more than one line (either before or after the change).</p>
+    <p>The result is very fragile code that is difficult to maintain. </p>
+    <p>In addition, all the extra tags needed to manage the text would bloat your code and impact not only authoring time, but also
+      bandwidth.</p>
+    <p>Visual ordering can also cause problems at a higher level. For example, it requires the order of table columns to be manually reversed when translating into another language. Line breaks will also need to be manually re-flowed if the page geometry changes. Often the  search dialog of browsers captures text in logical order, which causes   the search key not to match the text stored in visual order, unless   there is special logic in the browser to handle this issue. Etc.</p>
+    <p>Using logically ordered text, on the other hand, makes it almost trivial to create long paragraphs of flowing text that automatically
+      wrap to the width of the block element. It also makes it much easier to address accessibility, using such things as screen readers. You simply type the text in the spoken order, and the Unicode Bidirectional Algorithm does all the heavy lifting for you.</p>
+  </section>
+  
+  <section>
+    <h3 id="legacy"><a href="#legacy">Working with legacy systems</a></h3>
+    <p> In modern systems where backend storage includes legacy data (created at some point using green screens)  represented in visual order (such as mainframes or iSeries computers) it is necessary to support bidirectional flow of data between the back end (visual ordering) and web front end (logical ordering).</p>
+    <p>Various factors may be involved in this process, besides the order of the characters themselves. This level of detail is beyond the scope of the question that frames this article, but you can find useful additional information in a <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2013JanMar/0331.html">helpful email</a> from Tomer Mahlin, of the IBM Bidi Development Lab.</p>
+  </section>
+  
+  <section>
+    <h3 id="characterencodings"><a href="#characterencodings">Visual ordering and character encodings</a></h3>
+    <p>We always recommend that you use UTF-8 as the character encoding of your page, which supports logical ordering of characters, but if, and only if, you choose to use an ISO 8859
+      encoding instead, you need to take some care in declaring the encoding. You declare the encoding of your content either in the HTTP header or in a <code class="kw" translate="no">meta</code> element inside the document (or both).</p>
+    <p>There are special conventions with regard to the encoding declarations used for Hebrew text that relate to the visual vs. logical
+      ordering question. A declaration of ISO-8859-8 would indicate that the text is <em>visually encoded</em>. For logically-ordered content using the ISO encodings you must
+      label ISO-encoded text as ISO-8859-8-i.</p>
+</section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/bidi-xhtml/"><cite>Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#direction">Text direction</a></li>
+        <li><a href="/International/techniques/authoring-html#bidilocn">Making bidi localization easier</a></li>
+        <li><a href="/International/techniques/authoring-html#using">Setting up a right-to-left page</a></li>
+        <li><a href="/International/techniques/authoring-html#blocks">Changing the direction of a block element</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
