@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Styling using  language attributes</title>
+<meta name="description" content="What is the most appropriate way to associate CSS styles with text in a particular language in a multilingual HTML or XML document?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-css-lang' // the file name WITHOUT extensions
+f.authors = 'Andrew Cunningham, State Library of Victoria, Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-css-lang' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-08-07' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2013-08-14', time:'10:43'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-06-15', time:'14:41'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-css-lang-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Styling using  language attributes</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, and anyone who wants to use language information to apply CSS styles to markup.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">What is the most appropriate way to associate CSS styles with text in a particular language in a multilingual
+      HTML or XML document?</p>
+
+  <p>Presentation styles are commonly used to control changes in fonts, font sizes and line heights when language changes occur in the document. This can be particularly useful when dealing with Simplified versus Traditional Chinese, where users tend to prefer different fonts, even though they may be using many of the same characters. It can also be useful to better harmonize the look of mixed, script-specific fonts, such as when mixing Arabic and Latin fonts.</p>
+  <p>This page looks at available options for doing this most effectively.</p>
+  </section>
+  
+ 
+
+<section id="nutshell">
+    <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>The best way to style content by language in HTML is to use the <code class="kw" translate="no">:lang</code> selector in your CSS style sheet. For example:</p>
+  <figure class="example">
+    <pre style="white-space:pre-wrap;">:lang(ta) 	{
+    font-family: Latha, "Tamil MN", serif;
+    font-size: 120%;
+    }</pre>
+  </figure>
+  <p>The rest of the article  adds some detail about <code class="kw" translate="no">:lang</code>, and compares with two other approaches. It also considers implications for documents served as <code class="kw" translate="no">application/xhtml+xml</code>.</p>
+</section>
+
+
+<section>
+  <h2 id="detail"><a href="#detail">Details</a></h2>
+  <p>There are four ways to apply different styles to different languages in a multilingual document using CSS. They are listed here in order
+    of preference.</p>
+  <ol>
+    <li>the :lang() pseudo-class selector</li>
+    <li>a [lang |= "..."] selector that matches the beginning of the value of a language attribute</li>
+    <li>a [lang = "..."] selector that exactly matches the value of a language attribute</li>
+    <li>a generic class or id selector</li>
+  </ol>
+  <p>For more information about support for these selectors see the <a class="print" href="https://www.w3.org/International/tests/repo/results/lang-selectors">test results</a>. </p>
+  <p>The remainder of this page explains and provides examples of ways in which the use of these selectors differ.</p>
+  <section>
+    <h3 id="inheritance"><a href="#inheritance">Inheritance of language values</a></h3>
+    <p>A significant difference between <code class="kw" translate="no">:lang</code> and the other methods is that it recognizes the language of  the content of an element even
+      if the language is declared outside the element in question.</p>
+    <p>Suppose, for example, that in a future English document containing Japanese text you wanted to style emphasized Japanese text using
+      special Asian CSS3 properties, rather than italicization (which doesn't always work well with the complex characters of Japanese). You might have the
+      following rules in your style sheet:</p>
+    <div class="sidenoteGroup">
+      <figure class="example">
+        <p><code>em           { font-style: italic; }<br/>
+          em:lang(ja)  { font-style:&#xA0;normal; text&#x2011;emphasis:&#xA0;dot; text&#x2011;emphasis&#x2011;position:&#xA0;over right; }</code></p>
+      </figure>
+      <aside class="sideinfonote">
+        <p class="warning">The <code class="kw" translate="no">text-emphasis</code> and <code class="kw" translate="no">text-emphasis-position</code> properties are specified as per the current Editor's Draft of CSS3 Text Decoration, and may change before the draft moves to recommendation.</p>
+      </aside>
+    </div>
+    <p>Now assume that you have the following content, that the user agent supports <code class="kw" translate="no">:lang</code>, and that the <code class="kw" translate="no">html</code> tag
+      states that this is an English document.</p>
+    <figure class="example">
+      <p><code>&lt;p&gt;This is &lt;em&gt;English&lt;/em&gt;, but &lt;span lang="ja"&gt;これは&lt;em&gt;日本語&lt;/em&gt;です。&lt;/span&gt;&lt;/p&gt;</code></p>
+    </figure>
+    <p>You would expect to see the emphasized English word italicized, but the emphasized Japanese word in regular text with small dots above
+      each character, something like this:</p>
+    <figure class="example">
+      <p><img src="qa-css-lang-data/css-lang-e1.gif" height="25" width="242" alt="Picture of what was just described." /></p>
+    </figure>
+    <p>The important point to be made in this section is that this would not be possible using the <code>[lang|="..."]</code> or <code>[lang="..."]</code> selectors. For those to work you would have to declare the language explicitly on each Japanese <code class="kw" translate="no">em</code> tag.</p>
+    <p>This is a significant difference between the usefulness of these different selectors.</p>
+  </section>
+  <section>
+    <h3 id="which"><a href="#which">Which language attribute?</a> </h3>
+    <p>The <code class="kw" translate="no">lang</code> attribute is used to identify the language of text served as HTML. Text served as XML should use the <code class="kw" translate="no">xml:lang</code> attribute. </p>
+    <p>For XHTML that is served as text/html, it is recommended that you use both attributes, since the HTML parser will pick up on the <code class="kw" translate="no">lang</code> attribute, whereas if you parse the content as XML the <code class="kw" translate="no">xml:lang</code> attribute will be used by your XML parser.</p>
+    <p>The article will first discuss the various options for styling by language in HTML, using the lang attribute. There then follows a section  about <a href="#xmllang">how to style XML documents</a> based on <code class="kw" translate="no">xml:lang</code>.</p>
+  </section>
+  <section>
+    <h3 id="colon-lang"><a href="#colon-lang">The <code>:lang(...)</code> pseudo-class selector</a></h3>
+    <p>The HTML fragment:</p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">
+&lt;p&gt;It is polite to welcome people in their own language:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li lang="zh-Hans"&gt;欢迎&lt;/li&gt;
+    &lt;li lang="zh-Hant"&gt;歡迎&lt;/li&gt;
+    &lt;li lang="el"&gt;Καλοσωρίσατε&lt;/li&gt;
+    &lt;li lang="ar"&gt;اهلا وسهلا&lt;/li&gt;
+    &lt;li lang="ru"&gt;Добро пожаловать&lt;/li&gt;
+    &lt;li lang="din"&gt;Kudual&lt;/li&gt;
+&lt;/ul&gt;
+                </pre>
+    </figure>
+    <p>could have the following styling:</p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">body 		{font-family: "Times New Roman",serif;}
+:lang(ar) 	{font-family: "Scheherazade",serif; 
+                 font-size: 120%;}
+:lang(zh-Hant) 	{font-family: Kai,KaiTi,serif;}
+:lang(zh-Hans) 	{font-family: DFKai-SB,BiauKai,serif;}
+:lang(din) 	{font-family: "Doulos SIL",serif;}
+                </pre>
+    </figure>
+    <p>The Greek and Russian use the styling set for the <code class="kw" translate="no">body</code> element.</p>
+    <p>This is the ideal way to style language fragments, because it is the only selector that can apply styling to the content of an
+      element when the language of that content is declared earlier in a page.</p>
+    <p>A rule for <code>:lang(zh)</code> would match elements with a language value of <code class="kw" translate="no">zh</code>. It would also match more specific
+      language specifications such as <code class="kw" translate="no">zh-Hant</code>, <code class="kw" translate="no">zh-Hans</code> and <code class="kw" translate="no">zh-TW</code>.</p>
+    <p>The selector <code>:lang(zh-Hant)</code> will only match elements that have a language value of <code class="kw" translate="no">zh-Hant</code> or have inherited
+      that language value. If the CSS rule specified <code>:lang(zh-TW)</code>, the rule would not match our sample paragraph.</p>
+  </section>
+  <section>
+    <h3 id="lang-bar"><a href="#lang-bar">A <code>[lang|="..."]</code> selector that matches the beginning of a value of an attribute</a></h3>
+    <p>For  markup example we saw in the previous section, the style sheet could be written as:</p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">body 		   {font-family: "Times New Roman",serif;}
+*[lang|="ar"] 	   {font-family: "Scheherazade",serif; 
+                    font-size: 120%;}
+*[lang|="zh-Hant"] {font-family: Kai,KaiTi,serif;}
+*[lang|="zh-Hans"] {font-family: DFKai-SB,BiauKai,serif;}
+*[lang|="din"]     {font-family: "Doulos SIL",serif;}
+                </pre>
+    </figure>
+    <p>Unlike <code class="kw" translate="no">:lang</code>, this selector  will only work for elements which carry a <code class="kw" translate="no">lang</code> attribute (see <a href="#inheritance">Inheritance of language values</a>).</p>
+    <p>There is a significant difference between this selector and <code>[lang="..."]</code>. Whereas <code>[lang=&quot;...&quot;]</code> will
+      only match elements when the selector value and the attribute value are  identical, this selector value will match a language attribute
+      value that has additional hyphen-separated values. Therefore the  selector <code>[lang|=&quot;sl&quot;]</code> would match <code class="kw" translate="no">sl-IT</code>, <code class="kw" translate="no">sl-nedis</code> or <code class="kw" translate="no">sl-IT-nedis</code>, and the selector <code>[lang|=&quot;zh-Hans&quot;]</code> would also match <code class="kw" translate="no">zh-Hans-CN</code>.</p>
+  </section>
+  <section>
+    <h3 id="lang-equal"><a href="#lang-equal">A <code>[lang="..."]</code> selector that matches the value of an attribute</a></h3>
+    <p>The third method of specifying rules is to use an attribute selector that exactly matches the attribute value.</p>
+    <p>Unlike <code class="kw" translate="no">:lang</code>, this selector  will only work for elements which carry a <code class="kw" translate="no">lang</code> attribute (see <a href="#inheritance">Inheritance of language values</a>).</p>
+    <p>For the earlier example of markup, the style sheet could be written as:</p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">body                {font-family: "Times New Roman",serif;&nbsp;}
+*[lang="ar"] 	    {font-family: "Scheherazade",serif; 
+                     font-size: 120%;}
+*[lang="zh-Hant"]   {font-family: Kai,KaiTi,serif;}
+*[lang="zh-Hans"]   {font-family: DFKai-SB,BiauKai, serif;}
+*[lang="din"] 	    {font-family: "Doulos SIL",serif;}
+                </pre>
+    </figure>
+    <p>Note that using this approach <code class="kw" translate="no">en</code> will not match <code class="kw" translate="no">en-AU</code>. The match has to be exact.</p>
+  </section>
+  <section>
+    <h3 id="generic"><a href="#generic">Generic class or id selectors</a></h3>
+    <p>This method avoids the need to match the language declarations at all, and relies on <code class="kw" translate="no">class</code> or <code class="kw" translate="no">id</code> attribute markup. Using an ordinary CSS class or id selector works with most browsers that support CSS. The disadvantage is that adding the attributes takes up time and bandwidth.</p>
+    <p>For the markup example above, this would require us to change the HTML code by adding class attributes as follows:</p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">
+&lt;p&gt;It is polite to welcome people in their own language:&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li class="zhs" lang="zh-Hans"&gt;欢迎&lt;/li&gt;
+    &lt;li class="zht" lang="zh-Hant"&gt;歡迎&lt;/li&gt;
+    &lt;li class="el" lang="el"&gt;Καλοσωρίσατε&lt;/li&gt;
+    &lt;li class="ar" lang="ar"&gt;اهلا وسهلا&lt;/li&gt;
+    &lt;li class="ru" lang="ru"&gt;Добро пожаловать&lt;/li&gt;
+    &lt;li class="din" lang="din"&gt;Kudual&lt;/li&gt;
+&lt;/ul&gt;
+                </pre>
+    </figure>
+    <p>We could then have the following styling:</p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">body 	{font-family: "Times New Roman",serif; }
+.ar 	{font-family: "Scheherazade",serif; 
+         font-size: 120%;}
+.zht 	{font-family: PMingLiU, MingLiU,serif;}
+.zhs 	{font-family: SimSum-18030, SimHei,serif;}
+.din	{font-family: "Doulos SIL",serif;}
+                </pre>
+    </figure>
+  </section>
+  <section>
+    <h3 id="xmllang"><a href="#xmllang">Using CSS selectors in XML with <code class="kw" translate="no">xml:lang</code></a></h3>
+    <p>As mentioned earlier, in a document that is parsed as XML you need to use the <code class="kw" translate="no">xml:lang</code> attribute (rather than the <code class="kw" translate="no">lang</code> attribute) to express language information.</p>
+    <p><strong class="leadin">Using :lang</strong></p>
+    <p>Use of <code class="kw" translate="no">:lang</code> is straightforward. If the document is parsed as HTML, the <code class="kw" translate="no">:lang</code> selector will match content where the language was defined using a <code class="kw" translate="no">lang</code> attribute value. However, if the document is parsed as XML, the <code class="kw" translate="no">:lang</code> selector will match content labeled with an <code class="kw" translate="no">xml:lang</code> attribute value and ignore any <code class="kw" translate="no">lang</code> attribute value.</p>
+    <p><strong class="leadin">Using attr= and attr|=</strong></p>
+    <p>Use of these selectors involves some additional considerations. </p>
+    <p>The <code class="kw" translate="no">xml:</code> part of the <code class="kw" translate="no">xml:lang</code> attribute indicates that this is the <code class="kw" translate="no">lang</code> attribute used <em>in the XML namespace</em>. CSS3 Namespaces describes how to handle <code class="kw" translate="no">xml:lang</code> as an attribute in a namespace. Basically you need to declare the namespace and then replace the colon with a vertical bar. For example:</p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">@namespace xml &quot;http://www.w3.org/XML/1998/namespace&quot; 
+*[xml|lang |= 'ar'] { ... }</pre>
+    </figure>
+    <p>or:</p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">@namespace xml &quot;http://www.w3.org/XML/1998/namespace&quot; 
+*[xml|lang = 'ar'] { ... }</pre>
+    </figure>
+    <p>Any <code class="kw" translate="no">@namespace</code> rules must follow all <code class="kw" translate="no">@charset</code> and <code class="kw" translate="no">@import</code> rules and precede all other non-ignored at-rules and rule sets in a style sheet. Note, also, that the URI for the namespace declaration must be exactly correct.</p>
+    <p><strong class="leadin">Fallbacks</strong></p>
+    <p>For browsers that are not namespace aware, you can fall back to escaped characters. For this you need no <code class="kw" translate="no">@namespace</code> declaration, just one of the following: </p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">*[xml\:lang |= '..'] { ... } </pre>
+    </figure>
+    <p>or:</p>
+    <figure class="example">
+      <pre style="white-space:pre-wrap;">*[xml\:lang = '..'] { ... } </pre>
+    </figure>
+    <p> Note, however, that if you try to use this approach with a namespace-aware browser (ie. most recent, major browsers), it will not work, so if you feel it is needed, you should use this approach in addition to the namespace-based selectors. </p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p>I have used the language codes <code class="kw" translate="no">zh-Hant</code> and <code class="kw" translate="no">zh-Hans</code>. These language codes do not represent specific languages. <code class="kw" translate="no">zh-Hant</code> would
+    indicate Chinese written in Traditional Chinese <em>script</em>. Similarly <code class="kw" translate="no">zh-Hans</code> represents Chinese written in Simplified Chinese script. This
+    could refer to Mandarin or many other Chinese languages.</p>
+  <p>Until recently the codes <code class="kw" translate="no">zh-TW</code> and <code class="kw" translate="no">zh-CN</code> were used to indicate Traditional and Simplified versions of Chinese writing, respectively.
+    In reality, <code class="kw" translate="no">zh-TW</code> should indicate Chinese spoken in Taiwan, although there is more than one Chinese language spoken in Taiwan. Similarly <code class="kw" translate="no">zh-CN</code> represents Chinese spoken in China (PRC). This could refer to Mandarin or any other Chinese language.</p>
+  <p>If you need to use language tags to differentiate between Chinese languages, the <a class="print" href="http://www.iana.org/assignments/language-subtag-registry">IANA language subtag registry</a> has more precise language codes for a range of
+    Chinese languages. For more information see <a href="https://www.w3.org/International/articles/language-tags/#script">Language tags in HTML and XML</a>.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Getting started? <a href="/International/getting-started/language"><cite>Language on the Web</cite></a> <span class="uri">http://www.w3.org/International/getting-started/language</span></p>
+    </li>
+    <li>
+      <p><a href="/International/articles/language-tags/"><cite>Language tags in HTML and XML</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+      <li><a href="/International/techniques/authoring-html#style">Styling &amp; layout</a></li>
+      <li><a href="/International/techniques/authoring-html#langstyle">Styling by language</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
