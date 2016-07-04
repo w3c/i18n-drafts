@@ -50,7 +50,7 @@ s.accessKeyN = 'Код за достъп n прескача към<a href="#inte
 s.examplesInAnotherScript = "Този документ съдържа и примери написани на дург език/скрипт."
 s.worldMap = "Карта на света"
 s.searchI18nSite = "Търсене в сайта I18n" 
-s.translationDisclaimer = 'Този документ е преведен. В случй на несъответствие или грешки, <a href="'+f.filename+'.en">най-новият Английси оригинал</a> трябва да се счита за официален. <a href="#copyright">Оригиналното авторско право</a> принадлежи на W3C, както е указано долу.'
+s.translationDisclaimer = 'Този превод на документа е осигурен от доброволец. В случай на несъответствие или грешки, <a href="'+f.filename+'.en">последният Английски оригинал</a> следва да бъде считан за достоверен.<a href="#copyright">Оригиналното авторско право</a> принадлежи на W3C, както е означено по-долу.'
 s.translator = "Преводач:"
 s.relatedLinks = "Линкове по темата"
 s.articles = "Статии" // used in breadcrumbs, top right of page 
@@ -98,7 +98,7 @@ s.newResourcesAlt = "Нотифицира ви всеки път когато и
 s.newResources = "Нови ресурси"
 s.homePageNewsAlt = "Всички новини от началната страница."
 s.homePageNews = "Новините от началната страница"
-s.followOurNews = "Follow our news feed."
+s.followOurNews = "Абонирай се за нашият новинарски фиид."
 s.sentenceDelimiter = "."
 
 s.author = "Автор:" // followed by name of author(s)
@@ -111,22 +111,22 @@ s.codedInUtf8 = "Енкодинк UTF-8!"
 
 s.translatedFromEnglishVer = "Превод от Английско съдържание от дата "+dt.enVersion+". Последна ревизия на преведената версия: "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
-s.untranslatedChanges = '<strong>Note:</strong> Напрвени са промени в <a href="'+f.filename+'.en">Английският оригинал</a> след последният превод на документа. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
-s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
+s.historyOfDocumentChanges = 'За история на промените в документа, виж <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">новинарски фиид</a> за съществени промени, и <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">списък с промени в Github</a> за всички промени след Януари 2016.'
+s.untranslatedChanges = '<strong>Забележка:</strong> Направени са промени в <a href="'+f.filename+'.en">Английският оригинал</a> спрямо последния превод. Промените са вмъкнати в тази страница и затова някои пасажи може все още да бъдат на Английски докато превода не бъде актуализиран.'
+s.unlinkedTranslation = '<strong>Предупреждение:</strong> Значителни промени са направени в Английския оригинал откакто този документ последно е преведен. Съветваме ви да прочетете <a href="'+f.filename+'">на друг език</a> докато този превод не бъде актуализиран.'
 s.new="Ново"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Актуализирано" // same as New
 s.translation_updated="Преводът е актуализиран на:" // date appears after colon 
 
-s.aboutThisArticle="About this article" // title in the right column near the top of the page
-s.status_draft="This article is a draft that has not yet gone through public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_review="This article is currently out for public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_published="This article has been reviewed by the W3C Internationalization Working Group and has gone through public review to make it as accurate as possible. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_notreviewed="This article was published without public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
-s.tests="Tests" // used at the end of breadcrumbs for test related pages
-s.quickanswer = "Quick answer" // heading
-s.longeranswer = "Longer answer" // heading
-s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
-s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.aboutThisArticle="Относно тази статия" // title in the right column near the top of the page
+s.status_draft="Тази статия е чернова и не е преминала през публична оценка. Ако имате коментари, моля изпратете ги като използвате <a href='#survey'>линка в дъното на тази страница</a>."
+s.status_review="Тази страница е налична за публична оценка. Ако имате коментари, моля изпратете ги като използвате <a href='#survey'>линка в дъното на тази страница</a>."
+s.status_published="Тази страница е одобрена от W3C Internationalization Working Group и е преминала през публична оценка с цел да бъде максимално точна. Ако имате коментари, моля изпратете ги като използвате <a href='#survey'>линка в дъното на тази страница</a>."
+s.status_notreviewed="Тази страница е публикувана без да е преминала през публична оценка. Ако имате коментари, моля изпратете ги като използвате <a href='#survey'>линка в дъното на тази страница</a>."
+s.status_obsolete="Тази страница не е актуална. Тя вече не се обновява и може да е неточна. За по-актуална информация, вижте the <a href='http://www.w3.org/International/'>Internationalization Activity начална страница</a>."
+s.tests="Тестове" // used at the end of breadcrumbs for test related pages
+s.quickanswer = "Бърз отговор" // heading
+s.longeranswer = "Детайли" // heading that follows 'Quick answer'
+s.additionalinfo = "Допълнителна информация" // heading that sometimes follows 'Details'
+s.acknowledgements = "Благодарности на следните хора чиито статии или коментари бяха включени:" // used at bottom of page to list people who provided feedback. The list comes after this text.
+s.cookieMsg = "Ако разрешите браузъра да запише бисквитка, ще продължите да виждате W3C Internationalization Activity страниците (където са налични) на избрания от вас език. Искате ли да запишете бисквиткат?" // this text is to be copied to another location
