@@ -20,7 +20,7 @@ f.status = 'published'  // should be one of draft, review, published, notreviewe
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-06-23', time:'19:04'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2016-07-18', time:'14:47'} // date and time of latest edits to this document/translation
 f.contributors = 'Addison Phillips (especially since many of these definitions were originally based on text in his document, Working with Time Zones).' // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
@@ -86,7 +86,7 @@ f.additionalLinks = ''
   <p><dfn id="def_incremental_time">Incremental time</dfn> is a way of representing time in computers that is based on a  progression of fixed integer units that increase monotonically from a specific point in time (called the &quot;epoch&quot;). </p>
   <p> Java (and many other systems) count time as the number of milliseconds since midnight (00:00 a.m.) on January 1, 1970 in <a href="#utc" class="termref">UTC</a> (less all of the intervening leap seconds). Other systems use different units and/or epochs. </p>
   <p>For example, at one point while writing this paragraph the incremental time for JavaScript in my browser was <samp>1465621816590</samp> (ie. 11 June, 2016 at 6.10am BST).</p>
-  <p>Most programming languages and operating environments provide or use incremental time for working with time values. However, incremental time is not usually seen directly by users, but is mapped to a <a href="#field_based_time" class="termref">field-based time format</a> for human consumption.</p>
+  <p>Most programming languages and operating environments provide or use incremental time for working with time values. However, incremental time is not usually seen directly by users, but is typically mapped to a <a href="#field_based_time" class="termref">field-based time format</a> for interchange or  for human consumption.</p>
 </section>
 
   
@@ -109,7 +109,7 @@ f.additionalLinks = ''
   <section>
   <h2 id="floating_time">Floating time</h2>
   <p>Some  time values are not mapped to a specific moment in <a href="incremental_time" class="termref">incremental time</a>. Instead, they represent a nominal time which is described in the same way in all time zones around the world.</p>
-  <p>For example, Saturday 11 June 2016 happens to be the date of the British Queen's official 90th birthday. Although, in some parts of the world, the British 11th June starts or ends on what would be Friday or Sunday in Britain, the date given for the event is always Saturday 11 June.</p>
+  <p>For example, Saturday 11 June 2016 happens to be the date of the British Queen's official 90th birthday. The specific time when 11th June starts or ends in Britain may actually be on Friday or Sunday in other countries, because their clocks are set differently, but the date of the event is always referred to as Saturday 11 June.  </p>
   <p>We refer to these sorts of time values as <dfn id="def_floating_time">floating times</dfn> because they are not fixed to a specific <a href="#incremental_time" class="termref">incremental time</a> value. When you apply time zone information to floating times  they produce <em>a range of acceptable incremental time values</em>.</p>
   <p>Floating times are not attached and should never be attached to a particular time zone. </p>
   <p>Other examples of floating time events include  the  publication date for an issue of a newspaper, the date the Rio Olympics starts, the time the New Year starts, an announcement for a meeting start time where the wall time stays the same regardless of <a href="#dst">DST</a>, etc.</p>
@@ -117,7 +117,7 @@ f.additionalLinks = ''
   
   
 <section>
-  <h2 id="time_zone">Time Zone rules</h2>
+  <h2 id="time_zone">Time zone</h2>
   <p>A <dfn id="def_time_zone">time zone</dfn> is a set of rules for determining the local  time (wall time) as it relates to incremental time (as used in most computing systems) for a particular geographical region, and vice versa.</p>
   <p>Time zone rules have to take into account <a href="#time_zone_offset" class="termref"> zone offsets</a> <em>plus</em> any <a href="#dst" class="termref">daylight savings</a> modifications to wall time that apply.</p>
   </section>
@@ -125,7 +125,7 @@ f.additionalLinks = ''
   
 <section>
   <h2 id="zone_offset"> Zone offset</h2>
-  <p>A <dfn id="def_zone_offset"> zone offset</dfn> is an amount that is added to or subtracted from <a href="utc" class="termref">UTC</a> based on the location of the event around the world relative to the prime meridian. Usually offsets are at one-hour intervals, but offsets can also include 30 or 45 minute differences.</p>
+  <p>A <dfn id="def_zone_offset"> zone offset</dfn> is an amount that is added to or subtracted from <a href="utc" class="termref">UTC</a> based on the location of the event around the world relative to the prime meridian. Usually offsets are at one-hour intervals, but offsets can also include other differences, such as 30 or 45 minutes.</p>
   <p>A common way to express a zone offset in field-based formats is with +/- followed by the offset. So for example, Japan is 9 hours ahead of UTC, so you may see a time written as <samp>2016-06-11 05:10+09:00</samp>.</p>
   <p>Note, importantly, that the zone offset does not help you convert times to wall time where <a href="#dst" class="termref">daylight savings time</a> is in force.</p>
   </section>
@@ -143,12 +143,10 @@ f.additionalLinks = ''
   <section>
   <h2 id="time_zone_ids">Time Zone Identifiers</h2>
   <p><dfn id="def_time_zone_id">Time zone identifiers</dfn> allow you to refer to a particular difference from <a href="utc" class="termref">UTC</a> that includes both <a href="#time_zone_offset" class="termref"> zone offsets</a> and <a href="#dst" class="termref">daylight savings time</a>.</p>
-  <p>The most definitive reference for identifying sets of time zone rules is the <a href="http://www.twinsun.com/tz/tz-link.htm">TZ database</a> (also known as the Olson time zone database), which is used by systems such as various commercial UNIX operating systems, Linux, Java, CLDR, ICU, and many other systems and libraries. Other systems exist: for example, Microsoft Windows uses its own data set and identifiers.</p>
+  <p>The most definitive reference for identifying sets of time zone rules is the <a href="https://www.iana.org/time-zones">TZ database</a> (also known as the Olson time zone database), which is used by systems such as various commercial UNIX operating systems, Linux, Java, CLDR, ICU, and many other systems and libraries. Other systems exist: for example, Microsoft Windows uses its own data set and identifiers.</p>
   <p>In the TZ database, time zones are given IDs that typically consist of a region and exemplar city. An exemplar city is a city in the time zone in question that should be well-known to people using the time zone. For example, the U.S. Pacific time zone has a TZ database ID of <code class="kw" translate="no">America/Los_Angeles</code>. The TZ database also supplies aliases for many IDs; for example, <code class="kw" translate="no">Asia/Ulan Bator</code> is equivalent to <code class="kw" translate="no">Asia/Ulaanbaatar</code>.</p>
   <p>The Common Locale Data Repository (CLDR) can be used to provide a localized form for the IDs. Note that some systems, such as Apple's Mac OS, provide additional exemplar cities.</p>
   </section>
-  
-  
   <section>
   <h2 id="html5_terms">HTML5 terms</h2>
   <p>The following show examples of field-based times for terms used in the HTML5 spec, as a handy reference.</p>
