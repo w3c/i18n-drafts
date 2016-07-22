@@ -20,7 +20,7 @@ f.status = 'published';  // should be one of draft, review, published, or notrev
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-01-23', time:'19:22'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2016-07-22', time:'08:08'} // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -178,6 +178,7 @@ li ol {
     <p>Another use is to separate  an opposite-direction phrase from some  neighboring but independent text that would otherwise be incorrectly treated as the same directional run (see <a href="#usecase3">use case 3</a> for a good example). To do this you can put between them a directional mark with the same directionality as the overall context.</p>
     <p>In HTML5,  where the <code translate="no" class="kw">dir</code> attribute is isolating, both cases are better addressed by  adding the <code translate="no" class="kw">dir</code> attribute to an element wrapping the opposite-direction   phrase, so there is really no need to use LRM/RLM. See below for details.</p>
   </section>
+  
   <section>
     <h3 id="dirauto"><a href="#dirauto">dir=&quot;auto&quot;</a></h3>
     <p>HTML5  addresses another need: text dropped into a page, say from a database, when you don't know its base direction. Before HTML5, you could only set the <code translate="no" class="kw">dir</code> attribute to <code translate="no" class="kw">ltr</code> or <code translate="no" class="kw">rtl</code>, and had to somehow determine yourself which of them was appropriate. </p>
@@ -190,11 +191,16 @@ li ol {
   
   <section>
     <h3 id="bdi"><a href="#bdi">The <code translate="no" class="kw">bdi</code> element</a></h3>
-    <p>HTML5 also introduces a new element, <code translate="no" class="kw">bdi</code>. It is just like a <code translate="no" class="kw">span</code> except that, whether or not it is used with a <code translate="no" class="kw">dir</code> attribute, it directionally isolates its content from the surrounding text; &quot;bdi&quot; stands for &quot;bidirectional isolate&quot;. </p>
+    <p>HTML5 also introduces a new element, <code translate="no" class="kw">bdi</code> (bidirectional isolate). It is just like a <code translate="no" class="kw">span</code> except that, whether or not it is used with a <code translate="no" class="kw">dir</code> attribute, it directionally isolates its content from the surrounding text; &quot;bdi&quot; stands for &quot;bidirectional isolate&quot;. </p>
     <!--p> Since it is actually quite rare not to want to isolate embedded phrases from its surroundings, <code translate="no" class="kw">bdi</code> (when the browser supports it) can be used instead of a <code translate="no" class="kw">span</code> for bidi-wrapping, and  the use of LRMs and RLMs can be completely avoided.</p-->
     <p><code translate="no" class="kw">bdi</code> comes with the <code translate="no" class="kw">dir</code> attribute set to the new <code translate="no" class="kw">auto</code> value by default (see above), however it is also possible to use an explicit <code translate="no" class="kw">dir</code> attribute on <code translate="no" class="kw">bdi</code> with values set to <code translate="no" class="kw">ltr</code> or <code translate="no" class="kw">rtl</code>, if you know the direction of the phrase and just want to isolate it.</p>
     <p>The choice of whether to attach <code>dir=&quot;auto&quot;</code> on an existing element or to wrap the phrase in a <code translate="no" class="kw">bdi</code> depends on whether you already have an inline element tightly wrapping the potentially opposite-direction phrase, and whether you happen to know the phrase's direction (or can guess at it better than the browser's <code>dir=&quot;auto&quot;</code> logic).</p>
     <p><a class="print" href="/International/tests/repo/results/the-bdi-element">See  which browsers support this</a>.</p>
+  </section>
+  
+  <section>
+    <h3 id="bdo"><a href="#bdo">The <code translate="no" class="kw">bdo</code> element</a></h3>
+    <p>The <code class="kw" translate="no">bdo</code> (bidirectional override) element prevents the bidirectional algorithm from rearranging the sequence of characters it encloses, and allows you to display the sequence from right to left or from left to right in the order in which the characters are stored in memory. There are important use cases for it, but they are rare. For more information see <a href="#override">Overriding the algorithm</a> below.</p>
   </section>
 </section>
 
@@ -805,7 +811,7 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
       <p><a href="http://www.unicode.org/reports/tr9/"><cite>Unicode Standard Annex #9, The Unicode Bidirectional Algorithm</cite></a></p>
     </li>
     <li>
-      <p><a href="http://rishida.net/scripts/tutorial/" title="A tutorial on writing systems characteristics"><cite>Non-Latin scripts tutorial</cite></a></p>
+      <p><a href="http://r12a.github.io/scripts/tutorial/part4" title="A tutorial on writing systems characteristics"><cite>Non-Latin scripts tutorial, Text direction</cite></a></p>
     </li>
     <li>
       <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
