@@ -50,7 +50,7 @@ s.accessKeyN = 'Klucz dostępu n przeskakuje w nawigacji strony. <a href="#conte
 s.examplesInAnotherScript = "Dokument ten zawiera przykłady w innym języku/skrypcie."
 s.worldMap = "Mapa świata"
 s.searchI18nSite = "Wyszukiwanie na stronie I18n" 
-s.translationDisclaimer = 'Ten dokument jest tłumaczeniem. W przypadku rozbieżności i błędów <a href="'+f.filename+'.en">aktualna wersja angielska</a> powinna być uznana za autorytatywną. <a href="#copyright">Pierwotne prawa autorskie</a> należą do W3C jak wykazano poniżej.'
+s.translationDisclaimer = 'Ten document jest tłumaczeniem zapewnionym przez wolontariusza. W przypadku nieścisłości lubbłędów <a href="'+f.filename+'.en">ostatni angielski oryginał</a> powinien być brany pod uwagę.<a href="#copyright">Oryginalne prawa autorskie</a> Należą do W3C, jak wskazano poniżej.'
 s.translator = "Tłumacz:"
 s.relatedLinks = "Linki Pokrewne"
 s.articles = "Artykuły" // used in breadcrumbs, top right of page 
@@ -98,7 +98,7 @@ s.newResourcesAlt = "Poinformuje Państwa za każdym razem kiedy nowe źródło 
 s.newResources = "Nowe źródła"
 s.homePageNewsAlt = "Wszystkie wiadomości ze strony głównej."
 s.homePageNews = "Wiadomość ze strony głównej"
-s.followOurNews = "Bądź na bieżąco."
+s.followOurNews = "Śledź nasz kanał wiadomości."
 s.sentenceDelimiter = "."
 
 s.author = "Autor:" // followed by name of author(s)
@@ -111,23 +111,23 @@ s.codedInUtf8 = "Zakodowano w UTF-8!"
 
 s.translatedFromEnglishVer = "Angielska wersja dokumentu z dnia "+dt.enVersion+". Tłumaczenie wykonano dnia "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Aby zobaczyć histeorię zmian dokumentu sprawdź <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">kanały informacyjne</a> dla większych zmian, oraz <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">listę Github</a> dla zmian od stycznia 2016.'
-s.untranslatedChanges = '<strong>Uwaga:</strong> Wprowadzono zmiany do <a href="'+f.filename+'.en">oryginalnej wersji angielskiej</a> od czasu wykonania tłumaczenia. Wprowadzono zmiany w dokumencie więc możesz widzieć fragmenty po angielsku dopóki tekst nie zostanie przetłumaczony.'
+s.historyOfDocumentChanges = 'Aby przesledzić historię zmian dokumentu zobacz <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">kanał wiadomości</a> dla większych zmian, oraz <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'..en.html">listę na Github</a> dla wszystkich zmian od stycznia 2016.'
+s.untranslatedChanges = '<strong>Uwaga:</strong> Wprowadzono zmiany do <a href="'+f.filename+'.en">angielskiego oryginału</a> od kiedy dokument został przetłumaczony. Zmiany zostały tu wpisane dlatego możesz widzieć fragmenty w języku angielskim dopóki nie uaktualnimy tłumaczenia.'
 s.unlinkedTranslation = '<strong>Uwaga:</strong> Wprowadzono istotne zmiany do dokumentu po wykonaniu tłumaczenia. Doradza się przeczytanie <a href="'+f.filename+'.en">angielskiej wersji</a> dopóki tłumaczenie nie zostanie zaktualizowane.'
 s.new="Nowość"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Nowa wersja" // same as New
 s.translation_updated="Tłumaczenie uaktualnione:" // date appears after colon 
 
-s.aboutThisArticle="O tymartykule" // title in the right column near the top of the page
-s.status_draft="Ten artykuł do szkic, który nie podległ jeszcze publicznej recenzji. Jeśli masz uwagi prześlij je używając <a href='#survey'>odnośnika na dole strony</a>."
-s.status_review="Ten artykuł podlega obecnie publicznej ocenie. Jeśli masz jakieś uwagi prześlij je używając <a href='#survey'>odnośnika na dole strony</a>."
-s.status_published="Ten artykuł został już oceniony przez grupę roboczą internacjonalizacji W3C i został oceniony publicznie w celu zapewnienia jak największej wartości tekstu. Jeśli chcesz przesłać komentarz skorzystaj z <a href='#survey'>odnośnika na dole strony</a>."
-s.status_notreviewed="Ten artykuł został opublikowany bez publicznej oceny. Jeśli chcesz przesłac komentarz skorzystaj z <a href='#survey'>odnośnika na dole strony</a>."
-s.status_obsolete="Artykuł jest obecnie przestarzały. Już nie jest uaktualniany i najprawdopodobniej zawiera błędy. Jeśli szukasz świeższych informacji sprawdź <a href='http://www.w3.org/International/'>stronę główną aktywności Internacjonalizacji</a>."
-s.tests="Tests" // used at the end of breadcrumbs for test related pages
-s.quickanswer = "Szybka odpowiedź" // heading
-s.longeranswer = "Dłuższa odpowiedź" // heading
+s.aboutThisArticle="O tym artykule" // title in the right column near the top of the page
+s.status_draft="Ten artykuł to szkic, który nie był jeszcze podany publicznej ocenie. Jeśli masz jakieś uwagi prześlij je używając <a href='#survey'>odnośnika na dole strony</a>."
+s.status_review="Artykuł podlega obecnie publicznej ocenie. Jeśli masz jakieś uwagi prześlij je używając <a href='#survey'>odnośnika na dole strony</a>."
+s.status_published="Ten artykuł został oceniony przez Grupę Internacjonalizacji W3C i był poddany publicznej ocenie w cell zachowania najwyższej jakości. Jeśli masz jakieś uwagi wyślij je używając <a href='#survey'>odnośnika na dole strony</a>."
+s.status_notreviewed="Ten artykuł został opublikowany bez publicznej oceny. Jeśli masz jakieś uwagi wyślij je używając <a href='#survey'>odnośnika na dole strony</a>."
+s.status_obsolete="Ten artykuł jest już przestarzały. Nie jest już aktualizowany i może zawierać błędy. Aby uzyskać bardziej aktualne informacje zobacz <a href='http://www.w3.org/International/'>stronę główną internacjonalizacji</a>."
+s.tests="Testy" // used at the end of breadcrumbs for test related pages
+s.quickanswer = "Krótka odpowiedź" // heading
+s.longeranswer = "Szczegóły" // heading
 s.additionalinfo = "Dodatkowe informacje" // heading that sometimes follows 'Details'
-s.acknowledgements = "Podziekowania dla osób, których wkład lub komentarze zostały ujęte:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.acknowledgements = "Dziękujemy także osobom, które wniosły wkład:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Jeśli pozwolisz przeglądarce ustawić plik cookie będziesz kontynuować przeglądanie (tam gdzie to możliwe) stron Internaconalizacji W3C w języku, który wybierzesz. Czy chcesz ustawić plik cookie?" // this text is to be copied to another location
 
