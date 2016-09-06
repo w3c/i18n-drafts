@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<title>HTMLで文字エンコーディングを指定する</title>
+<meta name="description" content="どうやって私のHTML5ファイルのエンコーディングを指定すれば良いのでしょうか？" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'qa-html-encoding-declarations'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-html-encoding-declarations'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-09-09'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-02-26', time:'11:49'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-09-07', time:'04:04'} // date and time of latest edits to this document/translation
+f.contributors = 'Henri Sivonen, Gunnar Bittersmann'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://kyonagashima.com/">Kyo Nagashima</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-html-encoding-declarations-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ja.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>HTMLで文字エンコーディングを指定する</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">対象の読者:</span>
+    HTML制作者（編集者でもコーダーでも）や、スクリプト開発者（PHPやJSPなど）、ウェブ・プロジェクト・マネージャー、そしてどうやればHTMLファイルへ文字エンコーディングを指定できるかの解説を必要とする人々。</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">どうやって私のHTML5ファイルのエンコーディングを指定すれば良いのでしょうか？</p>
+
+  <p>HTMLやXMLのページで使われているエンコーディングは常に指定するべきです。もし指定しないと、コンテンツ内の文字が誤って解釈される可能性があります。それは単に人が読めるかどうかという問題であるだけでなく、コンピューターがデータを処理する必要がますます出てきたからでもあります。また文字エンコーディングは、フォームへ入力されたり、スクリプトにより生成されたURLなどなど、非ASCII文字を処理する際にも必要になります。</p>
+  <p>もし文字や文字エンコーディングについてちゃんと理解する必要がありそうなら、<a class="print" href="/International/questions/qa-what-is-encoding"><cite>Character encodings for beginners</cite></a>も参照しましょう。またCSSでエンコーディングを指定する方法については、<a class="print" href="/International/questions/qa-css-charset"><cite>CSS character encoding declarations</cite></a>を参照しましょう。</p>
+</section>
+
+
+<section id="nutshell">
+  <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p><code class="kw" translate="no">meta</code>要素で<code class="kw" translate="no">charset</code>属性を使うか、<code class="kw" translate="no">http-equiv</code>と<code class="kw" translate="no">content</code>属性（プラグマ・ディレクティブと呼ばれています）を使って、常に文書へエンコーディングを指定しましょう。この指定は必ずファイルの先頭から1024バイトまでに含まれるべきであるため、<code class="kw" translate="no">head</code>開始タグの直後に置くのが最善でしょう。</p>
+  <figure class="example">
+    <p><code>&lt;!DOCTYPE html&gt;<br>
+      &lt;html lang=&quot;en&quot;&gt;<br />
+      &lt;head&gt;<br />
+      &lt;meta charset=&quot;utf-8&quot;/&gt;<br/>
+      ...</code></p>
+  </figure>
+  <figure class="example">
+    <p><code>&lt;!DOCTYPE html&gt;<br>
+      &lt;html lang=&quot;en&quot;&gt;<br />
+      &lt;head&gt;<br />
+      &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt;<br/>
+      ...</code></p>
+  </figure>
+  <p style="clear:both;">どちらの方法で指定しても構いませんが、前者の方が書きやすいはずです。また<code>UTF-8</code>でも<code>utf-8</code>でも問題ありません。</p>
+  <p>文字エンコーディングは常にUTF-8を使用するべきです（UTF-8でファイルを<em>保存する</em>ことも忘れないようにしてください）。どうしてもUTF-8を使えない場合は、<a href="#nonutf8">考慮すべきこと</a>を参照してください。</p>
+  <p>ウェブ・サーバーの設定をする権限があるならば、<a href="#httphead">HTTPヘッダーを利用</a>するのも悪くないことも頭に入れておくべきです。<strong>しかしながら注意点として</strong>、HTTPヘッダーによる指定の方が文書内での<code class="kw" translate="no">meta</code>指定よりも優先度が高いため、ページ製作者は既にHTTPヘッダーで文字エンコーディングが指定されているかどうかについて常に頭の中に入れておくべきです。もし既に指定されている場合、<code class="kw" translate="no">meta</code>要素では同じエンコーディングを指定しなければなりません。</p>
+  <p>HTTPヘッダーとして送信される文字エンコーディングは<a class="print" href="http://validator.w3.org/i18n-checker/">Internationalization Checker</a>を利用すると確認できるでしょう。</p>
+</section>
+
+
+<section>
+  <h2 id="detail"><a href="#detail">Details</a></h2>
+  <section>
+    <h3 id="bom"><a href="#bom">バイトオーダーマークとはなんですか？</a></h3>
+    <p>UTF-8の<a href="/International/questions/qa-byte-order-mark#bomwhat" class="termref print">バイトオーダーマーク（BOM）</a>がファイルの先頭にある場合、Internet Explorer 10や11以外の最近のブラウザーはそれを使ってウェブページのエンコーディングをUTF-8と決定します。この仕組みはHTTPヘッダーを含めたあらゆる指定方法より高い優先度を持ちます。</p>
+    <p>BOMがあるなら<code class="kw" translate="no">meta</code>でのエンコーディング指定をしなくても良いですが、指定することをお勧めします。そのページがどのエンコーディングなのかをソースコードを参照するだけで誰にでもわかるからです。</p>
+    <p><a class="print" href="/International/questions/qa-byte-order-mark">バイトオーダーマークについて</a>を参照してください。</p>
+  </section>
+
+  <section>
+    <h3 id="httphead"><a href="#httphead">HTTPヘッダーでエンコーディングを指定するべきですか？</a></h3>
+    <p>仕組みを理解しており、可能であるなら、どのようなコンテンツであれ<a href="/International/articles/definitions-characters/Overview#httpheader" class="termref print">HTTPヘッダー</a>でエンコーディングを指定しましょう。<strong>しかし必ず同時に</strong>文書内での指定も行うべきです。</p>
+    <p>ページ製作者はHTTPによる指定と文書内での指定を確実に一致させるべきです。</p>
+    <section>
+      <h4 id="httpprocon">HTTPヘッダーを利用するメリットとデメリット</h4>
+      <div class="sidenoteGroup">
+        <p>HTTPヘッダーを利用するメリットとしては、まずHTTPヘッダーを受信し次第ユーザーエージェントが文字エンコーディングの情報を確認できることでしょう。</p>
+        <aside class="sideinfonote">
+          <p class="info">HTTPヘッダーの情報は、それと文書内での指定が競合した場合、バイトオーダーマークを除き高い優先度を持ちます。データを変換する中間サーバー（例えば他のエンコーディングへ変換するなど）は、限られた数のエンコーディングしか解釈できない機器のため文書を変換する際、HTTPヘッダーによる指定を有効利用できるかもしれません。このような変換の仕組みが現在よく利用されているかどうかは定かではありません。利用されているとすると、コンテンツを非UTF-8なエンコーディングへ変換することになり、その過程で多くのデータを失う恐れがあるため、あまり良いこととは言えないでしょう。</p>
+        </aside>
+      </div>
+      <p>一方、デメリットもいくつか考えられます:</p>
+      <ul>
+        <li>
+          <p>製作者がウェブサーバー — 特にISPが管理している — 上にある静的なファイルのエンコーディング情報を変更しづらくするかもしれません。制作者はウェブサーバーの設定方法を理解しているだけでなく、実際にアクセスする必要もあるでしょう。</p>
+        </li>
+        <li>
+          <p>ウェブサーバーでの設定は、様々な理由でドキュメント側での指定とずれてしまうことがあります。例えばウェブサーバーのデフォルト設定に依存していた場合、そのデフォルトが変更されてしまうとずれるでしょう。これはかなりまずい状況です。HTTPヘッダーによる指定が文書内での指定より優先されてしまうため、文書が読めなくなってしまうかもしれません。</p>
+        </li>
+        <li>
+          <p>ウェブサーバーを経由しない場合、静的であっても動的であっても問題が起こる可能性があります。例えば、CDやハードディスクから読み込まれる場合などがそうです。このような場合、HTTPヘッダーからエンコーディング情報を得ることはできません。</p>
+          <p>ファイルが編集される時やXSLTやスクリプトで処理される時、翻訳のために送信される時などに同じように、HTTPヘッダーのみで文字エンコーディングが指定されていた場合、同じようにエンコーディング情報を利用することはできません。</p>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h4 id="shouldi">この指定方法を利用すべきですか？</h4>
+      <p>ウェブサーバーからHTTPでファイルを配信するなら、HTTPヘッダーにより文字エンコーディングについての情報を送ることは、その情報が間違っていない限りまったく問題ないでしょう。</p>
+      <p>一方で上記デメリットのことも考え、同時に文書内でも常にエンコーディングを指定することをお勧めします。文書内での指定は開発者やテスター、翻訳マネージャーなど、文書のエンコーディングを確認したい人たちの役に立ちます。</p>
+      <p>（文書内でエンコーディングを指定するつもりならば、HTTPヘッダーでもそれを指定することが適切であるとは到底考えられない、という人もいます。この場合、HTTPヘッダーでは文書のエンコーディングについて何も教えないようにするわけです。ウェブサーバーのデフォルト設定を<em>無効</em>にすることをお忘れなく。）</p>
+    </section>
+  </section>
+
+  <section>
+    <h3 id="xml"><a href="#xml">PolyglotやXMLフォーマットへの対応</a></h3>
+    <p><b class="leadin">XHTML5:</b> XML文法が使われており、かつXMLとして配信されているXHTML5文書です。XMLパーサーは<code class="kw" translate="no">meta</code>要素を使ったエンコーディング指定を認識せず、XML宣言だけ認識します。以下は例です:</p>
+    <figure class="example">
+      <blockquote> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;<br>
+        &lt;!DOCTYPE html  .... </code></blockquote>
+    </figure>
+    <p>XML宣言はUTF-8（もしくはUTF-16）でページが配信されない場合にのみ必須ですが、含めることで開発者やテスター、翻訳マネージャーなどがソースから文書のエンコーディングを確認でき、有用でしょう。</p>
+    <p><b class="leadin">Polyglot markup:</b> Polyglot markupを利用しているページはXML文法によるHTMLのサブセットで書かれており、HTMLパーサーでもXMLパーサーでもパースすることができます。これは<a class="print" href="http://www.w3.org/TR/html-polyglot/"><cite>Polyglot Markup: A robust profile of the HTML5 vocabulary</cite></a>で定義されています。</p>
+    <p>Polyglot文書はUTF-8でなければならず、XML宣言は必要ないどころか、指定してはいけません。その一方でそのファイルはHTMLとして読まれるため、<code class="kw" translate="no">meta</code>要素やバイトオーダーマーク、そしてHTTPヘッダーのどれかでエンコーディングを指定する必要があるでしょう。</p>
+    <p><code class="kw" translate="no">meta</code>要素による指定はHTMLパーサーでのみ認識されることを考えると、<code class="kw" translate="no">content</code>属性を使う方法の場合、その値は<code>text/html;</code>で始めるべきです。</p>
+    <figure class="example">
+      <blockquote> <code>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot;/&gt; </code></blockquote>
+    </figure>
+    <p><code class="kw" translate="no">meta</code>要素で<code class="kw" translate="no">charset</code>属性を使うならこの辺りのことは考える必要はありません。</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="obscure"><a href="#obscure">Additional information</a></h2>
+  <p>このセクションの情報は通常知る必要はありませんが、網羅するために含めます。</p>
+
+  <section>
+    <h3 id="nonutf8"><a href="#nonutf8">非UTF-8なエンコーディングの扱い</a></h3>
+    <div class="sidenoteGroup">
+      <p>UTF-8を利用することは何もウェブページ制作の簡便さのためだけではありません。そうすることによりフォームの送信やURLエンコードなど通常文書の文字エンコーディングを利用する仕組みにおいて予期しない結果に陥ることを避けられます。どうしても非UTF-8な文字エンコーディングを使うしかない場合、互換性を最大限確保することやコンテンツがなるべくきちんと読めることを考慮する必要があるため、かなり限られた種類のエンコーディングから選択することになるでしょう。</p>
+      <aside class="sideinfonote">
+        <p class="info">通常これらは<dfn>キャラクタセット</dfn>名と呼ばれるにも関わらず、実際には文字集合ではなくエンコーディングを参照します。例えばユニコード文字集合（またはレパートリー）は3つの異なった符号化形式でエンコードできます。</p>
+      </aside>
+    </div>
+    <p>つい最近までは<a class="print" href="http://www.iana.org/assignments/character-sets">IANAのレジストリー</a>がエンコーディングの名称を探すための場所でした。このIANAレジストリーは、多くの場合、同じエンコーディングに対して複数の名称を含んでいます。その時には「preferred」とされている名称を使用するべきです。</p>
+    <p>新しい<a class="print" href="http://encoding.spec.whatwg.org/"><cite>Encoding</cite></a>の仕様ではブラウザーの実装に基づいて確認されたリストを提供しています。そのリストは<a class="print" href="http://encoding.spec.whatwg.org/#encodings">Encodings</a>というセクションにて表で参照できます。一番左の列の名称を使うと良いでしょう。</p>
+    <p>しかし<strong>注意すべきなのは</strong>、これらの参照元に掲載されているからといって、必ずしもそのエンコーディングを使っても大丈夫だということではありません。いくつかのエンコーディングには問題があります。本当にUTF-8を使えないなら、<a class="print" href="/International/questions/qa-choosing-encodings"><cite>Choosing &amp; applying a character encoding</cite></a>という記事で書かれている忠告に注意深く耳を傾けるべきでしょう。</p>
+    <p><code>x-</code>で始まる独自のエンコーディング名を発明してはいけません。それが悪いアイディアな理由は、互換性を制限してしまうからです。</p>
+  </section>
+
+  <section>
+    <h3 id="legacyhtml"><a href="#legacyhtml">旧式のHTML文書での扱い</a></h3>
+    <p>HTML&nbsp;4.01では<code class="kw" translate="no">meta</code>要素の<code class="kw" translate="no">charset</code>属性の利用について定義していません。しかし多くの著名なブラウザーはHTML5ではなくHTML4でページが書かれていたとしても認識し、利用してくれます。このセクションの内容はブラウザー以外で古い形式のHTMLを扱う場合にのみ意味があります。上記<a href="#quickanswer">要約的な回答</a>のセクションで書かれたこととは違うかもしれません。</p>
+    <p>XMLとして配信されるページについては<a href="#xml">PolyglotやXMLフォーマットへの対応</a>を参照してください。</p>
+    <p><b class="leadin">HTML4:</b> すぐ上で書いたように、HTML&nbsp;4.01へ完全に適合させるためには、<code class="kw" translate="no">charset</code>属性ではなくプラグマ・ディレクティブを使う必要があります。</p>
+    <p><b class="leadin">text/htmlで配信されるXHTML 1.x:</b> こちらもまたHTML&nbsp;4.01へ完全に適合させるためには、<code class="kw" translate="no">charset</code>属性ではなくプラグマ・ディレクティブを使う必要があります。HTMLとして配信されるため、XML宣言は必要ありません。</p>
+    <p><b class="leadin">XMLとして配信されるXHTML 1.x:</b> 最初の行でXML宣言を使って<code class="kw" translate="no">encoding</code>の指定をしましょう。半角スペースを含め、それより前に何もないようにもしましょう（もっとも<a class="termref print" href="/International/questions/qa-byte-order-mark">バイトオーダーマーク</a>はOKです）。</p>
+  </section>
+
+  <section>
+    <h3 id="charset"><a href="#charset">リンクでの<code class="kw" translate="no">charset</code>属性</a></h3>
+    <p>HTML5では<code class="kw" translate="no">a</code>と<code class="kw" translate="no">link</code>要素での<code class="kw" translate="no">charset</code>属性は廃止されたので、なるべく使うべきではありません。HTML&nbsp;4.01仕様では<code class="kw" translate="no">a</code>と<code class="kw" translate="no">link</code>、<code class="kw" translate="no">script</code>要素で使い、リンク先の文書のエンコーディングを示すことを想定していました。</p>
+    <p>以下のように埋め込まれたリンク要素で利用されることを意図していました:</p>
+    <figure class="example">
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> 悪い例です。コピーしないように！</span> </div>
+      <div><code>See our &lt;a href=&quot;/mysite/mydoc.html&quot; charset=&quot;iso-8859-15&quot;&gt;list of publications&lt;/a&gt;.</code></div>
+    </figure>
+    <p>文書にどのような形でもエンコーディングが指定されていなかったとしても、ブラウザーが正しいエンコーディングを適用できるだろうという考えに基づくものでした。</p>
+    <p>この属性の利用にはいくつもの問題がありました。まず、著名なブラウザーであまりサポートされてなかったことです。この属性をサポートしない第一の理由は、特別な扱いをしないとXSS攻撃を助長する結果になりかねないことです。また、その属性で指定された値がずっと正しいとは限らないことです。リンク先の文書を製作した人はあなたが知らない間に文書のエンコーディングを変更するかもしれません。もしその製作者が引き続き文書のエンコーディングを指定しないままだと、ブラウザーへ間違ったエンコーディングを適用するよう要求する羽目になります。更に、人々がこの記事のガイドラインに従い、文書を正しくマークアップするならば、まったくもって不要なものだということです。その方がずっと良いやり方でしょう。</p>
+    <p>この方法によるエンコーディング指定は最も低い優先度になります（例えば他の何かしらの方法でエンコーディングが指定されていた場合、無視されます）。つまりこの方法を利用して間違ったエンコーディング指定を修正することはできないということです。</p>
+  </section>
+
+  <section>
+    <h3 id="utf16"><a href="#utf16">UTF-16の扱い</a></h3>
+    <p>Googleによる数十億ページの解析結果によると、UTF-16を使用しているウェブページは0.01%以下だそうです。対してUTF-8はウェブページの60%を超え、サブセットであるASCIIを含めると80%に上ります。このことはウェブページのエンコーディングにUTF-16を利用することを諦めさせるに十分でしょう。</p>
+    <p>もし、何らかの理由で、選択肢がない場合、エンコーディングの指定にはいくつか規則があります。他のエンコーディングとは少し違うのです。</p>
+    <p>HTML5仕様ではUTF-16の指定を<code class="kw" translate="no">meta</code>要素で行うことを禁じています。なぜならば<code class="kw" translate="no">meta</code>要素の値は<a class="termref print" href="http://www.w3.org/TR/html5/infrastructure.html#ascii-compatible-character-encoding">ASCII互換</a>である必要があるからです。代わりにUTF-16のファイルの先頭で<a href="/International/questions/qa-byte-order-mark" class="termref print">バイトオーダーマーク</a>を置くことで行うべきでしょう。事実上、文書内での指定と同じです。</p>
+    <p>なお、ページがUTF-16で符号化されているなら、&quot;UTF-16BE&quot;や&quot;UTF-16LE&quot;とは指定せず、&quot;UTF-16&quot;だけで指定しましょう。ファイル先頭のバイトオーダーマークにより、符号化スキームとして<span class="qterm">リトルエンディアン</span>と<span class="qterm">ビッグエンディアン</span>のどちらを使うかを示せる。（UTF-16BEではバイトオーダーマーク使うべきではないとされているが、HTML5ではUTF-16のウェブページにはバイトオーダーマークが必須であるため、このようにしてどうやって符号化されているかを明示する必要がある。）</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>最初の一歩 <a href="/International/getting-started/characters"><cite>Introducing Character Sets and Encodings</cite></a></p>
+    </li>
+    <li>
+      <p>チュートリアル <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a></p>
+    </li>
+    <li>
+      <p><cite>Authoring HTML &amp; CSS</cite>より</p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
+        <li><a href="/International/techniques/authoring-html#indoc">Declaring the character encoding for HTML</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Choosing and applying a character encoding</a></li>
+      </ul>
+    </li>
+    <li>
+      <p><cite>Setting up a server</cite>より</p>
+      <ul>
+        <li><a href="/International/techniques/server-setup#charset">Characters</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
