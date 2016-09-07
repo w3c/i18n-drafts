@@ -50,7 +50,7 @@ s.accessKeyN = 'アクセスキー n により、<a href="#internal-links" acces
 s.examplesInAnotherScript = "この文書には、他の言語で書かれた例やスクリプトが存在します。"
 s.worldMap = "世界地図"
 s.searchI18nSite = "I18n サイト検索" 
-s.translationDisclaimer = 'この文書は翻訳版です。エラーや訳の食い違いがある場合は、<a href="'+f.filename+'.en">英語で書かれた最新版のオリジナル文書</a>を信頼するようにしてください。<a href="#copyright">オリジナル文書の著作権</a>は W3C および、次に記す人間や団体に帰属します。'
+s.translationDisclaimer = 'This document is a translation provided by a volunteer. In the case of any discrepancy or errors, the <a href="'+f.filename+'.en">latest English original</a> should be considered authoritative.<a href="#copyright">Original copyright</a> belongs to W3C, as shown below.'
 s.translator = "訳者:"
 s.relatedLinks = "関連するリンク"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
@@ -119,14 +119,13 @@ s.updated="Updated" // same as New
 s.translation_updated="Translation updated:" // date appears after colon 
 
 s.aboutThisArticle="この記事について" // title in the right column near the top of the page
-s.status_draft="この記事は、公開レビュー前の草案です。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
-s.status_review="この記事は現在公開レビュー中です。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
-s.status_published="この記事は、W3C 国際ワーキンググループによりレビューが行われていると同時に、できる限り正確なものにするため公開レビューも行われています。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
-s.status_notreviewed="この記事は公開レビューなしで正式公開されました。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
+s.status_review="This article is currently out for public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
+s.status_published="This article has been reviewed by the W3C Internationalization Working Group and has gone through public review to make it as accurate as possible. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
+s.status_notreviewed="This article was published without public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
 s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
-s.tests="" // used at the end of breadcrumbs for test related pages
+s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "要約的な回答" // heading
-s.longeranswer = "詳細な回答" // heading
+s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
