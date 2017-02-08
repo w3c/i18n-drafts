@@ -99,34 +99,19 @@ function highlightCode () {
 
 <section>
   <h2 id="configs"><a href="#configs">Basic configurations</a></h2>
-    <p>This section provides some suggestions for how to style the more common situations where ruby is used with Japanese and Chinese. The expected behavior is  based on the layout requirements documents for Japanese (JLReq) and Chinese (CLReq).</p>
-    <p>...</p>
-    <p>Add a few standard configurations here since the normal applications are fairly limited – the subsequent sections explain how to do fine tuning.</p>
-    <p>Chinese romanised phonetic annotations<br>
-    pinyin is centred over base character(s)</p>
-    <p>zhuyin</p>
-    <p>pinyin + zhuyin: pinyin below</p>
-    <p>Japanese mono-ruby<br>
-      nakatsuki<br>
-    katatsuki alternative, only for vertical</p>
-    <p>Japanese group ruby<br>
-      space-around, merged<br>
-    alternative space-between</p>
-    <p>Japanese jukugo<br>
-      ...
-    </p>
+    <p>This section provides some suggestions for how to style annotations with Japanese and Chinese. The expected behavior is  based on the layout requirements documents for Japanese (JLReq) and Chinese (CLReq). Only the more common configurations are described here; subsequent sections explain how to do fine tuning.</p>
+    <p>What follows assumes that you have used markup to map ruby text annotations to base characters appropriately, as described in the article <a href="https://www.w3.org/International/articles/ruby/markup">Ruby Markup</a>.</p>
     <section>
-    <h3 id="ja_mono_ruby"><a href="#ja_mono_ruby">Japanese mono ruby</a></h3>
-    <p>Mono ruby is commonly used to represent pronunciation of Japanese kanji characters. Each ideographic base character is mapped in markup to a ruby annotation that indicates how to pronounce it (usually using hiragana), and the annotations don't overlap adjacent kanji characters. Usually the annotations are centred over the base character (nakatsuke).</p>
-    <p>The markup should establish the mappings between base characters and annotations. Here is an example.</p>
+    <h3 id="ja_basics"><a href="#ja_basics">Japanese</a></h3>
+    <p><a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc" class="termref">Mono ruby</a> is typically used to represent pronunciation of Japanese kanji characters. Each ideographic base character is mapped in markup to an annotation that indicates how to pronounce it (usually using hiragana).</p>
+    <p>As you can see in the following example, the annotations don't overlap adjacent kanji characters, and they are normally centred over the base character (in Japanese this is called <span lang="ja" class="foreign">nakatsuke</span>). Lines can break between the base characters.</p>
     <figure>
-    <p><img style="margin-right: 30%; vertical-align:top;" src="styling-data/ruby_position_over_hor.png" alt="Horizontal ruby for 水芝居(みずしばい)"></p>
-    </figure>
-    <p>This is usually produced by the default display behavior of browsers, however if you want to style it, you would use the following CSS.</p>
+      <p><img style="margin-right: 30%; vertical-align:top;" src="styling-data/simple_ja_mono.png" alt="Horizontal ruby for 常用漢字表(じょうようかんじひょう)"></p>
+  </figure>
+    <p>This is usually produced automatically by the default display behavior of browsers, however if you want to style it explicitly, you would use the following CSS.</p>
     <figure class="example" lang="ja">
       <pre>ruby { 
     ruby-position: over;
-    ruby-merge: separate;
     ruby-align: center;
     }</pre>
       <div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">See live demo.</a></div>
@@ -137,10 +122,67 @@ function highlightCode () {
       <li>If the character alongside is punctuation or kana, the annotation will overlap it up to a certain point.</li>
       <li>If the base character is next to the line start or end, a little extra space will be added alongside the base character so that the annotation doesn't stick into the margin.</li>
       </ol>
-    <p>How to make that happen using CSS ?</p>
-    <p>Describe katatsuke.</p>
-	</section>
+    <p>This behaviour is currently browser dependent, rather than specified in CSS.</p>
+    <p>For a <span lang="ja" class="foreign">jukuji</span> annotation, where the kana don't map to individual base characters, such as for 田舎 (いなか), you will need to use <a href="https://www.w3.org/International/questions/qa-ruby#group" class="termref">group ruby</a>. A single annotation is mapped in markup to a range of base characters. A kana annotation is normally spread across the base text evenly, with a little extra space at either end. If the annotation is in the Latin script, however, it is normally centred on the base text. Base characters in group ruby are not split across line breaks.</p>
+    <p>Since this is different styling from the normal phonetic approach, you will need to indicate in markup, using a class name, the items that should be treated as group ruby. Assuming we used a class name of <code class="kw" translate="no">jukuji</code>, you could then add the following to your style sheet.</p>
+    <figure class="example" lang="ja">
+      <pre>.jukuji { 
+    ruby-position: over;
+    ruby-align: space-around;
+    }</pre>
+      <div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">See live demo.</a></div>
+    </figure>
+    <p>If you want to apply a semantic, rather than phonetic, annotation, you will also need to use <a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc">group ruby</a>. The annotation is usually aligned as per the jukuji example just described. You may, however, want the annotation to appear on the other side of the base characters. To achieve this, you need to change the <code class="kw" translate="no">ruby-position</code> value. The following code snippet assumes that such annotations have been given a class of <code class="kw" translate="no">semanticRuby</code>.</p>
+    <figure class="example" lang="ja">
+      <pre>.semanticRuby { 
+    ruby-position: under;
+    ruby-align: space-around;
+    }</pre>
+      <div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">See live demo.</a></div>
+    </figure>
+    </section>
+    
+  <section>
+        <h3 id="ja_variants"><a href="#ja_variants">Japanese variants</a></h3>
+    <div class="sidenoteGroup">
+    <p>The sections lower down this page indicate how you can change some of these basic styles. For example, in vertical text you could set <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">start</code> to make the phonetic ruby annotations align with the start of the base text (called <span lang="ja" class="foreign" translate="no">katatsuke</span> in Japanese), or you could eliminate the extra space around a group-ruby annotation (by setting <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">space-between</code>).</p>
+    <aside class="sideinfonote">
+    <p class="info">CSS will allow you to set <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">start</code> in horizontal text, but it is normally only used for vertical text.</p>
+    </aside>
+    </div>
+    </section>
+    
+  <section>
+        <h3 id="zh_hans_basics"><a href="#zh_hans_basics">Simplified Chinese</a>    </h3>
+    <p>In  Mainland China phonetic annotations normally consist of pinyin transcriptions, which are written in the Latin script.  Content annotated with pinyin is usually only set horizontally, since Latin text would be sideways in vertical text and is harder to read.</p>
+    <p>There are two common approaches to phonetic annotation: character based and word based.</p>
+    <p>Character based annotations are  common in text used for Chinese children, whereas word based annotations are often found in texts for those learning the Chinese language.</p>
+    <p>For character based phonetic annotations, you will need to use the markup to map each ideographic base character to an annotation that indicates how to pronounce it. This is <a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc" class="termref">mono ruby</a>. The annotations usually appear above the base text.</p>
+    <figure>
+      <p><img style="margin-right: 30%; vertical-align:top;" src="styling-data/simple_zh_mono.png" alt="Horizontal mono ruby for 他生怕被人笑话，立志要画得圆。 (tā shēng pà bèi rén xiào huà, li zhi yào huà de yuán.)"></p>
+    </figure>
+    <p>Word based phonetic annotations use <a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc">group ruby</a>, associating one annotation with more than one base character, and forbidding line breaks inside the annotation. Note how the top line below no longer breaks between the two parts of the word <span lang="zh-hans-latn" class="foreign" translate="no">lizhi</span>.</p>
+    <figure>
+      <p><img style="margin-right: 30%; vertical-align:top;" src="styling-data/simple_zh_word.png" alt="Horizontal word-based ruby for 他生怕被人笑话，立志要画得圆。 (tā shēng pà bèi rén xiào huà, li zhi yào huà de yuán.)"></p>
+    </figure>
+    <p>In both of these examples, the annotations are centred above the base text. Sometimes, however, the word-based approach places the annotation below the base text.</p>
+    <p>This behaviour is usually produced by default by the browser, but if you want to explicitly style it you can use the following.</p>
+    <figure class="example" lang="ja">
+      <pre>ruby { 
+    ruby-position: over;
+    ruby-align: center;
+    }</pre>
+      <div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">See live demo.</a></div>
+    </figure>
+    <p>To make the pinyin appear below the base text, change the value of <code class="kw" translate="no">ruby-position</code> to <code class="kw" translate="no">under</code>.</p>
+    <figure>
+      <p><img style="margin-right: 30%; vertical-align:top;" src="styling-data/simple_zh_word_under.png" alt="Horizontal word-based ruby for 他生怕被人笑话，立志要画得圆。 (tā shēng pà bèi rén xiào huà, li zhi yào huà de yuán.) displayed below the base text."></p>
+    </figure>
+    </section>
 </section>
+
+
+
 <section>
   <h2 id="ruby_position"><a href="#ruby_position">Positioning ruby relative to the base text</a></h2>
     <p> This section looks at how you make the ruby text appear above, below or to the side of the ruby base
@@ -153,7 +195,7 @@ function highlightCode () {
     </figure>
     <br  style="clear:both;"/>
 
-    <p>This is the default behavior, and you can expect browsers to produce this without CSS. </p>
+    <p>This is the default behavior, and you can expect browsers to produce this without CSS. @@@ make the example 紙芝居 kamishibai</p>
     <p>If you need to place the ruby explicitly in this position, use:</p>
     
     
@@ -279,7 +321,7 @@ function highlightCode () {
     <div class="demolink"><a href="styling-data/eg_dbl_mono_nested" target="text">See live demo.</a></div>
       </figure>
 	</section>
-    </section>
+</section>
     
     <section>
     <h2 id="inline_position"><a href="#inline_position">Rendering ruby text inline</a></h2>
