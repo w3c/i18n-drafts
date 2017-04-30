@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8" />
 <title>Floating times</title>
@@ -64,7 +64,10 @@ f.additionalLinks = ''
 
 <section id="nutshell">
   <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
-  <p>A <dfn id="def_floating_time">floating time</dfn> or a <dfn id="dfn_floating_date">floating date</dfn> is a time value that isn't tied to a specific time zone. </p>
+  <p>A <dfn id="def_floating_time">floating time</dfn> or a <dfn id="dfn_floating_date">floating date</dfn> is a time value that isn't tied to a specific time zone. 
+     Applications have to avoid implicit conversion to <em>incremental time</em> values or the improper
+     use of time zones when displaying or processing a floating time value.
+  </p>
 </section>
 
 
@@ -74,12 +77,19 @@ f.additionalLinks = ''
 <blockquote>
 <p>Some observed time values are not related to a specific moment in incremental time. Instead, they need to be combined with local information to determine a range of acceptable incremental time values. We refer to these sorts of time values as "floating times" because they are not fixed to a specific incremental time value. Floating times are not attached and should never be attached to a particular time zone.</p>
 </blockquote>
-<p>A common example of a floating time value would be a publication date. The January 30, 2013, issue of a newspaper, magazine, or blog posting does not depend on the current local time of the person reading the document. For example, a document might describe its publication date this way: </p>
+<p>One example of a floating time value would be a publication date. Consider the <em>January 30, 2013</em>, issue of a document such as 
+a newspaper, magazine, or blog posting. The publication date does not depend on the time zone of the person reading the document. Any
+person reading the document should expect to see the same date as the publication date.
+Such a document might describe its publication date in HTML this way: </p>
 <figure class="example">
 <p> &lt;p&gt;Publication Date: &lt;time datetime=&quot;2013-01-30&quot;&gt;January 30, 2013&lt;/time&gt;&lt;/p&gt;</p>
 </figure>
-  <p>Problems can arise, however, if Web developers and content authors are not aware of the ways that servers or local JavaScript applications handle date values. For example, the JavaScript Date object is a form of <em>incremental</em> time: it represents the number of milliseconds since an <span class="qterm">epoch date</span>. In the case of JavaScript, the epoch data is the same as that used by Unix, the Java programming language, and many other systems: it's defined as midnight, January 1, 1970 <strong>in the UTC time zone</strong>. </p>
-  <p>The range of incremental times that describe <samp>2016-01-30</samp> turns out to span as many as fifty hours. Depending on the time zone used to create and display an incremental time value, the same floating date value could be as much as two days off. </p>
+  <p>This seems unambiguous. However, problems can arise if Web developers or content authors 
+  do not treat the publication date as a floating time value. For example, the JavaScript <code>Date</code>
+  object is a form of <em>incremental</em> time: it represents the number of milliseconds since an <span class="qterm">epoch date</span>. In the case of JavaScript, the epoch data is the same as that used by Unix, the Java programming language, and many other systems: it's defined as midnight, January 1, 1970 <strong>in the UTC time zone</strong>. </p>
+  <p>The range of incremental times that describe <samp>2016-01-30</samp> turns out to span as 
+  many as fifty hours. Depending on the time zone used to create and display an incremental 
+  time value, the same floating date value could be as much as two days off. </p>
   <p>That's because, while a floating time is not tied to a specific time zone, any incremental time values depend on time zone for their display and processing. Since data formats for time values in both server-side (such as Java) and client-side languages (such as JavaScript) are always incremental times, this can lead to issues. For example, you can easily have code in your Web page that looks like this: </p>
   <figure class="example">
     <pre>var date = new Date(myPubDateElement.value);
