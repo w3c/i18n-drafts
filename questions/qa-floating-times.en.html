@@ -15,12 +15,12 @@ f.previousauthors = '' // as above
 f.modifiers = '' // people making substantive changes, and their affiliation
 f.searchString = 'qa-floating-times' // blog search string - usually the filename without extensions
 f.firstPubDate = '2016-04-08' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2016-04-08', time:'21:18'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2017-06-03', time:'21:18'}  // date and time of latest substantive changes to this document
 f.status = 'draft'  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-04-08', time:'21:18'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2017-06-03', time:'21:18'} // date and time of latest edits to this document/translation
 f.contributors = '' // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
@@ -131,25 +131,37 @@ target.appendChild(document.createTextNode(date.toDateString()));</pre>
   floating times from more-normal time values such as time stamps.</p>
   
   <h3 id="yyyshortcomings2"><a href="#yyyshortcomings">Storing, Retrieving, and Aggregating Time Data</a></h3>
-  <p>Another way that floating times are used is in the aggregation of data. For example, suppose you 
-  want to track the number of downloads that a user made on a daily basis. If you journal each download, 
-  it's easy to reconstruct the list of downloads. Consider: </p>
+  <p>Another way that floating times are used is in the aggregation of data. For example, suppose you are
+  building an application that keeps track of the number of downloads a user makes. You can record each
+  download using a timestamp (an incremental time value). That might look like this: </p>
   <figure class="example">
     <pre>{
+    &quot;user-id&quot;: &quot;9333c644-487a-11e7-a919-92ebcb67fe33&quot;,
     &quot;item&quot;: &quot;http://www.example.com/downloadMe&quot;,
-    &quot;date&quot;: &quot;2013-10-02T13:17:00Z&quot;
+    &quot;date&quot;: &quot;2013-10-02T07:17:00Z&quot;,
+    &quot;user-timezone&quot;: &quot;America/Los_Angeles&quot;
 },</pre>
   </figure>
-  <p>However, this might be cumbersome as the number of downloads grow. You might want to create summary statistics: </p>
+  <p>When your application wants to aggregate statistics, the use of incremental times
+    to represent the aggregated data could become a problem. Suppose you want to 
+    accumulate user statistics, such as total downloads, on a daily basis. 
+    The timestamp in the example above might fall on October 2, 2013 for that customer. 
+    In this case, if the time zone were <code class=kw translate=no>America/Los_Angeles</code> as
+    shown in the record, it would not! Here's what the accumulated record might look like:</p>
   <figure class="example">
     <pre>{
-    &quot;date&quot;: &quot;2013-10-02&quot;,
+    &quot;user-id&quot;: &quot;9333c644-487a-11e7-a919-92ebcb67fe33&quot;,
+    &quot;aggregationDate&quot;: &quot;2013-10-01&quot;,
     &quot;numDownloaded&quot;: 10
 },</pre>
   </figure>
-  <p>In this particular case, you <em>do</em> want to use local time (non-floating time) to compute the value of <code class="kw" translate="no">date</code> 
-  when the user starts a download (that is, when you add information to the data). But you'll want to use a consistent (or <span class="qterm">floating</span>) 
-  frame of reference when retrieving the record. </p>
+  <p>In this particular case, you <em>do</em> might want to use local time rules, including the time zone,
+  in order to compute which floating date the download should accumulate to. But you want to use floating time
+  rules to read and write the accumulated data record. That way the statistics remain the same
+  for a given date, even if the user's time zone has changed in the interim. For example,
+  if the customer moves to the <code class=kw translate=no>Europe/Paris</code> time zone, the
+  number of downloads on <code>2013-10-01</code> should remain the same, even though the
+  accumulation rules might be different now than they were previously.</p>
 </section>
 <section>
   <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
