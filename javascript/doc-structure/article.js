@@ -35,7 +35,7 @@ g.nativeText = {
 }
 
 
-f.clang = document.querySelector('html').lang
+//f.clang = document.querySelector('html').lang
 if (f.clang != 'en') { g.isTranslation = true } else { g.isTranslation = false }
 
 
@@ -167,12 +167,15 @@ if (outOfDateTranslation) g.updated += "<p class='outofdate'>"+s.untranslatedCha
 else if (unlinkedTranslation) g.updated += "<p class='unlinked'>"+s.unlinkedTranslation+" </p>" 
 else if (g.isTranslation && updatedTranslation) {g.updated ="<p class='updated'>"+s.translation_updated+" <time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></p>" }
 
+// put a redirect or warning banner on articles on github
 if (f.status === 'draft') {
 	g.updated += '<p class="note" style="clear:none; font-size: 150%; margin-top: 2em; line-height:1.5;"><strong>NOTE!</strong> &nbsp; This article is in development and is using a temporary URL. It is not safe to refer to it or use the information it contains.</p>'
 	}
-// put a redirect banner on articles on github if they have been published
+if (f.status === 'review') {
+	g.updated += '<p class="note" style="clear:none; font-size: 150%; margin-top: 2em; line-height:1.5;"><strong>NOTE!</strong> &nbsp; This article is currently out for public review. If you have comments, please send them using the <a href="#survey">Leave a Comment</a> link near the bottom of this page. The published version of the article will be at a different URL, and should be linked to there.</p>'
+	}
 if (f.status === 'published' && window.location.href.match('w3c.github.io')) {
-	g.updated += '<p class="note" style="clear:none; font-size: 150%; margin-top: 2em; line-height:1.5;"><strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. Normally, you should be reading the <a href="https://www.w3.org/International/'+f.directory+f.filename+'">officially published version</a>.</p>'
+	g.updated += '<p class="note" style="clear:none; font-size: 150%; margin-top: 2em; line-height:1.5;">'+s.githubRedirect+'</p>'
 	}
 
 // SURVEY

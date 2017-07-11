@@ -1,5 +1,6 @@
 var dt = { }
 
+f.clang = document.querySelector('html').lang
 
 function getYear (d) {
 	parts = d.split('-')

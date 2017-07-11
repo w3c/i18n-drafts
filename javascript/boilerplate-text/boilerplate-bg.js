@@ -130,3 +130,4 @@ s.longeranswer = "Детайли" // heading that follows 'Quick answer'
 s.additionalinfo = "Допълнителна информация" // heading that sometimes follows 'Details'
 s.acknowledgements = "Благодарности на следните хора чиито статии или коментари бяха включени:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "Ако разрешите браузъра да запише бисквитка, ще продължите да виждате W3C Internationalization Activity страниците (където са налични) на избрания от вас език. Искате ли да запишете бисквиткат?" // this text is to be copied to another location
+s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
