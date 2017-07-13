@@ -184,7 +184,7 @@ var body = window.location.href
 var qm = body.search(/\?/)
 if (qm > 0) body = body.substr(0,qm)
 body = encodeURIComponent('[source] ('+body+') ['+f.clang+']')
-var title = '['+f.directory+f.filename+']  '
+var title = '['+f.directory+f.filename+']%20BRIEF_TITLE_GOES_HERE'
 
 g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
 			'<p><a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A%0A">'+s.sendAComment+'</a></p>'+
