@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Styling vertical Chinese, Japanese, Korean and Mongolian text</title>
+<title>Strings and bidi</title>
 <meta name="description" content="How to set text vertically using CSS for Japanese, Chinese and Mongolian." />
 <script type="application/javascript">
 var f = { }
 
 // AUTHORS should fill in these assignments:
-f.directory = 'articles/vertical-text'+'/'; // the name of the directory this file is in
+f.directory = 'articles/strings-and-bidi'+'/'; // the name of the directory this file is in
 f.filename = 'index' // the file name WITHOUT extensions
 f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
 f.previousauthors = '' // as above
 f.modifiers = '' // people making substantive changes, and their affiliation
-f.searchString = 'article-vertical-text' // blog search string - usually the filename without extensions
-f.firstPubDate = '2017-03-13' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2017-03-13', time:'13:53'}  // date and time of latest substantive changes to this document
-f.status = 'published'  // should be one of draft, review, published, or notreviewed
+f.searchString = 'article-strings-and-bidi' // blog search string - usually the filename without extensions
+f.firstPubDate = '2017-07-31' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2017-07-31', time:'11:10'}  // date and time of latest substantive changes to this document
+f.status = 'draft'  // should be one of draft, review, published, or notreviewed
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2017-03-13', time:'13:53'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2017-07-31', time:'11:10'} // date and time of latest edits to this document/translation
 f.contributors = '' // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -85,7 +85,7 @@ function populateExamples (mydata, version, isolate) {
 	document.getElementById('isbn'+version).textContent = mydata.isbn
 	document.getElementById('publisher'+version).textContent = mydata.publisher
 	var li, span
-	for (t=0;t<mydata.translations.length;t++) {
+	for (let t=0;t<mydata.translations.length;t++) {
 		li = document.createElement('li')
 		if (version !== '' && version !== 'a') span = document.createElement('bdi')
 		else  span = document.createElement('span')
@@ -95,6 +95,24 @@ function populateExamples (mydata, version, isolate) {
 		li.appendChild(span)
 		document.getElementById('translations'+version).appendChild(li)
 		}
+	for (let r=0;r<mydata.reviews.length;r++) {
+		li = document.createElement('li')
+		if (version !== '' && version !== 'a') span = document.createElement('bdi')
+		else  span = document.createElement('span')
+		span.textContent = mydata.reviews[r].name
+		li.appendChild(span)
+
+		li.appendChild(document.createTextNode(' - '))
+
+		if (version !== '' && version !== 'a') span = document.createElement('bdi')
+		else  span = document.createElement('span')
+		span.textContent = mydata.reviews[r].score
+		li.appendChild(span)
+
+		li.appendChild(document.createTextNode('🌟'))
+
+		document.getElementById('reviews'+version).appendChild(li)
+		}
 	var ALM = ''
 	if (version === '3') ALM = '\u061C'
 	document.getElementById('availability'+version).textContent = ALM+mydata.availability
@@ -102,22 +120,13 @@ function populateExamples (mydata, version, isolate) {
 	}
 </script>
 <style type="text/css">
-.flexAnnotation .demolink {
-    font-size: 70%;
-    position: absolute;
-    bottom: 0.5em;
-    right: 1em;
-	margin: 0;
-	}
-figure pre {
-	margin: 16px 0 0 0;
-	}
-#testlinks td, #testlinks th { text-align: start; border: 0; padding: 0 0 0 30px; }
 .figWrap figure.card { 
 	text-align: start; 
 	background-color: rgba(249,237,221,1.00);
+	color: #666;
 	border-radius: 10px;
 	width: 30em;
+	margin: auto;
 	}
 .figWrap figure.card span, .figWrap figure.card bdi, .figWrap figure.card li {
 	color: black;
@@ -133,10 +142,6 @@ figure pre {
 	font-size: 1.4em;
 	text-align: center;
 	}
-p:lang(ar) {
-    font-family: scheherazade, sans-serif;
-    font-size: 1em;
-}
 .figWrap figure.card bdi.errorRef {
 	color: red; font-size: 120%;
 	}
@@ -159,11 +164,11 @@ figure.card li {
 
 <section>
     <div id="audience"> 
-        <p><span id="intendedAudience" class="leadin">Intended audience:</span>  CSS  developers,  and anyone who  needs guidance on how to produce vertically-oriented text for Chinese, Japanese and Korean using CSS.</p>
+        <p><span id="intendedAudience" class="leadin">Intended audience:</span>  authors of HTML and other markup, JavaScript coders,  spec developers dealing with strings, and anyone who  needs to better understand what problems can arise when using the same strings in different directional contexts.</p>
         <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
-    <p>This article shows the kinds of problem that can arise if metadata about base direction is not available when strings are inserted into text for display to users.</p>
+    <p>This article illustrates the problems that can arise when strings are inserted into text for display to users in different directional contexts: left-to-right (LTR) vs. right-to-left (RTL).</p>
   <p>The examples in the page are actually generated at run time from a set of strings in a JSON file. We insert the strings into HTML text in the page, and look at the results.</p>
 </section>
         
@@ -188,7 +193,10 @@ figure.card li {
 "publisher":    "O’Reilly Media Inc.",
 "coverImage":   "https://example.com/css_adventure.jpg",
 "availability": "1-3",
-&quot;delivery":     "22-08-2017"
+&quot;delivery":     "22-08-2017",
+"reviews":      [{"name":"Alan", "score":4}, 
+                 {"name":"أحمد", "score":5}
+                 ]
 }</pre>
 </figure>
 </section>
@@ -206,18 +214,23 @@ figure.card li {
   <p>ISBN: <span id="isbn"></span></p>
   <p>Publisher: <span id="publisher"></span></p>
   <p>In translation: <bdi class="errorRef">①</bdi></p> <ul id="translations"></ul>
+  <p>Reviewer (score): <bdi class="errorRef">②</bdi></p> <ul id="reviews"></ul>
   <p>Availability: <span id="availability"></span> days</p>
   <p>Expected delivery date:</p>
   <p class="ddate"><span id="deliverDate"></span></p>
   </figure>
 </div>
-<p>As you might imagine, there's not much wrong here, however there is one error, which affects three of the translation titles. </p>
+<p>As you might imagine, there's not much wrong here, however there are two bugs, the first of which affects three of the translation titles, and the second the review scores. </p>
 <ol>
   <li>
     <p>The title of the book in the arabic translation should read:
       <bdi dir="rtl" style="color:black; white-space:nowrap;">CSS: مغامرة جديدة!</bdi>
-      , and the same applies to the persian and hebrew translations. </p>
-    <p>The items in the string have been incorrectly presented because the browser assumed that the word CSS and the exclamation mark were part of the surrounding english context, and so laid them out where you would expect, given the LTR direction of the card.</p>
+      , and the same applies to the persian and hebrew translations. Note how the text 'CSS' should appear on the right of the arabic text, and the exclamation mark should appear at the far left of the title.</p>
+    <p>The items in the string have been incorrectly presented because the browser assumed that the word CSS and the exclamation mark were part of the surrounding english context, and so laid them out on the incorrect assumption that the overall LTR direction of the card is applicable to this text too.</p>
+    </li>
+  <li>
+    <p>The list item for the review score of Ahmed (أحمد) has the score itself way over on the left, and the star alongside Ahmed's name.</p>
+    <p>This is because the bidi algorithm treats numbers as part of the preceding directional run, and extends that run in the same direction. Treating Ahmed's name and the score all as a single item, it lays them out in RTL order. Not what you want in a LTR page!</p>
   </li>
 </ol>
 </section>
@@ -228,7 +241,7 @@ figure.card li {
 
 <p>Here we add the strings to a template that applies no extra information around the strings when it inserts them. This is an Arabic template, and the overall direction is RTL.</p>
 
-<div class="figWrap" dir="rtl" lang="fa">
+<div class="figWrap" dir="rtl" lang="ar">
   <figure class="card">
   <p class="cardTitle">إليك الكتاب الذي تبحث عنه:</p>
   <p>عنوان كتاب: <span id="titlea"></span> <bdi class="errorRef">①</bdi></p>
@@ -236,25 +249,31 @@ figure.card li {
   <p>رقم المرجع: <span id="isbna"></span> <bdi class="errorRef">③</bdi></p>
   <p>الناشر: <span id="publishera"></span> <bdi class="errorRef">①</bdi></p>
   <p>ترجمة: <bdi class="errorRef">①</bdi></p> <ul id="translationsa"></ul>
+  <p>المعلق (النتيجة): <bdi class="errorRef">④</bdi>
+  </p> <ul id="reviewsa"></ul>
   <p>توافر: <span id="availabilitya"></span> أيام</p>
-  <p class="ddate"><span id="deliverDatea"></span>  <bdi class="errorRef">④</bdi></p>
+  <p class="ddate"><span id="deliverDatea"></span>  <bdi class="errorRef">⑤</bdi></p>
   </figure>
 </div>
-  <p>You can see that the arabic, persian and hebrew translations of the book title (in the bulleted list) now look as expected, since they inherit the base direction of the card (RTL). However, we run into a number of problems:</p>
+  <p>You can see that the arabic, persian and hebrew translations of the book title (in the bulleted list) now look as expected, since they inherit the base direction of the card (RTL). However, we now run into quite a few different problems:</p>
   <ol>
   <li>
     <p>The exclamation mark, which is part of the book title, appears to the right of the title. (This also happens for the Japanese title, in the bulleted list.) The same issue arises a little further down, where the period indicating an abbreviation of <samp>Inc.</samp> appears in the location you'd expect to find a sentence-final full stop.</p>
     <p>This is because the bidi algorithm is given no indication that these punctuation marks are actually part of the LTR sequence, and so treats them as part of the RTL text, and puts them where you would therefore normally expect to find them in that case.</p>
   </li>
   <li>
-    <p>The  author's name are ordered LTR, whereas Lea's name should appear on the right (ie. first), followed by Chris's name on the left. Note also that the comma (an inverted arabic one) appears to the left of the space, which would be confusing for readers. </p>
-    <p>This is because the bidi algorithm assumes that a sequence of LTR characters that are uninterrupted by a RTL character is a contiguous directional run. However, in a RTL overall context this list should be ordered right-to-left.</p>
+    <p>The  author's name are ordered LTR, whereas Lea's name should appear on the right (ie. first, for the Arabic reader), followed by Chris's name on the left. Note also that the comma (an inverted arabic one) appears to the left of the space, which would be confusing for readers. </p>
+    <p>This is because the bidi algorithm assumes that a sequence of LTR characters that are uninterrupted by a RTL character with strong directionality is a contiguous directional run. However, in a RTL overall context this list should be ordered right-to-left.</p>
   </li>
-  <li><p>Here the order of the numbers that make up the ISBN sequence are reversed. This is not obvious to the user!</p>
-    <p>The hyphen, and a few other characters, have special properties when used as a number separator, or in mathematical expressions in Arabic, Thaana, or Syriac. If the bidi algorithm identifies a character from those scripts prior to a sequence of numbers separated by hyphens, it orders the sequence right-to-left. This is how an Arabic user would normally expect to read a range or mathematical expression. So a range such as 10-12 in English, where the hyphen means 'to', would look like this in Syriac: 12-10.</p>
-    <p>You can see this right-to-left order  applied correctly in the <samp>Availability</samp> field near the bottom of the form, which indicates a range of 1-3 days.</p>
-    <p>It should be noted that this would not be a problem in a Hebrew form, where the ISBN is preceded by a Hebrew character. Hebrew readers prefer to read ranges and expressions LTR.</p>
+  <li>
+    <p>The order of the numbers that make up the ISBN sequence are reversed. This is not obvious to the user!</p>
+    <p>The hyphen, and a few other characters, have special properties when used as a number separator, or in mathematical expressions in Arabic, Thaana, or Syriac. If the bidi algorithm identifies a character from those scripts prior to a sequence of numbers separated by hyphens, it orders the sequence right-to-left. This is how an Arabic user would normally expect to read a range or mathematical expression. So a range such as 10-12 in English, where the hyphen means 'to', would look like this in Arabic: 12-10.</p>
+    <p>You can see this right-to-left order  applied <em>correctly</em> in the <samp>Availability</samp> field near the bottom of the form, which indicates a range of 1-3 days.</p>
+    <p>It should be noted that this would not be a problem in a Hebrew form, where the ISBN is preceded by a Hebrew character. Hebrew readers prefer to read ranges and expressions LTR, and the bidi algorithm produces them that way by default after a hebrew character.</p>
     </li>
+  <li>
+    <p>The review score list looks ok now for Ahmed, but Alan's line is now scrambled from the point of view of an Arabic reader (for the same reasons, just in reverse).</p>
+  </li>
   <li>
     <p>The date is incorrectly ordered for an Arabic user. It should read 2017-80-22.</p>
     <p>Here the sequence is ordered LTR because the number is not preceded by an Arabic, Thaana, or Syriac, character. By default, the bidi algorithm arranges hyphen-separated numbers in LTR order.</p>
@@ -270,7 +289,7 @@ figure.card li {
 
 <p>Here we add <code class="kw" translate="no">bdi</code> elements around each string as it is inserted into the HTML. The <code class="kw" translate="no">bdi</code> element isolates the string directionally from its surroundings.</p>
 
-<div class="figWrap" dir="rtl" lang="fa">
+<div class="figWrap" dir="rtl" lang="ar">
   <figure class="card">
   <p class="cardTitle">إليك الكتاب الذي تبحث عنه:</p>
   <p>عنوان كتاب: <bdi id="titlei"></bdi></p>
@@ -278,11 +297,14 @@ figure.card li {
   <p>رقم المرجع: <bdi id="isbni"></bdi></p>
   <p>الناشر: <bdi id="publisheri"></bdi></p>
   <p>ترجمة: <bdi class="errorRef">①</bdi></p> <ul id="translationsi"></ul>
+  <p>المعلق (النتيجة): </p> <ul id="reviewsi"></ul>
   <p>توافر: <bdi id="availabilityi"></bdi> أيام <bdi class="errorRef">②</bdi></p>
   <p class="ddate"><bdi id="deliverDatei"></bdi>  <bdi class="errorRef">③</bdi></p>
   </figure>
 </div>
-  <p>This solves quite a few problems: the punctuation is in the right place, the order of Lea and Chris's names is correct (and so is the placement of the comma), and the ISBN number looks correct. However, a few issues remain:</p>
+  <p>This solves quite a few problems: the punctuation is in the right place, the order of Lea and Chris's names is correct (and so is the placement of the comma), and the ISBN number looks correct. </p>
+  <p>We also solved the issue of the review scores. We did this by wrapping both the name and the score in isolating markup (eg. using the <code class="kw" translate="no">bdi</code> element or <code class="kw" translate="no">dir=&quot;auto&quot;</code>). This breaks the link between the name and the number, and allows the relative order of each to be determined by the overall context. Note that we needed to wrap these items individually – it was not possible to achieve this by adding markup at the <code class="kw" translate="no">li</code> level.</p>
+  <p>However, a few issues remain:</p>
   <ol>
   <li>
     <p>The order of the words and the exclamation mark in the arabic, persian and hebrew titles is now wrong.</p>
@@ -292,14 +314,14 @@ figure.card li {
   <li>
     <p>The availability range is shown as 1-3, rather than 3-1.</p>
     <p>Because the range is isolated from the preceding arabic text, the bidi algorithm doesn't apply the special ordering for ranges that would produce the order 3-1.</p>
-    <p>To resolve this problem, we need to indicate that the context is that of the arabic language. Note that this is not a script-specific issue, since the order shown is fine for Persian (and Hebrew).</p>
+    <p>To resolve this problem, we need to indicate that the context is that of the arabic language. Note that this is a language-specific issue, rather than a script-specific issue, since the order shown is fine for Persian (and Hebrew).</p>
   </li>
   <li>
     <p>The date is still in the wrong order for arabic language readers.</p>
     <p>The isolation makes no difference to the problem we already had earlier.</p>
   </li>
   </ol>
-  <p>So we see some significant improvements, but two new problems. One of these problems is due to the isolation breaking the language context. The other is due to  incorrect cues being used to determine base direction from the first strong character.</p>
+  <p>So we see some significant improvements, but some new problems. One of these problems is due to the isolation breaking the language context. The other is due to  incorrect cues being used to determine base direction from the first strong character.</p>
 </section>
 
 
@@ -309,14 +331,15 @@ figure.card li {
 
 <p>For this third attempt we resort to a couple of additional strategies to fix the remaining problems.</p>
 
-<div class="figWrap" dir="rtl" lang="fa">
+<div class="figWrap" dir="rtl" lang="ar">
   <figure class="card">
   <p class="cardTitle">إليك الكتاب الذي تبحث عنه:</p>
   <p>عنوان كتاب: <bdi id="title3"></bdi></p>
   <p>مؤلف: <span id="authors3"></span></p>
   <p>رقم المرجع: <bdi id="isbn3"></bdi></p>
   <p>الناشر: <bdi id="publisher3"></bdi></p>
-  <p>ترجمة: <bdi class="errorRef">③</bdi></p> <ul id="translations3"></ul>
+  <p>ترجمة: <bdi class="errorRef">②</bdi></p> <ul id="translations3"></ul>
+  <p>المعلق (النتيجة): </p> <ul id="reviews3"></ul>
   <p>توافر: <bdi id="availability3"></bdi> أيام <bdi class="errorRef">①</bdi></p>
   <p class="ddate"><bdi id="deliverDate3"></bdi>  <bdi class="errorRef">②</bdi></p>
   </figure>
@@ -324,21 +347,21 @@ figure.card li {
   <p>Here's how we fixed the problems:</p>
   <ol>
   <li>
-    <p>Because we know that this is a card that is meant to be read by Arabic language users, we changed the javascript code that does the display so that it outputs U+061C ARABIC LETTER MARK (ALM) just inside the isolating markup. This has the effect of inserting an invisible arabic character before the availability range and the date, which then produces the desired effect.</p>
-    <p>Note that we were only able to do this because we knew (a) what the data was (ie. a date and a range), and (b) we knew that the context was that of Arabic language text. Note, also that we didn't insert this character for the ISBN number, which has to be read LTR, and we wouldn't insert it for Persian language text (or Hebrew).</p>
+    <p>Because we know that this is a card that is meant to be read by Arabic language users, we changed the javascript code that does the display so that it outputs U+061C ARABIC LETTER MARK (ALM) just inside the isolating markup for the availability range and the delivery date. This has the effect of inserting an invisible arabic character before the availability range and the date, which then produces the desired effect.</p>
+    <p>Note that we were only able to do this because we knew (a) what the data was (ie. a range and a date), and (b) we knew that the context was that of Arabic language text. Note, also that we didn't insert this character for the ISBN number, which has to be read LTR, and we wouldn't insert it for Persian language text (or Hebrew).</p>
     <p>If we were dealing with a situation in which we didn't know the type and format of the data involved, or the language of the surrounding context, we would still have a problem.</p>
   </li>
   <li>
-    <p>To solve the directionality of the Arabic title in the bulleted list we had to change the source data. For the purpose of the example above, we need to read in a different JSON file. That file uses two different strategies for resolving the problem (for the purposes of demonstration).</p>
-    <p>The first strategy involves putting an RLM (invisible strongly-RTL Unicode character) at the start of the arabic book title translation. This now becomes the first strong directional character inside the isolated range, and sets the base direction of the isolated text to RTL.</p>
-    <p>The second strategy was used for the persian and hebrew translations, and was to add a <code class="kw" translate="no">direction</code> property to the object containing the string. This <code class="kw" translate="no">direction </code>property indicates the required direction for those strings, and is read by the javascript as it fills in the template. As a result, a <code class="kw" translate="no">dir</code> attribute is set on the bdi element, with the value <code class="kw" translate="no">rtl</code>.</p>
+    <p>To solve the directionality of the Arabic title in the bulleted list we had to change the source data. For the purpose of the example above, we need to read in a different JSON file. That file uses two different strategies for resolving the problem (for the purposes of demonstration – normally you'd probably want to choose one or the other).</p>
+    <p>The first strategy involves putting an RLM (invisible strongly-RTL Unicode character) at the start of the  book title translation in Arabic (ie. the first of the two book titles using the Arabic script). This now becomes the first strong directional character inside the isolated range, and sets the base direction of the isolated text to RTL.</p>
+    <p>The second strategy was used for the persian and hebrew translations, and was to add a <code class="kw" translate="no">direction</code> property to the object containing the string. This <code class="kw" translate="no">direction </code>property indicates the required direction for those strings, and is read by the javascript as it fills in the template. As a result, a <code class="kw" translate="no">dir</code> attribute is set on the <code class="kw" translate="no">bdi</code> element, with the value <code class="kw" translate="no">rtl</code>.</p>
   </li>
   </ol>
   <p>It may be worthwhile to reflect a little on the two strategies employed for item 2.</p>
   <p>Putting an RLM at the start of a string that would otherwise be incorrectly interpreted, seems a simple fix. It does, however, change the identity of the string, which may be a concern. The other question it raises is how that RLM got there.</p>
-  <p>It is unlikely that users will add RLMs to strings when they create them. The mechanics of such characters are not well understood by many users (how many English-speaking people do you know who would be able to use an LRM in the converse situation?), and actually keyboards on mobile devices generally don't even provide them. Moreover, if a user is typing in the book name into, say, an HTML page where the form they are using inherits a <code class="kw" translate="no">dir=&quot;rtl&quot;</code> setting, they won't see any need to use an RLM, since the text will look fine to them without.</p>
-  <p>It would be possible for an application which stores the string, if it can detect the directional context in which it was created, to then add an RLM to the beginning of the string automatically. There are dangers here, though, besides that of changing the identity of the string. For example, the application may not make the right assumption sometimes, and may fail to detect the original directional context in others.</p>
-  <p>There is also the potential for error where a RTL string begins with LRM. Was that there intentionally, or is it the result of cut &amp; paste? If the user inserted it, did they do so intentionally to set the base direction for the whole string, or did they intend it to modify the direction in a small part of the beginning of the string?</p>
+  <p>It is unlikely that users will add RLMs to strings when they create them. The mechanics of such characters are not well understood by many users (how many English-speaking people do you know who would be able to use an LRM in the converse situation?), and actually keyboards on mobile devices generally don't even provide them. Moreover, if a user is typing in the book name into, say, an HTML page where the form they are using inherits a <code class="kw" translate="no">dir=&quot;rtl&quot;</code> setting, they won't see any need to use an RLM, since the text will look fine to them without one (because the form they are using is applying a RTL base direction).</p>
+  <p>If the application which stores the string can detect the directional context in which it was created, it would be able to then add an RLM to the beginning of the string automatically. There are dangers here, though, besides that of changing the identity of the string. For example, the application may not make the right assumption sometimes, and may fail to detect the original directional context in others.</p>
+  <p>There is also the potential for error where a RTL string begins with LRM. Was that there intentionally, or is it the result of cut &amp; paste? If the person who created the string inserted it, did they do so intentionally to set the base direction for the whole string, or did they intend it to modify the direction in a small part of the beginning of the string?</p>
   <p>Adding an additional field to the JSON to store the directional information of problematic bidi strings may avoid some of the latter problems. However, it is even less likely that users will create this metadata at the same time as they create the string, so we will again need to rely on the application which stores the string to detect the original directional context and store that in the <code class="kw" translate="no">direction</code> property. (HTML5 provides a mechanism for that, by the way, with <code class="kw" translate="no">dirname</code>.) It does, however, create an overhead for the complexity of the data and the application consuming that data, which has to be aware of the existence of the direction value pair, and know what to do with it.</p>
 </section>
 <section> 
@@ -347,14 +370,19 @@ figure.card li {
 
     <ul id="full-links">
       <li>
-        <p><cite><a href="https://www.w3.org/TR/css-writing-modes-3/">CSS Writing Modes Level 3</a></cite></p>
+        <p><cite><a href="https://w3c.github.io/string-meta/">Requirements for Language and Direction Metadata in Data Formats</a></cite></p>
         
       </li>
       <li>
           <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
           <ul>
       <li><a href="https://www.w3.org/International/techniques/authoring-html?collapse&amp;open=direction">Text direction</a></li>
-      <li><a href="https://www.w3.org/International/techniques/authoring-html#sec_verticaltext">Vertical text</a></li>
+      </ul>
+      </li>
+      <li>
+          <p>Related links, <cite>Developing specifications</cite></p>
+          <ul>
+      <li><a href="https://www.w3.org/International/techniques/developing-specs#text_direction">Text direction</a></li>
       </ul>
       </li>
     </ul>
