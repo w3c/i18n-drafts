@@ -16,7 +16,7 @@ f.modifiers = '' // people making substantive changes, and their affiliation
 f.searchString = 'article-strings-and-bidi' // blog search string - usually the filename without extensions
 f.firstPubDate = '2017-07-31' // date of the first publication of the document (after review)
 f.lastSubstUpdate = { date:'2017-07-31', time:'11:10'}  // date and time of latest substantive changes to this document
-f.status = 'draft'  // should be one of draft, review, published, or notreviewed
+f.status = 'review'  // should be one of draft, review, published, or notreviewed
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
@@ -116,7 +116,13 @@ function populateExamples (mydata, version, isolate) {
 	var ALM = ''
 	if (version === '3') ALM = '\u061C'
 	document.getElementById('availability'+version).textContent = ALM+mydata.availability
-	document.getElementById('deliverDate'+version).textContent = ALM+mydata.delivery
+	var ddate = new Date(mydata.delivery)
+	var year = ddate.getFullYear()
+	var month = ddate.getMonth()+1
+	month = month.toString()
+	while (month.length < 2) month = '0'+month
+	var date = ddate.getDate()
+	document.getElementById('deliverDate'+version).textContent = ALM+date+'-'+month+'-'+year
 	}
 </script>
 <style type="text/css">
@@ -172,9 +178,10 @@ h2 {
         <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
-    <p>This article illustrates the problems that can arise when strings are inserted into text for display to users in different directional contexts: left-to-right (LTR) vs. right-to-left (RTL).</p>
-  <p>The examples in the page are actually generated at run time from a set of strings in a JSON file. We insert the strings into HTML text in the page, and look at the results. </p>
-  <p>Unfortunately, since Edge still doesn't support basic aspects of bidi isolation, there are not really any useful solutions for text in that browser. The examples should work on all other major browsers, though.</p>
+    <p>This article illustrates  problems that can arise when strings are inserted into text and then displayed to users given different directional contexts: left-to-right (LTR) vs. right-to-left (RTL).</p>
+  <p class="note" style="clear:none;"><strong>Nota bene!</strong> The examples on this page are not intended to show you how to do things. In fact, even the final rendition could use better practices. They are simply meant to illustrate certain causes and effects.</p>
+  <p class="note">The examples in the page are actually generated at run time from a set of strings in a JSON file. We insert the strings into HTML text in the page, and look at the results. Unfortunately,  Edge still doesn't support basic aspects of bidi isolation, so the examples don't work  in that browser. When we publish the article after the review phase we'll use images. In the meantime, please view using Chrome, Firefox, or Safari.</p>
+  <p>Red, circled digits indicate places where there are problems. Look at the  list item with the same number (below the example) to find an explanation of the issue at hand.</p>
 </section>
 <section> 
 <h2 id="writing-mode"><a href="#writing-mode">The strings</a></h2>
@@ -186,7 +193,7 @@ h2 {
 "translations": [
     { "title":"CSS: 新しい冒険！","lang":"ja"}, 
     {"title":"CSS: مغامرة جديدة!","lang":"ar"}, 
-    {"title":"CSS: ماجراجویی جدید!","lang":"fa"},
+    {"title":&quot;CSS: ماجراجوییِ تازه!&quot;,"lang":"fa"},
     {"title":"CSS: הרפתקה חדשה!","lang":"he"} 
     ],
 "authors":      ["Lea Verou", "Chris Lilley"],
@@ -195,7 +202,7 @@ h2 {
 "publisher":    "eBook Publishing Inc.",
 "coverImage":   "https://example.com/css_adventure.jpg",
 "availability": "1-3",
-&quot;delivery":     "22-08-2017",
+&quot;delivery":     1503874800000,
 "reviews":      [{"name":"Alan", "score":4}, 
                  {"name":"أحمد", "score":5}
                  ]
@@ -207,7 +214,7 @@ h2 {
         
 <section> 
 <h2 id="upright"><a href="#upright">Presented in English</a></h2>
-<p>Here we take the strings, programmatically, and add them to an HTML template for viewing by an English user. Annotations describing issues with the data appear as red, circled digits.</p>
+<p>Here we take the strings, programmatically, and simply add them to <code class="kw" translate="no">span</code> elements in an HTML template for viewing by a British user.	</p>
 <div class="figWrap">
   <figure class="card">
   <p class="cardTitle">Here's the book you were looking for:</p>
@@ -215,7 +222,8 @@ h2 {
   <p>Authors: <span id="authors"></span></p>
   <p>ISBN: <span id="isbn"></span></p>
   <p>Publisher: <span id="publisher"></span></p>
-  <p>In translation: <bdi class="errorRef">①</bdi></p> <ul id="translations"></ul>
+  <p>Translated titles: 
+    <bdi class="errorRef">①</bdi></p> <ul id="translations"></ul>
   <p>Reviewer (score): <bdi class="errorRef">②</bdi></p> <ul id="reviews"></ul>
   <p>Availability: <span id="availability"></span> days</p>
   <p>Expected delivery date:</p>
@@ -265,24 +273,24 @@ h2 {
     <p>This is because the bidi algorithm is given no indication that these punctuation marks are actually part of the LTR sequence, and so treats them as part of the RTL text, and puts them where you would therefore normally expect to find them in that case.</p>
   </li>
   <li>
-    <p>The  author's name are ordered LTR, whereas Lea's name should appear on the right (ie. first, for the Arabic reader), followed by Chris's name on the left. Note also that the comma (an inverted arabic one) appears to the left of the space, which would be confusing for readers. </p>
+    <p>The  author's names are ordered LTR, whereas Lea's name should appear on the right (ie. first, for the Arabic reader), followed by Chris's name on the left. Note also that the comma (an inverted arabic one) appears to the left of the space, which would be confusing for readers. </p>
     <p>This is because the bidi algorithm assumes that a sequence of LTR characters that are uninterrupted by a RTL character with strong directionality is a contiguous directional run. However, in a RTL overall context this list should be ordered right-to-left.</p>
   </li>
   <li>
     <p>The order of the numbers that make up the ISBN sequence are reversed. This is not obvious to the user!</p>
     <p>The hyphen, and a few other characters, have special properties when used as a number separator, or in mathematical expressions in Arabic, Thaana, or Syriac. If the bidi algorithm identifies a character from those scripts prior to a sequence of numbers separated by hyphens, it orders the sequence right-to-left. This is how an Arabic user would normally expect to read a range or mathematical expression. So a range such as 10-12 in English, where the hyphen means 'to', would look like this in Arabic: 12-10.</p>
-    <p>You can see this right-to-left order  applied <em>correctly</em> in the <samp>Availability</samp> field near the bottom of the form, which indicates a range of 1-3 days.</p>
+    <p>You can see this right-to-left order  applied <em>correctly</em> in the <samp>Availability</samp> field near the bottom of the form, which indicates a range of 1-3 days by showing &quot;3-1&quot;.</p>
     <p>It should be noted that this would not be a problem in a Hebrew form, where the ISBN is preceded by a Hebrew character. Hebrew readers prefer to read ranges and expressions LTR, and the bidi algorithm produces them that way by default after a hebrew character.</p>
     </li>
   <li>
     <p>The review score list looks ok now for Ahmed, but Alan's line is now scrambled from the point of view of an Arabic reader (for the same reasons, just in reverse).</p>
   </li>
   <li>
-    <p>The date is incorrectly ordered for an Arabic user. It should read 2017-08-22.</p>
+    <p>The date is incorrectly ordered for an Arabic user. It should read 2017-08-28.</p>
     <p>Here the sequence is ordered LTR because the number is not preceded by an Arabic, Thaana, or Syriac, character. By default, the bidi algorithm arranges hyphen-separated numbers in LTR order.</p>
   </li>
   </ol>
-    <p>A brief note concerning dates: for the purposes of this illustration, we leave aside  the fact that purely numeric dates are never usually a good idea anyway – is 02-03-2004 the 2nd of March or the 3rd of February in English? Using a name for the month would certainly have prevented this ordering issue. However, it would be best to use an ISO 80601 format for the date in the string and get the browser or application to format it for the locale. For that, of course, the browser/application would need to know that the string is a date, rather than another type of number.</p>
+    <p><strong>A brief note concerning dates:</strong> The delivery date has been generated from an incremental time value using a numeric format appropriate for the locale of the reader. It's not relevant here that purely numeric dates are never usually a good idea  – is 02-03-2004 the 2nd of March or the 3rd of February? – and that using a name for the month would certainly have prevented any ordering issue. This date format does turn up in the wild, and for our purposes provides a useful additional example of a hyphen-separated number sequence (besides  ranges and expressions) which needs to be read right-to-left in Arabic. The main purpose here is to examine the behavior of this special type of string under 'laboratory conditions'.</p>
 </section>
 
 
@@ -290,7 +298,7 @@ h2 {
 <section> 
 <h2 id="isolation"><a href="#isolation">Presented in Arabic, with isolation</a></h2>
 
-<p>Here we add <code class="kw" translate="no">bdi</code> elements around each string as it is inserted into the HTML. The <code class="kw" translate="no">bdi</code> element isolates the string directionally from its surroundings.</p>
+<p>Here we add <code class="kw" translate="no">bdi</code> elements around each string as it is inserted into the HTML. The <code class="kw" translate="no">bdi</code> element isolates the string directionally from its surroundings, and sets the string's base direction to that of the first strong directional character in the string.</p>
 
 <div class="figWrap" dir="rtl" lang="ar">
   <figure class="card">
@@ -358,7 +366,16 @@ h2 {
   </li>
   <li>
     <p>To solve the directionality of the Arabic title in the bulleted list we had to change the source data. For the purpose of the example above, we need to read in a different JSON file. That file uses two different strategies for resolving the problem (for the purposes of demonstration – normally you'd probably want to choose one or the other).</p>
-    <p>The first strategy involves putting an RLM (invisible strongly-RTL Unicode character) at the start of the  book title translation in Arabic (ie. the first of the two book titles using the Arabic script). This now becomes the first strong directional character inside the isolated range, and sets the base direction of the isolated text to RTL.</p>
+    <p>The relevant lines in the JSON file now look like this:</p>
+    <figure class="example">
+      <pre>&quot;translations&quot;: [ 	
+  {&quot;title&quot;:&quot;CSS: 新しい冒険！&quot;,&quot;lang&quot;:&quot;ja&quot;,
+  {&quot;title&quot;:&quot;\u200FCSS: مغامرة جديدة!&quot;,&quot;lang&quot;:&quot;ar&quot;},
+  {&quot;title&quot;:&quot;CSS: ماجراجوییِ تازه!&quot;,&quot;lang&quot;:&quot;fa&quot;, &quot;direction&quot;:&quot;rtl&quot;},
+  {&quot;title&quot;:&quot;CSS: הרפתקה חדשה!&quot;,&quot;lang&quot;:&quot;he&quot;, &quot;direction&quot;:&quot;rtl&quot;} 
+  ],</pre>
+    </figure>
+    <p>The first strategy involves putting an RLM (invisible strongly-RTL Unicode character <span class="uname">U+200F</span>) at the start of the translation of the book title in Arabic (ie. the first of the two book titles using the Arabic script). This now becomes the first strong directional character inside the isolated range, and sets the base direction of the isolated text to RTL.</p>
     <p>The second strategy was used for the persian and hebrew translations, and was to add a <code class="kw" translate="no">direction</code> property to the object containing the string. This <code class="kw" translate="no">direction </code>property indicates the required direction for those strings, and is read by the javascript as it fills in the template. As a result, a <code class="kw" translate="no">dir</code> attribute is set on the <code class="kw" translate="no">bdi</code> element, with the value <code class="kw" translate="no">rtl</code>.</p>
   </li>
   </ol>
