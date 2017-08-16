@@ -61,8 +61,8 @@ f.additionalLinks = ''
 
 <section>
 	<h2 id="answer"><a href="#answer">Answer</a></h2>
-  <section id="what">
-    <h3><a href="#what"> What kinds of character escape can be used in markup?</a></h3>
+  <section>
+    <h3 id="what"><a href="#what"> What kinds of character escape can be used in markup?</a></h3>
     <p>You can use a <dfn>character escape</dfn> to represent any Unicode character in HTML, XHTML or XML using only ASCII characters. </p>
     <aside class="insideinfonote"><p class="info">Different specifications give different names  to these constructs. For example,  named character  references may be referred to as <dfn>character entity references</dfn>. We have chosen to use names for this article that  are used for HTML5.</p></aside>
     <p><dfn id="ncr">Numeric character references (NCRs)</dfn> and <dfn id="entity_ref">named character  references</dfn> are types of character escape used in  markup. For example, the following are different ways of  representing the character <span class="uname">U+00A0 NO-BREAK SPACE</span>.</p>
@@ -91,8 +91,8 @@ f.additionalLinks = ''
     <h3 id="cpnumbers"><a href="#cpnumbers">Code point numbers</a></h3>
     <p>One point worth special note is that values of numeric character references (such as <code>&amp;#x20AC;</code> or <code>&amp;#8364;</code> for the euro sign <span class="qchar">€</span>) are interpreted as Unicode characters – <strong>no matter what encoding you use for your document</strong>. It is a common error for people working on content encoded in Windows code page 1252, for example, to try to represent the euro sign using <code>&amp;#x80;</code>. This is because the euro appears at position 80 (in hexadecimal) on the Windows 1252 code page. Using <code>&amp;#x80;</code> in HTML should actually produce a control character, since the escape would be expanded as the character at position 80 in the Unicode repertoire. (In fact, browsers tend to silently correct that error. See the <a class="print" href="/International/tests/repo/results/escapes#reallocated">test pages</a>.) </p>
   </section>
-  <section id="cssescapes">
-    <h3><a href="#cssescapes"> CSS escapes</a></h3>
+  <section>
+    <h3 id="cssescapes"><a href="#cssescapes">CSS escapes</a></h3>
     <p>CSS represents escaped characters in a different way. To represent a character,  start with a backslash followed by the hexadecimal number that represents the character's Unicode code point value.</p>
     <p>If there is a following character that is not in the range A–F, a–f or 0–9, that is all you need. The following example represents the word <span class="qterm" lang="fr">émotion</span>.</p>
     <div class="example"><code lang="fr">.\E9motion  { ... }</code></div>
@@ -101,10 +101,13 @@ f.additionalLinks = ''
     <p>Alternatively, you can use a 6-digit hexadecimal number, with or without a space. Here is an alternative way of writing <span class="qterm"  lang="fr">édition</span>.</p>
     <div class="example"><code lang="fr">.\0000E9dition  { ... }</code></div>
     <p> Because any white-space following the hexadecimal number is swallowed up as part of the escape,  if you actually want a space to appear after the escaped character you will need to add two spaces (after a hexadecimal number of any length).</p>
+    <p>It's worth noting that the CSS specification <a href="https://drafts.csswg.org/css-syntax/#ident-token-diagram">doesn't allow identifiers, such as selectors, to begin with a numeric digit</a>. Digits can follow the first character, but other than - _  a-z A-Z or 0-9 the only other ASCII characters that can appear in an identifier have to be escaped. So, if the thing you want to select happens to begin with a digit, you will need to escape the start of the selector in CSS. For example, to select an element in HTML with the class name &quot;123&quot;, you would write the following.</p>
+    <div class="example"><code lang="fr">.\31 23 { ... }</code></div>
+    <p>Note the use of the space to separate the escaped part of the class name from the remainder, so that it's clear where the end of the escape is. If you had written <code>\3123</code> this would represent ㄣ [<span class="uname">U+3123   BOPOMOFO LETTER EN</span>]. (You could also have written <code>\00003123</code>, since the CSS escape ends after the 6th character past the backslash.)</p>
     <p>The backslash can also be used in CSS before a syntax character to prevent it being read as part of the code. For more information about CSS escapes, see the <a class="print" href="http://www.w3.org/TR/css-syntax-3/#escaping">CSS Syntax Module</a>.</p>
   </section>
-  <section id="not">
-    <h3><a href="#not"> When not to use escapes</a></h3>
+  <section>
+    <h3 id="not"><a href="#not"> When not to use escapes</a></h3>
     <p>It is almost always preferable to use an encoding that allows you to represent  characters in their normal form, rather than using named character references or numeric character references.</p>
     <p>Using escapes can make it difficult to read and maintain source code, and can also significantly increase file size.</p>
     <p>Many English-speaking developers have the expectation that other languages only make occasional use of non-ASCII characters, but this is wrong.</p>
@@ -120,8 +123,8 @@ f.additionalLinks = ''
     <p id="useinxhtml"><strong class="leadin">Use in XHTML.</strong> Using named character references in a document that is parsed as XML may become problematic if the entities are defined externally to your document and the tools that process the XML do not read the external files. In such cases the entity references will not be replaced by characters. For this reason, if you need to use escapes, it may be safer to use numeric character references, or define the character entities you need inside the document. </p>
     <p>If you use <a class="print" href="https://www.w3.org/TR/html5/syntax.html#named-character-references">HTML-defined named character references </a> (such as <code translate="no">&amp;aacute;</code>) to represent characters in XHTML, you should take care any time your content is processed using XML parsers or other tools.</p>
   </section>
-  <section id="use">
-    <h3><a href="#use">When to use escapes</a></h3>
+  <section>
+    <h3 id="use"><a href="#use">When to use escapes</a></h3>
     <p><strong class="leadin">Syntax characters.</strong> There are three characters that should always appear in content as escapes, so that they do not interact with the syntax of the markup. These are part of the language for all documents based on  HTML and for XML.</p>
     <ul>
       <li>
@@ -143,8 +146,8 @@ f.additionalLinks = ''
     <p><strong class="leadin">Input problems.</strong> If your editing tool does not allow you to easily enter needed characters you may also resort to using escapes. Note that this is not a long-term solution, nor one that works well if you have to enter a lot of such characters – it takes longer and makes maintenance more difficult. Ideally you would choose an editing tool that allowed you to enter these characters as characters. Alternatively, if you only need the occasional character, use a character map tool or <a class="print" href="http://r12a.github.io/pickers/">character picker</a>.</p>
     <p><strong class="leadin">Encoding gaps.</strong> Escapes can be useful to represent characters not supported by the encoding you choose for the document, for example, to represent Chinese characters in a document encoded as  Windows-1252. You should ask yourself first, however, why you have not changed the encoding of the document to UTF-8, which covers all the characters you need.</p>
   </section>
-  <section id="styleattr">
-    <h3><a href="#styleattr">Use of escapes in style attributes</a></h3>
+  <section>
+    <h3 id="styleattr"><a href="#styleattr">Use of escapes in style attributes</a></h3>
     <p class="note"><b>Note!</b> It is best to use the UTF-8 character encoding for the style sheet, so that you can just use characters in CSS declarations. This section addresses what should be a quite rare circumstance where you may have decided to use escapes.</p>
     <p>It is usually a good idea to put style information in an external style sheet or a <span class="kw">style</span> element in the head of an HTML  file. Occasionally, or perhaps on a temporary basis, you may use a <span class="kw">style</span> <em>attribute</em> on a particular element, instead. Even more rarely, you may want to represent one or more characters in the <span class="kw">style</span> attribute using character escapes.</p>
     <p>A <span class="kw">style</span> attribute in  HTML can represent characters using numeric or named character references or CSS escapes. On the other hand, the <span class="kw">style</span> <em>element</em> in HTML can contain neither numeric nor named character references, and the same applies to an external style sheet.</p>
