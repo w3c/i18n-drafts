@@ -91,6 +91,7 @@ function populateExamples (mydata, version, isolate) {
 		else  span = document.createElement('span')
 		span.lang = mydata.translations[t].lang
 		if (mydata.translations[t].direction) span.dir = mydata.translations[t].direction
+		if (version === '3' && mydata.translations[t].lang === 'he') span.dir = 'rtl'
 		span.textContent = mydata.translations[t].title
 		li.appendChild(span)
 		document.getElementById('translations'+version).appendChild(li)
@@ -365,28 +366,46 @@ h2 {
     <p>If we were dealing with a situation in which we didn't know the type and format of the data involved, or the language of the surrounding context, we would still have a problem.</p>
   </li>
   <li>
-    <p>To solve the directionality of the Arabic title in the bulleted list we had to change the source data. For the purpose of the example above, we need to read from a different JSON file. That file uses two different strategies for resolving the problem (for the purposes of demonstration – normally you'd probably want to choose one or the other).</p>
+    <p>To solve the directionality of the Arabic title in the bulleted list we had to change the source data. For the purpose of the example above, we need to read from a different JSON file. That file uses three different strategies for resolving the problem (for the purposes of demonstration – normally you'd probably want to choose one or the other).</p>
     <p>The relevant lines in the JSON file now look like this:</p>
     <figure class="example">
       <pre>&quot;translations&quot;: [ 	
   {&quot;title&quot;:&quot;CSS: 新しい冒険！&quot;,&quot;lang&quot;:&quot;ja&quot;,
   {&quot;title&quot;:&quot;\u200FCSS: مغامرة جديدة!&quot;,&quot;lang&quot;:&quot;ar&quot;},
   {&quot;title&quot;:&quot;CSS: ماجراجوییِ تازه!&quot;,&quot;lang&quot;:&quot;fa&quot;, &quot;direction&quot;:&quot;rtl&quot;},
-  {&quot;title&quot;:&quot;CSS: הרפתקה חדשה!&quot;,&quot;lang&quot;:&quot;he&quot;, &quot;direction&quot;:&quot;rtl&quot;} 
+  {&quot;title&quot;:&quot;CSS: הרפתקה חדשה!&quot;,&quot;lang&quot;:&quot;he&quot;} 
   ],</pre>
     </figure>
     <p>The first strategy involves putting an RLM (invisible strongly-RTL Unicode character <span class="uname">U+200F</span>) at the start of the translation of the book title in Arabic (ie. the first of the two book titles using the Arabic script). This now becomes the first strong directional character inside the isolated range, and sets the base direction of the isolated text to RTL.</p>
-    <p>The second strategy was used for the persian and hebrew translations, and was to add a <code class="kw" translate="no">direction</code> property to the object containing the string. This <code class="kw" translate="no">direction </code>property indicates the required direction for those strings, and is read by the JavaScript as it fills in the template. As a result, a <code class="kw" translate="no">dir</code> attribute is set on the <code class="kw" translate="no">bdi</code> element, with the value <code class="kw" translate="no">rtl</code>.</p>
+    <p>The second strategy was used for the persian  translation, and was to add a <code class="kw" translate="no">direction</code> property to the object containing the string. This <code class="kw" translate="no">direction </code>property indicates the required direction for those strings, and is read by the JavaScript as it fills in the template. As a result, a <code class="kw" translate="no">dir</code> attribute is set on the <code class="kw" translate="no">bdi</code> element, with the value <code class="kw" translate="no">rtl</code>.</p>
+    <p>The third strategy was used for the hebrew translation. It involved looking at the language metadata provided with the hebrew string, checking it against a list of languages that are usually written in RTL scripts and, if it finds a match, a <code class="kw" translate="no">dir</code> attribute is set on the <code class="kw" translate="no">bdi</code> element, with the value <code class="kw" translate="no">rtl</code>.</p>
   </li>
   </ol>
-  <p>It may be worthwhile to reflect a little on the two strategies employed for item 2.</p>
+  <p>It may be worthwhile to reflect a little on the three strategies employed for item 2.</p>
+  
+  
+  <section>
+  <h3 id="rlmmarker"><a href="#rlmmarker">Adding an RLM marker</a></h3>
   <p>Putting an RLM at the start of a string that would otherwise be incorrectly interpreted, seems like a simple fix. It does, however, change the identity of the string, which may be a concern. The other question it raises is how that RLM got there.</p>
   <p>It is unlikely that users will add RLMs to strings when they create them. The mechanics of such characters are not well understood by many users (how many English-speaking people do you know who would be able to use an LRM in the converse situation?), and actually keyboards on mobile devices generally don't even provide them. Moreover, if a user is typing in the book name into, say, an HTML page where the form they are using inherits a <code class="kw" translate="no">dir=&quot;rtl&quot;</code> setting, they won't see any need to use an RLM, since the text will look fine to them without one (because the form they are using is applying a RTL base direction).</p>
   <p>If the application which stores the string can detect the directional context in which it was created, it would be able to then add an RLM to the beginning of the string automatically. There are dangers here, though, besides that of changing the identity of the string. For example, the application may not make the right assumption sometimes, and may fail to detect the original directional context in others.</p>
   <p>There is also the potential for error where a RTL string begins with LRM. Was that there intentionally, or is it the result of cut &amp; paste? If the person who created the string inserted it, did they do so intentionally to set the base direction for the whole string, or did they intend it to modify the direction in a small part of the beginning of the string?</p>
+</section>
+  
+  
+<section>
+  <h3 id="directionfield"><a href="#directionfield">Using a direction field</a></h3>
   <p>Adding an additional field to the JSON to store the directional information of problematic bidi strings may avoid some of the latter problems. However, it is even less likely that users will create this metadata at the same time as they create the string, so we will again need to rely on the application which stores the string to detect the original directional context and store that in the <code class="kw" translate="no">direction</code> property. (HTML5 provides a mechanism for that, by the way, with <code class="kw" translate="no">dirname</code>.) It does, however, create an overhead for the complexity of the data and the application consuming that data, which has to be aware of the existence of the direction value-pair, and know what to do with it.</p>
 </section>
-<section> 
+  
+  
+<section>
+  <h3 id="languagelookup"><a href="#languagelookup">Language-direction lookup</a></h3>
+  <p>For the hebrew translation, to guess at the required direction we took advantage of the fact that we had information about the language of the text, and that we know that Hebrew is typically written with a RTL script.</p>
+  <p>In the general case, such as in an HTML document, it's  a bad idea to rely on language information to apply direction because <code class="kw" translate="no">lang</code> and <code class="kw" translate="no">dir</code> tags have very different uses and effects. However, in this particular case, it may be acceptable to guess the base direction of the string since it is a much less specific use.</p>
+  <p>An obvious drawback of this approach is that it relies on language information being available. Another drawback of this approach is that every time an application wants to use a string that will be viewed by a user it needs to do a lookup, to see whether the language corresponds to a RTL script.</p>
+  <p>In some cases a particular language may be written in more than one script, or this may be a Latin transcription of a non-Latin string, etc. In these cases, the application would need to rely on the language information indicating the script used as well as the language. For example, Azeri can be written in cyrillic, latin, or arabic scripts, so you'd want to see something like <code class="kw" translate="no">az-Arab</code> as the language tag, and the application would need to know how to deal with that.</p>
+</section><section> 
   <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
