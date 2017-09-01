@@ -88,25 +88,21 @@ different discrete instants in time and that all share some specific relationshi
 Common examples of floating times include concepts such as birth date, 
 starting or ending dates for a worldwide event, holidays, or 
 publication dates.</p>
+
+<h3>An Example: Martina's Newspaper</h3>
    
-<p>For example, consider the publication date of a document&mdash;let's 
-say a specific issue of an online newspaper. On <em>30 April 2017</em> 
+<p>As an example, let's consider the publication date of an online newspaper. On <em>30 April 2017</em> 
 this newspaper published an online Sunday edition.</p>
 
-<p>When Martina, who is a subscriber who lives in Buenos Aires, 
-Argentina, goes to the newspaper's web site, she is given the option of 
-selection which edition she wants to view. The HTML for the form 
-control might look like this:</p>
+<p>Martina is a subscriber who lives in Buenos Aires, Argentina. When she visits the newspaper's web site, she is given the option of 
+selecting which edition she wants to view. The HTML for the form control might look like this:</p>
 
 <figure class="example">
 	<pre>&lt;label for="publicationDate"&gt;Which issue would you like:&lt;/label&gt;
 &lt;input id="publicationDateInput" type="datetime-local"&gt;</pre>
 </figure>
 
-<p>When Martina fills in the form and submits it, though, she is 
-surprised to see that the actual edition she receives is  
-dated <em>Saturday, 29 April 2017</em> instead. What's 
-going on?</p>
+<p>When Martina fills in the form and submits it, though, she is surprised to see that the edition she receives is  dated <em>Saturday, 29 April 2017</em> instead. The actual newspaper is the correct Sunday edition. But the screen says the wrong date. What's going on?</p>
 
 <p>Problems such as this can arise if Web developers or content authors 
 do not treat the publication date as a floating time value. For 
@@ -137,8 +133,10 @@ target.appendChild(document.createTextNode(date.toDateString()));</pre>
   </figure>
   <p>The problem here is that many of the <code class="kw" translate="no">Date</code> methods in JavaScript are sensitive to the local system's time zone and they try to present the date's incremental time value using local time zone rules. Because the time of day was not specified in the string "2017-04-30", the time is treated as <q>midnight</q>, so anyone displaying the underlying value in a time zone following UTC will naturally see the previous day. In the case of a system running in the <code class="kw" translate="no">America/Buenos_Aires</code> time zone, which has an offset from UTC of either -3 hours or -2 hours (depending on whether or not daylight savings time is in effect) the value presented to the user from the JavaScript is incorrect because the the <code class="kw" translate="no">time</code> portion of the publication date is zeroed out. Subtracting two or three hours from the <code class="kw" translate="no">Date</code> object results in a presentation string that is on the <span class="qterm">previous</span> day. That day might be in the wrong month or even the wrong year.</p>
   
+  <p>Here's a more complete example showing the interaction between floating and incremental time values:</p>
+  
   <figure class="example">
-  <pre>
+  <pre><code>
   var mypanel = document.createElement('div');
   
   var date = new Date("2017-04-30");
@@ -167,8 +165,6 @@ target.appendChild(document.createTextNode(date.toDateString()));</pre>
   
   // the above shows: "29 de abril de 2017 21:00 ART"
   
-  // Using UTC finally results in displaying the expected value:
-  // "30 de abril de 2017 00:00 GMT"
   content = document.createElement('p');
   options = {
     month: 'long',
@@ -181,10 +177,14 @@ target.appendChild(document.createTextNode(date.toDateString()));</pre>
   };
   content.appendChild(document.createTextNode(
       new Intl.DateTimeFormat('es-AR', options).format(date)));
+      
+  // Using UTC finally results in displaying the expected value:
+  // "30 de abril de 2017 00:00 GMT"
+      
   mypanel.appendChild(content);
   
   document.body.appendChild(mypanel);
-  </pre></figure>
+  </code></pre></figure>
   
   <p>Because the local interpretation of a given date depends on the local time&mdash;that is, it depends 
   on the local calendar, clock, and time zone rules&mdash;the range of incremental times that might be described as <samp>2017-04-30</samp> turns out to span as many as fifty hours. The earliest time that can be called "30 April 2017" starts in Kiribati in the South Pacific, some 14 hours before midnight on 30 April 2017 occurs in UTC. The last moment that can be called part of "30 April 2017" occurs just before midnight of "1 May 2017" on the island of Midway's time zone, some 11 hours after "30 April 2017" has ended in UTC (there is an even later zone, but it is uninhabited). Depending on the time zone used to create and then later to display an incremental time value, the same floating date value could appear to be as much as two days off.</p>
