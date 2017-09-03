@@ -182,9 +182,8 @@ target.appendChild(document.createTextNode(date.toDateString()));</code></pre>
   
 <p>In client-side scripting with JavaScript, the <code class="kw">Date</code> single argument string constructor uses UTC, with a <dfn>local time offset</dfn> of 0, to compute the underlying incremental time value. Methods that use the local time zone of the browser, such as <code class="kw">toDateString</code> or <code class="kw">toString</code> will cause the problems such as Martina experienced above.</p>
   
-<p>If instead the developer uses the <dfn>field-based time</dfn> constructor <code class="kw">new Date(year, <em>month[, date[, hours[, minutes[, seconds[, milliseconds]]]]</em>]);</code>, then the browser's local time offset is used to compute the underlying incremental time. In the Martina example, <code>var Date = new Date(2017,04,30);</code> creates a time value <code class="kw">1496127600000</code>, which seems to work if only the date is shown. But when Martina visits her friend Noboyuki in Japan, the problem appears in the opposite direction:</p>
-<figure><code>
-  date = new Date(1493478000000); // 2017-04-30 in Japan Standard Time
+<p>If instead the developer uses the <dfn>field-based time</dfn> constructor <code class="kw">new Date(year, <em>month[, date[, hours[, minutes[, seconds[, milliseconds]]]]</em>]);</code>, then the browser's local time offset is used to compute the underlying incremental time. In the Martina example, <code>var Date = new Date(2017,04,30);</code> creates a time value <code class="kw">1493521200000</code>, which seems to work if only the date is shown. But when Martina visits her friend Noboyuki in Japan, the problem appears in the opposite direction:</p>
+<figure class="example"><pre><code>  date = new Date(1493478000000); // 2017-04-30 in Japan Standard Time
 
   var content = document.createElement('p');
 
@@ -216,9 +215,7 @@ target.appendChild(document.createTextNode(date.toDateString()));</code></pre>
   options.timeZone = 'Asia/Tokyo';
   
   // 30 de abril de 2017 00:00 GMT+9
-
-</code>
-</pre></figure>
+</code></pre></figure>
 
 <p>Ultimately, Web developers need to remain aware of the use of incremental times in the underlying APIs. Using UTC or a consistent local time offset for floating time values allows these values to be processed and displayed consistently.</p>
   
