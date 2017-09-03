@@ -64,9 +64,7 @@ f.additionalLinks = ''
 
 <section id="nutshell">
   <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
-  <p>A <dfn id="def_floating_time">floating time</dfn> or a <dfn id="dfn_floating_date">floating date</dfn> is a time value that isn't tied to a specific time zone. 
-     Applications that work with floating times need to avoid pitfalls that can arise from implicit conversion to <em>incremental time</em> values or the improper
-     use of time zones when displaying or processing a floating time value.
+  <p>A <dfn id="def_floating_time">floating time</dfn> or a <dfn id="dfn_floating_date">floating date</dfn> is a time value that isn't tied to a specific time zone. Applications that work with floating times need to avoid pitfalls that can arise from implicit conversion to <em>incremental time</em> values or the improper use of time zones when displaying or processing a floating time value.
   </p>
 </section>
 
@@ -83,16 +81,12 @@ because they are not fixed to a specific incremental time value.
 Floating times are not attached and should never be attached to a 
 particular time zone.</p> </blockquote> 
 
-<p>That is, a floating time value is a time value that is associated with many 
-different discrete instants in time and that all share some specific relationship. 
-Common examples of floating times include concepts such as birth date, 
-starting or ending dates for a worldwide event, holidays, or 
-publication dates.</p>
+<p>That is, a floating time value is a time value that is associated with many different discrete instants in time which share some specific relationship. Common examples of floating times include concepts such as birth date, 
+starting or ending dates for a worldwide event, holidays, or publication dates.</p>
 
 <h3>An Example: Martina's Newspaper</h3>
    
-<p>As an example, let's consider the publication date of an online newspaper. On <em>30 April 2017</em> 
-this newspaper published an online Sunday edition.</p>
+<p>As an example, let's consider the publication date of an online newspaper. On <em>30 April 2017</em> this newspaper published an online Sunday edition.</p>
 
 <p>Martina is a subscriber who lives in Buenos Aires, Argentina. When she visits the newspaper's web site, she is given the option of 
 selecting which edition she wants to view. The HTML for the form control might look like this:</p>
@@ -102,38 +96,27 @@ selecting which edition she wants to view. The HTML for the form control might l
 &lt;input id="publicationDateInput" type="datetime-local"&gt;</pre>
 </figure>
 
-<p>When Martina fills in the form and submits it, though, she is surprised to see that the edition she receives is  dated <em>Saturday, 29 April 2017</em> instead. The actual newspaper is the correct Sunday edition. But the screen says the wrong date. What's going on?</p>
+<p>When Martina fills in the form and submits it, though, she is surprised to see that the edition she receives is dated <em>Saturday, 29 April 2017</em> instead. The actual newspaper is the correct Sunday edition. But the screen says the wrong date. What's going on?</p>
 
-<p>Problems such as this can arise if Web developers or content authors 
-do not treat the publication date as a floating time value. For 
-example, the JavaScript <code class="kw" translate="no">Date</code> 
-object is a form of <em>incremental</em> time: it represents the number 
-of milliseconds since an <span class="qterm">epoch date</span>. In the 
-case of JavaScript, the epoch data is the same as that used by Unix, 
-the Java programming language, and many other systems: it's defined as 
-midnight, January 1, 1970 in the UTC (Universal Coordinated Time) time 
-zone. So for Martina's newspaper, the value in the HTML form she 
-submitted might be converted in JavaScript to a <code class="kw" 
-translate="no">Date</code> object with the value: 
-<kbd>1493510400000</kbd> (in milliseconds since the epoch). That long
-integer value actually represents the instant of midnight, 30 April, 
-2017 in Coordinated Universal Time (UTC). At that moment, it was still
-only 9:00 PM (21:00) in Buenos Aires on the previous day, 
-Saturday, 29 April, 2017.</p>
-  
-    <figure class="example">
-    <pre>var date = new Date(publicationDateInput.value);
+<p>The publication date of the newspaper is an example of a <em>floating time</em> value: the date of the newspaper stays the same, regardless of which time zone one views the newspaper in. However, most time values in programming languages and environments are based on <em>incremental time</em>. The JavaScript <code class="kw" translate="no">Date</code> object is an example of an incremental time: it represents the number of milliseconds since an <span class="qterm">epoch date</span>. In the case of JavaScript, the epoch data is the same as that used by Unix, the Java programming language, and many other systems: it's defined as midnight, January 1, 1970 in the UTC (Universal Coordinated Time) time zone. So for Martina's newspaper, the value in the HTML form she submitted might be converted in JavaScript to a <code class="kw" translate="no">Date</code> object with the value: <kbd>1493510400000</kbd> (in milliseconds since the epoch). That long integer value corresponds to the instant of midnight, 30 April, 2017 in Coordinated Universal Time (UTC). At that moment in Buenos Aires, Argentina, it was still only 9:00 PM (21:00) on the previous day, Saturday, 29 April, 2017. When the <code>Date</code> with value <kbd>1493510400000</kbd> is displayed in the local time zone, it's interpreted as the preceding Saturday.</p>
+
+<p>Here's an example. Suppose the <code class="kw">input</code> element <code class="kw" translate="no">publicationDateInput</code> above contained the value used in the example ("2017-04-30"). The code might look like this:</p>  
+
+<figure class="example">
+<pre><code>var date = new Date(publicationDateInput.value);
 var target = document.getElementById(&quot;date-target&quot;);
-target.appendChild(document.createTextNode(date.toDateString()));</pre>
-  </figure>
+target.appendChild(document.createTextNode(date.toDateString()));</code></pre>
+</figure>
   
-  <p>Suppose your element <code class="kw" translate="no">publicationDateInput</code> contained the value used in the example above ("2017-04-30"). You'd expect the element whose ID is <code class="kw" translate="no">date-target</code> to contain a string representing that date. However, if you live in a time zone west of UTC (such as Martina does, in the <code class="kw" translate="no">America/Buenos_Aires</code> time zone), you'll get a surprise. It says something like: </p>
-  <figure class="example">
-    <pre>Sat Apr 29 2017</pre>
-  </figure>
-  <p>The problem here is that many of the <code class="kw" translate="no">Date</code> methods in JavaScript are sensitive to the local system's time zone and they try to present the date's incremental time value using local time zone rules. Because the time of day was not specified in the string "2017-04-30", the time is treated as <q>midnight</q>, so anyone displaying the underlying value in a time zone following UTC will naturally see the previous day. In the case of a system running in the <code class="kw" translate="no">America/Buenos_Aires</code> time zone, which has an offset from UTC of either -3 hours or -2 hours (depending on whether or not daylight savings time is in effect) the value presented to the user from the JavaScript is incorrect because the the <code class="kw" translate="no">time</code> portion of the publication date is zeroed out. Subtracting two or three hours from the <code class="kw" translate="no">Date</code> object results in a presentation string that is on the <span class="qterm">previous</span> day. That day might be in the wrong month or even the wrong year.</p>
+<p>You'd expect the element whose ID is <code class="kw" translate="no">date-target</code> to contain a string representing Sunday, April 30th. However, if you live in a time zone west of UTC (such as Martina does, in the <code class="kw" translate="no">America/Buenos_Aires</code> time zone) you would see something like this instead:</p>
   
-  <p>Here's a more complete example showing the interaction between floating and incremental time values:</p>
+ <figure class="example">
+   <pre>Sat Apr 29 2017</pre>
+ </figure>
+  
+<p>Many of the <code class="kw" translate="no">Date</code> methods in JavaScript are sensitive to the local system's time zone and they try to present the date's incremental time value using local time zone rules. Because the time of day was not specified in the string "2017-04-30", the time is treated as <q>midnight</q>, so anyone displaying the underlying value in a time zone following UTC will naturally see the previous day. In the case of a system running in the <code class="kw" translate="no">America/Buenos_Aires</code>time zone, which has an offset from UTC of either -3 hours or -2 hours (depending on whether or not daylight savings time is in effect) the value presented to the user from the JavaScript is incorrect because the the <code class="kw" translate="no">time</code> portion of the publication date is zeroed out. Subtracting two or three hours from the <code class="kw" translate="no">Date</code> object results in a presentation string that is on the <span class="qterm">previous</span> day. That day might be in the wrong month or even the wrong year.</p>
+  
+<p>Here's a more complete example showing the interaction between floating and incremental time values, including how the new JavaScript <code class="kw">Intl</code> extension interacts with date values:</p>
   
   <figure class="example">
   <pre><code>
@@ -142,22 +125,23 @@ target.appendChild(document.createTextNode(date.toDateString()));</pre>
   var date = new Date("2017-04-30");
   var content = document.createElement('p');
   // this produces "Sat Apr 29 2017"
+  
   content.appendChild(document.createTextNode(date.toDateString()));
   mypanel.appendChild(content);
   
   // the Intl extension provides locale-awareness and
-  // supports different time zones, at least in some browsers.
+  // supports different time zones, in most modern browsers.
   // this code formats the same Date value using the Buenos Aires
-  // time zone and a Spanish/Argentina locale
+  // time zone and a Spanish/Argentina locale ('es-AR')
   content = document.createElement('p');
   var options = {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
+    month:        'long',
+    day:          'numeric',
+    year:         'numeric',
+    hour:         'numeric',
+    minute:       'numeric',
     timeZoneName: 'short',
-    timeZone: 'America/Buenos_Aires'
+    timeZone:     'America/Buenos_Aires'
   };
   content.appendChild(document.createTextNode(
       new Intl.DateTimeFormat('es-AR', options).format(date)));
@@ -167,13 +151,13 @@ target.appendChild(document.createTextNode(date.toDateString()));</pre>
   
   content = document.createElement('p');
   options = {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
+    month:        'long',
+    day:          'numeric',
+    year:         'numeric',
+    hour:         'numeric',
+    minute:       'numeric',
     timeZoneName: 'short',
-    timeZone: 'UTC'
+    timeZone:     'UTC'
   };
   content.appendChild(document.createTextNode(
       new Intl.DateTimeFormat('es-AR', options).format(date)));
@@ -186,53 +170,26 @@ target.appendChild(document.createTextNode(date.toDateString()));</pre>
   document.body.appendChild(mypanel);
   </code></pre></figure>
   
-  <p>Because the local interpretation of a given date depends on the local time&mdash;that is, it depends 
-  on the local calendar, clock, and time zone rules&mdash;the range of incremental times that might be described as <samp>2017-04-30</samp> turns out to span as many as fifty hours. The earliest time that can be called "30 April 2017" starts in Kiribati in the South Pacific, some 14 hours before midnight on 30 April 2017 occurs in UTC. The last moment that can be called part of "30 April 2017" occurs just before midnight of "1 May 2017" on the island of Midway's time zone, some 11 hours after "30 April 2017" has ended in UTC (there is an even later zone, but it is uninhabited). Depending on the time zone used to create and then later to display an incremental time value, the same floating date value could appear to be as much as two days off.</p>
+<p>Because the local interpretation of a given date depends on the local time&mdash;that is, it depends on the local calendar, clock, and time zone rules&mdash;the range of incremental times that might be described as <samp>2017-04-30</samp> turns out to span as many as fifty hours. The earliest time that can be called "30 April 2017" starts in Kiribati in the South Pacific, some 14 hours before midnight on 30 April 2017 occurs in UTC. The last moment that can be called part of "30 April 2017" occurs just before midnight of "1 May 2017" on the island of Midway's time zone, some 11 hours after "30 April 2017" has ended in UTC (there is an even later zone, but it is uninhabited). Depending on the time zone used to create and then later to display an incremental time value, the same floating date value could appear to be as much as two days off.</p>
   
-  <p>That's because, while a floating time is not tied to a specific time zone, any incremental time values depend 
-  on time zone for their display and processing. Since data formats for time values in both server-side (such as Java or PHP) 
-  and client-side languages (such as JavaScript) are usually incremental times, this can lead to problems such as Martina's mysterious
-  newspaper publication date. </p>
+<p>That's because, while a floating time is not tied to a specific time zone, any incremental time values depend on time zone for their display and processing. Since data formats for time values in both server-side (such as Java or PHP) and client-side languages (such as JavaScript) are usually incremental times, this can lead to problems such as Martina's mysterious newspaper publication date. </p>
   
-  <p>There are several ways to work around this. One method is to always use the UTC time zone for processing floating time values. Developers have to be careful to convert time values into incremental time objects using an offset of zero and segregate code that deals with floating times from more-normal time values such as time stamps.</p>
+<h3>How to handle floating times</h3>
   
-  <p>In other cases, there are data types or APIs that can help by keeping floating times "floating". For example, if you're a Java developer writing server code, you can (carefully) use data types from Joda time (part of the JDK since 1.8), such as <code>LocalDate</code> to create and process time values without imposing a specific time zone. A Java <code>LocalDate</code> is an example of a floating time value.</p>
+<p>There are several ways to work around this. One method is to always use the UTC time zone for processing floating time values. Developers have to be careful to convert time values into incremental time objects using an offset of zero and segregate code that deals with floating times (especially formatting these time values for display) from code dealing with actual incremental time values such as time stamps.</p>
   
-  <p>In client-side scripting with JavaScript, this means that if you pass a floating time to the single-argument string constructor for Date, which treats its argument as UTC, then you cannot use time-zone-aware methods such as toDateString and toString. If you are writing a web application, and are performing further date calculations that involve the current time for the user, consider using the user's local time zone instead: if you are using the Date object, construct it by passing in separate integer year, month and day values. You are then free to perform any calculations and finally use toDateString to format the date for display if required.</p>
+<p>In some programming languages and environments there are data types or APIs that can help by keeping floating times "floating". For example, if you're a Java developer writing server code, you can (carefully) use data types from Joda time (part of the JDK since 1.8), such as <code>LocalDate</code> to create and process time values without imposing a specific time zone. A Java <code class="kw">LocalDate</code> is an example of a floating time value. The care that must be excercised is that implicit or explict conversion to incremental time values such as <code class="kw">Instant</code> or <code class="kw">Date</code> often takes place in formatting code or when applying certain date processes, such as comparison.</p>
   
-  <h3 id="yyyshortcomings2"><a href="#yyyshortcomings">Storing, Retrieving, and Aggregating Time Data</a></h3>
-  <p>Another way that floating times are used is in the aggregation of data. For example, suppose you are
-  building an application that keeps track of the number of downloads a user makes. You can record each
-  download using a timestamp (an incremental time value). That might look like this: </p>
-  <figure class="example">
-    <pre>{
-    &quot;user-id&quot;: &quot;9333c644-487a-11e7-a919-92ebcb67fe33&quot;,
-    &quot;item&quot;: &quot;http://www.example.com/downloadMe&quot;,
-    &quot;date&quot;: &quot;2013-10-02T07:17:00Z&quot;,
-    &quot;user-timezone&quot;: &quot;America/Los_Angeles&quot;
-},</pre>
-  </figure>
-  <p>When your application wants to aggregate statistics, the use of incremental times
-    to represent the aggregated data could become a problem. Suppose you want to 
-    accumulate user statistics, such as total downloads, on a daily basis. 
-    The timestamp in the example above might fall on October 2, 2013 for that customer. 
-    In this case, if the time zone were <code class=kw translate=no>America/Los_Angeles</code> as
-    shown in the record, it would not! Here's what the accumulated record might look like:</p>
-  <figure class="example">
-    <pre>{
-    &quot;user-id&quot;: &quot;9333c644-487a-11e7-a919-92ebcb67fe33&quot;,
-    &quot;aggregationDate&quot;: &quot;2013-10-01&quot;,
-    &quot;numDownloaded&quot;: 10
-},</pre>
-  </figure>
-  <p>In this case, you want to use local time rules, including the time zone,
-  in order to compute which floating date the download should accumulate to. But you want to use floating time
-  rules to read and write the accumulated data record. That way the statistics remain the same
-  for a given date, even if the user's time zone has changed in the interim. For example,
-  if the customer moves to the <code class=kw translate=no>Europe/Paris</code> time zone, the
-  number of downloads on <code>2013-10-01</code> should remain the same, even though the
-  accumulation rules might be different now than they were previously.</p>
-</section>
+<p>In client-side scripting with JavaScript, if the developer passes a floating time to the single-argument string constructor for <code class="kw">Date</code>, which treats its argument as UTC, then you cannot use time-zone-aware methods such as <code class="kw">toDateString</code> and <code class="kw">toString</code> without extra care.</p>
+  
+<p>If instead the developer uses one of the local-time based constructors, such as <code class="kw">new Date(year, <em>month[, date[, hours[, minutes[, seconds[, milliseconds]]]]</em>]);</code>, then the local time zone is to fill in the missing fields and the <dfn>local time offset</dfn> (see the Working with Time Zones note) is used to compute the underlying incremental time. In the Martina example, writing the following code produces different potential mismatches:</p>
+  
+<figure>
+<pre><code>
+var Date = new Date(2017,04,30); // 1496127600000L
+</code>
+</pre></figure>
+  
 <section>
   <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
