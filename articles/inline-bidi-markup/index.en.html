@@ -202,37 +202,18 @@ li ol {
     <h3 id="bdo"><a href="#bdo">The <code translate="no" class="kw">bdo</code> element</a></h3>
     <p>The <code class="kw" translate="no">bdo</code> (bidirectional override) element prevents the bidirectional algorithm from rearranging the sequence of characters it encloses, and allows you to display the sequence from right to left or from left to right in the order in which the characters are stored in memory. There are important use cases for it, but they are rare. For more information see <a href="#override">Overriding the algorithm</a> below.</p>
   </section>
-</section>
-
-
-<section>
-  <h2 id="whattodo"><a href="#whattodo">Steps for handling inline bidirectional text in <abbr>HTML</abbr></a></h2>
-  <div class="sidenoteGroup">
-    <p>Here we  summarize  default guidelines for working with bidirectional inline  text. Often alternative approaches will work, but the approaches outlined here are simple to apply and should work for all cases. </p>
-    <p><a href="#aboutmarkup">Descriptions of the markup</a> used can be found in the previous section. Following sections will provide <a href="#staticexamples">worked examples</a>. Some of the alternatives are also explored in the worked examples.</p>
-    <aside class="sideinfonote">
-      <p class="info">If the text to be marked up is tightly wrapped by a <em>non-inline</em> element you would usually add the <code translate="no" class="kw">dir</code> attribute to that element. In some cases this can lead to the block of text being aligned on the page in a way that is not desirable. To avoid this, you can add an inline element immediately inside the tags of the existing markup, and follow the rules below for marking up that inline element. For more information about handling direction in non-inline elements, see <a class="print" href="/International/questions/qa-html-dir"><cite>Structural markup and right-to-left text in HTML</cite></a>.</p>
-    </aside>
-  </div>
-  <section>
-    <h3 id="unknownuc"><a href="#unknownuc">Tightly wrapping opposite-direction phrases</a></h3>
-    <p> The easiest way to address bidi issues in your content is to tightly wrap <em>every</em> <a class="termref" href="#oppositedirection">opposite-direction phrase</a> in markup that sets its base direction. </p>
-    <p>By <dfn id="tightwrap">tightly wrapping</dfn>, we mean that the element contains the entire opposite-direction phrase, and nothing but the opposite-direction phrase. </p>
-    <p>When none of the problematic use cases  apply, this will not have any visible effect. But when one of them does apply, this provides a simple solution, that doesn't require you to figure out specifically what the problem is.</p>
-  </section>
   
   <section>
-    <h3 id="html5markup"><a href="#html5markup">HTML5 approach</a></h3>
-    <p>The latest version of the  HTML5 specification says that  browsers should change their default style sheet so that the <code translate="no" class="kw">dir</code> attribute isolates the text inside the element from that surrounding it. This means that more of the potential problems pointed out <a href="#where">earlier</a> simply melt away when you tightly wrap all opposite-direction phrases with elements containing <code translate="no" class="kw">dir</code>.</p>
-    <p><b class="leadin" id="cssshim">The CSS Shim</b>. Unfortunately, not all browsers yet apply isolation when <code translate="no" class="kw">dir</code> is used. For this reason, during the transitional phase, we recommend that you provide  some CSS yourself to produce the effect of the default style sheet. The following browser versions are known to support the necessary CSS:</p>
-    <ul>
-      <li>Firefox 14+</li>
-      <li>Chrome 18+</li>
-      <li>Safari 6+</li>
-      <li>Opera 15+</li>
-    </ul>
-    <p> Internet Explorer 8-10 doesn't support the CSS, but does use a hack  that produces a similar effect, and is usually good enough.</p>
-    <p>Browsers that don't yet support the CSS will simply behave in the same way as before, but most recent versions of major browsers do support the desired behavior already.</p>
+    <h3 id="cssshim"><a href="#cssshim">The CSS shim</a></h3>
+<p>The CSS shim can be applied when a browser supports the CSS needed to isolate text, but doesn't support isolation for the <code class="kw" translate="no">dir</code> attribute. It was particularly useful during the transition period, while browsers had still not implemented the HTML5 behaviour. Now it is only useful for Safari (Edge never supported the required CSS), although hopefully it won't be needed for the much longer. The following browser versions are known to support the necessary CSS:</p>
+<ul>
+<li>Firefox 14+</li>
+<li>Chrome 18+</li>
+<li>Safari 6+</li>
+<li>Opera 15+</li>
+</ul>
+<p> Internet Explorer 8-10 doesn't support the CSS, but does use a hack  that produces a similar effect, and is often (but not always) good enough.</p>
+<p>Browsers that don't yet support the CSS will simply behave in the same way as before, but most recent versions of major browsers do support the desired behavior already.</p>
     <p>The CSS shim is as follows: </p>
     <figure>
       <pre>[dir='ltr'], [dir='rtl'] { 
@@ -250,99 +231,143 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
   	}</pre>
     </figure>
     <p><a class="print" href="/International/tests/repo/results/the-dir-attribute-isolation#inheritance">See  which browsers support this</a>.</p>
-    <p>At the time of writing, all browser versions that support isolation in CSS also support the <code translate="no" class="kw">bdi</code> element.</p>
-    <p>To  make sure that a phrase that contains any opposite-direction characters is displayed correctly, do the following.</p>
-    <p><b class="leadin">If you know the phrase's direction, or can work it out for injected text</b>,   wrap all opposite-direction phrases in an element with a <code translate="no" class="kw">dir</code> attribute. This is not always necessary, but never does any harm. If the phrase is already tightly wrapped in an inline element, you can use the existing element for this purpose. If not, add a <code translate="no" class="kw">span</code> element.</p>
+    <p>At the time of writing, all browser versions that support isolation in CSS also support the <code translate="no" class="kw">bdi</code> element.</p>  </section>
+</section>
+
+
+<section>
+  <h2 id="whattodo"><a href="#whattodo">Steps for handling inline bidirectional text in <abbr>HTML</abbr></a></h2>
+  <div class="sidenoteGroup">
+    <p>Here we  summarize  default guidelines for working with bidirectional inline  text. Often alternative approaches will work, but the approaches outlined here are simple to apply and should work for all cases. </p>
+<p>When none of the problematic use cases  apply, the approaches outlined here will not have any visible effect. But when one of them does apply, these approaches provide a simple solution, that doesn't require you to figure out specifically what the problem is.</p>
+    <p><a href="#aboutmarkup">Descriptions of the markup</a> used can be found in the previous section. Following sections will provide <a href="#staticexamples">worked examples</a>. Some of the alternatives are also explored in the worked examples.</p>
+    <aside class="sideinfonote">
+      <p class="info">If the text to be marked up is tightly wrapped by a <em>non-inline</em> element you would usually add the <code translate="no" class="kw">dir</code> attribute to that element. In some cases this can lead to the block of text being aligned on the page in a way that is not desirable. To avoid this, you can add an inline element immediately inside the tags of the existing markup, and follow the rules below for marking up that inline element. For more information about handling direction in non-inline elements, see <a class="print" href="/International/questions/qa-html-dir"><cite>Structural markup and right-to-left text in HTML</cite></a>.</p>
+    </aside>
+  </div>
+  <section>
+<h3 id="unknownuc2"><a href="#unknownuc">Tightly wrap opposite-direction phrases</a></h3>
+<p> The best way to begin to address bidi issues in your content is to tightly wrap <em>every</em> <a class="termref" href="#oppositedirection">opposite-direction phrase</a> in markup that sets its base direction. By <dfn id="tightwrap">tightly wrap</dfn>, we mean that the element contains the entire opposite-direction phrase, and nothing but the opposite-direction phrase. </p>
+</section>
+  
+  <section>
+    <h3 id="html5markup"><a href="#html5markup">If you know the direction of the phrase</a></h3>
+<p>Most of the potential problems pointed out <a href="#where">earlier</a> simply melt away when you add a <code translate="no" class="kw">dir</code> attribtue to tightly wrapped phrases of opposite-direction text. When browsers that support the  HTML5 specification encounter the <code translate="no" class="kw">dir</code> attribute on an element they isolate the text inside the element from the text surrounding it.</p>
+<p>If the phrase is already tightly wrapped in an inline element, you can use the existing element for this purpose. If not, add a <code class="kw" translate="no">span</code> element. </p>
     <div class="example">
       <div class="example-head">Examples for text in a left-to-right context</div>
-      <table class=injectionexamples>
+      <table class="injectionexamples">
         <tbody>
           <tr>
+          <td>1</td>
+          <td>Before:</td>
             <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text<code> </code>RTL-TEXT<code translate="no" class="kw">&lt;/p&gt;</code></td>
-            <td style="font-size: 36px;">⇨</td>
+            </tr>
+            <tr>
+          <td> </td>
+            <td>After:</td>
             <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;span dir=rtl&gt;</code>RTL-TEXT<code translate="no" class="kw">&lt;/span&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
           </tr>
           <tr>
-            <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;cite&gt;</code>RTL-TEXT<code translate="no" class="kw">&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
-            <td style="font-size: 36px;">⇨</td>
+          <td>2</td>
+            <td>Before:</td>
+          <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;cite&gt;</code>RTL-TEXT<code translate="no" class="kw">&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+            </tr>
+            <tr>
+            <td> </td>
+          <td>After:</td>
             <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;cite dir=rtl&gt;</code>RTL-TEXT<code translate="no" class="kw">&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
           </tr>
           <tr>
-            <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;cite&gt;</code>RTL-TEXT ltr-text-in-rtl<code translate="no" class="kw">&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
-            <td style="font-size: 36px;">⇨</td>
+           <td>3</td>
+          <td>Before:</td>
+           <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;cite&gt;</code>RTL-TEXT ltr-text-in-rtl<code translate="no" class="kw">&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+          </tr>
+          <tr>
+           <td> </td>
+           <td>After:</td>
             <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;cite dir=rtl&gt;</code>RTL-TEXT <code translate="no" class="kw">&lt;span dir=ltr&gt;</code>ltr-text-in-rtl<code translate="no" class="kw">&lt;/span&gt;&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p><b class="leadin">If you don't know the phrase's direction, ie. unknown text that will be injected at run time</b>, then either:</p>
-    <ol>
-      <li>
-        <p>wrap the phrase in <code>&lt;bdi&gt;...&lt;/bdi&gt;</code>.   (If already wrapped by a <code translate="no" class="kw">span</code> element, you may replace the <code translate="no" class="kw">span</code> with <code translate="no" class="kw">bdi</code>.)        Without an explicit <code translate="no" class="kw">dir</code> value, <code>dir=&quot;auto&quot;</code> is implied.</p>
-      </li>
-      <li>
-        <p>or alternatively, if the phrase is tightly wrapped by an element already, you could  just add <code>dir=&quot;auto&quot;</code> to that element</p>
-      </li>
-    </ol>
-    <div class="example">
-      <div class="example-head">Examples for text in a left-to-right context</div>
-      <table class=injectionexamples>
-        <tbody>
-          <tr>
-            <td><code translate="no" class="kw">&lt;p&gt;</code>static-text <em>injected-text</em><code translate="no" class="kw">&lt;/p&gt;</code></td>
-            <td style="font-size: 36px;">⇨</td>
-            <td><code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;bdi&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/bdi&gt;&lt;/p&gt;</code></td>
-          </tr>
-          <tr>
-            <td><code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;cite&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/cite&gt;&lt;/p&gt;</code></td>
-            <td style="font-size: 36px;">⇨</td>
-            <td><code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;cite&gt;&lt;bdi&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/bdi&gt;&lt;/cite&gt;&lt;/p&gt;</code>
-              <p>or</p>
-              <code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;cite dir=auto&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/cite&gt;&lt;/p&gt;</code></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-  
-  <section>
-    <h3 id="html4markup"><a href="#html4markup">Bullet-proofing for legacy browsers</a></h3>
-    <p>If <code translate="no" class="kw">dir</code> isolation or the CSS shim is not supported by a browser or browser version, it is not possible to isolate phrases from their surrounding content. It is often possible to achieve a similar effect, however, using an RLM or LRM Unicode control code, if you know the direction of the surrounding text.</p>
-    <p>To  make sure that a phrase that contains any opposite-direction characters is displayed correctly, do the following:</p>
-    <p><b class="leadin">If you know the  direction of the text surrounding a phrase, or can work it out for injected text</b>:</p>
-    <ol>
-      <li>
-        <p>tightly wrap opposite-direction  phrases in an inline element that uses the <code translate="no" class="kw">dir</code> attribute to set the direction of the phrase, as described above.</p>
-      </li>
-      <li>
-        <p>if the  tightly-wrapped phrase in the previous step is followed inline (possibly after some intervening neutral characters) by a number or a logically separate opposite-direction phrase, then add   a directional mark (RLM or LRM) immediately after the markup of that phrase. Choose one that matches the direction of the surrounding context. If you do not want to or cannot check whether the phrase is followed by one of those things, you can add a directional mark matching the direction of the  context after every tightly-wrapped phrase.</p>
-        <div class="example">
+<p><strong class="leadin">Bulletproofing your code for legacy browsers.</strong></p>
+<p>You can bulletproof this approach to handle Edge and Safari or other legacy browsers which still don't directionally isolate elements with a <code class="kw" translate="no">dir</code> attribute. Having tightly-wrapped the phrase as just shown, add a directional mark (RLM or LRM) immediately after the markup of that phrase. Choose one that matches the direction of the surrounding context. This is mostly needed when the phrase is followed by a number or a separate opposite-direction phrase (ie. in a list), but you can add a directional mark matching the direction of the context after every tightly-wrapped phrase.</p>
+<div class="example">
           <div class="example-head">Examples for text in a left-to-right context</div>
           <table class=injectionexamples>
             <tbody>
               <tr>
-                <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;span dir=rtl&gt;</code>RTL-TEXT<code translate="no" class="kw">&lt;/span&gt; 1234</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
-                <td style="font-size: 36px;">⇨</td>
+            <td>1</td>
+          <td>Before:</td>
+              <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;span dir=rtl&gt;</code>RTL-TEXT<code translate="no" class="kw">&lt;/span&gt; 1234</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+          </tr>
+          <tr>
+          <td> </td>
+            <td>After:</td>
                 <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;span dir=rtl&gt;</code>RTL-TEXT<code translate="no" class="kw">&lt;/span&gt;&amp;lrm; 1234</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
-              </tr>
+            </tr>
               <tr>
-                <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;span dir=rtl&gt;</code>RTL-TEXT-1<code translate="no" class="kw">&lt;/span&gt;, &lt;span dir=rtl&gt;</code>RTL-TEXT-2<code translate="no" class="kw">&lt;/span&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
-                <td style="font-size: 36px;">⇨</td>
+            <td>2</td>
+          <td>Before:</td>
+              <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;span dir=rtl&gt;</code>RTL-TEXT-1<code translate="no" class="kw">&lt;/span&gt;, &lt;span dir=rtl&gt;</code>RTL-TEXT-2<code translate="no" class="kw">&lt;/span&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+          </tr>
+          <tr>
+          <td> </td>
+            <td>After:</td>
                 <td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;span dir=rtl&gt;</code>RTL-TEXT-1<code translate="no" class="kw">&lt;/span&gt;&amp;lrm;, &lt;span dir=rtl&gt;</code>RTL-TEXT-2<code translate="no" class="kw">&lt;/span&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
               </tr>
             </tbody>
           </table>
         </div>
-      </li>
-    </ol>
-    <p><b class="leadin">If you don't know the phrase's direction, ie. unknown text that will be injected at run time</b>, there isn't really a good way to automatically apply the right base direction. However, if you know that one injected phrase may be followed inline by a number or a logically separate opposite-direction phrase, you can  add  a directional mark immediately after  the phrase that matches the direction of the surrounding context  in order to separate the phrase from what follows.</p>
-    <p>If the phrase is being injected at run-time and its overall direction is unknown, it can be estimated from the direction of its individual characters, e.g. by using the direction of its first strongly typed character. Open-source code for doing so is available, but HTML does not offer any features for easing this task. It is possible (but not necessary) to skip the steps  above only if both the overall direction of the phrase and the direction of the last strongly typed character in the phrase is the same as the context direction.</p>
   </section>
+  
+  <section>
+    <h3 id="html4markup"><a href="#html4markup">If you don't know the direction of the phrase</a></h3>
+<p>When text will be added at run time to your HTML page you may not be able to predict the base direction of the injected text in advance. To handle this eventuality you have two options.</p>
+<p>If the phrase is tightly wrapped by an element already, you could just add <code>dir="auto"</code> to that element. This directionally isolates the element's text and looks at the first strong character to determine what base direction to apply.</p>
+<p>Otherwise, wrap the phrase in a <code translate="no" class="kw">bdi</code> element (or in a <code translate="no" class="kw">span</code> element with <code class="kw" translate="no">dir</code> set to <code class="kw" translate="no">auto</code>, if you prefer.) Without a <code translate="no" class="kw">dir</code> attribute, the <code translate="no" class="kw">bdi</code> element behaves as if <code>dir=&quot;auto&quot;</code> had been applied.</p>
+<div class="example">
+      <div class="example-head">Examples of how to cater for text that is inserted at runtime</div>
+      <table class="injectionexamples">
+        <tbody>
+           <tr>
+             <td>1</td>
+          <td>Before:</td>
+           <td><code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;cite&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/cite&gt;&lt;/p&gt;</code></td>
+        </tr>
+              <tr>
+            <td> </td>
+             <td>After:</td>
+           <td><code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;cite dir=&quot;auto&quot;&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/cite&gt;&lt;/p&gt;</code></td>
+          </tr>
+        <tr>
+            <td>2</td>
+          <td>Before:</td>
+            <td><code translate="no" class="kw">&lt;p&gt;</code>static-text <em>injected-text</em><code translate="no" class="kw">&lt;/p&gt;</code></td>
+              </tr>
+              <tr>
+            <td> </td>
+            <td>After:</td>
+          <td><code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;bdi&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/bdi&gt;&lt;/p&gt;</code>
+<br/>or<br/>
+<code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;span dir=auto&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/span&gt;&lt;/p&gt;</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+<p><strong class="leadin">Bulletproofing your code for legacy browsers.</strong></p>
+<p>The isolation can be addressed using LRM/RLM as described above, but the key benefit of the <code translate="no" class="kw">bdi</code> element or <code>dir=&quot;auto&quot;</code> is that they can guess at the appropriate base direction for the inserted text.</p>
+<p>Unfortunately, there isn't really an alternative way to automatically determine the base direction for the inserted text, other than to use scripting,  unless the browser already supports the requisite CSS. This is the case for Safari, and you can therefore add the <a href="#cssshim">CSS Shim</a> to your style sheet to obtain the correct result.</p>
+</section>
 </section>
 
 
+
+
+
 <section>
-  <h2 id="staticexamples"><a href="#staticexamples">Worked examples for static use cases</a></h2>
+<h2 id="staticexamples"><a href="#staticexamples">Worked examples for static use cases</a></h2>
   <p>In this section we will look at how to write code that addresses various use cases  where the content is written by the author. The section following this deals with use cases where content is injected into the page.</p>
   <p>In all cases, the sections related to use of HTML5 features assume the availability of the CSS shim described above for browsers that support it but don't support isolation with <code translate="no" class="kw">dir</code>.</p>
   
