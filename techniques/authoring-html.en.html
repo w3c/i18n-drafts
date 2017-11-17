@@ -2855,7 +2855,12 @@ completePage();
 
 // add prompts for ids
 var summaries = document.querySelectorAll('summary')
-for (let i=0;i<summaries.length;i++) summaries[i].innerHTML = '<span>'+summaries[i].parentNode.id+'</span>'+summaries[i].textContent
+for (let i=0;i<summaries.length;i++) {
+    let eclink = '<a href="authoring-html.en?'
+    if (summaries[i].parentNode.parentNode.nodeName.toLowerCase() === 'details') eclink += 'open='+summaries[i].parentNode.parentNode.id+'&amp;'
+    eclink += 'open='+summaries[i].parentNode.id+'">'+summaries[i].parentNode.id+'</a>'+summaries[i].textContent
+    summaries[i].innerHTML = eclink
+    }
 
 // check for parameters and take appropriate action
 parameters = location.search.split('&');
