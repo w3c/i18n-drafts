@@ -97,18 +97,18 @@ li ol {
   <h2 id="quick"><a href="#quick">Just tell me  what I need to do</a></h2>
   <p><strong>If you know the direction of all the text involved</strong>, <a class="termref" href="#tightwrap">tightly wrap</a> <em>every</em> <a class="termref" href="#oppositedirection">opposite-direction phrase</a> in markup, and use the <code translate="no" class="kw">dir</code> attribute on  that markup. Be sure to nest markup to show the structure.</p>
   <figure class="example">
-    <div><a href='Overview-egs?test=105' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
     <p><code>&lt;p&gt;the title is &lt;cite dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO &lt;span dir=&quot;ltr&quot;&gt;c++&lt;/span&gt;&lt;/cite&gt; in arabic.&lt;/p&gt;</code></p>
-  </figure>
+      <div class="demolink"><a href="index-data/basic_tight_wrap.html" target="_blank">Test in your browser.</a></div>
+</figure>
   <p>If  you want to bullet-proof your code for legacy or non-conformant browsers  where tightly-wrapped text is followed inline by a number or a logically separate opposite-direction phrase, add<code translate="no" class="kw"> &amp;rlm;</code> or <code translate="no" class="kw">&amp;lrm; </code> (choose the one corresponding to the base direction of the surrounding text) immediately after  the phrase.</p>
   <figure class="example">
-  <div><a href='Overview-egs?test=109' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
     <p><code>&lt;p&gt;we find the phrase '&lt;span dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY&lt;/span&gt;&amp;lrm;' 5 times on the page.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/basic_bulletproof.html" target="_blank">Test in your browser.</a></div>
 </figure>
   <p><strong>If you <em>don't</em> know the direction of  text</strong> that will be inserted at run time, add <code>dir=auto</code> to any markup that tightly wraps the location. If there is no markup, wrap the  location  with a <code translate="no" class="kw">bdi</code> element.</p>
   <figure class="example">
-    <div><a href='Overview-egs?test=119' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
     <p><code class="code1">foreach $restaurant</code> <code class="code2">echo "&lt;p&gt;&lt;bdi&gt;$restaurant['name']&lt;/bdi&gt; - $restaurant['count'] reviews&lt;/p&gt;";</code> </p>
+<div class="demolink"><a href="index-data/basic_dir_auto.html" target="_blank">Test in your browser.</a></div>
   </figure>
 </div>
 
@@ -136,11 +136,13 @@ li ol {
   <aside class="insideinfonote">
     <p class="info">Our focus in this article is inline content, but for information about how <code translate="no" class="kw">dir</code> should be used on the <code translate="no" class="kw">html</code> tag and for structural markup see <a class="print" href="https://www.w3.org/International/questions/qa-html-dir"><cite>Structural markup and right-to-left text in HTML</cite></a>.</p>
   </aside>
-  <p>In the sections below, we will examine specific examples of what can go wrong, why it goes wrong, and what fixes it. Nevertheless, it is important to realize that, basically, the problems all occur when content in one direction  includes an <em>inline</em> phrase in the opposite direction. We will call these <span class="newterm" id="oppositedirection">opposite-direction phrases</span>. An opposite-direction phrase may be a single directional run (such as a word), or may be a set of directional runs with an embedded change in base direction. </p>
+  <p>In the sections below, we will examine specific examples of what can go wrong, why it goes wrong, and what fixes it. Nevertheless, it is important to realize that, basically, the problems all occur when content in one direction  includes an <em>inline</em> phrase in the opposite direction. We will call these <span class="newterm" id="oppositedirection">opposite-direction phrases</span>. An opposite-direction phrase may be a single directional run (such as a word), or may be a set of embedded directional runs with changes in base direction. </p>
   <p>In the following example, the English sentence contains an opposite-direction phrase between the quotation marks. That phrase, itself, also contains an opposite-direction phrase (the word C++), and an exclamation mark that has to appear at the end of the Arabic phrase. The arrows  show the opposite-direction phrases.</p>
+  <div class="figWrap">
   <figure>
     <p><img src="index-data/intro-to-C-direction.png" alt="Displayed result of previous code" /></p>
   </figure>
+  </div>
   <p>Common examples of such phrases include quotations, titles of books, articles or plays, formatted numbers (e.g. phone numbers and MAC addresses), street and email addresses, and various names, such as brand names, acronyms, part numbers, site names,  place names, file names (and paths), etc. </p>
   <p>The problem is worse in applications that drop text into a page, say from a database. The application often does not know a-priori whether such text is (or perhaps contains) an opposite-direction phrase, and has to estimate its direction at  run-time by checking the Unicode ranges of its characters. HTML5 introduces a feature for doing so in the browser.</p>
   <p>Whenever an opposite-direction phrase occurs, things can go wrong. That is, something will go wrong if the text includes, without any special &quot;wrapping&quot;, an inline opposite-direction phrase that:</p>
@@ -377,7 +379,7 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
 <h3 id="usecase1"><a href="#usecase1">Use case 1: Nested bidi</a></h3>
   <p> In this example a right-to-left book title is <strong>embedded</strong> in a left-to-right context, and the book title itself contains an embedded left-to-right phrase. Here is the code without any additional bidi markup:</p>
   <figure class="example">
-    <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span> <a href='Overview-egs?test=101' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+    <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
     <p><code>&lt;p&gt;the title is &quot;AN INTRODUCTION TO c++&quot; in arabic.&lt;/p&gt;</code></p>
   </figure>
   <p>What one would expect to see is:</p>
@@ -391,17 +393,17 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
 </section>
   
   <section>
-    <h3 id="usecase1html5" class="notoc"><a href="#usecase1html5">Fixing use case 1 in HTML5</a></h3>
+    <h4 id="usecase1html5" class="notoc"><a href="#usecase1html5">Fixing use case 1</a></h4>
     <p> To address this in HTML5, if there is no other markup around the opposite-direction phrases, wrap both  in markup with<code> </code>the appropriate<code translate="no" class="kw"> dir</code> value.  (Note, by the way, how the markup appears <em>inside</em> the quotation marks, which are part of the English text.)</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=102' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
       <p><code>&lt;p&gt;the title is &quot;&lt;span dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO &lt;span dir=&quot;ltr&quot;&gt;c++&lt;/span&gt;&lt;/span&gt;&quot; in arabic.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc1.html" target="_blank">Test in your browser.</a></div>
     </figure>
     <p> It is important to note that each phrase is <em>nested</em>. Just wrapping the Arabic in one <code translate="no" class="kw">span</code> followed by a <code translate="no" class="kw">span</code> containing the C++ would result in no improvement at all.</p>
     <div class="advancedusage">
       <p><strong>advanced usage notes:</strong> Note that two elements with <code translate="no" class="kw">dir</code> are needed in this case. This is because there are two opposite-direction phrases. If only one was used, like this:</p>
       <figure class="example">
-        <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span> <a href='Overview-egs?test=103' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+        <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
         <p><code>&lt;p&gt;the title is &quot;&lt;span dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO c++&lt;/span&gt;&quot;&lt;/p&gt;</code></p>
       </figure>
       <p>the displayed text would be as shown below. This moves the C++ to the left, as needed, but the + signs appear on the wrong side of the C.</p>
@@ -413,27 +415,25 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
     </div>
     <p>If there is already suitable markup to surround the  book title, such as a <code translate="no" class="kw">cite</code> element,  add the <code translate="no" class="kw">dir</code> attribute to that.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=105' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;the title is &lt;cite dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO &lt;span dir=&quot;ltr&quot;&gt;c++&lt;/span&gt;&lt;/cite&gt; in arabic.&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;the title is &lt;cite dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO &lt;span dir=&quot;ltr&quot;&gt;c++&lt;/span&gt;&lt;/cite&gt; in arabic.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc1_cite.html" target="_blank">Test in your browser.</a></div>
     </figure>
     <div class="advancedusage">
       <p><strong>advanced usage notes:</strong> If the &quot;C++&quot; in this example was an ordinary Latin-script word, such as &quot;Python&quot; you wouldn't actually need to mark it up to get the right display. The bidi algorithm would take care of it. However marking up text in this way avoids you having to understand why these two cases are different, and having to work out which case applies for your content. </p>
       <p>Similarly, if the title contained no embedded left-to-right text, you wouldn't actually need directional markup at all, but adding it  avoids possible issues related to following inline text, such as where the text is edited to add a following number or another title, like this:</p>
       <figure class="example1">
-        <div><a href='Overview-egs?test=104' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-        <p><code>&lt;p&gt;the titles are &lt;cite dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO ARABIC&lt;/cite&gt;, &lt;cite dir=&quot;rtl&quot;&gt;FIRST STEPS IN URDU&lt;/cite&gt;, and &lt;cite dir=&quot;rtl&quot;&gt;MASTERING HEBREW&lt;/cite&gt;.&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;the titles are &lt;cite dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO ARABIC&lt;/cite&gt;, &lt;cite dir=&quot;rtl&quot;&gt;FIRST STEPS IN URDU&lt;/cite&gt;, and &lt;cite dir=&quot;rtl&quot;&gt;MASTERING HEBREW&lt;/cite&gt;.&lt;/p&gt;</code></p>
       </figure>
     </div>
   </section>
   
   <section>
-    <h3 id="usecase1soln" class="notoc"><a href="#usecase1soln">Fixing use case 1 in browsers that don't support HTML5</a></h3>
+    <h4 id="usecase1soln" class="notoc"><a href="#usecase1soln">Bulletproofing for legacy browsers</a></h4>
     <p>The solution outlined for HTML5 aware browsers will work equally well for browsers that don't support HTML5 features.</p>
     <div class="advancedusage">
       <p><strong>advanced usage notes:</strong> As noted earlier, one use of LRM and RLM is to <em>extend</em> a directional run through neutral or weak characters at the start or end of an opposite-direction phrase, by putting a mark of the same direction as the phrase on the other side of those neutral or weak characters. For this example,  instead of wrapping the &quot;C++&quot; in a <code>&lt;span dir=&quot;ltr&quot;&gt;</code>, we could add <code>&amp;lrm;</code> after the second plus:</p>
       <figure class="example">
-        <div><a href='Overview-egs?test=106' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-        <p><code>&lt;p&gt;the title is &lt;cite dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO c++&amp;lrm;&lt;/cite&gt;&lt;/p&gt;</code> </p>
+<p><code>&lt;p&gt;the title is &lt;cite dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO c++&amp;lrm;&lt;/cite&gt;&lt;/p&gt;</code> </p>
       </figure>
       <p>The result is what we need:</p>
       <figure>
@@ -452,7 +452,7 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
     <h3 id="usecase2"><a href="#usecase2">Use case 2: Following numbers</a></h3>
     <p> In the next example, the opposite-direction phrase is <strong>followed by a logically separate number</strong>. This is the code without any bidi markup:</p>
     <figure class="example">
-      <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span> <a href='Overview-egs?test=123' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
       <p><code>&lt;p&gt;we find the phrase 'INTERNATIONALIZATION ACTIVITY' 5 times on the page.&lt;/p&gt;</code></p>
     </figure>
     <p>You would expect to see:</p>
@@ -466,25 +466,25 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
     <p style="clear: both;">This happens because the bidi algorithm tells the browser to treat the "5″ as part of the Hebrew text. This is not appropriate here though. We need to find a way to say that the name and the number are separate things, ie. to isolate the inserted name from the number.</p>
   </section>
   <section>
-  <h3 id="uc2html5" class="notoc"><a href="#uc2html5">Fixing use case 2 in HTML5</a></h3>
-  <p> In a browser that supports isolating <code translate="no" class="kw">dir</code>, wrap the opposite-direction phrase (the title) in markup and add the appropriate<code translate="no" class="kw"> dir</code> value. There is no need to add anything else, since the <code translate="no" class="kw">dir</code> attribute automatically isolates its content.</p>
+  <h4 id="uc2html5" class="notoc"><a href="#uc2html5">Fixing use case 2</a></h4>
+  <p> Wrap the opposite-direction phrase (the title) in markup and add the appropriate<code translate="no" class="kw"> dir</code> value. There is no need to add anything else, since the <code translate="no" class="kw">dir</code> attribute automatically isolates its content.</p>
   <figure class="example">
-    <div><a href='Overview-egs?test=107' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-    <p><code>&lt;p&gt;we find the phrase '&lt;span dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY&lt;/span&gt;' 5 times on the page.&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;we find the phrase '&lt;span dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY&lt;/span&gt;' 5 times on the page.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc2.html" target="_blank">Test in your browser.</a></div>
   </figure>
   <p>If there is already suitable markup to surround the  book title, such as an <code translate="no" class="kw">a</code> element,  add the <code translate="no" class="kw">dir</code> attribute to it.</p>
   <figure class="example">
-    <div><a href='Overview-egs?test=108' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-    <p><code>&lt;p&gt;we find the phrase '&lt;a href=&quot;...&quot; dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY&lt;/a&gt;' 5 times on the page.&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;we find the phrase '&lt;a href=&quot;...&quot; dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY&lt;/a&gt;' 5 times on the page.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc2_a.html" target="_blank">Test in your browser.</a></div>
   </figure>
   </section>
   
   <section>
-    <h3 id="uc2html4" class="notoc"><a href="#uc2html4">Fixing use case 2 in browsers that don't support HTML5</a></h3>
+    <h4 id="uc2html4" class="notoc"><a href="#uc2html4">Bulletproofing for legacy browsers</a></h4>
     <p> For browsers where <code translate="no" class="kw">dir</code> doesn't isolate, you would fix this by not only adding the markup around the opposite direction, Hebrew text, but adding also an LRM character after it. That would prevent the number being associated with the right-to-left text.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=109' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;we find the phrase '&lt;span dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY&lt;/span&gt;&amp;lrm;' 5 times on the page.&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;we find the phrase '&lt;span dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY&lt;/span&gt;' &amp;lrm;5 times on the page.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc2_bulletproof.html" target="_blank">Test in your browser.</a></div>
     </figure>
     <p>If the search string was already tightly wrapped by an element, use that element tag to add the <code translate="no" class="kw">dir</code> attribute, and add the LRM character after it.</p>
     <p>Of course, if the overall context is right-to-left, eg. Arabic/Hebrew/etc. text, and the book title was in English, you would need to add an RLM character rather than an LRM character.</p>
@@ -494,7 +494,7 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
     <h3 id="usecase3"><a href="#usecase3">Use case 3: Lists</a></h3>
     <p> Neutrals between same directional runs can  sometimes be misinterpreted by the bidi algorithm. In this use case we have several country names in Arabic listed in a LTR paragraph. This is an example of an opposite-direction phrase <strong>followed by another, but logically separate, opposite-direction phrase</strong>. Here is the source code without any bidi markup:</p>
     <figure class="example">
-      <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span> <a href='Overview-egs?test=110' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
       <p><code>&lt;p&gt;the names of these states in arabic are EGYPT, BAHRAIN and KUWAIT respectively.&lt;/p&gt;</code></p>
     </figure>
     <p>We expect to see the following:</p>
@@ -512,25 +512,25 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
   </section>
   
   <section>
-    <h3 id="uc3html5" class="notoc"><a href="#uc3html5">Fixing use case 3 in HTML5</a></h3>
+    <h4 id="uc3html5" class="notoc"><a href="#uc3html5">Fixing use case 3</a></h4>
     <p> Simply wrap each Arabic word with markup and add the appropriate<code translate="no" class="kw"> dir</code> value.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=111' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;the names of these states in arabic are &lt;span dir=&quot;rtl&quot;&gt;EGYPT&lt;/span&gt;, &lt;span dir=&quot;rtl&quot;&gt;BAHRAIN&lt;/span&gt; and &lt;span dir=&quot;rtl&quot;&gt;KUWAIT&lt;/span&gt; respectively.&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;the names of these states in arabic are &lt;span dir=&quot;rtl&quot;&gt;EGYPT&lt;/span&gt;, &lt;span dir=&quot;rtl&quot;&gt;BAHRAIN&lt;/span&gt; and &lt;span dir=&quot;rtl&quot;&gt;KUWAIT&lt;/span&gt; respectively.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc3.html" target="_blank">Test in your browser.</a></div>
     </figure>
     <p>If there is already  markup  surrounding the Arabic text, such as an <code translate="no" class="kw">a</code> element,  add the <code translate="no" class="kw">dir</code> attribute to it.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=112' id="q1" target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;the names of these states in arabic are &lt;a href=&quot;...&quot; dir=&quot;rtl&quot;&gt;EGYPT&lt;/a&gt;, &lt;a href=&quot;...&quot; dir=&quot;rtl&quot;&gt;BAHRAIN&lt;/a&gt; and &lt;a href=&quot;...&quot; dir=&quot;rtl&quot;&gt;KUWAIT&lt;/a&gt; respectively.&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;the names of these states in arabic are &lt;a href=&quot;...&quot; dir=&quot;rtl&quot;&gt;EGYPT&lt;/a&gt;, &lt;a href=&quot;...&quot; dir=&quot;rtl&quot;&gt;BAHRAIN&lt;/a&gt; and &lt;a href=&quot;...&quot; dir=&quot;rtl&quot;&gt;KUWAIT&lt;/a&gt; respectively.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc3_a.html" target="_blank">Test in your browser.</a></div>
     </figure>
   </section>
   
   <section>
-    <h3 id="uc3html4" class="notoc"><a href="#uc3html4">Fixing use case 3 in browsers that don't support HTML5 features</a></h3>
+    <h4 id="uc3html4" class="notoc"><a href="#uc3html4">Bulletproofing for legacy browsers</a></h4>
     <p> Add markup around the Arabic text, but add also an LRM character after it whenever that text is followed by another opposite-direction phrase. Use an RLM character if the surrounding context is right-to-left.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=114' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;the names of these states in arabic are &lt;span dir=&quot;rtl&quot;&gt;EGYPT&lt;/span&gt;&amp;lrm;, &lt;span dir=&quot;rtl&quot;&gt;BAHRAIN&lt;/span&gt; and &lt;span dir=&quot;rtl&quot;&gt;KUWAIT&lt;/span&gt; respectively.&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;the names of these states in arabic are &lt;span dir=&quot;rtl&quot;&gt;EGYPT&lt;/span&gt;&amp;lrm;, &lt;span dir=&quot;rtl&quot;&gt;BAHRAIN&lt;/span&gt; and &lt;span dir=&quot;rtl&quot;&gt;KUWAIT&lt;/span&gt; respectively.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc3_bulletproof.html" target="_blank">Test in your browser.</a></div>
     </figure>
     <p>As before, if  the Arabic text was already tightly wrapped by an element, use that element tag to add the <code translate="no" class="kw">dir</code> attribute. </p>
   </section>
@@ -538,20 +538,20 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
 
 
 <section>
-  <h2 id="dynamicexamples"><a href="#dynamicexamples">Worked examples for dynamic use cases</a></h2>
+<h2 id="dynamicexamples"><a href="#dynamicexamples">Worked examples for dynamic use cases</a></h2>
   <p>In this section we will look at use cases that involve injecting content into a page at run time.</p>
   <p>It is important to note that we cannot address markup <em>inside</em> the injected content. In all cases below, if the injected phrases contain embedded opposite-direction phrases themselves, these need to be already marked up when the phrase is injected into the page, either in the database, or added by scripting when the injected phrase is fetched. If this is not done, the injected text will look alright for simple cases, but may be problematic for more complex ones. </p>
 
   <section>
     <h3 id="uc4"><a href="#uc4">Use case 4: Nested bidi</a></h3>
     <p> In the article <a class="print" href="https://www.w3.org/International/questions/qa-html-dir"><cite>Structural markup and right-to-left text in HTML</cite></a> there is an example of a page for an online book store that carries books in many languages and needs to display the original book titles regardless of the language of the user interface. Thus, a Hebrew or Arabic book title may appear in an English interface, and vice-versa.</p>
-    <p>Let us suppose that you searched for the book <cite lang="he" dir="rtl" style="white-space:nowrap;">הצהרות קידוד תװי CSS</cite> and that that book wasn't found. The bookstore might generate a message that says so. <span style="clear: both;">The image above shows what one would expect to see. </span></p>
+    <p>Let us suppose that you searched for the book <cite lang="he" dir="rtl" style="white-space:nowrap;">הצהרות קידוד תװי CSS</cite> and and let's further suppose that that book wasn't found. The bookstore might generate a message that says so. <span style="clear: both;">The image below shows what one would expect to see. </span></p>
     <figure>
       <p><img src="index-data/book-result-correct.png" alt="Book not found message."></p>
     </figure>
     <p style="clear: both;">Note how the 'CSS' is to the  left of the Hebrew text because it is part of the book title.  However with the following source code ...</p>
     <figure class="example">
-      <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span> <a href='Overview-egs?test=115' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
       <p style="text-align:left;"><code>&lt;p&gt;your search - &lt;cite class=&quot;booktitle&quot;&gt;CHARACTER ENCODING IN css&lt;/cite&gt; - did not match any documents.&lt;/p&gt;</code></p>
     </figure>
     <p>... here  is the actual result. Note how the 'CSS' is now on the right of the Hebrew text.</p>
@@ -561,12 +561,12 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
   </section>
   
   <section>
-    <h3 id="uc4html5" class="notoc"><a href="#uc4html5">Fixing use case 4 in HTML5</a></h3>
+    <h4 id="uc4html5" class="notoc"><a href="#uc4html5">Fixing use case 4</a></h4>
     <p><span class="leadin"></span> The default rule  when there is no other element around the injected text, is to wrap it in <code translate="no" class="kw">bdi</code>.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=116' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p style="text-align:left;"><code>&lt;p&gt;your search - &lt;bdi&gt;&lt;?php echo $theString; ?&gt;&lt;/bdi&gt; - did not match any documents.&lt;/p&gt;</code></p>
-    </figure>
+<p style="text-align:left;"><code>&lt;p&gt;your search - &lt;bdi&gt;&lt;?php echo $theString; ?&gt;&lt;/bdi&gt; - did not match any documents.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc4.html" target="_blank">Test in your browser.</a></div>
+  </figure>
     <p></p>
     <p>The <code translate="no" class="kw">bdi</code> tag automatically assigns a direction based on the first strong character in the injected string. </p>
     <div class="advancedusage">
@@ -574,14 +574,14 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
     </div>
     <p>If there <em>is</em> another element around the injected text,  use <code>dir=&quot;auto&quot;</code> or wrap the injected phrase in <code translate="no" class="kw">bdi</code>.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=117' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p style="text-align:left;"><code>&lt;p&gt;your search - &lt;cite dir=&quot;auto&quot;&gt;&lt;?php echo $theString; ?&gt;&lt;/cite&gt; - did not match any documents.&lt;/p&gt;</code></p>
+<p style="text-align:left;"><code>&lt;p&gt;your search - &lt;cite dir=&quot;auto&quot;&gt;&lt;?php echo $theString; ?&gt;&lt;/cite&gt; - did not match any documents.&lt;/p&gt;</code></p>
       <p style="text-align:left;"><code>&lt;p&gt;your search - &lt;cite&gt;&lt;bdi&gt;&lt;?php echo $theString; ?&gt;&lt;/bdi&gt;&lt;/cite&gt; - did not match any documents.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc4_cite.html" target="_blank">Test in your browser.</a></div>
     </figure>
   </section>
   
   <section>
-    <h3 id="uc4html4" class="notoc"><a href="#uc4html4">Fixing use case 4 in browsers that don't support HTML5 features</a></h3>
+    <h4 id="uc4html4" class="notoc"><a href="#uc4html4">Bulletproofing for legacy browsers</a></h4>
     <p> Without HTML5 markup behavior we can't really address this use case using markup, since we need to know in advance the direction of the text. This can only be achieved by knowing the direction of or examining the injected phrase before insertion, and applying the appropriate directional information by scripting.</p>
   </section>
   
@@ -589,7 +589,7 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
     <h3 id="uc5"><a href="#uc5">Use case 5: Following numbers</a></h3>
     <p> Here's an example where the names of restaurants are added to a page from a database and followed by a number. You don't know in advance the directionality of the injected text. This is the code produced by the script that injects the phrases, without bidi markup:</p>
     <figure class="example">
-      <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span> <a href='Overview-egs?test=118' target="text"><img class="codelink" style="margin-right: 32%;" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
+      <div class="badcode"><span><img src="../../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
       <pre>&lt;p&gt;&lt;span class=&quot;name&quot;&gt;aroma&lt;/span&gt; - 3 reviews&lt;/p&gt;
 &lt;p&gt;&lt;span class=&quot;name&quot;&gt;PURPLE PIZZA&lt;/span&gt; - 5 reviews&lt;/p&gt;
 &lt;p&gt;&lt;span class=&quot;name&quot;&gt;PURPLE PIZZA roma&lt;/span&gt; - 3 reviews&lt;/p&gt;</pre>
@@ -608,38 +608,35 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
   </section>
   
   <section>
-    <h3 id="uc5html5" class="notoc"><a href="#uc5html5">Fixing use case 5 in HTML5</a></h3>
+    <h4 id="uc5html5" class="notoc"><a href="#uc5html5">Fixing use case 5</a></h4>
     <p><span class="leadin"></span> Once again, the default rule  when there is no other element around the injected text, is to wrap it in <code translate="no" class="kw">bdi</code>. The <code translate="no" class="kw">bdi</code> element automatically isolates the injected phrase from the number, and sets the direction for the phrase based on its first strong character.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=119' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code class="code1">foreach $restaurant</code> <code class="code2">echo "&lt;p&gt;&lt;bdi&gt;$restaurant['name']&lt;/bdi&gt; - $restaurant['count'] reviews&lt;/p&gt;";</code> </p>
+<p><code class="code1">foreach $restaurant</code> <code class="code2">echo "&lt;p&gt;&lt;bdi&gt;$restaurant['name']&lt;/bdi&gt; - $restaurant['count'] reviews&lt;/p&gt;";</code> </p>
+<div class="demolink"><a href="index-data/uc5.html" target="_blank">Test in your browser.</a></div>
     </figure>
-    <p></p>
     <p>The <code translate="no" class="kw">bdi</code> tag automatically assigns a direction based on the first strong character in the injected string.</p>
-    <p>You'll notice that the example above puts <code translate="no" class="kw">bdi</code> around the name Aroma too. Of course, you don't actually need that, but it won't do any harm. On the other hand, it simplifies the necessary script code, and means you can handle any name that comes out of the database, whatever script it is in.</p>
+    <p>You'll notice that the example above puts <code translate="no" class="kw">bdi</code> around the name <samp>Aroma</samp> too. Of course, you don't actually need that, but it won't do any harm. On the other hand, it simplifies the necessary script code, and means you can handle any name that comes out of the database, whatever script it is in.</p>
     <p>If there <em>is</em> another element around the injected text,  use <code>dir=&quot;auto&quot;</code>.</p>
     <figure class="example-wide">
-      <div><a href='Overview-egs?test=120' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code class="code1">foreach $restaurant</code> <code class="code2">echo "&lt;p&gt;&lt;a href='...' class='name'&gt;&lt;bdi&gt;$restaurant['name']&lt;/bdi&gt;&lt;/a&gt; - $restaurant['count'] reviews&lt;/p&gt;";</code> </p>
-      <div><a href='Overview-egs?test=121' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code class="code1">foreach $restaurant</code> <code class="code2">echo "&lt;p&gt;&lt;a href='...' dir='auto' class='name'&gt;$restaurant['name']&lt;/a&gt; - $restaurant['count'] reviews&lt;/p&gt;";</code> </p>
+<p><code class="code1">foreach $restaurant</code> <code class="code2">echo "&lt;p&gt;&lt;a href='...' dir='auto' class='name'&gt;$restaurant['name']&lt;/a&gt; - $restaurant['count'] reviews&lt;/p&gt;";</code> </p>
+<div class="demolink"><a href="index-data/uc5_auto.html" target="_blank">Test in your browser.</a></div>
     </figure>
   </section>
   
   <section>
-    <h3 id="uc5html4" class="notoc"><a href="#uc5html4">Fixing use case 5 in browsers that don't support HTML5 features</a></h3>
-    <p> Again, without HTML5 markup behavior, all we can do is add a LRM character after the injected phrase, to ensure that it is isolated from the number. This would be sufficient to correctly render the second item in the list, because it is a very simple case, with no embedded opposite-direction phrases or neutral characters. The third case, however, will not work so well, since  the base direction has to be set to right-to-left for the word 'Roma' to appear on the left. This can only be properly rendered if the injected phrase has markup added to it before insertion.</p>
+    <h4 id="uc5html4" class="notoc"><a href="#uc5html4">Bulletproofing for legacy browsers</a></h4>
+    <p> Again, without HTML5 markup behavior, all we can do is add a LRM character after the injected phrase, to ensure that it is isolated from the number. This would be sufficient to correctly render the second item in the list, because it is a very simple case, with no embedded opposite-direction phrases or neutral characters. The third case, however, will not work so well, since  the base direction has to be set to right-to-left for the word <samp>'Roma'</samp> to appear on the left. This can only be properly rendered if the injected phrase has markup added to it before insertion.</p>
     <p>The code would look something like this.</p>
     <figure class="example-wide">
-      <div><a href='Overview-egs?test=122' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code class="code1">foreach $restaurant</code> <code class="code2">echo "&lt;p&gt;&lt;span class='name' dir='auto'&gt;$restaurant['name']&lt;/span&gt;&amp;lrm; - $restaurant['count'] reviews&lt;/p&gt;";</code> </p>
+<p><code class="code1">foreach $restaurant</code> <code class="code2">echo "&lt;p&gt;&lt;span class='name' dir='auto'&gt;$restaurant['name']&lt;/span&gt;&amp;lrm; - $restaurant['count'] reviews&lt;/p&gt;";</code> </p>
+<div class="demolink"><a href="index-data/uc5_bulletproof.html" target="_blank">Test in your browser.</a></div>
     </figure>
   </section>
 </section>
 
 
 <section>
-  <h2 id="additionalexamples"><a href="#additionalexamples">Additional examples</a></h2>
+<h2 id="additionalexamples"><a href="#additionalexamples">Additional examples</a></h2>
   
   <section>
     <h3 id="usecase6"><a href="#usecase6">Use case 6: Punctuation at the end of an opposite-direction phrase</a></h3>
@@ -651,9 +648,8 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
     </figure>
     <p>Unfortunately, if we rely solely on the bidirectional algorithm we see this:</p>
     <figure>
-      <div><a href='Overview-egs?test=124' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><img src="index-data/exclamation-wrong.gif" alt="An exclamation mark appearing to the right of Arabic text." /></p>
-    </figure>
+<p><img src="index-data/exclamation-wrong.gif" alt="An exclamation mark appearing to the right of Arabic text." /></p>
+  </figure>
     <p>Given our understanding of the bidi algorithm we can easily understand why this happened. Because the exclamation mark was typed in
       between the last RTL letter 'ب' (on the left)‌ and the LTR letter 'i' (of the word 'in') its directionality is determined by the base direction of
       the paragraph, ie. LTR in this case. </p>
@@ -662,11 +658,11 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
   </section>
   
   <section>
-    <h3 id="uc6html4" class="notoc"><a href="#uc6html4">Fixing use case 6 when the direction is known</a></h3>
+    <h4 id="uc6html4" class="notoc"><a href="#uc6html4">Fixing use case 6 when the direction is known</a></h4>
     <p>The general solution mentioned above works fine: just put the opposite-direction phrase in an element with a <code translate="no" class="kw">dir</code> attribute. If there isn't already an element present, use a <code translate="no" class="kw">span</code>.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=125' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;the title is &quot;&lt;cite dir=&quot;rtl&quot; lang=&quot;ar&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/cite&gt;&quot; in arabic.&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;the title is &quot;&lt;cite dir=&quot;rtl&quot; lang=&quot;ar&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/cite&gt;&quot; in arabic.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc6_static.html" target="_blank">Test in your browser.</a></div>
     </figure>
     <div class="advancedusage">
       <p><strong>advanced usage notes:</strong>You could also simply place an RLM after the exclamation mark, but we have already discussed earlier why that is a less ideal fix. Note, also, that when using this solution, without markup, the Arabic text is not marked up for language or styling. Adding markup around the embedded title is probably a better way to solve the problem.</p>
@@ -674,15 +670,13 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
   </section>
   
   <section>
-    <h3 id="uc6html5" class="notoc"><a href="#uc6html5">Fixing use case 6 for injected text</a></h3>
+    <h4 id="uc6html5" class="notoc"><a href="#uc6html5">Fixing use case 6 for injected text</a></h4>
     <p> Use <code translate="no" class="kw">bdi</code> if there isn't already a surrounding element, otherwise put a <code>dir=&quot;auto&quot;</code> on the surrounding element.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=126' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;the title is &quot;&lt;bdi  lang=&quot;ar&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/bdi&gt;&quot; in arabic.&lt;/p&gt;</code> </p>
-      <div><a href='Overview-egs?test=127' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;the title is &quot;&lt;cite dir=&quot;auto&quot; lang=&quot;ar&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/cite&gt;&quot; in arabic.&lt;/p&gt;</code></p>
-      <div><a href='Overview-egs?test=128' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <!--p><code>&lt;p&gt;the title is &quot;&lt;cite lang=&quot;ar&quot;&gt;&lt;bdi dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/bdi&gt;&lt;/cite&gt;&quot; in arabic.&lt;/p&gt;</code></p-->
+<p><code>&lt;p&gt;the title is &quot;&lt;bdi  lang=&quot;ar&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/bdi&gt;&quot; in arabic.&lt;/p&gt;</code> </p>
+<p><code>&lt;p&gt;the title is &quot;&lt;cite dir=&quot;auto&quot; lang=&quot;ar&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/cite&gt;&quot; in arabic.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc6_dynamic.html" target="_blank">Test in your browser.</a></div>
+<!--p><code>&lt;p&gt;the title is &quot;&lt;cite lang=&quot;ar&quot;&gt;&lt;bdi dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/bdi&gt;&lt;/cite&gt;&quot; in arabic.&lt;/p&gt;</code></p-->
     </figure>
   </section>
   
@@ -694,41 +688,39 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
     </figure>
     <p>The next picture shows what you actually see, if you rely solely on the bidi algorithm.</p>
     <figure>
-      <div><a href="Overview-egs?test=129" target="text"><img class="codelinkl" src="../../icons/codelink.gif" alt="View code." title="View code for this example."></a></div>
-      <p style="text-align: right;"><img src="index-data/phonenumber-incorrect.png" alt="Telephone number incorrectly ordered."></p>
+<p style="text-align: right;"><img src="index-data/phonenumber-incorrect.png" alt="Telephone number incorrectly ordered."></p>
     </figure>
     <p>Because these are numbers, the  order applied by the bidirectional algorithm is slightly different from what we've seen before, but the fix is essentially the same. </p>
-    <p> Here is another, somewhat more problematic example of the same thing. The picture below shows a MAC address number as you would expect to see it displayed in a right-to-left context. The sequence 01:02:aa:4a:bb:06 looks exactly the same as it would in a left-to-right context.</p>
+    <p> Here is another, somewhat more problematic example of the same thing. The picture below shows a MAC address number as you would expect to see it displayed in a right-to-left context. The sequence <samp>01:02:aa:4a:bb:06</samp> looks exactly the same as it would in a left-to-right context.</p>
     <figure>
       <p style="text-align: right;"><img src="index-data/mac-correct.png" alt="MAC address correctly ordered."></p>
     </figure>
     <p>Here, however, is what you will  see when relying solely on the bidirectional algorithm.</p>
     <figure>
-      <div><a href="Overview-egs?test=130" target="text"><img class="codelinkl" src="../../icons/codelink.gif" alt="View code." title="View code for this example."></a></div>
-      <p style="text-align: right;"><img src="index-data/mac-incorrect.png" alt="MAC address incorrectly ordered."></p>
+<p style="text-align: right;"><img src="index-data/mac-incorrect.png" alt="MAC address incorrectly ordered."></p>
     </figure>
     <p>This is particularly worrisome, since it's not obvious when the order is incorrect. Even if you did know it was incorrect, it is not at all clear how it should be read.</p>
-    <p>Although there are more characters involved, this problem is caused because the bidirectional algorithm assumes that the initial run of numbers (and colons, since they are neutral) are associated with the preceding Hebrew text, rather than part of the Mac address.</p>
+    <p>Although there are more characters involved, this problem is caused because the bidirectional algorithm assumes that the initial run of numbers (and colons, since they are neutral) are associated with the preceding Hebrew text, rather than part of the MAC address.</p>
     <p>This example indicates that you should always wrap MAC addresses, and similar numbers, with directional information.</p>
   </section>
   
   <section>
-    <h3 id="uc7html4" class="notoc"><a href="#uc7html4">Fixing use case 7 when the direction is known</a></h3>
+    <h4 id="uc7html4" class="notoc"><a href="#uc7html4">Fixing use case 7 when the direction is known</a></h4>
     <p> The solution is the same. Put the opposite-direction phrase in an element with a <code translate="no" class="kw">dir</code> attribute. If there isn't already an element present, use a <code translate="no" class="kw">span</code>. The following code would be used in an overall right-to-left context.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=131' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;... &lt;span dir=&quot;ltr&quot;&gt;(012) 345 6789&lt;/span&gt; ...&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;... &lt;span dir=&quot;ltr&quot;&gt;(012) 345 6789&lt;/span&gt; ...&lt;/p&gt;</code></p>
       <p><code>&lt;p&gt;כתובת &lt;span dir=&quot;ltr&quot;&gt;‎‎01:02:aa:4a:bb:06&lt;/span&gt; ...&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/uc7_static.html" target="_blank">Test in your browser.</a></div>
     </figure>
   </section>
   
   <section>
-    <h3 id="uc7html5" class="notoc"><a href="#uc7html5">Fixing use case 7 for injected text</a></h3>
+    <h4 id="uc7html5" class="notoc"><a href="#uc7html5">Fixing use case 7 for injected text</a></h4>
     <p>Use <code translate="no" class="kw">bdi</code> if there isn't already a surrounding element, or put <code>dir=&quot;auto&quot;</code> on a surrounding element. We just show the simplest case here. The following code would be used in an overall right-to-left context.</p>
     <figure class="example">
-      <div><a href='Overview-egs?test=132' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;p&gt;...&lt;bdi&gt;(012) 345 6789&lt;/bdi&gt; ...&lt;/p&gt;</code></p>
+<p><code>&lt;p&gt;...&lt;bdi&gt;(012) 345 6789&lt;/bdi&gt; ...&lt;/p&gt;</code></p>
       <p><code>&lt;p&gt;כתובת &lt;bdi&gt;‎‎01:02:aa:4a:bb:06&lt;/bdi&gt; ...&lt;/p&gt;</code> </p>
+<div class="demolink"><a href="index-data/uc7_dynamic.html" target="_blank">Test in your browser.</a></div>
     </figure>
     <div class="advancedusage">
       <p><strong>advanced usage notes:</strong>You could also solve both of these cases by simply inserting an RLM immediately before the number. Adding markup around the number is probably a safer way to solve the problem.</p>
@@ -738,27 +730,27 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
 
 
 <section>
-  <h2 id="nomarkup"><a href="#nomarkup">What if I can't use markup?</a></h2>
+<h2 id="nomarkup"><a href="#nomarkup">What if I can't use markup?</a></h2>
   <p>There are some situations where you may not be able to use the markup described in the previous section. In HTML these include the <code translate="no" class="kw"><code translate="no" class="kw">title</code></code> element and any attribute value.</p>
   <p>In these situations you have to use the invisible Unicode characters	that	produce	the	same results.</p>
   <p>To replicate the effect of the markup described in the example above related to nested base directions, we can use pairs of characters to surround the embedded text. The first character is one of U+202B RIGHT-TO-LEFT EMBEDDING (RLE) or U+202A LEFT-TO-RIGHT EMBEDDING (LRE). This corresponds to <strong>the pre-HTML5</strong> markup <code>&lt;span dir=&quot;rtl&quot;&gt;</code> or <code>&lt;span dir=&quot;ltr&quot;&gt;</code>, respectively, ie. they do not isolate. The second character is U+202C POP DIRECTIONAL FORMATTING (PDF). This corresponds to the <code>&lt;/span&gt;</code> in the markup. Here's an example.</p>
   <div class="sidenoteGroup">
     <figure class="example">
-      <div><a href='Overview-egs?test=133' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>&lt;title&gt;the title says  &quot;&amp;#x202B;<span dir="rtl">INTERNATIONALIZATION ACTIVITY, w3c</span>&amp;#x202C;&quot; in hebrew.&lt;/title&gt;</code></p>
+<p><code>&lt;title&gt;the title says  &quot;&amp;#x202B;<span dir="rtl">INTERNATIONALIZATION ACTIVITY, w3c</span>&amp;#x202C;&quot; in hebrew.&lt;/title&gt;</code></p>
+<div class="demolink"><a href="index-data/rle.html" target="_blank">Test in your browser.</a></div>
     </figure>
     <aside class="sideinfonote">
-      <p class="info">Because the characters are invisible you may prefer to actually type in a numeric character reference, as we have here.</p>
+    <p class="info">Because the characters are invisible you may prefer to actually type in a numeric character reference, as we have here.</p>
     </aside>
   </div>
   <p>These control characters should only be used for inline phrases, not for block elements such as paragraphs. In general, <a class="print" href="https://www.w3.org/International/questions/qa-bidi-controls">it is recommended</a> that you use markup where it is available, rather than these character pairs, because it is easier to see and therefore manage the markup, and it is consistent with the approach used for block elements. Where markup is not available, of course, this is the only option.</p>
   <p>The two characters we already met in the above text, <span class="uname">U+200F RIGHT-TO-LEFT MARK</span> (RLM) and <span class="uname">U+200E LEFT-TO-RIGHT MARK</span> (LRM) can also be used, where appropriate.</p>
   <figure class="example">
-    <div><a href='Overview-egs?test=134' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-    <p><code>&lt;title&gt;the title says &quot;INTERNATIONALIZE THE WEB!&amp;#x200F;&quot; in arabic.&lt;/title&gt;</code></p>
+<p><code>&lt;title&gt;the title says &quot;INTERNATIONALIZE THE WEB!&amp;#x200F;&quot; in arabic.&lt;/title&gt;</code></p>
+<div class="demolink"><a href="index-data/rlm.html" target="_blank">Test in your browser.</a></div>
   </figure>
   <p>If isolation is necessary, either within the text or when the text is used with surrounding content, in addition to RLE/LRE...PDF, you may also need to add the LRM or RLM marks as described in the <a href="#html4markup">section about legacy browser support</a>.</p>
-  <p>Note that in the example just shown the Arabic text is no longer marked up for language or styling. Also, because the character is invisible you may prefer to actually type in a numeric character reference (&amp;#x200F;) as we did here, or, if available, a character entity (such as &amp;rlm; in HTML).</p>
+  <p>Note that in the example just shown the Arabic text is no longer marked up for language or styling. Also, because the character is invisible you may prefer to actually type in a numeric character reference (<code>&amp;#x200F;</code>) as we did here, or, if available, a character entity (such as <code>&amp;rlm;</code> in HTML).</p>
   <p><strong>From Unicode version 6.3 onwards</strong>, the Unicode Standard   contains new control codes (RLI, LRI, FSI, PDI) to enable authors to express isolation at the same time as direction in inline bidirectional text. The Unicode Consortium recommends that isolation <em>be used as the default</em> for all future inline bidirectional text embeddings. To use these new control codes, however, it will be necessary to wait until the browsers support them. The new control codes are:</p>
   <table>
     <tbody>
@@ -819,15 +811,17 @@ bdo[dir='ltr'], bdo[dir='rtl'] {
 <p>In other XML applications, such as XHTML2, it may be implemented as a value of <code translate="no" class="kw">rlo</code> or <code translate="no" class="kw">lro</code> on the <code translate="no" class="kw">dir</code> attribute, enabling it to be applied to any element. There are also Unicode control
     characters you could use to achieve the same result, but because they create states with invisible boundaries this is generally <a class="print" href="https://www.w3.org/International/questions/qa-bidi-controls">not recommended</a>.</p>
   <p>Examples that show the characters as ordered in memory use the <code translate="no" class="kw">bdo</code> tag to achieve that effect. You must provide a <code class="kw" translate="no">dir</code> attribute with the <code class="kw" translate="no">bdo</code> element, and the value must be either <code class="kw" translate="no">rtl</code> or <code class="kw" translate="no">ltr</code> (it cannot be <code class="kw" translate="no">auto</code>). For example, the picture below shows Hebrew text as ordered in memory.</p>
+  <div class="figWrap">
   <figure>
-    <div><a href='Overview-egs?test=137' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
     <p><img src="index-data/override.png" alt="Shows Hebrew text in the order stored in memory." /></p>
+    <figcaption>Text using a bidirectional override (bottom line).</figcaption>
   </figure>
-  <p>For the bottom line we would use the following markup in HTML:</p>
-  <figure class="example">
-    <div><a href='Overview-egs?test=138' target="text"><img class="codelink" src="../../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-    <p><code>&lt;p&gt;&lt;bdo dir=&quot;ltr&quot;&gt;<span dir="rtl">INTERNATIONALIZATION ACTIVITY, w3c</span>&lt;/bdo&gt;&lt;/p&gt;</code></p>
-  </figure>
+  </div>
+<p>For the bottom line we would use the following markup in HTML:</p>
+<figure class="example">
+<p><code>&lt;p&gt;&lt;bdo dir=&quot;ltr&quot;&gt;<span dir="rtl">INTERNATIONALIZATION ACTIVITY, w3c</span>&lt;/bdo&gt;&lt;/p&gt;</code></p>
+     <div class="demolink"><a href="index-data/bdo.html" target="_blank">Test in your browser.</a></div>
+</figure>
   <!--p>That the CSS shim described earlier in this article contains code that applies isolation to the <code translate="no" class="kw">bdo</code> element.</p-->
 </section>
 
