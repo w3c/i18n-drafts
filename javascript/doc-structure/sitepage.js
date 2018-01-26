@@ -114,26 +114,28 @@ else g.disclaimer = ''
 
 var mainNavigation = '<div id="search">'+g.siteSearch+'</div>'+
 '<div  style="float:left;"><a href="http://www.w3.org/"><img src="http://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72" /></a></div>'+
-'<div id="banner" style="float:left; margin-left:10px;"><a href="'+base+'/International"><p id="sitename" style="font-family: Arial, Helvetica, sans-serif; font-size: 22px; border-bottom: 2px solid brown; color: #4c5c9c; margin:0;">Internationalization (i18n) Activity</p>'+
+'<div id="banner" style="float:left; margin-left:10px;"><a href="'+base+'/International"><p id="sitename" style="font-family: Arial, Helvetica, sans-serif; font-size: 22px; border-bottom: 2px solid brown; color: #4c5c9c; margin:0;">Internationalization (i18n)</p>'+
 '	<p id="subtitle" style="margin:0; font-size:12px; font-style:italic; color: #4c5c9c;">Making the World Wide Web worldwide!</p></a></div>'+
 '   <br style="clear:both;" />'+
 '	<nav id="boilerplate">'+
 //'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'/icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="'+base+'/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
 //s.internationalizationTitle+'</a></div>'+
-'	<div id="sitelinks" class="noprint"><a href="'+base+'/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a>&#xA0;'+s.rlm+
-'	<a href="'+base+'/International/resources" title="'+s.informationResources+'">'+s.resources+'</a>&#xA0;'+s.rlm+
-'	<a href="'+base+'/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a>&#xA0;'+s.rlm+
-'	<a href="'+base+'/International/resource-index" title="'+s.topicIndexForInformation+'">'+s.topics+'</a>&#xA0;'+s.rlm+ 
-'	<a href="'+base+'/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a>&#xA0;'+s.rlm+
-'	<a href="'+base+'/International/about#scope" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a>&#xA0;'+s.rlm+ 
-'	<a href="'+base+'/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a>&#xA0;'+s.rlm+ 
+'	<div id="sitelinks" class="noprint">'+
+//'   <bdi><a href="'+base+'/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="'+base+'/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="'+base+'/International/resources" title="'+s.informationResources+'">'+s.resources+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="'+base+'/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+ 
+'	<bdi><a href="'+base+'/International/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+ 
+'	<bdi><a href="'+base+'/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>&#xA0;'+s.rlm+
+//'	<bdi><a href="'+base+'/International/resource-index" style="font-size:70%;" title="'+s.topicIndexForInformation+'">&nbsp;&nbsp;'+s.topics+'</a></bdi>&#xA0;'+s.rlm+ 
 '	&#xA0; </div><div id="line">&#xA0;</div>'+
 '	</nav>'+
 '	<div class="directory"><div id="site-navigation">'+
                 versionList+
                 g.disclaimer+
-'                </div>'+
-'        <nav class="noprint" id="level2toc">'+
+'                </div>'
+if (f.toc && f.toc === 'no') { } //do nothing
+else mainNavigation += '<nav class="noprint" id="level2toc">'+
 '            <h2 id="internal-links" class="notoc">'+s.onThisPage+'</h2>'+
 '            <div id="toclocation"> </div>'+
 '            </nav>'+
@@ -241,8 +243,10 @@ g.bottomOfPage =
 
 function completePage () {
 	var sidebarExtras = ''
-	if (document.getElementById('sidebarExtras')) sidebarExtras = document.getElementById('sidebarExtras').innerHTML
-	document.getElementById('relatedlinks').innerHTML = sidebarExtras
+	if (document.getElementById('sidebarExtras')) {
+		sidebarExtras = document.getElementById('sidebarExtras').innerHTML
+		document.getElementById('relatedlinks').innerHTML = sidebarExtras
+		}
 	fillinTranslations()
 	if (document.getElementById("toclocation")) createtoc(false);
 	getURLs()
