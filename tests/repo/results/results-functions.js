@@ -372,7 +372,7 @@ function drawResults (sectionid, base, batch, specsection, uri, related, results
 		else shortname = nameparts[0] 
 		var pathparts = tname.split('/')
 		var simplefilename = pathparts[pathparts.length-1]
-		out += '<th class="side title"><a href="../run?base='+base+'&batch='+batch+'&test='+tname+'" target="_blank">'+shortname+"</a><br/><span class='testName'>"+simplefilename+	"</span></th>\n"
+		out += '<th class="side title"><a href="../../../../i18n-tests/run?base='+base+'&batch='+batch+'&test='+tname+'" target="_blank">'+shortname+"</a><br/><span class='testName'>"+simplefilename+	"</span></th>\n"
 		out += '<th class="side assert '+exp+'">'
 		//if (exp === 'exp') { out += '[Exploratory test] ' }
 		out += tests[tname][assertion]+"</th>\n"
