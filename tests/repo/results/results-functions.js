@@ -57,7 +57,6 @@ function generateStuffInPage () {
 				}
 			}
 				
-			
 		for (i= 1;i<rows.length;i++) {
 			// get the test name
 			testname = rows[i].title
@@ -89,18 +88,20 @@ function generateStuffInPage () {
 						case 'UC Browser': ucscore = ctest[r].status; break
 						}
 					}
-					
+
 				// now assign the scores to table cells in the order shown below
+				// also add event listener to open detailed result info
 				if (ths.ff) {
 					td = document.createElement('td')
 					td.title = 'Firefox'
 					if (ffscore) {
 						td.textContent = ffscore
 						td.className = ffscore
+						td.addEventListener('click', showResultDetail)
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -111,10 +112,11 @@ function generateStuffInPage () {
 					if (fnscore) {
 						td.textContent = fnscore
 						td.className = fnscore
-						}
+						td.addEventListener('click', showResultDetail)
+					}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -125,11 +127,12 @@ function generateStuffInPage () {
 					if (cscore) {
 						td.textContent = cscore
 						td.className = cscore
+						td.addEventListener('click', showResultDetail)
 						//td.className = getStatus(cscore)
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -140,10 +143,11 @@ function generateStuffInPage () {
 					if (gcscore) {
 						td.textContent = gcscore
 						td.className = gcscore
+						td.addEventListener('click', showResultDetail)
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -154,10 +158,11 @@ function generateStuffInPage () {
 					if (oscore) {
 						td.textContent = oscore
 						td.className = oscore
+						td.addEventListener('click', showResultDetail)
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -168,10 +173,11 @@ function generateStuffInPage () {
 					if (sscore) {
 						td.textContent = sscore
 						td.className = sscore
+						td.addEventListener('click', showResultDetail)
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -182,10 +188,11 @@ function generateStuffInPage () {
 					if (wkscore) {
 						td.textContent = wkscore
 						td.className = wkscore
+						td.addEventListener('click', showResultDetail)
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -196,10 +203,11 @@ function generateStuffInPage () {
 					if (escore) {
 						td.textContent = escore
 						td.className = escore
+						td.addEventListener('click', showResultDetail)
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -209,11 +217,12 @@ function generateStuffInPage () {
 					td.title = 'Internet Explorer'
 					if (iescore) {
 						td.textContent = iescore
+						td.addEventListener('click', showResultDetail)
 						td.className = iescore
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -224,11 +233,12 @@ function generateStuffInPage () {
 					if (ascore) {
 						td.textContent = ascore
 						td.className = ascore
+						td.addEventListener('click', showResultDetail)
 						}
 					else {
 						td.textContent = '-'
 						td.style.textAlign = 'center'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						}
 					rows[i].appendChild(td)
 					}
@@ -237,11 +247,12 @@ function generateStuffInPage () {
 					td.title = 'Chrome mobile'
 					if (cmscore) {
 						td.textContent = cmscore
+						td.addEventListener('click', showResultDetail)
 						td.className = cmscore
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -252,10 +263,11 @@ function generateStuffInPage () {
 					if (smscore) {
 						td.textContent = smscore
 						td.className = smscore
+						td.addEventListener('click', showResultDetail)
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -266,10 +278,11 @@ function generateStuffInPage () {
 					if (ucscore) {
 						td.textContent = ucscore
 						td.className = ucscore
+						td.addEventListener('click', showResultDetail)
 						}
 					else {
 						td.textContent = '-'
-						td.style.backgroundColor = '#ddd'
+						td.style.backgroundColor = 'azure'
 						td.style.textAlign = 'center'
 						}
 					rows[i].appendChild(td)
@@ -294,7 +307,9 @@ function generateStuffInPage () {
 	
 	
 	
-
+function showResultDetail (evt) {
+	showdetail(evt.target.parentElement.dataset.testname,evt.target.parentElement.dataset.sectionid)
+	}
 
 
 function showdetail (testname, sectionid) {  
@@ -335,7 +350,7 @@ function drawResults (sectionid, base, batch, specsection, uri, related, results
 
 	out += '<table class="results">'
     out += '<tr>'
-    out += '<th class="topleft">Test link</th>'
+    out += '<th class="topleft">Link (to run test)</th>'
    	out += '<th>Assertion</th>'
 	out += '</tr>'      
 
@@ -343,9 +358,11 @@ function drawResults (sectionid, base, batch, specsection, uri, related, results
 		var tname = results[row]
 		//testlist[testlist.length] = tname
 		var exp = ''
-		if (tests[tname][assertion].substr(1,4) === 'Exlp') exp = 'exp'
+		//if (tests[tname][assertion].substr(1,4) === 'Expl') exp = 'exp'
+		if (tests[tname][assertion].match('xploratory tes')) exp = 'exp'
 		
-		out += '<tr title="'+tname+'" onClick="showdetail(\''+tname+"','"+sectionid+'\');">\n'
+		//out += '<tr title="'+tname+'" data-testname="'+tname+'" data-sectionid="'+sectionid+'" onClick="showdetail(\''+tname+"','"+sectionid+'\');">\n'
+		out += '<tr title="'+tname+'" data-testname="'+tname+'" data-sectionid="'+sectionid+'">\n'
 		var nameparts = tests[tname][title].split(': ')
 		var shortname = '';
 		if (nameparts.length>1) {
@@ -355,9 +372,9 @@ function drawResults (sectionid, base, batch, specsection, uri, related, results
 		else shortname = nameparts[0] 
 		var pathparts = tname.split('/')
 		var simplefilename = pathparts[pathparts.length-1]
-		out += '<th class="side title"><a href="/International/tests/repo/run?base='+base+'&batch='+batch+'&test='+tname+'" target="_blank">'+shortname+"</a><br/><span class='testName'>"+simplefilename+	"</span></th>\n"
+		out += '<th class="side title"><a href="../run?base='+base+'&batch='+batch+'&test='+tname+'" target="_blank">'+shortname+"</a><br/><span class='testName'>"+simplefilename+	"</span></th>\n"
 		out += '<th class="side assert '+exp+'">'
-		//if (exp == 'exp') { echo '[Exploratory test] '; }
+		//if (exp === 'exp') { out += '[Exploratory test] ' }
 		out += tests[tname][assertion]+"</th>\n"
 	
 		out += "</tr>\n"
