@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Работа с языком в HTML (руководство)</title>
+<meta name="description" content="Руководство W3C i18n: как объявлять и использовать язык в XHTML и HTML файлах" />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'tutorials/language-decl'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-language-decl'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-05-22'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-06-03', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2018-03-20', time:'15:00'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://taushiro.com" title="Russian">Russian Translation Agency</a>, Taushiro Inc'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+</script>
+<script type="text/javascript" src="language-decl-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-ru.js"> </script> <!--TRANSLATORS must change -en to the subtag for their language! -->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Работа с языком в HTML (руководство)</h1>
+</header>
+
+<div id="sidebarExtras">
+	<section>
+    	<h2 id="whyread" class="notoc">Почему следует прочесть это руководство?</h2>
+        <p>Информация о языке, используемом на странице важна для её доступности, стиля, функций поиска и по другим причинам. Кроме того, информация о языке, которая обычно передается между юзер-агентом и сервером, может быть использована для улучшения пользовательской навигации и локализуемости вашего сайта. Это руководство поможет вам воспользоваться преимуществами, доступными сегодня и в ближайшем будущем, с помощью корректного объявления информации о языке.</p>
+      	</section>
+	<section id="objectives">
+     	<h2 class="notoc">Цели</h2>
+        <p>После прочтения руководства вы будете:</p>
+        <ul>
+          <li>знать, как объявить язык по умолчанию для вашей страницы, а также контент на различных языках</li>
+          <li>понимать, чем языковые метаданные об ожидаемом языке аудитории отличаются от языка непосредственно текста, и смысл этой разметки</li>
+          <li>способны найти информацию о том, как выбрать правильные значения атрибутов языка</li>
+          <li>знать, как установить языковые настройки вашего браузера</li>
+          <li>знать, как стилизовать ваши страницы в зависимости от выбранного языка.</li>
+        </ul>
+      </section>
+	</div>
+
+<section> 
+      <div id="audience"> 
+            <p><span id="intendedAudience" class="leadin">Целевая аудитория:</span> XHTML/HTML и CSS кодеры, веб-разработчики (PHP, JSP, и т. д.), а также все, кому необходимо руководство по объявлению и использованию языковой информации в HTML. Предполагается, что вы имеете базовое знакомство с HTML и CSS.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+        </div>
+
+	<p>Данное руководство объединяет и организует ссылки на статьи, которые, все вместе, помогут вам понять основные аспекты работы с языковой информацией при создании HTML и CSS.</p>
+		</section>
+  
+		<div id="nutshell">
+		    <h2 id="quicksummary"><a href="#quicksummary">В двух словах</a></h2>
+		    <p>Всегда добавляйте <code class="kw" translate="no">lang</code> атрибут к тэгу <code class="kw" translate="no">html</code> для того, чтобы установить язык по умолчанию вашей страницы.</p>
+<div class="example">
+  <p><code translate="no">&lt;html lang=&quot;en&quot;&gt;</code></p>
+  </div>
+<p>Если это XHTML 1.x или HTML5 Polyglot документ, используемый, как XML, вам следует также использовать <code class="kw" translate="no">xml:lang</code> атрибут (с тем же значением). Если ваша страница используется только, как XML, то просто используйте <code class="kw" translate="no">xml:lang</code> атрибут.</p>
+	      <p>Не используйте <code class="kw" translate="no">meta</code> элемент с <code class="kw" translate="no">http-equiv</code>, установленным в значение <code class="kw" translate="no">Content-Language</code>.</p>
+	      <p>Выбирайте тэги из списка IANA Subtag Registry и следуйте правилам синтаксиса BCP 47 при использовании структур более сложных, чем просто языковой тэг. Держите свои языковые теги как можно более короткими.</p>
+		    <p>Используйте <code class="kw" translate="no">:lang</code> свойство в CSS, чтобы применять стили, зависящие от языка вашего контента. </p>
+		</div>
+ 
+ 
+<section>
+  <h2 id="Slide0030"><a href="#Slide0030">Зачем объявлять язык?</a></h2>
+		  <p>Эта часть руководства объясняет мотивы для дальнейшего чтения. Если вы спешите и просто хотите знать, что делать, без теории, то начните читать раздел <a href="#Slide0140">Как объявить язык страницы или элемента</a>.</p>
+		  <p>Браузеры и другие приложения могут использовать информацию о языке контента для предоставления пользователям наиболее подходящей информации или предоставления информации пользователям наиболее подходящим образом. Чем больше контента будет размечено и размечено правильно, тем более полезными и распространенными такие приложения станут.</p>
+<p><a href="/International/questions/qa-lang-why" class="maintitle print"><cite>Зачем использовать атрибут языка?</cite></a> содержит примеры того, как языковая информация может быть полезной.</p>
+</section>
+<section>
+<h2 id="Slide0140"><a href="#Slide0140">Как объявить язык страницы или элемента</a></h2>
+		  <p>Вам следует устанавливать язык текста на странице, используя языковые атрибуты. К сожалению, существует более, чем один атрибут, а также есть несколько вещей, которые необходимо прояснить. Этот раздел обсуждает различные варианты: те, которые следует использовать, и те, которых следует избегать (и почему). </p>
+		  <p><a href="/International/questions/qa-html-language-declarations" class="maintitle print"><cite>Объявление языка в HTML</cite></a> предоставляет итоговую информацию о том, как объявлять язык, используя атрибуты.</p>
+<p><a href="/International/questions/qa-http-and-lang" class="maintitle print"><cite>HTTP заголовки, мета элементы и информация о языке</cite></a> описывает, как языковые метаданные отличаются от действительного языка текста, а также Content-Language, используемый в HTTP заголовках и мета элементах.</p>
+</section>
+
+
+<section>
+<h2 id="Slide0200"><a href="#Slide0200">Работа с языковыми тэгами</a></h2>
+		  <p>В этом разделе рассматривается, как выбирать и создавать языковые теги, то есть значения, используемые для атрибутов языка.</p>
+		  <p>Чтобы быть уверенным в том, что все юзер агенты понимают, какой язык вы имеете в виду, вам необходимо следовать стандартным подходам при предоставлении языковых значений. Вам, вероятно, потребуется рассмотреть, как относиться к диалектным различиям, например между американским и британским английским, которые содержат существенные различия в орфографии и произношении.</p>
+  <p><a href="/International/articles/language-tags/" class="maintitle print"><cite>Языковые тэги в HTML и XML </cite></a> описывает синтаксис языковых тэгов, использующих спецификацию BCP 47.</p>
+  <p><a href="/International/questions/qa-choosing-language-tags" class="maintitle print"><cite>Выбор языкового тэга</cite></a> предоставляет практическую информацию о том, как выбрать корректный тэг из тысяч доступных, для представления необходимого вам языка.</p>
+</section>
+
+
+<section>
+  <h2 id="browser"><a href="#browser">Установка языковых настроек браузера</a></h2>
+<p>Когда ваш браузер получает документ из Сети, он отправляет HTTP запрос на сервер. Вместе с запросом, браузер также посылает информацию о своих языковых настройках. Эти настройки могут влиять на то, какой контент будет отправлен вам обратно. Узнайте, как устанавливать и изменять эти настройки.</p>
+  <p> <a href="/International/questions/qa-lang-priorities" class="maintitle print"><cite>Установка языковых настроек в браузере</cite></a></p>
+</section>
+
+<section>
+  <h2 id="styling"><a href="#styling">Использование информации о языке для стилизации документа</a></h2>
+  <p>Вам зачастую необходимо применять различные стили для текста на различных языках (например, шрифт или высота строки, или, вероятно, различные стили выделения и так далее). Если вы задействуете атрибуты для определения языка контента, то вы сможете использовать некоторые мощные CSS селекторы для автоматического применения различных стилей при изменении языка контента. Следующая статья рассматривает различные способы того, как это сделать.</p>
+  <p> <a href="/International/questions/qa-css-lang" class="maintitle print"><cite>Стилизация с использованием языковых атрибутов</cite></a></p>
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Дополнительные материалы</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+	<ul id="full-links">
+	  <li>
+	    <p>Приступаете к работе? <a href="/International/getting-started/language"><cite>Язык в Сети</cite></a></p>
+      </li>
+	<li>
+      <p>Ссылки по теме, <cite>Разработка HTML и CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#language">Язык</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
