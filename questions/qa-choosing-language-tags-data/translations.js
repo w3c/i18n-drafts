@@ -6,4 +6,4 @@ trans.outofdatetranslations = []
 
 trans.updatedtranslations = []
 
-trans.unlinkedtranslations = ['ro','uk']
+trans.unlinkedtranslations = ['ro','ru','uk']
