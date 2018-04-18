@@ -21,7 +21,7 @@ f.path = '../../' // what you need to prepend to a URL to get to the /Internatio
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2018-03-27', time:'17:29'} // date and time of latest edits to this document/translation
-f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+f.contributors = 'Aditya Bayu, Florian Rivoal'; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
 // TRANSLATORS should fill in these assignments:
@@ -75,7 +75,7 @@ figure img {
   </div>
   <p>This article gives a high level summary of various typographic strategies for wrapping text at the end of a line, for a variety of scripts.</p>
 <p>Typographic conventions for full text justification depend on the writing system, the content language, and the calligraphic style of the text. Results also tend to vary based on the capabilities of the layout engine and a given typographer’s preferences for weighing its various detrimental effects on typographic color and readability.</p>
-<p>This article provides a broad overview of the different strategies used by different writing systems, but is only an overview. Special rules apply to pretty much all scripts affecting what characters can and can't start or end a line. Some writing systems allow hyphenation, and others don't. We will only give examples of these, rather than exhaustively list all the details.</p>
+<p>This article provides a broad overview of the different strategies used by different writing systems, but is only an overview. Special rules apply to pretty much all scripts affecting what characters can and can't start or end a line. Some writing systems allow hyphenation, and others don't. We will only give examples of the main differences, rather than exhaustively list all the details.</p>
   <p class="note" style="clear: none;">For more detailed information about how justification happens in various scripts, see the <a href="http://w3c.github.io/typography/#linebreak">International text layout and typography index</a>.</p>
 </section>
 
@@ -128,8 +128,8 @@ figure img {
 </div>
 
 
-<p>Archaic scripts are much more likely to use a <span class="qterm">scriptio continua</span> approach (ie. no word or syllable breaks), although in modern texts describing them you may find spaces separating units of text.</p>
-<p>In following sections we will give examples of these alternatives, and mention some of the implications.</p>
+<p>Archaic scripts are much more likely to use a <span class="qterm">scriptio continua</span> approach (ie. no word or syllable breaks), although in modern texts describing them you may find spaces separating units of text. Older versions of the scripts mentioned may also use different rules for word division and line breaking. </p>
+<p>In following sections we will give examples of the main alternatives, and mention some of the implications. We'll focus on modern usage only.</p>
 </section>
 
 <section>
@@ -222,22 +222,26 @@ figure img {
 <section id="sec_syllables">
 <h2><a href="#sec_syllables">Languages that wrap syllables</a></h2>
 
-        <p>Other writing systems wrap not words but syllables to the next line.</p>
-
+        <p>Some writing systems wrap not just words but syllables to the next line. Often it is preferable to wrap whole words, but text can also be broken at syllable boundaries instead.</p>
+<p>Some analysis of the text is typically needed to determine where the syllable boundaries occur. Often the end of a syllable is marked by a  final consonant that is a combining character, or the end of the syllable may be indicated by a special mark.</p>
+<p>However, in some of these languages there may be ambiguous situations which are hard to deal with. For example, a single character may usually represent a consonant-plus-vowel sound such as /na/, ie. a syllable in its own right. That same character may be used, without special indications, as a syllable final consonant, where it is pronounced with no following vowel sound.  In such cases, it can be hard to automatically detect whether the character constitutes the end of the previous syllable, or beginning of a new syllable. </p>
+<p>In several South East Asian  writing systems,  where one syllable ends with a consonant and the following syllable starts with a consonant they may be stacked or joined in a special way. Those combinations are not split. In consequence, the line breaking algorithm may be expected to work with <em>orthographic</em> syllables, rather than phonetic ones.</p>
 <section id="sec_tibetan">
         <h3><a href="#sec_tibetan">Tibetan: visible syllable dividers</a></h3>
-        <p>A good example of this is Tibetan, which uses a <span class="qterm">tsek</span> character to separate syllables.  Tibetan wraps by moving complete syllables to the next line, so that the original line ends with a tsek mark.  This sounds like the Ethiopic example, but the difference is that Tibetan words can be made up of multiple syllables and although it is  preferable to avoid breaking a line in the middle of the word, it is not essential.  A syllable, on the other hand should always be kept intact.</p>
+        <p>A good example of of a writing system that breaks regularly at syllable boundaries is Tibetan, which uses a <span class="qterm">tsek</span> character to signal the end of a syllable.  </p>
+<p>Tibetan wraps by moving complete syllables to the next line, so that the original line ends with a tsek mark.  This sounds like the Ethiopic example, but the difference is that Tibetan words can be made up of multiple syllables and although it is  preferable to avoid breaking a line in the middle of the word, it is not essential.  A syllable, on the other hand should always be kept intact.</p>
  <div class="figWrap">
        <figure>
 <p><img src="linebreak-data/tibt.png" alt="Line break opportunities in Tibetan."/></p>
 <figcaption>Line break opportunities in Tibetan</figcaption>
  </figure>
 </div>
+<p>&nbsp;</p>
       </section>
       
      <section id="sec_sundanese">
         <h3><a href="#sec_sundanese">Sundanese, Cham: space as word separator</a></h3>
-        <p>We saw that Korean text uses spaces between words, but doesn't necessarily use those spaces to identify line-break opportunities. There are some writing systems that also separate words by spaces, but actually wrap on smaller units. Unlike Korean, which wraps character by character, these writing systems use a multi-character syllable as the unit of text.</p>
+        <p>We saw that Korean text uses spaces between words, but doesn't necessarily use those spaces to identify line-break opportunities. There are some writing systems that also separate words by spaces, but may actually wrap on smaller units. Unlike Korean, which wraps character by character, these writing systems use a multi-character syllable as the unit of text.</p>
   <div class="figWrap">
    <figure>
 <p><img src="linebreak-data/sund.png" alt="Sundanese line break opportunities."/></p>
@@ -246,18 +250,14 @@ figure img {
 </div>
 <section id="sec_se_asia2">
 <h3><a href="#sec_se_asia2">More from SE Asia: no word separator</a></h3>
-        <p style="color: red;">THIS INFORMATION NEEDS TO BE VALIDATED, INCLUDING WHETHER ORTHOGRAPHIC SYLLABLES ARE THE BASIS FOR LINE BREAKING</p>
-<p>This is an approach that hasn’t received much attention so far. Some scripts, particularly in South East Asia, also wrap syllables to the next line, regardless of word boundaries.  However, unlike Tibetan, there is no punctuation to indicate where the syllables start and end.  </p>
-<blockquote>
-<p><span class="ed">I think the following is relevant to Khmer or Thai, but not to these scripts (Javanese, Balinese, Sundanese, Batak, Cham).</span> In these languages, a single character, such as a nasal /n/, usually represents a consonant-plus-vowel sound, eg. /na/, a syllable in its own right. It may, however, be used, without special indications, as a syllable final consonant.  In this case it has no following vowel sound, and is part of the previous syllable.  In such cases, it can be hard to automatically detect whether a character constitutes the end or beginning of a syllable. </p>
-</blockquote>
+<p>A number of other South East Asian scripts are written without spaces between words. In these writing systems you may also find text being wrapped at syllable boundaries, in addition to word boundaries.</p>
 <div class="figWrap">
    <figure>
 <p><img src="linebreak-data/java.png" alt="Javanese line break opportunities."/></p>
 <figcaption>Line break opportunities in Javanese text.</figcaption>
 </figure>
 </div>
-        <p>The breaks shown above correspond to <em>orthographic</em> syllables, rather than phonetic ones. For example where one syllable ends with a consonant and the following syllable starts with a consonant they may be stacked or joined in a special way. Those combinations are not split.</p>
+        <p>The break opportunities shown above correspond to <em>orthographic</em> syllables, rather than phonetic ones. For example where one syllable ends with a consonant and the following syllable starts with a consonant they may be stacked or joined in a special way. Those combinations are not split.</p>
      </section>
 </section>
         
@@ -268,12 +268,13 @@ figure img {
         <p>We have already seen that Korean can be wrapped character by character. Chinese, Japanese and Vai also wrap individual characters to the next line, regardless of word boundaries. </p>
 <div class="figWrap">
    <figure>
-<p><img src="linebreak-data/japn.png" alt="Japanese line break opportunities."/></p>
+<p><img src="linebreak-data/japn.png" alt="Japanese line break opportunities." data-setup="font-size:2em;border:3px;" title="すべて人は、自国その他いずれの国をも立ち去り、及び自国に帰る権利を有する。"/></p>
 <figcaption>Line break opportunities in Japanese text.</figcaption>
 </figure>
 </div>
         <p>This type of wrapping is sometimes referred to as syllabic, but actually Japanese is a mora-based script, rather than a syllable-based one. This means that it is possible to find text wrapped within the single syllable <span lang="ja">きょう</span> (pronounced <span class="qterm">kyō</span>, meaning 'today').</p>
 <p>That said, things are (as always) not quite so simple. While it is common to wrap the last character in the word <span lang="ja">きょう</span> independently to the next line, some content authors prefer to always keep the small second character with the first. CSS provides <code class="kw" translate="no">strict</code> and <code class="kw" translate="no">loose</code> values for the <code class="kw" translate="no">line-break</code> property to allow content authors to control this behaviour. The latter value allows line-breaks between the two. This can often be useful for text in narrow columns, such as newspapers.</p>
+<p>Furthermore, the are occasionally situations, such as in headings, where the content author may prefer to wrap without splitting what are perceived to be 'words'. As for Thai, because in Japanese compound words are often built from individual words, and also because Japanese adds grammatical particles after words which may or may not be seen as tightly bound to the word, it is fairly subjective as to what constitutes a word boundary in this case.</p>
 <div class="figWrap"></div>
 </section>
 </section>
@@ -302,21 +303,20 @@ figure img {
 <h3><a href="#sec_hyphenation">Hyphenation</a></h3>
         <p class="advisement"> Hyphenation is a mechanism that helps to achieve a better fit for text on a line. Only a  subset of writing systems support hyphenation, but it is mostly needed to break words into smaller units for wrapping.</p>
 <p class="advisement">It is important to note that hyphenation rules differ from language to language within the same script. Although both use the Latin script, German and English orthographic rules can be quite different. Arabic language content doesn't usually permit hyphenation, but Uighur does, even though they both use the Arabic script. (Note, that Arabic provides a range of alternative methods to lengthen or shorten lines during justification.)</p>
-<p>The mechanism involved in hyphenation also varies. For some languages, the hyphen (which may not look like '-') appears at the start of the following line, in others it may appear on both lines. In some cases the spelling of a word is changed around hyphenation, for example in Dutch  <span lang="du">cafeetje → café-tje</span> and <span lang="du">skiërs → ski-ers</span>, and in Hungarian <span lang="hu">Összeg → Ösz-szeg</span>.</p>
-<div class="figWrap"></div>
+<p>The mechanism involved in hyphenation also varies. For some languages, the hyphen (which may not look like '-') appears at the start of the following line, in others it may appear on both lines. In some cases the spelling of a word is changed around hyphenation, for example in Dutch  <i class="foreignphrase" lang="du">cafeetje</i> → <i class="foreignphrase" lang="du">café-tje</i> and <i class="foreignphrase" lang="du">skiërs</i> → <i class="foreignphrase" lang="du">ski-ers</i>, and in Hungarian <i class="foreignphrase" lang="hu">Összeg</i> → <i lang="hu">Ösz-szeg</i>.</p>
 </section>
 
 
 <section id="sec_special_rules">
 <h3><a href="#sec_special_rules">Other special rules</a></h3>
 <p class="advisement">In addition to rules about what character can or cannot appear at the end/start of a line, there may be more complicated rules related to the process of wrapping text.</p>
-<p>For example, in traditional Tibetan formats, it is considered a special case if the last syllable of an expression that is terminated by <span class="codepoint"><span lang="bo">&#x0F0D;</span> [<span class="uname">U+0F0D TIBETAN MARK SHAD</span>]</span> (a phrase delimiter) breaks onto a new line. In that case the shay or double shay is replaced by <span lang="bo-latn" class="qterm">rin chen spungs shad</span>, <span class="codepoint"><span lang="bo">༑</span> <a href="/scripts/tibetan/block#char0F11">[<span class="uname">U+0F11 TIBETAN MARK RIN CHEN SPUNGS SHAD</span>]</a></span>. At the end of a topic the rules say that only one shay should be converted, ie. <span class="ex" style="white-space:nowrap;" lang="bo">༑  །</span>, however it is moderately popular to convert both, ie. <span class="ex" style="white-space:nowrap;" lang="bo">༑ ༑</span>. This change serves as an optical indication that there is a left-over syllable at the beginning of the line that actually belongs to the preceding line.</p>
+<p>Here we provide, by way of an example, some detail about line breaking in traditional Tibetan formats . It is considered a special case if the last syllable of an expression that is terminated by <span class="codepoint"><span lang="bo">&#x0F0D;</span> [<span class="uname">U+0F0D TIBETAN MARK SHAD</span>]</span> (a phrase delimiter) breaks onto a new line. In that case the shay or double shay is replaced by <i lang="bo-latn" class="foreignphrase">rin chen spungs shad</i>, <span class="codepoint"><span lang="bo">༑</span> <a href="/scripts/tibetan/block#char0F11">[<span class="uname">U+0F11 TIBETAN MARK RIN CHEN SPUNGS SHAD</span>]</a></span>. At the end of a topic the rules say that only one shay should be converted, ie. <span class="ex" style="white-space:nowrap;" lang="bo">༑  །</span>, however it is moderately popular to convert both, ie. <span class="ex" style="white-space:nowrap;" lang="bo">༑ ༑</span>. This change serves as an optical indication that there is a left-over syllable at the beginning of the line that actually belongs to the preceding line.</p>
 	  <p>This varies in the following cases:</p>
 	  <ul>
 	    <li>
-	      when a line starts with <span class="ex" style="white-space:nowrap;" lang="bo">ལེའུ། །</span>, no rin chen spungs shad would be used, since <span class="ipa">le'u</span> is pronounced as two syllables.</li>
+	      when a line starts with <span class="ex" style="white-space:nowrap;" lang="bo">ལེའུ། །</span>, no <i class="foreignphrase" lang="bo-Latn">rin chen spungs shad</i> would be used, since <i class="ipa">le'u</i> is pronounced as two syllables.</li>
 	    <li>sometimes  only the first of two shays is replaced, ie. <span class="ex" style="white-space:nowrap;" lang="bo">༑ །</span>, but this style is considered less attractive.</li>
-	    <li> some printed books do not use rin chen spungs shad replacements, however the majority of books seem to apply the same rules as are used with pechas.</li>
+	    <li> some printed books do not use <i class="foreignphrase" lang="bo-Latn">rin chen spungs shad</i> replacements, however the majority of books seem to apply the same rules as are used with pechas.</li>
 </ul>
 </section>
 
@@ -331,6 +331,9 @@ figure img {
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
   <ul id="full-links">
+  <li>
+  <p><a href="http://pioneer.netserv.chula.ac.th/~awirote/ling/snlp2007-wirote.pdf"><cite>Thoughts on Word and Sentence Segmentation in Thai</cite></a></p>
+  </li>
     <li>
       <p>Related links, <cite>International text layout and typography</cite>, <a href="http://w3c.github.io/typography/#justification">Justification &amp; line-end alignment</a></p>
     </li>
