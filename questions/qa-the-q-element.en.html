@@ -115,23 +115,32 @@ f.additionalLinks = ''
 
 <section>
 <h2 id="browsers"><a href="#browsers">How browsers apply default quotation marks</a></h2>
-<p>If you want complete success, you should probably use CSS to override the browser defaults and ensure that the q element produces quotation marks in the way you prefer. More on that later.</p>
-<p>This section looks at what browsers currently do if you use the q element without any styling.</p>
-<p>First of all, all major browsers do automatically add quotation marks. They also use different quotation marks for nested quotes.</p>
+<p>If you want complete success, you should probably use CSS to override the browser defaults and ensure that the <code class="kw" translate="no">q</code> element produces quotation marks in the way you prefer. More on that later.</p>
+<p>This section looks at what browsers currently do if you use the <code class="kw" translate="no">q</code> element without any styling.</p>
+<p>Before we start we should note that all major browsers do automatically add a default set of quotation marks, and they also use different quotation marks for nested subquotes.</p>
 
 <section>
 <h3 id="monolingual_defaults"><a href="#monolingual_defaults">Monolingual pages</a></h3>
-    <p>In a Swiss French page, with the language set on the <code class="kw" translate="no">html</code> element, you can expect to see Swiss French quotation marks in Chrome and Safari, but not in Firefox.</p>
+    <p>Let's assume you have the following markup, in a page where the language of the  <code class="kw" translate="no">html</code> tag is set to Swiss French using <code>lang=&quot;fr-CH</code>.</p>
+<div class="example">
+<p lang="fr">Mais Lucy répondit: &lt;q&gt;Embrassez George de ma part et dites-lui, &lt;q&gt;Embrouille&lt;/q&gt;&lt;/q&gt;</p>
+</div>
+<p>By default, you can expect to see Swiss French quotation marks in Chrome, Safari, and Edge, but not in Firefox.</p>
 <div class="example">
 <p lang="fr">Mais Lucy répondit: « Embrassez George de ma part et dites-lui, ‹ Embrouille › »</p>
 </div>
-<p>The quotation marks used in browsers that do generate quotation marks per the language of the text use the settings recommended by the CLDR repository. This is specified in the HTML standard.</p>
+<p>For browsers that do generate quotation marks per the language of the text, the quotation marks used follow the settings recommended by the CLDR repository. This is specified in the HTML standard.</p>
+<p>However, support varies by language, and doesn't cover all languages. There may not be a default set for the particular language you are using.</p>
 </section>
   
   <section>
     <h3 id="multilingual_defaults"><a href="#multilingual_defaults">Multilingual text</a></h3>
-    <p>Our main interest here is in multilingual text. This is where we begin to run into difficulties.</p>
-    <p>The fact that Firefox isn’t language-sensitive actually helps here. With Firefox you would see what you’d expect.</p>
+    <p>But what if the quotation is in a different language than the surrounding text? This is where we begin to run into difficulties.</p>
+<p>Here's our source code.</p>
+<div class="example">
+<p>But Lucy replied: &lt;q&gt;Embrassez George de ma part&lt;/q&gt;</p>
+</div>
+<p>The fact that Firefox isn’t language-sensitive actually helps here (as long as your document is mainly in English). With Firefox you would see:</p>
 <div class="example">
 <p>But Lucy replied: “<span lang="fr">Embrassez George de ma part</span>”</p>
 </div>
@@ -140,11 +149,13 @@ f.additionalLinks = ''
 <p>But Lucy replied: « <span lang="fr">Embrassez George de ma part</span>  »</p>
 </div>
 <p>This is what the WhatWG version of the HTML spec currently requires.</p>
-<p>The W3C version of HTML currently specifies that the version of the quotation marks should be set according to the language indicated on the html tag, and not according to the language of the quoted text.  This removes that unexpected result, but note that by the W3C HTML definition only that language declared on the html tag will count.  If your page is split into, say, two halves, one English and one French, then setting the language to French on the second half will not cause the default-supplied quotation marks to become the French ones.  </p>
+<p>The W3C version of HTML currently specifies that the version of the quotation marks should be set according to the language indicated on the <code class="kw" translate="no">html</code> tag, and not according to the language of the quoted text.  This would remove the unexpected result in a page that contains quotes in another language.</p>
+<p>If, however, the page contains sections in different languages, each with quotations in another language, you will have problems when using the W3C model. The language declared in the <code class="kw" translate="no">html</code> tag will apply throughout, so you'll need to use CSS styling to change the default for one or both sections.</p>
 </section>
   
-  <section>
-    <h3 id="defaults_summary"><a href="#defaults_summary">Summary</a></h3>
+  <section> </section>
+<section>
+<h3 id="defaults_summary"><a href="#defaults_summary">Summary</a></h3>
     <p>The upshot of this is that the default choice of automatically supplied quotation marks works as expected in monolingual documents in some but not all browsers. And for multilingual text it mostly works incorrectly and is not sensitive to in-document changes in language context.</p>
     <p>Therefore, it makes sense to use CSS styling most of the time when you want to automatically generate quote marks for the <code class="kw" translate="no">q</code> element, for <code class="kw" translate="no">blockquote</code>, or any other element.</p>
 </section>
@@ -154,17 +165,17 @@ f.additionalLinks = ''
 <h2 id="css_styling"><a href="#css_styling">Using CSS to style quotation marks</a></h2>
 <p>You can style quotation marks for a Swiss French, monolingual document using the following CSS.</p>
 <div class="example">
-<pre>q { quotes: '«' '»' &quot;‹&quot; &quot;›&quot;; } 
+<pre>* { quotes: '«' '»' &quot;‹&quot; &quot;›&quot;; } 
 q::before { content: open-quote; }
 q::after { content: close-quote; }</pre>
 </div>
 <p>For multilingual quotations, this should also serve, if you start the selector with a language choice. For example,</p>
 <div class="example">
-<pre>:lang(fr-CH) q { quotes: '«' '»' "‹" "›"; }
+<pre>:lang(fr-CH) { quotes: '«' '»' "‹" "›"; }
 :lang(fr-CH) q::before { content: open-quote; }
 :lang(fr-CH) q::after { content: close-quote; }
 
-:lang(en) q { quotes: '“' '”' "‘" "’"; }
+:lang(en) { quotes: '“' '”' "‘" "’"; }
 :lang(en) q::before { content: open-quote; }
 :lang(en) q::after { content: close-quote; }</pre>
 </div>
