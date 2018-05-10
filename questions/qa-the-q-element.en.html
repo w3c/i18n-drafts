@@ -121,16 +121,16 @@ f.additionalLinks = ''
 
 <section>
 <h3 id="monolingual_defaults"><a href="#monolingual_defaults">Monolingual pages</a></h3>
-    <p>Let's assume you have the following markup, in a page where the language of the  <code class="kw" translate="no">html</code> tag is set to Swiss French using <code>lang=&quot;fr-CH</code>.</p>
+    <p>Let's assume you have the following markup, in a page where the language of the  <code class="kw" translate="no">html</code> tag is set to Swiss French using <code>lang=&quot;fr-CH&quot;</code>.</p>
 <div class="example">
 <p lang="fr">Mais Lucy répondit: &lt;q&gt;Embrassez George de ma part et dites-lui, &lt;q&gt;Embrouille&lt;/q&gt;&lt;/q&gt;</p>
 </div>
-<p>By default, you can expect to see Swiss French quotation marks in Chrome, Safari, and Edge, but not in Firefox.</p>
+<p>By default, you can expect to see Swiss French quotation marks in Chrome, Safari, and Edge, but not in Firefox, since it doesn't take language settings into account for default quotation marks.</p>
 <div class="example">
 <p lang="fr">Mais Lucy répondit: « Embrassez George de ma part et dites-lui, ‹ Embrouille › »</p>
 </div>
-<p>For browsers that do generate quotation marks per the language of the text, the quotation marks used follow the settings recommended by the CLDR repository. This is specified in the HTML standard.</p>
-<p>However, support varies by language, and doesn't cover all languages. There may not be a default set for the particular language you are using.</p>
+<p>For browsers that <em>do</em> generate quotation marks per the language of the text, the quotation marks used follow the settings recommended by the CLDR repository. This is specified in the HTML standard.</p>
+<p>However, support varies by language, and doesn't cover all languages si there may not be a default set for the particular language you are using.</p>
 </section>
   
   <section>
@@ -140,13 +140,14 @@ f.additionalLinks = ''
 <div class="example">
 <p>But Lucy replied: &lt;q lang=&quot;fr&quot;&gt;Embrassez George de ma part&lt;/q&gt;</p>
 </div>
-<p>The fact that Firefox isn’t language-sensitive actually helps here (as long as your document is mainly in English). With Firefox you would see:</p>
+<p>The fact that Firefox isn’t language-sensitive actually helps here (as long as your document is mainly in English). With Firefox you would see what you'd expect:</p>
 <div class="example">
 <p>But Lucy replied: “<span lang="fr">Embrassez George de ma part</span>”</p>
 </div>
-    <p>However, Chrome and Safari add quotation marks based on the language of the quoted text, which is not  what would be expected. So in an English ebook you would see </p>
+    <p>However, Chrome, Safari and Edge add quotation marks based on the language of the quoted text, which is not  what would be expected. So in an English ebook you would see </p>
 <div class="example">
-<p>But Lucy replied: « <span lang="fr">Embrassez George de ma part</span>  »</p>
+        <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad result. Don't copy!</span></div>
+        <p>But Lucy replied: « <span lang="fr">Embrassez George de ma part</span>  »</p>
 </div>
 <p>This is what the WhatWG version of the HTML spec currently requires.</p>
 <p>The W3C version of HTML currently specifies that the version of the quotation marks should be set according to the language indicated on the <code class="kw" translate="no">html</code> tag, and not according to the language of the quoted text.  This would remove the unexpected result in a page that contains quotes in another language.</p>
@@ -156,8 +157,8 @@ f.additionalLinks = ''
   <section> </section>
 <section>
 <h3 id="defaults_summary"><a href="#defaults_summary">Summary</a></h3>
-    <p>The upshot of this is that the default choice of automatically supplied quotation marks works as expected in monolingual documents in some but not all browsers. And for multilingual text it mostly works incorrectly and is not sensitive to in-document changes in language context.</p>
-    <p>Therefore, it makes sense to use CSS styling most of the time when you want to automatically generate quote marks for the <code class="kw" translate="no">q</code> element, for <code class="kw" translate="no">blockquote</code>, or any other element.</p>
+    <p>The upshot of this is that currently the default choice of automatically supplied quotation marks works as expected in monolingual documents in some but not all browsers. And for multilingual text it mostly works incorrectly and is not sensitive to in-document changes in language context.</p>
+    <p>Therefore, until the specs and browser behaviour change, it makes sense to use CSS styling most of the time when you want to automatically generate quote marks for the <code class="kw" translate="no">q</code> element, for <code class="kw" translate="no">blockquote</code>, or any other element.</p>
 </section>
 </section>
 
@@ -169,33 +170,23 @@ f.additionalLinks = ''
 q::before { content: open-quote; }
 q::after { content: close-quote; }</pre>
 </div>
-<p>For multilingual quotations, this should also serve, if you start the selector with a language choice. For example,</p>
+<p>Although they should already be in the browser's default stylesheet, it's worth including the <code class="kw" translate="no">::before</code> and <code class="kw" translate="no">::after</code> lines in order to ensure that your code it bulletproof.</p>
+<p>For pages containing quotations in other languages, or sections in other languages, however, you'll want something a little more complex, such as the following:</p>
 <div class="example">
-<pre>:lang(fr-CH) { quotes: '«' '»' "‹" "›"; }
-:lang(fr-CH) q::before { content: open-quote; }
-:lang(fr-CH) q::after { content: close-quote; }
-
-:lang(en) { quotes: '“' '”' "‘" "’"; }
-:lang(en) q::before { content: open-quote; }
-:lang(en) q::after { content: close-quote; }</pre>
+<pre>:root:lang(fr-CH), :not(:lang(fr-CH))&gt;:not(q):lang(fr-CH) 
+      { quotes: '«' '»' "‹" "›"; }
+:root:lang(en), :not(:lang(en))&gt;:not(q):lang(en) 
+      { quotes: '“' '”' "‘" "’"; }</pre>
 </div>
-<p>It’s important to note that you need an additional set of assignments for any section in a different language.</p>
-<p>Say you declare the page to be French in the html tag (html lang=“fr”), then you start a section that is in English.  Unless you have an additional set of quote assignments for :lang(en), the quote marks won’t actually change even though the language of the content has changed. </p>
-<div class="example">
-<pre>&lt;html lang=“fr”&gt;
-&lt;head&gt;
-…
-&lt;/head&gt;
-&lt;body&gt;
-&lt;p&gt;Ceci est français.&lt;/p&gt;
-&lt;section lang=“en”&gt;
-&lt;p&gt;This is English.&lt;/p&gt;
-&lt;/section&gt;
-…</pre>
-</div>
+<p>The above CSS will prepare you to display quotations in Swiss French or English text. You'll need a line like this for every language in the document.</p>
+<p>The selector says:</p>
+<ul>
+<li>Set the selected quotes for the whole document if  language X is set in the <code class="kw" translate="no">html</code> tag.</li>
+<li>If the language changes away from X for any element <em>except</em> <code class="kw" translate="no">q</code>, set the quotes as specified.</li>
+</ul>
 
-  <section>
-    <h3 id="nonutf8"><a href="#nonutf8">Problems with scope</a></h3>
+<section>
+<h3 id="nonutf8"><a href="#nonutf8">Problems with scope</a></h3>
     <p>One of the issues you face when using CSS in the way just described is that any additional styling associated with the language of the quotation is applied to the quotation marks. This is also true when using the browser defaults.</p>
     <p>This can be problematic if, for example, the font used for the quotation is  different from that used for the surrounding text. In the following image the top line shows the result of adding quote marks to the text outside of a <code class="kw" translate="no">span</code> containing the Japanese text. The lower line shows that when the <code class="kw" translate="no">q</code> element is used the quotation marks adopt the shape of the Japanese font.</p>
 <div class="example">
@@ -203,7 +194,7 @@ q::after { content: close-quote; }</pre>
 </div>
 <p>This would not be ideal, since the quotation marks should be seen as belonging to the surrounding context, rather than the quotation itself.</p>
 <p>Similarly, if the quotation was italicised, coloured, or styled in any other way, that styling would apply by default to the quotation marks.</p>
-  </section>
+</section>
 </section>
 
 
