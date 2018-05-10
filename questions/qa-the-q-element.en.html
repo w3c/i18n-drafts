@@ -90,26 +90,29 @@ f.additionalLinks = ''
     </div>
 <p>Translate this book into French, and you would expect to see the use of French quotation marks.</p>
      <div class="example">
-    <p lang="fr">Mais Lucy répondit: « Embrassez George de ma part  »</p>
+    <p lang="fr">Mais Lucy répondit: «Embrassez George de ma part »</p>
     </div>
    <p>If we add a quotation inside a quotation, we would expect to see the inner quotation use different quotation marks in English.</p>
      <div class="example">
     <p>But Lucy replied: “Give George my love and tell him, ‘Muddle’”</p>
     </div>
-   <p>and in many other languages, including Swiss French (though not French French, according to the Unicode Consortium's CLDR).</p>
+   <p>and in many other languages, including Swiss French (though not European French, according to the Unicode Consortium's CLDR).</p>
 <div class="example">
-<p lang="fr">Mais Lucy répondit: « Embrassez George de ma part et dites-lui, ‹ Embrouille › »</p>
+<p lang="fr">Mais Lucy répondit: «Embrassez George de ma part et dites-lui, ‹Embrouille›»</p>
     </div>
 <p>So far so good. Now let’s look at what happens if we start mixing languages. Let’s suppose that the book is in English, but Lucy speaks in French.</p>
      <div class="example">
     <p>But Lucy replied: “<span lang="fr">Embrassez George de ma part</span>”</p>
     </div>
    <p>Note that the quotation marks remain in the English form. The rationale for this is that the quotation marks are part of the surrounding context, and don’t depend on the language of the quoted text.</p>
-<p>In fact, if we were to add the subquote, publishers would expect to see that use English quotation marks too, unless we specifically wanted to reproduce the text being quoted exactly as it looked in the original. So we’d normally expect to see</p>
+<p>In fact, if we were to add the subquote, publishers would expect to see that use English quotation marks too, unless we specifically wanted to reproduce the text being quoted exactly as it looked in the original. So we’d normally expect to see:</p>
      <div class="example">
     <p>But Lucy replied: “<span lang="fr">Embrassez George de ma part et dites-lui, ‘Embrouille’</span>”</p>
     </div>
-   <p>If we add a quotation inside a quotation, we would expect to see the inner quotation use different quotation marks in English</p>
+   <p>Occasionally, it may be important to retain the original quotation marks for embedded quotes. This would normally be when you want to show what the text looked like in the original source. In such a case, you might expect to see:</p>
+<div class="example">
+<p>The passage in question was: “<span lang="fr">Embrassez George de ma part et dites-lui, ‹Embrouille›</span>”</p>
+</div>
    </section>
 
 
@@ -127,7 +130,7 @@ f.additionalLinks = ''
 </div>
 <p>By default, you can expect to see Swiss French quotation marks in Chrome, Safari, and Edge, but not in Firefox, since it doesn't take language settings into account for default quotation marks.</p>
 <div class="example">
-<p lang="fr">Mais Lucy répondit: « Embrassez George de ma part et dites-lui, ‹ Embrouille › »</p>
+<p lang="fr">Mais Lucy répondit: «Embrassez George de ma part et dites-lui, ‹Embrouille›»</p>
 </div>
 <p>For browsers that <em>do</em> generate quotation marks per the language of the text, the quotation marks used follow the settings recommended by the CLDR repository. This is specified in the HTML standard.</p>
 <p>However, support varies by language, and doesn't cover all languages si there may not be a default set for the particular language you are using.</p>
@@ -147,14 +150,14 @@ f.additionalLinks = ''
     <p>However, Chrome, Safari and Edge add quotation marks based on the language of the quoted text, which is not  what would be expected. So in an English ebook you would see </p>
 <div class="example">
         <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad result. Don't copy!</span></div>
-        <p>But Lucy replied: « <span lang="fr">Embrassez George de ma part</span>  »</p>
+<p>But Lucy replied: «<span lang="fr">Embrassez George de ma part</span>»</p>
 </div>
-<p>This is what the WhatWG version of the HTML spec currently requires.</p>
-<p>The W3C version of HTML currently specifies that the version of the quotation marks should be set according to the language indicated on the <code class="kw" translate="no">html</code> tag, and not according to the language of the quoted text.  This would remove the unexpected result in a page that contains quotes in another language.</p>
+<p>This is what the <a href="https://html.spec.whatwg.org/multipage/rendering.html#quotes">WhatWG version of the HTML</a> spec currently requires.</p>
+<p>The upcoming <a href="https://www.w3.org/TR/html53/rendering.html#quotes">W3C version of HTML</a>  specifies that the version of the quotation marks should be set according to the language indicated on the <code class="kw" translate="no">html</code> tag, and not according to the language of the quoted text.  This would remove the unexpected result in a page that contains quotes in another language.</p>
 <p>If, however, the page contains sections in different languages, each with quotations in another language, you will have problems when using the W3C model. The language declared in the <code class="kw" translate="no">html</code> tag will apply throughout, so you'll need to use CSS styling to change the default for one or both sections.</p>
+<p>If this is one of the special cases where you want the quotation marks <em>inside</em> a quote to remain true to the original, it would be possible to style this using CSS, but it is probably a lot easier, and more true to the actual intention, to simply use Unicode characters for the quotation marks, rather than using the <span class="kw" translate="no">q</span> element.</p>
 </section>
-  
-  <section> </section>
+<section> </section>
 <section>
 <h3 id="defaults_summary"><a href="#defaults_summary">Summary</a></h3>
     <p>The upshot of this is that currently the default choice of automatically supplied quotation marks works as expected in monolingual documents in some but not all browsers. And for multilingual text it mostly works incorrectly and is not sensitive to in-document changes in language context.</p>
