@@ -84,25 +84,48 @@ figure img {
 <h2 id="sec_basics"><a href="#sec_basics">Basic parameters</a></h2>
 <p>The most fundamental algorithm used to wrap text at the end of a line depends on the confluence of two factors:</p>
 <ol>
-<li>whether words or syllables are separated in the text, and if so, how, and</li>
+<li>whether 'words' or syllables are separated in the text, and if so, how, and</li>
 <li>whether the <a href="https://www.unicode.org/glossary/#writing_system" class="termref">writing system</a> wraps words, syllables, or characters to the next line.</li>
 </ol>
-<p>The following table provides a high level view of  factors that play into how a writing system wraps text at the end of a line. The <a href="https://www.unicode.org/glossary/#script" class="termref">scripts</a> listed in the table are only examples, and only include writing systems in modern use. <span class="footnote">Note also that languages with the same name as the scripts listed in the table may not always be written with that script.</span></p>
 
-<div class="sidenoteGroup">
+
+<section>
+<h3 id="whatisword"><a href="#whatisword">What is a word?</a></h3>
+
+<p>A clear definition of the term '<dfn id="def-word">word</dfn>' is very difficult to arrive at, and yet there does seem to be a significant, notional difference between the concepts of word and syllable in certain languages.</p>
+
+<p>Often applications and algorithms assume that a word is a sequence of characters delimited by space, or occasionally some other punctuation character. Some languages, however, are written in scripts that only delimit syllables, but still regard words as units that are composed of one or more syllables (eg. Tibetan and Vietnamese). Others do not visually identify word or syllable boundaries at all, but maintain a distinction between words and syllables (eg. Khmer, which typically doesn't visually separate either within a phrase, but is strongly inclined to treat  'words' as a basic unit when wrapping lines, rather than syllables or characters).</p>
+
+<p>Even if a word is assumed, for a particular set of languages, to be a sequence of letters bounded by spaces, linguistically-speaking this obscures some significant underlying differences and complications. The composition of those words can differ significantly from language to language. For example, </p>
+<ul>
+<li>words in Finnish may end with several prepositional or other suffixes attached to the base word (<span class="qterm" lang="fi">talo</span> means 'house', and <span class="qterm" lang="fi">talostani</span> means 'from my house'),</li>
+<li>words in German may be a composite, made up of a sequence of smaller words, such as <span  class="qterm" lang="de">Eingabeverarbeitungsfunktionen</span>, which is a compound of the words <span class="qterm" lang="de">Eingabe</span>, <span class="qterm" lang="de">Verarbeitung</span>, and <span class="qterm" lang="de">Funktion</span>, followed by a plural marker,</li>
+<li>in Arabic, small words like 'and' (<span lang="ar">و</span>) are written alongside the following word with no intervening space (eg. <span lang="ar">الجامعات والكليات</span> means 'universities and colleges', but there is only one space).</li>
+</ul>
+<p>When 'word delimiters' are not present, in languages such as Khmer, Thai, Japanese, etc., the definition of what constitutes a word can be subjective when compound nouns or grammatical particles are involved. For example, the Thai translation of 'writing', <span lang="th">การเขียน</span>, might be regarded as a single word (kānkhīan) or as two  (kān khīan).</p>
+<p>For the purposes of this article, we will not try to define the term 'word' too closely. Instead, we will just use it to mean a vaguely-defined semantic unit that may comprise  one or more syllables.</p>
+
+</section>
+
+<section>
+<h3 id="table"><a href="#table">Broad types</a></h3>
+
+<p>The following table provides a high level view of factors influence how a writing system wraps text at the end of a line. The language+<a href="https://www.unicode.org/glossary/#script" class="termref">script</a> combinations listed in the table are only examples, and only refer to writing systems in modern use. Where a language name is not followed by a script name,  both language and script have the same name. Note that it is common for a given language to be written using more than one script.</p>
+<p>Note also that some language-script combinations (with asterisks) appear in more than one place in the table, indicating that there are alternative approaches. The reasons for this are described later.</p>
+
 <table style="margin-right: 32%;">
 <tbody>
 <tr>
 <th scope="col">&nbsp;</th>
-<th scope="col">Space as word separator</th>
-<th scope="col">Other word separator</th>
+<th scope="col">Space as <a href="#def-word" class="termref">word</a> separator</th>
+<th scope="col">Other <a href="#def-word" class="termref">word</a> separator</th>
 <th scope="col">Syllable separator</th>
-<th scope="col">No word or syllable separator</th>
+<th scope="col">No separator</th>
 </tr>
 <tr>
-<th scope="row">Wraps words</th>
-<td>Hangul*, Arabic, Armenian, Bengali, Cherokee, Cyrillic, Devanagari, Greek, Gujarati, Gurmukhi, Hebrew, Kannada, Latin, Malayalam, Mandaic, N’Ko, Oriya, Sinhala, Syriac, Tamil, Telugu, Thaana, UCAS, Georgian, Pau Cin Hau, Adlam, Deseret</td>
-<td>Ethiopic, Samaritan</td>
+<th scope="row">Wraps <a href="#def-word" class="termref">words</a></th>
+<td>Amharic (ethiopic)*, Arabic, Armenian, Bengali, Cherokee, Dhivehi (thaana), English (latin), English (deseret),  Fula (adlam), Georgian, Greek, Gujarati, Hebrew, Hindi (devanagari), Inuktitut (UCAS), Kannada, Korean (hangul)*, Malayalam, Mandaic, Mandinka(n’ko), Oriya, Panjabi (gurmukhi), Russian (cyrillic), Sinhala, Syriac, Tamil, Tedim (pau cin hau), Telugu,</td>
+<td>Samaritan</td>
 <td>&nbsp;</td>
 <td>Khmer, Lao, Myanmar, Thai</td>
 </tr>
@@ -110,47 +133,38 @@ figure img {
 <th scope="row">Wraps syllables</th>
 <td>Sundanese, Eastern Cham</td>
 <td>&nbsp;</td>
-<td>Tibetan</td>
+<td>Vietnamese (latin), Tibetan</td>
 <td>Balinese, Javanese, Batak, Western Cham</td>
 </tr>
 <tr>
 <th scope="row">Wraps characters</th>
-<td>Hangul*</td>
-<td>&nbsp;</td>
+<td>Korean (hangul)*</td>
+<td>Amharic (ethiopic)*</td>
 <td>&nbsp;</td>
 <td>Chinese, Japanese, Vai</td>
 </tr>
 </tbody>
 </table>
-<div class="sideinfonote">
-<p class="footnote">Hangul appears in two places. <a href="#hangul">See below</a> for an explanation.</p>
-</div>
+
 </div>
 
 
 <p>Archaic scripts are much more likely to use a <span class="qterm">scriptio continua</span> approach (ie. no word or syllable breaks), although in modern texts describing them you may find spaces separating units of text. Older versions of the scripts mentioned may also use different rules for word division and line breaking. </p>
-<p>In following sections we will give examples of the main alternatives, and mention some of the implications. We'll focus on modern usage only.</p>
+<p>In following sections we will give examples of the main alternatives, and mention some of the implications. We'll focus on modern usage only, and we'll defer mention of hyphenation until later.</p>
 </section>
 
 <section>
-<h2 id="sec_whole_words"><a href="#sec_whole_words">Languages that wrap whole words</a></h2>
+<h2 id="sec_whole_words"><a href="#sec_whole_words">Languages that wrap  words</a></h2>
 <section id="sec_space_delimited">
         <h3><a href="#space_delimited">Space delimited words</a></h3>
-        <p>This is an approach that most people are  familiar with, and it’s the way the English text in this article works. When the end of the line is reached, the application looks for the previous space, which is taken to be a word delimiter, and wraps everything after that to the next line. (We'll mention hyphenation later.)</p>
-        <p>Many scripts work this way. They include all European languages, including those using Cyrillic and Greek scripts, all major Indian languages, such as Hindi, Bangla, Tamil, modern Semitic scripts, such as Arabic, Hebrew, Syriac, American scripts such as Cherokee and Unified Canadian Syllabic (UCAS), etc. </p>
+        <p>This is an approach that most people are  familiar with, and it’s the way the English text in this article works. When the end of the line is reached, the application typically looks for the previous space, which is taken to be a word delimiter, and wraps everything after that to the next line.</p>
+        <p>Many scripts work this way. They include those used for all European languages, including Cyrillic and Greek, all major Indian languages, such as Hindi, Bangla, Tamil, modern Semitic languages  such as Arabic, Hebrew, and Syriac, and American languages such as Cherokee and Unified Canadian Syllabic (UCAS), etc. </p>
 <div class="figWrap">
 <figure>
 <p><img src="linebreak-data/deva.png" alt="Devanagari line breaks"/></p>
 <figcaption>Line break opportunities for Hindi text (Devanagari script).</figcaption>
 </figure>
 </div>
-
-<p>Although this approach seems simple, it actually conveniently covers over some interesting, underlying linguistic complications. By general agreement, the characters between spaces are normally agreed to be 'words'. However, the composition of those words can differ significantly from language to language. For example, </p>
-<ul>
-<li>words in Finnish may end with several suffixes attached to the base word (<span class="qterm" lang="fi">talo</span> means 'house', and <span class="qterm" lang="fi">talostani</span> means 'from my house')</li>
-<li>words in German may be a sequence of smaller words rammed together, such as <span  class="qterm" lang="de">Eingabeverarbeitungsfunktionen</span>, which is a compound of the words <span class="qterm" lang="de">Eingabe</span>, <span class="qterm" lang="de">Verarbeitung</span>, and <span class="qterm" lang="de">Funktionen</span></li>
-<li>in Arabic, small words like 'and' (<span lang="ar">و</span>) are written alongside the following word with no intervening space (eg. <span lang="ar">الجامعات والكليات</span> means 'universities and colleges', but there is only one space).</li>
-</ul>
 <p>Languages written in right-to-left scripts, such as Arabic or Hebrew or Dhivehi, also typically wrap full words to the next line. However they do so, of course, in the opposite direction from, say, English.</p>
 <div class="figWrap">
 <figure>
@@ -159,7 +173,7 @@ figure img {
 </figure>
 </div>
 
-<p>Text in languages such as Arabic, Hebrew or Dhivehi, however, gets significantly more complicated when it contains bidirectional text. If we make the text read '<span dir="rtl" lang="ar">...في <span dir="rtl" lang="en">this is English</span> ذلك... </span>' in the above example we end up with the following.</p>
+<p>Text in languages such as Arabic, Hebrew or Dhivehi, however, gets significantly more complicated when it contains bidirectional text. If we make the text read '<span style="white-space:nowrap"><span dir="rtl" lang="ar">...في <span dir="rtl" lang="en">this is English</span> ذلك... </span></span>' in the above example we end up with the following.</p>
 <div class="figWrap">
 <figure>
 <p><img src="linebreak-data/arab-bidi.png" alt="Arabic line breaks in bidirectional text"/></p>
@@ -186,19 +200,8 @@ figure img {
 </section>
 
 
-      <section id="sec_ethiopic">
-        <h3><a href="#sec_ethiopic">Ethiopic: a non-space word separator</a></h3>
-<p>Ethiopic is an example of a script that uses a punctuation mark to separate words, rather than a space.  Ethiopic still wraps text a word at a time, but the last word separator that fits will remain visible at the end of the line.</p>
-<div class="figWrap">
-<figure>
-<p><img src="linebreak-data/ethi.png" alt="Ethiopic line break opportunities."/></p>
-<figcaption>Line break opportunities in Ethiopic text.</figcaption>
-</figure>
-</div>
 
-<p>An obvious implication of this for implementers is that they should not assume that spaces are the basic dividers for word-based wrapping. Non-space word separators are particularly common in archaic scripts.</p>
-      </section>
-      <section>
+<section>
         <h3 id="sec_se_asia"><a href="#sec_se_asia">South-East Asia: no word separator</a></h3>
         <p>Thai, Lao, and Khmer are languages that are written with no spaces between words. Spaces do occur, but they serve as phrase delimiters, rather than word delimiters. However, when Thai, Lao, or Khmer text reaches the end of a line, the expectation is that text is wrapped a word at a time.  For humans, this is is not too hard (if you speak the language), but applications have to find a way to understand the text in order to determine where the word boundaries are.  </p>
 <div class="figWrap">
@@ -217,9 +220,9 @@ figure img {
 </figure>
 </div>
 
-      <p>The difference here is not just a question of faulty implementations. The concept of what is a word in writing systems that don't clearly delimit them, is somewhat fluid. The above differences arise from different subjective opinions about whether compound words should be wrapped whole or not to the next line.</p>
-<p>It is also important to bear in mind that the scripts referred to here may be used to write other languages than those mentioned, for which different dictionaries are needed (and may not available in a given browser or other application).</p>
-<p>In the past, the Unicode character <span class="uname">U+200B ZERO WIDTH SPACE </span>(ZWSP) was used to indicate word boundaries for these scripts, and some standard keyboards such as Khmer NIDA still generate ZWSP with the spacebar key, but recently major languages have line-breaking implementations at their disposal that means it is generally no longer used. Manual entry of ZWSP is also not very practical because the user cannot see the separator in most scenarios. This leads to problems with ZWSP being inserted in the wrong position, or multiple times. In fact, it has been suggested that word wrap algorithms ignore ZWSP for Khmer text because of data quality issues.</p>
+      <p>The difference here is not just a question of faulty implementations. As mentioned earlier, the concept of what is a word in writing systems that don't clearly delimit them, is somewhat fluid. The above differences arise from different subjective opinions about whether compound words should be wrapped whole or not to the next line.</p>
+<p>In the past, the Unicode character <span class="uname">U+200B ZERO WIDTH SPACE </span>(ZWSP) was used to indicate word boundaries for these scripts, and some standard keyboards such as Khmer NIDA still generate ZWSP with the spacebar key, but recently major languages have line-breaking implementations at their disposal, which means ZWSP is generally no longer used. Manual entry of ZWSP is also not very practical because the user cannot see the separator in most scenarios. This leads to problems with ZWSP being inserted in the wrong position, or multiple times. In fact, it has been suggested that word wrap algorithms ignore ZWSP for Khmer text because of data quality issues.</p>
+<p>It is also important to bear in mind that the scripts referred to here may be used to write  languages other than those mentioned, in particular minority languages for which different dictionaries are needed. Since such dictionaries may not available in a given browser or other application, there is a tendency to use ZWSP in order to compensate.</p>
 </section>
 </section>
 
@@ -230,11 +233,11 @@ figure img {
 
         <p>Some writing systems wrap not just words but syllables to the next line. Often it is preferable to wrap whole words, but text can also be broken at syllable boundaries instead.</p>
 <p>Some analysis of the text is typically needed to determine where the syllable boundaries occur. Often the end of a syllable is marked by a  final consonant that is a combining character, or the end of the syllable may be indicated by a special mark.</p>
-<p>However, in some of these languages there may be ambiguous situations which are hard to deal with. For example, a single character may  represent a consonant-plus-vowel sound such as /na/, ie. a syllable in its own right. However, that same character may be used, without special indications, as a syllable final consonant, where it is pronounced with no following vowel sound.  In such cases, it can be hard to automatically detect whether the character constitutes the end of the previous syllable, or beginning of a new syllable. </p>
+<p>However, in some of these languages there may be ambiguous situations which are hard to deal with. For example, a single character may  represent a consonant-plus-vowel sound such as /na/, ie. a syllable in its own right; that same character may be used, without special indications, as a syllable final consonant, where it is pronounced with no following vowel sound.  In such cases, it can be hard to automatically detect whether the character constitutes the end of the previous syllable, or beginning of a new syllable. </p>
 <section id="sec_tibetan">
 <h3><a href="#sec_tibetan">Tibetan: visible syllable dividers</a></h3>
-        <p>A good example of of a writing system that breaks regularly at syllable boundaries is Tibetan, which uses a <span class="qterm">tsek</span> character to signal the end of a syllable.  </p>
-<p>Tibetan wraps by moving complete syllables to the next line, so that the original line ends with a tsek mark.  This sounds like the Ethiopic example, but the difference is that Tibetan words can be made up of multiple syllables and although it is  preferable to avoid breaking a line in the middle of the word, it is not essential.  A syllable, on the other hand should always be kept intact.</p>
+        <p>A good example of of a writing system that breaks regularly at syllable boundaries is Tibetan, which uses <span class="codepoint" translate="no"><span lang="bo">&#x0F0B;</span> [<span class="uname">U+0F0B TIBETAN MARK INTERSYLLABIC TSHEG</span>]</span> (pronounced <span class="qterm">tsek</span>) to signal the end of a syllable.  </p>
+<p>Tibetan wraps by moving complete syllables to the next line, so that the original line ends with a tsek mark.  Tibetan words can be made up of multiple syllables and although it is  preferable to avoid breaking a line in the middle of the word, it is not essential.  A syllable, on the other hand should always be kept intact.</p>
  <div class="figWrap">
        <figure>
 <p><img src="linebreak-data/tibt.png" alt="Line break opportunities in Tibetan."/></p>
@@ -245,8 +248,8 @@ figure img {
       </section>
       
      <section id="sec_sundanese">
-        <h3><a href="#sec_sundanese">Sundanese, Cham: space as word separator</a></h3>
-        <p>We saw that Korean text uses spaces between words, but doesn't necessarily use those spaces to identify line-break opportunities. There are some writing systems that also separate words by spaces, but may actually wrap on smaller units. Unlike Korean, which wraps character by character, these writing systems use a multi-character syllable as the unit of text.</p>
+        <h3><a href="#sec_sundanese">Sundanese, Eastern Cham: space as word separator</a></h3>
+        <p>We saw that Korean text uses spaces between words, but doesn't necessarily use those spaces to identify line-break opportunities. There are some writing systems that also separate words by spaces, but may actually wrap on smaller units. Unlike Korean, which wraps character by character, these writing systems use a  syllable as the unit of text.</p>
   <div class="figWrap">
    <figure>
 <p><img src="linebreak-data/sund.png" alt="Sundanese line break opportunities."/></p>
@@ -262,14 +265,14 @@ figure img {
 <figcaption>Line break opportunities in Javanese text.</figcaption>
 </figure>
 </div>
-        <p>The break opportunities shown above for Javanese correspond to <em>orthographic</em> syllables, rather than phonetic ones. For example where one syllable ends with a consonant and the following syllable starts with a consonant they may be stacked or conjoined in a special way. Those combinations are not split. In many scripts these special conjuncts are likely to only occur internally within words, but in others (such as Javanese and Balinese) they may actually span word boundaries.</p>
+        <p>The break opportunities shown above for Javanese correspond to <em>orthographic</em> syllables, rather than phonetic ones. For example where one phonetic syllable ends with a consonant and the following syllable starts with a consonant they may be stacked or conjoined in a special way. Those combinations are not split. In many scripts these special conjuncts are likely to only occur internally within words, but in others (such as Javanese and Balinese) they may actually span word boundaries.</p>
 <div class="figWrap">
 <figure>
 <p><img src="linebreak-data/pangandika.png" alt="Javanese line break opportunities."/></p>
 <figcaption>The different colours represent the two Javanese words <i lang="jv-latn" translate="no">pangan</i> and <i lang="jv-latn" translate="no">dika</i>, but the break opportunity (red line) comes before the stack, cutting off the final n from the previous word.</figcaption>
 </figure>
 </div>
-<p>Where a writing system can represent  syllable-final consonants using a combining character, those are still regarded as part of the preceding orthographic syllable.</p>
+<p>Where a writing system can represent  syllable-final consonants using a combining character, those are generally regarded as part of the preceding orthographic syllable.</p>
      </section>
 </section>
         
@@ -277,19 +280,55 @@ figure img {
 <section id="sec_character">
 <h2><a href="#sec_character">Character-based wrapping</a></h2>
  
-        <p>We have already seen that Korean can be wrapped character by character. Chinese, Japanese and Vai also wrap individual characters to the next line, regardless of word boundaries. </p>
+        <p>We have already seen that Korean can be wrapped character by character. Chinese, Japanese and Vai also wrap individual characters to the next line, regardless of word or syllable boundaries. </p>
 <div class="figWrap">
    <figure>
 <p><img src="linebreak-data/japn.png" alt="Japanese line break opportunities." data-setup="font-size:2em;border:3px;" title="すべて人は、自国その他いずれの国をも立ち去り、及び自国に帰る権利を有する。"/></p>
 <figcaption>Line break opportunities in Japanese text.</figcaption>
 </figure>
 </div>
-        <p>This type of wrapping is sometimes referred to as syllabic, but actually Japanese is a mora-based script, rather than a syllable-based one. For example, it is possible to find text wrapped within the single syllable <span lang="ja">きょう</span> (pronounced <span class="qterm">kyō</span>, meaning 'today').</p>
+        <p>This type of wrapping is sometimes referred to as syllabic, but actually Japanese is a <a href="https://www.unicode.org/glossary/#mora" class="termref">mora</a>-based script, rather than a syllable-based one. For example, it is possible to find text wrapped within the single syllable <span lang="ja">きょう</span> (pronounced <span class="qterm">kyō</span>, meaning 'today').</p>
 <p>That said, things are (as always) not quite so simple. While it is common to wrap the last character in the word <span lang="ja">きょう</span> independently to the next line, some content authors prefer to always keep the small second character with the first. CSS provides <code class="kw" translate="no">strict</code> and <code class="kw" translate="no">loose</code> values for the <code class="kw" translate="no">line-break</code> property to allow content authors to control this behaviour. The latter value allows line-breaks between the two. This can often be useful for text in narrow columns, such as newspapers.</p>
-<p>Furthermore, the are occasionally situations, such as in headings, where the content author may prefer to wrap without splitting what are perceived to be 'words'. As for Thai, because in Japanese compound words are often built from individual words, and also because Japanese adds grammatical particles after words which may or may not be seen as tightly bound to the word, it is fairly subjective as to what constitutes a word boundary in this case.</p>
+<p>Furthermore, there are occasionally situations, such as in headings, where the content author may prefer to wrap without splitting what are perceived to be 'words'. Note, however, that in Japanese compound words are often built from individual words, and  Japanese adds grammatical particles after words, which may or may not be seen as tightly bound to the word. Therefore, as for Thai, it can be fairly subjective as to what constitutes a word boundary in Japanese.</p>
+<p>In some cases, the character-based wrapping used for Chinese and Japanese is also applied to embedded Latin text.  Likewise, Japanese and Chinese text embedded in Latin text may be expected to wrap as a single unit. (This behaviour can be controlled using CSS properties.)</p>
 <div class="figWrap"></div>
 </section>
+
+
+
+
+      <section id="sec_ethiopic">
+      <h3><a href="#sec_ethiopic">Ethiopic: a non-space word separator</a></h3>
+<p> Modern Ethiopic text may use spaces between words, in which case the expectation is that a whole word wraps to the next line as a unit. </p>
+<div class="figWrap">
+<figure>
+<p><img src="linebreak-data/ethi-space.png" alt="Amharic line break opportunities when words are separated by spaces."/></p>
+<figcaption>Amharic line break opportunities when words are separated by spaces.</figcaption>
+</figure>
+</div>
+<p>However, Ethiopic text may also use the traditional wordspace character <span class="codepoint" translate="no"><span lang="bo">&#x1361;</span> [<span class="uname">U+1361 ETHIOPIC WORDSPACE</span>]</span> to indicate word boundaries. When that is the case, Ethiopic wraps after any character, as long as the wordspace doesn't appear at the start of the line. (In fact, it is preferable to precede the wordspace by at least two characters at the line start.)</p>
+<div class="figWrap">
+<figure>
+<p><img src="linebreak-data/ethi-wordspace.png" alt="Ethiopic line break opportunities."/></p>
+<figcaption>Amharic line break opportunities when words are separated by the Ethiopic wordspace character.</figcaption>
+</figure>
+</div>
+
+<p>An obvious implication of this for implementers is that they should not assume that spaces are the basic dividers for word-based wrapping. Non-space word separators are particularly common in archaic scripts.</p>
+      </section>
 </section>
+
+
+
+<section id="sec_hyphenation">
+<h2><a href="#sec_hyphenation">Hyphenation</a></h2>
+        <p class="advisement"> Hyphenation is a mechanism that helps to achieve a better fit for text on a line. Only a  subset of writing systems support hyphenation, but it is mostly needed to break words into smaller units for wrapping.</p>
+<p class="advisement">It is important to note that hyphenation rules differ from language to language within the same script. Although both use the Latin script, German and English orthographic rules can be quite different. Arabic language content doesn't usually permit hyphenation, but Uighur does, even though they both use the Arabic script. (Note, that Arabic provides a range of alternative methods to lengthen or shorten lines during justification.)</p>
+<p>The mechanism involved in hyphenation also varies. For some languages, the hyphen (which may not look like '-') appears at the start of the following line, in others it may appear on both lines. In some cases the spelling of a word is changed around hyphenation, for example in Dutch  <i class="foreignphrase" lang="du">cafeetje</i> → <i class="foreignphrase" lang="du">café-tje</i> and <i class="foreignphrase" lang="du">skiërs</i> → <i class="foreignphrase" lang="du">ski-ers</i>, and in Hungarian <i class="foreignphrase" lang="hu">Összeg</i> → <i lang="hu">Ösz-szeg</i>.</p>
+<p>In other scripts, text may be broken inside a word on occasion, but no 'hyphen' is used to signal the break.</p>
+</section>
+
+
 
 
 <section id="sec_rules">
@@ -311,21 +350,12 @@ figure img {
 </section>
 
 
-<section id="sec_hyphenation">
-<h3><a href="#sec_hyphenation">Hyphenation</a></h3>
-        <p class="advisement"> Hyphenation is a mechanism that helps to achieve a better fit for text on a line. Only a  subset of writing systems support hyphenation, but it is mostly needed to break words into smaller units for wrapping.</p>
-<p class="advisement">It is important to note that hyphenation rules differ from language to language within the same script. Although both use the Latin script, German and English orthographic rules can be quite different. Arabic language content doesn't usually permit hyphenation, but Uighur does, even though they both use the Arabic script. (Note, that Arabic provides a range of alternative methods to lengthen or shorten lines during justification.)</p>
-<p>The mechanism involved in hyphenation also varies. For some languages, the hyphen (which may not look like '-') appears at the start of the following line, in others it may appear on both lines. In some cases the spelling of a word is changed around hyphenation, for example in Dutch  <i class="foreignphrase" lang="du">cafeetje</i> → <i class="foreignphrase" lang="du">café-tje</i> and <i class="foreignphrase" lang="du">skiërs</i> → <i class="foreignphrase" lang="du">ski-ers</i>, and in Hungarian <i class="foreignphrase" lang="hu">Összeg</i> → <i lang="hu">Ösz-szeg</i>.</p>
-<p>In other scripts, text may be broken inside a word on occasion, but no 'hyphen' is used to signal the break.</p>
-</section>
-
-
 <section id="sec_preventing">
 <h3><a href="#sec_preventing">Preventing line breaks</a></h3>
-        <p class="advisement"> In some situations, a mechanism is needed to <em>prevent</em> line-breaks occuring. This can be particularly useful when a sequence of characters on a very short line has no natural line-break opportunity, but it may also be useful in other situations where you want to customise behaviour.</p>
-<p class="advisement">Unicode has a set of rules for defining default <em>grapheme clusters</em>, which indicate sequences of characters that should not normally be split by a line break. For example, this includes any combining character following a base character. It can also be extended, however, to prevent breaks within multi-character syllables, for example in Indic or Southeast Asian scripts.</p>
-<p class="advisement">There are also characters in Unicode that glue adjacent characters together, including characters such as <span class="uname">U+00A0 NO-BREAK SPACE</span> and<span class="uname"> U+2011 NON-BREAKING HYPHEN</span>, and for situations where you want an invisible joining effect <span class="uname">U+2060 WORD JOINER</span>.</p>
-<p>We have already mentioned the strict mode which is used to keep certain characters together in Japanese. Markup or styling may also be used to override normal breaking behaviour. For example, in headings it is sometimes preferred to break at word boundaries in Japanese, to avoid ending up with a small number of characters on a new line. Styling can be used to achieve this.</p>
+        <p class="advisement"> In some situations, a mechanism is needed to <em>prevent</em> line-breaks occuring. This can be particularly useful when a sequence of characters on a very short line has no natural line-break opportunity, but it may also be useful in other situations where you want to <em>customise</em> behaviour.</p>
+<p class="advisement">Unicode has a set of rules for defining default <a href="https://www.unicode.org/glossary/#grapheme_cluster" class="termref">grapheme clusters</a>, which indicate sequences of characters that should not normally be split by a line break. For example, this includes any combining character following a base character. It can also be extended, however, to prevent breaks within multi-character syllables, for example in Indic or Southeast Asian scripts.</p>
+<p class="advisement">There are also characters in Unicode that glue adjacent characters together, including characters such as <span class="uname">U+00A0 NO-BREAK SPACE</span> and<span class="uname"> U+2011 NON-BREAKING HYPHEN</span>, and for situations where you want to prevent line-breaks an invisible <span class="uname">U+2060 WORD JOINER</span>.</p>
+<p>We have already mentioned the <code class="kw" translate="no">strict</code> mode which is used to keep certain characters together in Japanese. Markup or styling may also be used to override normal breaking behaviour. For example, in headings it is sometimes preferred to break at word boundaries in Japanese, to avoid ending up with a small number of characters on a new line. Styling can be used to achieve this.</p>
 </section>
 
 
@@ -334,7 +364,7 @@ figure img {
 <h3><a href="#sec_special_rules">Other special rules</a></h3>
 <p class="advisement">In addition to rules about what character can or cannot appear at the end/start of a line, there may be more complicated rules related to the process of wrapping text.</p>
 <div class="sidenoteGroup">
-<p>Here we provide, by way of an example, some detail about line breaking in traditional Tibetan formats. In Tibetan,  <span class="uname">U+0F0D TIBETAN MARK SHAD</span><sup>1</sup> is used as a phrase delimiter, and a double shay is a topic delimiter. If just a single syllable before the shay wraps to a new line the shay, or the first shay when there are two, is replaced by  <span class="uname">U+0F11 TIBETAN MARK RIN CHEN SPUNGS SHAD</span><sup>2</sup>.  At the end of a topic the rules say that only one shay should be converted, however it is moderately popular to convert both. This change serves as an optical indication that there is a left-over syllable at the beginning of the line that actually belongs to the preceding line.</p>
+<p>Here we provide, by way of an example, some detail about line breaking in traditional Tibetan formats. In Tibetan,  <span class="uname">U+0F0D TIBETAN MARK SHAD</span><sup>1</sup> is used as a phrase delimiter, and a double shay is a topic delimiter. If just a single syllable before the shay wraps to a new line, the shay (or the first shay when there are two) is replaced by  <span class="uname">U+0F11 TIBETAN MARK RIN CHEN SPUNGS SHAD</span><sup>2</sup>.  At the end of a topic the rules say that only one shay should be converted, however it is moderately popular to convert both. This change serves as an optical indication that there is a left-over syllable at the beginning of the line that actually belongs to the preceding line.</p>
 <div class="sideinfonote">
 <p>1) <img src="linebreak-data/shad.png" alt="&#x0F0D;"/> SHAD (pronounced shay)</p>
 <p>2) <img src="linebreak-data/rin_chen_spungs_shad.png" alt="༑"/> RIN CHEN SPUNGS SHAD</p>
