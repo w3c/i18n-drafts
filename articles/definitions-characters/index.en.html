@@ -162,7 +162,7 @@ th.bytes {
 
 <section>
   <h2 id="doccharset"><a href="#doccharset">The Document Character Set</a></h2>
-  <p>For XML and HTML (from version 4.0 onwards) the <dfn>document character set</dfn> is defined to be the Universal
+  <p>For XML and HTML (from version 4.0 onwards) the <dfn id="def_document_character_set">document character set</dfn> is defined to be the Universal
     Character Set (UCS) as defined by both ISO/IEC 10646 and Unicode standards. (For simplicity and in line with common practice, we will refer to the
     UCS here simply as <span class="qterm">Unicode</span>.)</p>
   <p>What this means is that the logical model describing how XML and HTML are processed is described in terms of the set of characters defined by
@@ -175,7 +175,28 @@ th.bytes {
 
 
 <section>
-  <h2 id="escapes"><a href="#escapes">Character escapes</a></h2>
+  <h2 id="characters"><a href="#characters">Characters &amp;  clusters</a></h2>
+  <p>Although we have used it without much qualification so far in this article, the term <dfn id="def_character">character</dfn> is used here in an abstract and somewhat vague way to refer to the smallest component of written language that has semantic value. However, is often used to mean different things in different contexts: it can variously refer to the visual, logical, or byte-level representation of a given piece of text. This makes the term too imprecise to use when specifying algorithms, protocols, or document formats, unless you explicitly define what you mean by it. If the term 'character' is used in those contexts in a technical sense, the recommendation is to use it as a synonym for code point (described above).</p>
+<p>It is particularly important to remember that bytes only rarely equate to characters in Unicode, as shown in the earlier examples.</p>
+<p>However, particularly in complex scripts, what a user perceives as a smallest component of their alphabet may actually be a sequence of code points. For example, the Swedish letter Ä will be perceived as a single letter even if the underlying code point sequence is <span class="codepoint" translate="no"><span class="uname">U+0041 LATIN CAPITAL LETTER A</span> + <span class="uname">U+0308 COMBINING DIAERESIS​</span></span>. Similarly, a Bangla speaker may view <i class="foreign">ksha</i> (<span lang="bn">ক্ষ)</span> (composed of the sequence <span class="codepoint" translate="no"><span class="uname">U+0995 BENGALI LETTER KA</span> + <span class="uname">U+09CD BENGALI SIGN VIRAMA</span> + <span class="uname">U+09B7 BENGALI LETTER SSA</span></span>) as a single letter. It is often important to take into account these units, which are called <dfn id="def_user_perceived_character">user-perceived characters</dfn>.</p>
+  <p>For example, it is common to treat certain combinations of code points as a single unit for various editing operations, such as line-breaking, cursor movement, selection, deletion, etc. It would usually be problematic if a user selection accidentally omitted part of the letters just mentioned, or if a line-break separated a base character from its following combining characters.</p>
+<p>In order to approximate user-perceived character units for such operations, Unicode uses a set of generalised rules to define <dfn id="def_grapheme_cluster">grapheme clusters</dfn> – sequences of adjacent code points that can be treated as units by applications. A single alphabetic character like A is a grapheme cluster, but so also is any combination of base character and following combining character(s), such as Ä mentioned above.</p>
+<p>There are, however, some limitations to the grapheme cluster rules: for example, the Bangla <i class="foreign">ksha</i> <span lang="bn">(ক্ষ)</span> mentioned above is not fully covered by the grapheme cluster rules, and is seen by applications as two adjacent grapheme clusters, unless some script-specific tailoring is applied.</p>
+<p>The appropriate units for editing operations sometimes vary according to what you want to do. For example, if you backspace over the Hindi word <span lang="hi">हूँ (<span class="codepoint" translate="no"><span class="uname">U+0939 DEVANAGARI LETTER HA</span> + <span class="uname">U+0942 DEVANAGARI VOWEL SIGN UU​</span> + <span class="uname">U+0901 DEVANAGARI SIGN CANDRABINDU​</span></span>) </span>you will typically first delete the two combining characters, and then the base. However, if you delete from the left, most applications will delete the whole grapheme cluster in one go.</p>
+<p>In order to refer to an indivisible text unit in a given context, CSS uses the term <dfn id="def_typographic_character_unit">typographic character unit</dfn>. So when deleting forwards, there would be a single typographic character unit, but three when backspacing. Also, typographic character units cover the cases such as Bengali ksha, which grapheme clusters currently don't. The determination of what constitutes a typographic character unit in a given language and editing context is deferred to the application, rather than spelled out in rules.</p>
+</section>
+
+
+<section>
+<h2 id="glyphs"><a href="#glyphs">Characters &amp; glyphs</a></h2>
+  <p>A font is a collection of <dfn id="def_glyph">glyphs</dfn>. In a simple scenario, a glyph is the visual representation of a code point. The glyph used to represent a code point will vary with the font used, and whether the font is bold, italic, etc. In the case of emoji, the glyphs used will vary by platform.	</p>
+<p>In fact, more than one glyph may be used to represent a single code point, and multiple code points may be represented by a single glyph. </p>
+<p>Emoji provide another example of the complex relationship between code points and glyphs. The emoji character for &quot;family&quot; has a code point in Unicode: 👪 <span class="uname">[U+1F46A FAMILY]</span>. It can also be formed by using  a sequence of code points: <span class="uname">👨‍👩‍👦 [U+1F468 U+200D U+1F469 U+200D U+1F466]</span>. Altering or adding other emoji characters can alter the composition of the family. For example the sequence 👨‍👩‍👧‍👧 <span class="uname">[U+1F468 U+200D U+1F469 U+200D U+1F467 U+200D U+1F467]</span> results in a composed emoji glyph for a &quot;family: man, woman, girl, girl&quot; on systems that support this kind of composition. Many common emoji can only be formed using sequences of code points, but should be treated as a single user-perceived character when displaying or processing the text.</p>
+</section>
+
+
+<section>
+<h2 id="escapes"><a href="#escapes">Character escapes</a></h2>
   <p>A character escape is a  way of representing a character without actually using the   character itself.</p>
   <p>For example, there is no way of directly representing the Hebrew character <span>א</span> in your document if you are using an ISO 8859-1
     encoding (which covers Western European languages). One way to indicate that you want to include that character in HTML is to use the  escape
