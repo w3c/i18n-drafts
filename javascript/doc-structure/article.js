@@ -35,7 +35,7 @@ g.nativeText = {
 }
 
 
-f.clang = document.querySelector('html').lang
+//f.clang = document.querySelector('html').lang
 if (f.clang != 'en') { g.isTranslation = true } else { g.isTranslation = false }
 
 
@@ -70,11 +70,11 @@ function stickyConneg (filename, cLang, targetLang) {
 
 // MAIN NAVIGATION
 
-g.siteSearch = '<form method="get" action="/International/site-search.php" enctype="application/x-www-form-urlencoded" style="margin: 0;"><div id="searchSite"><input name="q" type="text" value="'+s.searchI18nSite+'" onfocus="this.value=\'\'" id="searchField" accesskey="E" maxlength="255"/></div></form>'
+g.siteSearch = '<form method="get" action="https://www.w3.org/International/site-search.php" enctype="application/x-www-form-urlencoded" style="margin: 0;"><div id="searchSite"><input name="q" type="text" value="'+s.searchI18nSite+'" onfocus="this.value=\'\'" id="searchField" accesskey="E" maxlength="255"/></div></form>'
 
-g.breadcrumbs = "<a href='/International/'>"+s.home+"</a> &gt; <a href='/International/resources'>"+s.resources+"</a> &gt; "
-if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='/International/tests/'>"+s.tests+"</a>" 
-else g.breadcrumbs += "<a href='/International/articlelist#"+f.breadcrumb+"'>"+s.articles+"</a>"
+g.breadcrumbs = "<a href='https://www.w3.org/International/'>"+s.home+"</a> &gt; <a href='https://www.w3.org/International/resources'>"+s.resources+"</a> &gt; "
+if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='https://www.w3.org/International/tests/'>"+s.tests+"</a>" 
+else g.breadcrumbs += "<a href='https://www.w3.org/International/articlelist#"+f.breadcrumb+"'>"+s.articles+"</a>"
 
 g.about = "<h2 id='abouthead' class='notoc'>"+s.aboutThisArticle+"</h2>\n"
 if (f.status == "draft") { g.about += "<p style='color:red;'>"+s.status_draft+"</p>" }
@@ -104,7 +104,7 @@ else g.disclaimer = ''
 
 var mainNavigation = '<aside id="mainNavigation">'+
 '	<nav id="site-navigation">'+
-'		<a href="/International/"><img id="picture" alt="'+s.worldMap+'" title="'+s.worldMap+'" src="'+f.path+'/icons/world.gif" width="150" height="61"/></a>'+
+'		<a href="https://www.w3.org/International/"><img id="picture" alt="'+s.worldMap+'" title="'+s.worldMap+'" src="'+f.path+'icons/world.gif" width="150" height="61"/></a>'+
 		versionList+
 '		</nav>'+
 	g.disclaimer+
@@ -115,15 +115,16 @@ var mainNavigation = '<aside id="mainNavigation">'+
 '	<div id="aboutdoc">'+g.about+'</div>'+
 '	</aside>'+
 '	<nav id="boilerplate">'+
-'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'/icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
+'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="https://www.w3.org/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
 s.internationalizationTitle+'</a></div>'+
-'	<div id="sitelinks" class="noprint"><a href="/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a>&#xA0;'+s.rlm+
-'	<a href="/International/resources" title="'+s.informationResources+'">'+s.resources+'</a>&#xA0;'+s.rlm+
-'	<a href="/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a>&#xA0;'+s.rlm+
-'	<a href="/International/resource-index" title="'+s.topicIndexForInformation+'">'+s.topics+'</a>&#xA0;'+s.rlm+ 
-'	<a href="/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a>&#xA0;'+s.rlm+
-'	<a href="/International/about#scope" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a>&#xA0;'+s.rlm+ 
-'	<a href="/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a>&#xA0;'+s.rlm+ 
+'	<div id="sitelinks" class="noprint">'+
+//'	<bdi><a href="https://www.w3.org/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="https://www.w3.org/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="https://www.w3.org/International/resources" title="'+s.informationResources+'">'+s.resources+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="https://www.w3.org/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+ 
+'	<bdi><a href="https://www.w3.org/International/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+ 
+//'	<bdi><a href="https://www.w3.org/International/resource-index" title="'+s.topicIndexForInformation+'">'+s.topics+'</a></bdi>&#xA0;'+s.rlm+ 
+'	<bdi><a href="https://www.w3.org/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>&#xA0;'+s.rlm+
 '	&#xA0; </div><div id="line">&#xA0;</div>'+
 '	</nav>'
 
@@ -167,8 +168,15 @@ if (outOfDateTranslation) g.updated += "<p class='outofdate'>"+s.untranslatedCha
 else if (unlinkedTranslation) g.updated += "<p class='unlinked'>"+s.unlinkedTranslation+" </p>" 
 else if (g.isTranslation && updatedTranslation) {g.updated ="<p class='updated'>"+s.translation_updated+" <time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></p>" }
 
+// put a redirect or warning banner on articles on github
 if (f.status === 'draft') {
-	g.updated += '<p class="note" style="clear:none; font-size: 120%; margin-top: 2em;"><b>NOTE!</b>This article is in development and is using a temporary URL. It is not safe to refer to it or use the information it contains.</p>'
+	g.updated += '<p class="note" style="clear:none; font-size: 150%; margin-top: 2em; line-height:1.5;"><strong>NOTE!</strong> &nbsp; This article is in development and is using a temporary URL. It is not safe to refer to it or use the information it contains.</p>'
+	}
+if (f.status === 'review') {
+	g.updated += '<p class="note" style="clear:none; font-size: 150%; margin-top: 2em; line-height:1.5;"><strong>NOTE!</strong> &nbsp; This article is currently out for public review. If you have comments, please send them using the <a href="#survey">Leave a Comment</a> link near the bottom of this page. The published version of the article will be at a different URL, and should be linked to there.</p>'
+	}
+if (f.status === 'published' && window.location.href.match('w3c.github.io')) {
+	g.updated += '<p class="note" style="clear:none; font-size: 150%; margin-top: 2em; line-height:1.5;">'+s.githubRedirect+'</p>'
 	}
 
 // SURVEY
@@ -177,7 +185,7 @@ var body = window.location.href
 var qm = body.search(/\?/)
 if (qm > 0) body = body.substr(0,qm)
 body = encodeURIComponent('[source] ('+body+') ['+f.clang+']')
-var title = '['+f.directory+f.filename+']  '
+var title = '['+f.directory+f.filename+'] %20BRIEF_TITLE_GOES_HERE'
 
 g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
 			'<p><a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A%0A">'+s.sendAComment+'</a></p>'+

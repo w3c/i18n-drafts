@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Verwendung von Zeichen-Escapes in Markup und CSS</title>
+<meta name="description" content="Wie verwendet man Zeichen-Escapes (Maskierungen) in Markup und CSS, wann sollte man sie verwenden und wann nicht?" />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-escapes'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-escapes'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-08-05'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-12', time:'16:47'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-03-30', time:'16:51'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://bittersmann.de/">Gunnar Bittersmann</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="gunnar@bittersmann.de"; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-escapes-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-de.js"> </script> <!-- TRANSLATORS must change -en to the subtag for their language! -->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Verwendung von Zeichen-Escapes in Markup und CSS</h1>
+</header>
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span>  HTML/XML/CSS-Autoren (die Web-Editoren/Texteditoren oder Scripte benutzen), Script-Entwickler (PHP, JSP u.a.) und alle, die Rat suchen, wie und wann Alternativen zu den Zeichen in einem Dokument zu verwenden sind.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+  
+  <h2 id="question"><a href="#question">Question</a></h2>
+  <p class="question">Wie verwendet man Zeichen-Escapes (Maskierungen) in Markup und CSS, wann sollte man sie verwenden und wann nicht?</p>
+</section>
+
+
+<section>
+	<h2 id="answer"><a href="#answer">Answer</a></h2>
+  <section id="what">
+    <h3><a href="#what"> Welche Arten von Zeichen-Escapes können im Markup verwendet werden?</a></h3>
+    <p>Jedes Unicode-Zeichen lässt sich in XML, XHTML oder XML durch ein <dfn>Zeichen-Escape</dfn> darstellen (maskieren); in diesem kommen dann ausschließlich ASCII-Zeichen vor. </p>
+    <aside class="insideinfonote"><p class="info">Verschiedene Spezifikationen verwenden verschiedene Bezeichnungen für diese Konstrukte. Benannte Zeichenreferenzen bspw. werden auch als <dfn>Zeichen-Entity-Referenzen (<i lang="en">character entity references</i>)</dfn> bezeichnet. In diesem Artikel werden die Namen verwendet, die auch in HTML5 verwendet werden.</p></aside>
+    <p><dfn id="ncr">Nummerische Zeichenreferenzen (<i lang="en">numeric character references</i>, NCRs)</dfn> und <dfn id="entity_ref">benannte Zeichenreferenzen (<i lang="en">named character  references</i>)</dfn> sind Arten von Zeichen-Escapes, die im Markup verwendet werden können. Das geschützte Leerzeichen (<span class="uname">U+00A0 <span lang="en">NO-BREAK SPACE</span></span>) bspw. lässt sich folgendermaßen repräsentieren:</p>
+    <p>(Das geschützte Leerzeichen sieht wie ein normales Leerzeichen aus, verhindert aber einen Zeilenumbruch zwischen den Zeichen links und rechts davon. Es findet u.a. in der französischen Zeichensetzung Verwendung, wo vor Satzzeichen wie Doppelpunkten und Ausrufezeichen ein Leerzeichen steht, die Satzzeichen aber nicht am Anfang einer neuen Zeile stehen sollen.)</p>
+    <div class="sidenoteGroup"> 
+      <!--<p><span class="newterm">Nummerische Zeichenreferenzen</span> und <span class="newterm">Zeichen-Entity-Referenzen</span> sind Arten von <span class="newterm">Zeichen-Escapes</span>, d.h. Arten, jedes Unicode-Zeichen in XML oder (X)HTML ausschließlich durch ein ASCII-Zeichen darzustellen. Das geschützte Leerzeichen (<span class="uname">U+00A0 <span lang="en">NO-BREAK SPACE</span></span>) bspw. lässt sich folgendermaßen repräsentieren:</p>-->
+      <dl>
+        <dt><code>&amp;#xA0;</code></dt>
+        <dd>Eine hexadezimale nummerische Zeichenreferenz. Alle nummerischen Zeichenreferenzen beginnen mit <code>&amp;#</code> und enden mit&nbsp;<code>;</code>. Das <code>x</code> zeigt an, dass das Nachfolgende eine Hexadezimalzahl ist, die den Zeichencode eines Unicode-Zeichens angibt. Die Angabe ist nicht case-sensitiv (d.h. Groß-/Kleinschreibung spielt keine Rolle).
+          <div class="example"><code lang="fr">&lt;p&gt;Vive la France&amp;#xA0;!&lt;/p&gt;</code></div>
+        </dd>
+        <dt><code>&amp;#160;</code></dt>
+        <dd>Eine dezimale nummerische Zeichenreferenz. Hier wird eine Dezimalzahl benutzt, um denselben Zeichencode anzugeben.
+          <div class="example"><code lang="fr">&lt;p&gt;Vive la France&amp;#160;!&lt;/p&gt;</code></div>
+        </dd>
+        <dt><code>&amp;nbsp;</code></dt>
+        <dd>Eine benannte Zeichenreferenz. Dies ist eine völlig andere Art von Escape. Benannte Zeichenreferenzen werden durch die Auszeichnungssprache definiert. Das bedeutet bspw., dass in HTML nur bestimmte Zeichen (welche durch die HTML-Spezifikation definiert sind) als benannte Zeichenreferenzen repräsentiert werden können (und dies sind nur sehr wenige Zeichen aus dem Unicode-Bereich). Zu beachten ist, dass die Bezeichner case-sensitiv sind: in HTML repräsentiert <code>&amp;Aacute;</code> den <em>Großbuchstaben</em> <span class="qchar">Á</span>, <code>&amp;aacute;</code> hingegen den <em>Kleinbuchstaben</em> <span class="qchar">á</span>.
+          <div class="example"><code lang="fr">&lt;p&gt;Vive la France&amp;nbsp;!&lt;/p&gt;</code></div>
+        </dd>
+      </dl>
+      <aside class="sideinfonote"><p class="warning">Einige Browser elauben es, das Semikolon am Ende einer nummerischen Zeichenreferenz wegzulassen. Dies ist aber nicht empfehlenswert, denn es kann zu Interoperabilitäts&shy;problemen führen. Wenn ein Semikolon am Ende steht, umgeht das auch das Problem, dass das Ende des Escapes nicht zu erkennen wäre, wenn das Escape im Text eingebettet ist.</p></aside>
+    </div>
+    <p>Ein wichtiger Punkt ist, dass die Werte von nummerischen Zeichenreferenzen (wie <code>&amp;#x20AC;</code> oder <code>&amp;#8364;</code> für das Euro-Zeichen <span class="qchar">€</span>) als Zeichencode von Unicode-Zeichen interpretiert werden – <strong>unabhängig von der Zeichencodierung des Dokuments</strong>. Es ist ein häufiger Fehler, in Windows-1252-codierten Texten das Euro-Zeichen als <code>&amp;#x80;</code> notieren. Zwar liegt das Euro-Zeichen in der Windows-1252-Codepage auf Position 80 (hexadezimal); aber <code>&amp;#x80;</code> sollte ein Steuerzeichen ergeben, denn das Escape wird aufgelöst zu dem Zeichen auf Position 80 (hexadezimal) im Unicode-Repertoire. (Allerdings korrigieren manche Browser diesen Fehler stillschweigend. Siehe diese <a class="print" href="/International/tests/repo/results/escapes#reallocated">Testseiten</a>.) </p>
+  </section>
+  <section id="cssescapes">
+    <h3><a href="#cssescapes"> CSS-Escapes</a></h3>
+    <p>In CSS werden Zeichen-Escapes anders gebildet. Sie beginnen mit einem Backslash <code>\</code> gefolgt von der Hexadezimalzahl, die den Zeichencode des Zeichens in Unicode angibt.</p>
+    <p>Wenn danach ein Zeichen folgt, das nicht in den Bereichen A–F, a–f oder 0–9 liegt, ist das alles, was nötig ist. Das folgende Beispiel repräsentiert das Wort <span class="qterm" lang="fr">émotion</span>:</p>
+    <div class="example"><code lang="fr">.\E9motion  { ... }</code></div>
+	<div class="sidenoteGroup">
+      <p>Wenn hingegen das nachfolgende Zeichen eines ist, das als Hexadezimalziffer dienen kann, wäre nicht klar, wo die Hexadezimalzahl endet. In diesen Fällen gibt es zwei Möglichkeiten. Die eine ist, ein Leerzeichen nach dem Zeichen-Escape zu setzen. Dieses Leerzeichen ist Teil der Escape-Syntax und bleibt nicht erhalten, nachdem das Escape geparst wurde. Das folgende Beispiel zeigt, wie das Wort <span class="qterm"  lang="fr">édition</span> repräsentiert werden kann:</p>
+      <div class="example"><code lang="fr">.\E9 dition  { ... }</code></div>
+      <aside class="sideinfonote"><p class="footnote">Anmerkung des Übersetzers: Ich halte es für empfehlenswert, immer ein Leerzeichen am Ende eines CSS-Escapes zu setzen (analog zu der Empfehlung, in HTML immer ein Semikolon am Ende einer Zeichenreferenz zu setzen). Dann muss man sich keine Gedanken darüber machen, ob man das Leerzeichen im betreffenden Fall weglassen könnte oder nicht.</p></aside>
+	</div>
+    <p>Alternativ lann man eine 6-stellige Hexadezimalzahl verwenden, mit oder ohne Leerzeichen danach. Dies ist eine andere Möglichkeit, <span class="qterm" lang="fr">édition</span> zu repräsentieren:</p>
+    <div class="example"><code lang="fr">.\0000E9dition  { ... }</code></div>
+    <p>Da ein jedes Whitespace-Zeichen hinter der Hexadezimalzahl zum Escape dazugehört, muss man, wenn hinter dem escapeten Zeichen wirklich ein Leerzeichen erscheinen soll, hinter der Hexadezimalzahl (beliebiger Länge) zwei Leerzeichen setzen.</p>
+    <p>Ein Backslash kann in CSS auch vor einem Syntax-Zeichen verwendet werden, damit dieses nicht als Teil des Codes angesehen wird. Für weitere Informationen über CSS-Escapes siehe <a class="print" href="http://www.w3.org/TR/css-syntax-3/#escaping">CSS Syntax Module</a>.</p>
+  </section>
+  <section id="not">
+    <h3><a href="#not"> Wann keine Escapes zu verwenden sind</a></h3>
+    <p>Es ist fast immer besser, eine Zeichencodierung zu benutzen, die es erlaubt, die Zeichen in ihrer normalen Form zu verwenden, anstatt benannte Zeichenreferenzen oder nummerische Zeichenreferenzen zu verwenden.</p>
+    <p>Die Verwendung von Escapes macht den Quelltext schlechter lesbar und schwerer zu pflegen und kann auch die Dateigröße beträchtlich erhöhen.</p>
+    <p>Viele englischsprachige Entwickler gehen davon aus, dass andere Sprachen nur gelegentlich Nicht-ASCII-Zeichen verwenden, aber dem ist nicht so.</p>
+    <p>Nehmen wir als Beispiel folgende Passage auf Tschechisch:</p>
+    <blockquote>
+      <p lang="cs">Jako efektivnější se nám jeví pořádání tzv. Road Show prostřednictvím našich autorizovaných dealerů v   Čechách a na Moravě, které proběhnou v průběhu září a října.</p>
+    </blockquote>
+    <p>Wenn für alle Nicht-ASCII-Zeichen nummerische Zeichenreferenzen verwendet werden, wird die Passage unlesbar, schwierig zu pflegen und deutlich länger. Es wäre natürlich noch schlimmer bei einer Sprache, die überhaupt keine lateinischen Buchstaben verwendet.</p>
+    <blockquote>
+      <p lang="cs">Jako efektivn&amp;#x115;j&amp;#x161;&amp;#xED; se n&amp;#xE1;m jev&amp;#xED;   po&amp;#x159;&amp;#xE1;d&amp;#xE1;n&amp;#xED; tzv. Road Show prost&amp;#x159;ednictv&amp;#xED;m na&amp;#x161;ich autorizovan&amp;#xFD;ch   dealer&amp;#x16F; v &amp;#x10C;ech&amp;#xE1;ch a na Morav&amp;#x11B;, kter&amp;#xE9; prob&amp;#x11B;hnou v pr&amp;#x16F;b&amp;#x11B;hu   z&amp;#xE1;&amp;#x159;&amp;#xED; a &amp;#x159;&amp;#xED;jna.</p>
+    </blockquote>
+    <p>Wie bereits gesagt, besser die richtigen Zeichen für normalen Text verwenden, keine Escapes.</p>
+    <p><strong class="leadin" id="useinxhtml">Verwendung in XHTML:</strong> Die Verwendung von benannten Zeichenreferenzen in Dokumenten, die als XML verarbeitet werden, wird problematisch, wenn die Entities extern (nicht im Dokument selbst) definiert werden und die XML-Prozessoren die externen Dateien nicht lesen. Dann werden die Entity-Referenzen nicht durch die entsprechenden Zeichen ersetzt. Wenn wirklich Escapes benötigt werden, ist es deshalb sicherer, nummerische Referenzen zu verwenden oder die benötigten Entities im Dokument selbst zu definieren.</p>
+    <p>Wenn <a class="print" href="https://www.w3.org/TR/html5/syntax.html#named-character-references">in HTML-definierte benannte Zeichenreferenzen</a> (wie <code translate="no">&amp;aacute;</code>) verwendet werden, um Zeichen in XHTML zu repräsentieren, ist Vorsicht geboten, wenn der Inhalt von XML-Werkzeugen verarbeitet wird.</p>
+  </section>
+  <section id="use">
+    <h3><a href="#use">Wann Escapes zu verwenden sind</a></h3>
+    <p><strong class="leadin">Syntax-Sonderzeichen:</strong> Es gibt 3 Zeichen, die im Inhalt immer als Escapes auftreten sollten, damit sie nicht die Syntax der Auszeichnungssprache beeinflussen. Diese sind Sprachbestandteile von XML bzw. HTML:</p>
+    <ul>
+      <li>
+        <p><code>&amp;lt;</code> (&lt;)</p>
+      </li>
+      <li>
+        <p><code>&amp;gt;</code> (&gt;)</p>
+      </li>
+      <li>
+        <p><code>&amp;amp;</code> (&amp;)</p>
+      </li>
+    </ul>
+    <p>Auch sollte das doppelte Anführungszeichen (") durch <code>&amp;quot;</code> und das einfache Anführungszeichen (') durch <code>&amp;apos;</code> repräsentiert werden – besonders in Attributwerten, wenn dasselbe Anführungszeichen, das den Attributwert umgibt, auch in diesem vorkommt. <!--Zu beachten ist dabei jedoch, dass &amp;apos; zwar in XML definiert ist, nicht aber in HTML 4.01, und manche Browser unterstützen &amp;apos; in HTML nicht. Aus diesem Grund empfiehlt die <a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_16">XHTML-Spezifikation</a> im Anhang C.16, stattdessen &amp;#39; zu verwenden, wenn der Text an einen HTML-Browser geschickt wird--></p>
+    <p><strong class="leadin">Unsichtbare oder nicht unterscheidbare Zeichen:</strong> Eine besonders nützliche Rolle spielen Escapes für die Repräsentation von Zeichen, die in der Darstellung nicht sichtbar oder nicht unterscheidbar sind. </p>
+    <p>Ein Beispiel dafür wäre das Unicode-Zeichen <span class="uname">U+200F <span lang="en">RIGHT-TO-LEFT MARK</span></span>. Dieses Zeichen kann verwendet werden, um die Schreibrichtung in bidirektionalem Text anzugeben (wenn auch arabische oder hebräische Schrift vorkommt). Es wird nicht grafisch dargestellt, wodurch schwierig zu erkennen ist, wo solche Zeichen im Text vorhanden sind; und wenn sie fehlen oder verloren gehen, kann das zu unerwarteten Ergebnissen bei der späteren Bearbeitung des Textes führen. Bei der Verwendung von <code>&amp;rlm;</code> (oder der entsprechenden nummerischen Zeichenreferenz <code>&amp;#x200F;</code>) hingegen ist es leicht, diese Zeichen zu erkennen.</p>
+    <p>Ein Beispiel für ein nicht unterscheidbares Zeichen ist das geschützte Leerzeichen <span class="uname">U+00A0 <span lang="en">NO-BREAK SPACE</span></span>. Dieses verhindert einen Zeilenumbruch, sieht aber genauso aus wie ein normales Leerzeichen. Die Verwendung von <code>&amp;nbsp;</code> (oder <code>&amp;#xA0;</code>) macht klar ersichtlich, wo solche geschützten Leerzeichen im Text vorkommen.</p>
+    <p><strong class="leadin">Probleme bei der Eingabe:</strong>  Wenn es der Web-Editor bzw. Texteditor nicht ermöglicht, benötigte Zeichen auf einfache Weise einzugeben, kann man auch auf Escapes ausweichen. Dies stellt jedoch keine Langzeitlösung dar und ist auch umständlich, wenn viele Zeichen auf diese Art eingegeben werden müssen – es braucht mehr Zeit und macht die Pflege schwieriger. Besser ist die Verwendung eines Editors, der die Eingabe dieser Zeichen als Zeichen ermöglicht. Wenn nur gelegentlich ein solches Zeichen benötigt wird, kann als Alternative auch eine Zeichentabelle oder ein <a class="print" href="http://r12a.github.io/pickers/">Zeichenwähler</a> benutzt werden.</p>
+    <p><strong class="leadin">Lücken der Zeichencodierung:</strong> Escapes können nützlich sein, um Zeichen zu repräsentieren, die von der für das Dokument gewählten Zeichencodierung nicht unterstützt werden, z.B. um chinesische Zeichen in einem Windows-1252-codierten Dokument zu repräsentieren. Man sollte sich zunächst aber fragen, warum man nicht die Zeichencodierung zu UTF-8 ändert, was alle im Dokument vorkommenden Zeichen abdeckt.</p>
+  </section>
+  <section id="styleattr">
+    <h3><a href="#styleattr">Verwendung von Escapes in style-Attributen</a></h3>
+    <p class="note"><b>Beachten Sie:</b> Am besten wählt man UTF-8 als Zeichencodierung für das Stylesheet, damit man in CSS-Angaben die richtigen Zeichen verwenden kann. Dieser Abschnitt behandelt, was ein seltener Ausnahmefall sein sollte, wenn Escapes verwendet werden sollen.</p>
+    <p>Es ist generell angebracht, Darstellungsinformationen in einem externen Stylesheet oder in einem <span class="kw">style</span>-Element im Kopf einer HTML-Datei anzugeben. Ausnahmsweise oder vielleicht nur kurzzeitig kann stattdessen ein <span class="kw">style</span>-<em>Attribut</em> für ein bestimmtes Element verwendet werden. In ganz seltenen Fällen sollen vielleicht ein oder mehrere Zeichen in dem <span class="kw">style</span>-Attribut durch Zeichen-Escapes maskiert werden.</p>
+    <p>In einem <span class="kw">style</span>-Attribut können in HTML Zeichen durch nummerische oder benannte Zeichenreferenzen oder CSS-Escapes repräsentiert werden. In einem <span class="kw">style</span>-<em>Element</em> hingegen können weder nummerische noch benannte Zeichenreferenzen vorkommen, und dasselbe gilt für ein externes Stylesheet.</p>
+    <p>Weil die Tendenz dahin geht, in Attributen angegebene Stile ins <span class="kw">style</span>-Element oder ein externes Stylesheet zu verschieben (dies kann auch automatisch durch eine Applikation oder ein Script geschehen), ist es am sichersten, ausschließlich CSS-Escapes zu verwenden.</p>
+    <p>Es ist bspw. besser,</p>
+    <div class="example">
+      <pre>&lt;span style=&quot;font-family: L\FC beck&quot;&gt;...&lt;/span&gt;</pre>
+    </div>
+    <p>zu schreiben, und nicht</p>
+    <div class="example">
+      <pre>&lt;span style=&quot;font-family: L&amp;#xFC;beck&quot;&gt;...&lt;/span&gt;</pre>
+    </div>
+  </section>
+</section>
+
+
+
+<section>
+<h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+  <p><strong class="leadin">Der Wechsel zu UTF-8 bedeutet erneutes Speichern der Datei:</strong> Bei Verwendung der Zeichencodierung UTF-8 kann auf die meisten Escapes verzichtet werden und einfach mit den Zeichen selbst gearbeitet werden. Um die Zeichencodierung eines Dokuments zu ändern, genügt es nicht, nur die Angabe der Zeichencodierung am Anfang der Seite oder auf dem Server zu ändern. Man muss das Dokument erneut speichern – in eben dieser Zeichencodierung. Für weitere Information, wie das in einem Anwendungsprogramm zu tun ist, siehe <a class="print" href="/International/questions/qa-setting-encoding-in-applications"><cite>Einstellung der Zeichencodierung in Web-Editoren und Texteditoren</cite></a>.</p>
+  <p><span class="leadin">Hexadezimal oder dezimal: </span> Im Unicode-Standard werden die Zeichencodes hexadezimal angegeben, der Code des Zeichens <span class="qchar">á</span> bspw. als <span class="uname">U+00E1</span>. Wegen dieser Konvention ist es ratsam, aber nicht zwingend, dass bei nummerischen Zeichenreferenzen die Werte hexadezimal notiert werden, nicht dezimal. Führende Nullen sind nicht erforderlich, d.h. <span class="qchar">á</span> kann auch durch <code>&amp;#xE1;</code> repräsentiert werden.</p>
+  <p><span class="leadin">Ergänzende Zeichen (<span lang="en">supplementary characters</span>): </span>Das sind die Unicode-Zeichen mit Zeichencodes jenseits derer der Zeichen der <a href="/International/articles/definitions-characters/#unicode" class="dfn print" lang="en">Basic Multilingual Plane (BMP)</a>. In UTF-16 wird ein solches Zeichen durch zwei 16-Bit-<dfn>Ersatz-Zeichencodes (<span lang="en">surrogate code points</span>)</dfn> aus der BMP codiert. Deshalb denken manche, dass diese Zeichen durch zwei Escapes repräsentiert werden, aber das ist falsch – es muss der einzelne Zeichencode angegeben werden; also bspw. <code>&amp;#x233B4;</code> anstatt <code>&amp;#xD84C;&amp;#xDFB4;</code>.</p>
+  <p><strong class="leadin"><span class="qchar">&amp;</span>-Zeichen:</strong> Obwohl HTML-Nutzerprogramme großzügig darüber hinwegsehen, sollte niemals ein <span class="qchar">&amp;</span>-Zeichen (Kaufmanns-Und) für sich allein im Text stehen. Besondere Beachtung gilt URIs, die Parameter enthalten. So sollte bspw. <code>http://example.org/my-script.php?class=guest<span class="highlight">&amp;amp;</span>name=user</code> im Quelltext stehen, nicht <code>http://example.org/my-script.php?class=guest<span class="highlight">&amp;</span>name=user</code>.</p>
+</section>
+
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Erste Schritte: <a href="/International/getting-started/characters"><cite>Einführung in Zeichensätze und Zeichencodierungen</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial: <a href="/International/tutorials/tutorial-char-enc/"><cite>Umgang mit Zeichensätzen und Zeichencodierungen in  HTML und CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Verwandte Links: <cite>HTML und CSS erstellen</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Zeichen</a></li>
+        <li><a href="/International/techniques/authoring-html#escapes">Verwendung von Zeichen-Escapes</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Verwandte Links: <cite>XML erstellen</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-xml#charset">Zeichen</a></li>
+        <li><a href="/International/techniques/authoring-xml#escapes">Verwendung von Zeichen-Escapes</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Verwandte Links: <cite>Entwicklung von Spezifikationen</cite></p>
+      <ul>
+        <li><a href="/International/techniques/developing-specs#char_escapes">Zeichen-Escapes entwerfen</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

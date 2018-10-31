@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Declaring character encodings in CSS</title>
+<meta name="description" content="How do I declare the character encoding of a CSS style sheet?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-css-charset' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = 'Russ Rolfe, Microsoft Corporation' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-css-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-24' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-03-31', time:'19:54'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-04-20', time:'09:54'} // date and time of latest edits to this document/translation
+f.contributors = 'Zack Weinberg, Simon Sapin, Gunnar Bittersmann' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-css-charset-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Declaring character encodings in CSS</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    CSS coders, Web project managers, and anyone who wants to know how to declare the character encoding of a CSS file.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">How do I declare the character encoding of a <abbr title="Cascading Style Sheets">CSS</abbr> style sheet?</p>
+
+  <p>If  you have any non-ASCII text in your CSS file, for example non-ASCII characters in font names, in values of the <code class="kw" translate="no">content</code> property, in selectors, etc., you need to be sure that the CSS parser knows how to transform the bytes into characters correctly, so that it understands your CSS code. This article describes how to do this.</p>
+</section>
+
+
+<section id="nutshell">
+    <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>You should always use UTF-8 as the character encoding of your style sheets and your HTML pages, and declare that encoding in your HTML. If you do that, there is no need to declare the encoding of your style sheet. </p>
+  <p>Other approaches are only needed if your style sheet contains non-ASCII characters and, for some reason, you  can't rely on the encoding of the HTML and the associated style sheet to be the same. In this case you should use <code class="kw" translate="no">@charset</code> or  HTTP headers to declare the encoding. (If   your HTML and CSS files use the same  encoding, the latest versions of major browsers  will apply the encoding of the HTML file to the CSS stylesheet.)</p>
+</section>
+
+
+<section>
+  <h2 id="detail"><a href="#detail">Details</a></h2>
+
+  <section>
+    <h3 id="atcharset"><a href="#atcharset">Using <code class="kw" translate="no">@charset</code></a></h3>
+    <p> As mentioned above, you should only use this when the style sheet and the calling HTML file are in different encodings.</p>
+    <p>It is important to understand that, although the <code class="kw" translate="no">@charset</code> declaration looks like a CSS at-rule, it is not parsed as such for detection of the character encoding. Only an <em>exact    byte sequence</em>, beginning with the very first byte in the style sheet, will be effective.  Variations, even those that would be valid for a normal at-rule with the same syntax, are silently     ignored.</p>
+    <p>To set the character encoding  inside the style sheet, use the following sequence of bytes, apart from the <var class="kw" translate="no">charset-name</var>, at the very start of the file, one byte per character.</p>
+    <figure class="example"> <code>@charset "<var>charset-name</var>";</code> </figure>
+    <p>The <var class="kw" translate="no">charset-name</var> is case-insensitive, but should always be <code class="kw" translate="no">utf-8</code> for new style sheets. If you really cannot use UTF-8 for your style sheet, see <a href="#nonutf8">Working with non-UTF-8 encodings</a>, below.</p>
+    <p>Only one <code class="kw" translate="no">@charset</code> byte sequence may appear in an external style sheet and it must appear at the very start of the document. It must not be
+      preceded by any characters, not even comments.</p>
+    <div class="note"><b>Note!</b> It is not enough to simply put <code>@charset "utf-8";</code> at the top of the style sheet – you need to also <strong>save</strong> your style sheet in the UTF-8 character encoding. (See <a href="/International/questions/qa-choosing-encodings#applyingencoding">Applying an encoding to your content</a>.)</div>
+    <p><strong>Important:</strong> Since the HTTP header has a higher precedence than the in-document <code class="kw">@charset</code> declaration, you should always take into account whether the character encoding is already declared in the HTTP header. If it is, <code class="kw">@charset</code> must be set to declare the same encoding, and will only have an effect when the style sheet is read in a context where there are no HTTP headers (eg. from a local drive).</p>
+    <p>The techniques index provides <a href="/International/techniques/authoring-html#checkenc">a set of links</a> to  help you detect whether a declaration is being sent in the HTTP header.</p>
+  </section>
+  <section>
+    <h3 id="bom"><a href="#bom">What about the byte-order mark?</a></h3>
+    <p>The <a href="http://www.w3.org/TR/css-syntax-3/#input-byte-stream">CSS3 Syntax specification says</a> that if you have a UTF-8 <a class="termref" href="/International/questions/qa-byte-order-mark#bomwhat">byte-order mark</a> at the start of your file, this should cause the browser to read the style sheet as UTF-8, regardless of any other declaration. Unfortunately, at the time of writing this is not supported interoperably – Internet Explorer 10 and 11 still give higher precedence to the HTTP header and <code class="kw" translate="no">@charset</code> declarations.</p>
+    <p>So for the time being you should rely on the <code class="kw" translate="no">@charset</code> or HTTP header declarations instead. The former has the additional advantage that it helps people looking at the source code to ascertain what is the encoding of the style sheet. The byte-order mark is invisible.</p>
+    <p>Read more <a href="/International/questions/qa-byte-order-mark">about the byte-order mark</a>.</p>
+  </section>
+  <section>
+    <h3 id="http"><a href="#http">Using HTTP</a></h3>
+    <div class="sidenoteGroup">
+      <p>The server may already send a default character encoding declaration in the HTTP <code class="kw" translate="no">Content-Type</code> header when your browser retrieves a style sheet, or it may not. This line in the HTTP response would indicate that the file is encoded in UTF-8.</p>
+      <figure class="example"> <code>Content-Type: text/css; charset=utf-8 </code></figure>
+      <aside class="sideinfonote">
+        <p class="info">The techniques index provides <a href="/International/techniques/authoring-html#checkenc">a set of links</a> to  help you detect whether a declaration is being sent in the HTTP header. For more information about how to set the encoding in HTTP see <a href="/International/O-HTTP-charset"><cite>Setting the HTTP charset parameter</cite></a>.</p>
+      </aside>
+    </div>
+    <p>It could be that the server is serving a style sheet with an encoding declaration that you don't want, due to server-wide defaults or specific settings, or serving without an encoding declaration when you want one. You can change  the situation either for the server as a whole, or for a specific file or set of files, by changing the server settings (globally or locally) or by using code in scripts such as PHP.</p>
+    <p>The declaration in the HTTP header will always override the in-document declaration, if there is a conflict, except for those browsers where the byte-order mark overrides it.</p>
+    <p>However, we recommend that if you need to use an HTTP declaration to set the correct encoding, you also include an <code class="kw" translate="no">@charset</code> declaration inside the style sheet. This will ensure that the encoding is still known if the style sheet is used locally or moved, eg. for testing or editing.</p>
+  </section>
+</section>
+<section>
+  <h2 id="additionalinfo"><a href="#additionalinfo">Additional information</a></h2>
+  <p>Most people will not need to know the information in this section. It is provided for the sake of completeness.</p>
+  <section>
+    <h3 id="nonutf8"><a href="#nonutf8">Working with non-UTF-8 encodings</a></h3>
+    <div class="sidenoteGroup">
+      <p>This section is only to be read if you really cannot save your style sheet as UTF-8.</p>
+      <aside class="sideinfonote">
+        <p class="info">Note that although the names appearing in documents referred to here are normally called <dfn>charset</dfn> names,
+          in reality they refer to the encodings, not the character sets. For example, the Unicode character set or 'repertoire' can be encoded in three different encoding schemes.</p>
+      </aside>
+    </div>
+    <p>Until recently  the <a
+					href="http://www.iana.org/assignments/character-sets">IANA registry</a> was the place to find names for encodings. The IANA registry commonly includes multiple names for the same encoding. In this case you should use the name designated as
+      'preferred'.</p>
+    <p>The new <a href="http://encoding.spec.whatwg.org/"><cite>Encoding</cite></a> specification now provides a list that has been tested against actual browser implementations. You can find the list in the table in the section called <a href="http://encoding.spec.whatwg.org/#encodings">Encodings</a>. It is best to use the names in the left column of that table.</p>
+    <p><strong>Note</strong>, however, that the presence of a name in either of these sources doesn't necessarily mean that it is OK to use that encoding. Several of the encodings are problematic. If you really can't use UTF-8, you should carefully consider the advice in the article <a href="/International/questions/qa-choosing-encodings"><cite>Choosing &amp; applying a character encoding</cite></a>.</p>
+  </section>
+  <section>
+    <h3 id="charsetlink"><a href="#charsetlink">The <code class="kw" translate="no">charset</code> attribute on the <code class="kw" translate="no">link</code> element</a></h3>
+    <p>The HTML 4.01 specification describes a <span class="kw">charset</span> attribute that can be added to the <span class="kw">link</span> element  to indicate the encoding of the document you are linking to. However, the use of this attribute on a <span class="kw">link</span> element is currently <a href="http://www.w3.org/TR/html5/obsolete.html#attr-link-charset">obsoleted</a> by the HTML5 specification,  so you shouldn't use it.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Getting started? <a href="/International/getting-started/characters"><cite>Introducing Character Sets and Encodings</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
+        <li><a href="/International/techniques/authoring-html#css">Declaring the character encoding in a CSS style sheet</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Related links, <cite>Setting up a server</cite></p>
+      <ul>
+        <li><a href="/International/techniques/server-setup#charset">Characters</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

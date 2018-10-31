@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Internationalization Quick Tips for the Web</title>
+<meta name="description" content="Some key concepts of international Web design worth bearing in mind. These tips are not complete guidelines." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'quicktips'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-quicktips' // blog search string - usually the filename without extensions
+f.firstPubDate = '2006-02-24' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-04-01', time:'13:22'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-05-18', time:'18:31'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'gettingstarted'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="index-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="index-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Internationalization Quick Tips for the Web</h1>
+</header>
+
+
+<section id="sidebarExtras">
+<p><a href="#encoding">Encoding.</a> Use the UTF-8 (Unicode) character encoding for content, databases, etc. Always declare the encoding.</p>
+<p><a href="#escapes">Escapes.</a> Use characters rather than escapes (e.g. <code translate="no">&amp;#xE1;</code> <code translate="no">&amp;#225;</code> or <code translate="no">&amp;aacute;</code>) whenever you can.</p>
+<p><a href="#language">Language.</a> Declare the language of documents and indicate internal language changes.</p>
+<p><a href="#presentation">Presentation vs. content.</a> Use style sheets for presentational information. Restrict markup to
+semantics.</p>
+<p><a href="#images">Images, animations &amp; examples.</a> Check for translatability and inappropriate cultural bias.</p>
+<p><a href="#forms">Forms.</a> Use UTF-8 on both form and server. Support local formats of names/addresses, times/dates, etc.</p>
+<p><a href="#authoring">Text authoring.</a> Use simple, concise text. Use care when composing sentences from multiple strings.</p>
+<p><a href="#navigating">Navigation.</a> On each page include clearly visible navigation to localized pages or sites, using the target language.</p>
+<p><a href="#rtl">Right-to-left text.</a> For HTML, add <code translate="no">dir="rtl"</code> to the <code class="kw" translate="no">html</code> tag. Only re-use it to change the base direction.</p>
+<p><a>Check your work.</a> <span class="tip">Validate! Use techniques, tutorials, and articles at <a class="print" href="/International/">http://www.w3.org/International/</a> </span></p>
+</section>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    anyone who is new to internationalization and needs guidance on topics to consider and ways to get into the material on the site. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+    <p>The following 'Quick Tips' summarize key concepts of international Web design. These tips are not complete guidelines, they are only a
+      handful of concepts described at the W3C's <a class="print" href="/International/">Internationalization Activity</a> subsite.</p>
+    <p>This page lists the tips in very terse statements that also appear on the <a class="print" href="quicktips.pdf">business-card size reference
+      cards</a>, followed by text that provides more detail and explanations. Then we link to information on the W3C Internationalization subsite, when
+      available, where you can read further.</p>
+    <p>This page will be updated from time to time.</p>
+</section>
+
+<section>
+  <h2 id="quicktips"><a class="print" href="#quicktips">Quick tips</a></h2>
+  <dl>
+    <dt class="tipdl" id="encoding"> <a href="#encoding">Encoding.</a> <span class="tip">Use  the UTF-8 (Unicode) character encoding for content, databases, etc. Always declare the encoding.</span></dt>
+    <dd>
+      <p>The character encoding you choose determines how bytes are mapped to characters in your text.</p>
+      <p>Normally character encodings limit you to a particular script or set of languages. Unicode allows you to deal simply with almost
+        all scripts and languages in use around the world. In this way Unicode simplifies the handling of content in multiple languages, whether within a
+        single page or across one or more sites. Unicode is particularly useful when used in forms, scripts and databases, where you often need to support
+        multiple languages. Unicode also makes it very straightforward to add new languages to your content.</p>
+      <p>Unless you appropriately declare which character encoding you are using your users may be unable to read your content. This is
+        because incorrect assumptions may be made by the application interpreting your text about how the bytes map to characters.</p>
+      <dl>
+        <dt> Give me more background</dt>
+        <dd><a class="print" href="/International/questions/qa-what-is-encoding">Character encodings for beginners</a> explains some of the basic concepts about character encodings, and why you should care. <a class="print" href="/International/getting-started/characters">Introducing Character sets and Encodings</a> gives an gentle introduction to various aspects of the topic.</dd>
+        <dt> So, how do I do this?</dt>
+        <dd><a class="print" href="/International/techniques/authoring-html#charset">HTML &amp; CSS authors</a> &#x2022; <a class="print" href="/International/techniques/developing-specs#characters">Spec developers</a> &#x2022; <a class="print" href="/International/techniques/server-setup#charset">Server setup</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="escapes"> <a href="#escapes">Escapes.</a> <span class="tip">Use characters rather than escapes (e.g.
+      &amp;#xE1; &amp;#225; or &amp;aacute;) whenever you can. </span></dt>
+    <dd>
+      <p>Escapes such as Numeric Character References (NCRs), and entities are ways of representing any Unicode character in markup using
+        only ASCII characters. For example, you can represent the character á in HTML as <code>&amp;#xE1;</code> or <code>&amp;#225;</code> or <code>&amp;aacute;</code>.</p>
+      <p>Such escapes are useful for clearly representing ambiguous or invisible characters, and to prevent problems with syntax characters
+        such as ampersands and angle brackets. They may also be useful on occasion to represent characters not supported by your character encoding or
+        unavailable from your keyboard. Otherwise you should always use characters rather than escapes.</p>
+      <dl>
+        <dt>Give me more background</dt>
+        <dd><a class="print" href="/International/questions/qa-escapes">Using character escapes in markup and CSS</a> provides  additional information about
+          the use of escapes in markup languages. In particular, note that entities (such as &amp;aacute;) should be used with caution. </dd>
+        <dt>So, how do I do this?</dt>
+        <dd><a class="print" href="/International/techniques/authoring-html#escapes">HTML &amp; CSS authors</a> &#x2022; <a class="print" href="/International/techniques/developing-specs#char_escapes">Spec developers</a> &#x2022; <a class="print" href="/International/techniques/authoring-svg#escapes">SVG authors</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="language"> <a href="#language">Language.</a> <span class="tip">Declare the  language
+      of documents and indicate  internal language changes.</span></dt>
+    <dd>
+      <p>Information about the (human) language of content is already important for accessibility, styling, searching, editing, and other
+        reasons. As more and more content is tagged and tagged correctly, applications that can detect language information will become more and more useful
+        and pervasive.</p>
+      <p>When declaring language, you may need to express information about a specific range of content in a different way from metadata about the document as a whole. It is important to understand this distinction.</p>
+      <dl>
+        <dt>Give me more background</dt>
+        <dd><a class="print" href="/International/getting-started/language">Language on the Web</a> gives an gentle introduction to various aspects of the topic.</dd>
+        <dt> So, how do I do this?</dt>
+        <dd><a class="print" href="/International/techniques/authoring-html#language">HTML &amp; CSS authors</a> &#x2022; <a class="print" href="/International/techniques/authoring-svg#language">SVG authors</a> &#x2022; <a class="print" href="/International/techniques/authoring-xml#language">XML authors</a> &#x2022; <a class="print" href="/International/techniques/server-setup#language">Server setup</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="presentation"> <a href="#presentation">Presentation vs. content.</a> <span class="tip">Use
+      style sheets for presentational information. Restrict markup to semantics.</span></dt>
+    <dd>
+      <p>It is an important principle of Web design to keep the way content is styled or presented separate from the actual text itself.
+        This makes it simple to apply alternative styling for the same text, for example in order to display the same content on both a conventional browser
+        and a small hand-held device.</p>
+      <p>This principle is particularly useful for localization, since different scripts have different typographic needs. For example, due
+        to the complexity of Japanese characters, it may be preferable to show emphasis in Japanese HTML pages in other ways than bolding or italicisation.
+        It is much easier to apply such changes if the presentation is described using CSS, and markup is much cleaner and more manageable if text is
+        correctly and unambiguously labelled as 'emphasized' rather than just 'bold'.</p>
+      <p>It can save considerable time and effort during localization to work with CSS files rather than have to change the markup, because
+        any needed changes can be made in a single location for all pages, and the translator can focus on the content rather than the presentation.</p>
+      <dl>
+        <dt>Give me more background</dt>
+        <dd> Read the talks slides from the 2007 @media conference presentation "<a class="print" href="http://www.w3.org/2007/Talks/0706-atmedia/slides/Slide0350.html">Designing for International Users: Practical Tips</a>". </dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="images"><a href="#images">Images, animations &amp; examples.</a> <span class="tip">Check for translatability and inappropriate cultural bias.</span></dt>
+    <dd>
+      <p>If you want your content to really communicate with people, you need to speak their language, not only through the text, but also
+        through local imagery, color, objects and preoccupations. It is easy to overlook the culture-specific nature of symbolism, behaviour, concepts, body
+        language, humor, etc. You should get feedback on the suitability and relevance of your images, video-clips, and examples from in-country users.</p>
+      <p>You should also take care when incorporating text in graphics when content is translated. Text on complex backgrounds or in
+        restricted spaces can cause considerable trouble for the translator. You should provide graphics to the localization group that have text on a
+        separate layer, and you should bear in mind that text in languages such as English and Chinese will almost certainly expand in translation.</p>
+      <dl>
+        <dt>Give me more background</dt>
+        <dd> Read the talks slides from the 2007 @media conference presentation "<a class="print" href="http://www.w3.org/2007/Talks/0706-atmedia/slides/Slide0440.html">Designing for International Users: Practical Tips</a>". </dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="forms"> <a href="#forms">Forms.</a> <span class="tip">Use UTF-8 on both form and
+      server. Support local formats of names/addresses, times/dates, etc.</span></dt>
+    <dd>
+      <p>The encoding used for an HTML page that contains a form should support all the characters needed to enter data into that form. This
+        is particularly important if users are likely to enter information in multiple languages.</p>
+      <p>Databases and scripts that receive data from forms on pages in multiple languages must also be able to support the characters for
+        all those languages simultaneously.</p>
+      <p>The simplest way to enable this is to use the Unicode character encoding UTF-8 for both pages containing forms and all back-end processing and storage. In such
+        a scenario the user can fill in data in whatever language and script they need to.</p>
+      <p>You should also try to avoid making assumptions that things such as the user's name and address will follow the same formatting
+        rules as your own. Ask yourself how much detail you really need to break out into separate fields for things such as addresses. Bear in mind that in
+        some cultures there are no street names, in others the house number follows the street name, some people need more than one line for the part of the
+        address that precedes the town or city name, etc. In fact in some places an address runs top down from the general to the specific, which implies a
+        very different layout strategy. Be very careful about building into validation routines incorrect assumptions about area codes or telephone number
+        lengths. Recognize that careful labelling is required for how to enter numeric dates, since there are different conventions for ordering of day,
+        month and year.</p>
+      <p>If you are gathering information from people in more than one country, it is important to develop a strategy for addressing the
+        different formats people will expect to be able to use. Not only is this important for the design of the forms you create, but it also has an impact
+        on how you will store such information in databases.</p>
+      <dl>
+        <dt>So, how do I do this?</dt>
+        <dd><a class="print" href="http://www.w3.org/International/techniques/authoring-html#formcontrols">HTML &amp; CSS authors</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="authoring"> <a href="#authoring">Text authoring.</a> <span class="tip">Use simple, concise text.
+      Use care when composing sentences from multiple strings.</span></dt>
+    <dd>
+      <p>Simple, concise text is easier to translate. It is also easier for people to read if the text they are reading is not in their
+        first language.</p>
+      <p>You should take considerable care when composing messages from multiple substrings, or when inserting variable text into strings.
+        For example, suppose your site uses PHP scripting, and you decide to compose certain messages on the fly. You may create messages by concatenating
+        separate substrings, such as 'Only' or 'Don't', ' return results in ', and 'any format' or 'HTML'. Because the order of text in sentences of other
+        languages can be very different, translating this may present major difficulties.</p>
+      <p>Similarly, it is important to avoid fixing the positions of variables in text such as "Page 1 of 10". The syntax of other languages
+        may require the numbers to be reversed to make sense. If you use PHP, this would mean using a formatting string such as "Page %1\$d of %2\$d.",
+        rather than the more simple "Page %d of %d.". The latter is untranslatable in some languages.</p>
+      <dl>
+        <dt>So, how do I do this?</dt>
+        <dd><a class="print" href="http://www.w3.org/International/techniques/authoring-html#strings">HTML &amp; CSS authors</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="navigating"> <a href="#navigating">Navigation.</a> <span class="tip">On each page include clearly
+      visible navigation to localized pages or sites, using the target language.</span></dt>
+    <dd>
+      <p>Where you have versions of a page or site in a different language, or for a different country or region, you should provide a way
+        for the user to view the version they prefer. This should be available from any page on your site where an alternative exists.</p>
+      <p>When providing links to pages in other languages, use the name of the target language <em>in the native language and script</em>.
+        Don't assume that the user can read English. For example, in a link to a French page, 'French' would be written 'français'. This also applies if you
+        are guiding the user to a country- or region-specific page or site, eg. 'Germany' would be 'Deutschland'.</p>
+      <dl>
+        <dt>So, how do I do this?</dt>
+        <dd><a class="print" href="http://www.w3.org/International/techniques/authoring-html#navigation">HTML &amp; CSS authors</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="rtl"> <a href="#rtl">Right-to-left text.</a> <span class="tip">For HTML, add <code>dir="rtl"</code> to the html tag.
+      Only re-use it to change the base direction.</span></dt>
+    <dd>
+      <p>Text in languages such as Arabic, Hebrew, Persian and Urdu is read from right to left. This reading order typically leads to
+        right-aligned text and mirror-imaging of things like page and table layout. You can set the default alignment and ordering of page content to right
+        to left by simply including <code>dir="rtl"</code> in the <code class="kw" translate="no">html</code> tag.</p>
+      <p>The direction set in the <code class="kw" translate="no">html</code> tag sets a base direction for the document which cascades down through all the elements on the page. It is not necessary to repeat the attribute
+        on lower level elements unless you want to explicitly change the directional flow.</p>
+      <p>Embedded text in, for example, Latin script still runs left to right within the overall right to left flow. So do numbers. If you
+        are working with right to left languages, you should become familiar with the basics of the Unicode bidirectional algorithm. This algorithm takes
+        care of much of this bidirectional text without the need for intervention from the author. There are some circumstances, however, where markup or
+        Unicode control characters are needed to ensure the correct effect.</p>
+      <dl>
+        <dt>Give me more background</dt>
+        <dd><a
+							class="print" href="/International/articles/inline-bidi-markup/uba-basics">Unicode Bidirectional Algorithm basics</a> provides a gentle introduction to the basics of how the Unicode Bidirectional Algorithm works, and where it needs help from markup. </dd>
+        <dd><a
+							class="print" href="/International/tutorials/bidi-xhtml/">Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts</a> provides a gentle introduction to the basics of handling right-to-left text in  HTML. The principles are similar for other markup languages. </dd>
+        <dd><a
+							class="print" href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a> provides another gentle introduction, this time to the basics of handling inline
+          bidirectional text. </dd>
+        <dt> So, how do I do this?</dt>
+        <dd><a class="print" href="/International/techniques/authoring-html#direction">HTML &amp; CSS authors</a> &#x2022; <a class="print" href="/International/techniques/authoring-svg#direction">SVG authors</a> &#x2022; <a class="print" href="/International/techniques/authoring-xml#direction">XML authors</a> &#x2022; <a class="print" href="/International/techniques/developing-schemas#direction">Schema developers</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl"> Check your work. <span class="tip"><a class="print" href="http://validator.w3.org/">Validate!</a> Use techniques, tutorials, and
+      articles at <a class="print" href="/International/">http://www.w3.org/International/</a> </span></dt>
+    <dd>Try the <a class="print" href="http://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a>.</dd>
+  </dl>
+</section>
+
+
+<section>
+  <h2 id="materials"><a href="#materials">Other introductory materials</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <p>There is  a <a class="print" href="/International/getting-started/">Getting Started</a> page to help you find information on the site.
+    The Getting Started page points to articles that provide newcomers with a gentle introduction to key
+    internationalization topics and point to basic information on the site to get you going. </p>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

@@ -130,7 +130,9 @@ s.status_obsolete="Cet article est maintenant dépassé. Il n’est plus entrete
 s.tests=""; // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Réponse courte"; // heading
 s.longeranswer = "Détails"; // heading
+s.details = "Détails"; // heading
 s.additionalinfo = "Information complémentaire" // heading that sometimes follows 'Details'
 s.acknowledgements = "Nous remercions également les personnes suivantes pour leur contribution ou leurs commentaires\u202F:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Si vous acceptez que votre navigateur crée un cookie, vous continuerez de voir les pages d’activité d’internationalisation de W3C (lorsque cela est possible) dans la langue de votre choix. Souhaitez-vous créer le cookie\u202F?" // this text is to be copied to another location
 s.supercededTranslation = '<strong>Avertissement :</strong> Ceci est une version dépassée de ce document! Il est recommandé de lire <a href="'+g.betterfilename+'.en">la dernière version</a> et si vous le pouvez, de modifier le marque-page ou le lien qui vous a redirigé ici.'
+s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles

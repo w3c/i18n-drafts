@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Approaches to full justification</title>
+<meta name="description" content="Provides an overview of text justification strategies, and advice to authors and implementers." />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/typography'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'justification'; // the file name WITHOUT extensions
+f.authors = 'Elika J. Etemad / fantasai'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = 'Richard Ishida, W3C'; // people making substantive changes, and their affiliation
+f.searchString = 'article-justification'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2017-01-25'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2017-03-13', time:'17:29'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2017-03-13', time:'17:29'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'styling';
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="justification-data/translations.js"> </script>
+<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css" media="all">
+th.bytes {
+	font-size: 20px;
+}
+.figWrap {
+    margin-left: 7.5%;
+    margin-right: 32%;
+}
+.figWrap figure {
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+    margin: 0;
+}
+figure img {
+	max-width: 100%;
+	}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Approaches to full justification</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    browser implementers, specification developers, and anyone who would like to get a better idea about how full justification differs for writing systems around the world. </p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+  <p>This article gives a high level summary of various typographic strategies for fully justifying text on a line and in a paragraph for a variety of scripts, and offers some advice to authors and implementers.</p>
+  <p>Since the amount of content on a line tends to vary, even if minutely, from line to line within a paragraph, typographers have come up with various methods for effective full justification – causing the text to completely fill the line – in order to create visual alignment on both edges of a paragraph.</p>
+  <p>Typographic conventions for full text justification depend on the writing system, the content language, and the calligraphic style of the text. Results also tend to vary based on the capabilities of the layout engine and a given typographer’s preferences for weighing its various detrimental effects on typographic color and readability.</p>
+  <p>This article provides a hint at some of the different strategies used in different writing systems, but the devil is very much in the detail. Furthermore, other factors such as line-break rules, hyphenation, and other inline features, have to be taken into account during justification.</p>
+  <p class="note">For more detailed information about how justification happens in various scripts, see the <a href="http://w3c.github.io/typography/#justification">International text layout and typography index</a>.</p>
+</section>
+
+
+<section>
+  <h2 id="sec_survey"><a href="#sec_survey">A survey of script behaviors</a></h2>
+      <section>
+        <h3 id="chinese"><a href="#chinese">Chinese Writing System (Han Ideographs)</a></h3>
+        <p>Historically, Chinese was written as Han ideographs, with no punctuation.
+          Under this system, justification was automatic,
+          as the characters fit perfectly into a square grid, and lines could wrap between any two characters.
+          However, the introduction of punctuation in recent centuries,
+          along with its accompanying line-breaking restrictions, plus the increase in mixed-script text
+          (such as the inclusion of European numbers and/or words, phrases, names, and trademarks)
+          has created a need for adjustments within a line.</p>
+        <p> Punctuation introduced line-breaking restrictions such as not starting a line with a period or closing parentheses; and Latin text, while sometimes typeset in a full-width character style with Chinese-style line-breaking, is also frequently typeset with proportional fonts and line-wrapped or hyphenated according to its usual rules, breaking the Chinese grid. These newer developments thus open up space at the end of a line, which justification needs to deal with. </p>
+        <p>Chinese notably does not use word spaces,
+          so these do not provide a justification opportunity within the lines;
+          thus justification techniques focus on adjustments to spacing around punctuation,
+          script-change boundaries,
+          and inter-character spacing.</p>
+      </section>
+      <section>
+        <h3 id="japanese"><a href="#japanese">Japanese Writing System</a></h3>
+        <p>Like Chinese, Japanese was historically written in Han ideographs;
+          however it has since developed its own phonetic scripts
+          Hiragana and Katakana (collectively, Kana).
+          While pure kana texts do exist,
+          particularly in children’s literature,
+          Han ideographs (Kanji, in Japanese) continue to be an integral part of normal Japanese text,
+          and are interspersed with kana within a sentence.</p>
+        <p>Like Chinese, Japanese embraced European-inspired punctuation, numerals, and other foreign snippets
+          that don’t conform to the standard full-width character grid.
+          The Japanese writing system also does not use word spaces,
+          and similarly focuses on adjustments to spacing around punctuation,
+          script-change boundaries,
+          and inter-character spacing,
+          with a notable preference for compression of intra-glyph spacing
+          over expansion between glyphs.</p>
+         <div class="figWrap">
+        <figure>
+        <img src="justification-data/japanese.jpg" alt="Example of Japanese justification."/>
+        <figcaption>Examples of Japanese justification (from <a href="https://www.w3.org/TR/jlreq/">jlreq</a>)</figcaption>
+        </figure>
+        </div>
+        <p>Punctuation normally fits in the same square glyph as ideographic and kana characters, but typically leaves a substantial part of that square blank. When attempting to justify text on a line, justification  may reduce the blank space in such glyphs first, before attempting other strategies.</p>
+      </section>
+      <section>
+        <h3 id="korean"><a href="#korean">Korean Writing System</a></h3>
+        <p>Like Japanese, Korean was historically written in pure Han ideographs,          but long ago developed its own phonetic script, Hangul, which has mostly supplanted ideographs in modern Korean writing.          </p>
+        <p>While Han ideographs (Hanja, in Korean) were kept as part of the writing system,
+          they have become increasingly scarce over time
+          such that many documents are written in pure Hangul,
+          and some only use Hanja in a limited way for things such as proper nouns, or dates, or  as inline annotations for disambiguation among homophones
+          rather than as part of the main text.
+          However, Hanja and Hangul together remain important components of Korean writing.</p>
+        <p>Like Japanese, Korean  adopted  punctuation and numerals.
+          However, unlike Japanese, Korean  also adopted word spaces,
+          and tends towards narrow (Western-style, rather than full-width) punctuation.          </p>
+        <p>The word spaces allow Korean to use inter-word justification:
+          as in English publications, this method adjusts the spaces between words
+          in order to fill the line. However, unlike English,  modern  Korean normally wraps characters rather than whole words to a new line when the end of a line is reached. This can to some extent reduce the difficulty of justifying text. </p>
+      </section>
+      <section>
+        <h3 id="latin"><a href="#latin">Latin (Roman) Writing System</a></h3>
+        <p>Quite possibly the writing system familiar to more people than any other,
+          the Latin writing system derives from the Roman alphabet,
+          including a few additional characters and diacritic marks
+          to accommodate languages such as Icelandic and modern Vietnamese.
+          Thanks to the Europeans in the Age of Exploration,
+          their missionaries,
+          and the Western-dominated global scholastic culture of the modern age,
+          most languages in the world have one or more Latin transcriptions,
+          even those that do not use it as their primary writing system.</p>
+        <p>The Latin alphabet is a phonetic system with disjoint letterforms,
+          and typically uses spaces between words.
+          This allows it to use inter-word justification,
+          although it can and sometimes does adjust the spacing between individual letters as well.
+          Line breaks generally occur between words, although hyphenation is also allowed  to reduce the variance in line lengths. </p>
+        <p>Since text in Latin script is frequently adopted into other writing systems,
+          it can sometimes take on characteristics of that system;
+          for example, some styles of Japanese typesetting
+          treat Latin letters the same as Japanese characters
+          for the purpose of line-breaking and justification.</p>
+      </section>
+      <section>
+        <h3 id="ethiopic"><a href="#ethiopic">Ethiopic Writing System</a></h3>
+        <p>Like Latin, the Ethiopic writing system uses an alphabet of disjoint letters
+          and uses punctuation to indicate the break between words.
+          Unlike Latin, Ethiopic traditionally uses a visible word separator –<wbr/>
+          the <span class="uname">ETHIOPIC WORD SPACE U+1361</span>
+          <span class="qchar">፡</span>
+–<wbr/>
+          although modern documents usually use a regular space U+0020 “ ” instead.
+          Justification strategies are as for Latin:
+          increasing the space at the word separator,
+          and/or distributing space between letters.</p>
+        <p>Because the traditional word space is visible, the question arises as to whether it should stay with the previous word or be centred between words when the space between words is stretched. Both approaches are attested. A similar question arises for the <span class="uname">ETHIOPIC FULL STOP U+1362</span> <span class="qchar">።</span>: in some cases the author may prefer that the space to the right side of the full stop is “more elastic”, rather than stretching the space around it equally.</p>
+ <div class="figWrap">
+       <figure>
+        <img src="justification-data/ethiopic.jpg" alt="Example"/>
+        <figcaption>Word-bound wordspace in justified Ethiopic text (from <a href="https://www.w3.org/TR/elreq/">elreq</a>).</figcaption>
+        </figure>
+        </div>
+      </section>
+      <section>
+        <h3 id="arabic"><a href="#arabic">Arabic Writing System (and Other Cursive Systems)</a></h3>
+        <p>Arabic is a cursive script,
+          meaning its letters are typically joined together within a word.
+          This creates additional challenges,          and opportunities for full justification.</p>
+        <p>Since Arabic uses spaces between words,
+          one method for justification is inter-word justification –<wbr/>
+          stretching out the spaces within the line to fill it.
+          However,  Arabic writing also allows for  calligraphic elongation or compression,
+          distorting the shapes and connections between letters
+          in order to fill the line while preserving its typographic color.</p>
+        <p>For example, baseline connections may be stretched (kashida), or alternate forms of glyphs, including ligated forms, may be used to lengthen or shorten words. There tend to be complex rules for the use of such techniques, which may depend on things such as the number of syllables in a word, or the proximity of a word to the start of the line, etc. The applicability of such techniques also tends to vary across different font styles, such as naskh, nastaʻlīq, and ruqʻa. Ruqʻa font styles avoid elongation techniques for justification.</p>
+        <p>A simplistic variant of the kashida technique inserts baseline elongation marks  (U+0640 TATWEEL <span class="qchar">ـ</span>) at appropriate points in the text to produce justified lines, but the result is generally regarded as ugly. Depending on the implementation, it may also affect operations such as copy-paste, and searching. It is a particular problem for browser-based text, if content authors add tatweels to their source text, since stretching the browser window will invalidate the distribution of the tatweel characters.</p>
+         <div class="figWrap">
+        <figure>
+        <img src="justification-data/arabic.jpg" alt="Example"/>
+        <figcaption>Simple baseline extensions used to justify Arabic script text.</figcaption>
+        </figure>
+        </div>
+
+        <p>Syriac and Mongolian
+          have properties similar to Arabic,
+          and in the absence of additional information should be given
+          similar treatment for justification.</p>
+      </section>
+      <section>
+        <h3 id="tibetan"><a href="#tibetan">Tibetan Writing System</a></h3>
+        <p>Tibetan is a Brahmic writing system related to Indic scripts like Devanagari and Gujarati;
+          however, unlike these systems, it does not use Western-style punctuation
+          nor spaces between words,
+          and instead uses the <span class="uname">TIBETAN MARK INTERSYLLABIC TSHEG U+0F0B</span> <span class="qchar">་</span>
+          between individual syllables (regardless of word boundaries),
+          and has its own punctuation marks such as the <span class="uname">TIBETAN MARK SHAD U+0F0D </span> <span class="qchar">།</span> and <span class="uname">TIBETAN MARK NYIS SHAD U+0F0E</span> <span class="qchar">༎</span>,
+          which indicate the end of longer segments.</p>
+        <p>Justification techniques used in Tibetan include stretching the space after a shad, minutely increasing the spaces after tsheg marks,
+          and simply filling the remaining space on a line with tsheg marks.</p>
+         <div class="figWrap">
+        <figure>
+        <img src="justification-data/tibetan.jpg" alt="Example"/>
+        <figcaption>Tsek marks used to fill line-end spaces in Tibetan.</figcaption>
+        </figure>
+        </div>
+      </section>
+      <section>
+        <h3 id="sea"><a href="#sea">Southeast Asian Writing Systems</a></h3>
+        <p>In Southeast Asian systems such as Thai and Lao,
+          letters are merged together into <span class="qterm">clusters</span>.
+          There are no spaces between words
+          (lines must be broken by dictionary lookup),
+          but spaces serve to separate larger units of text.</p>
+        <p>Techniques for justification include stretching spaces on the line
+          (if it happens to have any)
+          and interspersing extra space between clusters.</p>
+        <p>Scripts in this category include
+          Khmer, Myanmar, Lao, and Thai.</p>
+      </section>
+      <section>
+        <h3 id="other"><a href="#other">Other Writing Systems</a></h3>
+        <p>Most (but not all) writing systems not mentioned here
+          have discrete letters, like Latin,
+          and in the absence of more specific information
+          may be assumed to justify in a similar manner.</p>
+        <p class="note">Readers who wish to provide such “more specific information”
+          are invited (and strongly encouraged) to 
+          <a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title=%5Barticles/typography/justification%5D%20specific_title_here&amp;body=%5Bsource%5D%20(http%3A%2F%2Flocalhost%2Fgit%2Fi18n-drafts%2Farticles%2Ftypography%2Fjustification.en.html)%20%5Ben%5D%0A%0Ayour_comment_here">create a github issue</a>
+          so that we can add information or links to this article and the typography index.</p>
+      </section>
+</section>
+
+
+<section>
+  <h2>Advice for implementers and authors</h2>
+      <p>In this section we provide additional advice for implementers and content authors related to justification.</p>
+      <section>
+        <h3 id="tag_for_content"><a href="#tag_for_content">Tagging content for language</a></h3>
+        <p class="advisement"> Authors should use (correct) language tags
+          in order to get the best possible typographic behavior.
+          For example, if Japanese text is tagged as Japanese,
+          the user agent knows to preferentially compress the space rather than expand it. If Latin text is labelled as German, the user agent knows to avoid inter-character spacing, since that may signify emphasis to German readers.</p>
+        <p>For information about how to tag HTML for language, see <a href="/International/articles/language-tags/index">Language tags in HTML and XML</a>.</p>
+      </section>
+      <section>
+        <h3 id="untagged_content"><a href="#untagged_content">Justifying untagged content</a></h3>
+<p>Web browsers frequently have to deal with untagged, potentially mixed-script content.
+	The following are some implementation guidelines for designing a strategy to deal with such content.</p>
+   <ul>
+    <li>Since Chinese and Japanese do not use spaces to provide justification opportunities,
+		CJK content (Han, Hiragana, Katakana, and Hangul)
+		should be allowed to accept inter-character spacing. 
+    </li>
+    <li>Since Japanese content prefers compression,
+		CJK fullwidth punctuation characters, if present on a line,
+		should be compressed at a higher priority (if possible) rather than expanding spaces
+		or letter-spacing. 
+    </li><li>Since Korean prefers expanding spaces to expanding between characters,
+		spaces should be expanded at a higher priority (if possible)
+		than letter-spacing. 
+   </li></ul>
+      </section>
+</section>
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Related links, <cite>International text layout and typography</cite>, <a href="http://w3c.github.io/typography/#justification">Justification &amp; line-end alignment</a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p><ul><li><a href="https://www.w3.org/International/techniques/authoring-html#style">Styling &amp; layout</a></li>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#justification">Justifying and aligning text</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

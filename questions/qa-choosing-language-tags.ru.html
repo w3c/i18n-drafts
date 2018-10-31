@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Выбор языковых тэгов</title>
+<meta name="description" content="Какой тэг языка подходит для меня? Как выбрать язык и другие субтэги?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-choosing-language-tags' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-choosing-language-tags' // blog search string - usually the filename without extensions
+f.firstPubDate = '2009-12-03' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2011-02-22', time:'20:40'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2018-03-30', time:'19:00'} // date and time of latest edits to this document/translation
+f.contributors = 'Addison Phillips and Mark Davis, authors of BCP 47' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://taushiro.com" title="Russian">Russian Translation Agency</a>, Taushiro Inc' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-choosing-language-tags-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css">
+.currentExample {
+	border: 1px dotted teal;
+}
+.languageExample {
+	color: #ff00ff;
+}
+.puExample {
+	color: #800000;
+}
+.regionExample {
+	color: #0099ff;
+}
+.tagExample {
+	font-size: 400%;
+	line-height: 1em;
+	margin: .25em;
+	margin-right: .25em;
+	margin-left: 0;
+}
+.tagExampleHead {
+	font-size: 200%;
+	padding-bottom: 0.5em;
+	padding-top: 0.5em;
+}
+del {
+	color: #999;
+}
+ins {
+	background-color: #CF9;
+	text-decoration: none;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Выбор языковых тэгов</h1>
+</header>
+
+
+<section id="sidebarExtras">
+  <section>
+<h2 id="links" class="notoc">Ссылки по теме</h2>
+<p><a href="http://www.iana.org/assignments/language-subtag-registry"><abbr title="Internet Assigned Numbers Authority">IANA</abbr> Language Subtag Registry</a></p>
+<p><a href="http://rishida.net/utils/subtags/">Subtag search tool</a></p>
+<p><a href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a></p>
+  </section>
+</section>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Целевая аудитория:</span>
+    HTML и CSS кодеры, веб-программисты (PHP, JSP, и т. д.), разработчики схем (DTDs, XML Schema, RelaxNG, и т. д.), XSLT разработчики, менеджеры веб-проектов и каждый, кому необходимо руководство по созданию языковых тэгов.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Вопрос</a></h2>
+    <p class="question">Какой тэг языка подходит для меня? Как выбрать язык и другие субтэги?</p>
+
+  <p>В HTML и XML документах <dfn>языковой тэг</dfn> используется для объявления языка контента.</p>
+  <p>Языковой тэг состоит из одного или нескольких <dfn>субтэгов</dfn> (subtag), разделённых дефисами. Субтэги могут быть различных типов.</p>
+  <div class="insideinfonote">
+    <p class="info">BCP означает 'Best Current Practice' и
+      является постоянным именем серии <abbr title="Request For Comment">RFC</abbr> документов, чьё количество изменяется по мере их обновления.
+      Последний RFC, описывающий синтаксис языковых тэгов - это <a href="http://www.rfc-editor.org/rfc/rfc5646.txt">RFC 5646, Tags for the Identification of Languages</a>,
+      он заменил предыдущие RFC, такие, как <a href="http://www.rfc-editor.org/rfc/rfc4646.txt">4646</a>, <a href="http://www.ietf.org/rfc/rfc3066.txt">3066</a> и <a href="http://www.nordu.net/ftp/rfc/rfc1766.txt">1766</a>.</p>
+  </div>
+  <p>Синтаксис языковых тэгов определён <a href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>, написанный <abbr title="Internet Engineering Task Force">IETF</abbr>.  В прошлом было необходимо обращаться к спискам кодов различных ISO стандартов, чтобы найти подходящие субтэги, но
+    сегодня всё, что вам нужно, это <a href="http://www.iana.org/assignments/language-subtag-registry"><abbr
+					title="Internet Assigned Numbers Authority">IANA</abbr> Language Subtag Registry</a>. Мы опишем новый реестр ниже.</p>
+  <p>Эта статья предоставляет советы по выбору компонентов для языковых тэгов. Для обзора концепций, определяемых BCP 47, смотрите <a href="/International/articles/language-tags/">Языковые тэги в HTML и XML</a>.</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Ответ</a></h2>
+  <section>
+      <aside class="insideinfonote">
+        <p class="info">Примечания на данной странице предоставляют руководство, достаточное для большинства людей, желающих использовать языковые тэги. На полях статьи есть ссылки на связанные разделы BCP 47 для людей, которые хотят читать полный текст спецификации.</p>
+</aside>
+      <h3 id="subtagregistry"><a href="#subtagregistry">Обращение к реестру субтэгов</a></h3>
+      <p>Все субтэги, которые необходимы для создания языковых тэгов находятся в одном месте - <strong><a href="http://www.iana.org/assignments/language-subtag-registry">IANA Language Subtag Registry</a></strong>. Реестр представляет собой длинный текстовый файл, содержащий около 8,000 записей. </p>
+    <p>Первый (и часто единственный) субтэг в языковом тэге всегда означает язык. Он упоминается в BCP 47, как <span class="newterm">субтэг основного языка</span> (primary language subtag). Мы будем использовать этот термин для субтэга, который обозначает язык, чтобы показать различие со всей строкой, которая называется 'языковым тэгом'.</p>
+    <div class="sidenoteGroup">
+    <p>Чтобы найти субтэг основного языка ищите на странице по имени этого языка. Например, если вы хотите объявить что-либо французским языком,
+      то поиск '<span translate="no">French</span>' в реестре вернет вам запись, которая выглядит так:</p>
+       <aside class="sideinfonote" style="clear:both;">
+        <p class="warning">Некоторые среды или системы могут требовать выбор, который отличается от ожидаемого. Например, в Java вы должны использовать <code class="kw" translate="no">iw</code> (устарел в BCP47) вместо <code class="kw" translate="no">he</code> (рекомендуется в BCP47).</p>
+      </aside>
+ </div>
+    <div class="example">
+      <pre translate="no">%%
+Type: language
+Subtag: fr
+Description: French
+Added: 2005-10-16
+Suppress-Script: Latn
+%%</pre>
+    </div>
+    <p>Ваш поиск совпал с полем <code class="kw" translate="no">Description</code>. Проверьте, что тип этой записи <code class="kw" translate="no">language</code>. То, что вы ищете, это значение поля <code class="kw" translate="no">Subtag</code>, то есть <code class="kw" translate="no">fr</code>.</p>
+    <p>В остальной части этой статьи вы найдете рекомендации по выбору субтэгов основного языка и, при необходимости, других типов субтэгов. Обратите внимание, что не все решения о создании языкового тега просты. Существуют обстоятельства, при которых использование определяет, какие из различных возможностей вам следует использовать.</p>
+    <p>Существуют утилиты, предоставляющие дополнительную помощь в поиске по реестру, такие, как <a href="http://rishida.net/utils/subtags/">Language Subtag Lookup</a>.</p>
+    <ul>
+      <li>
+        <p>
+          <mark>Помните о регистре символов.</mark>
+          По соглашению, субтэги основного языка пишутся в нижнем регистре, субтэги письменности начинаются с заглавной буквы, а субтэги региона - в верхнем регистре.  Это только соглашение, и вы можете использовать любой регистр, который вам нравится.</p>
+        <p>С другой стороны, вы можете использовать языковые тэги в данных, где регистр букв важен, например, имена файлов в некоторых системах. В таких случаях, вам следует убедиться, что вы следуете политике совместимости регистра символов; Для любых новых систем, где регистр не важен, рекомендуется следовать соглашениям BCP 47.</p>
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="langsubtag"><a href="#langsubtag">Решение 1: Субтэг основного языка</a></h3>
+    <div class="sidenoteGroup">
+      <p>Вы всегда начинаете с выбора субтэга основного языка, и зачастую это всё, что вам нужно для вашего языкового тэга.</p>
+      <div class="sidenote">
+        <p>Читайте подробнее в BCP 47: </p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-2.2.1">2.2.1 Primary Language Subtag</a></p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-4.1">4.1 Choice of Language Tag</a></p>
+      </div>
+    </div>
+    <p style="font-weight:bold; font-style: italic;">Всегда помните, что золотое правило гласит: "сохраняйте ваши языковые тэги как можно более короткими". Добавляйте дальнейшие субтэги только если вам необходимо указать различие языка от чего либо ещё в контексте, в котором ваш контент используется.</p>
+    <p>Во время поиска подходящего субтэга основного языка есть несколько вещей о которых следует помнить.</p>
+    <ul>
+      <li>
+        <mark>Убедитесь в правильности языка.</mark>
+        Иногда необходимо проверить несколько альтернатив. Марк Дэвис, соавтор BCP47, писал: &quot;Часто непонятно какой идентификатор языка использовать. Например, то, что большинство людей называют Панджаби в Пакистане на самом деле имеет код 'lah' и официальное название 'Lahnda'. Есть много других примеров, когда одно и то же имя используется для различных языков, или когда имя, которое ищут люди отсутствует в IANA registry.&quot;
+        <p>Вы можете искать информацию в <a href="http://www.ethnologue.com/web.asp">SIL Ethnologue</a> и проверять также в <a href="http://en.wikipedia.org/w/index.php?title=Special%3ASearch&amp;search=&amp;fulltext=Search">Wikipedia</a>. Ethnologue использует такие же трёхбуквенные коды, что и BCP47, но вам придётся <a href="http://www.sil.org/iso639-3/codes.asp?order=639_1&amp;letter=a">конвертировать двухбуквенные коды BCP47 в их соттветствие ISO 639-3</a>, чтобы найти язык по коду. (Утилита <a href="http://rishida.net/utils/subtags/"> Language Subtag  Lookup</a> может сделать это для вас).</p>
+        <p>Есть небольшое число примеров, когда различные коды языков доступны для того, что многие люди считают одним языком, например, филиппинский и тагальский язык, или язык Чви и Акан. В реестре нет указания на то, какой из них вам следует использовать, но вам следует убедиться, что вы последовательно используете одинаковый код в рамках приложения или одного контекста.</p>
+      </li>
+      <li>
+        <mark>Избегайте коллекций.</mark>
+        В записях вы можете обнаружить поле <code class="kw" translate="no">Scope: collection</code>, означающее, что этот субтэг представляет группу языков, происходящих от общего предка, используемых в одной географической зоне, или связанных как-то ещё.
+        <p>Вам следует искать более конкретный субтэг для языка, который вам нужен. К сожалению, реестр субтэгов не предоставляет никаких указателей для этого.</p>
+        <p>Вы можете использовать эти субтэги, если недоступны никакие более конкретные субтэги, и всегда более предпочтительно использовать один из них, чем субтэги <code class="kw" translate="no">MUL</code> (несколько языков) или <code class="kw" translate="no">UND</code> (не определено).</p>
+      </li>
+      <li>
+        <mark>Используйте языковые ветви с осторожностью.</mark>
+        Некоторые субтэги имеют поле <code class="kw" translate="no">Scope</code>, установленное в значение <code class="kw" translate="no">macrolanguage</code>, то есть этот субтэг основного языка указывает на несколько более конкретных субтэгов основного языка в реестре.
+        <p>Например, <code class="kw" translate="no">ku</code> (курдский) это языковая ветвь указывающая на <code class="kw" translate="no">ckb</code> (Сорани), <code class="kw" translate="no">kmr</code> (Курманджи) и <code class="kw" translate="no">sdh</code> (Южнокурдский язык). </p>
+        <p>Вы сможете найти более конкретные субтэги, с помощью поиска по реестру: <code class="kw" translate="no">Macrolanguage: &lt;имя субтэга&gt;</code>. Либо утилита <a href="http://rishida.net/utils/subtags/">Language Subtag  Lookup</a> может автоматически создасть список для переданной языковой ветви (<a href="http://rishida.net/utils/subtags/index.php?lookup=ar&amp;submit=Look+up">пример</a>).</p>
+        <p>Как мы рекомендовали для коллекций, упомянутых выше, в большинстве случаев лучше попытаться использовать более конкретные субтэги, но есть небольшое число важных исключений. Это ситуации, в которых вам следует использовать субтэг языковой ветви по причинам обратной совместимости. </p>
+        <p>Например, хотя BCP 47 объясняет, что <code class="kw" translate="no">zh</code> (субтэг языковой ветви для китайского) не указывает на один из множества, иногда взаимно непонятных, диалектов китайского, на практике, соглашение в подавляющем большинстве случаев связывает субтэг языковой ветви с языком, доминирующим среди других охватываемых субтэгов - в данном случае, <code class="kw" translate="no">cmn</code> (путунхуа). Если ваше приложение для обозначения путунхуа использовало в прошлом языковой тэг <code class="kw" translate="no">zh-CN</code> (китайский, используемый в материковом Китае), или даже просто <code class="kw" translate="no">zh</code>, то вы можете продолжать использовать <code class="kw" translate="no">zh</code>. Использование <code class="kw" translate="no">cmn</code> или <code class="kw" translate="no">cmn-CN</code> может привести к серьёзным проблемам с совместимостью если программы или пользователи ожидают такой тэг, как <code class="kw" translate="no">zh</code>.</p>
+        <p>Если, с другой стороны, вы используете <code class="kw" translate="no">zh</code> для обозначения другого китайского диалекта, например, хакка, то вам следует вместо него использовать субтэг <code class="kw" translate="no">hak</code>.</p>
+      </li>
+      <li>
+        <mark>Избегайте устаревших субтэгов.</mark>
+        Если запись субтэга содержит поле <code class="kw" translate="no">Deprecated</code>, то вам не следует его использовать. Обычно реестр указывает рекомендованный альтернативный вариант в поле <code class="kw" translate="no">Preferred-Value</code>. Например, запись субтэга для <code class="kw" translate="no">iw</code> (иврит) содержит два следующих поля:
+        <blockquote>
+          <pre translate="no">Deprecated: 1989-01-01
+Preferred-Value: he</pre>
+        </blockquote>
+        <p>Это означает, что вам следует использовать субтэг <code class="kw" translate="no">he</code> для иврита.</p>
+      </li>
+    </ul>
+    <p>В прошлом при работе с кодами ISO иногда встречались несколько кодов для одного языка - там мог быть двухбуквенный код и один или два трёхбуквенных. Эта неоднозначность была устранена в реестре IANA Subtag Registry, который содержит только один код для одного языка. Если существует двухбуквенный ISO код, то он будет использован, если нет, то трёхбуквенный. Разработчики реестра также координируют текущее развитие реестра с изменениями, происходящими в мире ISO.</p>
+  </section>
+  <section>
+    <h3 id="extlangsubtag"><a href="#extlangsubtag">Решение 2: Субтэги диалекта</a></h3>
+    <div class="sidenoteGroup">
+      <p>Спецификация BCP 47 позволяет использование дополнительного трёхбуквенного субтэга сразу после субтэга основного языка. Он называется <strong class="newterm">субтэгом диалекта</strong> (extended language subtag или <strong class="newterm">extlang</strong>). Определено только относительно небольшое количество субтэгов диалекта, и они обязательно должны быть использованы с конкретными субтэгами основного языка (указанного в поле <code class="kw" translate="no">Prefix</code> записи субтэга диалекта в реестре).</p>
+      <div class="sidenote">
+        <p>Читайте подробнее в BCP 47: </p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-2.2.2">2.2.2 Extended Language Subtags</a></p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-4.1.2">4.1.2 Using Extended Language Subtags</a></p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-4.1.1">4.1.1 Tagging Encompassed Languages</a></p>
+      </div>
+    </div>
+    <p>На сегодня только семь субтэгов основного языка могут быть использованы с субтэгами диалекта. Шесть из них имеют поле <code class="kw" translate="no">Scope</code>, со значением <code class="kw" translate="no">macrolanguage</code> в реестре (<code class="kw" translate="no">ar</code>, <code class="kw" translate="no">kok</code>, <code class="kw" translate="no">ms</code>, <code class="kw" translate="no">sw</code>, <code class="kw" translate="no">uz</code> и <code class="kw" translate="no">zh</code>). Седьмой код - <code class="kw" translate="no">sgn</code>. </p>
+    <p>Рассмотрим следующее:</p>
+    <ul>
+      <li>
+        <p>
+          <mark>Там, где возможно, используйте просто тэг языка вместо комбинации языка и диалекта.</mark>
+          Всегда есть трёхбуквенный субтэг, являющийся эквивалентом любой паре язык + диалект. Например, <code class="kw" translate="no">zh-yue</code> (Кантонский диалект китайского языка) может быть также выражен с помощью субтэга <code class="kw" translate="no">yue</code>.</p>
+        <p>Единственное значительное исключение для комбинации языка и диалекта - укоренившаяся практика для системы, с которой вы работаете; например, когда <code class="kw" translate="no">zh-yue</code> предпочтительнее <code class="kw" translate="no">yue</code> для поддержки обратной совместимости.</p>
+      </li>
+      <li>
+        <mark>Учитывайте обратную совместимость использования тэгов для преобладающих языков.</mark>
+        В разделе о субтэгах основного языка мы говорили о преобладающих языках в наборе из нескольких, входящих в одну языковую ветвь. Мы говорили, что в случае поддержки обратной совместимости в рамках приложения или системы, как правило, лучше использовать тэг языковой ветви для доминирующего языка, а не более конкретный субтэг. Например, в следующих примерах <code class="kw" translate="no">ar</code> (субтэг арабских языков) может быть более подходящим для арабского литературного языка, чем <code class="kw" translate="no">arb</code> (более конкретный субтэг, означающий современный стандартный арабский язык).
+        <p>Подобным образом, при работе с преобладающим языком в наборе, для обратной совместимости обычно лучше заменить комбинацию языка и диалекта, отбросив субтэг диалекта, а не субтэг основного языка.  Например, упрощение <code class="kw" translate="no">ms-zsm</code> к <code class="kw" translate="no">ms</code> (субтэг малайских языков) может быть иногда лучше, чем <code class="kw" translate="no">zsm</code> (литературный малайский).</p>
+      </li>
+    </ul>
+    <p>Примером использования может быть Общий Репозиторий Языковых Данных (Unicode's CLDR), который использует языковую ветвь <code class="kw" translate="no">zh</code> для отображения путунхуа (Mandarin Chinese) и <code class="kw" translate="no">ku</code> для курдского языка. Таким образом для путунхуа вы используете <code class="kw" translate="no">zh</code>, а не <code class="kw" translate="no">cmn</code>, а для курманджи (севернокурдский) вы используете <code class="kw" translate="no">ku-Latn</code>, а не <code class="kw" translate="no">kmr-Latn</code>. База данных CLDR, однако, вообще не использует субтэги диалектов, так что вам придется использовать <code class="kw" translate="no">yue</code> для кантонского диалекта китайского языка, а не <code class="kw" translate="no">zh-yue</code>.</p>
+  </section>
+  <section>
+    <h3 id="scriptsubtag"><a href="#scriptsubtag">Решение 3: Субтэги письменности</a></h3>
+    <div class="sidenoteGroup">
+      <p>Субтэги письменности должны быть использованы в качестве части языкового тэга только тогда, когда необходимо передать какую-то отличительную информацию через тэг. Обычно это случаи, когда один язык использует различные типы письма или когда контент был записан с помощью нетипичной для данного языка письменности (например, русский текст, написанный латиницей, будет иметь такой тэг: <code class="kw" translate="no">ru-Latn</code>).</p>
+      <div class="sidenote">
+        <p>Читайте подробнее в BCP 47: </p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-2.2.3">2.2.3  Script Subtag</a></p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-4.1">4.1 Choice of Language Tag</a></p>
+      </div>
+    </div>
+    <p>Субтэги письменности всегда состоят из четырёх букв, и должны идти после любых субтэгов языка или диалекта и до всех других субтэгов.</p>
+    <p>Вот что нужно учитывать при выборе субтэга письменности.</p>
+    <ul>
+      <li>
+        <mark>Не используйте его автоматически для неписьменного контента.</mark>
+        Такой контент, как аудио-записи не должен содержать один из обычных субтэгов письменности.
+        Например, фильм с субтитрами на узбекском языке на основе арабского письма (не латиницы или кириллицы). Субтитры могут быть отмечены тэгом <code class="kw" translate="no">uz-Arab</code>, при этом субтэг письменности <code class="kw" translate="no">Arab</code> не будет иметь отношения к аудио-записи.
+        <p>Для неписьменного контента может быть использован субтэг письменности <code class="kw" translate="no">Zxxx</code>, в данном случае: <code class="kw" translate="no">uz-Zxxx</code>, так как <code class="kw" translate="no">Zxxx</code> это <code class="kw" translate="no">код для неписьменных документов</code>, но снова - это полезно только в случае, если нужно, подчеркнуть подобные отличия.</p>
+      </li>
+      <li>
+        <mark>Проверяйте поля suppress-script в субтэгах языка.</mark>
+        Некоторые языковые субтэги имеют поле <code class="kw" translate="no">Suppress-script</code> со значением какого-либо субтэга письменности. Например, запись в реестре для en (английский) содержит:
+        <blockquote><code translate="no">Suppress-Script: Latn</code></blockquote>
+        <p>означающую, что вам не следует использовать субтэг письменности <code class="kw" translate="no">Latn</code> (латиница) с этим языком.</p>
+        <p>Причина в том, что практически все документы на английском записаны латиницей, и это не добавляет никакой отличительной информации. Тем не менее, если англоязычный документ записан латиницей, а также есть блоки с другой системой письма, например, такой, как шрифт Брайля (<code class="kw" translate="no">Brai</code>), тогда может быть допустимым обозначить обе письменности, чтобы помочь при выборке контента (например, для применения стилей).</p>
+        <p>Заметьте, что не все языковые субтэги строго связаны с какой-либо письменностью и имеют поля suppress-script. При этом вам не следует полагать, что необходимо обяхательно использовать субтэг письменности, если поле suppress-script отсутствует.</p>
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="regionsubtag"><a href="#regionsubtag">Решение 4: Субтэги региона</a></h3>
+    <div class="sidenoteGroup">
+      <p>Субтэги региона связывают выбранный вами субтэг языка с определённым регионом мира. Субтэги региона должны идти после всех субтэгов языка и письменности.</p>
+      <p>Как и субтэги письменности, субтэги региона следует использовать только, если они вносят информацию, необходимую, чобы отличить этот языковой тэг от другого; если нет - отбрасывайте его. </p>
+      <div class="sidenote">
+        <p>Читайте подробнее в BCP 47: </p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-2.2.4">2.2.4 Region Subtag</a></p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-4.1">4.1 Choice of Language Tag</a></p>
+      </div>
+    </div>
+    <p>Например, <code class="kw" translate="no">en-GB</code> может быть полезным отличием при проверке правописания, но субтэг региона в <code class="kw" translate="no">ja-JP</code> вряд ли полезен, если только вы намеренно не подчёркиваете, что это не японский, используемый в других частях мира.</p>
+    <p>Есть 2 типа субтэгов региона: двухбуквенные коды и коды, состоящие из трёх цифр. Последние, как правило, определяют многонациональные регионы, а не конкретные страны. Например <code class="kw" translate="no">es-ES</code> означает испанский, на котором говорят в Испании, тогда, как <code class="kw" translate="no">es-419</code> означает испанский, распространённый в Латинской Америке.</p>
+    <ul>
+      <li>
+        <p>
+          <mark>Избегайте устаревших субтэгов.</mark>
+          Проверьте, что субтэг, который вы собираетесь использовать, не является устаревшим. Таким же образом, как и для субтэгов других типов, реестр указывает с помощью поля <code class="kw" translate="no">Preferred-Value</code>, какая альтернатива должна быть использована.</p>
+        <p>В некоторых случаях в устаревших записях нет поля <code class="kw" translate="no">Preferred-Value</code>, но иногда поле <code class="kw" translate="no">Comments</code> содержит рекомендацию. Например, в YU (Югославия) вы найдёте:</p>
+        <blockquote>
+          <pre translate="no">Deprecated: 2003-07-23
+Comments: see BA, HR, ME, MK, RS, or SI</pre>
+        </blockquote>
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="variants"><a href="#variants">Решение 5: Субтэги варианта</a></h3>
+    <div class="sidenoteGroup">
+      <p>И опять же, используйте субтэги варианта только, если необходимо подчеркнуть отличие этого языкового тэга от другого, похожего в контексте используемой информации.</p>
+      <div class="sidenote">
+        <p>Читайте подробнее в BCP 47: </p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-2.2.5">2.2.5 Variant Subtags</a></p>
+        <p><a href="http://tools.ietf.org/html/bcp47#section-4.1">4.1 Choice of Language Tag</a></p>
+      </div>
+    </div>
+    <p>Субтэги варианта описывают дополнительные отличия, не охваченные другими субтэгами. Обычно это диалекты, варианты написания (такие, как реформы правописания), транскрипции и так далее. Субтэг варианта обычно имеет длину от пяти до восьми символов и может содержать буквы и/или цифры. Зарегистрированы также несколько субтэгов, состоящих из 4 цифр (обычно представляющих год). Субтэги варианта должны идти после всех субтэгов языка, письменности и региона.</p>
+    <p>Основная вешь, за которой нужно следить при использовании субтэгов варианта - это порядок их использования.</p>
+    <ul>
+      <li>
+        <p>
+          <mark>Проверяйте контекст и порядок субтэгов варианта.</mark>
+          Большинство записей субтэгов варианта в реестре содержат одно поле <code class="kw" translate="no">Prefix</code> или более. Префиксы указывают на то, с какими субтэгами обычно принято использовать данный вариант.
+          Например, <code class="kw" translate="no">pinyin</code>, как правило, следует использовать с языковыми тэгами, которые также содержат субтэги <code class="kw" translate="no">zh</code> и <code class="kw" translate="no">Latn</code> или субтэги <code class="kw" translate="no">bo</code> и <code class="kw" translate="no">Latn</code>, так как запись <code class="kw" translate="no">pinyin</code> содержит следующее:</p>
+        <blockquote>
+          <pre translate="no">Prefix: zh-Latn
+Prefix: bo-Latn</pre>
+        </blockquote>
+        <p>Если у вас есть веская причина, вы можете использовать субтэг варианта и с другими субтэгами, например, <code class="kw" translate="no">cmn-Latn-pinyin</code> может быть отличным способом обозначить путунхуа (Mandarin Chinese), записанный с помощью пиньинь.</p>
+        <p>Хотя <code class="kw" translate="no">zh</code>, <code class="kw" translate="no">bo</code> и <code class="kw" translate="no">Latn</code> и определены, это минимальное требование. Вы можете также включать другие субтэги, такие, как регион, в языковой тэг (там, где это уместно), например, <code class="kw" translate="no">zh-Latn-TW-pinyin</code>.</p>
+        <p>Среди других полей префиксов, запись субтэга варианта <code class="kw" translate="no">1994</code> содержит</p>
+        <blockquote>
+          <pre translate="no">Prefix: sl-rozaj-biske</pre>
+        </blockquote>
+        <p>Это означает, что данный субтэг должен быть использован в языковом тэге, который уже содержит два других субтэга варианта, <code class="kw" translate="no">rozaj</code> и <code class="kw" translate="no">biske</code>. Любой субтэг варианта, определенный в поле prefix должен идти до субтэга варианта, который вы только что искали.</p>
+        <p>Некоторые субтэги варианта не содержат поля prefix, например, <code class="kw" translate="no">fonipa</code> (Международный фонетический алфавит). Такие варианты должны идти после любых других субтэгов варианта, которые содержат информацию в поле prefix. </p>
+        <p>Если вы планируете использовать более, чем один вариант без префиксов, то располагайте их в порядке уменьшения их значимости. Если они равнозначны, то ранжируйте по алфавиту. Это должно помочь совместимости.</p>
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="extension"><a href="#extension">Решение 6: Субтэги расширения</a></h3>
+    <div class="insidenote">
+      <p class="readmore">Читайте подробнее в BCP 47: </p>
+      <p><a href="http://tools.ietf.org/html/bcp47#section-2.2.6">2.2.6 Extension Subtags</a></p>
+      <p><a href="http://tools.ietf.org/html/bcp47#section-4.1">4.1 Choice of Language Tag</a></p>
+    </div>
+    <p>Эти субтэги, состоящие из одного символа, позволяют расширять языковые тэги. На сегодняшний день, зарегистрирован только один субтэг расширения. Субтэг <code class="kw" translate="no">u</code> был зарегистрирован организацией Unicode Consortium для добавления информации о поведении языка или локали. Многие обозначения локалей требуют дополнительных надстроек с конкретными значениями языка, культуры, региона или других вариаций. Это расширение предоставляет механизм использования этих дополнительных надстроек языковых тэгов для постановки их аналогичным образом в другие языковые тэги.</p>
+    <p>Например, следующий код обозначает, что приложение использует для сортировки метод телефонной книги, что отсортированные данные отсортированы в соответствии с этим методом и так далее.</p>
+    <ul>
+      <li><code class="kw" translate="no">de-DE-u-co-phonebk</code></li>
+    </ul>
+    <p>Расширение <code class="kw" translate="no">u-</code> определено в <a href="http://www.rfc-editor.org/rfc/rfc6067.txt">RFC 6067</a>, который ссылается на Unicode Consortium's Common Locale Data Repository (CLDR). Оно не определено в BCP 47.</p>
+  </section>
+  <section>
+    <h3 id="privateuse"><a href="#privateuse">Решение 7: Субтэги частного использования</a></h3>
+    <div class="insidenote">
+      <p class="readmore">Читайте подробнее в BCP 47: </p>
+      <p><a href="http://tools.ietf.org/html/bcp47#section-2.2.7">2.2.7 Private Use Subtags</a></p>
+      <p><a href="http://tools.ietf.org/html/bcp47#section-4.1">4.1 Choice of Language Tag</a></p>
+    </div>
+    <p>Субтэги частного использования не присутствуют в реестре субтэгов, они создаются и поддерживаются сторонами частных соглашений, которые их используют. Они представлены в виде однобуквенных субтэгов или 'синглтонов'. Синглтон частного использования это - <code class="kw" translate="no">x</code>. Обратите внимание, что любые субтэги, идущие после синглтона могут быть до 8 символов длиной, при этом вы можете использовать несколько субтэгов.</p>
+    <ul>
+      <li>
+        <p>
+          <mark>Субтэги частного использования следует использовать с большой осторожностью, и избегать их, там, где это возможно</mark>, поскольку они препятствуют функциональной совместимости, которую продвигает BCP 47. </p>
+        <p>В качестве примера использования субтэга частного использования, <code class="kw" translate="no">en-US-x-twain</code>, может обозначать определённый тип американского английского, но только в рамках соглашения внутри закрытого сообщества. За пределами этого частного соглашения нельзя полагаться на его смысл.</p>
+      </li>
+    </ul>
+  </section>
+  <section>
+    <h3 id="grandfather"><a href="#grandfather">Устаревшие тэги</a></h3>
+    <div class="insidenote">
+      <p class="readmore">Читайте подробнее в BCP 47: </p>
+      <p><a href="http://tools.ietf.org/html/bcp47#section-4.1">4.1 Choice of Language Tag</a></p>
+    </div>
+    <p>Устаревшие тэги это особые случаи, существующие для обратной совместимости. Это тэги, зарегистрированные до RFC 4646, которые не могут быть полностью собраны из субтэгов текущего реестра, или не следующие сунтаксису, определённому для языковых тэгов.</p>
+    <p>Практически все устаревшие тэги были заменены в реестре субтэгами или комбинациями субтэгов. Подобные тэги сегодня не рекомендуются к использованию и обычно содержат поле <code class="kw" translate="no">Preferred-Value</code>, указывающее на предпочтительный вариант использования. Например, запись в реестредля устаревшего тэга <code class="kw" translate="no">art-lojban</code> указывает, что вам следует использовать языковой субтэг <code class="kw" translate="no">jbo</code>.</p>
+    <p>Обратите внимание, что вам не следует использовать дополнительные субтэги в устаревшем тэге.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Дополнительные материалы</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Приступаете к работе? <a href="/International/getting-started/language"><cite>Язык в Сети</cite></a></p>
+    </li>
+    <li>
+      <p>Ссылки по теме, <cite>Создание HTML и CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#language">Язык</a></li>
+        <li><a href="/International/techniques/developing-schemas#langvalues">Выбор языковых тэгов</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Ссылки по теме, <cite>Создание XML</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-xml#language">Язык</a></li>
+        <li><a href="/International/techniques/developing-schemas#langvalues">Выбор языковых тэгов</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Ссылки по теме, <cite>Создание SVG</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-svg#language">Язык</a></li>
+        <li><a href="/International/techniques/developing-schemas#langvalues">Выбор языковых тэгов</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

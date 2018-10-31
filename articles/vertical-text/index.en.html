@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Styling vertical Chinese, Japanese, Korean and Mongolian text</title>
+<meta name="description" content="How to set text vertically using CSS for Japanese, Chinese and Mongolian." />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/vertical-text'+'/'; // the name of the directory this file is in
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-vertical-text' // blog search string - usually the filename without extensions
+f.firstPubDate = '2017-03-13' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2017-03-13', time:'13:53'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2017-03-13', time:'13:53'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="" // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'styling'
+
+f.additionalLinks = ''
+</script>
+<script type="application/javascript" src="index-data/translations.js"> </script>
+<script type="application/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
+<script type="application/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"> // TRANSLATORS must change -en to the subtag for their language! </script>  
+<script type="application/javascript" src="../../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<link rel="stylesheet" href="index-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style type="text/css">
+.flexAnnotation .demolink {
+    font-size: 70%;
+    position: absolute;
+    bottom: 0.5em;
+    right: 1em;
+	margin: 0;
+	}
+figure pre {
+	margin: 16px 0 0 0;
+	}
+#testlinks td, #testlinks th { text-align: start; border: 0; padding: 0 0 0 30px; }
+</style>
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Styling vertical Chinese, Japanese, Korean and Mongolian text</h1>
+</header>
+
+<section>
+    <div id="audience"> 
+        <p><span id="intendedAudience" class="leadin">Intended audience:</span>  CSS  developers,  and anyone who  needs guidance on how to produce vertically-oriented text for Chinese, Japanese and Korean using CSS.</p>
+        <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+    <p>This article explains how to use CSS to produce vertical text for languages such as Chinese, Japanese, Korean, and Mongolian. The CSS specification contains a lot of implementation-specific information. This article draws out the basic information that content authors need to create the more common features of vertical text. It also compares the theory and practice about what is possible.</p>
+  <p>Each section explains how you would mark up up your content according to the CSS spec (which is usually simple and straightforward), but then looks at what you currently have to do to achieve the same result in browsers that don't implement the standard property and value names. For more information, see <a href="#browsers">Browser support</a>.</p>
+</section>
+        
+        
+        
+<section> 
+<h2 id="writing-mode"><a href="#writing-mode">Basic setup</a></h2>
+<p>Where it is supported, most of what you need should be achievable by applying the <code class="kw" translate="no">writing-mode</code> property to the content that you want to be set vertically.</p>
+<p>In Japanese, Chinese and Korean, lines start at the right side of the figure box and progress to the left.  Latin script text typically runs down the page, with the letters rotated clockwise, while the Han characters remain upright. Any graphic also remains upright.</p>
+<div class="figWrap">
+<figure style="padding: 0;">
+<img src="index-data/basic-ja.png" alt="basic vertical japanese" />
+<figcaption>Chinese and Japanese vertical text lines run right to left. This example shows vertical Japanese text.</figcaption>
+</figure>
+</div>
+<!--p>To produce the Japanese example above we would use the following CSS on the <code class="kw" translate="no">figure</code> element:</p-->
+
+
+<div class="flexAnnotation">
+<div class="faMain">
+<p>To produce the Japanese example above we would use the following CSS on a block<code class="kw" translate="no"></code> element that contains the text (in this case a <code class="kw" translate="no">div</code>).</p>
+   <figure class="example">
+      <pre>div {
+    writing-mode: vertical-rl;
+    }</pre>
+ <div class="demolink">Test in your browser: <a href="index-data/basic-ja.html" target="text">standard syntax</a> &bull; <a href="index-data/basic-ja-pref.html" target="text">proprietary syntax</a></div>
+  </figure>
+</div>
+<div class="faNote">
+  <aside class="simpleimplnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+  <p><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> For  Webkit-based browsers you currently need to use the proprietary <code class="kw" translate="no">-webkit-writing-mode</code> property.</p>
+  <p><img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> IE requires <code class="kw" translate="no">-ms-writing-mode</code>, but in addition   requires the deprecated value <code class="kw" translate="no">rl-tb</code>. That value can be used with the unprefixed <code class="kw" translate="no">writing-mode</code> property in IE, but <code class="kw" translate="no">-ms-writing-mode</code> was introduced in mid 2014 to improve the behaviour of nested properties in IE.</p>
+  <p><a target="_blank" href="https://www.w3.org/International/tests/repo/results/writing-mode-vertical">See test results for major browsers</a>.</p>
+</aside>
+</div>
+</div>
+
+
+<p>In Mongolian the lines start at the left side of the containing box and progress to the right. The Latin script text still runs down the page, with the letters rotated clockwise, and the Mongolian characters display as expected.</p>
+<div class="figWrap">
+<figure style="padding: 0;">
+<img src="index-data/basic-mn.png" alt="basic vertical japanese" />
+<figcaption>Mongolian lines run left to right.</figcaption>
+</figure>
+</div>
+
+<p> For Mongolian, use:</p>
+<div class="flexAnnotation">
+  <div class="faMain">
+    <figure class="example">
+      <pre>div {
+    writing-mode: vertical-lr;
+    }</pre>
+      <div class="demolink">Test in your browser: <a href="index-data/basic-mn.html" target="text">standard syntax</a> &bull; <a href="index-data/basic-mn-pref.html" target="text">proprietary syntax</a></div>
+    </figure>
+  </div>
+  <div class="faNote">
+    <aside class="simpleimplnote">
+      <p class="impl"><span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> Webkit doesn't correctly display the Mongolian text. Glyphs are rotated anti-clockwise away from the correct orientation, and don't join. </span></p>
+    </aside>
+  </div>
+</div>
+<p>If you embed a right-to-left script in the text, such as Arabic or Hebrew, it will run from bottom to top along the line, and the top of the letters will be to the right.  This is analogous to what happens in horizontal text.</p>
+
+<div class="sidenoteGroup">
+<div class="figWrap">
+<figure>
+<img src="index-data/embedded-ar.png" alt="embedded arabic" />
+<figcaption>Arabic text embedded in vertical Chinese. <span class="demolink">Test in your browser: <a href="index-data/embedded-ar.html" target="text">standard syntax</a> &bull; <a href="index-data/embedded-ar-pref.html" target="text">proprietary syntax</a></span></figcaption>
+</figure>
+</div>
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> In Trident (Internet Explorer), the addition of the <code class="kw" translate="no">dir</code> attribute in vertical text causes the space where the text should appear to go blank.</p>
+</aside>
+</div>
+
+<section>
+<h3 id="other-wmode"><a href="#other-wmode">Other values of <code class="kw" translate="no">writing-mode</code></a></h3>
+<div class="sidenoteGroup">
+<p>In addition to <code class="kw" translate="no">horizontal-tb</code>, which is the normal setting for horizontal text, there are two other property values for <code class="kw" translate="no">writing-mode</code>, which  are primarily intended for  use with scripts which are normally horizontal but that are being used vertically for captions, table headers, UI elements, and so forth. They may only rarely be useful for vertical Chinese, Japanese, or Korean, and are unlikely to be useful at all for Mongolian.</p>
+
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+  <p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+</aside>
+</div>
+<p>The value <code class="kw" translate="no">sideways-rl</code> makes all characters to which it is applied lie on their right side, including Han characters. The text runs from top to bottom, and lines progress from right to left.</p>
+
+<div class="figWrap">
+<figure>
+<img src="index-data/sideways-right.png" alt="sideways-right" />
+ <figcaption>Text set with the property <code class="kw" translate="no">sideways-rl</code>. <span class="demolink">Test in your browser: <a href="index-data/sideways-right.html" target="text">standard syntax</a> &bull; <a href="index-data/sideways-right-pref.html" target="text">proprietary syntax</a></span></figcaption>
+</figure>
+</div>
+
+<p>The <code class="kw" translate="no">sideways-lr</code> value makes all characters lie on their left side. Left-to-right text starts at the bottom of the line, and lines progress from left to right.</p>
+
+<div class="figWrap">
+<figure>
+<img src="index-data/sideways-left.png" alt="sideways-left" />
+ <figcaption>Text set with the property <code class="kw" translate="no">sideways-lr</code>. <span class="demolink">Test in your browser: <a href="index-data/sideways-left.html" target="text">standard syntax</a> &bull; <a href="index-data/sideways-left-pref.html" target="text">proprietary syntax</a></span></figcaption>
+</figure>
+</div>
+<p>The <code class="kw" translate="no">vertical-</code> values of <code class="kw" translate="no">writing-mode</code> are really intended for use in setting a normal vertical context for CJK or Mongolian text. On the other hand, if your content is in English and you want some title text to run from bottom to top vertically, say on a book spine or in table header, you would use <code class="kw" translate="no">writing-mode:sideways-lr,</code> not one of the <code class="kw" translate="no">vertical-</code> values. (To make Arabic script text run up the page, you'd use <code class="kw" translate="no">sideways-rl</code>.)</p>
+
+
+
+</section>
+
+</section>
+        
+        
+        
+<section> 
+<h2 id="upright"><a href="#upright">Changing the glyph orientation</a> for embedded text</h2>
+
+<section>
+<h3 id="default_orientation"><a href="#default_orientation">Default character orientation</a></h3>
+<p>In vertical text, certain characters are normally upright and others are normally rotated sideways. The Unicode Standard assigns a property to each character and browsers can use this to determine the default orientation of a given character. For example, ordinary number digits in vertical text lie on their side by default, whereas fullwidth digits and enclosed alphanumerics, such as ①, are upright by default.</p>
+<p>In some cases, rotation may also involve a transformation of a character –  for example  <img src="index-data/watto_v.png" alt="Vertical 'watto'." style="vertical-align: middle;"/> (vertical) vs. <img src="index-data/watto_h.png"  alt="Horizontal 'watto'." style="vertical-align: middle;"/> (horizontal). This change requires more than simple rotation, and you will need to use a font that supports the alternative glyphs.</p>
+<div class="sidenoteGroup">
+  <p>Occasionally you may  come across situations where the browser doesn't support the expected default behavior, or the default is different according to the language of the text. However, most of the time, the browser will automatically do what you expect, on a per character basis.</p>
+<aside class="sideinfonote">
+  <p class="info">For Japanese there are currently ongoing investigations into what does and doesn't currently work well. (See for example <a href="http://kadokawa-epub.bookwalker.co.jp/download/CharacterOrientationEval_JISX0213-20150123.zip?attredirects=0&d=1">Kadokawa</a> and <a href="http://densholab.jp/lab/RScheck/result.html">Denshalab</a>.)</p>
+ </aside>
+  <p> For those situations where you may want to do something different from the default, the sections that follow will examine how to influence the rotation of characters.</p>
+</div>
+</section>
+
+
+<section>
+<h3 id="upright-latin"><a href="#upright-latin">Keeping embedded Latin text upright</a></h3>
+<p>Sometimes you may want to show embedded Latin letters standing upright, rather than running down the page, particularly  for initialisms. Currently there are a number of ways of achieving this, but all  have pros and cons.</p>
+<p><span class="leadin">Using dedicated CSS.</span> One alternative is to apply the <code class="kw" translate="no">text-orientation</code> property. Note how the letter <span class="qchar">i</span> is upright in the following example.</p>
+
+<div class="figWrap">
+  <figure> <img src="index-data/upright-i.png" alt="upright latin" />
+  <figcaption>Upright Latin text in vertical Japanese.</figcaption>
+</figure>
+</div>
+
+<p>If you want to restyle  characters  so that they stand upright,  use markup such as <code class="kw" translate="no">span</code> or <code class="kw" translate="no">abbr</code> to identify the relevant text so that you can apply a CSS<code class="kw" translate="no"></code> property. In the  examples below we put the Latin text in a <code class="kw" translate="no">span</code> with a class name <code class="kw" translate="no">upright</code>.</p>
+<figure class="example">
+  <p><code>&lt;p&gt;『&lt;span class=&quot;upright&quot;&gt;i&lt;/span&gt;』は、浅䈡の双子の兄であり、共犯者だ。&lt;/p&gt;</code></p>
+  </figure>
+
+  <p>To make the letter <span class="qchar">i</span> upright, you would then use this CSS declaration:</p>
+  <div class="sidenoteGroup">
+  <figure class="example">
+  <pre>.upright {
+    text-orientation: upright;
+    }</pre>
+    <div class="demolink">Test in your browser: <a href="index-data/upright-i.html" target="text">standard syntax</a> &bull; <a href="index-data/upright-i-pref.html" target="text">proprietary syntax</a></div>
+    </figure>
+  <!--figure lang="zh-hans" class="example" style="height: 200px; width: 250px;">
+  <p>国际化活动ａｉｆＡＩＬ万维网联盟</p>
+</figure>
+<figure lang="zh-hans" class="example" style="height: 200px; width: 250px;">
+  <p>国际化活动Ｗ３Ｃ万维网联盟</p>
+</figure>
+<figure lang="zh-hans" class="example" style="height: 200px; width: 250px;">
+  <p>国际化活动<span style="text-transform: full-width;">aifAIL</span>万维网联盟</p>
+</figure>
+<figure lang="zh-hans" class="example" style="height: 200px; width: 250px;">
+  <p>国际化活动<span style="-webkit-text-orientation: upright; text-orientation: upright;">aifAIL</span>万维网联盟</p>
+</figure-->
+  <aside class="implnote">
+    <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/>  <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+    <p> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> For Webkit-based browsers you need to use the proprietary <code class="kw" translate="no">-webkit-text-orientation </code>property. However, Webkit seems to have a problem centering the letter in the vertical line.</p>
+    <p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+  </aside>
+</div>
+<p> This option doesn't convert any characters to fullwidth. If you need to do so, you could apply additional CSS for that, if the browser supports it (see the next subsection).</p>
+
+
+ <p><span class="leadin">Full-width transforms.</span> If you transform the text into fullwidth characters, that may actually be sufficient on its own, since fullwidth characters are displayed upright by default.</p>
+ <div class="figWrap">
+ <figure>
+<img src="index-data/upright-en.png" alt="upright latin" />
+<figcaption>Using a fullwidth transform to make Latin letters stand upright.</figcaption>
+</figure>
+</div>
+
+ <p>The letters 'W3C' in the above example initially ran down the page, but applying the fullwidth transform using the following CSS makes them stand upright.</p>
+
+  <div class="sidenoteGroup">
+   <figure class="example">
+  <pre>.upright { 
+    text-transform: full-width; 
+    }</pre>
+     <div class="demolink">Test in your browser: <a href="index-data/upright-en.html" target="text">standard syntax</a> &bull; <a href="index-data/upright-en-pref.html" target="text">proprietary syntax</a></div>
+  </figure>
+ <p>This is appropriate for initialisms, but is not necessarily useful for all types of upright text, and note especially that <em>this technique only works for Latin characters without accents</em>! </p>
+  <aside class="implnote">
+   <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+   <p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+   <p><code translate="no" class="kw">text-transform: full-width</code> currently only works in Gecko.</p>
+    <p>Text in other scripts will not have full-width equivalents, and so will need to use the next approach.</p>
+  </aside>
+</div>
+
+
+
+<div class="sidenoteGroup">
+<p><span class="leadin">Using full-width characters.</span> Another way to achieve this is to just use fullwidth characters, such as Ｗ３Ｃ. These will automatically be displayed upright by default. You don't need any markup in this case.</p>
+<p>Of course, this also only works for Latin script text that doesn't include accents (since those are the only letters for which full-width variants exist).</p>
+  <aside class="implnote">
+    <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+  </aside>
+</div>
+
+
+<div class="figWrap">
+<figure>
+  <img src="index-data/fullwidth-w3c.png" alt="fullwidth latin" />
+  <figcaption>Upright Latin text produced by using fullwidth characters.
+  <span class="demolink">Test in your browser: <a href="index-data/fullwidth-w3c.html" target="text">standard syntax</a> &bull; <a href="index-data/fullwidth-w3c-pref.html" target="text">proprietary syntax</a></span></figcaption>
+</figure>
+</div>
+</section>
+
+<section>
+<h3 id="other-upright"><a href="#other-upright">Embedding other languages upright</a></h3>
+<p>Mixtures of vertical Chinese, Japanese, Korean and Mongolian text should just work as expected, but for other non-Latin scripts and Latin text with accents you will need to use the <code class="kw" translate="no">text-orientation</code> property to make the text stand upright.  </p>
+<p>If the Latin text contains accents or diacritics as separate characters alongside their base character, you should not see the combining characters on separate lines.</p>
+<p>However, there are some scripts that present additional issues, although it should be said that these non-Latin scripts don't seem to be set upright often. </p>
+
+<div class="figWrap">
+  <figure>
+  <img src="index-data/upright-ar-hi.png" alt="upright latin" />
+  <figcaption>Expected rendering of Uighur words, devanagari syllables, and Latin characters with separate combining characters when set upright.
+    <span class="demolink">Test in your browser: <a href="index-data/upright-ar-hi.html" target="text">standard syntax</a> &bull; <a href="index-data/upright-ar-hi-pref.html" target="text">proprietary syntax</a></span></figcaption>
+  </figure>
+</div>
+<div class="sidenoteGroup">
+  <p>Embedded Arabic script text (shown in the two right-most lines above) is usually joined up. It is not possible to join Arabic characters when they are displayed upright, so isolated forms should be used. In addition, the order of characters is top to bottom when written upright, whereas Arabic script text that is rotated clockwise is read from bottom to top (because it is right-to-left).</p>
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> Webkit and Blink browsers produce isolated Arabic letters correctly, but incorrectly order the glyphs from bottom to top within each word.</p>
+</aside>
+</div>
+<div class="sidenoteGroup">
+<p>Some complex scripts, such as Devanagari (used for Hindi, and shown in the two left-most lines above) require upright text to be split at syllable boundaries. Such syllables are currently not handled well by browsers in upright text runs.</p>
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> None of the browser engines that support upright orientation of characters do well with Hindi. Many, if not all, combining characters appear on separate lines. Webkit does combine some consonant clusters, but still has problems with spacing combining characters.  In Gecko and Blink browsers the indic script text also has large gaps between characters and runs outside the box it is displayed in.</p>
+</aside>
+</div>
+</section>
+
+<br  style="clear:both;"/>
+
+<section>
+<h3 id="other-orientation"><a href="#other-orientation">The <code class="kw" translate="no">sideways</code> value of <code class="kw" translate="no">text-orientation</code></a></h3>
+<div class="sidenoteGroup">
+  <p>CSS provides one more value of the <code class="kw" translate="no">text-orientation</code> property: <code class="kw" translate="no">sideways</code>. This value only works if you have also applied the values of <code class="kw" translate="no">writing-mode</code> that begin with <code class="kw" translate="no">vertical-</code>. </p>
+  <p>This value of <code class="kw" translate="no">text-orientation</code> makes all characters  lie on their right side, including Han characters. The result of using this value with  with <code class="kw" translate="no">writing-mode:vertical-rl</code> is different from that seen when using <code class="kw" translate="no">writing-mode:sideways-lr</code>  since the text starts at the top of the block and glyphs lie on their right side.</p>
+
+<div class="figWrap">
+<figure>
+<img src="index-data/sideways.png" alt="sideways" />
+<figcaption>The result of using <code class="kw" translate="no">text-orientation:sideways</code> with <code class="kw" translate="no">writing-mode:vertical-lr</code>. <span class="demolink">Test in your browser: <a href="index-data/sideways.html" target="text">standard syntax</a> &bull; <a href="index-data/sideways-pref.html" target="text">proprietary syntax</a></span></figcaption>
+</figure>
+</div>
+
+
+<p>It is more likely that you will want to use the <code class="kw" translate="no">sideways-rl</code> and <code class="kw" translate="no">sideways-lr</code> values of <code class="kw" translate="no">writing-mode</code> (see above) to render text sideways.</p>
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+  <p><span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span>  For Webkit browsers you need to use the prefixed property name, ie. <code class="kw" translate="no">-webkit-text-orientation: sideways</code>.</p>
+  <p><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+</aside>
+</div>
+</section>
+
+</section>
+        
+        
+<section> 
+<h2 id="tcy"><a href="#tcy">Horizontal-in-vertical text</a></h2>
+
+<p>It is common for short numbers of 2-3 digits (sometimes 4) and occasionally other runs of text, to run horizontally within the vertical flow. In Japanese this is called <span class="foriegntext" lang="ja-Latn" translate="no">tate chū yoko</span>. See the month and day digits in this example.</p>
+
+<div class="figWrap">
+<figure> <img src="index-data/digit2.png" alt="two-digit upright spans" />
+<figcaption><span class="foriegntext" translate="no">Tate chū yoko</span> applied to 2-digit numbers.</figcaption>
+</figure>
+</div>
+
+<section>
+  <h3 id="tcy_digits"><a href="#tcy_digits">Making inline digits run horizontally</a></h3>
+  <div class="sidenoteGroup">
+    <p>The easiest way to apply this to numeric digits is to use <code class="kw" translate="no">text-combine-upright</code> with a <code class="kw" translate="no">digits x</code> value.</p>
+    <aside class="implnote">
+      <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> Gecko, Webkit and Blink browsers do not yet support this property for the <code class="kw" translate="no">digits</code> value.</p>
+      <p><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/>  In Internet Explorer and Edge this property is called <code class="kw" translate="no">-ms-text-combine-horizontal</code>. It works in Edge, but unlike other browsers stretches any single character to the width of the line.</p>
+      <p><img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/>  Internet Explorer  doesn't appear to be able to pick the digits out of a sequence of characters when using the <code class="kw" translate="no">digits</code> value. It makes  all the content of the element horizontal (see the demos).</p>
+      </aside>
+    </div>
+  <p>It only works for digits in the ASCII range, and full-width Unicode codepoints are automatically converted to ASCII codepoints during the process.  It doesn't work for other numbering systems, such as Arabic, Bengali, etc.</p>
+  <p>Let's suppose we have some HTML markup like the following, where the date <span lang="ja">2015年5月22日</span> is inside a <code class="kw" translate="no">time</code> element.</p>
+  <figure class="example">
+    <p translate="no"><code>&lt;p&gt;今日は&lt;time datetime=&quot;2016-05-22&quot;&gt;2015年5月22日&lt;/time&gt;です。&lt;/p&gt;</code></p>
+    </figure>
+  <p>We can reproduce the  rendering seen in the above example using the following CSS. </p>
+  <figure class="example">
+    <pre translate="no">time {
+      text-combine-upright: digits 2; 
+      }</pre>
+    <div class="demolink">Test in your browser: <a href="index-data/digits.html" target="text">standard syntax</a> &bull; <a href="index-data/digits-pref.html" target="text">proprietary syntax</a></div>
+    </figure>
+  <p>This makes any double-digit numbers in the text run horizontally, but doesn't affect anything else. Note that you get the same effect by omitting the number after <code class="kw" translate="no">digits</code>.</p>
+  <p>To fit longer numbers horizontally, change the number after <code class="kw" translate="no">digits</code>. In the previous example  2015 is not horizontal. You could make it horizontal using <code class="kw" translate="no">text-combine-upright:digits 4</code>. Then any numeric sequence up to four digits long will be horizontal. Four is the maximum number of digits you can layout horizontally in vertical text using this style.</p>
+  <div class="figWrap">
+  <figure>
+  <img src="index-data/digit4.png" alt="four-digit upright spans" />
+    <figcaption>Tate chu yoko applied to all numbers of 4 digits or less. 
+    <span class="demolink">Test in your browser: <a href="index-data/digits4.html" target="text">standard syntax</a> &bull; <a href="index-data/digits4-pref.html" target="text">proprietary syntax</a></span></figcaption>
+  </figure>
+  </div>
+  
+  <p>If you'd like the unaffected numbers to be full-width, you can use the following styling. Full-width characters are displayed upright by default.</p>
+  <figure class="example">
+    <pre>time { 
+    text-combine-<code>upright</code>: digits 2; 
+    text-transform: full-width; 
+    }</pre>
+<div class="demolink">Test in your browser: <a href="index-data/fullwidth-digits.html" target="text">standard syntax</a> &bull; <a href="index-data/fullwidth-digits-pref.html" target="text">proprietary syntax</a></div>
+    </figure>
+
+<div class="figWrap">
+  <figure>
+  <img src="index-data/fullwidth-digits.png" alt="fullwidth upright characters" />
+    <figcaption>Fullwidth transform applied to non-affected digits.</figcaption>
+  </figure>
+  </div>
+  
+  <p>Use dedicated markup where possible. For example, for dates and times, you could just apply the style to the <code class="kw" translate="no">time</code> element.</p>
+  <p>You can set this style on block elements such as <code class="kw" translate="no">p</code> or <code class="kw" translate="no">section</code> and the style will only be applied to runs of numbers. Be aware, however, that you may need to correct the behavior if you set <code class="kw" translate="no">text-combine-upright</code> for a whole paragraph or more if that content contains numbers like 10,000, since the comma interrupts the sequence of digits; the result will be 10 set horizontally, and ,000 set running down the page.  </p>
+  <!--figure class="example" lang="ja" style="height: 200px; width: 250px;">
+    <p>今日は<date class="fw">2015年5月22日</date>です。</p>
+  </figure-->
+</section>
+
+<section>
+<h3 id="tcy_other"><a href="#tcy_other">Making non-digit inline text run horizontally</a></h3>
+<div class="sidenoteGroup">
+  <p>If you want to apply horizontal layout to non-digit text, you have to use <code class="kw" translate="no">text-combine-upright:all</code> and surround the text you want to be horizontal with markup.  You can still use the <code class="kw" translate="no">digits</code> value for the numbers, but you'll need to use <code class="kw" translate="no">all</code> for the other stuff.</p>
+  <aside class="implnote">
+    <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+  <p>(Assuming that you are using the <code class="kw" translate="no">-ms-text-combine-horizontal</code> property name for Edge and IE.)</p>
+  <p><span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+  </aside>
+  </div>
+<p>For example, given some content marked up as follows</p>
+<figure class="example">
+  <p><code>&lt;p&gt;...是有&lt;span class=&quot;tcy&quot;&gt;5012&lt;/span&gt;&lt;span class=&quot;tcy&quot;&gt;GI&lt;/span&gt;的話、...&lt;/p&gt;</code></p>
+</figure>
+<p>we can produce the desired effect with the following CSS.</p>
+<figure class="example">
+  <pre>.tcy { 
+    text-combine-upright: all; 
+    }</pre>
+  <div class="demolink">Test in your browser: <a href="index-data/tcu-all.html" target="text">standard syntax</a> &bull; <a href="index-data/tcu-all-pref.html" target="text">proprietary syntax</a></div>
+</figure>
+<p>Note how we used two <code class="kw" translate="no">spans</code>, in order to clearly indicate the boundaries of the horizontal text.</p>
+
+<div class="figWrap">
+<figure> <img src="index-data/tcu-all.png" alt="text-combine-upright:all" />
+<figcaption>Tate chu yoko applied to other types of text.</figcaption></figure>
+</div>
+
+<p>The browser will try to squeeze the horizontal text into the width of a single character, so don't be too ambitious about how many characters you do this to. It is likely to be hard to read if you have more than three characters side-by-side.</p>
+</section>
+
+<section>
+<h3 id="tcy_prevention"><a href="#tcy_prevention">Preventing inline text from running horizontally</a></h3>
+<p>Suppose you applied the <code class="kw" translate="no">digits</code> styling to a whole section, and there's a number 10,000 in that section that you don't want to be affected. You can use the <code class="kw" translate="no">none</code> value for that.</p>
+<p>For example you could surround the number with a <code class="kw" translate="no">span</code> with a class such as <code class="kw" translate="no">no-tcy</code> that has the following styling.</p>
+<figure class="example">
+  <pre>.no-tcy { 
+    text-combine-upright: none; 
+    }</pre>
+ <div class="demolink">Test in your browser: <a href="index-data/tcu-none.html" target="text">standard syntax</a> &bull; <a href="index-data/tcu-none-pref.html" target="text">proprietary syntax</a></div>
+</figure>
+
+<p>See the result in the figure below, where the right hand side shows before, and the left, after.</p>
+<div class="figWrap">
+<figure>
+<img src="index-data/tcu-none.png" alt="text-combine-upright:all" />
+<figcaption>Text with <code class="kw" translate="no">text-combine-upright</code> set to <code class="kw" translate="no">digits</code> at the paragraph level. Corrected on the left by applying <code class="kw" translate="no">text-combine-upright:none</code> to the number.</figcaption>
+</figure>
+</div>
+</section>
+
+
+<section>
+<h3 id="tcy_font"><a href="#tcy_font">Choosing a font for horizontal inline text</a></h3>
+<p>The browser will try to use special narrow variants of the horizontal characters if they are included in the font being used (eg. OpenType's <code class="kw" translate="no">hwid</code> and <code class="kw" translate="no">twid</code>).  After trying that, it will compress the glyphs to fit them in the space available. The former approach will produce a much nicer result, especially at larger sizes, therefore, it's worth using a font that has those extra glyphs (many do).</p>
+</section>
+</section>
+
+
+
+<section>
+  <h2 id="forms_etc"><a href="#forms_etc">Forms, lists and tables</a></h2>
+
+<section>
+<h3 id="forms"><a href="#forms">Forms</a></h3>
+<p>Text entry forms and select menus should flow down the page in vertical text, as illustrated in the following diagram. You will need to ensure that you specify sufficient vertical height to hold the form field.</p>
+<div class="sidenoteGroup">
+<div class="figWrap">
+<figure>
+<img src="index-data/vertical-form.png" alt="Vertical forms" />
+ <figcaption>Various form controls in vertically set text. 
+ <span class="demolink">Test in your browser: <a href="index-data/vertical-form.html" target="text">standard syntax</a> &bull; <a href="index-data/vertical-form-pref.html" target="text">proprietary syntax</a></span></figcaption>
+</figure>
+</div>
+
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+  <p>Only Gecko rotates the direction of the form fields for <code class="kw" translate="no">select</code>, <code class="kw" translate="no">textarea</code> or <code class="kw" translate="no">input</code> elements with a type of <code class="kw" translate="no">text</code>.</p>
+  <p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+  <p> Blink, Webkit, Edge and Internet Explorer browsers place the form field horizontally and display the contained text horizontally also.</p>
+  <p>See test results for major browsers: <a target="_blank" href="https://www.w3.org/International/tests/repo/results/writing-mode-vertical#rl_forms">vertical-rl</a>, <a target="_blank" href="https://www.w3.org/International/tests/repo/results/writing-mode-vertical#lr_forms">vertical-lr</a>.</p>
+</aside>
+</div>
+</section>
+
+<section>
+<h3 id="lists"><a href="#lists">Lists</a></h3>
+<p>List content should also flow down the page in vertical text, with the counter at the top of the line, as illustrated in the following diagram.</p>
+<div class="sidenoteGroup">
+<div class="figWrap">
+<figure>
+<img src="index-data/japanese_list_upright.png" alt="Vertical lists" />
+ <figcaption>List items in vertical text.
+ <span class="demolink">Test in your browser: <a href="index-data/japanese_list_upright.html" target="text">standard syntax</a> &bull; <a href="index-data/japanese_list_upright_pref.html" target="text">proprietary syntax</a></span></figcaption>
+</figure>
+</div>
+
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+  <p>All browsers all behave as expected in terms of ordering list items correctly, given the use of <code class="kw" translate="no">writing-mode</code> prefixes where needed.</p>
+</aside>
+</div>
+
+<div class="sidenoteGroup">
+<p>Notice that in the figure above, the counters are arranged upright, with a dot separator alongside (ie. like <span class="foreign">tate chu yoko</span>). The best way to make  list counters upright is to use the following CSS.</p>
+<figure class="example">
+  <pre>li::marker { text-combine-upright: all; } </pre>
+  <div class="demolink">Test in your browser: <a href="index-data/korean-list-upright.html" target="text">standard syntax</a> &bull; <a href="index-data/korean-list-upright-pref.html" target="text">proprietary syntax</a></div>
+</figure>
+
+
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+  <p>No browsers support <code class="kw" translate="no">text-combine-upright</code>, so the number+dot markers will lie on their side.</p>
+</aside>
+</div>
+
+<p>Unfortunately, the <code class="kw" translate="no">text-combine-upright</code> property isn't currently supported by browsers. One way around that would be to use <a href="https://www.w3.org/TR/predefined-counter-styles/#digit-styles">custom counter-styles which define fullwidth characters</a> as the counters. Unfortunately, that is also not  supported by all major browsers at the moment. The following figure shows how that looks in Firefox, which does support custom counter styles.</p>
+
+<div class="sidenoteGroup">
+<div class="figWrap">
+  <figure> <img src="index-data/korean-list-counterstyles.png" alt="Vertical lists" />
+    <figcaption>List items with fullwidth counters. <span class="demolink">Test in your browser: <a href="index-data/korean-list-counterstyles.html" target="text">standard syntax</a> &bull; <a href="index-data/korean-list-counterstyles-pref.html" target="text">proprietary syntax</a></span></figcaption>
+  </figure>
+</div>
+
+
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+  <p>Only Gecko supports custom counter styles<code class="kw" translate="no"></code>.</p>
+  <p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+  <p><a href="https://www.w3.org/International/tests/repo/results/counter-styles">See test results for major browsers</a>.</p>
+</aside>
+</div>
+
+</section>
+
+<section>
+<h3 id="tables"><a href="#tables">Tables</a></h3>
+<div class="sidenoteGroup">
+<p>In vertical content areas, table rows should run in the same direction as lines, ie. down the page, the rows should progress in the same direction as lines follow each other, and the text inside cells should also be vertical by default.</p>
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+</aside>
+</div>
+<div class="sidenoteGroup">
+<div class="figWrap">
+<figure><img src="index-data/korean-table.png" alt="Vertical tables" />
+  <figcaption>A vertically set table.
+  <span class="demolink">Test in your browser: <a href="index-data/korean-table.html" target="text">standard syntax</a> &bull; <a href="index-data/korean-table-pref.html" target="text">proprietary syntax</a></span></figcaption>
+</figure>
+</div>
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/> If you place the <code class="kw" translate="no">writing-mode</code> property on an individual table cell, you would expect the text in that cell to be displayed vertically.</p>
+  <p>This works as expected in Edge, Internet Explorer and Gecko browsers. </p>
+  <p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/>  <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> Blink and Webkit browsers, on the other hand, leave the text horizontal but rotate the characters to the left. </p>
+  <p>Note, also, by the way that you  have to set the height of the cell in these browsers for a <code class="kw" translate="no">span</code> to be displayed vertically.</p>
+  <p>See test results for major browsers: <a target="_blank" href="https://www.w3.org/International/tests/repo/results/writing-mode-vertical#rl_tables">vertical-rl</a>, <a target="_blank" href="https://www.w3.org/International/tests/repo/results/writing-mode-vertical#rl_tables">vertical-lr</a>.</p>
+</aside>
+</div>
+<p>The numbers in the illustration above count cells in a row first, then move to the next row. As you can see, the columns are now horizontal.</p>
+<div class="sidenoteGroup">
+<p>The picture above shows a caption after the table. The placement of captions can be set using the <code class="kw" translate="no">caption-side</code> property. The value <code class="kw" translate="no">bottom</code> (used in the example above) will display the caption after the last row in the table, and <code class="kw" translate="no">top</code> will display it before the first.</p>
+<p><span class="impl"> All the major browsers  display the caption as vertical text on the right by default. The CSS Working Group voted not to allow <code class="kw" translate="no">block-start</code> and <code class="kw" translate="no">block-end</code> values, but to treat <code class="kw" translate="no">top</code> and <code class="kw" translate="no">bottom</code> as logical.</span></p>
+<!--p>CSS3 provides two new values for this property: <code class="kw" translate="no">block-start</code> (which would position the caption vertically to the right in the example above), and <code class="kw" translate="no">block-end</code> (which would position the caption as shown). These logical values allow the position of the caption to change appropriately as the direction of the text changes.</p-->
+<aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/><br>
+    Gecko, Blink and Webkit recognize the <code class="kw" translate="no">bottom</code> value.</p>
+  <p class="impl"><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/><br>
+    Edge and IE don't recognize the value <code class="kw" translate="no">bottom</code>.</p>
+</aside>
+</div>
+</section>
+
+
+
+</section>
+<section>
+  <h2 id="logical_dimensions"><a href="#logical_dimensions">Using logical dimensions</a></h2>
+  <p>You may decide that  you want to align text along the left edge in horizontal text. Scripts like Arabic, Hebrew, and Thaana tend to mirror-image horizontal text, so where you would apply left text alignment to English text, you would apply right alignment to text in those scripts. </p>
+  <p>How does it work, then, if you want to apply a vertical writing mode to that text?</p>
+  <p>A great deal of time and confusion can be saved by using 'logical' properties, rather than right, left, top and bottom, for things such as alignment.</p>
+  <p>CSS is developing the necessary keywords in the <a href="https://drafts.csswg.org/css-logical-props/">Logical Properties</a> specification, which at the time of writing is still an editor's draft. Some of the properties described there, however, are already supported by browsers.</p>
+  <div class="sidenoteGroup">
+  <p>To go back to our example of text alignment, let's suppose that we want text to be right-aligned for horizontal left-to-right text, left-aligned for paragraphs of right-to-left text, such as Arabic, and bottom-aligned for vertically set text. We can achieve all those with a single keyword: <code class="kw" translate="no">text-align:end</code> will produce the effect you need based on the direction of the content. To align in the other direction, use the value <code class="kw" translate="no">start</code>.</p>
+  <p>Take a look at  the following three boxes. We applied <code class="kw" translate="no">dir=&quot;rtl&quot;</code> to the Arabic one, and <code class="kw" translate="no">writing-mode:vertical-rl</code> to the Japanese one. In our CSS we have aligned them all using <code class="kw" translate="no"> text-align:end</code>.</p>
+  
+  <div class="figWrap">
+<figure style="padding-left: 0;"><img src="index-data/text-align-end.png" alt="Three boxes showing end alignment" />
+  <figcaption><code class="kw" translate="no">text-align:end</code> takes into account the writing-mode of the text.
+  <span class="demolink">Test in your browser: <a href="index-data/text-align-end.html" target="text">standard syntax</a> &bull; <a href="index-data/text-align-end-pref.html" target="text">proprietary syntax</a></span></figcaption>
+</figure>
+</div>
+
+  <p>The new keywords being defined in the specification allow you not only to align things to one or other end of a line, but to align things relative to the containing box in a logical way. You will also be able to do other things, such as position and float items logically too.</p>
+  <!--div id="alignTest">
+  <div><span>Article 1 All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood.</span></div>
+  <div dir="rtl"><span>المادة 1‏ يولد جميع الناس أحرارًا متساوين في الكرامة والحقوق. وقد وهبوا عقلاً وضميرًا وعليهم أن يعامل بعضهم بعضًا بروح الإخاء.</span></div>
+  <div style="writing-mode: vertical-rl; -webkit-writing-mode: vertical-rl; writing-mode: tb-rl;"><span>第１条 すべての人間は、生まれながらにして自由であり、かつ、尊厳と権利とについて平等である。人間は、理性と良心とを授けられており、互いに同胞の精神をもって行動しなければならない。</span></div>
+  </div>
+  <br style="clear:both;"/-->
+<aside class="implnote" style="clear:both;">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <span class="issue"><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/></span> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+  <p><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+  <p>Unfortunately, Microsoft Edge still doesn't support the <code class="kw" translate="no">start</code> and <code class="kw" translate="no">end</code> values for <code class="kw" translate="no">text-align</code>.</p>
+  <p>The other values described in the Logical Properties are also likely to be poorly supported at the moment, but it's worth watching out for them as they become usable.</p>
+  </aside>
+  </div>
+</section>
+
+
+
+
+<section>
+  <h2 id="browsers"><a href="#browsers">Browser support</a></h2>
+  <p>Currently,  Chrome, Opera, Microsoft Edge  and Firefox (v41+) support many features of vertical text per the CSS standard (though with some gaps for form controls). Internet Explorer and  Safari also support vertical text to some degree, but you may need to use a prefixed keyword as well as the standard keyword, and for Internet Explorer you will need to use deprecated values for <code class="kw" translate="no">writing-mode</code>. </p>
+    <p>The article describes behavior for the following browser versions. We will try to update the article as behavior changes.</p>
+    <table border="0" summary="Table lists browsers and engines whose behavior is represented in the article.">
+      <tbody>
+        <tr>
+          <th scope="col">Browser</th>
+          <th scope="col">Version</th>
+          <th scope="col">Engine</th>
+          <th scope="col">Other browsers using that engine</th>
+        </tr>
+        <tr>
+          <td><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> Firefox</td>
+          <td>51.0.1</td>
+          <td>Gecko</td>
+          <td>Conkeror, etc.</td>
+        </tr>
+        <tr>
+          <td><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> Chrome</td>
+          <td>56.0.2924.87</td>
+          <td>Blink</td>
+          <td>Opera, Vivaldi, etc.</td>
+        </tr>
+        <tr>
+          <td><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> Safari</td>
+          <td>10.0.3</td>
+          <td>Webkit</td>
+          <td>iOS-based browsers, Yandex, UC Browser, etc.</td>
+        </tr>
+        <tr>
+          <td><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> Edge</td>
+          <td>38.14393</td>
+          <td>EdgeHTML</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td><img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> Internet Explorer</td>
+          <td>11.0</td>
+          <td>Trident</td>
+          <td>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+    <!--p>&nbsp;</p>
+    <ul>
+    <li><dfn>Gecko</dfn> (Firefox, Conkeror, etc.)</li>
+    <li><dfn>Blink</dfn> (Chrome, Opera, Vivaldi, etc.)</li>
+    <li><dfn>Webkit</dfn> (Safari, iOS-based browsers, Yandex, UC Browser, etc.)</li>
+    <li><dfn>Edge</dfn> (Microsoft Edge)</li>
+    <li><dfn>Trident</dfn> (Internet Explorer)</li>
+    </ul-->
+  
+
+
+<section>
+    <h3 id="udtest"><a href="#udtest">User-driven test pages</a></h3>
+    <p>The behaviour of browsers can be explored using the following user-controlled test pages:</p>
+    <table  id="testlinks">
+      <tbody>
+        <tr>
+          <th scope="row">Chinese</th>
+          <td><a class="print" href="index-data/tests/chinese">paragraphs</a></td>
+          <td><a class="print" href="index-data/tests/chinese-lists">lists</a></td>
+          <td><a class="print" href="index-data/tests/chinese-forms">forms</a></td>
+          <td><a class="print" href="index-data/tests/chinese-table">tables</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Mongolian</th>
+          <td><a class="print" href="index-data/tests/mongolian">paragraphs</a></td>
+          <td><a class="print" href="index-data/tests/mongolian-lists">lists</a></td>
+          <td><a class="print" href="index-data/tests/mongolian-forms">forms</a></td>
+          <td><a class="print" href="index-data/tests/mongolian-table">tables</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>&nbsp;</p>
+  </section>
+</section>
+        
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+    <ul id="full-links">
+      <li>
+        <p><cite><a href="https://www.w3.org/TR/css-writing-modes-3/">CSS Writing Modes Level 3</a></cite></p>
+        
+      </li>
+      <li>
+          <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+          <ul>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?collapse&amp;open=direction">Text direction</a></li>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html#sec_verticaltext">Vertical text</a></li>
+      </ul>
+      </li>
+    </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

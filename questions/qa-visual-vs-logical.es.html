@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Ordenando el texto de forma visual vs. lógica</title>
+<meta name="description" content="¿Cuál es la diferencia entre el orden visual y lógico del texto, y cual debería utilizar?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-visual-vs-logical' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-visual-vs-logical' // blog search string - usually the filename without extensions
+f.firstPubDate = '2011-08-12' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2013-04-19', time:'13:04'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-06-10', time:'17:33'} // date and time of latest edits to this document/translation
+f.contributors = 'Mati Allouche, Aharon Lanin, Norbert Lindenberg, Tomer Mahlin' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://www.languagemarketplace.com" title="Spanish Translation">Spanish Translation Team</a>, Language Marketplace Inc' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-visual-vs-logical-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Ordenando el texto de forma visual vs. lógica</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    los codificadores de XHTML/HTML (utilizando editores o lenguaje de script), desarrolladores de script (PHP, JSP, etc.), gerentes de proyectos web y cualquier otra persona que necesite entender mejor la diferencia entre el almacenamiento visual y lógico de texto bidireccional.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">¿Cuál es la diferencia entre el orden visual y lógico del texto, y cual debería utilizar?</p>
+
+  <p>El <a href="/International/tutorials/bidi-xhtml/#term_bidirectional" class="termref print">texto bidireccional</a> es común en la escritura de derecha a izquierda como en el árabe, hebreo, siríaco y Thaana. Muchas lenguas diferentes están escritas con estos scripts, incluyendo el árabe, hebreo, pashto, persa, sindhi, siríaco, Dhivehi, urdu, yiddish, etc.</p>
+  <p>Cuando se muestra el texto bidireccional, cualquier texto incrustado desde un script de izquierda a derecha y todos los números progresan visualmente de <em>izquierda a derecha</em> dentro del flujo visual usual de derecha a izquierda de los scripts mencionados. (Por supuesto, el texto en ingles de esta página también contiene texto bidireccional donde incluye ejemplos en árabe y hebreo.)</p>
+  </section>
+  
+ 
+
+<section id="nutshell">
+    <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>Siempre se debería crear HTML (y cualquier otro tipo de marcador) utilizando el orden lógico, y nunca el visual.</p>
+  <p>El <dfn id="term_visualordering">orden visual</dfn> del texto era una forma común de representar el hebreo en HTML en agentes de usuario antiguos que no podían utilizar el <a href="/International/tutorials/bidi-xhtml/#term_uba" class="termref print">algoritmo unidireccional Unicode</a>. Este persiste muy poco hoy en día. Los caracteres que componen el texto se almacenaron en el código fuente en el mismo orden en el que se verían en la pantalla mirándolos de izquierda a derecha.</p>
+  <p>(El orden visual es menos común para el árabe. Dado que las letras árabes están todas unidas, esta fue una motivación más fuerte de parte de los ejecutores árabes para utilizar el enfoque del orden lógico. El texto en árabe ordenado visualmente puede utilizar puntos de código separados para cada glifo formado.)</p>
+  <p>Con el <dfn id="term_logicalordering">orden lógico</dfn>, el texto se almacena en la memoria en el orden en el que se escribiría normalmente (y se pronunciaría normalmente). El algoritmo bidireccional Unicode es entonces aplicado por el navegador, en el tiempo de la visualización, para crear la presentación correcta. </p>
+</section>
+
+
+<section>
+  <h2 id="detail"><a href="#detail">Details</a></h2>
+
+  <section>
+    <h3 id="shortcomings"><a href="#shortcomings">El orden visual y sus deficiencias</a></h3>
+    <p>La siguiente imagen muestra la frase bidireccional, <span lang="he" translate="no" dir="rtl">פעילות הבינאום, W3C</span> en azul en la parte superior, como aparecería normalmente en un párrafo de derecha a izquierda. Las flechas numeradas indican la dirección de lectura. Usted leería las secuencias en el orden de los números mostrados abajo de las flechas. </p>
+    <p>La segunda y tercera línea (texto en verde) muestran el orden en que se almacenan los caracteres en la memoria (de izquierda a derecha en la visualización) para el texto codificado lógico y visual, respectivamente. El orden lógico también refleja el orden en el que, como autor de contenido, debería escribir el texto. También se puede decir lo mismo sobre la línea visual, es decir que usted escribe el texto al revés (a menos que tenga una herramienta de edición que reorganice automáticamente las entradas lógicas al orden de almacenamiento visual para usted).</p>
+    <figure>
+      <p><img src="qa-visual-vs-logical-data/directions.gif" alt=" " /></p>
+    </figure>
+    <p>La siguiente imagen muestra un ejemplo de código fuente ordenado visualmente en HTML.</p>
+    <figure>
+      <p><img src="qa-visual-vs-logical-data/visual-example.png" alt=" " /></p>
+    </figure>
+    <p>Para hacer que el orden visual funcione, además de escribir el texto en reverso, también deberá tomar acciones como deshabilitar cualquier ajuste de línea, alinear el texto directamente hacia la derecha en párrafos y celdas de tablas, agregar saltos de línea explícitos, y, cuando esté traduciendo de un idioma que utiliza una secuencia de izquierda a derecha, invertir manualmente el orden de las columnas de las tablas. También tendrá que añadir y mantener diferentes spans de enlaces o enfatizar los marcados para cualquier texto marcado que se salte hacia otra línea..</p>
+    <p>(Realmente esta es una implementación bastante limpia. Por ejemplo, también podrá encontrar cosas como párrafos alineados a la derecha con etiquetas  &lt;nobr&gt;..&lt;/nobr&gt; alrededor de cada línea. Si su ventana es demasiado estrecha, el principio de cada línea desaparecerá del lado derecho de su navegador.)</p>
+    <p>Hay una asunto clave en referencia al mantenimiento. Por ejemplo, además de la dificultad de escribir hebreo al revés, si usted desea añadir algunas palabras en medio de un párrafo de texto ordenado visualmente, tendría que mover el texto hacia y desde cada línea que le sigue en el párrafo para restablecer los saltos de línea. También tendría que reorganizar cualquier marcador dentro de una línea que se extienda por más de una línea (ya sea antes o después del cambio) manualmente. </p>
+    <p>Esto resulta en un código muy frágil y difícil de mantener. </p>
+    <p>Además, todas las etiquetas adicionales necesarias para manejar el texto inflarían su código y afectarían no sólo el tiempo de creación, sino también el ancho de banda.</p>
+    <p>El orden visual también puede causar problemas en un nivel superior. Por ejemplo, cuando se traduce a otro idioma, se requiere que el orden de las columnas de las tablas se in viertan de forma manual. También se tendría que reordenar el flujo de los saltos de líneas manualmente si se cambia la geometría de la página. Usualmente, la ventana de diálogo de búsqueda de los navegadores captura el texto en un orden lógico, lo que hace que la clave de búsqueda no coincida con el texto almacenado en orden visual, a menos que haya una lógica especial en el navegador para lidiar con este problema, etc. </p>
+    <p>Utilizar texto lógicamente ordenado, por otro lado, hace que crear párrafos largos que fluyan, que se envuelven automáticamente a la anchura del elemento a nivel de bloque sea casi trivial. También hace que lidiar con la accesibilidad sea mucho más fácil, utilizando cosas como los lectores de pantalla. Simplemente escribe el texto en el orden en el que sería dicho, y el Algoritmo Bidireccional Unicode hace todo el trabajo pesado por usted.</p>
+  </section>
+  <section>
+    <h3 id="legacy"><a href="#legacy">Trabajando con sistemas heredados</a></h3>
+    <p> En los sistemas modernos donde el almacenamiento de base de datos incluye datos heredados (creados en algún momento con el uso de pantallas verdes) representados en orden visual (como ordenadores centrales u ordenadores iSeries) es necesario apoyar el flujo bidireccional de datos entre la base de datos (orden visual) y los sistemas de escritorio web (orden lógico).</p>
+    <p>Hay varios factores implicados en este proceso, además del orden de los caracteres. Este nivel de detalle va más allá del alcance de la pregunta enmarcada en este artículo, pero puede encontrar información adicional de ayuda en un <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2013JanMar/0331.html">útil correo electrónico</a> escrito por Tomer Mahlin, del Laboratorio de Desarrollo Bidi de IBM.</p>
+  </section>
+  <section>
+    <h3 id="characterencodings"><a href="#characterencodings">El orden visual y la codificación de caracteres</a></h3>
+    <p>Siempre recomendamos que utilice UTF-8 para la codificación de caracteres de su página, la cual apoya el orden lógico de los caracteres, pero en el caso de que, y sólo en este caso, usted eligiera utilizar una codificación ISO 8859 en su lugar, necesitará tener cierto cuidado al declarar la codificación. Uno declara la codificación de su contenido en la cabecera HTTP o en un elemento <code class="kw" translate="no">meta</code> dentro del documento (o ambos).</p>
+    <p>Existen convenciones especiales con respecto a las declaraciones de codificación utilizadas para el texto en hebreo que se relacionan a la cuestión entre el orden visual vs el lógico. Declarar que el contenido es ISO-8859-8 indicaría que el texto esta <em>codificado visualmente</em>. Para el contenido lógicamente ordenado que utiliza las codificaciones ISO usted deberá etiquetar el texto codificado ISO como ISO-8859-8-i.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/bidi-xhtml/"><cite>Creando páginas HTML en árabe, hebreo, y otras escrituras de Derecha a Izquierda</cite></a></p>
+    </li>
+    <li>
+      <p>Enlaces relacionados,<cite>La autoría de HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#direction">Dirección del texto</a></li>
+        <li><a href="/International/techniques/authoring-html#bidilocn">Facilitando la localización bidi</a></li>
+        <li><a href="/International/techniques/authoring-html#using">Construyendo una página de derecha a izquierda </a></li>
+        <li><a href="/International/techniques/authoring-html#blocks">Cambiando la dirección de un elemento de bloque </a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

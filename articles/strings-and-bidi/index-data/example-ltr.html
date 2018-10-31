@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Strings and bidi: Example 1</title>
+<link rel="stylesheet" href="../../../style/article-2016.css" type="text/css" />
+<link rel="stylesheet" href="local.css" type="text/css" />
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<script>
+function getJSON () {
+	var requestURL = 'data.json'
+	var request = new XMLHttpRequest()
+	request.open('GET', requestURL)
+	request.responseType = 'json'
+	request.send()
+	request.onload = function() {
+	  var mydata = request.response
+	  console.log(mydata)
+	  populateExamples(mydata,'',false)
+	  }
+
+	}
+
+function populateExamples (mydata, version, isolate) {
+	document.getElementById('title'+version).textContent = mydata.title
+	for (let i=0;i<mydata.authors.length;i++) {
+		if (isolate) span = document.createElement('bdi')
+		else span = document.createElement('span')
+		span.textContent = mydata.authors[i]
+		document.getElementById('authors'+version).appendChild(span)
+		if (i<mydata.authors.length-1) {
+			if (version) document.getElementById('authors'+version).appendChild(document.createTextNode('، '))
+			else document.getElementById('authors'+version).appendChild(document.createTextNode(', '))
+			}
+		}
+	document.getElementById('isbn'+version).textContent = mydata.isbn
+	document.getElementById('publisher'+version).textContent = mydata.publisher
+	var li, span
+	for (let t=0;t<mydata.translations.length;t++) {
+		li = document.createElement('li')
+		if (version !== '' && version !== 'a') span = document.createElement('bdi')
+		else  span = document.createElement('span')
+		span.lang = mydata.translations[t].lang
+		if (mydata.translations[t].direction) span.dir = mydata.translations[t].direction
+		if (version === '3' && mydata.translations[t].lang === 'he') span.dir = 'rtl'
+		span.textContent = mydata.translations[t].title
+		li.appendChild(span)
+		document.getElementById('translations'+version).appendChild(li)
+		}
+	for (let r=0;r<mydata.reviews.length;r++) {
+		li = document.createElement('li')
+		if (version !== '' && version !== 'a') span = document.createElement('bdi')
+		else  span = document.createElement('span')
+		span.textContent = mydata.reviews[r].name
+		li.appendChild(span)
+
+		li.appendChild(document.createTextNode(' - '))
+
+		if (version !== '' && version !== 'a') span = document.createElement('bdi')
+		else  span = document.createElement('span')
+		span.textContent = mydata.reviews[r].score
+		li.appendChild(span)
+
+		li.appendChild(document.createTextNode('🌟'))
+
+		document.getElementById('reviews'+version).appendChild(li)
+		}
+	var ALM = ''
+	if (version === '3') ALM = '\u061C'
+	document.getElementById('availability'+version).textContent = ALM+mydata.availability
+	var ddate = new Date(mydata.delivery)
+	var year = ddate.getFullYear()
+	var month = ddate.getMonth()+1
+	month = month.toString()
+	while (month.length < 2) month = '0'+month
+	var date = ddate.getDate()
+	document.getElementById('deliverDate'+version).textContent = ALM+date+'-'+month+'-'+year
+	}
+</script>
+<style type="text/css">
+.figWrap figure.card { 
+	text-align: start; 
+	background-color: rgba(249,237,221,1.00);
+	color: #666;
+	border-radius: 10px;
+	width: 30em;
+	margin: auto;
+	}
+.figWrap figure.card span, .figWrap figure.card bdi, .figWrap figure.card li {
+	color: black;
+	font-family: Gotham, Helvetica, Arial, sans-serif;
+	font-weight:normal;
+	}
+.ddate {
+	text-align: center;
+	font-size: 160%;
+	margin: 0;
+	}
+.cardTitle {
+	font-size: 1.4em;
+	text-align: center;
+	}
+.figWrap figure.card bdi.errorRef {
+	color: red; font-size: 120%;
+	}
+figure.card ul {
+	margin: 0;
+	padding: 0;
+	}
+figure.card li {
+	margin: 0 1em;
+	}
+h2 {
+	font-family: "Gill Sans", "Helvetica Neue", "Helvetica", Arial, sans-serif;
+	text-transform: uppercase;
+	}
+</style>
+</head>
+
+<body onLoad="getJSON()">
+<section>
+  <div class="figWrap">
+    <figure class="card">
+  <p class="cardTitle">Here's the book you were looking for:</p>
+  <p>Title: <span id="title"></span></p>
+  <p>Authors: <span id="authors"></span></p>
+  <p>ISBN: <span id="isbn"></span></p>
+  <p>Publisher: <span id="publisher"></span></p>
+  <p>Translated titles: 
+    <bdi class="errorRef">①</bdi></p> <ul id="translations"></ul>
+  <p>Reviewer (score): <bdi class="errorRef">②</bdi></p> <ul id="reviews"></ul>
+  <p>Availability: <span id="availability"></span> days</p>
+  <p>Expected delivery date:</p>
+  <p class="ddate"><span id="deliverDate"></span></p>
+  </figure>
+</div>
+</section>
+</body>
+</html>
