@@ -2,7 +2,7 @@ var trans = { }
 
 trans.versions = ['de','en','es','ro','uk'];
 
-trans.outofdatetranslations = [];
+trans.outofdatetranslations = ['de','es','ro','uk'];
 
 trans.updatedtranslations = [];
 
