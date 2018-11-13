@@ -113,7 +113,7 @@ var mainNavigation = '<aside id="mainNavigation">'+
 '	<nav id="breadcrumbs"><p>'+g.breadcrumbs+'</p></nav>'+
 '	<nav class="noprint" id="toc"><h2 id="internal-links" class="notoc"><a href="#internal-links">'+s.onThisPage+'</a></h2><div id="toclocation"> </div></nav>'+
 '	<nav class="noprint" id="relatedlinks"></nav>'+
-'	<div id="aboutdoc">'+g.about+'</div>'+
+'	<div id="aboutdoc" class="noprint">'+g.about+'</div>'+
 '	</aside>'+
 '	<nav id="boilerplate">'+
 '	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="https://www.w3.org/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
