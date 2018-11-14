@@ -241,7 +241,7 @@ g.bottomOfPage = '<footer><address>'+credits+'</address>'+
 function completePage () {
     var related = ''
     if (document.getElementById('full-links')) { 
-        related = "<h2 id='relatedhead' class='notoc'>"+"Related links"+"</h2>\n"
+        related = "<h2 id='relatedhead' class='notoc'>"+s.relatedLinks+"</h2>\n"
         related +=  '<ul id="relatedLinkList">\n'
         related += document.getElementById('full-links').innerHTML
         related += '</ul>\n'
