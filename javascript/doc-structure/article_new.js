@@ -238,6 +238,15 @@ g.bottomOfPage = '<footer><address>'+credits+'</address>'+
 
 // COMPLETE PAGE
 
+function getLink2GHIssues () {
+    var body = window.location.href
+    var qm = body.search(/\?/)
+    if (qm > 0) body = body.substr(0,qm)
+    body = encodeURIComponent('[source] ('+body+') ['+f.clang+']')
+    var title = '['+f.directory+f.filename+'] %20BRIEF_TITLE_GOES_HERE'
+    return 'https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A%0A'
+    }
+
 function completePage () {
     var related = ''
     if (document.getElementById('full-links')) { 
@@ -245,7 +254,6 @@ function completePage () {
         related +=  '<ul id="relatedLinkList">\n'
         related += document.getElementById('full-links').innerHTML
         related += '</ul>\n'
-        console.log(related)
         }
 	var sidebarExtras = ''
 	if (document.getElementById('sidebarExtras')) sidebarExtras = document.getElementById('sidebarExtras').innerHTML
@@ -253,7 +261,11 @@ function completePage () {
 	fillinTranslations()
 	if (document.getElementById("toclocation")) createtoc(true);
 	getURLs()
-	}
+
+    // add link to GH issues to "About this document"
+    document.getElementById('linktoGHissues').href = getLink2GHIssues()
+    document.getElementById('linktoGHissues').target = "_blank"
+    }
 
 
 function fillinTranslations () {
