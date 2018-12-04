@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<title>Нормализация в HTML и CSS</title>
+<meta name="description" content="Какие есть формы нормализации, почему я должен знать о них при создании HTML и CSS контента?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-html-css-normalization' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-html-css-normalization' // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-10' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-10', time:'14:48'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-05', time:'20:08'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Alexandr Shlapak' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-html-css-normalization-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2018.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Нормализация в HTML и CSS</h1>
+</header>
+
+
+<section id="sidebarExtras">
+  <section>
+    <h2><a id="quicktest" href="quicktest">Quick check</a></h2>
+    <form action="https://validator.w3.org/i18n-checker/" method="get" class="quickcheck">
+      <p>Проверка на несоответствия нормализации в идентификаторах и именах классов</p>
+      <p>
+        <input type="text" value="URI страницы для проверки" name="docAddr" onfocus="this.value=''" />
+      </p>
+      <p>
+        <button type="submit">Проверить</button>
+      </p>
+      <p><span class="guide">Посмотрите на поле "Class &amp; id names" в таблице информации.</span></p>
+    </form>
+  </section>
+</section>
+
+
+<section>
+<div id="audience">
+<p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    шифровальщики XHTML / HTML (используя редакторы или скрипты), разработчики скриптов (PHP, JSP, и т.д.), шифровальщики  CSS,
+      Менеджеры веб-проектов, и те, кто не знаком с нормализацией Unicode, и как это может повлиять на разработку HTML и CSS.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">Какие есть формы нормализации, почему я должен знать о них при создании HTML и CSS контента?</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Answer</a></h2>
+  <p>Нормализация - то, о чем вы должны знать, если вы разрабатываете HTML страницы с таблицами стилей CSS в UTF-8 (или в любой другой кодировке Unicode), особенно если вы имеете дело со скриптом, который в тексте использует ударения или другие диакритические знаки. </p>
+  
+  <section>
+    <h3 id="n11nwhat"><a href="#n11nwhat">Какие есть формы нормализации?</a></h3>
+    <p>В Unicode можно показывать тот же текст с разными последовательностями символов. Например, возьмем венгерское слово <span class="qterm">világ</span>. Четвертая буква может храниться в памяти как <dfn>составленная</dfn> U+00E1   МАЛЕНЬКАЯ ЛАТИНСКАЯ БУКВА A С УДАРЕНИЕМ (один символ) или как <dfn>разложенная</dfn> последовательность U+0061   МАЛЕНЬКАЯ ЛАТИНСКАЯ БУКВА A за которой следует U+0301   УДАРЕНИЕ (два символа). </p>
+    <p><img src="qa-html-css-normalization-data/vilag.png" alt=" " /></p>
+    <p>Стандарт Unicode позволяет любую из этих альтернатив, но требует, чтобы обе рассматривались как идентичные. Для повышения эффективности, приложение, как правило, <dfn>нормализует</dfn> текст, прежде чем выполнять поиск или сравнение. Нормализация, в этом случае, означает преобразование текста используя все составленные или все разложеные символы.</p>
+    <p>Есть четыре <dfn>формы нормализации</dfn> указанные стандартом Unicode: NFC, NFD, NFKC и NFKD. <span class="qchar">C</span> означает составленные, и <span class="qchar">D</span> означает разложенные. <span class="qchar">K</span> означает совместимость. Для улучшения совместимости, W3C рекомендует использовать <strong>NFC</strong> нормализованный текст на Веб страницах.</p>
+  </section>
+  
+  <section>
+    <h3 id="n11nhow"><a href="#n11nhow">Что мне нужно знать о нормализации?</a></h3>
+    <p style="">К сожалению, нормализация не всегда используется до сравнения контента. Особенно важно использование селекторов и имен классов или идентификаторов в HTML и CSS. Если слово <span class="qterm">világ</span> используется в составленной форме в HTML (например <code>&lt;span class=&quot;világ&quot;&gt;</code>), но в разложенной форме в CSS (например <code>.vila&#x0301;g { font-style: italic; }</code>), то потом селектор не будет соответствовать имени класса.</p>
+    <p style="">Это означает, что при создании контента вы должны убедиться, что селекторы и класс или идентификаторы такие же символ-к-символу. Это особенно вероятно тогда, когда разметка и CSS разрабатываются или обслуживаются разными людьми.</p>
+    <p style="">Лучший способ убедиться, в соответствии - использовать одну отдельную форму Unicode нормализации для всего контента, который разрабатывается. Как мы уже говорили выше, W3C рекомендует NFC.</p>
+    <p style="">Большинство клавиатур для европейских языков уже выводят текст в NFC, но это менее вероятно в случае, если вы имеете дело со многими неевропейскими языками.</p>
+    <p style="">В некоторых случаях ваш редактор может позволить вам сохранить данные в форме нормализации на выбор. На изображении ниже показан вариант для создания особой формы нормализации по умолчанию при открытии новых файлов в Dreamweaver (избранная NFC). Вам показан подобный выбор при сохранении документа.</p>
+    <p style=""><img src="qa-html-css-normalization-data/dwprefs-nfc.png" alt="Форма Unicode нормализации в диалоговом окне преимущества, что показывает выбранную NFC." /></p>
+  </section>
+  
+  <section>
+    <h3 id="checking"><a href="#checking">Как я могу проверить страницы на наличие ошибок?</a></h3>
+    <p style="">Вы можете выяснить содержат ли страницы HTML имена классов и идентификаторы, которые не нормируется согласно NFC, используя <a class="print" href="https://validator.w3.org/i18n-checker/">Контроллер W3C Интернационализации</a>.</p>
+    <p style="">Если у вас проблемы, вы должны найти редактор или инструмент для преобразования, который позволяет указать форму нормализации, и использовать его для повторного сохранения страницы.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Приступая к работе? <a href="/International/getting-started/characters"><cite>Представляем Наборы Символов и Кодирование</cite></a></p>
+    </li>
+    <li>
+      <p>Пособие, <a href="/International/tutorials/tutorial-char-enc/"><cite>Обработка кодирования символов в HTML и CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Ссылки по теме, <cite>Разработка HTML и CSS</cite></p>
+      		<ul>
+            <li><a href="/International/techniques/authoring-html#charset">Символы</a></li>
+      		<li><a href="/International/techniques/authoring-html#normalization">Обработка нормализации</a></li>
+      		</ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>
