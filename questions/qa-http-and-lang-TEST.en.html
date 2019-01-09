@@ -71,29 +71,30 @@ f.additionalLinks = ''
  
 
 <section>
-<p><span style="margin-top: 6em;">In addition to the <a class="print termref" href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"><code class="kw" translate="no">lang</code></a> and/or <a class="print termref" href="http://www.w3.org/TR/2004/REC-xml-20040204/#sec-lang-tag"><code class="kw" translate="no">xml:lang</code></a> attributes on the <code class="kw" translate="no">html</code> tag, it  is also possible to find language information related to an HTML page in <code class="kw" translate="no">meta</code> elements and the HTTP header which is served with the page. </span> </p>
-<p>This article is about HTML pages and, specifically, whether  it's useful to put language declarations in HTTP headers and <code class="kw" translate="no">meta</code> elements. It is not a general guide to setting language on an HTML page: for that, see <a href="qa-html-language-declarations">Declaring language in HTML</a>, or for other information try the <a href="#relatedhead">Related links</a>.</p>
-<p>To understand the use of the language declaration in the HTTP header, it is important to recognize the distinction between (1)  using
-file metadata to identify the audience for the document, and (2) specifying the language used for processing content (eg. for hyphenation, styling, spell checking, etc). This is explored further in the detailed sections below.</p>
-<p>The HTTP <code class="kw" translate="no">Content-Language</code> header <em>can</em> be used, but only to provide metadata about the <em>intended audience</em> of the page, rather than to indicate the actual language of a range of text. Unlike a <code class="kw" translate="no">lang</code> attribute on an element, if your intended audience speaks more than one language, the HTTP header allows you to use a comma-separated list of languages.</p>
-<p>To send language information in the HTTP header, you need to set up the server appropriately. Note that this approach is not effective if your page is accessed from a hard drive, disk or other non-server based location. There is currently no widely recognized way of using this kind of metadata inside the page.</p>
-<p>Here is an example of an HTTP header that declares the resource to be a mixture of English, Hindi and Punjabi:</p>
-<figure class="example">
-<p><code>Content-Language: en, hi, pa</code></p>
-</figure>
-<p>You should always use a <code class="kw" translate="no">lang</code> attribute on the <code class="kw" translate="no">html</code> tag to declare the default language of the actual text in the page.</p>
-<p>The <code class="kw" translate="no">Content-Language</code> value for an <code class="kw" translate="no">http-equiv</code> attribute on a <code class="kw" translate="no">meta</code> element is deprecated, and should no longer be used.</p>
-<p>The remainder of this article provides additional details, that you may find helpful.</p>
+<p><span style="margin-top: 6em;">In addition to the <a class="print termref" href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"><code class="kw" translate="no">lang</code></a> and/or <a class="print termref" href="http://www.w3.org/TR/2004/REC-xml-20040204/#sec-lang-tag"><code class="kw" translate="no">xml:lang</code></a> attributes on the <code class="kw" translate="no">html</code> tag, you may come across language information  in HTML <code class="kw" translate="no">meta</code> elements, or in the HTTP header which is served with an HTML page. </span> </p>
+<p class="info">This article is (specifically) about whether  it's useful to put language declarations in HTTP headers and <code class="kw" translate="no">meta</code> elements. It is not a general guide to setting language on an HTML page: for that, see <a href="qa-html-language-declarations">Declaring language in HTML</a>, or  try the <a href="#relatedhead">Related links</a>.</p>
 </section>
+
+
 <section>
-<h2 id="detail"><a href="#detail">Details</a></h2>
-  
+    <h2 id="meta_summary"><a href="#meta_summary">The meta element</a></h2>
+    <p>Let's look at the <code class="kw" translate="no">meta</code> element first, since it's easily dealt with. It looks like this.</p>
+<figure class="example">
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
+<p><code>&lt;meta http-equiv=&quot;content-language&quot; content=&quot;de&quot; /&gt;</code></p>
+</figure>
+<p>This use of the <code class="kw" translate="no">content-language</code> value for an <code class="kw" translate="no">http-equiv</code> attribute  is deprecated by the HTML specification, and should no longer be used. Instead, you should always use a <code class="kw" translate="no">lang</code> attribute on the <code class="kw" translate="no">html</code> tag to declare the default language of the  text in the page. (For more information, <a href="#meta">see below</a>.)</p>
+</section>
+
+
+
+
   <section>
-    <h3 id="http"><a href="#http">Specifying language  in an HTTP header</a></h3>
-    <p> Language information may  also be found in the <code class="kw" translate="no">Content-Language</code> <a class="print" href="http://tools.ietf.org/html/rfc2616#section-14.12">HTTP header</a> that is sent with a
-      document when a document is requested from a server. This information is associated with a particular page by settings on the server or by server-side scripting. See the last line in the example below that shows the  HTTP response that accompanies this article. </p>
-    <figure class="example">
-      <pre>HTTP/1.1·200·OK
+    <h2 id="http_summary"><a href="#http_summary">HTTP headers</a></h2>
+<p>When you retrieve a web page or resource from a server, the server sends with it some   metadata, referred to as <a class="print" href="http://tools.ietf.org/html/rfc2616#section-14.12">HTTP headers</a>. One of the items you may find in such metadata is language related.</p>
+<p> The <code class="kw" translate="no">Content-Language</code>  header  is associated with a particular page by settings on the server or by server-side scripting. See the last line in the example below that shows the  HTTP response that accompanies this article. </p>
+<figure class="example">
+<pre>HTTP/1.1·200·OK
 Date:·Sat,·23·Jul·2011·07:28:50·GMT
 Server:·Apache/2
 Content-Location:·qa-http-and-lang.en.php
@@ -104,63 +105,78 @@ Connection:·close
 Transfer-Encoding:·chunked
 Content-Type:·text/html; charset=utf-8
 <span style="color:red;">Content-Language:·en</span></pre>
-    </figure>
-    <p>Like the <code class="kw" translate="no">meta</code> element with the <code class="kw" translate="no">http-equiv</code> attribute set to <code class="kw" translate="no">Content-Language</code>, the value of the HTTP header can be a comma-separated list of language tags. The <a class="print" href="http://tools.ietf.org/html/rfc2616#section-14.12">HTTP specification</a> indicates clearly that the intent of this information is to provide metadata about the intended audience of the document.</p>
-    <p>If no language is declared on the <code class="kw" translate="no">html</code> tag, some, but not all, mainstream browsers recognize the value declared in the HTTP header to set the default language of the text in the page. Even in a browser that does this, however, the information seems to be applied to some features and not others that are affected by language. The HTML5 specification says that if there is no <code class="kw" translate="no">lang</code> attribute on the <code class="kw" translate="no">html</code> tag, and if there is no <code class="kw" translate="no">meta</code> element with the <code class="kw" translate="no">http-equiv</code> attribute set to <code class="kw" translate="no">Content-Language</code>, and if there is only a single language tag in the HTTP header declaration, then a browser may use that information to guess at the default language of the text in the page.</p>
-    <p>Since you should always use a language attribute on the <code class="kw" translate="no">html</code> tag, and the language attribute always overrides the HTTP header information, this really becomes a fine point, however. The HTTP header should be used only to provide metadata about the intended audience of the document as a whole, and the language attribute on the <code class="kw" translate="no">html</code> tag should be used to declare the default language of the content.</p>
+</figure>
+<p>Here is an example of an HTTP <code class="kw" translate="no">Content-Language</code> header that declares the resource to be a mixture of English, Hindi and Punjabi. Unlike a <code class="kw" translate="no">lang</code> attribute on an HTML element, if your intended audience speaks more than one language, the HTTP header allows you to use a comma-separated list of languages.</p>
+<figure class="example">
+<p><code>Content-Language: en, hi, pa</code></p>
+</figure>
+<p>The HTTP <code class="kw" translate="no">Content-Language</code> header can be useful, but the <a class="print" href="http://tools.ietf.org/html/rfc2616#section-14.12">HTTP specification</a> indicates clearly that the intent of this information is to provide metadata about the intended audience of the document, rather than to indicate the actual language of the text itself. Such metadata may be used for serving the right language version, workflow management, classification, searching, etc.</p>
+<p>To send language information in the HTTP header, you need to set up the server appropriately. Note, however, that this approach is not effective if your page is accessed from a hard drive, memory stick, or other non-server based location. There is currently no widely recognized way of using this kind of metadata inside the page.</p>
 </section>
 
 
 
 <section>
-<h3 id="metadata"><a href="#metadata">Specifying file metadata: the language of the intended audience</a></h3>
-    <p>Metadata that describes the language or languages of the intended audience is about <strong>the document as a whole</strong>. Such metadata may be used for searching, serving the right language version, workflow management, classification, etc. Where there are language changes in a document, information about the language of the intended audience is not specific enough to support text-processing (for example in a way that would be needed for the application of text-to-speech, styling, automatic font assignment, etc.)</p>
-    <p>The language of the intended audience does not include every language used in a document. Many documents on the Web contain embedded fragments of content in different languages, whereas the page is clearly aimed at speakers of one particular language. For example, a German city-guide for Beijing may contain useful phrases in Chinese, but it is aimed at a German-speaking audience, not a Chinese one.</p>
-    <p>On the other hand, it is also possible for a page to contain the same or parallel content in more than one language. For example, a Canadian web page may welcome  readers with French content in the left column, and <em>the same content</em> in English in the right-hand column. Here the document is equally targeted at speakers of both languages, so there are two audience languages. This situation is not as common on the Web as in printed material since it is easy to link to separate pages on the Web for different audiences, but it does occur where there are multilingual communities. Another use case is a blog or a news page aimed at a multilingual community, where some articles on a page are in one language and some in another. For example, a  forum used by a Punjabi community may contain posts in English, Hindi and Punjabi in a single thread.</p>
-    <p>There are also pages where the navigational information, including the page title, is in one language but the real content of the page is in another. While this is not necessarily good practice, it doesn't change the fact that the language of the intended audience is usually that of the content, regardless of the language at the top of the document source.</p>
+<h2 id="processing"><a href="#processing">Specifying the text-processing language</a></h2>
+<p>The  <code translate="no" class="kw">lang</code> (and/or <code class="kw" translate="no">xml:lang</code>) attribute should be used to  specify the language of text content so that the browser can correctly display or process language of your content. You should always use it on the <code class="kw" translate="no">html</code> element tag, and then also use it on any elements that surround fragments of content in a different language. </p>
+<p><span class="info">If you want to better understand the distinction between (1)  using
+file metadata to identify the audience for the document, and (2) specifying the language used for processing content (eg. for hyphenation, styling, spell checking, etc), see the article <a href="qa-text-processing-vs-metadata">Types of language declaration</a>.</span></p>
+<p class="info">For more information about how to use the <code class="kw" translate="no">lang</code> attribute, see <a href="qa-html-language-declarations">Declaring language in HTML</a>.</p>
 </section>
+
+
+
   
-  <section>
-    <h3 id="processing"><a href="#processing">Specifying the text-processing language</a></h3>
-    <p>When specifying the language for text-processing you are declaring the language in which <strong>a specific range of text</strong> is actually written, so that user agents or applications that manipulate the text (such as voice browsers, spell checkers, or style processors) can effectively handle the text in question. So we are, by necessity, talking about associating a <em>single</em> language with a specific range of text. </p>
-    <p>This specificity distinguishes the declaration of the language for text-processing from the language of the intended audience.	Whereas the intended audience can be speakers of multiple languages, a specific range of text can only be in one language at a time.</p>
-    <p>The  <code translate="no" class="kw">lang</code> (and/or <code class="kw" translate="no">xml:lang</code>) attribute should be used for specifying the text-processing language of your content. This is why you can only use a single language value with these attributes.</p>
-  </section>
+<section>
+    <h2 id="http"><a href="#http">Inferring the  language  of the text from an HTTP header</a></h2>
+<p>If no language is declared on the <code class="kw" translate="no">html</code> tag, some, but not all, mainstream browsers recognize the value declared in the HTTP header to set the default language of the text in the page. Even in a browser that does this, however, the information seems to be applied to some features and not others that are affected by language. The HTML5 specification says that if there is no <code class="kw" translate="no">lang</code> attribute on the <code class="kw" translate="no">html</code> tag, and if there is no <code class="kw" translate="no">meta</code> element with the <code class="kw" translate="no">http-equiv</code> attribute set to <code class="kw" translate="no">Content-Language</code>, and if there is only a single language tag in the HTTP header declaration, then a browser may use that information to guess at the default language of the text in the page.</p>
+    <p>Since you should always use a language attribute on the <code class="kw" translate="no">html</code> tag, and the language attribute always overrides the HTTP header information, this really becomes a fine point, however. The HTTP header should be used only to provide metadata about the intended audience of the document as a whole, and the language attribute on the <code class="kw" translate="no">html</code> tag should be used to declare the default language of the content.</p>
 </section>
+
+
 
 
 <section>
   <h2 id="additionalinfo"><a href="#additionalinfo">Additional information</a></h2>
 <p>The information in this section is less likely to be useful, but is provided for completeness.</p>
 
-<section>
-    <h3 id="fallbacks"><a href="#fallbacks">Fallback heuristics for determining language</a></h3>
-    <p>For backwards compatibility, HTML5 describes an algorithm by which the default language of the content can be guessed at from the HTTP or <code class="kw" translate="no">meta</code> <code class="kw" translate="no">Content-Language</code> information under certain conditions. This is, however, only a fallback mechanism for cases where no language attribute has been used on the <code class="kw" translate="no">html</code> tag. If you have used the language attribute on the <code class="kw" translate="no">html</code> tag, as you always should,  such fallbacks are irrelevant.</p>
-    </section>
+
+
 
 <section>
-    <h3 id="meta"><a href="#meta">Specifying language with  the <code class="kw" translate="no">meta</code> element (not recommended)</a></h3>
+    <h3 id="meta"><a href="#meta">Why you shouldn't use   the <code class="kw" translate="no">meta</code> element</a></h3>
     <p> The use of a <code class="kw" translate="no">meta</code> element in the document <code class="kw" translate="no">head</code> with the <code class="kw" translate="no">http-equiv</code> attribute set to <code class="kw" translate="no">Content-Language</code> is not mentioned directly in the HTML 4.01 specification, and yet, for a long time, much of the informal guidance out on the Web about how to declare
       language for your HTML page suggested its use, and some  HTML authoring tools automatically created such elements when you specified language information using
       dialog boxes. Here is an example that declares the language to be English.</p>
     <figure class="example">
-      <p><img src="../icons//dontcopy.png" alt="Do not use this" title="Do not use this" class="dontuse"/> <code>&lt;meta http-equiv="Content-Language" content="en"&gt;</code> </p>
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
+<p><code>&lt;meta http-equiv="Content-Language" content="en"&gt;</code> </p>
     </figure>
     <p>Unlike the <code class="kw" translate="no">lang</code> and <code class="kw" translate="no">xml:lang</code> attributes, the value of the <code class="kw" translate="no">content</code> attribute can be a comma-separated list of language tags. The example below declares the primary
       languages of the document to be (in equal measure) German, French and Italian.</p>
     <figure class="example">
-      <p><code><img src="../icons//dontcopy.png" alt="Do not use this" title="Do not use this" class="dontuse"/> &lt;meta http-equiv="Content-Language" content="de, fr, it"&gt;</code></p>
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
+<p><code>&lt;meta http-equiv="Content-Language" content="de, fr, it"&gt;</code></p>
     </figure>
     <p>If the name of the <code class="kw" translate="no">meta</code> element wasn't a clear enough clue, the fact that the value supports  multiple languages  indicates that this element is really about document level metadata. If you are to usefully indicate the language of a range of text, you have to be specific – it can only be in one language at a time. The <code class="kw" translate="no">meta</code> element, then, is an in-document location for expressing metadata about the language of the intended audience of the document as a whole.</p>
     <p>Until recently, few browsers paid any attention to this meta element. Then several major browsers began using this element, if there was no language attribute on the <code class="kw" translate="no">html</code> tag, to set the default language of the text in the document (what you should use a language attribute on the <code class="kw" translate="no">html</code> tag for). The way this was implemented was inconsistent, and therefore unreliable, from one browser to another.</p>
     <p>Because of the history of confusion and inconsistent implementation surrounding this kind of declaration, in 2011 the HTML Working Group took a decision to make the <code class="kw" translate="no">meta</code> element with <code class="kw" translate="no">http-equiv</code> set to <code class="kw" translate="no">Content-Language</code> <a class="print" href="http://www.w3.org/TR/html5/semantics.html#pragma-directives">non-conforming in HTML</a>. This means that you should no longer use it in HTML5, and therefore, though technically not illegal in other types of HTML, it is best to now not use it anywhere.</p>
     <p>HTML5 did, however, make a <a class="print" href="http://www.w3.org/TR/html5/semantics.html#pragma-set-default-language">concession</a> for backwards compatibility. If there is a  meta element with <code class="kw" translate="no">http-equiv</code> set to <code class="kw" translate="no">Content-Language</code> in the markup, and if there is no language attribute on the <code class="kw" translate="no">html</code> tag, and if the  meta element has a value that is a single language tag, then a browser can (not must) use that information to guess at the default language of the text on the page. Having said that, this is only for backwards compatibility, and you really shouldn't use this approach any more. Simply use a language attribute on the <code class="kw" translate="no">html</code> tag.</p>
-    <p>One implication of HTML5 dropping the  meta element for declaring language is that there is now no obvious way to provide metadata about the document inside the document itself. At the time of writing, it is hard to find examples of the use of such metadata, though in theory it would be quite useful for content management systems, translation processes, and the like. This kind of information can be carried by an HTTP header (as we'll see in the next section), but such systems and processes tend to work on documents that are not sent from a server with an HTTP header, and so  in-document metadata would be useful.</p>
-    <p>Perhaps another approach, such as <a class="print" href="http://wikipedia.org/wiki/RDFa">RDFa</a>, would provide a way of representing such information in the future.</p>
-    <p><span class="leadin">Dublin Core on the meta element.</span> Since the rules in HTML4 for <code class="kw" translate="no">meta</code> elements put few restrictions on how it is used, it is also possible, though not common, to find instances where it is used to express language information using <a class="print" href="http://en.wikipedia.org/wiki/Dublin_core">Dublin Core</a> notation. It does not appear, however, that this information is ever used by browsers, and it is unclear to what extent it is used by any other application.</p>
-    <figure class="example">
-      <p><code><img src="../icons//dontcopy.png" alt="Do not use this" title="Do not use this" class="dontuse"/> &lt;meta name="dc.language" content="en"&gt;</code></p>
-    </figure>
+    </section>
+    
+
+
+
+<section>
+    <h3 id="internal_meta"><a href="#internal_meta">Document-internal metadata</a></h3>
+
+<p>One implication of HTML5 dropping the  meta element for declaring language is that there is now no obvious way to provide metadata about the document inside the document itself. In theory it would be quite useful for content management systems, translation processes, and the like. This kind of information can be carried by an HTTP header (as we'll see in the next section), but such systems and processes tend to work on documents that are not sent from a server with an HTTP header, and so  in-document metadata would be useful.</p>
+<p>Perhaps another approach, such as <a class="print" href="http://wikipedia.org/wiki/RDFa">RDFa</a>, would provide a way of representing such information in the future.</p>
+<p>The <a rel="noopener" href="https://wiki.whatwg.org/wiki/MetaExtensions" class="external external-icon">WHATWG Wiki MetaExtensions page</a> provides an extended list of values that could be used with the <code class="kw" translate="no">meta</code> element's <code class="kw" translate="no">name</code> value, though none have been formally accepted yet. One such value is <code translate="no">dc.language</code>, used to express language information with <a class="print" href="http://en.wikipedia.org/wiki/Dublin_core">Dublin Core</a> notation. </p>
+<figure class="example">
+<p><code><img src="../icons//dontcopy.png" alt="Do not use this" title="Do not use this" class="dontuse"/> &lt;meta name="dc.language" content="en"&gt;</code></p>
+</figure>
+<p>It is unclear, however, that this information is ever used by browsers, or to what extent it is used by any other application. The WHATWG page recommends that the lang attribute be used instead. That recommendation is good for declaring the text-processing language, but doesn't address its possible use for expressing metadata about the page as a whole.</p>
 </section>
 </section>
 
@@ -184,7 +200,7 @@ Content-Type:·text/html; charset=utf-8
       <li><a href="https://www.w3.org/International/techniques/authoring-html?open=language&open=textprocessing">Declaring the overall language of a page</a></li>
       </ul>
     </li>
-  </ul>
+</ul>
 </section>
 
 <footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
