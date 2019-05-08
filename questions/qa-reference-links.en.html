@@ -48,7 +48,7 @@ f.additionalLinks = ''
 <header>
   <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
   
-  <h1>Linking to headings &amp; figures in multilingual documents</h1>
+  <h1>Linking to headings &amp; figures in multilingual documents (Draft!)</h1>
 </header>
 <section>
   <div id="audience">
@@ -160,18 +160,26 @@ f.additionalLinks = ''
 <section>
 <h3>The language of the link text</h3>
 <p>Take an example of an English paragraph that refers to a section heading in Japanese. Here's the section heading:</p>
+<div class="figWrap">
+<figure id="h4_ja">
+<h4 id="heading1" lang="ja" style="text-align: left; padding:1em; margin:0; border: 1px solid #ccc;">国際化活動 W3C</h4>
+<figcaption>A Japanese heading.</figcaption>
+</figure>
+</div>
+
+<p>The markup for the heading is as follows. The language is indicated in the <code class="kw" translate="no">h4</code> tag in this case, but it may be indicated in a previous tag and inherited by the <code class="kw" translate="no">h4</code> tag.</p>
 <figure class="example">
-<p>&lt;h4 id=&quot;myHeading&quot; lang=&quot;ja&quot;&gt;<span class="ja">国際化活動 W3C</span>&lt;/h4&gt;</p>
+<p><code>&lt;h4 id=&quot;myHeading&quot; lang=&quot;ja&quot;&gt;<span class="ja">国際化活動 W3C</span>&lt;/h4&gt;</code></p>
 </figure>
 
-<h4 id="heading1" lang="ja">国際化活動 W3C</h4>
-<p>It's important to ensure that a Japanese font gets associated with the Japanese text in the link (rather than a Chinese font which is the default for ideographic characters in some browsers).  However, even if we pull out all the nodes inside the heading tag, we lose the information about the language being Japanese.</p>
+<p>It's important to ensure that a Japanese font gets associated with the Japanese text in the link, rather than a Chinese font which is the default for ideographic characters in some browsers.  However, even if we pull out all the nodes inside the heading tag, we lose the information about the language being Japanese.</p>
 <figure class="example">
-<p>This is a paragraph that points to the section &lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot;&gt;<span class="ja">国際化活動 W3C</span>&lt;/a&gt;.</p>
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=""/> Incorrect result.</span></div>
+<p><code>This is a paragraph that points to the section &lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot;&gt;<span class="ja">国際化活動 W3C</span>&lt;/a&gt;.</code></p>
 </figure>
-<p>In this example, that information happens to be on the <code class="kw" translate="no">h4</code> tag in the heading itself, though it could be further up the hierarchy.  The code inserting the  reference link into the paragraph needs to get the computed language of the heading (as a whole) and apply that to the anchor tag.  The end result we are seeking is like this.</p>
+<p> The code inserting the  reference link into the paragraph needs to get the computed language of the heading (as a whole) and apply that to the anchor tag.  The end result we are seeking is like this.</p>
 <figure class="example">
-<p>This is a paragraph that points to the section &lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot; <strong>lang=&quot;ja&quot;</strong>&gt;<span class="ja">国際化活動 W3C</span>&lt;/a&gt;.</p>
+<p><code>This is a paragraph that points to the section &lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot; <strong>lang=&quot;ja&quot;</strong>&gt;<span class="ja">国際化活動 W3C</span>&lt;/a&gt;.</code></p>
 </figure>
 </section>
 
@@ -185,18 +193,29 @@ f.additionalLinks = ''
 <p>There are similar considerations for documents containing text that runs in multiple directions. It is essential to apply the correct base direction for a sequence of characters that is inserted into a paragraph, and this requires finding the computed direction for the heading tag.</p>
 <p>For example, take a heading such as: </p>
 <figure class="example">
-<p>&lt;h4 id="myHeading" lang="ar" dir="rtl"><span lang="ar">نشاط التدويل، W3C</span>&lt;/h4> </p>
+<p><code>&lt;h4 id="myHeading" lang="ar" dir="rtl"><span lang="ar">نشاط التدويل، W3C</span>&lt;/h4> </code></p>
 </figure>
 
 <p>This code is displayed as shown just below. Note the location of the text &quot;W3C&quot;.</p>
-<h4 id="myHeading" lang="ar" dir="rtl">نشاط التدويل، W3C</h4>
+
+<div class="figWrap">
+<figure id="h4_ar">
+<h4 id="myHeading" lang="ar" dir="rtl" style="text-align: right; padding:1em; margin:0; border: 1px solid #ccc;">نشاط التدويل، W3C</h4>
+<figcaption>An Arabic heading with Latin text at the end.</figcaption>
+</figure>
+</div>
+
+
+<!--h4 id="myHeading" lang="ar" dir="rtl">نشاط التدويل، W3C</h4-->
 <p>Drop just the inner HTML nodes into our previous paragraph, and you get:</p>
 <figure class="example">
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=""/> Incorrect result.</span></div>
 <p>This is a paragraph that points to <a class="secref" href="#myHeading"><span lang="ar">نشاط التدويل، W3C</span></a>.</p>
 </figure>
 <p>Here, the W3C is on the wrong side of the Arabic text.  So let's add <code>dir="auto"</code> to the generated markup.</p>
 <figure class="example">
-<p>This is a paragraph that points to &lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot; lang=&quot;ar&quot; <strong>dir=&quot;auto&quot;</strong>&gt;<span lang="ar">نشاط التدويل، W3C</span>&lt;/a&gt;.</p>
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=""/> Incomplete solution!</span></div>
+<p><code>This is a paragraph that points to &lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot; lang=&quot;ar&quot; <strong>dir=&quot;auto&quot;</strong>&gt;<span lang="ar">نشاط التدويل، W3C</span>&lt;/a&gt;.</code></p>
 </figure>
 <p>The <code class="kw" translate="no">auto</code> value of the <code class="kw" translate="no">dir</code> attribute looks at the incoming data, finds the first strong directional character (in this case an Arabic letter), and sets the base direction for the contents of the anchor tag to that direction (here RTL). Now the "W3C" text is in the right place.</p>
 <figure class="example">
@@ -208,10 +227,19 @@ f.additionalLinks = ''
 </figure>
 <p>So far so good. However, there's another potential problem. </p>
 <p>Let's suppose that, instead, the heading is the following. Note that the heading begins with ASCII characters (on the right).</p>
-<h4 id="myHeading2" lang="ar" dir="rtl">HTML و CSS: تصميم و إنشاء مواقع الويب</h4>
+
+<div class="figWrap">
+<figure id="h4_ar2">
+<h4 id="myHeading2" lang="ar" dir="rtl" style="text-align: right; padding:1em; margin:0; border: 1px solid #ccc;">HTML و CSS: تصميم و إنشاء مواقع الويب</h4>
+<figcaption>An Arabic heading with Latin text at the start.</figcaption>
+</figure>
+</div>
+
+<!--h4 id="myHeading2" lang="ar" dir="rtl">HTML و CSS: تصميم و إنشاء مواقع الويب</h4-->
 <p>If we apply the same formula here, we have a problem.</p>
 <figure class="example">
-<p>* This is a paragraph that points to <a class="secref" href="#myHeading" dir="auto"><span lang="ar">HTML و CSS: تصميم و إنشاء مواقع الويب</span></a>.</p>
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=""/> Incorrect result.</span></div>
+<p>This is a paragraph that points to <a class="secref" href="#myHeading" dir="auto"><span lang="ar">HTML و CSS: تصميم و إنشاء مواقع الويب</span></a>.</p>
 </figure>
 <p>Even though we used <code>dir="auto"</code>, the sequence "<span lang="ar">HTML و CSS:</span>" is incorrectly positioned.  This is because <code>dir="auto"</code> sets the base direction according to the first strong bidirectional character, which happens to be "H" in this case, so the base direction is set to LTR.  However, the heading itself holds the key to resolving this problem (the direction is declared on the <code class="kw" translate="no">h4</code> tag in this case, but may be inherited from higher level markup). The base direction for the heading is RTL. If we apply <code>dir="rtl",</code> instead of <code>dir="auto"</code>, we get a better result: </p>
 <figure class="example">
@@ -229,23 +257,32 @@ f.additionalLinks = ''
 <p>It generally makes sense to bidirectionally isolate strings or markup fragments that are dropped into a location in an HTML file, so that the text inside the string doesn't interact directionally with text outside it.  The HTML spec requires the <code class="kw" translate="no">dir</code> attribute to isolate the content of the tag, so we have been isolating the reference from the surrounding paragraph already.</p>
 <p>However, let's suppose that we want the reference link to include the number of the heading, as well as the heading text.</p>
 <p>Suppose our heading looks like this.</p>
-<h4 id="myHeading4" lang="ar" dir="rtl">2. نشاط التدويل، W3C</h4>
 
-<p>Let's suppose also that the number is generated using CSS counters, and that the Javascript code obtains that number while generating the link text, and concatenates it with the text of the heading. We would expect to see something like this:</p>
+<div class="figWrap">
+<figure id="h4_ar_numbered">
+<h4 id="myHeading4" lang="ar" dir="rtl" style="text-align: right; padding:1em; margin:0; border: 1px solid #ccc;">2. نشاط التدويل، W3C</h4>
+<figcaption>A numbered Arabic heading.</figcaption>
+</figure>
+</div>
+
+<!--h4 id="myHeading4" lang="ar" dir="rtl">2. نشاط التدويل، W3C</h4-->
+
+<p>Let's suppose also that the number is generated using CSS counters, and that the Javascript code obtains that number while generating the link text, and concatenates it with the text of the heading. We would expect to see something like this in an English paragraph:</p>
 <figure class="example">
 <p>This is a paragraph that points to <a class="secref" href="#myHeading4"><bdi>2.</bdi> <bdi lang="ar" dir="rtl">نشاط التدويل، W3C</bdi></a>.</p>
 </figure>
 
 <p>Unfortunately, if we follow the advice given so far (to put <code class="kw" translate="no">dir</code> on the anchor tag), we would see the following:</p>
 <figure class="example">
-<p>* This is a paragraph that points to <a class="secref" href="#myHeading4" lang="ar" dir="rtl">2. نشاط التدويل، W3C</a>.</p>
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=""/> Incorrect result.</span></div>
+<p>This is a paragraph that points to <a class="secref" href="#myHeading4" lang="ar" dir="rtl">2. نشاط التدويل، W3C</a>.</p>
 </figure>
 
 <p>The "W3C" is in the right place, but the section number is in the wrong place. And it's because we applied dir="rtl" to the anchor tag, as described earlier. To make this work as expected, we need to also isolate the section number from the heading text, and add the directional information to the heading text, rather than to the anchor tag as a whole.
 </p>
 <figure class="example">
-<code>&lt;p&gt;This is a paragraph that points to &lt;a class=&quot;secref&quot; href=&quot;#myHeading4&quot;&gt;&lt;bdi&gt;2.&lt;/bdi&gt; &lt;bdi lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;نشاط التدويل، W3C&lt;/bdi&gt;&lt;/a&gt;.&lt;/p&gt;
-</code>
+<p><code>&lt;p&gt;This is a paragraph that points to &lt;a class=&quot;secref&quot; href=&quot;#myHeading4&quot;&gt;&lt;bdi&gt;2.&lt;/bdi&gt; &lt;bdi lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;نشاط التدويل، W3C&lt;/bdi&gt;&lt;/a&gt;.&lt;/p&gt;
+</code></p>
 </figure>
 
 <p>This produces the expected display shown above, and it would still produce expected results if the text was dropped into a RTL paragraph. In that case we do want the section number to appear to the right. There is no need to change the markup for this to happen.</p>
