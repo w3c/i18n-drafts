@@ -25,7 +25,7 @@ f.contributors = ''; // people providing useful contributions or feedback during
 // also make sure that the lang attribute on the html tag is correct!
 
 // TRANSLATORS should fill in these assignments:
-f.translators = '<a href="https://www.ibidem-translations.com">Italian Translation</a> team, IBIDEM TRANSLATIONS; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translators = '<a href="https://www.ibidem-translations.com">Italian Translation</a> team, IBIDEM TRANSLATIONS;' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
 
 f.breadcrumb = 'forms';
 
@@ -66,7 +66,18 @@ f.additionalLinks = ''
   <p>In secondo luogo, si consiglia che lo script che riceve i dati del modulo verifichi che i dati siano effettivamente in UTF-8 (nel caso in cui venisse riscontrato un errore, ad esempio, la modifica della codifica da parte dell’usuario). Il controllo è reso possibile dal momento che UTF-8 presenta un modello di byte molto specifico assente in qualsiasi altra codifica. In caso di ricezione di dati in un formato diverso da UTF-8, si consiglia di inviare un messaggio di errore.</p>
   <p>Ad esempio, in Perl, una valutazione di espressione regolare di UTF-8 potrebbe apparire come indicato di seguito:</p>
   <figure class="example">
-    <pre>$field =~ m/( \x09\x0A\x0A\x0D\x20-\x20-\x7E] # ASCII | [\xC2-\xD] [\x80-\xBF] # non-overlong 2-byte \xE0[\xA0-\xBF] [\x80-\xBF] # escludendo le sovra-lunghe | [\xE1-\xEC\xEE\xEF][\x80-\xBF] [\x80-\xBF] [\xBF] [\xE1-\xEC\xEE\xEE\xEF] [\x80-\xBF] [¨¨</pre>
+    <pre>$field =~
+  m/\A(
+     [\x09\x0A\x0D\x20-\x7E]            # ASCII
+   | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+   |  \xE0[\xA0-\xBF][\x80-\xBF]        # escludendo le sovra-lunghe
+   | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+   |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
+   |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
+   | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+   |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
+  )*\z/x;
+  </pre>
   </figure>
   <p>Questa espressione può essere adattata ad altri linguaggi di programmazione. Si occupa di varie questioni, come le codifiche illecite lunghe e l&apos;uso illecito di surrogati. Visualizzerete vero se si tratta di UTF-8, e altrimenti falso.</p>
 </section>
