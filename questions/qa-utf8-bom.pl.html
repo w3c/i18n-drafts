@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<title>Sygnatura UTF-8 BOM a problemy z wyświetlaniem</title>
+<meta name="description" content="Przy wykorzystaniu stron kodowanych w UTF-8, w niektórych agentach użytkownika na górze strony lub dołączonego pliku pojawia się dodatkowy pusty wiersz lub inne niechciane znaki. Jak się ich pozbyć?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-utf8-bom' // the file name WITHOUT extensions
+f.authors = 'Deborah Cawkwell, BBC World Service' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'qa-utf8-bom' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-11-27' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-07-17 18:19', time:'12:09'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-05-23', time:'11:03'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://fortheweb.info/">Ana Backstone</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-utf8-bom-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-pl.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="utf8-bom-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Sygnatura UTF-8 BOM a problemy z wyświetlaniem</h1>
+</header>
+<section>
+  <div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+    
+</section>
+  
+ 
+
+<section>
+<p class="question">Przy wykorzystaniu stron kodowanych w UTF-8, w niektórych agentach użytkownika na górze strony lub dołączonego pliku pojawia się dodatkowy pusty wiersz lub inne niechciane znaki. Jak się ich pozbyć?</p>
+</section>
+
+
+
+
+
+<section>
+<h2 id="answer">Odpowiedź</h2>
+
+<p>Kiedy mamy do czynienia z plikami z kodowaniem znaków UTF-8 problemy z wyświetlaniem mogą być spowodowane obecnością sygnatury UTF-8 (BOM), której agent użytkownika nie rozpoznaje. This used to be a problem for static HTML files, but is no longer  in recent versions of major browsers. However, if you use PHP to generate your HTML, this was still an issue with PHP version 5.3.6.</p>
+<p>Sygnatura BOM pojawia się zawsze na początku pliku, więc problemy z wyświetlaniem pojawiają się najczęściej na górze strony. Jednak puste wiersze mogą pojawić się też w dalszej części strony, jeżeli dołączono do niej tekst z oddzielnego pliku, który rozpoczynał się sygnaturą UTF-8.</p>
+<p>Ten artykuł ma za zadanie pomóc w określeniu czy to właśnie kodowanie UTF-8 jest przyczyną problemu. Jeżeli nic nie wskazuje na obecność sygnatury UTF-8 na początku pliku, rozwiązania problemu należy szukać gdzie indziej.</p>
+
+
+
+<section>
+<h3 id="bom"><a href="#bom">Czym jest sygnatura UTF-8 (BOM)?</a></h3>
+<div class="sidenoteGroup"> 
+	<p>Niektóre aplikacje umieszczają specjalną kombinację bajtów na początku pliku, wskazującą na to, że tekst zawarty w pliku jest kodowany w formacie Unicode. Ta kombinacja bajtów jest określana jako <strong>sygnatura</strong> lub <strong>Byte Order Mark (BOM)</strong>. Niektóre aplikacje, takie jak edytory tekstu lub przeglądarki, wyświetlają sygnaturę BOM jako dodatkowy wiersz w pliku, inne z kolei mogą wyświetlić nieoczekiwane znaki, jak np.  ï»¿.</p>
+	<p>Szczegółowe informacje na temat sygnatury BOM można znaleźć na panelu bocznym.</p>
+	<div class="sidenote"> 
+		<p class="info">W kodowaniu Unicode sygnatura BOM znajduje się w punkcie kodowym  U+FEFF, odpowiadającym w Unicode znakowi 'ZERO WIDTH NON-BREAKING SPACE' (ZWNBSP).</p>
+		<p>W kodowaniu UTF-16 oraz UTF-32, o ile nie występuje jakiś alternatywny wskaźnik, sygnatura BOM jest niezbędna do zapewnienie poprawnej interpretacji zawartości pliku. Każdy znak w pliku jest reprezentowany przez 2 lub 4 bajty danych. Znaczenie ma też kolejność, w której bajty te są przechowywane w pliku. Sygnatura BOM wskazuje na tą właśnie kolejność.</p>
+		<p>W kodowaniu UTF-8 obecność sygnatury BOM nie jest konieczna, ponieważ w przeciwieństwie do kodowania UTF-16 i UTF-32 nie ma możliwości pojawienia się alternatywnej sekwencji bajtów w znaku. Syngatura BOM może jednak wciąż pojawić się w tekście z kodowaniem UTF-8 jako pozostałość po konwersji kodowaniu lub jeżeli zostanie dodana przez program do edycji pliku.</p>
+	</div>
+</div>
+</section>
+
+
+
+<section>
+
+<h3 id="detect"><a href="#detect">Wykrywanie sygnatury BOM</a></h3>
+<p>Na początku należy sprawdzić, czy sygnatura BOM rzeczywiście znajduje się na początku pliku.</p>
+<p>Można poszukać sygnatury BOM w zawartości pliku, ale jeśli dany edytor poprawnie wykorzystuje sygnaturę UTF-8 najprawdopodobniej nie będzie można jej zobaczyć. Edytor, który nie wykorzystuje poprawnie sygnatury UTF-8 wyświetli składające się na sygnaturę bajty zgodnie z własnymi ustawieniami kodowania znaków. (Przy kodowaniu znaków Latin 1 (ISO 8859-1) sygnatura wyświetlana jest jako ciąg znaków ï»¿.) W przypadku edytora binarnego umożliwiającego wyświetlanie szesnastkowych wartości bajtów w pliku sygnatura UTF-8 wyświetlana jest jako  EF BB BF.</p>
+<p>Możliwe też, że dany edytor wyświetli na pasku stanu lub w jednym z menu aktualne kodowanie pliku wraz z informacją o obecności lub nieobecności sygnatury UTF-8.</p>
+<p>Jeżeli powyższe metody zawiodą lub okażą się niedostępne, można skorzystać z pomocy testu opartego na skrypcie (patrz niżej).  (Uwaga, w przypadku plików dołączanych przez PHP lub inny mechanizm, który może być przyczyną problemu, należy wpisać adres URI <em>dołączonego</em> pliku.)</p>
+</section>
+
+
+
+
+<section>
+<h3 id="remove"><a href="#remove">Usuwanie sygnatury BOM</a></h3>
+
+<p>Jeżeli dysponujemy edytorem wyświetlającym znaki składające się na sygnaturę UTF-8 można skasować je ręcznie. Jest jednak możliwe, że problem z sygnaturą BOM mamy dlatego, że jej nie widzimy.</p>
+<p>Należy sprawdzić czy używany edytor zezwala na określenie czy sygnatura UTF-8 jest dodawana bądź zachowywana <a href="http://www.w3.org/International/questions/qa-setting-encoding-in-applications">podczas zapisywania pliku</a>. Edytor tego typu pozwala rozwiązać problem sygnatury poprzez odczytanie pliku i ponowne go zapisanie. Przykładowo, jeżeli Dreamweaver wykryje sygnaturę BOM w oknie dialogowym &quot;zapisz jako&quot; zaznaczone będzie opcja &quot;Dołącz sygnaturę Unicode (BOM)&quot;. Wystarczy wtedy odznaczyć opcję i zapisać zmiany.</p>
+<p>Jedną z zalet wykorzystania skryptów jest to, że możliwe jest szybkie usunięcie sygnatury z wielu plików. Tak naprawdę skrypt może być uruchamiany automatycznie jako część procesu. Jeżeli korzystamy z Perla możemy wykorzystać <a href="http://people.w3.org/rishida/blog/?p=102">prosty skrypt</a> napisany przez Martina Dürsta.</p>
+<p>Uwaga: Należy sprawdzić wpływ usunięcia sygnatury na przebieg procesu. Jest możliwe, że jakaś cześć procesu budowy zawartości wykorzystuje sygnaturę do określenia pliku jako kodowanego w UTF-8. Trzeba również pamiętać, że strony o wysokiej zawartości znaków z alfabetu łacińskiego mogą na pierwszy rzut oka wyglądać poprawnie, ale w niektórych miejscach znaki spoza zakresu ASCII (U+0000 to U+007F) mogą być kodowane niepoprawnie.</p>
+</section>
+
+</section>
+
+
+
+
+
+
+
+  
+  <section>
+  <h2 id="bytheway"><a href="#bytheway">Dodatkowe informacje</a></h2>
+    <p>Niektóre edytory tekstu, takie jak Notatnik Windows, automatycznie dodają sygnaturę UTF-8 do każdego pliku, który zapisany zostanie z tym kodowaniem znaków.</p>
+<p>Sygnatura UTF-8 na początku pliku CSS może w niektórych programach spowodować nieprawidłowe funkcjonowanie początkowych reguł z tego pliku.</p>
+<p>W niektórych przeglądarkach obecność sygnatury UTF-8 może sprawić, że przeglądarka uzna tekst za kodowany w UTF-8 niezależnie od innych użytych deklaracji dotyczących kodowania.</p>
+</section>
+<h2 id="endlinks" class="notoc"><a href="#endlinks">Warto przeczytać</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.unicode.org/faq/utf_bom.html#BOM">FAQ Unicode dotyczące sygnatury BOM</a></p>
+    </li>
+    <li>
+      <p><a href="http://www.unicode.org/International/questions/qa-setting-encoding-in-applications">Ustawienie kodowania w internetowych aplikacjach autorskich</a></p>
+    </li>
+    <li>
+      <p><a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a></p>
+    </li>
+<li>
+  <p><cite>Authoring HTML &amp; CSS</cite></p>
+  <ul>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=charset">Characters</a></li>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction&open=bomhandling">Handling the byte-order mark</a></li>
+  </ul>
+</li>
+</ul>
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

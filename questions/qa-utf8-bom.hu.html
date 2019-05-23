@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8" />
+<title>Megjelenítési problémák amelyeket az UTF-8 BOM okoz</title>
+<meta name="description" content="Amikor UTF-8-ba kódolt oldalt nézek, néhány böngészőben egy plusz sort vagy nemkívánt karaktert látok a weboldal vagy fájl tetején. Hogyan távolíthatom el ezeket?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-utf8-bom' // the file name WITHOUT extensions
+f.authors = 'Deborah Cawkwell, BBC World Service' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'qa-utf8-bom' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-11-27' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-07-17 18:19', time:'12:09'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-05-23', time:'11:03'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Dénes Kohn, <a href="http://www.metaphraser.com/" target="_blank" title="translation company">Metaphraser - Translation Company</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-utf8-bom-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-hu.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="utf8-bom-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Megjelenítési problémák amelyeket az UTF-8 BOM okoz</h1>
+</header>
+<section>
+  <div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+    
+</section>
+  
+ 
+
+<section>
+<p class="question">Amikor UTF-8-ba kódolt oldalt nézek, néhány böngészőben egy plusz sort vagy nemkívánt karaktert látok a weboldal vagy fájl tetején. Hogyan távolíthatom el ezeket?</p>
+</section>
+
+
+
+
+
+<section>
+<h2 id="answer">Válasz</h2>
+
+<p>Ha UTF-8-ba kódolt fájllal van dolgunk, a megjelenítési problémákat okozhatja az UTF-8 jelzés (BOM) jelenléte, amit a böngésző nem ismer fel. This used to be a problem for static HTML files, but is no longer  in recent versions of major browsers. However, if you use PHP to generate your HTML, this was still an issue with PHP version 5.3.6.</p>
+<p>A BOM mindig a fájl elején van, ezért normális esetben a megjelenítési problémákra az oldal tetején számítunk. Azonban emellett üres sorokat is találhatunk ha 
+olyan szöveget illesztünk be egy másik fájlból, ami UTF-8 jelzéssel kezdődik.</p>
+<p>Ez a cikk segít eldönteni hogy az UTF-8 okozza-e a problémánkat. Ha nincs bizonyíték az UTF-8 jelzésre a fájl elején akkor máshol kell keresnünk a megoldást.</p>
+
+
+
+<section>
+<h3 id="bom"><a href="#bom">Mi az az UTF-8 jelzés (BOM)?</a></h3>
+<div class="sidenoteGroup"> 
+	<p>Néhány applikáció egy egyéni bájtkombinációt helyez el a fájl elején, így jelezve, hogy a szöveg a fájlban Unicode. Ezt a bájtkombinációt nevezi <strong>UTF-8 signature (UTF-8 jelzés/aláírás)</strong>-nek
+	vagy <strong>Byte Order Mark (BOM)</strong>-nak. Néhány program - mint például egy szövegszerkesztő vagy egy böngésző - a BOM-ot extra sorként fogja megjeleníteni a fájlban, míg mások váratlan karakterként, mint például ez: ï»¿.</p>
+	<p>Részletesebb információt a BOM-ról a jobb oldalon találhat.</p>
+	<div class="sidenote"> 
+		<p class="info">A BOM egy Unicode karakter, ami az U+FEFF résznél található a kódban. Ez egy nulla szélességű sortörés nélküli köz, tehát általában nem látható.</p>
+		<p>Az UTF-16 és UTF-32 kódolásokban, hacsak nincs valami más alternatív jelzés, a BOM biztosítja a fájl tartalmának a megfelelő értelmezését. Minden
+		karakter a fájlban 2 vagy 4 bájtos adatban van kifejezve és ezeknek a bájtoknak a sorrendje igen jelentős; a BOM jelzi ezt a sorrendet.</p>
+		<p>Az UTF-8 kódolásban a BOM jelenléte nem olyan lényeges, mint az UTF-16 és UTF-32 kódolásban, mivel ott nincs alternatív bájtsorrend egy karakterben.</p>
+	</div>
+</div>
+</section>
+
+
+
+<section>
+
+<h3 id="detect"><a href="#detect">A BOM Észlelése</a></h3>
+<p>Elsőként ellenőriznünk kell, hogy valóban van-e BOM a fájl elején.</p>
+<p>Megpróbálhatjuk a tartalmunkban is keresni a BOM-ot, de ha a szerkesztőnk jól kezeli az UTF-8 jelzést, akkor feltehetőleg nem fogjuk látni. 
+				Egy szerkesztő, amely nem kezeli jól az UTF-8 jelzést, az a jelzést kifejező bájtokat mutatja az aktuális kódolásnak megfelelő karakterekkel. 
+				(A Latin 1 (ISO 8859-1) karakterkódolással a jelzés így fog kinézni: ï»¿.) Egy bináris szerkesztővel, amely képes a hexadecimális bájtértékeket megjeleníteni, az 
+UTF-8 jelzés így fog kinézni: EF BB BF.</p>
+<p>Bizonyos szerkesztők kijelzik, hogy milyen kódolású a fájl, illetve, hogy jelen van-e az UTF-8 jelzés.</p>
+<p>Ha nincs jelen, néhány szkript-alapú teszt (lásd alul) segíthet.  
+(Ha feltehetőleg egy olyan fájl okozza a problémát, amit a PHP vagy más mechanizmus illeszt be, akkor a <em>beillesztett</em> fájl URI-jét kell beírni.)</p>
+</section>
+
+
+
+
+<section>
+<h3 id="remove"><a href="#remove">A BOM eltávolítása</a></h3>
+
+<p>Ha olyan szerkesztőnk van, ami az UTF-8 jelzést alkotó karaktereket is mutatja, akkor kézzel törölhetjük. Megvan az esély rá azonban, hogy a BOM ott van az elején, mivel nem láttuk.</p>
+<p>Ellenőrizzük hogy a szerkesztőnk engedi-e meghatározni vagy az UTF-8 jelzés egy <a href="http://www.w3.org/International/questions/qa-setting-encoding-in-applications">mentés közben</a> lett hozzáadva. Az ilyen szerkesztők lehetőséget biztosítanak az eltávolításra 
+				oly	módon, hogy behívjuk a fájlt és újra elmentjük. Például, ha a Dreamweaver észleli a BOM-ot, a Mentés Másként ablakban lesz egy opció arra, hogy a BOM-ot tartalmazva mentse el a fájlt. 
+Győzödjünk meg róla, hogy nincs kipipálva és mentsük úgy el.</p>
+<p>Az egyik előnye, ha szkriptet használunk, hogy gyorsan eltávolíthatjuk a jelzéseket, akár több fájlból is. Valójában a szkript automatikusan is futhat a folyamat egy részeként. Ha Perl-ben 
+programozunk, használhatjuk ezt az <a href="http://people.w3.org/rishida/blog/?p=102">egyszerű szkriptet</a>, amit Martin Dürst készített..</p>
+<p>Megjegyzés: Ellenőrizzük a jelzés eltávolításának hatását a folyamatunkban. Lehet hogy néhány része a fejlesztési folyamatnak épp erre az UTF-8 jelzésre támaszkodik. Szintén vegyük 
+figyelembe, hogy a Latin karakteres oldalak nagy része látszólag jól néz ki, de esetenként az ASCII tartományon kívűl eső karakterek (U+0000 - U+007F) helytelenül lehetnek kódolva.</p>
+</section>
+
+</section>
+
+
+
+
+
+
+
+  
+  <section>
+  <h2 id="bytheway"><a href="#bytheway">Mellesleg</a></h2>
+    <p>You will find that some text editors such as Windows Notepad will automatically add a UTF-8 signature to any file you save as UTF-8.</p>
+<p>A UTF-8 signature at the beginning of a CSS file can sometimes cause the initial rules in the file to fail on certain user agents.</p>
+<p>In some browsers, the presence of a UTF-8 signature will cause the browser to interpret the text as UTF-8 regardless of any character
+  encoding declarations to the contrary.</p>
+</section>
+<h2 id="endlinks" class="notoc"><a href="#endlinks">További olvasnivaló</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.unicode.org/faq/utf_bom.html#BOM">Unicode GYIK a BOM-ról</a></p>
+    </li>
+    <li>
+      <p><a href="http://www.unicode.org/International/questions/qa-setting-encoding-in-applications">A kódolás beállítása webszerkesztő programokban</a></p>
+    </li>
+    <li>
+      <p><a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a></p>
+    </li>
+<li>
+  <p><cite>Authoring HTML &amp; CSS</cite></p>
+  <ul>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=charset">Characters</a></li>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction&open=bomhandling">Handling the byte-order mark</a></li>
+  </ul>
+</li>
+</ul>
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

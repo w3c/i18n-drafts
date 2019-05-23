@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Display problems caused by the UTF-8 BOM</title>
+<meta name="description" content="When using UTF-8 encoded pages in some user agents, I get an extra line or unwanted characters at the top of my web page or included file. How do I remove them?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-utf8-bom' // the file name WITHOUT extensions
+f.authors = 'Deborah Cawkwell, BBC World Service' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'qa-utf8-bom' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-11-27' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-07-17 18:19', time:'12:09'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-05-23', time:'11:03'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-utf8-bom-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="utf8-bom-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Display problems caused by the UTF-8 BOM</h1>
+</header>
+<section>
+  <div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+    
+</section>
+  
+ 
+
+<section>
+<p class="question">When using UTF-8 encoded pages in some user agents, I get an extra line or unwanted characters at the top of my web page or included file. How do I remove them?</p>
+</section>
+
+
+
+
+
+<section>
+<h2 id="answer">Answer</h2>
+
+<p>If you are dealing with a file encoded in UTF-8, your display problems <em>may</em> be caused by the presence of a UTF-8 signature (BOM) that the
+				user agent doesn't recognize. This used to be a problem for static HTML files, but is no longer  in recent versions of major browsers. However, if you use PHP to generate your HTML, this was still an issue with PHP version 5.3.6.</p>
+<p>The BOM is always at the beginning of the file, and so you would normally expect to see the display issues at the top of a page. However,
+			  you may also find blank lines appearing within the page if you include text from a separate file that begins with a UTF-8 signature.</p>
+<p>This article will help you determine whether the UTF-8 is causing the problem. If there is no evidence of a UTF-8 signature at the
+				beginning of the file, then you will have to look elsewhere for a solution.</p>
+
+
+
+<section>
+<h3 id="bom"><a href="#bom">What is a UTF-8 signature (BOM)?</a></h3>
+<div class="sidenoteGroup"> 
+	<p>Some applications insert a particular combination of bytes at the beginning of a file to indicate that the text contained in the
+		file is Unicode. This combination of bytes is known as a <strong>signature</strong> or <strong>Byte Order Mark (BOM)</strong>. Some applications -
+		such as a text editor or a browser - will display the BOM as an extra line in the file, others will display unexpected characters, such as ï»¿.</p>
+	<p>See the side panel for more detailed information about the BOM.</p>
+	<div class="sidenote"> 
+		<p class="info">The BOM is the Unicode codepoint U+FEFF, corresponding to the Unicode character 'ZERO WIDTH NON-BREAKING SPACE' (ZWNBSP).</p>
+		<p>In UTF-16 and UTF-32 encodings, unless there is some alternative indicator, the BOM is essential to ensure correct
+			interpretation of the file's contents. Each character in the file is represented by 2 or 4 bytes of data and the order in which these bytes are
+			stored in the file is significant; the BOM indicates this order.</p>
+		<p>In the UTF-8 encoding, the presence of the BOM is not essential because, unlike the UTF-16 or UTF-32 encodings, there is no
+			alternative sequence of bytes in a character. The BOM may still occur in UTF-8 encoding text, however, either as a by-product of an encoding
+			conversion or because it was added by an editor.</p>
+	</div>
+</div>
+</section>
+
+
+
+<section>
+
+<h3 id="detect"><a href="#detect">Detecting the BOM</a></h3>
+<p>First, we need to check whether there is indeed a BOM at the beginning of the file.</p>
+<p>You can try looking for a BOM in your content, but if your editor handles the UTF-8 signature correctly you probably won't be able to
+					see it. An editor which does not handle the UTF-8 signature correctly displays the bytes that compose that signature according to its own character
+					encoding setting. (With the Latin 1 (ISO 8859-1) character encoding, the signature displays as characters ï»¿.) With a binary editor capable of
+					displaying the hexadecimal byte values in the file, the UTF-8 signature displays as EF BB BF.</p>
+<p>Alternatively, your editor may tell you in a status bar or a menu what encoding your file is in, including information about the
+					presence or not of the UTF-8 signature.</p>
+<p>If not, some kind of script-based test (see below) may help. (Note, if it’s a file included by PHP or some other mechanism that you
+think is causing the problem, type in the URI of the <em>included</em> file.)</p>
+</section>
+
+
+
+
+<section>
+<h3 id="remove"><a href="#remove">Removing the BOM</a></h3>
+
+<p>If you have an editor which shows the characters that make up the UTF-8 signature you may be able to delete them by hand. Chances are,
+however, that the BOM is there in the first place because you didn't see it.</p>
+<p>Check whether your editor allows you to specify whether a UTF-8 signature is added or kept <a href="http://www.w3.org/International/questions/qa-setting-encoding-in-applications">during a save</a>. Such an editor provides a way of removing
+					the signature by simply reading the file in then saving it out again. For example, if Dreamweaver detects a BOM the Save As dialogue box will have a
+check mark alongside the text "Include Unicode Signature (BOM)". Just uncheck the box and save.</p>
+<p>One of the benefits of using a script is that you can remove the signature quickly, and from multiple files. In fact the script could
+be run automatically as part of your process. If you use Perl, you could use <a href="http://people.w3.org/rishida/blog/?p=102">a simple script</a> created by Martin Dürst.</p>
+<p>Note: You should check the process impact of removing the signature. It may be that some part of your content development process
+					relies on the use of the signature to indicate that a file is in UTF-8. Bear in mind also that pages with a high proportion of Latin characters may
+look correct superficially but that occasional characters outside the ASCII range (U+0000 to U+007F) may be incorrectly encoded.</p>
+</section>
+
+</section>
+
+
+
+
+
+
+
+  
+  <section>
+  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+    <p>You will find that some text editors such as Windows Notepad will automatically add a UTF-8 signature to any file you save as UTF-8.</p>
+<p>A UTF-8 signature at the beginning of a CSS file can sometimes cause the initial rules in the file to fail on certain user agents.</p>
+<p>In some browsers, the presence of a UTF-8 signature will cause the browser to interpret the text as UTF-8 regardless of any character
+  encoding declarations to the contrary.</p>
+</section>
+<h2 id="endlinks" class="notoc"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.unicode.org/faq/utf_bom.html#BOM">Unicode FAQ about the Byte Order Mark</a></p>
+    </li>
+    <li>
+      <p><a href="http://www.unicode.org/International/questions/qa-setting-encoding-in-applications">Setting encoding in web authoring applications</a></p>
+    </li>
+    <li>
+      <p><a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a></p>
+    </li>
+<li>
+  <p><cite>Authoring HTML &amp; CSS</cite></p>
+  <ul>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=charset">Characters</a></li>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction&open=bomhandling">Handling the byte-order mark</a></li>
+  </ul>
+</li>
+</ul>
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
