@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="utf-8" />
+<title>Проблеми с визуализацията на UTF-8 BOM</title>
+<meta name="description" content="W3C I18N Често задавани въпроси: Когато използвам UTF-8 кодирани страници във някои уеб браузъри се появява допълнителен нов ред или нежелани символи в нчалото на страницата или вмъкнатият файл. Как да ги премахна?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-utf8-bom' // the file name WITHOUT extensions
+f.authors = 'Deborah Cawkwell, BBC World Service' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'qa-utf8-bom' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-11-27' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-07-17 18:19', time:'12:09'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-05-23', time:'11:03'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.mindgems.com/about.htm">Ivan Baldwin</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-utf8-bom-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-bg.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="utf8-bom-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Проблеми с визуализацията на UTF-8 BOM</h1>
+</header>
+<section>
+  <div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+    
+</section>
+  
+ 
+
+<section>
+<p class="question">Когато използвам UTF-8 кодирани страници във някои уеб браузъри се появява допълнителен нов ред или нежелани символи в нчалото на страницата или вмъкнатият файл. Как да ги премахна?</p>
+</section>
+
+
+
+
+
+<section>
+<h2 id="answer">Отговор</h2>
+
+<p>Ако работите с файл който е кодиран с UTF-8, проблемите ви с визуализацията може да са причинени от наличието на UTF-8 маркировка (BOM) която уеб браузърът ви не разпознава.  This used to be a problem for static HTML files, but is no longer in recent versions of major browsers. However, if you use PHP to generate your HTML, this was still an issue with PHP version 5.3.6.</p>
+<p>BOM е винаги в началото на файла, следователно бихте очаквали проблемите с визуализацията да бъдат винаги в начлото на страницата. Въпреки това може да откриете празни редове които се появяват въре във страницата ако е вмъкнат текс от друг файл който започва със UTF-8 маркировка.</p>
+<p>Тази статия ще ви помогне да определите дали UTF-8 е причината за проблема. Ако няма следи от UTF-8 маркировка в началото на файла, тогава би трябвало да потърсите решението на проблема другаде.</p>
+
+
+
+<section>
+<h3 id="bom"><a href="#bom">Какво е UTF-8 маркировка (BOM)?</a></h3>
+<div class="sidenoteGroup"> 
+	<p>Някои програми вмъкват определена комбинациа от байтове в началото на файла за да маркират че текстът който се съдържа вътре е Unicode. Тази комбинация от байтове е позната като <strong>signature </strong>(маркировка) или <strong>Byte Order Mark (BOM)</strong>. Някои программи -
+	като текстови редактори и уеб браузъри - ще визуализират BOM като допълнителен ред във файла, други ще визуализират странни символи като  ï»¿.</p>
+	<p>Вижте навигацията отстрани за повече информация относно BOM.</p>
+	<div class="sidenote"> 
+	<p class="info"> BOM е Unicode стартова точка за кодиране U+FEFF, съответстваща на Unicode символа 'ZERO WIDTH NON-BREAKING SPACE' (ZWNBSP).</p>
+		<p>В UTF-16 и UTF-32 кодирането, ако няма алтернативен индикатор, BOM е това което определя правилното интерпретиране на съдържанието на файла. Всеки символ във файла е представен от  2 или 4 байта и редът на тези байтове е от значение; BOM посочва този ред.</p>
+		<p>В UTF-8 кодирането, наличието на BOM не е от съществено значение, защото за разлика от UTF-16 или UTF-32 кодирането, няма алтернативна поредица от байтове за символа. Въпреки това BOM може да присъства в UTF-8 кодиран текс, в следствие на конвертиране на кодировката или защото е добавен от редактор.</p>
+</div>
+</div>
+</section>
+
+
+
+<section>
+
+<h3 id="detect"><a href="#detect">Проверка за наличие на BOM</a></h3>
+<p>Първо трябва да проверим дали наистина съществува BOM в началото на файла.</p>
+<p>Може да провеите за BOM във визуализираното съдържание, но ако вашият редактор интерпретира UTF-8 маркировката правилно най-вероятно няма да можете да го видите. Редактор който не интерпретира UTF-8 маркировката правилно показва байтовете които образуват тази маркировка използвайки собствените си настройки за кодиране на символите. (Със Latin 1 (ISO 8859-1) кодиране на символите, маркировката се визуализира по следният начин ï»¿.) Прегледана със шестнадесетичен редактор UTF-8 маркировката изглежда по следният начин EF BB BF.</p>
+<p>Възможно е вашият редактор да покаже индикация в меню или в лентата за статуса относно кодирането на файла, включително информация за наличието на UTF-8 маркировка.</p>
+<p>Ако не, някакъв тест написан на скриптинг език (виж по-долу) би могъл да помогне.  (Забележка. Ако е файл вмъкнат в PHP или някакъв дург механизъм който мислите че е причина за проблема, напишете адреса <em>на вмъкнатият</em> файл.)</p>
+</section>
+
+
+
+
+<section>
+<h3 id="remove"><a href="#remove">Премахване на  BOM</a></h3>
+
+<p>Ако използвате редактор който показва символоте които предсатвят UTF-8 маркировката сигурно би било възможно да ги изтриете ръчно. Но най-вероятно обаче BOM присъства именно зашото не се вижда при визуализацията.</p>
+<p>Проверете дали вашият редактор разрешава да се специфицира дали UTF-8 кодриовка е добавена или запазаена <a href="http://www.w3.org/International/questions/qa-setting-encoding-in-applications">по време на запис</a>. Такъв редактор обаче би трябвало да да ви предоставя възможност да премахнете маркировката просто като заредите файла и го запишете обратно. Например ако Dreamweaver открие BOM диалога Запиши Като ще съдържа отметка "Включи Unicode кодировка (BOM)". Просто изключете опцията и запишете.</p>
+<p>Едното от преимуществата когато използвате скрипт е че можете да премахнете маркировката бързо от множество файлове едновременно. Всъщност скрипта може да бъде стартиран автоматично като част от вашият работен процес. Ако използвате Perl, може да използвате този <a href="http://people.w3.org/rishida/blog/?p=102">простичък скрипт</a> написан от Martin Dürst.</p>
+<p>Забележка: Трябва да проверите как се отразява премахването на маркировката на процеса на генериране на съдържанието. Възможно е някоя част от процеса на генериране на съдържание да разчита на маркировката за да определи че файла е UTF-8 кодиран. Имайте в предвид че страници които в по-голямата си част съдържат Latin символи може привидно да изглежда правилни, но често символите извън ASCII диапазона (U+0000 to U+007F) може да бъдат кодирани грешно.</p>
+</section>
+
+</section>
+
+
+
+
+
+
+
+  
+  <section>
+  <h2 id="bytheway"><a href="#bytheway">Междо другото</a></h2>
+    <p>Ще откриете че някои текстови редактори като Windows Notepad добвят автоматично UTF-8 маркировка на всеки файл който зпишете като UTF-8.</p>
+<p>UTF-8 маркировка в началото на CSS файл може да причини проблеми с някои уеб браузъри.</p>
+<p>В някои браузъри, наличието на UTF-8 маркировка ше накара браузъра да интерпретира текста като UTF-8 без значение каква кодировка на символите е зададена в декларациите.</p>
+</section>
+<h2 id="endlinks" class="notoc"><a href="#endlinks">Странична информация</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.unicode.org/faq/utf_bom.html#BOM">Unicode често задавани въпроси относно Byte Order Mark</a></p>
+    </li>
+    <li>
+      <p><a href="http://www.unicode.org/International/questions/qa-setting-encoding-in-applications">Задаване на кодировка въвъ продуктите за уеб разработка</a></p>
+    </li>
+    <li>
+      <p><a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a></p>
+    </li>
+<li>
+  <p><cite>Authoring HTML &amp; CSS</cite></p>
+  <ul>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=charset">Characters</a></li>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction&open=bomhandling">Handling the byte-order mark</a></li>
+  </ul>
+</li>
+</ul>
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
