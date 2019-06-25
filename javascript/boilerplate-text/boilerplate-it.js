@@ -109,7 +109,7 @@ s.validXHTML = "XHTML 1.0 valido!"
 s.validCSS = "CSS Valido!"
 s.codedInUtf8 = "Codificato in UTF-8!"
 
-s.translatedFromEnglishVer = "Tradotto dal contenuto Inglese datato $enVersion. Ultima modifica della versione tradotta $thisVersionPlain GMT"
+s.translatedFromEnglishVer = "Tradotto dal contenuto Inglese datato "+dt.enVersion+". Ultima modifica della versione tradotta "+dt.thisVersionPlain+" GMT"
 
 s.historyOfDocumentChanges = 'Per la cronologia delle modifiche apportate al documento, vedi  <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> fper le modifiche sostanziali e <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la lista dei commit Github</a> per tutte le modifiche apportate da gennaio 2016.'
 s.untranslatedChanges = '<strong>Nota:</strong> Sono state apportate delle modifiche alla <a href="'+f.filename+'.en">versione originale in inglese</a> dal momento in cui il presente documento é stato tradotto. Le modifiche sono state inserite nella presente pagina. Per tale ragione, potrai visualizzare alcuni passaggi in inglese fino a che non aggiornerai la traduzione.'
