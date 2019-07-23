@@ -135,3 +135,5 @@ s.acknowledgements = "Även tack till följande personer som bidragit eller gett
 s.cookieMsg = "Om du tillåter webbläsaren att spara en kaka (cookie), så kommer du i fortsättningen att se sidor från W3C Internationalization Activity i det språk du valt (när sådana översättningar finns). Vill du spara kakan?" // this text is to be copied to another location
 //s.supercededTranslation = '<strong>Varning:</strong> Detta är en föråldrad version av dokumentet! Du bör läsa <a href="'+g.betterfilename+'.en">den senaste versionen</a> istället, och, om du kan, uppdatera det bokmärke eller länk som kan ha lett dig hit.'
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

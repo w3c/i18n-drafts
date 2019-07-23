@@ -133,3 +133,5 @@ s.acknowledgements = "Közreműködésükért és átvett megjegyzéseikért kö
 s.cookieMsg = "Amennyiben hozzájárul ahhoz, hogy a böngészője elfogadjon egy sütit, a W3C Nemzetköziesítés Fejlesztési Tevékenység lapjait, ha rendelkezésre állnak, az ön által választott nyelven tudja elérni. Hozzájárul a süti használatához?" // this text is to be copied to another location
 //s.supercededTranslation = '<strong>Figyelmeztetés:</strong> Ez a dokumentumnak egy lejárt verziója! Olvassa inkább a <a href="'+g.filename+f.clang+'">legfrissebb verziót</a> és, ha lehetséges, változtassa meg azt a linket vagy könyvjelzőt amelynek révén ide jött.'
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "
