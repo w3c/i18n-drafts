@@ -131,3 +131,5 @@ s.additionalinfo = "Дополнительная информация" // headin
 s.acknowledgements = "Спасибо также следующим людям, чей вклад или отзывы были включены:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "Если вы разрешите браузеру установить cookie, вы будете видеть страницы W3C Internationalization Activity на выбранном вами языке (там, где это доступно). Установить cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>Внимание!</strong> &nbsp; Это только редакторский черновик статьи. Все ссылки и закладки должны вести на <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>версию, размещенную на W3C сайте</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

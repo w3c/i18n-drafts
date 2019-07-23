@@ -131,3 +131,5 @@ s.additionalinfo = "補足情報" // heading that sometimes follows 'Details'
 s.acknowledgements = "この文書へ貢献またはフィードバックを送ってくださった以下の方々に感謝します:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "ブラウザーにクッキーを設定させると、W3C Internationalization Activityのページを（もしあるなら）選択した言語で続けて閲覧できるでしょう。クッキーを設定しますか？" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

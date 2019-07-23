@@ -134,3 +134,5 @@ s.acknowledgements = "Agradecemos también a las siguientes personas cuyas contr
 s.cookieMsg = "Si permite que el navegador establezca una cookie, continuará viendo las páginas de Actividad de Internacionalización de W3C (si existieran) en el idioma de su elección. ¿Quiere establecer la cookie?" // this text is to be copied to another location
 //s.supercededTranslation = '<strong>Advertencia:</strong> ¡Esta es una versión desactualizada de este documento! Le recomendamos leer  <a href="'+g.betterfilename+'.en">la última versión</a> et si vous le pouvez, y, si puede, cambiar la marca o el enlace que lo trajo aquí.'
 s.githubRedirect = "<strong>NOTA!</strong> &nbsp; Este es sólo un borrador del artículo del editor. Todos los enlaces y marcadores deben apuntar a  la <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>versión del sitio web de W3C</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

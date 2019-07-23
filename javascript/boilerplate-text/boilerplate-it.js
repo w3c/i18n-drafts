@@ -131,3 +131,5 @@ s.additionalinfo = "Informazioni complementari" // heading that sometimes follow
 s.acknowledgements = "Un ringraziamento anche a coloro il cui contributo o riscontro é stato incluso:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Se consenti al browser di impostare un cookie, continuerai a visualizzare le pagine W3C Internationalization Activity (ove disponibili) nella lingua selezionata. Vuoi impostare il cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTA!</strong> &nbsp; Questo é solo una bozza dell’articolo del redattore. Tutti i link e i preferiti dovrebbero rimandare a <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>versione sul sito di W3C</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "
