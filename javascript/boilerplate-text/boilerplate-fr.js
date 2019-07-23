@@ -137,4 +137,4 @@ s.cookieMsg = "Si vous acceptez que votre navigateur crée un cookie, vous conti
 //s.supercededTranslation = '<strong>Avertissement :</strong> Ceci est une version dépassée de ce document! Il est recommandé de lire <a href="'+g.betterfilename+'.en">la dernière version</a> et si vous le pouvez, de modifier le marque-page ou le lien qui vous a redirigé ici.'
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; Ceci est seulement un brouillon de l\’éditeur de cet article. Tous les liens et signets doivent pointer vers <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>la version sur le site du W3C</a>." // used for github-based versions of published articles
 
-s.lastChanged = "Dernier mise à jour&nbsp;: "
+s.lastChanged = "Dernière mise à jour&nbsp;: "

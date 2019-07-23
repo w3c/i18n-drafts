@@ -208,7 +208,7 @@ if (g.isTranslation) g.dateStamp = '<small>'+s.translatedFromEnglishVer+'</small
 else g.dateStamp = "<small id='version'>Content first published <time datetime='"+f.firstPubDate+"'>"+f.firstPubDate+"</time>. Last substantive update <time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+" GMT</time>. This version <time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+" GMT</time></small>";
 
 if (g.isTranslation == 'yes') g.dateStamp = '<p>'+s.translatedFromEnglishVer+'</p>' 
-else g.dateStamp = "<span id='version'>"+s.lastChanged+dt.thisVersionPlain+"</span>";
+else g.dateStamp = "<span id='version' dir='auto'>"+s.lastChanged+dt.thisVersionPlain+"</span>";
 
 var previousCredit = ''
 if (f.previousauthors && f.previousauthors != '') previousCredit = ' '+s.previousAuthors+' '+f.previousauthors+s.sentenceDelimiter
