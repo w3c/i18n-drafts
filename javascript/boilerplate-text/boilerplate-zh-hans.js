@@ -98,7 +98,7 @@ s.newResourcesAlt = "每当首次发布一个新的资源时通知您。"
 s.newResources = "新的资源"
 s.homePageNewsAlt = "主页上显示的所有新闻条目。."
 s.homePageNews = "主页新闻"
-s.followOurNews = "Follow our news feed."
+s.followOurNews = "关注我们的新闻源。"
 s.sentenceDelimiter = "."
 
 s.author = "作者：" // followed by name of author(s)
@@ -111,25 +111,25 @@ s.codedInUtf8 = "UTF-8 编码!"
 
 s.translatedFromEnglishVer = "翻译以格林尼治标准时间 "+dt.enVersion+" 的英语内容为准，并于格林尼治标准时间 "+dt.thisVersionPlain+" 作最新修改。"
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
-s.untranslatedChanges = '<strong>注意:</strong> 在此文件翻译以后<a href="'+f.filename+'.en.php">英文版本</a> 已有改变。 The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
-s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
+s.historyOfDocumentChanges = '有关文档更新的历史记录，请参阅主要更新的<a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">新闻源</a>，以及自2016年1月以来所有更改的 <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Git 提交列表</a>。'
+s.untranslatedChanges = '<strong>注意：</strong>在此文件翻译以后<a href="'+f.filename+'.en.php">英文版本</a> 已有改变。这些更改已合并到此页面中，因此您可能会看到一些英文段落，直到翻译更新为止。'
+s.unlinkedTranslation = '<strong>警告：</strong>本文的英文原文自翻译以来进行了实质性修改，建议您在此版本更新之前阅读<a href="'+f.filename+'.en">英文版本</a>。'
 s.new="新"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="已更新" // same as New
 s.translation_updated="更新译本:" // date appears after colon 
 
 s.aboutThisArticle="文章相关" // title in the right column near the top of the page
 s.status_draft="此篇文章为未经公开审阅的拟定草稿。如有信息需要及时补充或订正，请您使用页面下的网络链接及时反馈给我们。"
-s.status_review="此篇文章目前正供公开审阅，请发送您的宝贵意见到 <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20$filename'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>订阅</a>)</span>."
-s.status_published="此篇文章已由W3C国际工作组（W3C Internationalization Working Group）审阅，并经过公开审阅以尽可能的确保文章的正确性。如有信息需要及时补充或订正，请您使用页面下的网络链接及时反馈给我们。"
+s.status_review="此篇文章目前正供公开审阅，请发送您的宝贵意见到 <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20$filename'>www-international@w3.org</a><span class='noprint'> (<a href='https://lists.w3.org/Archives/Public/www-international/'>订阅</a>)</span>."
+s.status_published="此篇文章已由 W3C 国际化工作组（W3C Internationalization Working Group）审阅，并经过公开审阅以尽可能的确保文章的正确性。如有信息需要及时补充或订正，请您使用页面下的网络链接及时反馈给我们。"
 s.status_notreviewed="此篇文章尚未经过公开审阅。如有信息需要及时补充或订正，请您使用页面下的网络链接及时反馈给我们。"
-s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
+s.status_obsolete="这篇文章现已过时，不会继续维护，且信息可能不准确。有关更多最新信息，请参阅<a href='http://www.w3.org/International/'>国际化活动主页</a>。"
 s.tests="测试" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "简约回复" // heading
-s.longeranswer = "Details" // heading that follows 'Quick answer'
-s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
-s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
-s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+s.longeranswer = "详情" // heading that follows 'Quick answer'
+s.additionalinfo = "更多信息" // heading that sometimes follows 'Details'
+s.acknowledgements = "还要感谢以下人员的贡献或反馈：" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.cookieMsg = "您可以让浏览器设置cookie，以继续使用您选择的语言浏览 W3C 国际化活动页面（如果有该语言的翻译的话）。请问您想设置cookie吗？" // this text is to be copied to another location
+s.githubRedirect = "<strong>注意！</strong> &nbsp; 这只是本文的编辑草案，所有链接和收藏都应指向 <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>W3C 网站上的版本</a>。" // used for github-based versions of published articles
 
-s.lastChanged = "Last changed "
+s.lastChanged = "最后一次更新 "
