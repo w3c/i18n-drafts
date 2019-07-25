@@ -98,7 +98,7 @@ s.newResourcesAlt = "الإشعار بكل الموارد الجديدة تنش�
 s.newResources = "موارد جديدة."
 s.homePageNewsAlt = "كل الأخبار الواردة في الصفحة الرئيسية."
 s.homePageNews = "الصفحة الرئيسية للأخبار."
-s.followOurNews = "Follow our news feed."
+s.followOurNews = "تابع مجرى أخبارنا"
 s.sentenceDelimiter = "."
 
 s.author = "كتبه:‏" // followed by name of author(s)
