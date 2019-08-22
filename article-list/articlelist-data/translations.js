@@ -103,11 +103,8 @@ var titles = {
 	},
 	{
 	"url": "/International/articles/definitions-characters/index",
-	"de": "Zeichencodierungen: grundlegende Konzepte",
 	"en": "Character encodings: Essential concepts",
-	"es": "Codificación de caracteres: Conceptos básicos",
-	"ro": "Codări de caractere: Concepte esențiale",
-	"uk": "Кодування символів: Основні поняття",
+	"fr": "Encodages de caractères : concepts essentiels",
 	},
 	{
 	"url": "/International/questions/qa-choosing-encodings",
