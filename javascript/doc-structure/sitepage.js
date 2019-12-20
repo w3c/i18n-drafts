@@ -114,7 +114,7 @@ else g.disclaimer = ''
 
 
 var mainNavigation = '<div id="search">'+g.siteSearch+'</div>'+
-'<div  style="float:left;"><a href="http://www.w3.org/"><img src="http://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72" /></a></div>'+
+'<div  style="float:left;"><a href="http://www.w3.org/"><img src="https://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72" /></a></div>'+
 '<div id="banner" style="float:left; margin-left:10px;"><a href="'+base+'/International"><p id="sitename" style="font-family: Arial, Helvetica, sans-serif; font-size: 22px; border-bottom: 2px solid brown; color: #4c5c9c; margin:0;">Internationalization (i18n)</p>'+
 '	<p id="subtitle" style="margin:0; font-size:12px; font-style:italic; color: #4c5c9c;">Making the World Wide Web worldwide!</p></a></div>'+
 '   <br style="clear:both;" />'+
