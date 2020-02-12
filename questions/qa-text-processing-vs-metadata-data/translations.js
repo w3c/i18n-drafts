@@ -1,6 +1,6 @@
 var trans = { }
 
-trans.versions = ['en', 'es', 'fr'];
+trans.versions = ['en', 'es', 'fr', 'it'];
 
 trans.outofdatetranslations = [];
 
