@@ -73,22 +73,98 @@ figure pre {
 </section>
         
         
-        
-<section>
-<h2 id="language_identification">Identifying the Language of Content</h2>
 
 
 <section>
-<h3 id="definitions">Definitions</h3>
+<h2 id="examples">Examples</h2>
 
-<p><dfn id="langmeta">Language metadata</dfn> typically indicates the 
+<section>
+<h3 id="ebook_example">E-book catalogue</h3>
+
+<p>Suppose that you are building a Web page to show a 
+customer's library of e-books. The e-books exist in a catalog of data 
+and consist of the usual data values. A JSON file for a single entry 
+might look something like:</p>
+
+<div class="figWrXXXap">
+<figure id="fig_example">
+<!--
+ Title below is actually "HTML and CSS: Design and Build Websites"
+ ASIN: 1118871642
+ ISBN-13: 978-1118871645
+ ISBN-10: 1118871642
+-->
+<pre>
+{
+    "id": "978-111887164-5",
+    "title": "<span dir="rtl">HTML &#x0648; CSS: &#x062A;&#x0635;&#x0645;&#x064A;&#x0645; &#x0648; &#x0625;&#x0646;&#x0634;&#x0627;&#x0621; &#x0645;&#x0648;&#x0627;&#x0642;&#x0639; &#x0627;&#x0644;&#x0648;&#x064A;&#x0628;</span>",
+    "authors": [ "Jon Duckett" ],
+    "language": "ar",
+    "pubDate": "2008-01-01",
+    "publisher": "مكتبة",
+    "coverImage": "https://example.com/images/html_and_css_cover.jpg",
+    // etc.
+},
+</pre>
+<figcaption>An example of data containing strings that need direction and language metadata.</figcaption>
+</figure>
+</div>
+
+<p>Each of the above is a data field in a database somewhere. Note that the language information provided (<code class="kw" translate="no">"language": "ar"</code>) indicates the language of the book, not  the language of the text in the database record.</p>
+
+<p>A well-internationalized catalog would include additional metadata 
+to what is shown above. That is, for each of the fields containing 
+natural language text, such as the <kbd>title</kbd> and 
+<kbd>authors</kbd> fields, there should be language  and base 
+direction information stored as metadata. (There may be other values as well, such 
+as pronunciation metadata for sorting East Asian language information.) 
+These metadata values are used by consumers of the data to influence the processing 
+and enable the display of the items in a variety of ways. As the JSON data structure 
+provides no place to store or exchange these values, it is more difficult
+to construct internationalized applications.</p>
+</section>
+
+
+
+
+<section>
+<h3 id="example2">Annotated manuscripts</h3>
+
+<p>Kitayama-san is reading an old Tibetan manuscript from the Dunhuang 
+collection. The tool he is using to read the manuscript has access 
+to annotations created by scholars who are commenting on the 
+text, and who are working in the various languages 
+of the International Dunhuang Project.  </p>
+<p>The section of the manuscript he is currently looking at has 
+commentaries by people writing in Chinese, Japanese, and Russian. 
+Each of these commentaries is stored in a separate  annotation, but 
+the annotations point to the same point in the target document.</p>
+<p>Each commentary is mainly written in the language of the scholar, 
+but may contain excerpts from the manuscript and other sources 
+written in Tibetan, as well as quoted text in Chinese and English. Some 
+commentaries may contain parallel annotations, each in a different 
+language. For example, there are some with the same text translated 
+into Japanese, Chinese and Tibetan.</p>
+
+<p>Kitayama-san speaks Japanese, so he generally wants to be presented with the 
+Japanese commentary.</p>
+</section>
+
+
+
+
+
+<section>
+<h2 id="definitions">Definitions</h2>
+
+<p><dfn id="def_langmeta">Language metadata</dfn> typically indicates the 
 intended linguistic audience or user of the resource as a whole, and 
 it's possible to imagine that this could, for a multilingual resource, 
 involve a property value that is a list of languages. A property that 
 is about language metadata may have more than one value, since it aims 
 to describe all potential users of the information</p>
 
-<p>The <dfn id="tpl">text-processing language</dfn> is the language of a 
+<p>The <dfn id="def_tpl">text-processing language</dfn> is the language of a 
 particular range of text (which could be a whole resource or just part 
 of it). A property that represents the text-processing language needs 
 to have a single value, because it describes the text content in such a 
@@ -98,38 +174,25 @@ other language-sensitive applications know which set of rules or
 resources to apply to a specific range of text. Such applications 
 generally need an unambiguous statement about the language they are 
 working on.</p>
+<p><dfn id="def_base_direction">Base direction</dfn> determines the general arrangement and progression of content when bidirectional text is displayed. The Unicode Bidirectional Algorithm (UBA) is primarily focused on arranging adjacent characters, based on character properties. Base direction works at a higher level, and dictates (a) the visual order and direction in which runs of strongly-typed LTR and RTL character are displayed, and (b) where there are weakly-typed characters such as punctuation, the placement of those items relative to the other content.</p>
 </section>
 
 
 
 
+
+
 <section>
-<h3 id="lang_use_cases">A language tagging use case</h3>
-  <p>Kitayama-san is reading an old Tibetan manuscript from the Dunhuang 
-	collection. The tool he is using to read the manuscript has access 
-	to annotations created by scholars who are commenting on the 
-	text, and who are working in the various languages 
-	of the International Dunhuang Project.  The section of the manuscript he is currently looking at has 
-	commentaries by people writing in Chinese, Japanese, and Russian. 
-	Each of these commentaries is stored in a separate  annotation, but 
-	the annotations point to the same point in the target document. 
-	Each commentary is mainly written in the language of the scholar, 
-	but may contain excerpts from the manuscript and other sources 
-	written in Tibetan, as well as quoted text in Chinese and English. Some 
-	commentaries may contain parallel annotations, each in a different 
-	language. For example, there are some with the same text translated 
-	into Japanese, Chinese and Tibetan.</p>
-	
-  <p>Kitayama-san speaks Japanese, so he generally wants to be presented with the 
-    Japanese commentary.</p>
- </section>
+<h2 id="language_identification">Identifying the Language of Content</h2>
+
  
  
  
     
  <section id="language_metadata">
    <h3>Capturing the language of the audience</h3>
-   <p>The annotations containing the Japanese commentary have a <code class="kw" translate="no">language</code> property set to &quot;<code class="kw" translate="no">ja</code>&quot; (Japanese). The tool he is using knows that he wants to read the Japanese commentaries, and it uses this information to select and present to him the text contained in that body.  This is language information being used as metadata about the intended audience – it indicates to the application doing the retrieval that the intended consumer of the information  wants Japanese.</p>
+   <p>Kitayama-san wants to find manuscript annotations in Japanese (see the <a href="#example2">example</a> above).</p>
+<p>The annotations containing the Japanese commentary have a <code class="kw" translate="no">language</code> property set to &quot;<code class="kw" translate="no">ja</code>&quot; (Japanese). The tool he is using knows that he wants to read the Japanese commentaries, and it uses the metadata attached to the annotations to select and present to him the text that is available in Japanese.  This is language information being used as metadata about the <em>intended audience</em> – it indicates to the application doing the retrieval that the intended consumer of the information  is someone who wants Japanese content.</p>
     
    <p>Some of the annotations contain text in more than one language. 
    For example, there are several with commentary in  Chinese, Japanese, 
@@ -142,7 +205,7 @@ working on.</p>
    possible, however, that the text-processing language for strings 
    inside the resource may be assumed by looking at the resource level 
    language tag – but only if it is a single language tag. If the tag 
-   contains &quot;ja,zh,bo&quot; it's not clear which strings are in 
+   contains &quot;<code class="kw" translate="no">ja,zh,bo</code>&quot; it's not clear which strings should be treated as if they are in 
    Japanese, which are in Chinese, and which are in Tibetan.</p>
  </section>
 
@@ -152,16 +215,21 @@ working on.</p>
 <h3 id="text_processing">Capturing the text-processing language</h3>  
   <p>Having identified the relevant annotation text to present to 
     Kitayama-san, his application has to then display it so that he can read it. 
-    It's important to apply the correct font to the text. In the following 
-    example, the first line is labeled <code class="kw" translate="no">ja</code> 
+    It's important to apply the correct font to the text. In the figure just below, the first line is labeled <code class="kw" translate="no">ja</code> 
     (<em>Japanese</em>), and the second <code class="kw" translate="no">zh-Hant</code> (<em>Traditional 
-    Chinese</em>) respectively. The characters on both lines are the same code points, but they demonstrate systematic differences between how those and similar codepoints are rendered in Japanese vs. Chinese fonts. It's important to associate the right forms with the right language, otherwise you can make the reader uncomfortable or possibly unhappy.</p>
-  
+    Chinese</em>), respectively. The characters on both lines  are the same code points, but the reader expects to see systematic differences between how those  codepoints are rendered in Japanese vs. Chinese. It's important to associate the right forms with the right language, otherwise you can make the reader uncomfortable or possibly unhappy.</p>
+ 
+<div class="figWrap">
+<figure id="fig_ja_zh_fonts">
   <p class="cjk-demo"><img src="index-data/ja_zh_fonts.png" alt="雪, 刃, 直, 令, 垔"></p>
   <!--p class="cjk-demo"> 雪, 刃, 直, 令, 垔 </p>
   <p class="cjk-demo" lang="ja"> 雪, 刃, 直, 令, 垔 </p>
   <p class="cjk-demo" lang="zh-Hans"> 雪, 刃, 直, 令, 垔 </p>
   <p class="cjk-demo" lang="zh-Hant"> 雪, 刃, 直, 令, 垔 </p-->
+  <figcaption>The same code points, displayed with a Japanese (top) and Chinese (bottom) font.</figcaption>
+  </figure>
+  </div>
+  
   
   <p>So, it's important to apply a Japanese font to 
 	the Japanese text that Kitayama-san is reading. There are also 
@@ -205,7 +273,7 @@ working on.</p>
 <section>
 <h2 id="bidi_use_case">Identifying the Base Direction of Content</h2>
 
-  <p>In order for a <a>consumer</a> to correctly display bidirectional text, such as those in the following use cases, there must be a way for the consumer to determine the required base direction for each string. It is not enough to rely on the Unicode Bidirectional Algorithm to solve these issues. What is needed is a way to establish the overall directional context in which the string will be displayed (which is what 'base direction' means).</p>
+  <p>In order for a <a>consumer</a> to correctly display bidirectional text, such as those in the following use cases, there must be a way for the consumer to determine the required <a href="#def_base_direction">base direction</a> for each string. It is not enough to rely on the Unicode Bidirectional Algorithm to solve these issues. What is needed is a way to establish the overall directional context in which the string will be displayed (which is what 'base direction' means).</p>
 <p>These use cases illustrate situations where a failure to apply the necessary base direction creates a problem.</p>
 
 
