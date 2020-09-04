@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Personal names around the world</title>
 <meta name="description" content="How do people's names differ around the world, and what are the implications of those differences on the design of forms, databases, ontologies, etc. for the Web?" />
-<script type="application/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -21,7 +21,7 @@ f.path = '../' // what you need to prepend to a URL to get to the /International
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2016-01-24', time:'17:46'} // date and time of latest edits to this document/translation
-f.contributors = 'Kang Seonghoon, Bjarki Geir Benediktsson, Fabien Basmaison, Carlos Mateo, Hedvig Skirgård'; // people providing useful contributions or feedback during review or at other times
+f.contributors = 'Alberto Sánchez Molero, Kang Seonghoon, Casey McNamara, Bjarki Geir Benediktsson, Fabien Basmaison, Абрамова Алина Алексадровна, Carlos Mateo, Hedvig Skirgård'; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
 // TRANSLATORS should fill in these assignments:
@@ -39,7 +39,6 @@ f.additionalLinks = ''
 <link rel="stylesheet" href="../style/article-2016.css" />
 <link rel="stylesheet" href="qa-personal-names-data/local.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 
 <body>
@@ -97,7 +96,7 @@ f.additionalLinks = ''
   <section>
     <h3 id="multiplefamily"><a href="#multiplefamily">Multiple family names</a></h3>
     <p>Spanish-speaking people will commonly have two family names.  For example, <b class="highlight">María José Carreño Quiñones</b> (José being a part of her given name) may be the daughter of Antonio Carreño Rodríguez and María Quiñones Marqués.</p>
-    <p>You would refer to her as Señorita Carreño, not Señorita Quiñones.</p>
+    <p>You could refer to her as Señorita Carreño, but not Señorita Quiñones. However, more recently there is also a preference to move away from titles that indicate the married status of women (especially when they are not so indicated for men), so  'Señorita'  may be replaced  with 'Señora' or 'Doña'.</p>
     <p>Brazilians have similar customs, and may even have three or four family names, drawing on the names of other ancestors, such as <b class="highlight">José Eduardo Santos Tavares Melo Silva</b>.</p>
     <p>Typically,  two Spanish family names would have the order paternal+maternal, whereas Portuguese names in Brazil would be maternal+paternal. However, this order may change.</p>
     <p>Furthermore, some names add short words, such as de or e between family names, such as Carreño de Quiñones, or Tavares e Silva.</p>
@@ -106,11 +105,13 @@ f.additionalLinks = ''
   <section>
     <h3 id="variants"><a href="#variants">Variant word forms</a></h3>
     <p>We already saw that the patronymic in Iceland ends in ‑son or ‑dóttir, depending on whether the child is male or female.  Russians use patronymics as their middle name but also use family names, in the order givenName-patronymic-familyName.  The endings of the patronymic and family names will indicate whether the person in question is male or female.  For example, the wife of <b class="highlight">Борис Николаевич Ельцин</b> (Boris Nikolayevich Yeltsin) is <b class="highlight">Наина Иосифовна Ельцина</b> (Naina Iosifovna Yeltsina) – note how the husband’s names end in consonants, while the wife’s names (even the patronymic from her father) end in ‑a.</p>
+<p>By the way, a slightly less formal way of writing Russian names follows the order familyName-givenName-patronymic, such as <b class="highlight">Ельцина Наина Иосифовна</b>.</p>
   </section>
   
   <section>
     <h3 id="middleinitial"><a href="#middleinitial">Middle initials</a></h3>
     <p>Americans often write their name with a middle initial, for example, <b class="highlight">John Q. Public</b>. Often forms designed in the USA assume that this is common practice, whereas even in the UK, where people may indeed have (one or more) middle names, this is often seen as a very American approach.  People in other countries who have more than two names and don't usually initialise them may be confused about how to deal with such forms.  Bear in mind, also, that many people who do use an initial in their name may use it at the beginning.</p>
+<p>Filipinos also write their name with a middle initial, but it represents the mother's  name before marriage rather than a given name. For example, in <b class="highlight">Maria J. Go</b>, the initial repesents Jimenez, the previous family name of Maria's mother. (In fact, an initial may represent more than one name: 'D' may stand for 'Dela Cruz' when the name is written in full.)</p>
   </section>
   
   <section>
@@ -161,7 +162,7 @@ f.additionalLinks = ''
 
 
 <section>
-  <h2 id="fielddesign"><a href="#fielddesign">Implications for field design</a></h2>
+<h2 id="fielddesign"><a href="#fielddesign">Implications for field design</a></h2>
   <aside class="insidenote"><img src="qa-personal-names-data/firstmlast.png" alt=" "  style="border-radius: 5px;"/></aside>
   <p>As mentioned above, one possible approach is to localize forms for a particular culture. In theory this should allow you to tailor your forms exactly to the needs of the audience. Unfortunately, there may still be a number of possible disadvantages to this approach:</p>
   <ul>
@@ -262,13 +263,12 @@ f.additionalLinks = ''
       <mark id="req_spaces" class="requirement">Allow the user to enter a name with spaces</mark>
       , eg. to support prefixes and suffixes
       such as de in French, von in German, and Jnr/Jr  in American names, and also because some people consider a space-separated sequence of characters to be a single name, eg. Rose Marie.</p>
-    <p>
-      <mark id="req_samefamily" class="requirement">Don't assume that members of the same family will share the same family name.</mark>
-    </p>
-    <p>
-<mark id="req_title" class="requirement">Ask yourself whether it's necessary to require that people supply a title.</mark> 
+<p><mark id="req_case_normalization">Don't normalize the casing in names.</mark>
+Some names (such as 'McNamara') contain capital letters that are not the first letter; others (such as 'van der Waals') include words that are not capitalized.  Forms should preserve the case the user enters and not coerce such names to always and only use capital letters at the start of each word. </p>
+<p><mark id="req_samefamily" class="requirement">Don't assume that members of the same family will share the same family name.</mark></p>
+<p><mark id="req_title" class="requirement">Ask yourself whether it's necessary to require that people supply a title.</mark> 
 Some people don't expect to use titles at all. In that case, they should be able to leave such a field blank. If you are requiring  people to supply a title such as Mr./Mrs./Ms. in order to indicate their gender, why not ask directly? This also gets around the issue that you may be inadvertently asking women to take decisions about revealing their marital status, but not men. Of course, also bear in mind that titles vary signficantly around the world (see <a href="#formality">below</a>). </p>
-    <p>As mentioned earlier, because it is not only women who change their family names,
+  <p>As mentioned earlier, because it is not only women who change their family names,
       <mark class="requirement">it may be better for a form to ask for 'Previous name' rather than 'Maiden name' or 'née'</mark>
       . </p>
     <p>If you are designing forms that will be localized on a per culture basis, don’t forget that atomized name parts may still need to be stored in a central database, which therefore needs to be able to represent all the various complexities that you dealt with by relegating the form design to the localization effort.</p>
@@ -277,7 +277,7 @@ Some people don't expect to use titles at all. In that case, they should be able
 
 
 <section>
-  <h2 id="encoding"><a href="#encoding">Implications for character support</a></h2>
+<h2 id="encoding"><a href="#encoding">Implications for character support</a></h2>
   <p>The first thing that English speakers must remember about other people’s names is that a large majority of them don’t use the Latin alphabet, and  of those that <em>do</em>, a majority use accents and characters that don’t occur in English.  It seems obvious, once it is said, but it has some important consequences for designers that are often overlooked.</p>
   <div class="sidenoteGroup">
     <p>If you are designing an English form you need to decide whether you are expecting people to enter names in their own script (eg. 小林康宏) or in an Latin-only transcription (such as Yasuhiro Kobayashi), or both. </p>
