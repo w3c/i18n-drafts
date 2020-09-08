@@ -68,7 +68,7 @@ f.additionalLinks = ''
     whatever language and script they need to.</p>
   <p>There are a few details to make sure this approach works well. First, it is important to tell the browser that the form page is in UTF-8.
     There are various ways to <a class="print" href="/International/questions/qa-html-encoding-declarations">tell the browser about the encoding of your page</a>. This is
-    important in any case, but even more so if your form page itself doesn't contain any characters outside US-ASCII, but your users may type in other
+    important in any case, but even more so if your form page itself doesn't contain any characters outside US-ASCII, but your users may type in such
     characters.</p>
   <p>Second, it may be a good idea for the script that receives the form data to check that the data returned indeed uses UTF-8 (in case
     something went wrong, e.g. the user changed the encoding). Checking is possible because UTF-8 has a very specific byte-pattern not seen in any other
@@ -76,8 +76,8 @@ f.additionalLinks = ''
   <p>As an example, in Perl, a regular expression testing for UTF-8 may look as follows:</p>
   <figure class="example">
     <pre>$field =~
-  m/\A(
-     [\x09\x0A\x0D\x20-\x7E]            # ASCII
+  /\A(
+     [\x00-\x7F]      				      # ASCII
    | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
    |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
    | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
@@ -90,6 +90,7 @@ f.additionalLinks = ''
   </figure>
   <p>This expression can be adapted to other programming languages. It takes care of various issues, such as illegal overlong encodings and
     illegal use of surrogates. It will return true if <code>$field</code> is UTF-8, and false otherwise.</p>
+<p>The above regular expression can be tailored by adding application-related restrictions. As an example, many control characters can be excluded by replacing <code>[\x00-\x7F]</code> with <code>[\x09\x0A\x0D\x20-\x7E]</code>.</p>
 </section>
 
 
