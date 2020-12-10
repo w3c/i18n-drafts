@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Typographic units in complex scripts</title>
-<meta name="description" content="Issues related to segmentation of text into typographic units." />
+<title>typographic character units in complex scripts</title>
+<meta name="description" content="Issues related to segmentation of text into typographic character units." />
 <script>
 var f = { }
 
@@ -21,7 +21,7 @@ f.path = '../' // what you need to prepend to a URL to get to the /International
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2020-12-09', time:'17:46'} // date and time of latest edits to this document/translation
-f.contributors = 'Fantasai, Florian Rivoal'; // people providing useful contributions or feedback during review or at other times
+f.contributors = 'Fantasai, Florian Rivoal, Addison Phillips'; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
 // TRANSLATORS should fill in these assignments:
@@ -45,7 +45,7 @@ f.additionalLinks = ''
 <header>
 <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
 
-<h1>Typographic units in complex scripts (initial draft)</h1>
+<h1>Typographic character units in complex scripts (initial draft)</h1>
 </header>
 
 
@@ -53,16 +53,17 @@ f.additionalLinks = ''
 <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
 </div>
 
-<p>The basic unit of text is not always a Unicode code point when it comes to text operations such as the following:</p>
+<p>The basic unit of text is not always a Unicode <a class="dfn" href="https://www.w3.org/International/articles/definitions-characters/index.en#charsets">code point</a> when it comes to text operations such as the following:</p>
 <ul>
 <li>line breaking &amp; hyphenation</li>
 <li>letter spacing &amp; justification</li>
 <li>cursor movement</li>
 <li>forward delete</li>
-<li>dropped initials, and </li>
-<li>some vertical text</li>
+<li>dropped initials </li>
+<li> vertical text</li>
+<li>truncation</li>
 </ul>
-<p>In this article we look at some of the issues encountered when working with typographic units in complex scripts. Note that different typographic units may be appropriate for different operations. For example, some of the justification issues we mention below require different segmentation than, say, cursor movement.</p>
+<p>CSS defines the <a href="https://www.w3.org/TR/css-text-3/#typographic-character-unit" class="dfn">typographic character unit</a> as a basic unit of text for use with these editing operations, however the meaning of a that term can vary according to the operation, and there are issues in working with such units in complex scripts. In this article we look at examples of some of those differences and issues.</p>
 
 
 <section>
@@ -120,10 +121,10 @@ f.additionalLinks = ''
 </figure>
 </div>
 
-<p>The vowel-killer is generically referred to as a virama, although each language has its own name, such as halant, hasant, pulli, viramamu etc.</p>
+<p>The vowel-killer is generically referred to as a <em class="name">virama</em>, although each language has its own name, such as <i class="name">halant</i>, <i class="name">hasant</i>, <i class="name">pulli</i>, <i class="name">viramamu</i>, etc. Each script in Unicode that uses a vowel-killer has its own code point for that character.</p>
 
 <div class="sidenoteGroup">
-<p><mark>The important rule is that <em>conjuncts</em> are never normally split apart</mark> by   operations such as      line breaking &amp; hyphenation,     letter spacing &amp; justification,     cursor movement,     forward delete,     hihglighted initial paragraph letters, and     vertical text.</p>
+<p><mark>The important rule is that <em>conjuncts</em> are never normally split apart</mark> by   operations such as      line breaking &amp; hyphenation,     letter spacing &amp; justification,     cursor movement,     forward delete,     hihglighted initial paragraph letters,      vertical text, and truncation.</p>
 <p>This also affects placement of vowel-signs. As can be seen in the Hindi example above, the left-positioned vowel-sign is therefore placed to the left of the <em>whole cluster</em>, even though it is pronounced after the last consonant in the group.</p>
 
 <div class="sideinfonote">
@@ -153,10 +154,10 @@ f.additionalLinks = ''
 <div class="figWrap">
 <figure id="fig_pulli">
 <img src="qa-indic-graphemes-data/pulli.png" alt="யாவற்றையும்" data-notes="72px Noto Serif Tamil; 30px Gentium">
-<figcaption>The Tamil word 'yavattaiyum', showing the 2 geminated consonants (orange) with a virama dot above the first, and a prescript vowel (tan). Typographic unit boundaries are shown by thin vertical lines.</figcaption>
+<figcaption>The Tamil word 'yavattaiyum', showing the 2 geminated consonants (orange) with a vowel-killer dot above the first, and a prescript vowel (tan). Typographic unit boundaries are shown by thin vertical lines.</figcaption>
 </figure>
 </div>
-<p><mark>Where a <em>visible</em> virama is used, it is possible to split apart the consonants that make up a cluster</mark> while breaking lines,  spacing text, etc.</p>
+<p><mark>Where a <em>visible</em> vowel-killer is used, it is possible to split apart the consonants that make up a cluster</mark> while breaking lines,  spacing text, etc.</p>
 
 <!--div class="figWrap">
 <figure id="fig_tamil_segments">
@@ -165,8 +166,8 @@ f.additionalLinks = ''
 </figure>
 </div-->
 
-<p>The handling of left-positioned vowel-signs is also different from the case where conjuncts are produced. In Tamil, the left-positioned vowel-sign <em>does</em> push apart the consonants that make up the cluster, as can be seen in the earlier figure.</p>
-<p>In Unicode text the same code point is generally used for both the invisible conjunct-former and the visible virama, and the different display effects are produced by font rules.</p></section>
+<p>The handling of left-positioned vowel-signs is also different from the case where conjuncts are produced. In Tamil, the left-positioned vowel-sign <em>does</em> push apart the consonants that make up the cluster, as can be seen in the  figure.</p>
+<p>In Unicode text the same code point is generally used for both the invisible conjunct-former and the visible vowel-killer, and the different display effects are produced by font rules.</p></section>
 
 
 
@@ -175,9 +176,17 @@ f.additionalLinks = ''
 <section id="messy"><h3><a href="#messy">The messy bits</a></h3>
 
 <p>Unfortunately, consonant cluster handling is not quite as clear-cut as implied above. Orthographies don't always indicate a consonant cluster using a conjunct or a vowel-killer.</p>
-<p>For example, as a general rule Hindi doesn't pronounce a vowel after the penultimate consonant in a word if there is a vowel-sign at the end. However, It doesn't indicate the vowel absence by a conjunct or virama.</p>
+<p>For example, as a general rule Hindi doesn't pronounce a vowel after the penultimate consonant in a word if there is a vowel-sign at the end. However, It doesn't indicate the vowel absence by a conjunct or vowel-killer.</p>
 <p>In other orthographies, such as commonly in Gujarati and  Bengali, there is often no indication of where consonant clusters appear. You simply have to know how to pronounce the word.</p>
-<p>These differences, however, don't normally cause problems for text segmentation. A sequence of consonant glyphs that is actually a cluster, but which is not connected visually is treated as so many separate typographic units, and can be handled using grapheme clusters (see below).</p>
+
+<div class="figWrap">
+<figure id="fig_gujarati">
+<img src="qa-indic-graphemes-data/gujarati.png" alt="ઘરકામ" data-notes="62px Noto Serif Gujarati">
+<figcaption>Segmentation for the Gujarati word '<span class="ipa">ɡarkəm</span>', where the 'rk' cluster is not signalled by any vowel-killer or conjunct. Nor is the missing inherent vowel of the final 'm'.</figcaption>
+</figure>
+</div>
+
+<p>These differences, however, don't normally cause problems for text segmentation. A sequence of consonant glyphs that is actually a cluster, but which is not connected visually is treated as so many separate typographic character units, and can be handled using grapheme clusters (see below).</p>
 </section>
 
 
@@ -226,15 +235,15 @@ f.additionalLinks = ''
 <p>What's problematic about this is that there is no difference whatsoever in the underlying code point sequence, and yet the segmentation behaviour has to be different. The only clue as to how to segment this sequence comes in the visually rendered shapes.</p>
 <p>Currently, browsers are unable to distinguish between consonant clusters that should be handled as a single unit, and those that should not.</p>
 
-<p>This is problematic for Tamil because, although Tamil almost always uses the visible virama (pulli) to indicate consonant clusters, there are two clusters that are rendered as conjuncts: 'ksh' and 'shri'. The former can be split into multiple segments, but the latter not.</p>
+<p>This is problematic for Tamil because, although Tamil almost always uses the visible vowel-killer (pulli) to indicate consonant clusters, there are two clusters that are rendered as conjuncts: 'ksh' and 'shri'. The former can be split into multiple segments, but the latter not.</p>
 
-<p>The problem is wider than just this Tamil convention, however. It is possible that a font doesn't have the glyphs needed for a particular conjunct. In such a case, the font will generally show the virama explicitly to indicate the absence of the intervening vowel.</p>
+<p>The problem is wider than just this Tamil convention, however. It is possible that a font doesn't have the glyphs needed for a particular conjunct. In such a case, the font will generally show the vowel-killer explicitly to indicate the absence of the intervening vowel.</p>
 <p>Here, for example, is a rendering of the previous Bengali word without the conjunct formation.</p>
 
 <div class="figWrap">
 <figure id="fig_jhilli_virama">
 <img src="qa-indic-graphemes-data/jhilli_virama.png" alt="ঝিল্লি → ঝি + ল্লি" data-notes="72px Noto Serif Devanagari">
-<figcaption>The Bengali word 'jhilli' without conjunct formation. The highlighted items are the visible virama (left) and the letter 'i' (right). Typographic unit boundaries are shown by thin vertical lines.</figcaption>
+<figcaption>The Bengali word 'jhilli' without conjunct formation. The highlighted items are the visible vowel-killer (left) and the letter 'i' (right). Typographic unit boundaries are shown by thin vertical lines.</figcaption>
 </figure>
 </div>
 
