@@ -21,7 +21,7 @@ f.path = '../' // what you need to prepend to a URL to get to the /International
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2020-12-09', time:'17:46'} // date and time of latest edits to this document/translation
-f.contributors = 'Fantasai, Florian Rivoal, Addison Phillips'; // people providing useful contributions or feedback during review or at other times
+f.contributors = 'Fantasai, Florian Rivoal, Addison Phillips, Norbert Lindenberg'; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
 // TRANSLATORS should fill in these assignments:
@@ -128,7 +128,7 @@ f.additionalLinks = ''
 <p>This also affects placement of vowel-signs. As can be seen in the Hindi example above, the left-positioned vowel-sign is therefore placed to the left of the <em>whole cluster</em>, even though it is pronounced after the last consonant in the group.</p>
 
 <div class="sideinfonote">
-<p>Note that backwards deletion (rather than forwards) will typically delete text character by character, and so may break down conjuncts.  Also, we will see later that vowel-signs may be split apart from the conjunct during justification or letter-spacing, however the conjunct itself still resists decomposition in this case.</p>
+<p>Note that forwards and backwards deletion  will typically each delete different numbers of characters per keypress, and backwards deletion may break down conjuncts when forward deletion does not.  Also, we will see later that vowel-signs may be split apart from the conjunct during justification or letter-spacing, however the conjunct itself still resists decomposition in this case.</p>
 </div>
 </div>
 
@@ -237,7 +237,13 @@ f.additionalLinks = ''
 <mark>there is no difference whatsoever in the underlying code point sequence, and yet the segmentation behaviour has to be different. The only clue as to how to segment this sequence comes in the visually rendered shapes</mark>
 .</p>
 <p>Currently, browsers are unable to distinguish between consonant clusters that should be handled as a single unit, and those that should not.</p>
+
+<div class="sidenoteGroup">
 <p>This causes a problem for a script such as Tamil, which almost always uses the visible vowel-killer (<i class="foreign">pulli</i>) to indicate consonant clusters, but has two clusters for which the same vowel-killer code point produces conjuncts ('ksh' and 'shri'). Normally, Tamil consonant clusters can be split into multiple text units, but not those which are conjuncts. It is therefore necessary to apply different rules, according to the specific letters occuring in the syllable.</p>
+<div class="sideinfonote">
+The Unicode Standard recognises 3 types of vowel-killer. <a href="https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=[:Indic_Syllabic_Category=Pure_Killer:]" target="_blank"><code class="kw" translate="no">Pure_Killer</code> types</a> are always rendered visibly and don’t cause conjunct formation. They are generally not a problem for segmentation. <a href="https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=[:Indic_Syllabic_Category=Invisible_Stacker:]" target="_blank"><code class="kw" translate="no">Invisible_Stacker</code> types</a> always cause conjunct formation, and should never be rendered visibly. Breaking between such viramas and subsequent consonants is always wrong, but unfortunately that’s what applying  grapheme cluster rules does. <a href="https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=[:Indic_Syllabic_Category=Virama:]" target="_blank"><code class="kw" translate="no">Virama</code> types</a> are sometimes  rendered visibly in a way that breaking after them would be fine, and sometimes they participate in conjunct formation, so that breaking after them causes problems. These are particularly problematic, for the reasons described here.</div>
+</div>
+
 <p>But the problem is wider than  this. It is possible that, for the exact same sequence of characters, one font has the glyphs needed for a particular conjunct, but another doesn't. In the latter case, the font will generally show the vowel-killer explicitly to indicate the absence of the intervening vowel.</p>
 <p>Here, for example, is a rendering of the previous Bengali word without the conjunct formation.</p>
 
