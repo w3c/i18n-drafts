@@ -294,26 +294,26 @@ Japanese, which are in Chinese, and which are in Tibetan. Therefore, there is a 
 <section>
 <h2 id="bidi_use_case">Identifying the Base Direction of Content</h2>
 
-  <p>In order for an application to correctly display bidirectional text, such as those in the following use cases, there must be a way for the consumer to determine the required <a href="#def_base_direction">base direction</a> for each string. It is not enough to rely on the Unicode Bidirectional Algorithm to solve these issues. What is needed is a way to establish the overall directional context in which the string will be displayed (which is what 'base direction' means).</p>
+  <p>In order for an application to correctly display bidirectional text, such as  in the following use cases, there must be a way for the consumer to determine the required <a href="#def_base_direction">base direction</a> for each string. It is not enough to rely on the Unicode Bidirectional Algorithm to solve these issues. What is needed is a way to establish the overall directional context in which the string will be displayed (which is what 'base direction' means).</p>
 <p>If you are new to RTL text and the Unicode Bidirectional Algorithm you may find it useful to start with <a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics.en">this easy introduction</a>.</p>
-<p>These use cases illustrate situations where a failure to apply the necessary base direction creates a problem.</p>
+<p>These use cases illustrate situations where a failure to apply the necessary base direction creates a problem. Most of these examples are about getting things to appear in the right place.</p>
 
 
 
 
 <section>
-<h3 id="bidiCase1">Getting things to appear in the right place</h3>
-<p>The <a href="#base_example"> eBook Catalog example</a> above shows an entry for a Hebrew book. Here are the strings that represent the names of the author and publisher, respectively, shown as you would expect to see them written.</p>
+<h3 id="bidiCase1">Punctuation and basic directional run placement</h3>
+<p>The <a href="#base_example"> eBook Catalog example</a> above shows an entry for a Hebrew book. Here are the strings that represent the names of the  publisher and author, respectively, shown as you would expect to see them written.</p>
 
 <div class="figWrap">
 <figure id="fig_international_books">
 <img src="index-data/position_string.png" alt="פעילות הבינאום, W3C    ספרים בינלאומיים!" data-notes="27px Noto Sans Hebrew + Noto Sans">
-<figcaption>(top) The author's (W3C Internationalization Activity) and  (bottom) publisher's names (International Books!).  (<a class="cpref" href="index-data/codepoints#fig_international_books" target="_blank">View codepoints.</a>)</figcaption>
+<figcaption>The names (top) of the publisher (International Books!) and (bottom) of the author (W3C Internationalization Activity).  (<a class="cpref" href="index-data/codepoints#fig_international_books" target="_blank">View codepoints.</a>)</figcaption>
 </figure>
 </div>
 
 <p>These strings are picked up and inserted into a page that describes the book. There is both an English (LTR) and Hebrew (RTL) version of the page.</p>
-<p>Drop this string into a RTL Hebrew context, as shown in the figure below, and it will look fine.</p>
+<p>Drop these strings into a RTL Hebrew context, as shown in the figure below, and they will look fine.</p>
 
 <div class="figWrap">
 <figure id="fig_position_RTL">
@@ -350,40 +350,8 @@ Japanese, which are in Chinese, and which are in Tibetan. Therefore, there is a 
 
 
 
-
 <section>
-<h3 id="bidiCase2">Problems with initial Latin text in RTL strings</h3>
-<p>This is how the title of the book in the first part of the <a href="#base_example"> eBook Catalog example</a> should be written. The words 'HTML' and 'CSS' should be read first, and in that order, at the start of the title.</p>
-
-<div class="figWrap">
-<figure id="fig_initial">
-<img src="index-data/initial.png" alt="HTML و CSS: تصميم و إنشاء مواقع الويب" data-notes="27px Noto Sans Arabic + Noto Sans">
-<figcaption>The name of the book in the Arabic example in the eBook Catalog (HTML and CSS: Website Design and Creation). (<a class="cpref" href="index-data/codepoints#fig_initial" target="_blank">View codepoints.</a>)</figcaption>
-</figure>
-</div>
-
-<p>As we saw in the previous section, a browser can test the first strong character in the string in order to guess the base direction that needs to be applied. In this case, that heuristic will produce the wrong result.</p>
-
-<div class="figWrap">
-<figure id="fig_initial_LTR">
-<img src="index-data/initial_LTR.png" alt="Book title: HTML و CSS: تصميم و إنشاء مواقع الويب" data-notes="27px Noto Sans Arabic + Noto Sans">
-<figcaption>The name of the book in the Arabic example of the eBook Catalog with no directional information for the display of the string. (<a class="cpref" href="index-data/codepoints#fig_initial_LTR" target="_blank">View codepoints.</a>)</figcaption>
-</figure>
-</div>
-
-<p>The heuristics work most of the time, but for cases like this, or others, such as where a Latin hash tag or @name appears at the start of a tweet, the heuristics will produce the wrong result. What's needed here is some information that is stored alongside the string to indicate what its true directionality should be when displayed.</p>
-</section>
-
-
-
-
-
-
-
-
-
-  <section>
-  <h3 id="bidiCase3">Bidirectional text ordering</h3>
+  <h3 id="bidiCase3">Managing multiple directional runs</h3>
 <p>When the opposite direction text is neither at the start nor the end, but is in the middle of a string, the results can be even more confusing.</p>
 <p>The title of the Hebrew book is shown here as you would expect to read it. In this case the string contains three directional runs. </p>
 
@@ -444,26 +412,44 @@ Japanese, which are in Chinese, and which are in Tibetan. Therefore, there is a 
 
 
 
+
+
+
 <section>
-  <h3 id="bidiCase4">Interpreting HTML markup</h3>
-<p>In this use case, the string to be displayed contains markup.</p>
+<h3 id="bidiCase2">Problems with initial Latin text in RTL strings</h3>
+<p>This is how the title of the book in the first part of the <a href="#base_example"> eBook Catalog example</a> should be written. The words 'HTML' and 'CSS' should be read first, and in that order, at the start of the title.</p>
 
 <div class="figWrap">
-<figure id="fig_markup">
-<img src="index-data/markup.png" alt="&lt;span dir='ltr'>one שתיים three&lt;/span>" data-notes="27px Noto Sans Hebrew + Noto Sans">
-<figcaption>A string containing HTML markup. (<a class="cpref" href="index-data/codepoints#fig_markup" target="_blank">View codepoints.</a>)</figcaption>
+<figure id="fig_initial">
+<img src="index-data/initial.png" alt="HTML و CSS: تصميم و إنشاء مواقع الويب" data-notes="27px Noto Sans Arabic + Noto Sans">
+<figcaption>The name of the book in the Arabic example in the eBook Catalog (HTML and CSS: Website Design and Creation). (<a class="cpref" href="index-data/codepoints#fig_initial" target="_blank">View codepoints.</a>)</figcaption>
 </figure>
 </div>
 
-<p>Unlike the previous example, where the markup was displayed to the reader, in this case there is an expectation that the markup will be parsed and added to the DOM when the string is inserted into a page. This is a way of indicating the appropriate base direction for the string, using the <code class="kw" translate="no">dir</code> attribute.</p>
-<p>Such an approach relies, however, on a process where the consumer expects to receive HTML, and knows how to handle bidi markup. It also requires the producer to take explicit action to identify the appropriate base direction and set up the required markup to indicate that.</p>
+<p>As we saw in the previous section, a browser can test the first strong character in the string in order to guess the base direction that needs to be applied. In this case, that heuristic will produce the wrong result.</p>
+
+<div class="figWrap">
+<figure id="fig_initial_LTR">
+<img src="index-data/initial_LTR.png" alt="Book title: HTML و CSS: تصميم و إنشاء مواقع الويب" data-notes="27px Noto Sans Arabic + Noto Sans">
+<figcaption>The name of the book in the Arabic example of the eBook Catalog with no directional information for the display of the string. (<a class="cpref" href="index-data/codepoints#fig_initial_LTR" target="_blank">View codepoints.</a>)</figcaption>
+</figure>
+</div>
+
+<p>The heuristics work most of the time, but for cases like this, or others, such as where a Latin hash tag or @name appears at the start of a tweet, the heuristics will produce the wrong result. What's needed here is some information that is stored alongside the string to indicate what its true directionality should be when displayed.</p>
 </section>
+
+
+
+
+
+
+
 
 
 
 <section>
 <h3 id="bidiCase5">Neutral LTR text</h3>
-<p>The text in this use case could be a phone number, product catalogue number, mac address, etc. Or it could be an ISBN number in the <a href="#base_example"> eBook Catalog example</a>.</p>
+<p>The text in this use case could be a phone number, product catalogue number, MAC address, etc. Or it could be an ISBN number in the <a href="#base_example"> eBook Catalog example</a>.</p>
 
 <div class="figWrap">
 <figure id="fig_isbn">
@@ -474,7 +460,7 @@ Japanese, which are in Chinese, and which are in Tibetan. Therefore, there is a 
 
 
 <!--p lang="he" dir="rtl" style="text-align:center; font-size: 1.8em;"><code><bdo dir="ltr">&quot;123 456 789&quot;</bdo></code></p-->
-<p>Dropped into a RTL context, you will get the result just below, which is incorrect – the sequencing is wrong, and this may not even be apparent to the reader, who will expect to read such numbers from left to right:</p>
+<p>Dropped into an  RTL context when preceded by Arabic text, you will get the result just below, which is incorrect – the sequencing is wrong, and this may not even be apparent to the reader, who will expect to read such numbers from left to right:</p>
 
 <div class="figWrap">
 <figure id="fig_isbn_RTL">
@@ -484,8 +470,15 @@ Japanese, which are in Chinese, and which are in Tibetan. Therefore, there is a 
 </div>
 
 
-<p>When presented to a user, the order of the numbers must remain the same even when the directional context of the surrounding text is RTL. There are no strong directional characters in this string, and the need to preserve a strong LTR base direction is more to do with the type of information in the string than with the content.</p>
+<p>There are no strong directional characters in this string, and so nothing to indicate the expected direction when displayed. </p>
+<p>In fact, the need to preserve a strong LTR base direction has more to do with the type of information in the string than with the character content. Things like ranges and mathematical expressions <em>are</em> expected to be read from right to left in Arabic (although the numbers themselves still run LTR). Also, different separators produce different ordering. The  directional information may be needed to indicate what type of data this is.</p>
 </section>
+
+
+
+
+
+
 
 
 <section>
@@ -524,6 +517,31 @@ Japanese, which are in Chinese, and which are in Tibetan. Therefore, there is a 
 <p>This problem is caused by spillover effects as the Unicode bidirectional algorithm operates on the text inside and outside the inserted string without making any distinction between the two.</p>
 <p>The solution to this problem is  <a>bidi isolation</a>. The title needs to be directionally isolated from the rest of the text. </p>
 </section>
+
+
+  
+
+
+
+
+<section>
+  <h3 id="bidiCase4">Interpreting HTML markup</h3>
+<p>In this use case, the string to be displayed contains markup.</p>
+
+<div class="figWrap">
+<figure id="fig_markup">
+<img src="index-data/markup.png" alt="&lt;span dir='ltr'>one שתיים three&lt;/span>" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>A string containing HTML markup. (<a class="cpref" href="index-data/codepoints#fig_markup" target="_blank">View codepoints.</a>)</figcaption>
+</figure>
+</div>
+
+<p>Unlike the previous example, where the markup was displayed to the reader, in this case there is an expectation that the markup will be parsed and added to the DOM when the string is inserted into a page. This is a way of indicating the appropriate base direction for the string, using the <code class="kw" translate="no">dir</code> attribute.</p>
+<p>Such an approach relies, however, on a process where the consumer expects to receive HTML, and knows how to handle bidi markup. It also requires the producer to take explicit action to identify the appropriate base direction and set up the required markup to indicate that.</p>
+</section>
+
+
+
+
 
 
 
