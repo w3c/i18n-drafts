@@ -62,6 +62,7 @@ s.techIndexText = "Index des techniques";
 s.gotoW3cHome = "Aller à la page d’accueil du W3C";
 s.gotoI18nHome = "Aller à la page d’accueil de l’activité d’internationalisation";
 s.internationalizationTitle = "Internationalisation";
+s.worldwide = "Rendre le World Wide Web mondial&#x202F;!"
 s.i18nActivityHomePage = "Page d’accueil de l’activité d’internationalisation.";
 s.home = "Accueil";
 s.aboutI18nActivity = "Pour obtenir de l'aide au sujet de l'internationalisation au W3C.";
