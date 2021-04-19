@@ -76,11 +76,12 @@ g.breadcrumbs = "<a href='https://www.w3.org/International/'>"+s.home+"</a> &gt;
 if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='https://www.w3.org/International/tests/'>"+s.tests+"</a>" 
 else g.breadcrumbs += "<a href='https://www.w3.org/International/articlelist#"+f.breadcrumb+"'>"+s.articles+"</a>"
 
-g.about = "<h2 id='abouthead' class='notoc'>"+s.aboutThisArticle+"</h2>\n"
+if (f.status !== 'published' && f.status !== 'notreviewed') g.about = "<h2 id='abouthead' class='notoc'>"+s.aboutThisArticle+"</h2>\n"
+else g.about = ''
 if (f.status == "draft") { g.about += "<p style='color:red;'>"+s.status_draft+"</p>" }
 if (f.status == "review") { g.about += "<p style='color:red;'>"+s.status_review+"</p>" }
-if (f.status == "published") { g.about += "<p>"+s.status_published+"</p>" }
-if (f.status == "notreviewed") { g.about += "<p>"+s.status_notreviewed+"</p>" }
+//if (f.status == "published") { g.about += "<p>"+s.status_published+"</p>" }
+//if (f.status == "notreviewed") { g.about += "<p>"+s.status_notreviewed+"</p>" }
 if (f.status == "obsolete") { g.about += "<p style='color:red;'>"+s.status_obsolete+"</p>" }
 
 var fontlink = ''
@@ -102,7 +103,7 @@ if (g.isTranslation) g.disclaimer = '<div id="disclaimer"><p>'+s.translationDisc
 else g.disclaimer = ''
 
 
-var mainNavigation = '<aside id="mainNavigation">'+
+var mainNavigation = '<aside id="mainNavigationAside">'+
 '	<nav id="site-navigation">'+
 '		<a href="https://www.w3.org/International/"><img id="picture" alt="'+s.worldMap+'" title="'+s.worldMap+'" src="'+f.path+'icons/world.gif" width="150" height="61"/></a>'+
 		versionList+
@@ -110,13 +111,25 @@ var mainNavigation = '<aside id="mainNavigation">'+
 	g.disclaimer+
 '	<nav class="noprint" id="search">'+g.siteSearch+'</nav>'+
 '	<nav id="breadcrumbs"><p>'+g.breadcrumbs+'</p></nav>'+
-'	<nav class="noprint" id="toc"><h2 id="internal-links" class="notoc"><a href="#internal-links">'+s.onThisPage+'</a></h2><div id="toclocation"> </div></nav>'+
+'	<nav class="noprint" id="toc"><h2 id="internal-links" class="notoc">'+s.onThisPage+'</h2><div id="toclocation"> </div></nav>'+
 '	<nav class="noprint" id="relatedlinks"></nav>'+
 '	<div id="aboutdoc">'+g.about+'</div>'+
 '	</aside>'+
-'	<nav id="boilerplate">'+
-'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="https://www.w3.org/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
-s.internationalizationTitle+'</a></div>'+
+
+'	<nav id="siteicons">'+
+'   <a href="https://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="https://www.w3.org/Icons/w3c_home" alt="'+s.gotoW3cHome+'" width="72" height="48"></a>'+
+'   <div id="banner" style="margin-inline-start:10px;"><a href="/International" title="'+s.gotoI18nHome+'">'+
+'   <p id="sitename">'+s.internationalizationTitle+'</p>'+
+'   <p id="subtitle">'+s.worldwide+'</p></a></div>'+
+'   </div>'+
+'   </nav>'+
+
+
+
+//'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="https://www.w3.org/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
+//s.internationalizationTitle+'</a></div>'+
+
+
 '	<div id="sitelinks" class="noprint">'+
 //'	<bdi><a href="https://www.w3.org/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a></bdi>&#xA0;'+s.rlm+
 '	<bdi><a href="https://www.w3.org/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
@@ -125,7 +138,8 @@ s.internationalizationTitle+'</a></div>'+
 '	<bdi><a href="https://www.w3.org/International/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+ 
 //'	<bdi><a href="https://www.w3.org/International/resource-index" title="'+s.topicIndexForInformation+'">'+s.topics+'</a></bdi>&#xA0;'+s.rlm+ 
 '	<bdi><a href="https://www.w3.org/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>&#xA0;'+s.rlm+
-'	&#xA0; </div><div id="line">&#xA0;</div>'+
+'	&#xA0; </div>'+
+//' <div id="line">&#xA0;</div>'+
 '	</nav>'
 
 
@@ -275,6 +289,6 @@ function getURLs () {
 	var container = document.createElement('section')
 	container.id = "printLinks"
 	container.innerHTML = out
-	document.querySelector('#endlinks').parentNode.appendChild(container)
+	if (document.querySelector('#endlinks')) document.querySelector('#endlinks').parentNode.appendChild(container)
 	
 	}
