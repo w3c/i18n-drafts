@@ -120,11 +120,11 @@ var mainNavigation = '<div id="search">'+g.siteSearch+'</div>'+
 '   <br style="clear:both;" />'+
 '	<nav id="boilerplate">'+
 '	<div id="sitelinks" class="noprint">'+
-'	<bdi><a href="'+base+'/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="'+base+'/International/resources" title="'+s.informationResources+'">'+s.resources+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="'+base+'/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+ 
-'	<bdi><a href="'+base+'/International/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+ 
-'	<bdi><a href="'+base+'/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="'+base+'/International/i18n-drafts/nav/learn" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="'+base+'/International/i18n-drafts/nav/find" title="'+s.informationResources+'">'+s.resources+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="'+base+'/International/i18n-drafts/nav/follow" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="'+base+'/International/i18n-drafts/nav/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+ 
+'	<bdi><a href="'+base+'/International/i18n-drafts/nav/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+ 
 '	&#xA0; </div><div id="line">&#xA0;</div>'+
 '	</nav>'+
 '	<div class="directory"><div id="site-navigation">'+
