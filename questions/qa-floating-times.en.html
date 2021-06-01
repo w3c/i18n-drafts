@@ -15,12 +15,12 @@ f.previousauthors = '' // as above
 f.modifiers = '' // people making substantive changes, and their affiliation
 f.searchString = 'qa-floating-times' // blog search string - usually the filename without extensions
 f.firstPubDate = '2016-04-08' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2017-06-03', time:'21:18'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2021-06-03', time:'21:18'}  // date and time of latest substantive changes to this document
 f.status = 'draft'  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2017-06-03', time:'21:18'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2021-06-03', time:'21:18'} // date and time of latest edits to this document/translation
 f.contributors = '' // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
@@ -64,7 +64,7 @@ f.additionalLinks = ''
 
 <section id="nutshell">
   <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
-  <p>A <dfn id="def_floating_time">floating time</dfn> or a <dfn id="dfn_floating_date">floating date</dfn> is a time value that isn't tied to a specific time zone. Applications that work with floating times need to avoid pitfalls that can arise from implicit conversion to <em>incremental time</em> values or the improper use of time zones when displaying or processing a floating time value.
+  <p>A <dfn id="def_floating_time">floating time</dfn> or a <dfn id="dfn_floating_date">floating date</dfn> is a date/time value that isn't tied to a specific time zone. Applications that work with floating times need to avoid pitfalls that can arise from implicit conversion to <em>incremental time</em> values or the improper use of time zones when displaying or processing a floating time value.
   </p>
 </section>
 
@@ -98,7 +98,7 @@ selecting which edition she wants to view. The HTML for the form control might l
 
 <p>When Martina fills in the form and submits it, though, she is surprised to see that the edition she receives is dated <em>Saturday, 29 April 2017</em> instead. The actual newspaper is the correct Sunday edition. But the screen says the wrong date. What's going on?</p>
 
-<p>The publication date of the newspaper is an example of a <em>floating time</em> value: the date of the newspaper stays the same, regardless of which time zone one views the newspaper in. However, most time values in programming languages and environments are based on <em>incremental time</em>. The JavaScript <code class="kw" translate="no">Date</code> object is an example of an incremental time: it represents the number of milliseconds since an <span class="qterm">epoch date</span>. In the case of JavaScript, the epoch data is the same as that used by Unix, the Java programming language, and many other systems: it's defined as midnight, January 1, 1970 in the UTC (Universal Coordinated Time) time zone. So for Martina's newspaper, the value in the HTML form she submitted might be converted in JavaScript to a <code class="kw" translate="no">Date</code> object with the value: <kbd>1493510400000</kbd> (in milliseconds since the epoch). That long integer value corresponds to the instant of midnight, 30 April, 2017 in Coordinated Universal Time (UTC). At that moment in Buenos Aires, Argentina, it was still only 9:00 PM (21:00) on the previous day, Saturday, 29 April, 2017. When the <code>Date</code> with value <kbd>1493510400000</kbd> is displayed in the local time zone, it's interpreted as the preceding Saturday.</p>
+<p>The publication date of the newspaper is an example of a <em>floating time</em> value: the date of the newspaper stays the same, regardless of which time zone one views the newspaper in. However, most time values in programming languages and environments are based on <em>incremental time</em>. The JavaScript <code class="kw" translate="no">Date</code> object is an example of an incremental time: it represents the number of milliseconds since an <span class="qterm">epoch date</span>. In the case of JavaScript, the epoch data is the same as that used by Unix, the Java programming language, and many other systems: it's defined as midnight, January 1, 1970 in the UTC (Universal Coordinated Time) time zone. So for Martina's newspaper, the value in the HTML form she submitted might be converted in JavaScript to a <code class="kw" translate="no">Date</code> object with the value: <kbd>1493510400000</kbd> (in milliseconds since the epoch). That long integer value corresponds to the instant of midnight, 30 April, 2017 in Coordinated Universal Time (UTC). At that moment in Buenos Aires, Argentina, it was still only 9:00 PM (21:00) on the previous day, Saturday, 29 April, 2017. When the <code class="kw" translate="no">Date</code> with value <kbd>1493510400000</kbd> is displayed in the local time zone, it's interpreted as the preceding Saturday.</p>
 
 <p>Here's an example. Suppose the <code class="kw">input</code> element <code class="kw" translate="no">publicationDateInput</code> above contained the value used in the example ("2017-04-30"). The code might look like this:</p>  
 
@@ -163,7 +163,7 @@ target.appendChild(document.createTextNode(date.toDateString()));</code></pre>
       new Intl.DateTimeFormat('es-AR', options).format(date)));
       
   // Using UTC finally results in displaying the expected value:
-  // "30 de abril de 2017 00:00 GMT"
+  // "30 de abril de 2017 00:00 UTC"
       
   mypanel.appendChild(content);
   
@@ -183,12 +183,11 @@ target.appendChild(document.createTextNode(date.toDateString()));</code></pre>
 <p>In client-side scripting with JavaScript, the <code class="kw">Date</code> single argument string constructor uses UTC, with a <dfn>local time offset</dfn> of 0, to compute the underlying incremental time value. Methods that use the local time zone of the browser, such as <code class="kw">toDateString</code> or <code class="kw">toString</code> will cause the problems such as Martina experienced above.</p>
   
 <p>If instead the developer uses the <dfn>field-based time</dfn> constructor <code class="kw">new Date(year, <em>month[, date[, hours[, minutes[, seconds[, milliseconds]]]]</em>]);</code>, then the browser's local time offset is used to compute the underlying incremental time. In the Martina example, <code>var Date = new Date(2017,04,30);</code> creates a time value <code class="kw">1493521200000</code>, which seems to work if only the date is shown. But when Martina visits her friend Noboyuki in Japan, the problem appears in the opposite direction:</p>
-<figure class="example"><pre><code>  date = new Date(1493478000000); // 2017-04-30 in Japan Standard Time
-
-  var content = document.createElement('p');
+<figure class="example"><pre><code>const  date = new Date(1493478000000); // 2017-04-30 in Japan Standard Time  
+var content = document.createElement('p');
 
   content = document.createElement('p');
-  applyStyles(content);
+
   var options = {
     month:        'long',
     day:          'numeric',
@@ -198,16 +197,14 @@ target.appendChild(document.createTextNode(date.toDateString()));</code></pre>
     timeZoneName: 'short',
     timeZone:     'America/Buenos_Aires'
   };
-  content.appendChild(document.createTextNode(new Intl.DateTimeFormat('es-AR', options).format(date)));
-  mypanel.appendChild(content);
+  console.log(new Intl.DateTimeFormat('es-AR', options).format(date));
   
   // 29 de abril de 2017 12:00 ART
   
   content = document.createElement('p');
   options.timeZone = 'UTC';
 
-  content.appendChild(document.createTextNode(new Intl.DateTimeFormat('es-AR', options).format(date)));
-  mypanel.appendChild(content);
+  console.log(new Intl.DateTimeFormat('es-AR', options).format(date));
   
   // 29 de abril de 2017 15:00 GMT
   
@@ -215,9 +212,29 @@ target.appendChild(document.createTextNode(date.toDateString()));</code></pre>
   options.timeZone = 'Asia/Tokyo';
   
   // 30 de abril de 2017 00:00 GMT+9
+  console.log(new Intl.DateTimeFormat('es-AR', options).format(date));
 </code></pre></figure>
 
-<p>Ultimately, Web developers need to remain aware of the use of incremental times in the underlying APIs. Using UTC or a consistent local time offset for floating time values allows these values to be processed and displayed consistently.</p>
+<p>This is even visible in the MDN article on <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat">Intl.DateTimeFormat</a>:</p>
+
+<figure class="example"><pre><code>const date = new Date(Date.UTC(2020, 11, 20, 3, 23, 16, 738));
+// Results below assume UTC timezone - your results may vary
+
+// Specify default date formatting for language (locale)
+console.log(new Intl.DateTimeFormat('en-US').format(date));
+// expected output: "12/20/2020"
+
+// Specify default date formatting for language with a fallback language (in this case Indonesian)
+console.log(new Intl.DateTimeFormat(['ban', 'id']).format(date));
+// expected output: "20/12/2020"
+
+// Specify date and time format using "style" options (i.e. full, long, medium, short)
+console.log(new Intl.DateTimeFormat('en-GB', { dateStyle: 'full', timeStyle: 'long' }).format(date));
+// Expected output "Sunday, 20 December 2020 at 14:23:16 GMT+11"</code></pre></figure>
+
+<p>If this code is executed on a browser in a time zone west of UTC, the "expected output" won't be shown: instead one sees values such as <code class="kw" translate="no">12/19/2020</code>.</p>
+
+<p>Ultimately, Web developers need to remain aware of the use of incremental times in the underlying APIs. Using floating or "local" time formats is one way to accmoplish this. Or developers can use UTC or a consistent local time offset for floating time values to allow these values to be processed and displayed consistently.</p>
   
 <section>
   <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
