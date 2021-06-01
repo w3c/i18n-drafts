@@ -59,10 +59,15 @@ s.techIndexText = "技術索引"
 s.gotoW3cHome = "回到 W3C 主頁"
 s.gotoI18nHome = "回到國際化活動主頁"
 s.internationalizationTitle = "國際化"
+s.worldwide = "締造真正全球通行的萬維網"
 s.i18nActivityHomePage = "國際化活動主頁."
 s.home = "主頁"
-s.aboutI18nActivity = "關於國際化活動."
-s.about = "關於"
+s.contactI18nActivity = "關於國際化活動."
+s.contact = "關於"
+s.aboutI18nActivity = "About W3C Internationalization."
+s.about = "About"
+s.askI18nActivity = "Ask for help or information."
+s.ask = "Ask"
 s.groupsThatMakeUp = "國際化活動的小組"
 s.groups = "小組"
 s.topicIndexForInformation = "此網站信息内容索引"
@@ -130,3 +135,6 @@ s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

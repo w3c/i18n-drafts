@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Elegir y aplicar una codificación de caracteres</title>
+<meta name="description" content="¿Qué codificación de caracteres debo usar para mi contenido y cómo la aplico a mi contenido?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-choosing-encodings'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-choosing-encodings'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-03-31', time:'19:50'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-06-14', time:'13:00'} // date and time of latest edits to this document/translation
+f.contributors = 'Henri Sivonen, Gunnar Bittersmann, Zack Weinberg'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://www.ibidemgroup.com/traducciones.php">Traducido al Español por</a> IBIDEM GROUP'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-choosing-encodings-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!--><script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<link rel="copyright" href="#copyright"/><!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]--><style> .badencoding { font-weight: bold; color: #a52a2a; } </style>
+</head>
+
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Elegir y aplicar una codificación de caracteres<br></h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Público al que va dirigido:</span> Codificadores HTML (que usan editores o scripts), desarrolladores de scripts (PHP, JSP, etc.), codificadores CSS, jefes de proyectos Web, y cualquiera que sea nuevo en codificación de caracteres y necesite una introducción a cómo elegir y aplicar codificación de caracteres.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Pregunta</a></h2>
+  <p class="question">¿Qué codificación de caracteres debo utilizar para mi contenido y cómo la aplico a mi contenido?</p>
+
+    <p>El contenido se compone de una secuencia de caracteres. Los caracteres representan letras del alfabeto, puntuación, etc. Pero el contenido se almacena en un ordenador como una secuencia de bytes, que son valores numéricos. A veces se utiliza más de un byte para representar un único carácter. Al igual que los códigos utilizados en el espionaje, la forma en que la secuencia de bytes se convierte en caracteres depende de la clave que se haya utilizado para codificar el texto. En este contexto, esa <i class="quote-term">clave</i> se denomina <b class="newterm">codificación de caracteres</b>.</p>
+    <p>Este artículo ofrece consejos sencillos sobre qué codificación de caracteres utilizar para el contenido, y cómo aplicarla, es decir, cómo producir realmente un documento en esa codificación.</p>
+    <p>Para comprender mejor qué son los caracteres y las codificaciones de caracteres, consultar el artículo <a class="print" href="/International/questions/qa-what-is-encoding"><cite>Codificaciones de caracteres para principiantes</cite></a>.</p>
+  </section>
+
+
+<section id="nutshell">
+  <h2 id="quickanswer"><a href="#quickanswer">Respuesta rápida</a></h2>
+  
+    <p>Elegir UTF-8 para todo el contenido y considerar la posibilidad de convertir cualquier contenido de las codificaciones heredadas a UTF-8.</p>
+    <p>Si realmente no se puede utilizar una codificación Unicode, <a href="#nonutf8">comprobar que existe una amplia compatibilidad con el navegador</a> para la codificación de la página que se ha seleccionado, y que la codificación no está en la <a href="#avoid">lista de codificaciones que se deben evitar</a> según las especificaciones recientes.</p>
+  <p>Comprobar si la elección se verá <a href="#http">afectada por la</a> configuración server-side.</p>
+    <p>Además de declarar la codificación del documento dentro del documento y/o en el servidor, es necesario <a href="#applyingencoding">guardar el texto en esa codificación</a> para aplicarlo a su contenido.</p>
+    <p>Los desarrolladores también necesitan asegurarse de que las diversas partes del sistema puedan comunicarse entre sí.</p>
+</section>
+
+
+<section>
+  <h2 id="more"><a href="#more">Más detalles</a></h2>
+  <section>
+    <h3 id="applyingencoding"><a href="#applyingencoding">Aplicar una codificación al contenido</a></h3>
+    <p>Los autores de los contenidos deben declarar la codificación de caracteres de sus páginas utilizando uno de los métodos descritos en <a class="print" href="/International/questions/qa-html-encoding-declarations"><cite>Declaración de codificaciones de caracteres en HTML</cite></a>.</p>
+    <p>Sin embargo, es importante entender que el simple hecho de declarar una codificación dentro de un documento o en el servidor no cambiará los bytes; es necesario <strong>guardar el texto en esa codificación</strong> para aplicarlo a su contenido. (La declaración sólo ayuda al navegador a interpretar las secuencias de bytes en los que se almacena el texto.)</p>
+    <p>El artículo <a class="print" href="/International/questions/qa-setting-encoding-in-applications"><cite>Configuración de la codificación en aplicaciones de creación web</cite></a> proporciona consejos sobre cómo establecer la codificación de una página mientras se guarda, para una serie de entornos de edición.</p>
+    <div class="sidenoteGroup">
+      <p>Si puede, configure UTF-8 como el valor predeterminado para los nuevos documentos en su editor. La siguiente imagen muestra cómo lo haría en las preferencias de un editor como Dreamweaver.</p>
+      <aside class="sideinfonote">
+        <p class="info">Para obtener información sobre el "Formulario de normalización Unicode", consultar <a class="print" href="/International/questions/qa-html-css-normalization"><cite>Normalización en HTML y CSS</cite></a>. Para obtener información sobre la `Firma Unicode (LMat)&apos;, consultar <a class="print" href="/International/questions/qa-byte-order-mark"><cite>La marca de orden de byte (BOM) en HTML</cite></a>.</p>
+      </aside>
+    </div>
+    <figure><img src="qa-choosing-encodings-data/dwprefs-encoding.png" alt="Las nuevas preferencias de documento de DreamWeaver le permiten especificar una codificación predeterminada." /></figure>
+    <p>También es posible que tenga que comprobar que su servidor está entregando documentos con las declaraciones HTTP correctas, ya que, de lo contrario, anulará la información contenida en el documento <a href="#http"> (véase más adelante</a>).</p>
+    <p>Los desarrolladores también necesitan asegurarse de que las diversas partes del sistema puedan comunicarse entre sí. Las páginas web deben ser capaces de comunicarse perfectamente con los scripts de back-end, bases de datos, etc. Estos, por supuesto, todos ellos funcionan mejor con UTF-8, también. Los desarrolladores pueden encontrar un conjunto detallado de cosas a considerar en el artículo <a class="print" href="/International/articles/unicode-migration/"><cite>Migración a Unicode</cite></a>.</p>
+  </section>
+
+  <section>
+    <h3 id="useunicode"><a href="#useunicode">¿Por qué usar UTF-8?</a></h3>
+    <p>Una página HTML sólo puede estar en una codificación. No se pueden codificar diferentes partes de un documento en diferentes codificaciones.</p>
+    <div class="sidenoteGroup">
+      <p>Una codificación basada en Unicode como UTF-8 puede soportar muchos idiomas y puede acomodar páginas y formularios en cualquier mezcla de esos idiomas. Su uso también elimina la necesidad de que la lógica del server-side determine individualmente la codificación de caracteres para cada página servida o cada envío de formulario entrante. Esto reduce significativamente la complejidad de tratar con un sitio o aplicación multilingüe.</p>
+      <p>Una codificación Unicode también permite mezclar muchos más idiomas en una sola página que cualquier otra opción de codificación.</p>
+      <aside class="sideinfonote">
+        <p class="info">La compatibilidad con una codificación determinada, incluso con una codificación Unicode, no implica necesariamente que un agente de usuario muestre correctamente el texto. Numerosos scripts, como el árabe y el indio, requieren reglas adicionales para transformar la secuencia de caracteres de la memoria en una secuencia apropiada de glifos de fuentes para su visualización.</p>
+      </aside>
+    </div>
+    <p>Cualquier barrera para usar Unicode es muy baja en estos días. De hecho, en enero de 2012 Google informó que más del 60% de la Web en su muestra de varios miles de millones de páginas estaba usando UTF-8. Agregue a esto la cifra de páginas web sólo ASCII (ya que ASCII es un subconjunto de UTF-8), y la cifra se eleva a alrededor del 80%.</p>
+    <p>Hay tres <a class="termref print" href="/International/articles/definitions-characters/#charsets">codificaciones de caracteres</a> Unicode diferentes: UTF-8, UTF-16 y UTF-32. De estos tres, sólo UTF-8 debe utilizarse para el contenido de la Web. La especificación HTML5 <a class="print" href="http://www.w3.org/TR/html5/document-metadata#charset">dice</a> &quot;Se anima a los autores a utilizar UTF-8. Los verificadores de conformidad pueden aconsejar a los autores que no utilicen codificaciones heredadas. Las herramientas de autoría deberían usar UTF-8 por defecto para los documentos recién creados&quot;</p>
+    <p>Tenga en cuenta, que todos los caracteres ASCII en UTF-8 utilizan exactamente los mismos bytes que una codificación ASCII, lo que a menudo ayuda a la interoperabilidad y a la compatibilidad con versiones anteriores.</p>
+  </section>
+  
+  <section>
+    <h3 id="http"><a href="#http">Tener en cuenta la cabecera HTTP</a></h3>
+    <p>Cualquier declaración de codificación de caracteres en el <a href="/International/articles/definitions-characters/Overview#httpheader" class="termref print">encabezado HTTP</a> anulará las declaraciones dentro de la página. Si el encabezado HTTP declara una codificación que no es la misma que la que desea utilizar para su contenido, esto causará un problema a menos que pueda cambiar la configuración del servidor.</p>
+    <p>Es posible que no tenga control sobre las declaraciones que vienen con el encabezado HTTP y que tenga que ponerse en contacto con las personas que administran el servidor para obtener ayuda. Por otro lado, a veces hay formas de arreglar las cosas en el servidor si tiene acceso limitado a los archivos de configuración del servidor o si está generando páginas utilizando lenguajes de scripting. Por ejemplo, véase <a class="print" href="/International/O-HTTP-charset"><cite>Configuración del parámetro de conjunto de caracteres HTTP</cite></a> para obtener más información sobre cómo cambiar la información de codificación, ya sea localmente para un conjunto de archivos en un servidor o para contenido generado utilizando un lenguaje de scripting.</p>
+    <p>Normalmente, antes de hacerlo, debe comprobar si la cabecera HTTP está declarando la codificación de caracteres. Puede utilizar el <a class="print" href="https://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a> para averiguar qué codificación de caracteres, si existe, se especifica en el encabezado HTTP. Alternativamente, el artículo <a class="print" href="/International/questions/qa-headers-charset"><cite>Comprobación de cabeceras HTTP</cite></a> apunta a otras herramientas para comprobar la información de codificación pasada por el servidor.</p>
+  </section>
+</section>
+
+<section>
+<h2 id="obscure"><a href="#obscure">Información adicional</a></h2>
+<p>La información de esta sección se refiere a cosas que normalmente no debería necesitar saber, pero que se incluyen aquí para que estén completas.</p>
+
+  <section>
+    <h3 id="nonutf8"><a href="#nonutf8">¿Qué pasa si no puedo usar UTF-8?</a></h3>
+    <p>Si realmente no puede evitar utilizar una codificación de caracteres que no sea UTF-8, tendrá que elegir entre un conjunto limitado de nombres de codificación para garantizar la máxima interoperabilidad y el mayor tiempo posible de legibilidad para su contenido, y para minimizar las vulnerabilidades de seguridad.</p>
+    <p>Hasta hace poco, el <a
+					class="print" href="http://www.iana.org/assignments/character-sets">registro de IANA</a> era el lugar para encontrar nombres para las codificaciones. El registro de IANA suele incluir varios nombres para la misma codificación. En este caso, debe utilizar el nombre designado como &quot;preferido&quot;.</p>
+    <p>La nueva especificación <a class="print" href="http://encoding.spec.whatwg.org/"><cite>Codificación</cite></a> ahora proporciona una lista que ha sido probada contra las implementaciones reales del navegador. Puede encontrar la lista en la tabla en la sección llamada <a class="print" href="http://encoding.spec.whatwg.org/#encodings">Codificaciones</a>. Es mejor usar los nombres en la columna izquierda de esa tabla.</p>
+    <p><strong>Tenga en cuenta, sin embargo,</strong> que la presencia de un nombre en cualquiera de estas fuentes no significa necesariamente que esté bien usar esa codificación. Consulte la siguiente sección para ver las codificaciones que debe evitar.</p>
+  </section>
+  
+  <section>
+    <h3 id="avoid"><a href="#avoid">Evitar estas codificaciones</a></h3>
+    <p>La especificación HTML5 <a class="print" href="http://www.w3.org/TR/html5/document-metadata#charset">indica</a> una serie de codificaciones que debe evitar.</p>
+    <p>Los documentos no deben utilizar <b class="badencoding" translate="no">JIS_C6226-1983</b>, <b class="badencoding" translate="no">JIS_X0212-1990</b>, <b class="badencoding" translate="no">HZ-GB-2312</b>, <b class="badencoding" translate="no">JOHAB</b> (código de Windows página 1361), codificaciones basadas en <b class="badencoding" translate="no">ISO-2022</b>, o codificaciones basadas en <b class="badencoding" translate="no">EBCDIC</b>. Esto se debe a que permiten que los puntos de código ASCII representen caracteres no ASCII, lo que supone una amenaza para la seguridad.</p>
+    <p>Los documentos tampoco deben utilizar codificaciones <b class="badencoding" translate="no">CESU-8</b>, <b class="badencoding" translate="no">UTF-7</b>, <b class="badencoding" translate="no">BOCU-1</b> o <b class="badencoding" translate="no">SCSU</b> , ya que nunca han sido diseñados para contenido Web y la especificación HTML5 prohíbe que los navegadores los reconozcan.</p>
+    <p>La especificación también desalienta fuertemente el uso de <b class="badencoding" translate="no">UTF-16</b>, y el uso de <b class="badencoding" translate="no">UTF-32</b> es &quot;especialmente desalentado&quot;.</p>
+    <p>También deben evitarse otras codificaciones de caracteres <a class="print" href="http://encoding.spec.whatwg.org/#encodings">que figuran en la especificación de <cite>codificación</cite> </a> . Estos incluyen codificaciones <b class="badencoding" translate="no">Big5</b> y <b class="badencoding" translate="no">EUC-JP</b> , que tienen problemas de interoperabilidad. <b class="badencoding" translate="no">ISO-8859-8</b> (codificación en hebreo para texto <a class="termref print" href="/International/questions/qa-visual-vs-logical#term_visualordering">ordenado visualmente</a> ) también debe evitarse, en favor de una codificación que funcione con texto <a href="/International/questions/qa-visual-vs-logical#term_logicalordering" class="termref print">ordenado de forma lógica</a> (es decir, en inglés). UTF-8 o, en su defecto, ISO-8859-8-i).</p>
+    <p>La codificación <b class="badencoding" translate="no">replacement</b>, que figura en la especificación de <cite>codificación</cite> , no es en realidad una codificación; es un método alternativo que asigna cada octeto al punto de código Unicode <span class="uname">U+FFFD REPLACEMENT CHARACTER</span>. Obviamente, no es útil transmitir datos en esta codificación.</p>
+    <p>La codificación <b class="badencoding" translate="no">x-user-defined</b> es una codificación de un solo byte cuya mitad inferior es ASCII y cuya mitad superior está asignada al Área de uso privado Unicode (PUA). Al igual que la PUA en general, es mejor evitar el uso de esta codificación en la Internet pública porque daña la interoperabilidad y el uso a largo plazo.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Lecturas adicionales</a></h2>
+<aside class="section" id="survey"></aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Cómo empezar? <a href="/International/getting-started/characters"><cite>Introducción a los conjuntos de caracteres y codificaciones</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Gestión de codificaciones de caracteres en HTML y CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Enlaces relacionados, <cite>Autoría HTML y CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Caracteres</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Elegir una codificación de caracteres</a></li>
+        <li><a href="/International/techniques/authoring-html#changing">Cambiar la codificación de un documento</a></li>
+        <li><a href="/International/techniques/authoring-html#checkenc">Comprobación de la codificación de un documento</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

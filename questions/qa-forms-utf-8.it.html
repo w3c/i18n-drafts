@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<title>Codifica dei moduli multilingue</title>
+<meta name="description" content="Qual è il miglior modo per risolvere i problemi di codifica nei moduli che  utilizzano più lingue e script?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'qa-forms-utf-8'; // the file name WITHOUT extensions
+f.authors = 'Martin Dürst, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-forms-utf-8'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-06-09'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2020-09-24', time:'09:14'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' //what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2020-09-24', time:'09:14'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://www.ibidem-translations.com">Italian Translation</a> team, IBIDEM TRANSLATIONS;' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'forms';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-forms-utf-8-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-it.js"></script><!--TRANSLATORS must change -en to the subtag for their language!--><script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<link rel="copyright" href="#copyright"/><!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]--></head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Codifica dei moduli multilingue</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Destinatari:</span> Codificatori HTML (che utilizzano editor o scripting), sviluppatori di script (PHP, JSP, ecc.), project manager Web, e chiunque sia alla ricerca di informazioni su come utilizzare la codifica dei caratteri nei moduli.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+
+  <h2 id="question"><a href="#question">Domanda</a></h2>
+    <p class="question">Qual è il miglior modo per risolvere i problemi di codifica nei moduli che  utilizzano più lingue e script?</p>
+</section>
+
+
+<section>
+  <h2 id="answer"><a href="#answer">Risposta</a></h2>
+  <p>Il modo migliore per risolvere i problemi di codifica nei moduli HTML consiste nel codificare tutte le pagine in UTF-8. UTF-8 può rappresentare i caratteri della più ampia gamma di lingue. I browser inviano i dati dei moduli nella stessa codifica della pagina contenente il modulo, consentendo all&apos;utente di compilare i dati nella lingua e script desiderati. </p>
+  
+  <p>Bisogna considerare alcuni punti per garantire il corretto funzionamento di tale procedura. In primo luogo, è importante indicare al browser che la pagina del modulo è in UTF-8. Ci sono vari modi per <a class="print" href="/International/questions/qa-html-encoding-declarations">indicare al browser la codifica della pagina</a>. Questo risulta importante in ogni situazione, ma ancora di più se la pagina del modulo non contiene caratteri che non siano US-ASCII, e gli utenti possono scrivere in  altri caratteri.</p>
+  
+  <p>In secondo luogo, si consiglia che lo script che riceve i dati del modulo verifichi che i dati siano effettivamente in UTF-8 (nel caso in cui venisse riscontrato un errore, ad esempio, la modifica della codifica da parte dell’usuario). Il controllo è reso possibile dal momento che UTF-8 presenta un modello di byte molto specifico assente in qualsiasi altra codifica. In caso di ricezione di dati in un formato diverso da UTF-8, si consiglia di inviare un messaggio di errore.</p>
+  <p>Ad esempio, in Perl, una valutazione di espressione regolare di UTF-8 potrebbe apparire come indicato di seguito:</p>
+  <figure class="example">
+    <pre>$field =~
+  /\A(
+     [\x00-\x7F]            # ASCII
+   | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+   |  \xE0[\xA0-\xBF][\x80-\xBF]        # escludendo overlongs
+   | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+   |  \xED[\x80-\x9F][\x80-\xBF]        # escludendo surrogates
+   |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
+   | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+   |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
+  )*\z/x;
+  </pre>
+  </figure>
+  <p>Questa espressione può essere adattata ad altri linguaggi di programmazione. Si occupa di varie questioni, come le codifiche illecite lunghe e l&apos;uso illecito di surrogati. Visualizzerete vero se si tratta di UTF-8, e altrimenti falso.</p>
+<p>The above regular expression can be tailored by adding application-related restrictions. As an example, many control characters can be excluded by replacing <code>[\x00-\x7F]</code> with <code>[\x09\x0A\x0D\x20-\x7E]</code>.&nbsp;</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Ulteriori letture</a></h2>
+<aside class="section" id="survey"></aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><cite>Creazione di HTML e CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Caratteri</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Scelta e applicazione di una codifica dei caratteri</a></li>
+        <li><a href="/International/techniques/authoring-html#indoc">Dichiarare la codifica dei caratteri per l&apos;HTML</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

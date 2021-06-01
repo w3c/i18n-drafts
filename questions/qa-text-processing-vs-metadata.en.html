@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Types of language declaration</title>
+<meta name="description" content="What's the difference between a language declaration for metadata and one for text processing?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-text-processing-vs-metadata' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-text-processing-vs-metadata' // blog search string - usually the filename without extensions
+f.firstPubDate = '2019-01-22' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2019-01-22', time:'16:31'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-01-22', time:'16:31'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-text-processing-vs-metadata-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Types of language declaration</h1>
+</header>
+<div>
+  <div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+</div>
+  
+ 
+
+<p>On the Web it is always important to associate   content with language information. This is important on the one hand so that content can be processed or presented correctly to the reader, but on the other, it may also be important to know the language(s) of the intended audience for the  resource as a whole. These are two different things: technologies should provide separate ways of expressing each, and content authors should use those appropriately.</p>
+<p>This article describes how these two types of language information, ('metadata' and  'text-processing') differ.</p>
+
+  
+  <section>
+    <h2 id="processing"><a href="#processing">The text-processing language</a></h2>
+    <p>A browser or  application generally needs to take language into account when it displays or manipulates  content. This includes  such things as speaking the text in a voice browser,  running a spell checker,  styling line-breaks, applying hyphenation, choosing default fonts, and many more things  that need to be done in a language appropriate way. For this, it needs to know  what <strong>specific language</strong> it is dealing with for <strong>a specific range of text</strong>.</p>
+<p>So we are, by necessity, talking about associating a <em>single</em> language with the text, or some range of text, within the resource.  Whereas the intended audience can be speakers of more than one language, a specific range of text can only be in one language at a time.</p>
+<p>In HTML the  <code translate="no" class="kw">lang</code> attribute is used for specifying the text-processing language. It can be used to set a default for the page as a whole, and for internal fragments where the language changes. </p>
+<figure class="example">
+<p><code>&lt;html lang=&quot;en&quot;&gt;</code></p>
+<p><code>...</code></p>
+<p><code>&lt;p&gt;The title of the book is &quot;&lt;cite lang=&quot;el&quot;&gt;Κάνοντας τον Παγκόσμιο Ιστό πραγματικά Παγκόσμιο&lt;/cite&gt;&quot;.&lt;/p&gt;</code></p>
+</figure>
+<p>This need for specificity has implications for how one declares the language for text-processing. Which is why the <code class="kw" translate="no">lang</code> attribute only allows you to use a single language value.</p>
+</section>
+
+
+
+<section>
+<h2 id="metadata"><a href="#metadata">Metadata: the language of the intended audience</a></h2>
+    <p>Metadata that describes the language or languages of the intended audience is about <strong>the document/resource as a whole</strong>. Such metadata may be used for searching, serving the right language version, workflow management, classification, etc. </p>
+<p>The language of the intended audience does not necessarily include every language used in a document. Many documents on the Web contain embedded fragments of content in different languages, whereas the page itself is clearly aimed at speakers of one particular language. For example, a German city-guide for Beijing may contain useful phrases in Chinese, but it is aimed at a German-speaking audience, not a Chinese one.</p>
+<p>On the other hand, it <em>is</em> also possible for a page to contain the same or parallel content in more than one language. For example, a Canadian web page may welcome  readers with French content in the left column, and <em>the same content</em> in English in the right-hand column. Here the document is equally targeted at speakers of both languages, so there are two audience languages. This situation is not as common on the Web as in printed material since it is easy to link to separate pages on the Web for different audiences, but it does occur where there are multilingual communities. Another use case is a blog or a news page aimed at a multilingual community, where some articles on a page are in one language and some in another. For example, a  forum used by a Punjabi community may contain posts in English, Hindi and Punjabi in a single thread.</p>
+    <p>There are also pages where the navigational information, including the page title, is in one language but the real content of the page is in another. While this is not necessarily good practice, it doesn't change the fact that the language of the intended audience is usually that of the content, regardless of the language at the top of the document source.</p>
+<p>For an HTML page, metadata about the audience could be expressed in an HTTP <code class="kw" translate="no">Content-Language</code> header. This content header can take multiple values.</p>
+<figure class="example">
+<p><code>Content-Language: en, hi, pa</code></p>
+</figure>
+<p>HTML  pages sometimes contain a <code class="kw" translate="no">meta</code> element that can declare language in a similar way, eg. <code translate="no">&lt;meta http-equiv=&quot;content-language&quot; content=&quot;en, fr&quot;/&gt;</code>, but this construct is now deprecated and should not be used. (For more details, see <a href="qa-http-and-lang">HTTP headers, meta elements and language information</a>.)</p>
+</section>
+
+
+  <section>
+  <h2 id="inference"><a href="#inference">Inferring the text-processing language from metadata</a></h2>
+    <p>In some cases, it may be possible to infer the text-processing language from  the metadata for the resource, but not always.</p>
+<p>If the metadata value is a list of more than one language there needs to be a way of identifying <em>which</em> language to use when it comes to processing the content.</p>
+<p>Furthermore, where there are language changes inside a document, information about the language of the intended audience can't be associated with the appropriate part of the page or document as would be needed for text-processing (ie. in a way that would be needed for the correct application of language-specific text-to-speech, styling, automatic font assignment, etc. to different parts of the document.)</p>
+<p>When developing a new technology or format for data, developers should therefore provide separate methods for expressing the language of the intended audience vs. the text-processing language.</p>
+<p>Content developers should use the available constructs properly.</p>
+<p class="info" style="margin-top: 2em;">For information about how to set language in HTML, see <a href="qa-html-language-declarations">Declaring language in HTML</a>.</p>
+</section>
+
+<section>
+<h2 id="endlinks" class="notoc"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Getting started? <a href="https://www.w3.org/International/getting-started/language"><cite>Language on the Web</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="https://www.w3.org/International/tutorials/language-decl/"><cite>Working with language in HTML</cite></a></p>
+    </li>
+    <li>
+      <p><cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?open=language">Language</a></li>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?open=language&open=primarylanguage">Declaring metadata about the language(s) of the intended audience</a></li>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?open=language&open=textprocessing">Declaring the overall language of a page</a></li>
+      </ul>
+    </li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

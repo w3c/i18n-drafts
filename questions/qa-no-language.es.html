@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Etiquetado de texto sin idioma</title>
+<meta name="description" content="¿Cómo utilizo el marcado de idioma en contenido HTML o XML cuando no conozco el idioma o el contenido no es lingüístico?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-no-language' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-no-language' // blog search string - usually the filename without extensions
+f.firstPubDate = '2007-10-30' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-02-09', time:'12:35'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-11-22', time:'12:37'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://www.traductor-jurado.org/ingles.php">Traductor Jurado Inglés - Español </a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-no-language-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Etiquetado de texto sin idioma</h1>
+</header>
+
+
+<div>
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+</div>
+
+
+
+    <p>Este artículo ofrece consejos sobre cómo utilizar el marcado de idioma en HTML o XML cuando no se conoce el idioma del contenido, o cuando el contenido no es lingüístico.</p>
+<p>En HTML siempre se debe identificar el lenguaje humano del texto, cuando se conoce, utilizando el atributo <code class="kw" translate="no">lang</code> para que las aplicaciones como los navegadores de voz, hojas de estilo y similares puedan procesar el texto de forma adecuada. Lo mismo ocurre con los formatos basados en XML, donde se utiliza el atributo <code class="kw" translate="no">xml:lang</code>. </p>
+<p>Sin embargo, suponga que tiene algún texto que no está en ningún idioma, muestras de tipos, números de parte, ilustraciones de datos binarios, etc. ¿Cómo diría que esto no se escribió en ningún idioma en particular? o ¿Qué sucede cuando se extrae el texto de una base de datos y no viene con información lingüística?</p>
+<p class="info" style="margin-top: 2em;">Para obtener información acerca de cómo establecer el idioma en HTML, consulte <a href="qa-html-language-declarations">Cómo declarar el idioma en HTML.</a>.</p>
+
+
+
+<section id="nonlinguistic">
+  <h2><a href="#nonlinguistic">Cuando el texto no es lingüístico</a></h2>
+    <p>Utilice la subetiqueta <span class="kw">zxx</span> cuando <em>sepa</em> que el texto no está en ningún idioma. </p>
+    <p>Esto se aplicaría a textos tales como muestras de tipos, números de pieza, ilustraciones de datos binarios, etc. La definición de <span class="kw">zxx</span> en el <a class="print" href="http://www.iana.org/assignments/language-subtag-registry">Registro de Subetiquetas de Idiomas de IANA</a> es `ningún contenido lingüístico'.</p>
+    <p>Por ejemplo:</p>
+    <div class="example"> <code>&lt;p&gt;Aquí una lista de números de parte: <span translate="no">&lt;span lang="zxx"&gt;9RUI34 8XOS12 3TYY85&lt;/span&gt;.&lt;/p&gt;</span></code> </div>
+  </section>
+  
+  <section id="undetermined">
+    <h2><a href="#undetermined">Cuando el idioma es indeterminado</a></h2>
+    <p>En HTML, use <code translate="no">lang=&quot;&quot;</code>. Si está usando XML y el formato que está usando lo soporta, use <a class="print" href="http://www.w3.org/TR/REC-xml/#sec-lang-tag"><code translate="no">xml:lang=""</code></a>,
+      de lo contrario use <code translate="no">xml:lang="<span class="kw">und</span>"</code>.</p>
+    <p>Estos valores indican que no podemos determinar, por una razón u otra, cuál es la información lingüística correcta, o si el texto no es lingüístico. Por ejemplo, puede utilizar un valor vacío para el atributo de idioma si el texto de la base de datos se incluye en un documento pero la base de datos no proporciona información sobre el idioma y no puede estar razonablemente seguro de cuál es el idioma. El efecto sería impedir que cualquier información lingüística declarada más arriba en la jerarquía de elementos del documento se aplique al texto incluido.</p>
+    <p>Sin embargo, sólo debe etiquetar el texto como indeterminado si no puede dejarlo tal cual. En la práctica, esto significa que sólo debe utilizar esta marca de revisión si el texto indeterminado está incrustado en contenido que ya ha sido etiquetado para el idioma de alguna manera, o si su uso a nivel de documento es requerido por el formato que está utilizando.</p>
+  </section>
+
+
+
+<section id="advanced">
+<h2><a href="#advanced">Temas avanzados</a></h2>
+  <section id="xhtml">
+    <h3><a href="#xhtml">Implicaciones para XHTML 1.0</a></h3>
+    <p>Las páginas heredadas que usan XHTML 1.0, y que no pueden ser actualizadas a HTML5 o XHTML5, deben usar <code translate="no">xml:lang="und"</code> si hay una necesidad de expresar la naturaleza indefinida de algún texto incrustado en un documento, porque <code translate="no">xml:lang=""</code> no está permitido. En las raras ocasiones en que todo el documento está en un idioma no definido, es mejor no declarar el idioma por defecto del documento.</p>
+  </section>
+  <section id="xmlschemas">
+    <h3><a href="#xmlschemas">Consideraciones sobre el esquema XML</a></h3>
+    <p><code translate="no">xml:lang=""</code> sólo funciona si el esquema que describe el formato de su documento permite una cadena vacía como un valor de <span class="kw" translate="no">xml:lang</span>. Por ejemplo, debido a que los DTDs de XHTML 1.0 definen <span class="kw">xml:lang</span> de tal manera que un valor de cadena vacío para el atributo <span class="kw">xml:lang</span> <em>no está permitido</em>, no se puede usar la cadena vacía en XHTML 1.0. </p>
+    <p>Para aquellos que están al tanto de cómo funcionan los DTDs y otros esquemas: El atributo  <span class="kw" translate="no">xml:lang</span> toma valores NMTOKEN en el esquema XML, por lo que no pueden estar vacíos. En su DTD XML, si es posible, declare <span class="kw" translate="no">xml:lang</span> como CDATA para que se permita un valor vacío. Para los usuarios de esquemas XML, confíe en el documento de esquema XML para el <a class="print" href="http://www.w3.org/2001/xml.xsd">espacio de nombres XML</a>.</p>
+    <p>Martin Dürst <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2007JanMar/0136.html">señala</a> que se puede redefinir el formato XHTML dentro del documento para crear una página XHTML que valide utilizando  <code translate="no">lang=""</code> o <code translate="no">xml:lang=""</code>.Sin embargo, no se recomienda su uso generalizado, ya que dicho documento ya no es estrictamente conforme en el sentido de XHTML 1.0.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">Por cierto</a></h2>
+  <p>Este es un resumen de una discusión en una <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2005JulSep/0163.html">cadena</a> en
+    www-international@w3.org, y una posterior <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2007JanMar/0123.html">interpretación</a> de aquellas ideas a las que varias personas contribuyeron. </p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Lectura complementaria</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><cite>Creación de HTML y CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#language">Idioma</a></li>
+        <li><a href="/International/techniques/authoring-html#langvalues">Selección de etiquetas de idioma</a></li>
+      </ul>
+    </li>
+    <li>
+      <p><cite>Creación de XML</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-xml#language">Idioma</a></li>
+        <li><a href="/International/techniques/authoring-xml#langvalues">Selección de etiquetas de idioma</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

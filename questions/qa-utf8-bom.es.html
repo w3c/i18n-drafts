@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Problemas de visualización provocados por BOM en UTF-8</title>
+<meta name="description" content="Al usar las páginas codificadas UTF-8 en algunos agentes de usuarios, aparece una línea adicional o caracteres no deseados en la parte superior de mi página web o archivo incluido. ¿Cómo se eliminan?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-utf8-bom' // the file name WITHOUT extensions
+f.authors = 'Deborah Cawkwell, BBC World Service' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'qa-utf8-bom' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-11-27' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-07-17 18:19', time:'12:09'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-05-23', time:'11:03'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://www.spanishtranslation.us/">Spanish Translation</a> Team, Spanish Translation US.' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-utf8-bom-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-es.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="utf8-bom-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Problemas de visualización provocados por BOM en UTF-8</h1>
+</header>
+<section>
+  <div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+    
+</section>
+  
+ 
+
+<section>
+<p class="question">Al usar las páginas codificadas UTF-8 en algunos agentes de usuarios, aparece una línea adicional o caracteres no deseados en la parte superior de mi página web o archivo incluido. ¿Cómo se eliminan?</p>
+</section>
+
+
+
+
+
+<section>
+<h2 id="answer">Respuesta</h2>
+
+<p>Si está trabajando con un archivo codificado en UTF-8, es posible que sus problemas de visualización se deban a la presencia de una firma UTF-8 (BOM) que el agente de usuario no reconoce. This used to be a problem for static HTML files, but is no longer  in recent versions of major browsers. However, if you use PHP to generate your HTML, this was still an issue with PHP version 5.3.6.</p>
+<p>La BOM siempre se encuentra al principio del archivo, y por lo tanto, habitualmente puede esperarse ver los problemas de visualización en la parte superior de una página. Sin embargo, es posible que también encuentre líneas en blanco dentro de la página, si incluye un texto de otro archivo que comience con una firma UTF-8.</p>
+<p>Este artículo le ayudará a determinar si la UTF-8 está provocando el problema. Si no hay ninguna evidencia de una firma UTF-8 al principio del archivo, deberá buscar la solución en alguna otra parte.</p>
+
+
+
+<section>
+<h3 id="bom"><a href="#bom">¿Qué es una firma UTF-8 (BOM)?</a></h3>
+<div class="sidenoteGroup"> 
+	<p>Algunas aplicaciones introducen una combinación de bytes en particular al principio de un archivo, para indicar que el texto incluido en el archivo es Unicode. Esta combinación de bytes se conoce como <strong>firma</strong> o <strong>marca de orden de bytes (Byte Order Mark, BOM)</strong>. Algunas aplicaciones, como un editor de texto o un explorador, muestran la BOM como una línea adicional en el archivo, en tanto que otros muestran caracteres inesperados, como ï»¿.</p>
+	<p>Consulte el panel lateral para obtener información más detallada acerca de la BOM.</p>
+	<div class="sidenote"> 
+		<p class="info">La BOM es el punto de codificación de Unicode U+FEFF, que corresponde al carácter de Unicode 'SIN ANCHO NI ESPACIO' (ZERO WIDTH NON-BREAKING SPACE', ZWNBSP).</p>
+		<p>En las codificaciones UTF-16 y UTF-32, salvo que exista algún indicador alternativo, la BOM es esencial para asegurar una interpretación correcta del contenido del archivo. Cada carácter del archivo está representado por 2 o 4 bytes de datos y el orden en el que se almacenan estos bytes en el archivo es importante; la BOM indica este orden.</p>
+		<p>En la codificación UTF-8, la presencia de una BOM no es fundamental, debido a que, a diferencia de las codificaciones UTF-16 o UTF-32, no existe ninguna secuencia de bytes alternativa en un carácter. Sin embargo, la BOM aún puede aparecer en texto de codificación UTF-8, ya sea como producto secundario de una conversión de una codificación o debido a que fue agregada por un editor.</p>
+	</div>
+</div>
+</section>
+
+
+
+<section>
+
+<h3 id="detect"><a href="#detect">Detección de la BOM</a></h3>
+<p>Primero, necesitamos verificar si efectivamente existe una BOM al principio del archivo.</p>
+<p>Puede intentar encontrar una BOM en su contenido, pero si su editor trabaja correctamente con la firma UTF-8, es probable que no pueda verla. Un editor que no trabaja correctamente con la firma UTF-8 muestra los bytes que componen esa firma de acuerdo con su propia configuración de codificación de caracteres. (Con la codificación de caracteres Latin 1 (ISO 8859-1), la firma aparece como caracteres ï»¿.) Con un editor binario capaz de mostrar los valores de bytes hexadecimales en el archivo, la firma UTF-8 aparece como EF BB BF.</p>
+<p>Alternativamente, es posible que su editor le informe en una barra de estado o un menú en qué codificación se encuentra su archivo, incluida información acerca de la presencia o no de la firma UTF-8.</p>
+<p>Si esto no ocurre, puede ayudarle algún tipo de prueba basada en sistemas de escritura (ver a continuación). (Tenga en cuenta, si se trata de un archivo incluido por PHP o algún otro mecanismo que usted considere que está provocando el problema, escriba el URI del archivo<em>incluido</em>).</p>
+</section>
+
+
+
+
+<section>
+<h3 id="remove"><a href="#remove">Eliminación de la BOM</a></h3>
+
+<p>Si tiene un editor que muestre los caracteres que componen la firma UTF-8 es posible que pueda eliminarlos manualmente. Sin embargo, lo más posible es que la BOM esté allí en primer lugar porque usted no la vio.</p>
+<p>Verifique si su editor le permite especificar si una firma UTF-8 se agrega o almacena <a href="http://www.w3.org/International/questions/qa-setting-encoding-in-applications">al guardar</a>. Este tipo de editor proporciona una forma de eliminar la firma simplemente leyendo el archivo y luego guardándola afuera nuevamente. Por ejemplo, si Dreamweaver detecta una BOM, el cuadro de diálogo Guardar como tendrá una marca de verificación junto al texto "Incluir firma Unicode (BOM)". Simplemente destilde el casillero y guarde.</p>
+<p>Una de las ventajas de usar un sistema de escritura es que puede eliminar la firma rápidamente y de varios archivos. De hecho, el sistema de escritura puede ejecutarse automáticamente como parte de su proceso. Si usa Perl, puede emplear <a href="http://people.w3.org/rishida/blog/?p=102">un sistema de escritura simple</a> creado por Martin Dürst.</p>
+<p>Nota: Debe verificar cómo afecta al proceso la eliminación de la firma. Puede suceder que parte del proceso de desarrollo de su contenido se base en el uso de la firma para indicar que un archivo está en UTF-8. Recuerde también que las páginas con una alta proporción de caracteres del latín pueden verse correctas superficialmente, pero quizás los caracteres ocasionales que se encuentran fuera del rango ASCII (U+0000 a U+007F) están codificados incorrectamente.</p>
+</section>
+
+</section>
+
+
+
+
+
+
+
+  
+  <section>
+  <h2 id="bytheway"><a href="#bytheway">A propósito</a></h2>
+    <p>Podrá ver que algunos editores de texto, como Windows Notepad agregarán automáticamente una firma UTF-8 a cualquier archivo que guarde como UTF-8.</p>
+<p>Una firma UTF-8 al principio de un archivo CSS en ocasiones puede hacer que las reglas iniciales del archivo presenten error con determinados agentes de usuarios.</p>
+<p>En algunos exploradores, la presencia de una firma UTF-8 hará que el explorador interprete el texto como UTF-8 independientemente de cualquier declaración de codificaciones que indiquen lo contrario.</p>
+</section>
+<h2 id="endlinks" class="notoc"><a href="#endlinks">Lecturas complementarias</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.unicode.org/faq/utf_bom.html#BOM">Preguntas frecuentes de Unicode acerca de la marca de orden de bytes</a></p>
+    </li>
+    <li>
+      <p><a href="http://www.unicode.org/International/questions/qa-setting-encoding-in-applications">Configuración de codificaciones en aplicaciones de autoría web</a></p>
+    </li>
+    <li>
+      <p><a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a></p>
+    </li>
+<li>
+  <p><cite>Authoring HTML &amp; CSS</cite></p>
+  <ul>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=charset">Characters</a></li>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction&open=bomhandling">Handling the byte-order mark</a></li>
+  </ul>
+</li>
+</ul>
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

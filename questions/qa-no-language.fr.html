@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Marquer du texte sans langue</title>
+<meta name="description" content="Comment utiliser le balisage linguistique dans le contenu HTML ou XML lorsque je ne connais pas la langue ou que le contenu n'est pas linguistique?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-no-language' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-no-language' // blog search string - usually the filename without extensions
+f.firstPubDate = '2007-10-30' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2019-11-25', time:'13:45'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-11-05', time:'17:37'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://www.ibidem-traduction.com/anglais.php">IBIDEM, Traductions Anglais - Français</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-no-language-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-fr.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Marquer du texte sans langue</h1>
+</header>
+
+
+<div>
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+</div>
+
+
+
+    <p>Cet article donne des conseils sur la façon d'utiliser le balisage linguistique en HTML ou XML lorsque vous ne connaissez pas la langue du contenu, ou lorsque le contenu est non linguistique.</p>
+<p>En HTML, vous devez toujours identifier la langue humaine du texte, lorsqu'elle est connue, à l'aide de l'attribut <code class="kw" translate="no">lang</code> afin que les applications telles que les navigateurs vocaux, les feuilles de style, etc. puissent traiter le texte de manière appropriée. Il en va de même pour les formats basés sur XML, où vous utiliseriez l'attribut <code class="kw" translate="no">xml:lang</code>. </p>
+<p>Supposons, cependant, que vous ayez du texte qui n'est dans aucune langue, comme des échantillons de type, des numéros de pièces, des illustrations de données binaires, etc. Comment diriez-vous que ce n'était dans aucune langue en particulier ? Ou que diriez-vous d'une situation où vous avez extrait le texte d'une base de données et qu'il n'y avait aucune information linguistique?</p>
+<p class="info" style="margin-top: 2em;">Pour plus d'informations sur le paramétrage de la langue en HTML, voir <a href="qa-html-language-declarations">Déclarer la langue en HTML</a>.</p>
+
+
+
+<section id="nonlinguistic">
+  <h2><a href="#nonlinguistic">Lorsque le texte est non linguistique</a></h2>
+    <p>Utilisez la sous-étiquette <span class="kw">zxx</span> lorsque <em>vous savez</em> que le texte n'est dans aucune langue.</p>
+    <p>Ceci s'applique aux textes tels que les échantillons de type, les numéros de pièces, les illustrations de données binaires, etc. La définition de <span class="kw">zxx</span> dans le <a class="print" href="http://www.iana.org/assignments/language-subtag-registry">Registre des sous-balises linguistiques de l'IANA</a> est 'aucun contenu linguistique'.</p>
+    <p>Par exemple:</p>
+    <div class="example"> <code>&lt;p&gt;Voici la liste des numéros de pièces: <span translate="no">&lt;span lang="zxx"&gt;9RUI34 8XOS12 3TYY85&lt;/span&gt;.&lt;/p&gt;</span></code> </div>
+  </section>
+  
+  <section id="undetermined">
+    <h2><a href="#undetermined">Lorsque la langue est indéterminée</a></h2>
+    <p>En HTML, utilisez <code translate="no">lang=&quot;&quot;</code>. Si vous utilisez XML et que le format que vous utilisez le supporte, utilisez <a class="print" href="http://www.w3.org/TR/REC-xml/#sec-lang-tag"><code translate="no">xml:lang=""</code></a>,
+      sinon utilisez <code translate="no">xml:lang="<span class="kw">und</span>"</code>.</p>
+    <p>Ces valeurs indiquent que nous ne pouvons pas déterminer, pour une raison ou une autre, quelle est l'information linguistique appropriée ou si le texte est non linguistique. Par exemple, vous pouvez utiliser une valeur vide pour l'attribut langue si le texte de la base de données est inclus dans un document mais que la base de données ne fournit pas d'informations sur la langue et que vous ne pouvez pas être raisonnablement sûr de la langue. Cela aurait pour effet d'empêcher qu'une information linguistique déclarée plus haut dans la hiérarchie des éléments du document ne s'applique au texte inclus.</p>
+    <p>Cependant, vous ne devez marquer le texte comme indéterminé que si vous ne pouvez pas le laisser tel quel. En pratique, cela signifie que vous ne devriez utiliser ce balisage que si le texte indéterminé est incorporé dans un contenu qui a déjà été étiqueté pour la langue d'une manière ou d'une autre, ou si son utilisation au niveau du document est requise par le format que vous utilisez.</p>
+  </section>
+
+
+
+<section id="advanced">
+<h2><a href="#advanced">Sujets avancés</a></h2>
+  <section id="xhtml">
+    <h3><a href="#xhtml">Implications pour XHTML 1.0</a></h3>
+    <p>Les pages héritées qui utilisent XHTML 1.0, et qui ne peuvent pas être mises à jour en HTML5 ou XHTML5, devraient utiliser <code translate="no">xml:lang="und"</code> s'il est nécessaire d'exprimer la nature indéfinie de certains textes intégrés dans un document, car <code translate="no">xml:lang=""</code> in'est pas autorisé. Dans les très rares cas où l'ensemble du document est dans une langue non définie, il vaut mieux ne pas déclarer la langue par défaut du document.</p>
+  </section>
+  <section id="xmlschemas">
+    <h3><a href="#xmlschemas">Considérations relatives au schéma XML</a></h3>
+    <p><code translate="no">xml:lang=""</code> ne fonctionne que si le schéma qui décrit le format de votre document autorise une chaîne vide comme valeur de <span class="kw" translate="no">xml:lang</span>. Par exemple, parce que les DTD XHTML 1.0 définissent <span class="kw">xml:lang</span> de telle manière qu'une valeur de chaîne vide pour l'attribut <span class="kw">xml:lang</span>est <em>interdite</em>, vous ne pouvez pas utiliser la chaîne vide dans XHTML 1.0.</p>
+    <p>Pour ceux qui connaissent le fonctionnement des DTD et autres schémas: L'attribut <span class="kw" translate="no">xml:lang</span> prend les valeurs NMTOKEN dans le schéma XML, elles ne peuvent donc pas être vides. Dans votre DTD XML, si possible, déclarez <span class="kw" translate="no">xml:lang</span> comme CDATA pour qu'une valeur vide soit autorisée. Pour les utilisateurs de schéma XML, utilisez le document de schéma XML pour l'espace de <a class="print" href="http://www.w3.org/2001/xml.xsd">nommage XML</a>.</p>
+    <p>Martin Dürst <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2007JanMar/0136.html">souligne</a> que vous pouvez redéfinir le format XHTML dans le document pour créer une page XHTML qui se valide en utilisant <code translate="no">lang=""</code> ou <code translate="no">xml:lang=""</code>. Cependant, cela n'est pas recommandé pour une utilisation généralisée, car un tel document n'est plus strictement conforme au sens du XHTML 1.0.</p>
+  </section>
+</section>
+
+
+<section>
+  <h2 id="bytheway"><a href="#bytheway">À propos</a></h2>
+  <p>Ceci est un résumé d'une discussion dans un <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2005JulSep/0163.html">fil de discussion</a> sur www-international@w3.org, et une <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2007JanMar/0123.html">reprise</a> ultérieure de ces idées auxquelles plusieurs personnes ont contribué.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Lecture supplémentaire</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><cite>Rédaction HTML et CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#language">Langue</a></li>
+        <li><a href="/International/techniques/authoring-html#langvalues">Choix des balises de langue</a></li>
+      </ul>
+    </li>
+    <li>
+      <p><cite>Auteur XML</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-xml#language">Langue</a></li>
+        <li><a href="/International/techniques/authoring-xml#langvalues">Choix des balises de langue</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

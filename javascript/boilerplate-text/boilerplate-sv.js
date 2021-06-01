@@ -62,10 +62,15 @@ s.techIndexText = "Index över tekniker"
 s.gotoW3cHome = "Gå till W3C:s hemsida"
 s.gotoI18nHome = "Gå till W3C:s hemsida om internationalisering"
 s.internationalizationTitle = "Internationalization"
+s.worldwide = "Making the World Wide Web worldwide!"
 s.i18nActivityHomePage = "Internationaliseringsaktivitetens hemsida."
 s.home = "Hemsidan"
+s.contactI18nActivity = "Om internationaliseringsaktiviteten."
+s.contact = "Om"
 s.aboutI18nActivity = "Om internationaliseringsaktiviteten."
 s.about = "Om"
+s.askI18nActivity = "Ask for help or information."
+s.ask = "Ask"
 s.groupsThatMakeUp = "Arbetsgrupper inom internationaliseringsaktiviteten."
 s.groups = "Grupper"
 s.topicIndexForInformation = "Ämnesorienterat index över information på denna webbplats."
@@ -133,4 +138,7 @@ s.longeranswer = "Detaljer" // heading
 s.additionalinfo = "Ytterligare information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Även tack till följande personer som bidragit eller gett kommentarer:"  // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "Om du tillåter webbläsaren att spara en kaka (cookie), så kommer du i fortsättningen att se sidor från W3C Internationalization Activity i det språk du valt (när sådana översättningar finns). Vill du spara kakan?" // this text is to be copied to another location
-s.supercededTranslation = '<strong>Varning:</strong> Detta är en föråldrad version av dokumentet! Du bör läsa <a href="'+g.betterfilename+'.en">den senaste versionen</a> istället, och, om du kan, uppdatera det bokmärke eller länk som kan ha lett dig hit.'
+//s.supercededTranslation = '<strong>Varning:</strong> Detta är en föråldrad version av dokumentet! Du bör läsa <a href="'+g.betterfilename+'.en">den senaste versionen</a> istället, och, om du kan, uppdatera det bokmärke eller länk som kan ha lett dig hit.'
+s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

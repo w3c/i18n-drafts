@@ -59,20 +59,25 @@ s.techIndexText = "तकनीक सूचकांक"
 s.gotoW3cHome = "W3C होम पेज पर जाएँ"
 s.gotoI18nHome = "अंतरराष्ट्रीयकरण गतिविधि होम पेज पर जाएँ"
 s.internationalizationTitle = "अंतर्राष्ट्रीयकरण"
+s.worldwide = "वर्ल्ड वाईड वेब को सचमुच विश्वव्यापी बना रहें हैं !"
 s.i18nActivityHomePage = "अंतरराष्ट्रीयकरण गतिविधि होम पेज।"
 s.home = "होम पेज"
-s.aboutI18nActivity = "अंतर्राष्ट्रीयकरण गतिविधि के बारे में।"
-s.about = "के बारे में"
-s.groupsThatMakeUp = "समूह जो अंतरराष्ट्रीयकरण गतिविधि बनाते है।"
-s.groups = "समूह"
-s.topicIndexForInformation = "इस साइट पर जानकारी के विषय सूचकांक।"
-s.topics = "विषयों"
-s.taskBasedIndex = "टास्क आधारित  i18n का सूचकांक तकनीक."
-s.techniques = "तकनीक"
-s.informationResources = "अंतर्राष्ट्रीयकरण साइट पर सूचना संसाधन."
-s.resources = "संसाधन"
-s.newsFiltersAndFeeds = "समाचार फिल्टर और आरएसएस फ़ीड के बारे में डब्ल्यू .3 सी. अंतरराष्ट्रीयकरण की जानकारी।"
-s.news = "समाचार"
+s.contactI18nActivity = "W3C  अंतरराष्ट्रीयकरण  से सहायता प्राप्त करें।"
+s.contact = "संपर्क-सूत्र"
+s.aboutI18nActivity = "About W3C Internationalization."
+s.about = "About"
+s.askI18nActivity = "Ask for help or information."
+s.ask = "Ask"
+s.groupsThatMakeUp = "W3C  अंतरराष्ट्रीयकरण  कार्य में हिस्सा लें।"
+s.groups = "हिस्सा लें"
+s.topicIndexForInformation = "इस साइट को खोजें।"
+s.topics = "खोजें"
+s.taskBasedIndex = "अंतरराष्ट्रीयकरण के लिए तकनीकों एवं आवश्यकताओं को जान।ें"
+s.techniques = "जानें"
+s.informationResources = "इस साइट पर जानकारी प्राप्त करें।"
+s.resources = "प्राप्त करें"
+s.newsFiltersAndFeeds = "W3C अंतर्राष्ट्रीयकरण पर कार्य का अनुसरण करें।"
+s.news = "अनुसरण करें"
 s.onThisPage = "इस पृष्ठ पर"
 s.questionAlt = "सवाल"
 s.questionLink = "सवाल"
@@ -111,22 +116,25 @@ s.codedInUtf8 = "UTF-8 में एनकोडेड!"
 
 s.translatedFromEnglishVer = "अंग्रेजी सामग्री से अनुवादित दिनांक "+dt.enVersion+". पिछले परिवर्तित संस्करण अनुवादित "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
-s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="'+f.filename+'.en">the English original</a> since this document was translated. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
-s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
-s.new="New"// placed alongside new articles at http://www.w3.org/International/articlelist 
-s.updated="Updated" // same as New
-s.translation_updated="Translation updated:" // date appears after colon 
+s.historyOfDocumentChanges = 'दस्तावेज़ परिवर्तन के इतिहास के लिए, जनवरी 2016 से मूल परिवर्तनों के लिए <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">न्यूज फीड</a>, और सभी परिवर्तनों के लिए <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">गिटहब कमिट सूची</a> देखें।'
+s.untranslatedChanges = '<strong>टिप्पणी:</strong> जब से इस दस्तावेज़ का अनुवाद हुआ है, <a href="'+f.filename+'.en">मूल अंग्रेजी</a> में परिवर्तन किए गए हैं। परिवर्तनों को इस पृष्ठ में शामिल किया गया था, इसलिए अनुवाद के अद्यतन होने तक अंग्रेजी में आप कुछ अवतरणों को देख सकते हैं।'
+s.unlinkedTranslation = '<strong>चेतावनी:</strong> इस दस्तावेज़ के अनुवादित होने के बाद से अंग्रेजी मूल में काफी बदलाव किए गए हैं। आपको सलाह दी जाती है कि जब तक यह अद्यतन नहीं हो जाता है, आप <a href="'+f.filename+'.en">अंग्रेजी संस्करण</a> पढ़ें।'
+s.new="नया"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.updated="अद्यतनित" // same as New
+s.translation_updated="अनुवाद अद्यतन:" // date appears after colon 
 
-s.aboutThisArticle="About this article" // title in the right column near the top of the page
-s.status_draft="This article is a draft that has not yet gone through public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_review="This article is currently out for public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_published="This article has been reviewed by the W3C Internationalization Working Group and has gone through public review to make it as accurate as possible. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_notreviewed="This article was published without public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
-s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
-s.tests="Tests" // used at the end of breadcrumbs for test related pages
-s.quickanswer = "Quick answer" // heading
-s.longeranswer = "Details" // heading that follows 'Quick answer'
-s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
-s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.aboutThisArticle="आलेख के बारे में" // title in the right column near the top of the page
+s.status_draft="यह आलेख एक मसौदा है, जिसका अभी तक सार्वजनिक समीक्षा नहीं किया गया है। अगर आपको टिप्पणियां देनी हैं तो कृपया <a href='#survey'>इस पृष्ठ के निचले भाग के पास की लिंक</a> का उपयोग करते हुए उन्हें भेजें।"
+s.status_review="यह आलेख फिलहाल सार्वजनिक समीक्षा के लिए है। अगर आपको टिप्पणियां देनी हैं तो कृपया<a href='#survey'>इस पृष्ठ के निचले भाग के पास की लिंक </a> का उपयोग करते हुए उन्हें भेजें।"
+s.status_published="इस आलेख की समीक्षा W3C अंतर्राष्ट्रीयकरण कार्य समूह द्वारा की गई है और इसे यथासंभव सटीक बनाने के लिए इसका सार्वजनिक समीक्षा भी किया गया है। अगर आपको टिप्पणियां देनी हैं तो कृपया<a href='#survey'>इस पृष्ठ के निचले भाग के पास की लिंक </a> का उपयोग करते हुए उन्हें भेजें।"
+s.status_notreviewed="यह लेख बिना सार्वजनिक समीक्षा के प्रकाशित हुआ था। अगर आपको टिप्पणियां देनी हैं तो कृपया <a href='#survey'>इस पृष्ठ के निचले भाग के पास की लिंक </a> का उपयोग करते हुए उन्हें भेजें।"
+s.status_obsolete="Tयह आलेख अब अप्रचलित है। अब इसकी देख-रेख नहीं की जाती है तथा इसकी सत्यता पर भी संदेह है। और अधिक अद्यतनित जानकारी के लिए <a href='http://www.w3.org/International/'>अंतर्राष्ट्रीयकरण गतिविधि होम पेज</a> देखें।"
+s.tests="परीक्षा" // used at the end of breadcrumbs for test related pages
+s.quickanswer = "त्वरित उत्तर" // heading
+s.longeranswer = "विवरण" // heading that follows 'Quick answer'
+s.additionalinfo = "अतिरिक्त जानकारी" // heading that sometimes follows 'Details'
+s.acknowledgements = "उन लोगों को भी धन्यवाद जिनके योगदान या प्रतिक्रिया को शामिल किया गया था:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.cookieMsg = "यदि आप ब्राउज़र के द्वारा कुकी सेट करते हैं, तो आप अपने द्वारा चुनी गई भाषा में W3C अंतर्राष्ट्रीयकरण गतिविधि पृष्ठ (जहाँ उपलब्ध हो) देखना जारी रखेंगे। क्या आप कुकी सेट करना चाहते हैं?" // this text is to be copied to another location
+s.githubRedirect = "<strong>टिप्पणी!</strong> &nbsp; यह, इस आलेख का एक संपादकीय मसौदा है। सभी लिंक और बुकमार्क <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a> को निर्देशित होने चाहिए।" // used for github-based versions of published articles
+
+s.lastChanged = "अंतिम बार परिवर्तित। "

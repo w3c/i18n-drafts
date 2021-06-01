@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Typographic character units in complex scripts</title>
+<meta name="description" content="Issues related to segmentation of text into typographic character units." />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-indic-graphemes'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-indic-graphemes'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2021-03-01'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2021-03-01', time:'17:22'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2021-03-01', time:'17:22'} // date and time of latest edits to this document/translation
+f.contributors = 'Fantasai, Florian Rivoal, Addison Phillips, Norbert Lindenberg'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'style';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-indic-graphemes-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script><!-- TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<link rel="stylesheet" href="qa-indic-graphemes-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Typographic character units in complex scripts</h1>
+</header>
+
+
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+</div>
+
+<p>The basic unit of text is not always a Unicode <a class="dfn" href="https://www.w3.org/International/articles/definitions-characters/index.en#charsets">code point</a> when it comes to text operations such as the following:</p>
+<ul>
+<li>line breaking &amp; hyphenation</li>
+<li>letter spacing &amp; justification</li>
+<li>cursor movement</li>
+<li>forward delete</li>
+<li>dropped initials </li>
+<li> vertical text</li>
+<li>truncation</li>
+</ul>
+<p>CSS defines the <a href="https://www.w3.org/TR/css-text-3/#typographic-character-unit" class="dfn">typographic character unit</a> as a basic unit of text for use with these editing operations, however the meaning of  that term can vary according to the operation, and there are issues in working with such units in complex scripts. In this article we look at examples of some of those differences and issues.</p>
+
+
+<section>
+<h2 id="scenarios"><a href="#scenarios">Inherent vowels, conjuncts &amp; vowel-killers</a></h2>
+<p>In this section we set the scene by describing how most Brahmi-derived scripts work.</p>
+
+<section id="inherent">
+<h3><a href="#inherent">Inherent vowels &amp; vowel-signs</a></h3>
+
+<p>Writing systems that derive from the former Brahmi script, whether in India or other parts of Asia, tend to automatically associate an <span class="newterm">inherent vowel </span>sound with each consonant. The specific sound varies with the language, and for some orthographies there can be different sounds in different contexts.</p>
+
+<div class="figWrap">
+<figure id="fig_ra">
+<img src="qa-indic-graphemes-data/ra.png" alt="റ = ra" data-notes="72px Noto Sans Malayalam">
+<figcaption>The glyph used for the consonant 'r' in Malayalam has an inherent 'a' vowel, built in. <a href="qa-indic-graphemes-data/codepoints.html#fig1" target="_blank">View characters.</a></figcaption>
+</figure>
+</div>
+
+<div class="sidenoteGroup">
+<p>To express a vowel other than the inherent one, you add a <span class="newterm">vowel-sign</span> to the consonant. For most South Asian scripts, this involves a single combining character, but other languages may use multiple combining characters, or mixtures of combining and ordinary spacing characters. Vowel-signs may appear above, below or on either side of the base, or may be a single character that produces separate glyphs on more than one side of the base consonant (a circumgraph) .</p>
+<div class="sideinfonote">
+<p>A writing system with inherent vowels that are modified by the use of vowel-signs is often referred to as an 'abugida'.</p>
+</div>
+</div>
+
+<div class="figWrap">
+<figure id="fig_ban_vowel_signs">
+<img src="qa-indic-graphemes-data/ban_vowel_signs.png" alt="ᬓᬸ ᬓᭀ ᬓᬿ" data-notes="62px Vimala">
+<figcaption>Vowel-signs (coloured) changing the sound /ka/ into /ku/, /ko/, and /kaːi/ in Balinese. <a href="qa-indic-graphemes-data/codepoints.html#fig2" target="_blank">View characters.</a></figcaption>
+</figure>
+</div>
+
+<!--div class="figWrap">
+<figure id="fig_bn_vowel_signs">
+<img src="qa-indic-graphemes-data/bn_vowel_signs.png" alt="কু কৌ কি" data-notes="72px Solaimonlipi">
+<figcaption>Vowel-signs (coloured) creating the sounds /ku/, /ko/, and /ki/ in Bengali.</figcaption>
+</figure>
+</div-->
+</section>
+
+
+
+
+
+<section id="conjuncts">
+<h3><a href="#conjuncts">Consonant clusters &amp; conjunct forms</a></h3>
+
+<p>The languages that use these scripts also have consonant <em>clusters</em>. There are a number of ways of indicating that the vowel is not pronounced between the consonants that make up a cluster. The shape of the clustered consonants may, for example, be merged, or one consonant may be stacked above the other, and so on. When the shapes of a sequence of consonants are  changed to indicate a cluster, this is referred to as a <span class="newterm">conjunct</span>.</p>
+<p>Conjunct formation is usually triggered in Unicode text by adding a combining character, the <span class="newterm">vowel-killer</span>, after each consonant that loses its vowel. When the vowel-killer causes a conjunct to form, it becomes invisible. In the following figure, the second syllable of the word 'shakti' in computer memory is  the sequence of characters KA+vowel_killer+TA+I.</p>
+
+<div class="figWrap">
+<figure id="fig_shakti">
+<img src="qa-indic-graphemes-data/shakti.png" alt="शक्ति" data-notes="72px Noto Serif Devanagari">
+<figcaption>The Hindi word 'shakati' (left) which has no clusters, and the word 'shakti' (right) where the second orthographic syllable is a conjunct cluster. Colours are used to highlight consonants (orange) and the (prescript) 'i' vowel (tan). Typographic unit  boundaries are shown by thin vertical lines. <a href="qa-indic-graphemes-data/codepoints.html#fig3" target="_blank">View characters.</a></figcaption>
+</figure>
+</div>
+
+<p>The vowel-killer is generically referred to as a <em class="name">virama</em>, although each language has its own name, such as <i class="name">halant</i>, <i class="name">hasant</i>, <i class="name">pulli</i>, <i class="name">viramamu</i>, etc. Each script in Unicode that uses a vowel-killer has its own code point for that character.</p>
+
+<div class="sidenoteGroup">
+<p><mark>The important rule is that <em>conjuncts</em> are never normally split apart</mark> by   operations such as      line breaking &amp; hyphenation,     letter spacing &amp; justification,     cursor movement,     forward delete,     highlighted initial paragraph letters,      vertical text, and truncation.</p>
+<p>This also affects placement of vowel-signs. As can be seen in the Hindi example above, the left-positioned vowel-sign is therefore placed to the left of the <em>whole cluster</em>, even though it is pronounced after the last consonant in the group.</p>
+
+<div class="sideinfonote">
+<p>Note that forwards and backwards deletion  will typically each delete different numbers of characters per keypress, and backwards deletion may break down conjuncts when forward deletion does not.  Also, we will see later that vowel-signs may be split apart from the conjunct during justification or letter-spacing, however the conjunct itself still resists decomposition in this case.</p>
+</div>
+</div>
+
+<p>Because of this resistance to breaking conjuncts, Brahmi-derived orthographies are typically parsed into <span class="newterm">orthographic syllables</span>. These differ from  phonetic syllables, because they include a whole consonant cluster and any combining characters that follow it as a single unit.</p>
+
+<div class="figWrap">
+<figure id="fig_hindi">
+<img src="qa-indic-graphemes-data/hindi.png" alt="हिन्दी → हि + न्दी" data-notes="72px Noto Serif Devanagari">
+<figcaption>The Hindi word 'hindi', showing the 2 orthographic syllables, 'hi' and 'ndi'. <a href="qa-indic-graphemes-data/codepoints.html#fig4" target="_blank">View characters.</a></figcaption>
+</figure>
+</div>
+<p>The word 'hindi', just above, is split into two orthographic syllables, 'hi' and 'ndi', although the phonetic syllables are 'hin' and 'di'.</p>
+</section>
+
+
+
+
+<section id="visible">
+<h3><a href="#visible">Clusters with a visible vowel-killer</a></h3>
+
+<p>Rather than forming a conjunct, sometimes consonant clusters are indicated by the presence of a <em>visible</em> vowel-killer alongside the relevant consonant(s). In this case, no shape changes are produced. This is, in fact, the default approach for Tamil.</p>
+
+<div class="figWrap">
+<figure id="fig_pulli">
+<img src="qa-indic-graphemes-data/pulli.png" alt="யாவற்றையும்" data-notes="72px Noto Serif Tamil; 30px Gentium">
+<figcaption>The Tamil word 'yavattaiyum', showing the 2 geminated consonants (orange) with a vowel-killer dot above the first, and a prescript vowel (tan). Typographic unit boundaries are shown by thin vertical lines. <a href="qa-indic-graphemes-data/codepoints.html#fig5" target="_blank">View characters.</a></figcaption>
+</figure>
+</div>
+<p><mark>Where a <em>visible</em> vowel-killer is used, it is possible to split apart the consonants that make up a cluster</mark> while breaking lines,  spacing text, etc.</p>
+
+<!--div class="figWrap">
+<figure id="fig_tamil_segments">
+<img src="qa-indic-graphemes-data/tamil_segments.png" alt="யா+வ+ற்+றை+யு+ம்" data-notes="42px Noto Serif Tamil">
+<figcaption>Segmentation for the Tamil word '<span class="ipa">ʋɪrpənəj</span>', showing how the cluster 'rp' is split into 2 segments.</figcaption>
+</figure>
+</div-->
+
+<p>The handling of left-positioned vowel-signs is also different from the case where conjuncts are produced. In Tamil, the left-positioned vowel-sign <em>does</em> push apart the consonants that make up the cluster, as can be seen in the  figure.</p>
+<p>In Unicode text the same code point is generally used for both the invisible conjunct-former and the visible vowel-killer, and the different display effects are produced by font rules.</p></section>
+
+
+
+
+
+<section id="messy"><h3><a href="#messy">The messy bits</a></h3>
+
+<p>Unfortunately, consonant cluster handling is not quite as clear-cut as implied above. Orthographies don't always indicate a consonant cluster using a conjunct or a vowel-killer.</p>
+<p>For example, as a general rule Hindi doesn't pronounce a vowel after the penultimate consonant in a word if there is a vowel-sign at the end. However, It doesn't indicate the vowel absence by a conjunct or vowel-killer.</p>
+<p>In other orthographies, such as commonly in Gujarati and  Bengali, there is often no indication of where consonant clusters appear. You simply have to know how to pronounce the word.</p>
+
+<div class="figWrap">
+<figure id="fig_gujarati">
+<img src="qa-indic-graphemes-data/gujarati.png" alt="ઘરકામ" data-notes="62px Noto Serif Gujarati">
+<figcaption>Segmentation for the Gujarati word '<span class="ipa">ɡarkəm</span>', where the 'rk' cluster is not signalled by any vowel-killer or conjunct. Nor is the missing inherent vowel of the final 'm'. <a href="qa-indic-graphemes-data/codepoints.html#fig6" target="_blank">View characters.</a></figcaption>
+</figure>
+</div>
+
+<p>These differences, however, don't normally cause problems for text segmentation. A sequence of consonant glyphs that is actually a cluster, but which is not connected visually is treated as so many separate typographic character units, and can be handled using grapheme clusters (see below).</p>
+</section>
+
+
+
+
+
+
+
+<section>
+<h2 id="examples"><a href="#examples">Problems with conjuncts</a></h2>
+<p>Now we examine some of the problems encountered when dealing with conjunct forms.</p>
+<section>
+<h3 id="patronymic"><a href="#patronymic">Grapheme clusters</a></h3>
+<p>In order to approximate user-perceived character units for editing operations, Unicode uses a <a href="http://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries">set of generalised rules</a> to define <dfn id="def_grapheme_cluster">grapheme clusters</dfn> – sequences of adjacent code points that can be treated as a unit by applications. </p>
+<p>Typically, a grapheme cluster is a single base character plus any combining characters that follow it. A single alphabetic character like <span class="codepoint" translate="no"><span lang="en">&#x0065;</span> [<span class="uname">U+0065 LATIN SMALL LETTER E</span>]</span> is a grapheme cluster, but so also is  <span class="codepoint" translate="no"><span lang="vi">&#x0065;&#x0302;&#x0300;</span> [<span class="uname">U+0065 LATIN SMALL LETTER E</span> + <span class="uname">U+0302 COMBINING CIRCUMFLEX ACCENT</span> + <span class="uname">U+0300 COMBINING GRAVE ACCENT</span>]</span>.</p>
+</section>
+
+<section>
+<h3 id="partorder"><a href="#partorder">Grapheme clusters don't span conjuncts</a></h3>
+<p>The figure just below shows how the Bengali word 'jhilli' is split into its two orthographic syllables, 'ji' and 'lli'. The second orthographic syllable is a conjunct, representing a doubled 'l' sound followed by the sound 'i'.</p>
+
+<div class="figWrap">
+<figure id="fig_jhilli">
+<img src="qa-indic-graphemes-data/jhilli.png" alt="ঝিল্লি → ঝি + ল্লি" data-notes="72px Noto Serif Devanagari">
+<figcaption>The Bengali word 'jhilli', showing the 2 orthographic syllables, 'jhi' and 'lli'. <a href="qa-indic-graphemes-data/codepoints.html#fig7" target="_blank">View characters.</a></figcaption>
+</figure>
+</div>
+
+<p>The code points in that conjunct are:</p>
+
+<div class="figWrap">
+<figure id="fig_jhilli_codepoints">
+<img src="qa-indic-graphemes-data/jhilli_codepoints.png" alt="">
+<figcaption>Code points that make up the Bengali word 'jhilli'. The horizontal line shows the boundary between the two grapheme clusters.</figcaption>
+</figure>
+</div>
+
+<p>As you can see, the conjunct, which must not be split, involves more than one grapheme cluster, because as soon as a sequence of characters composing a grapheme cluster meets another base character it terminates.</p>
+<p>This means that <mark>for scripts of this type, additional tailoring rules need to be applied, over and above grapheme cluster segmentation</mark>, in order to identify appropriate text boundaries. In this case, that means treating the whole orthographic syllable as a unit.</p>
+</section>
+
+<section>
+<h3 id="multiplefamily"><a href="#multiplefamily">Font-dependent segmentation</a></h3>
+<p>Some applications successfully apply tailoring rules to treat conjunct clusters as unbreakable units, providing a way to address the problem just mentioned. There is, however, an additional problem which is somewhat less tractable.</p>
+<p>In a nutshell, <mark>if the vowel-killer is hidden <abbr title="Consonant+vowel_killer+Consonant+Vowel_sign">CvCV</abbr> should be treated as an unbreakable unit, and if the vowel-killer is visible it should be treated as two separate segments (<abbr title="Consonant+vowel_killer">Cv</abbr> and <abbr title="Consonant+Vowel_sign">CV</abbr>)</mark>.</p>
+
+<p>What's problematic about this is that 
+<mark>there is no difference whatsoever in the underlying code point sequence, and yet the segmentation behaviour has to be different. The only clue as to how to segment this sequence comes in the visually rendered shapes</mark>
+.</p>
+<p>Currently, browsers are unable to distinguish between consonant clusters that should be handled as a single unit, and those that should not.</p>
+
+<div class="sidenoteGroup">
+<p>This causes a problem for a script such as Tamil, which almost always uses the visible vowel-killer (<i class="foreign">pulli</i>) to indicate consonant clusters, but has two clusters for which the same vowel-killer code point produces conjuncts ('ksh' and 'shri'). Normally, Tamil consonant clusters can be split into multiple text units, but not those which are conjuncts. It is therefore necessary to apply different rules, according to the specific letters occuring in the syllable.</p>
+<div class="sideinfonote">
+The Unicode Standard recognises 3 types of vowel-killer. <a href="https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=[:Indic_Syllabic_Category=Pure_Killer:]" target="_blank"><code class="kw" translate="no">Pure_Killer</code> types</a> are always rendered visibly and don’t cause conjunct formation. They are generally not a problem for segmentation. <a href="https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=[:Indic_Syllabic_Category=Invisible_Stacker:]" target="_blank"><code class="kw" translate="no">Invisible_Stacker</code> types</a> always cause conjunct formation, and should never be rendered visibly. Breaking between such viramas and subsequent consonants is always wrong, but unfortunately that’s what applying  grapheme cluster rules does. <a href="https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=[:Indic_Syllabic_Category=Virama:]" target="_blank"><code class="kw" translate="no">Virama</code> types</a> are sometimes  rendered visibly in a way that breaking after them would be fine, and sometimes they participate in conjunct formation, so that breaking after them causes problems. These are particularly problematic, for the reasons described here.</div>
+</div>
+
+<p>But the problem is wider than  this. It is possible that, for the exact same sequence of characters, one font has the glyphs needed for a particular conjunct, but another doesn't. In the latter case, the font will generally show the vowel-killer explicitly to indicate the absence of the intervening vowel.</p>
+<p>Here, for example, is a rendering of the previous Bengali word without the conjunct formation.</p>
+
+<div class="figWrap">
+<figure id="fig_jhilli_virama">
+<img src="qa-indic-graphemes-data/jhilli_virama.png" alt="ঝিল্লি → ঝি + ল্লি" data-notes="72px Noto Serif Devanagari">
+<figcaption>The Bengali word 'jhilli' without conjunct formation. The highlighted items are the visible vowel-killer (left) and the letter 'i' (right). Typographic unit boundaries are shown by thin vertical lines.</figcaption>
+</figure>
+</div>
+
+<p>Note, in particular, that the prescript vowel sign ('i') now appears between the two 'l' letters. It doesn't appear to the left of the whole cluster any more. A crucial difference between this and what we saw before is that we now have three segments in the word: 'jhi' + 'l' + 'li', and text can be split at any of these grapheme cluster boundaries. </p>
+<p>However, because it is impossible to tell the difference between the two different rendered outcomes by looking at the code points, unless some way is found to detect the shape of the actual rendered text it is not possible to always apply the correct segmentation in the face of such variations.</p>
+</section>
+</section>
+
+
+
+
+
+<section id="glyphs">
+<h2><a href="#glyphs">Segmentation that splits glyphs</a></h2>
+
+<p>The figure just below shows a news column where the second line is a single word. The word is so long that there is no room to add another word to the line. To maintain the justified line ends, the word has been stretched to fit by inserting equal amounts of space between each grapheme cluster.</p>
+
+<div class="figWrap">
+<figure id="fig_justification_intercharacter_spacing">
+<img alt="แนะโบรกฯรวมตัวตั้งสนง.ตปท." src="qa-indic-graphemes-data/justification_intercharacter_spacing.jpg" data-source="" >
+<figcaption>A line containing a single Thai word applies inter-grapheme spacing to justify the text.</figcaption>
+</figure>
+</div>
+
+<p>Combining characters above and below base characters are kept with the base, but space is added between any spacing vowel-signs and the base consonant. This is mostly straightforward in Thai because, unlike South Asian scripts, most vowel-signs are ordinary spacing characters, and therefore grapheme-clusters.</p>
+<p>One particular combination, however, needs some extra attention. The sequence shown at the left of the figure just below has to be broken down into one base character and <em>two</em> combining marks, and then the spacing needs to be applied before the second mark.</p>
+
+<div class="figWrap">
+<figure id="fig_thai_sara_am_spacing">
+<img alt="กำ" src="qa-indic-graphemes-data/thai_sara_am_spacing.png" data-source="" >
+<figcaption>When letters are spaced, SARA AM needs to be recomposed, and the space inserted between the two new components. <a href="qa-indic-graphemes-data/codepoints.html#fig11" target="_blank">View characters.</a></figcaption>
+</figure>
+</div>
+
+<p>Apart from the extra work required to recompose the vowel-signs, notice that the space is now inserted between two combining marks, ie. the first item is a grapheme cluster but the second is a code point.</p>
+<p>Tamil and other writing systems take this a step further, particularly in relation to text justification and letter-spacing. </p>
+<p>Tamil has many very long words, and in Tamil news columns it may not be possible to fit more than a single word on a line. In such cases it is common to stretch the word to fit the whole width of the line. To do so, equal space is added between each non-connected glyph across the line, regardless of whether a glyph is a grapheme cluster, or even a single code point.</p>
+
+<div class="figWrap">
+<figure id="fig_justification_full_stop">
+<img alt="" src="qa-indic-graphemes-data/justification_full_stop.png" data-source="" >
+<figcaption>An example from a news column of a single word stretched to the line width (middle line).</figcaption>
+</figure>
+</div>
+
+<p>As for the Thai example, the space is inserted evenly between the unconnected glyphs.</p>
+
+<div class="figWrap">
+<figure id="fig_partridge">
+<img alt="" src="qa-indic-graphemes-data/partridge.png" data-source="" >
+<figcaption>Tamil glyph separation. The vowel-signs are coloured, and on the top line the grapheme-cluster boundaries are shown with thin vertical lines. The first vowel-sign is a circumgraph (ie. a single code point that renders glyphs on more than one side of the base). The bottom line shows how this word would be expanded to fill a line. <a href="qa-indic-graphemes-data/codepoints.html#fig13" target="_blank">View characters.</a></figcaption>
+</figure>
+</div>
+
+<p>In the figure just above, the last grapheme cluster (on the right) is kept intact, because the vowel-sign is joined to the base consonant.</p>
+<p>To its immediate left, the base character and combining mark that make up the middle syllable have been split apart, so the units are codepoints rather than grapheme clusters.</p>
+<p>
+<mark>The decision as to which sequences of base character plus combining character constitute typographic units, in this case, depends on how the glyphs will be rendered.</mark>
+</p>
+<p>The sequence of three items on the far left is actually composed of only two code points, <span class="codepoint" translate="no"><span lang="ta">&#x0B95;</span> [<span class="uname">U+0B95 TAMIL LETTER KA</span>]</span> followed by the circumgraph <span class="codepoint" translate="no"><span lang="ta">&#x0020;&#x0BCC;</span> [<span class="uname">U+0BCC TAMIL VOWEL SIGN AU</span>]</span>. Notice  that there are spaces between the base consonant and <em>both</em> glyphs that make up the vowel-sign. </p>
+<p>
+<mark> In such cases, the typographic unit may be at the sub-codepoint level !</mark></p>
+</section>
+
+
+
+
+
+
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><cite>Developing specifications</cite></p>
+<ul>
+<li><a href="https://www.w3.org/International/techniques/developing-specs.en?open=operations&open=char_indexing#char_indexing">Choosing text units for segmentation, indexing, etc.</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

@@ -62,20 +62,25 @@ s.techIndexText = "Index des techniques";
 s.gotoW3cHome = "Aller à la page d’accueil du W3C";
 s.gotoI18nHome = "Aller à la page d’accueil de l’activité d’internationalisation";
 s.internationalizationTitle = "Internationalisation";
+s.worldwide = "Rendre le World Wide Web mondial&#x202F;!"
 s.i18nActivityHomePage = "Page d’accueil de l’activité d’internationalisation.";
 s.home = "Accueil";
-s.aboutI18nActivity = "À propos de l’activité d’internationalisation.";
-s.about = "À propos";
-s.groupsThatMakeUp = "Les groupes constituant l’activité d’internationalisation.";
-s.groups = "Groupes";
-s.topicIndexForInformation = "Index thématique du site";
-s.topics = "Sujets";
-s.taskBasedIndex = "Index des techniques d’internationalisation par tâches";
-s.techniques = "Techniques";
-s.informationResources = "Ressources d’information sur le site de l’internationalisation.";
-s.resources = "Ressources";
-s.newsFiltersAndFeeds = "Informations sur les filtres d’information et fils RSS pour l’internationalisation du W3C.";
-s.news = "Nouvelles";
+s.contactI18nActivity = "Pour obtenir de l'aide au sujet de l'internationalisation au W3C.";
+s.contact = "Contacter";
+s.aboutI18nActivity = "About W3C Internationalization."
+s.about = "About"
+s.askI18nActivity = "Ask for help or information."
+s.ask = "Ask"
+s.groupsThatMakeUp = "Pour participer aux travaux du W3C relatifs à l'internationalisation.";
+s.groups = "Participer";
+s.topicIndexForInformation = "Pour effectuer des recherches dans le site.";
+s.topics = "Chercher";
+s.taskBasedIndex = "Pour apprendre les techniques et les exigences de l'internationalisation.";
+s.techniques = "Apprendre";
+s.informationResources = "Pour trouver les informations sur ce site.";
+s.resources = "Trouver";
+s.newsFiltersAndFeeds = "Pour suivre les travaux du W3C relatifs à l'internationalisation.";
+s.news = "Suivre";
 s.onThisPage = "Sur cette page";
 s.questionAlt = "Question";
 s.questionLink = "Question";
@@ -134,4 +139,7 @@ s.details = "Détails"; // heading
 s.additionalinfo = "Information complémentaire" // heading that sometimes follows 'Details'
 s.acknowledgements = "Nous remercions également les personnes suivantes pour leur contribution ou leurs commentaires\u202F:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Si vous acceptez que votre navigateur crée un cookie, vous continuerez de voir les pages d’activité d’internationalisation de W3C (lorsque cela est possible) dans la langue de votre choix. Souhaitez-vous créer le cookie\u202F?" // this text is to be copied to another location
-s.supercededTranslation = '<strong>Avertissement :</strong> Ceci est une version dépassée de ce document! Il est recommandé de lire <a href="'+g.betterfilename+'.en">la dernière version</a> et si vous le pouvez, de modifier le marque-page ou le lien qui vous a redirigé ici.'
+//s.supercededTranslation = '<strong>Avertissement :</strong> Ceci est une version dépassée de ce document! Il est recommandé de lire <a href="'+g.betterfilename+'.en">la dernière version</a> et si vous le pouvez, de modifier le marque-page ou le lien qui vous a redirigé ici.'
+s.githubRedirect = "<strong>NOTE!</strong> &nbsp; Ceci est seulement un brouillon de l\’éditeur de cet article. Tous les liens et signets doivent pointer vers <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>la version sur le site du W3C</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Dernière mise à jour&nbsp;: "
