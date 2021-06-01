@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Using the q element</title>
+<meta name="description" content="Which character encoding should I use for my content, and how do I apply it to my content?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-the-q-element'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-the-q-element'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2018-04-18'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2018-04-18', time:'17:03'}  // date and time of latest substantive changes to this document
+f.status = 'draft';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2018-04-18', time:'17:03'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-the-q-element-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link href="../style/article-2016.css" rel="stylesheet" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<style>
+.badencoding {
+	font-weight: bold;
+	color: #a52a2a;
+}
+</style>
+</head>
+
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Using the <span class="kw" translate="no">q</span> element<br>
+  </h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, Web project managers, and anyone who is new to character encodings and needs an introduction to how to choose and apply character encodings.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <h2 id="question"><a href="#question">Question</a></h2>
+  <p class="question">What do I need to know about using the <span class="kw" translate="no">q</span> element in multilingual text?</p>
+
+    <p>There are those who think that the <code class="kw" translate="no">q</code> element shouldn’t automatically produce quotation marks around the text it surrounds, and that therefore it shouldn’t be used. Others think that it can be useful if used judiciously.  This article doesn’t take a stand on that choice: it just provides information for those who want to use it. </p>
+<p>The  <code class="kw" translate="no">q</code> element exists in HTML, and  all browsers automatically provide quotation marks if you use it. However, the HTML specification says that <q>Content inside a <code class="kw" translate="no">q</code> element must be quoted from another source … The source may be fictional, as when quoting characters in a novel or screenplay.</q> It’s probably fair to say that quoted speech in novels may use very different mechanisms than those the <code class="kw" translate="no">q</code> element supports, and that the element is most safe to use when quoting text from another written source.  </p>
+<p>This article sets out to describe some of the things you should be aware of if you choose to use the <code class="kw" translate="no">q</code> element in a <em>multilingual</em> context. It reflects the situation at the time of writing. That situation may change soon, at which point the article will be updated.</p>
+</section>
+
+
+<section id="nutshell">
+<h2 id="quickanswer"><a href="#quickanswer"> answer</a></h2>
+  
+    <p>Readers expect to see a quote surrounded by quotation marks appropriate to their language. For quotes in a different language than the surrounding text, readers expect the quotation marks to be those of the language <em>outside</em> the quotation.</p>
+<p>Currently, although all major browsers add quotation marks around  the q element, not all choose those marks, by default, according to the language of the text. Where the quote is in a <em>different</em> language than the surrounding text, most browsers don't, by default, produce the correct quotation marks.</p>
+<p>It is more effective to use CSS to explicitly define the quotation marks you expect the browser to use around the <span class="kw" translate="no">q</span> element, but the CSS selector has to be carefully composed. For example, for Swiss French text you might use:</p>
+<pre>:root:lang(fr-CH), :not(:lang(fr-CH))&gt;:not(q):lang(fr-CH) 
+      { quotes: '«' '»' "‹" "›"; }
+</pre>
+<p>You should always identify the language of the page, and that of the quotation if the language differs.</p>
+</section>
+<p>For more details, read the remainder of this article.</p>
+
+
+<section>
+  <h2 id="how"><a href="#how">How quotation marks are used</a></h2>
+  
+    <p>Let’s begin by examining some use cases and establishing some ground rules, using an example to illustrate what most people would expect to see when using quotation marks. </p>
+    <p>Take the following sentence. (Whether or not the final period belongs inside or outside the quotation marks depends on your preference. We’ll omit it to keep the example simple.)</p>
+    <div class="example">
+    <p>But Lucy replied: “Give George my love”</p>
+    </div>
+<p>Translate this book into French, and you would expect to see the use of French quotation marks.</p>
+     <div class="example">
+    <p lang="fr">Mais Lucy répondit: «Embrassez George de ma part »</p>
+    </div>
+   <p>If we add a quotation inside a quotation, we would expect to see the inner quotation use different quotation marks in English.</p>
+     <div class="example">
+    <p>But Lucy replied: “Give George my love and tell him, ‘Muddle’”</p>
+    </div>
+   <p>and in many other languages, including Swiss French (though not European French, according to the Unicode Consortium's CLDR).</p>
+<div class="example">
+<p lang="fr">Mais Lucy répondit: «Embrassez George de ma part et dites-lui, ‹Embrouille›»</p>
+    </div>
+<p>So far so good. Now let’s look at what happens if we start mixing languages. Let’s suppose that the book is in English, but Lucy speaks in French.</p>
+     <div class="example">
+    <p>But Lucy replied: “<span lang="fr">Embrassez George de ma part</span>”</p>
+    </div>
+   <p>Note that the quotation marks remain in the English form. The rationale for this is that the quotation marks are part of the surrounding context, and don’t depend on the language of the quoted text.</p>
+<p>In fact, if we were to add the subquote, publishers would expect to see that use English quotation marks too, unless we specifically wanted to reproduce the text being quoted exactly as it looked in the original. So we’d normally expect to see:</p>
+     <div class="example">
+    <p>But Lucy replied: “<span lang="fr">Embrassez George de ma part et dites-lui, ‘Embrouille’</span>”</p>
+    </div>
+   <p>Occasionally, it may be important to retain the original quotation marks for embedded quotes. This would normally be when you want to show what the text looked like in the original source. In such a case, you might expect to see:</p>
+<div class="example">
+<p>The passage in question was: “<span lang="fr">Embrassez George de ma part et dites-lui, ‹Embrouille›</span>”</p>
+</div>
+   </section>
+
+
+<section>
+<h2 id="browsers"><a href="#browsers">How browsers apply default quotation marks</a></h2>
+<p>If you want complete success, you should probably use CSS to override the browser defaults and ensure that the <code class="kw" translate="no">q</code> element produces quotation marks in the way you prefer. More on that later.</p>
+<p>This section looks at what browsers currently do if you use the <code class="kw" translate="no">q</code> element without any styling.</p>
+<p>Before we start we should note that all major browsers do automatically add a default set of quotation marks, and they also use different quotation marks for nested subquotes.</p>
+
+<section>
+<h3 id="monolingual_defaults"><a href="#monolingual_defaults">Monolingual pages</a></h3>
+    <p>Let's assume you have the following markup, in a page where the language of the  <code class="kw" translate="no">html</code> tag is set to Swiss French using <code>lang=&quot;fr-CH&quot;</code>.</p>
+<div class="example">
+<p lang="fr">Mais Lucy répondit: &lt;q&gt;Embrassez George de ma part et dites-lui, &lt;q&gt;Embrouille&lt;/q&gt;&lt;/q&gt;</p>
+</div>
+<p>By default, you can expect to see Swiss French quotation marks in Chrome, Safari, and Edge, but not in Firefox, since it doesn't take language settings into account for default quotation marks.</p>
+<div class="example">
+<p lang="fr">Mais Lucy répondit: «Embrassez George de ma part et dites-lui, ‹Embrouille›»</p>
+</div>
+<p>For browsers that <em>do</em> generate quotation marks per the language of the text, the quotation marks used follow the settings recommended by the CLDR repository. This is specified in the HTML standard.</p>
+<p>However, support varies by language, and doesn't cover all languages si there may not be a default set for the particular language you are using.</p>
+</section>
+  
+  <section>
+    <h3 id="multilingual_defaults"><a href="#multilingual_defaults">Multilingual text</a></h3>
+    <p>But what if the quotation is in a different language than the surrounding text? This is where we begin to run into difficulties.</p>
+<p>Here's our source code.</p>
+<div class="example">
+<p>But Lucy replied: &lt;q lang=&quot;fr&quot;&gt;Embrassez George de ma part&lt;/q&gt;</p>
+</div>
+<p>The fact that Firefox isn’t language-sensitive actually helps here (as long as your document is mainly in English). With Firefox you would see what you'd expect:</p>
+<div class="example">
+<p>But Lucy replied: “<span lang="fr">Embrassez George de ma part</span>”</p>
+</div>
+    <p>However, Chrome, Safari and Edge add quotation marks based on the language of the quoted text, which is not  what would be expected. So in an English ebook you would see </p>
+<div class="example">
+        <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad result. Don't copy!</span></div>
+<p>But Lucy replied: «<span lang="fr">Embrassez George de ma part</span>»</p>
+</div>
+<p>This is what the <a href="https://html.spec.whatwg.org/multipage/rendering.html#quotes">WhatWG version of the HTML</a> spec currently requires.</p>
+<p>The upcoming <a href="https://www.w3.org/TR/html53/rendering.html#quotes">W3C version of HTML</a>  specifies that the version of the quotation marks should be set according to the language indicated on the <code class="kw" translate="no">html</code> tag, and not according to the language of the quoted text.  This would remove the unexpected result in a page that contains quotes in another language.</p>
+<p>If, however, the page contains sections in different languages, each with quotations in another language, you will have problems when using the W3C model. The language declared in the <code class="kw" translate="no">html</code> tag will apply throughout, so you'll need to use CSS styling to change the default for one or both sections.</p>
+<p>If this is one of the special cases where you want the quotation marks <em>inside</em> a quote to remain true to the original, it would be possible to style this using CSS, but it is probably a lot easier, and more true to the actual intention, to simply use Unicode characters for the quotation marks, rather than using the <span class="kw" translate="no">q</span> element.</p>
+</section>
+<section> </section>
+<section>
+<h3 id="defaults_summary"><a href="#defaults_summary">Summary</a></h3>
+    <p>The upshot of this is that currently the default choice of automatically supplied quotation marks works as expected in monolingual documents in some but not all browsers. And for multilingual text it mostly works incorrectly and is not sensitive to in-document changes in language context.</p>
+    <p>Therefore, until the specs and browser behaviour change, it makes sense to use CSS styling most of the time when you want to automatically generate quote marks for the <code class="kw" translate="no">q</code> element, for <code class="kw" translate="no">blockquote</code>, or any other element.</p>
+</section>
+</section>
+
+<section>
+<h2 id="css_styling"><a href="#css_styling">Using CSS to style quotation marks</a></h2>
+<p>You can style quotation marks for a Swiss French, monolingual document using the following CSS.</p>
+<div class="example">
+<pre>* { quotes: '«' '»' &quot;‹&quot; &quot;›&quot;; } 
+q::before { content: open-quote; }
+q::after { content: close-quote; }</pre>
+</div>
+<p>Although they should already be in the browser's default stylesheet, it's worth including the <code class="kw" translate="no">::before</code> and <code class="kw" translate="no">::after</code> lines in order to ensure that your code it bulletproof.</p>
+<p>For pages containing quotations in other languages, or sections in other languages, however, you'll want something a little more complex, such as the following:</p>
+<div class="example">
+<pre>:root:lang(fr-CH), :not(:lang(fr-CH))&gt;:not(q):lang(fr-CH) 
+      { quotes: '«' '»' "‹" "›"; }
+:root:lang(en), :not(:lang(en))&gt;:not(q):lang(en) 
+      { quotes: '“' '”' "‘" "’"; }</pre>
+</div>
+<p>The above CSS will prepare you to display quotations in Swiss French or English text. You'll need a line like this for every language in the document.</p>
+<p>The selector says:</p>
+<ul>
+<li>Set the selected quotes for the whole document if  language X is set in the <code class="kw" translate="no">html</code> tag.</li>
+<li>If the language changes away from X for any element <em>except</em> <code class="kw" translate="no">q</code>, set the quotes as specified.</li>
+</ul>
+
+<section>
+<h3 id="nonutf8"><a href="#nonutf8">Problems with scope</a></h3>
+    <p>One of the issues you face when using CSS in the way just described is that any additional styling associated with the language of the quotation is applied to the quotation marks. This is also true when using the browser defaults.</p>
+    <p>This can be problematic if, for example, the font used for the quotation is  different from that used for the surrounding text. In the following image the top line shows the result of adding quote marks to the text outside of a <code class="kw" translate="no">span</code> containing the Japanese text. The lower line shows that when the <code class="kw" translate="no">q</code> element is used the quotation marks adopt the shape of the Japanese font.</p>
+<div class="example">
+<p><img src="qa-the-q-element-data/css_quotes.png" alt=""/></p>
+</div>
+<p>This would not be ideal, since the quotation marks should be seen as belonging to the surrounding context, rather than the quotation itself.</p>
+<p>Similarly, if the quotation was italicised, coloured, or styled in any other way, that styling would apply by default to the quotation marks.</p>
+</section>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><a href="http://w3c.github.io/i18n-discuss/default-quote-styling"><cite>Default styling for multilingual quotes &amp; quotation marks in HTML</cite></a></p>
+    </li>
+    <li>
+      <p><a href="https://w3c.github.io/i18n-tests/results/the-q-element.html"><cite>Summarized test results: The q element</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=markup">Markup &amp; styling</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

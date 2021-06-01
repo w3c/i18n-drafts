@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>W3C I18N Spec Development Techniques</title>
+<title>Authoring HTML &amp; CSS</title>
 <meta name="description" content="Allows you to find articles, tutorials, tests, etc at the W3C Internationalization subsite using lists of tasks." />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -31,44 +31,18 @@ f.breadcrumb = 'characters';
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="developing-specs-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/sitepage.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<script src="developing-specs-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/sitepage.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
 <link rel="stylesheet" href="../style/sitepage-2016.css" type="text/css" />
-<link rel="stylesheet" href="common/techniques.css" type="text/css" />
+<link rel="stylesheet" href="common/techniques2.css" type="text/css" />
 <link rel="copyright" href="#copyright"/>
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-
-<script type="text/javascript" src="common/expandcollapse.js"></script>
-<link rel="stylesheet" type="text/css" href="common/expandcollapsestyle.css"/>
-<script>
-function collapseAll () {
-	setCollapseExpand('expandingContent', 'h2','');
-	setCollapseExpand('sec_charset', 'h3',''); 
-	setCollapseExpand('sec_language', 'h3',''); 
-	setCollapseExpand('sec_markup', 'h3',''); 
-	setCollapseExpand('sec_direction', 'h3','');
-	setCollapseExpand('sec_style', 'h3','');
-	//setCollapseExpand('sec_forms', 'h3','');
-	setCollapseExpand('sec_navigation', 'h3','');
-	//setCollapseExpand('sec_cultural', 'h3','');
-	//setCollapseExpand('sec_trouble', 'h3','');
-	}
-function toggleExtra (trigger, target) {
-	target = document.getElementById(target)
-	trigger = document.getElementById(trigger)
-	if (target.style.display!='block') {
-		trigger.textContent = 'Hide extra links'
-		target.style.display='block'
-		}
-	else {
-		trigger.textContent = 'Show extra links'
-		target.style.display='none'
-		}
-	}
-</script>
+<style>
+div.directory { display: none; }
+</style>
 </head>
 
 <body>
@@ -82,11 +56,11 @@ function toggleExtra (trigger, target) {
   <section>
     <p id="contentstart">This page lists links to resources on the W3C Internationalization Activity site and
       elsewhere that help you author HTML and CSS for internationalization. It is one of several <a href="/International/technique-index">techniques pages</a>.</p>
-    <p>You can see a list of <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/techniques/authoring-html.en.html">updates to this document</a>. You can also <a href="https://github.com/w3c/i18n-drafts/issues/new?title=[techniques/authoring-html]%20%20&body=%5Bsource%5D%20%28http%3A%2F%2Flocalhost%2FInternational%2Ftechniques%2Fauthoring-html%29%20%5Ben%5D%0A%0A">leave a comment about this page</a>.</p>
-    <p id="mainECButtons">
-      <button onClick="collapseAll()">Collapse all</button>
+    <p>You can see a list of <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/techniques/authoring-html.en.html">updates to this document</a>. You can also <a href="https://github.com/w3c/i18n-drafts/issues/new?title=[techniques/authoring-html]%20%20&body=%5Bsource%5D%20%28http%3A%2F%2Fwww.w3.org%2FInternational%2Ftechniques%2Fauthoring-html%29%20%5Ben%5D%0A%0A">raise an issue about this page</a>.</p>
+<p id="mainECButtons">
+<button onClick="sections=document.querySelectorAll('details.sec');for (i=0;i<sections.length;i++) sections[i].open=false;">Collapse all</button>
       &bull;
-      <button onClick="document.location = 'authoring-html';">Expand all</button>
+      <button onClick="sections=document.querySelectorAll('details.sec');for (i=0;i<sections.length;i++) sections[i].open=true;">Expand all</button>
     </p>
   </section>
 </div>
@@ -95,32 +69,15 @@ function toggleExtra (trigger, target) {
   <!-- ##################################################################### --> 
   <!-- ##################################################################### -->
   
-  <section id="sec_charset">
-    <h2 id="charset">Characters</h2>
-    <div class="summary">
-      <h3>In this section</h3>
-      <ul>
-        <li><a href="#gscharset">Getting started</a></li>
-        <li><a href="#choosing">Choosing and applying a character encoding</a></li>
-        <li><a href="#changing">Changing to UTF-8</a></li>
-        <li><a href="#indoc">Declaring the character encoding for HTML</a></li>
-        <li><a href="#css">Declaring the character encoding for a CSS style sheet</a></li>
-        <li><a href="#escapes">Using escapes to represent characters</a></li>
-        <li><a href="#checkenc">Checking the encoding of a document</a></li>
-        <li><a href="#bomhandling">Handling the byte-order mark (BOM)</a></li>
-        <li><a href="#normalization">Handling character normalization</a></li>
-        <li><a href="#formencoding">Handling encoding issues in forms</a></li>
-        <li><a href="#controlcodes">Using Unicode control codes</a></li>
-        <li><a href="#missingchars">Working around unavailable characters/glyphs</a></li>
-        <li><a href="#iris">Using non-ASCII web addresses</a></li>
-      </ul>
-    </div>
-    <div class="showhide"><a onclick="openAll('charset', 'h3','');" href="#_">Open All</a> <a onclick="closeAll('charset', 'h3','');" href="#_">Close All</a></div>
+<section>
+<details class="sec" id="charset">
+<summary class="h2" id="sec_charset">Characters</summary>
+    
+    
+<details class="sec" id="gscharset">
+    <summary class="h3">Getting started</summary>
     <div class="resource-box" id="sec_gscharset">
-      <h3 id="gscharset">Getting started</h3>
-      <div class="checklist"> </div>
-      <div>
-        <h5 class="background">Background reading</h5>
+        <h5>Background reading</h5>
         <ul>
           <li class="w3">
             <p class="link"><a href="/International/questions/qa-what-is-encoding">Character encodings for beginners</a></p>
@@ -160,26 +117,29 @@ function toggleExtra (trigger, target) {
             <p class="desc">One of the 10 quick tips for internationalization.</p>
           </li>
         </ul>
-      </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+    
+  <details class="sec" id="choosing">
+    <summary class="h3">Choosing and applying a character encoding</summary>
     <div class="resource-box" id="sec_choosing">
-      <h3 id="choosing">Choosing and applying a character encoding</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+          <div class="xref">
+          <h5>See also</h5>
+          <p>This section is specifically about how to choose a character encoding for your content and ensure that the content is in that encoding. </p>
+          <p>For information about how to declare the encoding so that the browser knows how to read your content see <a href="#indoc">Declaring the character encoding for HTML</a> and <a href="#css">Declaring the&nbsp;character encoding for your CSS stylesheet</a>.</p>
+          <p>See also the dedicated section about <a href="#changing">Changing to UTF-8</a>.</p>
+        </div>
+    <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Choose UTF-8  for all content. <a href="/International/questions/qa-choosing-encodings#useunicode">more</a></li>
           <li class="bp"> If you really can't use a Unicode encoding, use only those legacy encodings listed in the Encoding specification. <a href="/International/questions/qa-choosing-encodings#nonutf8">more</a></li>
           <li class="bp"> Avoid the following encodings: UTF-16, UTF-32, JIS_C6226-1983, JIS_X0212-1990, HZ-GB-2312, JOHAB (Windows code page 1361), encodings based on ISO-2022, or encodings based on EBCDIC, CESU-8, UTF-7, BOCU-1, and SCSU. <a href="/International/questions/qa-choosing-encodings#avoid">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>This section is specifically about how to choose a character encoding for your content and ensure that the content is in that encoding. </p>
-          <p>For information about how to declare the encoding so that the browser knows how to read your content see <a href="#indoc">Declaring the character encoding for HTML</a> and <a href="#css">Declaring the&nbsp;character encoding for your CSS stylesheet</a>.</p>
-          <p>See also the dedicated section about <a href="changing">Changing to UTF-8</a>.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -203,7 +163,7 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/syntax.html#character-encodings">HTML5, 8.2.2.2 Character encodings</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/syntax.html#character-encodings">HTML5, 8.2.2.2 Character encodings</a></p>
             <p class="desc">Recommendations for support of particular encodings for browsers implementing HTML5.</p>
           </li>
         </ul>
@@ -222,7 +182,8 @@ function toggleExtra (trigger, target) {
         </ul>
       </div>
       <div>
-        <h5 id="choosing_trigger" class="otherlinks" onClick="toggleExtra('choosing_trigger','choosing_other');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="choosing_other" class="extraLinks">
           <li class="w3">
             <p class="link"><a href="http://googleblog.blogspot.co.uk/2012/02/unicode-over-60-percent-of-web.html">Unicode over 60 percent of the web</a></p>
@@ -233,25 +194,30 @@ function toggleExtra (trigger, target) {
             <p class="desc">The official registry of character encoding names.</p>
           </li>
         </ul>
-      </div>
+        </details>
+        </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+    <details class="sec" id="changing">
+    <summary class="h3">Changing to  UTF-8</summary>
     <div class="resource-box" id="sec_changing">
-      <h3 id="changing">Changing to  UTF-8</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+      <div class="xref">
+          <h5>See also</h5>
+          <p>This section is specifically about how migrate your content to the UTF-8 (Unicode) encoding. For more general advice   see <a href="#choosing">Choosing and applying a character encoding</a>. </p>
+          <p>For information about how to declare the encoding so that the browser knows how to read your content see <a href="#indoc">Declaring the character encoding for HTML</a> and <a href="#css">Declaring the&nbsp;character encoding for your CSS stylesheet</a>.</p>
+        </div>
+     <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Save the data as UTF-8, don't just change the encoding declaration. <a href="/International/questions/qa-changing-encoding#savedata">more</a></li>
           <li class="bp">Declare the encoding in your page. <a href="/International/questions/qa-changing-encoding#declare">more</a></li>
           <li class="bp">Ensure that your server does the right thing. <a href="/International/questions/qa-changing-encoding#server">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>This section is specifically about how migrate your content to the UTF-8 (Unicode) encoding. For more general advice   see <a href="#choosing">Choosing and applying a character encoding</a>. </p>
-          <p>For information about how to declare the encoding so that the browser knows how to read your content see <a href="#indoc">Declaring the character encoding for HTML</a> and <a href="#css">Declaring the&nbsp;character encoding for your CSS stylesheet</a>.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -283,10 +249,21 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+    
+    <details class="sec" id="indoc">
+    <summary class="h3" title="Id is indoc.">Declaring the character encoding for HTML</summary>
     <div class="resource-box" id="sec_indoc">
-      <h3 id="indoc">Declaring the character encoding for HTML</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+          <div class="xref">
+          <h5>See also</h5>
+          <p>This section is specifically about how declare the character encoding of your HTML page. </p>
+          <p>For  advice   about which encoding to choose, see <a href="#choosing">Choosing and applying a character encoding</a>. </p>
+          <p>For further advice about setting the character encoding on the server, see <span class="link"><a href="/International/techniques/server-setup#setting">Setting the HTTP charset parameter</a></span> and <span class="link"><a href="/International/techniques/server-setup#htaccess">Setting character encoding information using .htaccess</a></span>.</p>
+        </div>
+    <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Use the HTTP header if it is available. <a href="/International/questions/qa-html-encoding-declarations#httphead">more</a></li>
           <li class="bp">Always use an in-document encoding declaration, even if you are also using the HTTP header. <a href="/International/questions/qa-html-encoding-declarations#httphead">more</a></li>
@@ -294,12 +271,6 @@ function toggleExtra (trigger, target) {
           <li class="bp">If you cannot use UTF-8, use the preferred encoding name indicated in the Encoding specification. <a href="/International/questions/qa-html-encoding-declarations#nonutf8">more</a></li>
           <li class="bp">Do not use the <code class="kw" translate="no">charset</code> attribute on <code class="kw" translate="no">a</code> or <code class="kw" translate="no">link</code> elements. <a href="/International/questions/qa-html-encoding-declarations#charset">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>This section is specifically about how declare the character encoding of your HTML page. </p>
-          <p>For  advice   about which encoding to choose, see <a href="#choosing">Choosing and applying a character encoding</a>. </p>
-          <p>For further advice about setting the character encoding on the server, see <span class="link"><a href="/International/techniques/server-setup#setting">Setting the HTTP charset parameter</a></span> and <span class="link"><a href="/International/techniques/server-setup#htaccess">Setting character encoding information using .htaccess</a></span>.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -323,18 +294,18 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/">HTML5</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/">HTML5</a></p>
             <ul>
               <li>
-                <p class="link"><a href="http://www.w3.org/TR/html5/syntax.html#the-input-byte-stream"> 8.2.2 The input byte stream</a></p>
+                <p class="link"><a href="https://www.w3.org/TR/html5/syntax.html#the-input-byte-stream"> 8.2.2 The input byte stream</a></p>
                 <p class="desc">Detailed technical information for browser implementers about how pages are parsed for recognition of the character encoding.</p>
               </li>
               <li>
-                <p class="link"><a href="http://www.w3.org/TR/html5/infrastructure.html#encoding-terminology"> 2.1.6 Character encodings</a></p>
+                <p class="link"><a href="https://www.w3.org/TR/html5/infrastructure.html#encoding-terminology"> 2.1.6 Character encodings</a></p>
                 <p class="desc">Information about preferred MIME names, ASCII compatible encodings, and Unicode characters.</p>
               </li>
               <li>
-                <p class="link"><a href="http://www.w3.org/TR/html5/semantics.html#charset"> 4.2.5.5 Specifying the document's character encoding</a></p>
+                <p class="link"><a href="https://www.w3.org/TR/html5/semantics.html#charset"> 4.2.5.5 Specifying the document's character encoding</a></p>
                 <p class="desc">How to use the meta element to declare the encoding.</p>
               </li>
             </ul>
@@ -355,77 +326,84 @@ function toggleExtra (trigger, target) {
         </ul>
       </div>
       <div>
-        <h5 id="sec_indoc_trigger" class="otherlinks" onClick="toggleExtra('sec_indoc_trigger','sec_indoc_other');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="sec_indoc_other" class="extraLinks">
           <li class="nonw3">
             <p class="link"><a href="http://www.iana.org/assignments/character-sets">IANA charset registry</a></p>
             <p class="desc">The official registry of character encoding names.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/xhtml1/">XHTML 1.0</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/xhtml1/">XHTML 1.0</a></p>
             <ul>
               <li>
-                <p class="link"><a href="http://www.w3.org/TR/xhtml1/#C_1">C.1. Processing Instructions and the XML Declaration</a></p>
+                <p class="link"><a href="https://www.w3.org/TR/xhtml1/#C_1">C.1. Processing Instructions and the XML Declaration</a></p>
                 <p class="desc">Recommendation to avoid XML declaration for compatibility with HTML.</p>
               </li>
               <li>
-                <p class="link"><a href="http://www.w3.org/TR/xhtml1/#C_9"> C.9. Character Encoding</a></p>
+                <p class="link"><a href="https://www.w3.org/TR/xhtml1/#C_9"> C.9. Character Encoding</a></p>
                 <p class="desc">Recommendations on use of meta encoding declarations for HTML compatibility.</p>
               </li>
             </ul>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/">Polyglot Markup: HTML-Compatible XHTML Documents</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html-polyglot/">Polyglot Markup: HTML-Compatible XHTML Documents</a></p>
             <p class="desc">How to specify the encoding of documents that work as both HTML5 and XHTML5.</p>
             <ul>
               <li>
-                <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#character-encoding"> 3. Specifying a Document's Character Encoding</a></p>
+                <p class="link"><a href="https://www.w3.org/TR/html-polyglot/#character-encoding"> 3. Specifying a Document's Character Encoding</a></p>
                 <p class="desc">How to specify the encoding of documents that work as both HTML5 and XHTML5.</p>
               </li>
               <li>
-                <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#PI-and-xml"> 2. Processing Instructions and the XML Declaration</a></p>
+                <p class="link"><a href="https://www.w3.org/TR/html-polyglot/#PI-and-xml"> 2. Processing Instructions and the XML Declaration</a></p>
                 <p class="desc">The XML declaration is not allowed in documents that work as both HTML5 and XHTML5.</p>
               </li>
             </ul>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/charmod/#C034">Character Model for the World Wide Web, 4.4.1 Mandating a unique character encoding, C034</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/charmod/#C034">Character Model for the World Wide Web, 4.4.1 Mandating a unique character encoding, C034</a></p>
             <p class="desc">You should use encoding declarations that are available.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html-markup/syntax.html#character-encoding">HTML: The Markup Language, 4.2. Character encoding declaration</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html-markup/syntax.html#character-encoding">HTML: The Markup Language, 4.2. Character encoding declaration</a></p>
             <p class="desc">How to declare the character encoding in HTML5.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/xml/#charencoding">Extensible Markup Language (XML) 1.0, 4.3.3 Character Encoding in Entities</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/xml/#charencoding">Extensible Markup Language (XML) 1.0, 4.3.3 Character Encoding in Entities</a></p>
             <p class="desc">How to declare encodings in XML, with particular reference to the XML declaration.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html401/charset.html#h-5.2.2">HTML 4.01, 5.2.2 Specifying the character encoding</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html401/charset.html#h-5.2.2">HTML 4.01, 5.2.2 Specifying the character encoding</a></p>
             <p class="desc">Character encoding information in the HTML 4.01 spec.</p>
           </li>
         </ul>
+        </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+    
+    <details class="sec" id="css">
+    <summary class="h3">Declaring the character encoding for a CSS style sheet</summary>
     <div class="resource-box" id="sec_css">
-      <h3 id="css">Declaring the character encoding for a CSS style sheet</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+         <div class="xref">
+          <h5>See also</h5>
+          <p>This section is specifically about how declare the character encoding of your CSS stylesheet. </p>
+          <p>For  advice   about which encoding to choose, see <a href="#choosing">Choosing and applying a character encoding</a>. </p>
+          <p>For further advice about setting the character encoding on the server, see <span class="link"><a href="/International/techniques/server-setup#setting">Setting the HTTP charset parameter</a></span> and <span class="link"><a href="/International/techniques/server-setup#htaccess">Setting character encoding information using .htaccess</a></span>.</p>
+        </div>
+     <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">If you use UTF-8 as the character encoding for your style sheets and your HTML pages, and declare that encoding in your HTML, there is no need to declare the encoding for your style sheet. <a href="/International/questions/qa-css-charset#answer">more</a></li>
           <li class="bp">If you use <code class="kw" translate="no">@charset</code>, ensure that nothing (except a BOM) comes before it in the style sheet, and use the exact syntax. <a href="/International/questions/qa-css-charset#atcharset">more</a></li>
           <li class="bp">If you cannot use UTF-8, use the preferred encoding name indicated in the Encoding specification. <a href="/International/questions/qa-css-charset#nonutf8">more</a></li>
           <li class="bp">Do not use the <code class="kw" translate="no">charset</code> attribute on <code class="kw" translate="no">a</code> or <code class="kw" translate="no">link</code> elements. <a href="/International/questions/qa-css-charset#charsetlink">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>This section is specifically about how declare the character encoding of your CSS stylesheet. </p>
-          <p>For  advice   about which encoding to choose, see <a href="#choosing">Choosing and applying a character encoding</a>. </p>
-          <p>For further advice about setting the character encoding on the server, see <span class="link"><a href="/International/techniques/server-setup#setting">Setting the HTTP charset parameter</a></span> and <span class="link"><a href="/International/techniques/server-setup#htaccess">Setting character encoding information using .htaccess</a></span>.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -449,13 +427,14 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/css-syntax-3/#input-byte-stream">CSS Syntax  Level 3, 3.2. The input byte stream</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/css-syntax-3/#input-byte-stream">CSS Syntax  Level 3, 3.2. The input byte stream</a></p>
             <p class="desc">Character encoding information in the CSS Level 3 spec.</p>
           </li>
         </ul>
       </div>
       <div>
-        <h5 id="css_trigger" class="otherlinks" onClick="toggleExtra('css_trigger','css_other');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="css_other" class="extraLinks">
           <li class="w3">
             <p class="link"><a href="/International/tutorials/tutorial-char-enc">Handling character encodings in HTML and CSS</a></p>
@@ -466,19 +445,27 @@ function toggleExtra (trigger, target) {
             <p class="desc">The official registry of character encoding names.</p>
           </li>
            <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/CSS21/syndata.html#charset">CSS 2.1, 4.4 CSS style sheet representation</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/CSS21/syndata.html#charset">CSS 2.1, 4.4 CSS style sheet representation</a></p>
             <p class="desc">Character encoding information in the CSS 2.1 spec.</p>
           </li>
        </ul>
+       </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_escapes">
-      <h3 id="escapes">Using escapes to represent characters</h3>
+    </details>
+    
+    
+    
+    
+    
+   <details class="sec" id="escapes">
+    <summary class="h3">Using escapes to represent characters</summary>
+   <div class="resource-box" id="sec_escapes">
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Avoid using escapes whenever possible. When you use UTF-8 it supports all the characters you need. <a href="/International/questions/qa-escapes#not">more</a></li>
           <li class="bp">Use escapes for invisible or ambiguous characters. <a href="/International/questions/qa-escapes#invisible">more</a></li>
@@ -502,7 +489,7 @@ function toggleExtra (trigger, target) {
         <h5 class="refs">Useful reference links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/syntax.html#named-character-references">HTML5, 8.5 Named character references</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/syntax.html#named-character-references">HTML5, 8.5 Named character references</a></p>
             <p class="desc">Character reference names that are supported by HTML, and the code points to which they refer.</p>
           </li>
         </ul>
@@ -511,57 +498,64 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/syntax.html#named-character-references">HTML5, 8.5 Named character references</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/syntax.html#named-character-references">HTML5, 8.5 Named character references</a></p>
             <p class="desc">Character reference names that are supported by HTML, and the code points to which they refer.</p>
           </li>
         </ul>
       </div>
       <div>
-        <h5 id="sec_escapes_trigger" class="otherlinks" onClick="toggleExtra('sec_escapes_trigger','sec_escapes_list');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="sec_escapes_list" class="extraLinks">
           <li class="w3">
             <p class="link"><a href="/International/tutorials/tutorial-char-enc">Handling character encodings in HTML and CSS</a></p>
             <p class="desc">Tutorial style article that gathers together and organizes pointers to articles that, taken  together, help you understand how to handle the essential aspects of  authoring HTML and CSS related to characters and character encodings.</p>
           </li>
-          <li class="w3"><p class="link"><a href="http://www.w3.org/TR/html401/">HTML 4.01</a></p>
+          <li class="w3"><p class="link"><a href="https://www.w3.org/TR/html401/">HTML 4.01</a></p>
           <ul>
           <li>
-            <p class="link"><a href="http://www.w3.org/TR/html401/charset.html#h-5.3"> 5.3 Character references</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html401/charset.html#h-5.3"> 5.3 Character references</a></p>
             <p class="desc">Numeric character references and character entity references described in the HTML4 spec.</p>
           </li>
           <li>
-            <p class="link"><a href="http://www.w3.org/TR/html401/sgml/entities.html"> 24 Character entity references in HTML 4</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html401/sgml/entities.html"> 24 Character entity references in HTML 4</a></p>
             <p class="desc">List of character entity references supported by HTML 4 and  XHTML 1.0.</p>
           </li>
           </ul>
           </li>
           <li class="w3">
-          <p class="link"><a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_12">XHTML 1.0</a></p>
+          <p class="link"><a href="https://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_12">XHTML 1.0</a></p>
           <ul>
           <li>
-<p class="link"><a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_12"> C.12. Using Ampersands in Attribute Values (and Elsewhere)</a></p>
+<p class="link"><a href="https://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_12"> C.12. Using Ampersands in Attribute Values (and Elsewhere)</a></p>
             <p class="desc">Advice on use of ampersands in href attributes in XHTML.</p>
           </li>
           <li>
-            <p class="link"><a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_16"> C.16. The Named Character Reference &amp;apos;</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_16"> C.16. The Named Character Reference &amp;apos;</a></p>
             <p class="desc">Advice to not use &amp;apos in XHTML.</p>
           </li>
           </ul>
           </li>
         </ul>
+        </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
-    </div>
+		</div>
+    </details>
+    
+    
+    
+    <details class="sec" id="checkenc">
+    <summary class="h3">Checking the encoding of a document</summary>   
     <div class="resource-box" id="sec_checkenc">
-      <h3 id="checkenc">Checking the encoding of a document </h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://qa-dev.w3.org/i18n-checker/">W3C Internationalization Checker</a></p>
+            <p class="link"><a href="https://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a></p>
             <p class="desc">Shows the HTTP header information for a page, and all in-page encoding declarations. Also highlights conficts.</p>
           </li>
           <li class="w3">
@@ -594,11 +588,17 @@ function toggleExtra (trigger, target) {
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
-    </div>
-    <div class="resource-box" id="sec_bomhandling">
-      <h3 id="bomhandling">Handling the byte-order mark (BOM)</h3>
+		</div>
+    </details>
+    
+    
+    
+    
+  <details class="sec" id="bomhandling">
+    <summary class="h3">Handling the byte-order mark (BOM)</summary>   
+  <div class="resource-box" id="sec_bomhandling">
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">If you use the byte-order mark with UTF-8-encoded pages, check that any scripts and back-end processes can handle the BOM. <a href="/International/questions/qa-byte-order-mark#problems">more</a></li>
           <li class="bp">If you ignored the advice above and encoded your page as UTF-16, always ensure that it starts with a BOM. <a href="/International/questions/qa-byte-order-mark#bytheway">more</a></li>
@@ -617,12 +617,8 @@ function toggleExtra (trigger, target) {
         <h5 class="refs">Useful reference links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://qa-dev.w3.org/i18n-checker/">W3C Internationalization Checker</a></p>
+            <p class="link"><a href="https://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a></p>
             <p class="desc">Tells you whether your page starts with a BOM, and whether there is a BOM later in the content.</p>
-          </li>
-          <li class="nonw3">
-            <p class="link"><a href="http://rishida.net/blog/?p=102">Perl script code for removing the BOM</a></p>
-            <p class="desc">External link .</p>
           </li>
         </ul>
       </div>
@@ -630,36 +626,44 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/syntax.html#the-input-byte-stream">HTML5, 8.2.2 The input byte stream</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/syntax.html#the-input-byte-stream">HTML5, 8.2.2 The input byte stream</a></p>
             <p class="desc">How HTML5 detects the character encoding of a page, and mentions how browsers should handle BOM detection.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/css-syntax-3/#input-byte-stream">CSS Syntax  Level 3, 3.2. The input byte stream</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/css-syntax-3/#input-byte-stream">CSS Syntax  Level 3, 3.2. The input byte stream</a></p>
             <p class="desc">Character encoding information in  CSS. Mentions how browsers should handle the BOM.</p>
           </li>
         </ul>
       </div>
       <div>
-        <h5 id="bomhandling_trigger" class="otherlinks" onClick="toggleExtra('bomhandling_trigger','bomhandling_list');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="bomhandling_list" class="extraLinks">
           <li class="w3">
             <p class="link"><a href="/International/tutorials/tutorial-char-enc">Handling character encodings in HTML and CSS</a></p>
             <p class="desc">Tutorial style article that gathers together and organizes pointers to articles that, taken  together, help you understand how to handle the essential aspects of  authoring HTML and CSS related to characters and character encodings.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/CSS21/syndata.html#charset">CSS 2.1, 4.4 CSS style sheet representation</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/CSS21/syndata.html#charset">CSS 2.1, 4.4 CSS style sheet representation</a></p>
             <p class="desc">Character encoding information in the CSS 2.1 spec. Mentions how browsers should handle the BOM.</p>
           </li>
         </ul>
+        </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_normalization">
-      <h3 id="normalization">Handling character normalization</h3>
+	</details>
+   
+   
+   
+   
+   <details class="sec" id="normalization">
+    <summary class="h3">Handling character normalization</summary>   
+   <div class="resource-box" id="sec_normalization">
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Ensure that  all HTML class names and CSS selectors are saved using the same Unicode normalization form (NFC is recommended). <a href="/International/questions/qa-html-css-normalization#n11nhow">more</a></li>
         </ul>
@@ -677,7 +681,7 @@ function toggleExtra (trigger, target) {
         <h5 class="refs">Useful reference links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://qa-dev.w3.org/i18n-checker/">W3C Internationalization Checker</a></p>
+            <p class="link"><a href="https://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a></p>
             <p class="desc">Tells you whether your HTML page contains non-NFC class names and ids.</p>
           </li>
         </ul>
@@ -686,10 +690,15 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_formencoding">
-      <h3 id="formencoding">Handling encoding issues in forms</h3>
+	</details>
+   
+   
+   
+    <details class="sec" id="formencoding">
+    <summary class="h3">Handling encoding issues in forms</summary>   
+   <div class="resource-box" id="sec_formencoding">
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Use UTF-8 for the character encoding of your page. <a href="/International/questions/qa-forms-utf-8">more</a></li>
           <li class="bp">Consider checking on the server that form data is arriving in UTF-8. <a href="/International/questions/qa-forms-utf-8">more</a></li>
@@ -708,18 +717,23 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+	</details>
+   
+   
+   
+    <details class="sec" id="controlcodes">
+    <summary class="h3">Using Unicode control codes</summary>   
     <div class="resource-box" id="sec_controlcodes">
-      <h3 id="controlcodes">Using Unicode control codes</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
-        <ul>
-          <li class="bp">Don't use Unicode characters if there is markup to do the same job. <a href="/International/questions/qa-chars-vs-markup#not">more</a></li>
-          <li class="bp">Use character escapes to represent control codes, so that they are visible. <a href="/International/questions/qa-escapes#invisible">more</a></li>
-        </ul>
         <div class="xref">
           <h5>See also</h5>
           <p>If you represent control codes using character escapes, see also <span class="link"><a href="#escapes">Using escapes to represent characters</a></span> for more information.</p>
         </div>
+      <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
+        <ul>
+          <li class="bp">Don't use Unicode characters if there is markup to do the same job. <a href="/International/questions/qa-chars-vs-markup#not">more</a></li>
+          <li class="bp">Use character escapes to represent control codes, so that they are visible. <a href="/International/questions/qa-escapes#invisible">more</a></li>
+        </ul>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -729,7 +743,7 @@ function toggleExtra (trigger, target) {
             <p class="desc">There are a range of control-like Unicode characters, some of which fulfill the same role as markup. Which should I use, and which should I avoid?</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/unicode-xml/">Unicode in XML &amp; Other Markup Languages</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/unicode-xml/">Unicode in XML &amp; Other Markup Languages</a></p>
             <p class="desc">Guidelines on the use of the Unicode Standard in conjunction with markup languages such as XML.</p>
           </li>
           <li class="w3">
@@ -750,8 +764,13 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_missingchars">
-      <h3 id="missingchars">Working around unavailable characters/glyphs</h3>
+	</details>
+   
+   
+   
+    <details class="sec" id="missingchars">
+    <summary class="h3">Working around unavailable characters/glyphs</summary>   
+      <div class="resource-box" id="sec_missingchars">
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -766,22 +785,27 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+	</details>
+   
+   
+   
+    <details class="sec" id="iris">
+    <summary class="h3">Using non-ASCII web addresses</summary>   
     <div class="resource-box" id="sec_iris">
-      <h3 id="iris">Using non-ASCII web addresses</h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="refs">Useful reference links</h5>
         <ul>
           <li class="nonw3">
-            <p class="link"><a href="http://en.wikipedia.org/wiki/Internationalized_country_code">Internationalized country code top-level domain</a></p>
+            <p class="link"><a href="https://en.wikipedia.org/wiki/Internationalized_country_code">Internationalized country code top-level domain</a></p>
             <p class="desc">Wikipedia article. Contains  news about recent developments.</p>
           </li>
           <li class="nonw3">
-            <p class="link"><a href="http://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized domain name</a></p>
+            <p class="link"><a href="https://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized domain name</a></p>
             <p class="desc">Wikipedia page.</p>
           </li>
           <li class="nonw3">
-            <p class="link"><a href="http://www.w3.org/2003/06/mod_fileiri/">mod_fileiri: new Apache module under development</a></p>
+            <p class="link"><a href="https://www.w3.org/2003/06/mod_fileiri/">mod_fileiri: new Apache module under development</a></p>
             <p class="desc">Martin Dürst's fileiri Apache module.</p>
           </li>
         </ul>
@@ -790,7 +814,7 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="nonw3">
-            <p class="link"><a href="http://www.ietf.org/rfc/rfc3987">RFC 3987 Internationalized Resource Identifiers (IRIs)</a></p>
+            <p class="link"><a href="https://www.ietf.org/rfc/rfc3987">RFC 3987 Internationalized Resource Identifiers (IRIs)</a></p>
             <p class="desc">IETF Proposed Standard for handling of IRIs.</p>
           </li>
           <li class="nonw3">
@@ -821,28 +845,26 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#charset">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-  </section>
-  <section id="sec_language">
-    <h2 id="language">Language</h2>
-    <div class="summary">
-      <h3>In this section</h3>
-      <ul>
-        <li><a href="#gslang">Getting started</a></li>
-        <li><a href="#textprocessing">Declaring the overall language of a page</a></li>
-        <li><a href="#indoclang">Identifying in-document language changes</a></li>
-        <li><a href="#langvalues">Choosing language values</a></li>
-        <li><a href="#primarylanguage">Declaring metadata about the language(s) of the intended audience</a></li>
-        <li><a href="#linkdestination">Indicating the language of a link destination</a></li>
-        <li><a href="#browserlanguage">Setting &amp; changing browser language preferences</a></li>
-        <li><a href="#localesetting">Using Accept-Language for locale setting</a></li>
-      </ul>
-    </div>
-    <div class="showhide"><a onclick="openAll('language', 'h3','');" href="#_">Open All</a> <a onclick="closeAll('language', 'h3','');" href="#_">Close All</a></div>
-    <div class="resource-box" id="sec_gslang">
-      <h3 id="gslang">Getting started</h3>
+	</details>
+  
+  </details>
+  </section> 
+  
+
+  
+  
+  
+<section id="sec_language">
+<details class="sec" id="language">
+<summary class="h2">Language</summary>
+    
+    
+<details class="sec" id="gslang">
+<summary class="h3">Getting started</summary>
+    <div class="resource-box" id="sec_gslanguage">
       <div class="checklist"> </div>
       <div>
-        <h5 class="background">Background reading</h5>
+        <h5>Background reading</h5>
         <ul>
           <li class="w3">
             <p class="link"><a href="/International/getting-started/language">Language on the Web </a></p>
@@ -868,12 +890,22 @@ function toggleExtra (trigger, target) {
       </div>
       <div class="goto">
         <h5>Go to:</h5>
-        <a href="#language">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
+        <a href="#language">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a>
+        </div>
     </div>
-    <div class="resource-box" id="sec_textprocessing">
-      <h3 id="textprocessing">Declaring the overall language of a page</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+    </details>
+    
+    
+ <details class="sec" id="textprocessing">
+<summary class="h3">Declaring the overall language of a page</summary>
+   <div class="resource-box" id="sec_textprocessing">
+    <div class="xref">
+          <h5>See also</h5>
+          <p>For detailed advice about how to select the right language tags, see <span class="link"><a href="#langvalues">Choosing language values</a></span>.</p>
+          <p>See also <span class="link"><a href="#primarylanguage">Declaring metadata about the language of the intended audience</a></span>.</p>
+        </div>
+    <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Always declare the default language for text in the page using attributes on the <code class="kw">html</code> tag. <a href="/International/questions/qa-html-language-declarations#basics">more</a></li>
           <li class="bp">Do NOT use the <code class="kw">meta</code> element with the <code class="kw">content</code> attribute set to <code class="kw">Content-Language</code>. <a href="/International/questions/qa-html-language-declarations#metadata">more</a></li>
@@ -883,11 +915,6 @@ function toggleExtra (trigger, target) {
           <li class="bp">Where a document contains content aimed at speakers of more than one language, try to divide the document linguistically at the highest possible level, and declare the appropriate language for each of those divisions. </li>
           <li class="bp">For HTML use the <code class="kw">lang</code> attribute only, for XHTML 1.0 served as <code class="kw">text/html</code> use the <code class="kw">lang</code> and <code class="kw">xml:lang</code> attributes, and for XHTML served as XML use the <code class="kw">xml:lang</code> attribute only. <a href="/International/questions/qa-html-language-declarations#attributes">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>For detailed advice about how to select the right language tags, see <span class="link"><a href="#langvalues">Choosing language values</a></span>.</p>
-          <p>See also <span class="link"><a href="#primarylanguage">Declaring metadata about the language of the intended audience</a></span>.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -902,6 +929,10 @@ function toggleExtra (trigger, target) {
         <h5 class="background">Background reading</h5>
         <ul>
           <li class="w3">
+            <p class="link"><a href="/International/questions/qa-text-processing-vs-metadata">Types of language declaration</a></p>
+            <p class="desc">Describes two different types of language information, 'metadata' and 'text-processing', and how they differ.</p>
+          </li>
+          <li class="w3">
             <p class="link"><a href="/International/questions/qa-lang-why">Why use the language attribute?</a></p>
             <p class="desc">Why should I use the language attribute in web pages? A number of useful reasons.</p>
           </li>
@@ -915,14 +946,14 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/">HTML5</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/">HTML5</a></p>
             <ul>
             <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"> 3.2.3.3 The lang and xml:lang attributes</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"> 3.2.3.3 The lang and xml:lang attributes</a></p>
             <p class="desc">The language attributes in HTML5.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"> 4.2.5.3 Pragma directives</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"> 4.2.5.3 Pragma directives</a></p>
             <p class="desc">How HTML5 deals with a meta element with http-equiv set to Content-Language.</p>
           </li>
           </ul>
@@ -938,65 +969,72 @@ function toggleExtra (trigger, target) {
         </ul>
       </div>
       <div>
-        <h5 id="sec_textprocessing_trigger" class="otherlinks" onClick="toggleExtra('sec_textprocessing_trigger','sec_textprocessing_list');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="sec_textprocessing_list" class="extraLinks">
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html401/struct/dirlang.html#h-8.1">HTML4.01, 8.1 Specifying the language of
+            <p class="link"><a href="https://www.w3.org/TR/html401/struct/dirlang.html#h-8.1">HTML4.01, 8.1 Specifying the language of
               content: the lang attribute</a></p>
             <p class="desc">lang attribute definition in HTML 4.01</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/REC-xml/#sec-lang-tag">XML 1.0, 2.12 Language Identification</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/REC-xml/#sec-lang-tag">XML 1.0, 2.12 Language Identification</a></p>
             <p class="desc">xml:lang attribute definition in XML.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/WCAG10/#gl-abbreviated-and-foreign">WCAG, Guideline 4. Clarify natural language usage</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/WCAG10/#gl-abbreviated-and-foreign">WCAG, Guideline 4. Clarify natural language usage</a></p>
             <p class="desc">Recommendation to express natural language in a document in Web Content Accessibility Guidelines.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/WCAG10-HTML-TECHS/#identify-primary-lang">WCAG, 2.2 Identifying the primary language</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/WCAG10-HTML-TECHS/#identify-primary-lang">WCAG, 2.2 Identifying the primary language</a></p>
             <p class="desc">Recommendation to use lang attribute on html tag in Web Content Accessibility Techniques for HTML.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/xhtml11/doctype.html#s_doctype">XHTML 1.1, 3. The XHTML 1.1 Document Type</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/xhtml11/doctype.html#s_doctype">XHTML 1.1, 3. The XHTML 1.1 Document Type</a></p>
             <p class="desc">The 2nd edition introduced the lang attribute to go with the xml:lang attribute.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/xhtml1/#C_7">XHTML 1.0, C.7 The lang and xml:lang Attributes</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/xhtml1/#C_7">XHTML 1.0, C.7 The lang and xml:lang Attributes</a></p>
             <p class="desc">xml:lang and lang attribute definitions in XHTML 1.0.</p>
           </li>
           <li class="nonw3">
-            <p class="link"><a href="http://www.ietf.org/rfc/rfc2616.txt">HTTP 1.1, 14.12 Content-Language</a></p>
+            <p class="link"><a href="https://www.ietf.org/rfc/rfc2616.txt">HTTP 1.1, 14.12 Content-Language</a></p>
             <p class="desc">Content-Language definition in HTTP 1.1.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#language-attributes">Polyglot markup, 7.2 Language Attributes</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html-polyglot/#language-attributes">Polyglot markup, 7.2 Language Attributes</a></p>
             <p class="desc">Using lang and xml:lang in HTML5 polyglot documents.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#content-language">Polyglot markup, 6.5.1.1 Content-Language</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html-polyglot/#content-language">Polyglot markup, 6.5.1.1 Content-Language</a></p>
             <p class="desc">Content-Language and HTML5 polyglot documents.</p>
           </li>
         </ul>
+        </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#language">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_indoclang">
-      <h3 id="indoclang">Identifying in-document language changes</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+    </details>
+    
+    
+    
+<details class="sec" id="indoclang">
+<summary class="h3">Identifying in-document language changes</summary>
+  <div class="resource-box" id="sec_indoclang">
+         <div class="xref">
+          <h5>See also</h5>
+          <p>See also <span class="link"><a href="#textprocessing">Declaring  the overall language of a page</a></span>.</p>
+          <p>For detailed advice about how to select the right language tags, see <span class="link"><a href="#langvalues">Choosing language values</a></span>.</p>
+        </div>
+     <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">When the page contains content in another language, add a language attribute to an element surrounding that content. <a href="/International/questions/qa-html-language-declarations#basics">more</a></li>
           <li class="bp">For HTML use the <code class="kw">lang</code> attribute only, for XHTML 1.0 served as <code class="kw">text/html</code> use the <code class="kw">lang</code> and <code class="kw">xml:lang</code> attributes, and for XHTML served as XML use the <code class="kw">xml:lang</code> attribute only. <a href="/International/questions/qa-html-language-declarations#attributes">more</a></li>
           <li class="bp">If the text in attribute values and element content is in different languages, consider using a nested approach. <a href="/International/questions/qa-html-language-declarations#contentvsattribute">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>See also <span class="link"><a href="#textprocessing">Declaring  the overall language of a page</a></span>.</p>
-          <p>For detailed advice about how to select the right language tags, see <span class="link"><a href="#langvalues">Choosing language values</a></span>.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1020,53 +1058,60 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 3.2.3.3 The lang and xml:lang attributes</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 3.2.3.3 The lang and xml:lang attributes</a></p>
             <p class="desc">The language attributes in HTML5.</p>
           </li>
         </ul>
       </div>
       <div>
-        <h5 id="sec_indoclang_trigger" class="otherlinks" onClick="toggleExtra('sec_indoclang_trigger','sec_indoclang_list');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="sec_indoclang_list" class="extraLinks">
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html401/struct/dirlang.html#h-8.1">HTML4.01, 8.1 Specifying the language of
+            <p class="link"><a href="https://www.w3.org/TR/html401/struct/dirlang.html#h-8.1">HTML4.01, 8.1 Specifying the language of
               content: the lang attribute</a></p>
             <p class="desc">lang attribute definition in HTML 4.01</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/xhtml1/#C_7">XHTML 1.0, C.7. The lang and xml:lang Attributes</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/xhtml1/#C_7">XHTML 1.0, C.7. The lang and xml:lang Attributes</a></p>
             <p class="desc">Use both lang and xml:lang.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/xhtml11/doctype.html#s_doctype">XHTML 1.1, 3. The XHTML 1.1 Document Type</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/xhtml11/doctype.html#s_doctype">XHTML 1.1, 3. The XHTML 1.1 Document Type</a></p>
             <p class="desc">The 2nd edition introduced the lang attribute to go with the xml:lang attribute.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/REC-xml/#sec-lang-tag">XML 1.0, 2.12 Language Identification</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/REC-xml/#sec-lang-tag">XML 1.0, 2.12 Language Identification</a></p>
             <p class="desc">xml:lang attribute definition in XML.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/WCAG10/#gl-abbreviated-and-foreign">WCAG, Guideline 4. Clarify natural language usage</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/WCAG10/#gl-abbreviated-and-foreign">WCAG, Guideline 4. Clarify natural language usage</a></p>
             <p class="desc">Recommendation to express natural language in a document in Web Content Accessibility Guidelines.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/WCAG10-HTML-TECHS/#changes-in-lang">WCAG Techniques, 2.1 Identifying changes in language</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/WCAG10-HTML-TECHS/#changes-in-lang">WCAG Techniques, 2.1 Identifying changes in language</a></p>
             <p class="desc">Recommendation to use lang attribute when language changes in a document, in Web Content Accessibility Techniques for HTML.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html-polyglot/#language-attributes">Polyglot markup, 7.2 Language Attributes</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html-polyglot/#language-attributes">Polyglot markup, 7.2 Language Attributes</a></p>
             <p class="desc">Using lang and xml:lang in HTML5 polyglot documents.</p>
           </li>
         </ul>
+        </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#language">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+    
+<details class="sec" id="langvalues">
+<summary class="h3">Choosing language tags</summary>
     <div class="resource-box" id="sec_langvalues">
-      <h3 id="langvalues">Choosing language tags</h3>
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Use subtags as defined by BCP 47 for language attribute values. <a href="/International/questions/qa-choosing-language-tags#subtagregistry">more</a></li>
           <li class="bp">Use the shortest possible language tag values. <a href="/International/questions/qa-choosing-language-tags#langsubtag">more</a></li>
@@ -1092,7 +1137,7 @@ function toggleExtra (trigger, target) {
             <p class="desc">How do I use language markup in HTML or XML content when I don't know the language, or the content is  					non-linguistic?</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/International/questions/qa-lang-2or3.html">Two-letter or three-letter language
+            <p class="link"><a href="https://www.w3.org/International/questions/qa-lang-2or3">Two-letter or three-letter language
               codes</a></p>
             <p class="desc">Should I use two-letter or three-letter ISO language codes in language tags? W3C article.</p>
           </li>
@@ -1110,7 +1155,7 @@ function toggleExtra (trigger, target) {
             <p class="desc">This is the official location where you will find all subtags available for use in language tags.</p>
           </li>
           <li class="nonw3">
-            <p class="link"><a href="http://r12a.github.io/apps/subtags/">Language Subtag Lookup tool</a></p>
+            <p class="link"><a href="https://r12a.github.io/app-subtags/">Language Subtag Lookup tool</a></p>
             <p class="desc">User friendly interface to IANA's language tag registry. Provides for checking of subtags as well as lookup. Up-to-date with latest version of BCP 47.</p>
           </li>
           <li class="nonw3">
@@ -1119,7 +1164,7 @@ function toggleExtra (trigger, target) {
               Language Tags)</p>
           <ul>
           <li class="nonw3">
-            <p class="link"><a href="http://www.rfc-editor.org/rfc/rfc4646.txt">RFC 5646 Tags for the Identification of Languages</a></p>
+            <p class="link"><a href="http://www.rfc-editor.org/rfc/rfc5646.txt">RFC 5646 Tags for the Identification of Languages</a></p>
             <p class="desc">The specification that describes language tag syntax.</p>
           </li>
           <li class="nonw3">
@@ -1138,20 +1183,21 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 3.2.3.3 The lang and xml:lang attributes</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 3.2.3.3 The lang and xml:lang attributes</a></p>
             <p class="desc">The language attributes in HTML5.</p>
           </li>
         </ul>
       </div>
       <div>
-        <h5 id="langvalues_trigger" class="otherlinks" onClick="toggleExtra('langvalues_trigger','langvalues_list');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="langvalues_list" class="extraLinks">
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1">Specifying the language of content: the lang attribute</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1">Specifying the language of content: the lang attribute</a></p>
             <p class="desc">lang in the HTML 4.01 spec (section 8.1)</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/REC-xml/#sec-lang-tag">Language Identification</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/REC-xml/#sec-lang-tag">Language Identification</a></p>
             <p class="desc">xml:lang in the XML spec (section 2.12)</p>
           </li>
           <li class="nonw3">
@@ -1164,10 +1210,10 @@ function toggleExtra (trigger, target) {
           </li>
           <li class="nonw3">
             <p class="link"><a href="http://www.rfc-editor.org/rfc/rfc4646.txt">RFC 4646 Tags for the Identification of Languages</a></p>
-            <p class="desc">[Of historic interest only] The specification that describes language tag syntax.</p>
+            <p class="desc">[Of historic interest only] An earlier version of the specification that describes language tag syntax.</p>
           </li>
           <li class="nonw3">
-            <p class="link"><a href="http://www.ietf.org/rfc/rfc3066.txt">RFC 3066 Tags for the Identification of Languages</a></p>
+            <p class="link"><a href="https://www.ietf.org/rfc/rfc3066.txt">RFC 3066 Tags for the Identification of Languages</a></p>
             <p class="desc">[Of historic interest only] The previous IETF document that used to define how to use language tags to identify languages, now obsolete.</p>
           </li>
           <li class="w3">
@@ -1175,24 +1221,30 @@ function toggleExtra (trigger, target) {
             <p class="desc">[Of historic interest only] Overview of planned improvements for RFC3066bis by one of its authors.</p>
           </li>
         </ul>
+        </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#language">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+    
+<details class="sec" id="primarylanguage">
+<summary class="h3">Declaring metadata about the language(s) of the intended audience</summary>
     <div class="resource-box" id="sec_primarylanguage">
-      <h3 id="primarylanguage">Declaring metadata about the language(s) of the intended audience</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
-        <ul>
-          <li class="bp">Consider using a <code class="kw" translate="no">Content-Language</code> HTTP header  to declare metadata about the language(s) of the intended audience of a document. <a href="/International/questions/qa-html-language-declarations#metadata">more</a></li>
-          <li class="bp">Where a document contains content aimed at speakers of more than one language, use the HTTP <code class="kw" translate="no">Content-Language</code> header with a comma-separated list of language tags. <a href="/International/questions/qa-http-and-lang#http">more</a></li>
-        </ul>
-        <div class="xref">
+         <div class="xref">
           <h5>See also</h5>
           <p>This section is specifically about setting metadata for the document as an object. For information about declaring the language of the document for text-processing purposes, see <span class="link"><a href="#textprocessing">Declaring  the overall language of a page</a></span>.</p>
           <p>For detailed advice about how to select the right language tags, see <span class="link"><a href="#langvalues">Choosing language values</a></span>.</p>
         </div>
+    <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
+        <ul>
+          <li class="bp">Consider using a <code class="kw" translate="no">Content-Language</code> HTTP header  to declare metadata about the language(s) of the intended audience of a document. <a href="/International/questions/qa-html-language-declarations#metadata">more</a></li>
+          <li class="bp">Where a document contains content aimed at speakers of more than one language, use the HTTP <code class="kw" translate="no">Content-Language</code> header with a comma-separated list of language tags. <a href="/International/questions/qa-http-and-lang#http">more</a></li>
+        </ul>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1213,47 +1265,62 @@ function toggleExtra (trigger, target) {
           </li>
         </ul>
       </div>
+       <div>
+        <h5 class="background">Background reading</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="/International/questions/qa-text-processing-vs-metadata">Types of language declaration</a></p>
+            <p class="desc">Describes two different types of language information, 'metadata' and 'text-processing', and how they differ.</p>
+          </li>
+        </ul>
+      </div>
       <div>
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 4.2.5.3 Pragma directives</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes">HTML5, 4.2.5.3 Pragma directives</a></p>
             <p class="desc">How HTML5 deals with a <code class="kw">meta</code> element with <code class="kw">http-equiv</code> set to <code class="kw">Content-Language</code>.</p>
           </li>
           <li class="nonw3">
-            <p class="link"><a href="http://www.ietf.org/rfc/rfc2616.txt">HTTP 1.1, 14.12 Content-Language</a></p>
+            <p class="link"><a href="https://www.ietf.org/rfc/rfc2616.txt">HTTP 1.1, 14.12 Content-Language</a></p>
             <p class="desc">The <code class="kw">Content-Language</code> HTTP header described in the HTTP1.1 specification.</p>
           </li>
         </ul>
       </div>
       <div>
-        <h5 id="sec_primarylanguage_trigger" class="otherlinks" onClick="toggleExtra('sec_primarylanguage_trigger','sec_primarylanguage_list');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="sec_primarylanguage_list" class="extraLinks">
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1">HTML 4.01, 8.1 Specifying the language of
+            <p class="link"><a href="https://www.w3.org/TR/1999/REC-html401-19991224/struct/dirlang.html#h-8.1">HTML 4.01, 8.1 Specifying the language of
               content: the lang attribute</a></p>
             <p class="desc"><code class="kw">Content-Language</code> in the HTML specification: only says that the <code class="kw">html</code> language attribute has a higher precedence.</p>
           </li>
         </ul>
+        </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#language">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+<details class="sec" id="linkdestination">
+<summary class="h3">Indicating the language of a link destination</summary>
     <div class="resource-box" id="sec_linkdestination">
-      <h3 id="linkdestination">Indicating the language of a link destination</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
-        <ul>
-          <li class="bp">When pointing to a resource in another language, consider the pros and cons before indicating the language of the target document. <a href="/International/questions/qa-link-lang#proscons">more</a></li>
-          <li class="bp">If you want to indicate that the target document of an a element is in another language, consider the pros and cons before using <code class="kw">hreflang</code> with CSS. <a href="/International/questions/qa-link-lang#hreflang">more</a></li>
-          <li class="bp">Do not use flag icons to indicate languages. <a href="/International/questions/qa-link-lang#flags">more</a></li>
-        </ul>
         <div class="xref">
           <h5>See also</h5>
           <p>For  advice about how to select the right language tags, see <span class="link"><a href="#langvalues">Choosing language values</a></span>.</p>
           <p>See also <a href="#linkloc">Linking to localized content</a> in the Navigation section.</p>
         </div>
+      <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
+        <ul>
+          <li class="bp">When pointing to a resource in another language, consider the pros and cons before indicating the language of the target document. <a href="/International/questions/qa-link-lang#proscons">more</a></li>
+          <li class="bp">If you want to indicate that the target document of an a element is in another language, consider the pros and cons before using <code class="kw">hreflang</code> with CSS. <a href="/International/questions/qa-link-lang#hreflang">more</a></li>
+          <li class="bp">Do not use flag icons to indicate languages. <a href="/International/questions/qa-link-lang#flags">more</a></li>
+        </ul>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1272,30 +1339,36 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/links.html#attr-hyperlink-hreflang">HTML5, 4.12.2 Links created by a and area elements</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/links.html#attr-hyperlink-hreflang">HTML5, 4.12.2 Links created by a and area elements</a></p>
             <p class="desc"><code class="kw">hreflang</code> in the HTML5 spec</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/CSS2/generate.html#before-after-content">CSS 2.1, 12.1 The :before and :after pseudo-elements</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/CSS2/generate.html#before-after-content">CSS 2.1, 12.1 The :before and :after pseudo-elements</a></p>
             <p class="desc"><code class="kw">:before</code> and <code class="kw">:after</code> in the CSS 2.1 spec</p>
           </li>
         </ul>
       </div>
       <div>
-        <h5 id="linkdestination_trigger" class="otherlinks" onClick="toggleExtra('linkdestination_trigger','linkdestination_list');">Show more links</h5>
+      <details>
+      <summary class="h5">Show more links</summary>
         <ul id="linkdestination_list" class="extraLinks">
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html401/struct/links.html#adef-hreflang">HTML 4.01, 12.2 The A element</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html401/struct/links.html#adef-hreflang">HTML 4.01, 12.2 The A element</a></p>
             <p class="desc"><code class="kw">hreflang</code> in the HTML 4.01 spec.</p>
           </li>
         </ul>
+        </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#language">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+<details class="sec" id="browserlanguage">
+<summary class="h3">Setting &amp; changing browser language preferences</summary>
     <div class="resource-box" id="sec_browserlanguage">
-      <h3 id="browserlanguage">Setting & changing browser language preferences</h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1305,7 +1378,7 @@ function toggleExtra (trigger, target) {
             <p class="desc">How do I check or change the language settings of my browser? </p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://validator.w3.org/i18n-checker/">Internationalization checker</a></p>
+            <p class="link"><a href="https://validator.w3.org/i18n-checker/">Internationalization checker</a></p>
             <p class="desc">Tells you what your current <code class="kw" translate="no">Accept-Language</code> headers are set to. (See the bottom of the information table.)</p>
           </li>
         </ul>
@@ -1327,8 +1400,12 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#language">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+<details class="sec" id="localesetting">
+<summary class="h3">Using Accept-Language for locale setting</summary>
     <div class="resource-box" id="sec_localesetting">
-      <h3 id="localesetting">Using Accept-Language for locale setting </h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1347,23 +1424,25 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#language">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-  </section>
-  <section id="sec_markup">
-    <h2 id="markup">Markup & text</h2>
-    <div class="summary">
-      <h3>In this section</h3>
-      <ul>
-        <li><a href="#gsmarkup">Getting started</a></li>
-        <li><a href="#strings">Working with composite strings and string re-use</a></li>
-        <li><a href="#ruby">Using ruby markup </a></li>
-        <li><a href="#bandi">Using b and i tags</a></li>
-        <li><a href="#formcontrols">Working with form controls</a></li>
-        <li><a href="#translate">Indicating what should and should not be translated</a></li>
-      </ul>
-    </div>
-    <div class="showhide"><a onclick="openAll('markup', 'h3','');" href="#_">Open All</a> <a onclick="closeAll('markup', 'h3','');" href="#_">Close All</a></div>
+    </details>
+  </details>
+  </section> 
+  
+  
+  
+  
+  
+  
+  
+
+<section id="sec_markup">
+<details class="sec" id="markup">
+<summary class="h2">Markup &amp; text</summary>
+    
+
+<details class="sec" id="gsmarkup">
+<summary class="h3">Getting started</summary>
     <div class="resource-box" id="sec_gsmarkup">
-      <h3 id="gsmarkup">Getting started</h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1382,10 +1461,14 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#markup">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_strings">
-      <h3 id="strings">Working with composite strings and string re-use </h3>
+    </details>
+    
+    
+ <details class="sec" id="strings">
+<summary class="h3">Working with composite strings and string re-use</summary>
+   <div class="resource-box" id="sec_strings">
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Use a topic-comment approach whenever possible. <a href="/International/articles/composite-messages/#recommendations">more</a></li>
           <li class="bp">Avoid sentence-like arrangements when they contain substrings that are predefined translatable text or numeric text. <a href="/International/articles/composite-messages/#recommendations">more</a></li>
@@ -1425,64 +1508,44 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#markup">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_ruby">
-      <h3 id="ruby">Using ruby markup </h3>
-      <div class="checklist">
+    </details>
+    
+
+
+    
+<details class="sec" id="ruby">
+<summary class="h3">Using ruby markup</summary>
+  <div class="resource-box" id="sec_ruby">
         <div class="xref">
           <h5>See also</h5>
           <p>This section is specifically about how to use <em>markup</em> for ruby annotations. For information about styling ruby see <a href="#rubystyle">Styling ruby text</a>.</p>
         </div>
+      <div class="checklist">
       </div>
       <div>
         <h5 class="howto">How to's</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/International/notes/ruby-extension/">Ruby extension markup</a></p>
-            <p class="desc">Gives examples of how ruby markup can be used per the HTML5 ruby extension spec.</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="/International/articles/ruby/#Slide0090">Ruby markup</a></p>
-            <p class="desc">Overview of the Ruby Annotation specification (in W3C tutorial, Ruby Markup and Styling)</p>
+            <p class="link"><a href="https://www.w3.org/International/articles/ruby/markup.en">Ruby markup</a></p>
+            <p class="desc">Discusses how to use ruby markup in HTML5, and has pointers to what currently works in browsers.</p>
           </li>
         </ul>
       </div>
-      <div>
-        <h5 class="specs">Spec links</h5>
+       <div>
+        <h5 class="refs">Useful reference links</h5>
         <ul>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element">HTML5, 4.6.21 The ruby element</a></p>
-            <p class="desc">The <code class="kw">ruby</code> element in the HTML5 spec</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/text-level-semantics.html#the-rt-element">HTML5, 4.6.22 The rt element</a></p>
-            <p class="desc">The <code class="kw">rt</code> element in the HTML5 spec</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/text-level-semantics.html#the-rp-element">HTML5, 4.6.23 The rp element</a></p>
-            <p class="desc"><code class="kw">rp</code> in the HTML5 spec</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="http://darobin.github.io/html-ruby/">HTML Ruby Markup Extensions</a></p>
-            <p class="desc"> Proposed extensions to the HTML5 markup model.</p>
+         <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/typography/#ruby_annotation">Typography index: Ruby annotation</a></p>
+            <p class="desc">Links to requirements for ruby in the typography index.</p>
           </li>
         </ul>
       </div>
-      <div>
+     <div>
         <h5 class="background">Background reading</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/jlreq/">Requirements for Japanese Text Layout</a></p>
-            <p class="desc">Mainly based on a standard for Japanese layout, JIS X 4051, however, it also addresses areas which are not covered by JIS X 4051.</p>
-            <ul>
-              <li>
-                <p class="link"><a href="http://www.w3.org/TR/jlreq/#ruby_and_emphasis_dots"> 3.3 Ruby and Emphasis Dots</a></p>
-                <p class="desc">The main section dealing with ruby typographic requirements. </p>
-              </li>
-              <li>
-                <p class="link"><a href="http://www.w3.org/TR/jlreq/#positioning_of_jukugoruby">Appendix F Positioning of Jukugo-ruby</a></p>
-                <p class="desc">More details about 'jukugo' style use of ruby. </p>
-              </li>
-            </ul>
+            <p class="link"><a href="https://www.w3.org/International/questions/qa-ruby">What is ruby?</a></p>
+            <p class="desc">What are 'ruby' annotations?</p>
           </li>
           <li class="w3">
             <p class="link"><a href="https://r12a.github.io/scripts/bopomofo/ontheweb">Bopomofo on the Web</a></p>
@@ -1500,22 +1563,57 @@ function toggleExtra (trigger, target) {
         </ul>
       </div>
       <div>
-        <h5 class="otherlinks">Other links</h5>
+        <h5 class="specs">Spec links</h5>
         <ul>
+          <li class="w3">
+            <p class="link"><a href="https://www.w3.org/TR/html5/">HTML5</a></p>
+            <ul>
+          <li class="w3">
+            <p class="link"><a href="https://www.w3.org/TR/html5/text-level-semantics.html#the-ruby-element"> 4.6.21 The ruby element</a></p>
+            <p class="desc">The <code class="kw">ruby</code> element in the HTML5 spec</p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://www.w3.org/TR/html5/text-level-semantics.html#the-rt-element"> 4.6.22 The rt element</a></p>
+            <p class="desc">The <code class="kw">rt</code> element in the HTML5 spec</p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://www.w3.org/TR/html5/text-level-semantics.html#the-rp-element"> 4.6.23 The rp element</a></p>
+            <p class="desc"><code class="kw">rp</code> in the HTML5 spec</p>
+          </li>
+          </ul>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="http://darobin.github.io/html-ruby/">HTML Ruby Markup Extensions</a></p>
+            <p class="desc"> Proposed extensions to the HTML5 markup model.</p>
+          </li>
+        </ul>
+      </div>
+        <div>
+        <h5 class="tests">Tests</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/ruby-html">HTML5, the ruby element and its children</a></p>
+          </li>
+        </ul>
+      </div>
+     <div>
+      <details>
+      <summary class="h5">Show more links</summary>
+        <ul id="sec_ruby_list" class="extraLinks">
           <li class="w3">
             <p class="link"><a href="https://www.w3.org/International/notes/ruby-extension/">Ruby extension markup</a></p>
             <p class="desc"> Looks at various possible models for marking up ruby, with a view to informing discussion about the models found in the HTML5 draft of 25 October 2012 and the proposed Ruby Extension Spec as of 25 February 2013.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/ruby">Ruby Annotation Recommendation</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/ruby/">Ruby Annotation Recommendation</a></p>
             <p class="desc">W3C Recommendation that defines markup for ruby, in the form of an XHTML module. The HTML5 markup model should eventually replace this specification.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/css3-ruby/">CSS3 Ruby Module</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/css3-ruby/">CSS3 Ruby Module</a></p>
             <p class="desc">W3C Working Draft that defines how ruby elements can be styled in various different ways. This draft is likely to change significantly as it is reworked to support the HTML5 markup model. (For more about styling ruby see <a href="#rubystyle">Styling ruby text</a>).</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/2001/REC-xhtml11-20010531/doctype.html#s_doctype">XHTML 1.1, 3. The XHTML 1.1 Document
+            <p class="link"><a href="https://www.w3.org/TR/2001/REC-xhtml11-20010531/doctype.html#s_doctype">XHTML 1.1, 3. The XHTML 1.1 Document
               Type</a></p>
             <p class="desc">Ruby Annotation inthe XHTML 1.1 spec (bottom of the page)</p>
           </li>
@@ -1525,15 +1623,21 @@ function toggleExtra (trigger, target) {
             <p class="desc">Sample module implementations of the Ruby Annotation Specification in several schemas (W3C Personal Note)</p>
           </li>
         </ul>
+        </details>
       </div>
       <div class="goto">
         <h5>Go to:</h5>
         <a href="#markup">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+    
+<details class="sec" id="bandi">
+<summary class="h3">Using b and i tags</summary>
     <div class="resource-box" id="sec_bandi">
-      <h3 id="bandi">Using b and i tags</h3>
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Use the class attribute on a b or i  element to identify why the element is being used. <a href="/International/questions/qa-b-and-i-tags#recommendations">more</a></li>
           <li class="bp">Consider whether other elements might be more applicable  than the b or i element because they carry the right semantics. <a href="/International/questions/qa-b-and-i-tags#recommendations">more</a></li>
@@ -1552,11 +1656,11 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/text-level-semantics.html#the-i-element">HTML5, 4.5.17 The i element</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/text-level-semantics.html#the-i-element">HTML5, 4.5.17 The i element</a></p>
             <p class="desc">The <code class="kw">i</code> element in the HTML5 spec</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/text-level-semantics.html#the-b-element">HTML5, 4.5.18 The b element</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/text-level-semantics.html#the-b-element">HTML5, 4.5.18 The b element</a></p>
             <p class="desc">The <code class="kw">b</code> element in the HTML5 spec</p>
           </li>
         </ul>
@@ -1565,15 +1669,20 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#markup">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+    
+<details class="sec" id="formcontrols">
+<summary class="h3">Working with form controls</summary>
     <div class="resource-box" id="sec_formcontrols">
-      <h3 id="formcontrols">Working with form controls </h3>
-      <div class="checklist">
         <div class="xref">
           <h5>See also</h5>
           <p>In the Characters section see <a href="#formencoding">Handling encoding issues in forms</a>.</p>
           <p>In the section Text Direction see <a href="#formdir">Managing text direction in form controls</a>.</p>
           <p>In the section Styling &amp; Layout see <a href="#localnames">Working with names</a> and <a href="#localdata">Working with date formats</a>.</p>
         </div>
+      <div class="checklist">
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1588,14 +1697,18 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#markup">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+
+<details class="sec" id="translate">
+<summary class="h3">Indicating what should and should not be translated</summary>
     <div class="resource-box" id="sec_translate">
-      <h3 id="translate">Indicating what should and should not be translated </h3>
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+      <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Use the <code class="kw" translate="no">translate</code> attribute on an element to prevent its content being translated by online translation services or by computer-assisted translation tools. <a href="/International/questions/qa-translate-flag">more</a></li>
         </ul>
-      </div>
+        </div>
       <div>
         <h5 class="howto">How to's</h5>
         <ul>
@@ -1603,43 +1716,61 @@ function toggleExtra (trigger, target) {
             <p class="link"><a href="/International/questions/qa-translate-flag">Using HTML's translate attribute</a></p>
             <p class="desc">What is the translate attribute for, and how should I use it?</p>
           </li>
-          <li class="nonw3">
-            <p class="link"><a href="http://rishida.net/blog/?p=831">HTML5 adds new translate attribute</a></p>
-            <p class="desc">Blog post describing the translate attribute, how it works, and why it is needed.</p>
-          </li>
         </ul>
       </div>
       <div>
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-translate-attribute">HTML5, 3.2.3.4 The translate attribute</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-translate-attribute">HTML5, 3.2.3.4 The translate attribute</a></p>
             <p class="desc">The <code class="kw">translate</code> attribute in the HTML5 spec</p>
           </li>
         </ul>
       </div>
-      <div class="goto">
+      <div>
+        <h5 class="tests">Tests</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/translation-services">HTML5, the translate element and online services</a></p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/the-translate-attribute">HTML5, the translate attribute</a></p>
+          </li>
+        </ul>
+      </div>
+      <div>
+      <details>
+      <summary class="h5">Show more links</summary>
+        <ul class="extraLinks">
+          <li class="nonw3">
+            <p class="link"><a href="https://r12a.github.io/blog/201110.html#20120222">HTML5 adds new translate attribute</a></p>
+            <p class="desc">Blog post describing the translate attribute, how it works, and why it is needed.</p>
+          </li>
+        </ul>
+        </details>
+      </div>
+     <div class="goto">
         <h5>Go to:</h5>
         <a href="#markup">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+  </details>
   </section>
-  <section id="sec_direction">
-    <h2 id="direction">Text direction</h2>
-    <div class="summary">
-      <h3>In this section</h3>
-      <ul>
-        <li><a href="#gsdirection">Getting started</a></li>
-        <li><a href="#using">Setting up a right-to-left page </a></li>
-        <li><a href="#blocks">Setting direction on block elements</a></li>
-        <li><a href="#formdir">Managing text direction in form controls</a></li>
-        <li><a href="#inline">Mixing text direction inline</a></li>
-        <li><a href="#mirrored">Handling parentheses and other mirrored characters</a></li>
-        <li><a href="#bdo">Overriding the Unicode bidirectional algorithm</a></li>
-      </ul>
-    </div>
-    <div class="showhide"><a onclick="openAll('direction', 'h3','');" href="#_">Open All</a> <a onclick="closeAll('direction', 'h3','');" href="#_">Close All</a></div>
-    <div class="resource-box" id="sec_directiongs">
-      <h3 id="directiongs">Getting started</h3>
+  
+  
+  
+  
+  
+  
+<section id="sec_direction">
+<details class="sec" id="direction">
+<summary class="h2">Text direction</summary>
+    
+
+<details class="sec" id="gsdirection">
+<summary class="h3">Getting started</summary>
+    <div class="resource-box" id="sec_gsdirection">
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1662,10 +1793,18 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#direction">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+<details class="sec" id="using">
+<summary class="h3">Setting up a right-to-left page</summary>
     <div class="resource-box" id="sec_using">
-      <h3 id="using">Setting up a right-to-left page </h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+         <div class="xref">
+          <h5>See also</h5>
+          <p>This section is about setting up the default direction for a whole page. For information about working with text direction changes inside the document see <span class="link"><a href="#blocks">Changing the direction of a block element</a></span> and <span class="link"><a href="#inline">Mixing text direction inline</a></span>.</p>
+        </div>
+     <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp"><span class="rule">Only use bidi markup to set the base direction for the document as a whole, or where you need to <em>change</em> the base direction</span>. <a href="/International/questions/qa-html-dir#markkupcrazy">more</a></li>
           <li class="bp">Add <code>dir="rtl"</code> to the <code class="kw">html</code> tag any time the overall document direction is right-to-left. <a href="/International/questions/qa-html-dir#documentlevel">more</a></li>
@@ -1675,10 +1814,6 @@ function toggleExtra (trigger, target) {
           <li class="bp"><span class="rule">If you have to use an ISO encoding for a Hebrew page, declare the encoding as ISO-8859-8-i rather than ISO-8859-8</span>. <a href="/International/questions/qa-visual-vs-logical#characterencodings">more</a></li>
           <li class="bp"><span class="rule">Do not use CSS styling to control directionality in HTML. Use markup</span>. <a href="/International/questions/qa-bidi-css-markup">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>This section is about setting up the default direction for a whole page. For information about working with text direction changes inside the document see <span class="link"><a href="#blocks">Changing the direction of a block element</a></span> and <span class="link"><a href="#inline">Mixing text direction inline</a></span>.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1707,7 +1842,7 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-dir-attribute">HTML5, 3.2.3.6 The <code class="kw">dir</code> attribute</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-dir-attribute">HTML5, 3.2.3.6 The <code class="kw">dir</code> attribute</a></p>
           </li>
         </ul>
       </div>
@@ -1715,10 +1850,10 @@ function toggleExtra (trigger, target) {
         <h5 class="tests">Tests</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-dir-attribute/results-dir-basics">HTML5, dir basics</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/the-dir-attribute">HTML5, dir basics</a></p>
           </li>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/native-user-interfaces/results-chrome">HTML5, native user interfaces</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/native-user-interfaces">HTML5, native user interfaces</a></p>
           </li>
         </ul>
       </div>
@@ -1726,20 +1861,25 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#direction">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+
+<details class="sec" id="blocks">
+<summary class="h3">Setting direction on block elements</summary>
     <div class="resource-box" id="sec_blocks">
-      <h3 id="blocks">Setting direction on block elements</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+         <div class="xref">
+          <h5>See also</h5>
+          <p>For information about setting up the default direction for a whole page see <span class="link"><a href="#using">Setting up a right-to-left page</a></span>.</p>
+          <p>See also <span class="link"><a href="#formdir">Managing direction in form controls</a></span>.</p>
+        </div>
+     <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp"><span class="rule">Add the <code class="kw">dir</code> attribute to a block  element to change base direction</span>. <a href="/International/questions/qa-html-dir#blockelements">more</a></li>
           <li class="bp"><span class="rule">Do not use CSS styling to control directionality in HTML. Use markup</span>. <a href="/International/questions/qa-bidi-css-markup">more</a></li>
           <li class="bp"><span class="rule">Only use bidi markup to set the base direction for the document as a whole, or where you need to <em>change</em> the base direction</span>. <a href="/International/questions/qa-html-dir#markkupcrazy">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>For information about setting up the default direction for a whole page see <span class="link"><a href="#using">Setting up a right-to-left page</a></span>.</p>
-          <p>See also <span class="link"><a href="#formdir">Managing direction in form controls</a></span>.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1781,7 +1921,7 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-dir-attribute">HTML5, 3.2.3.6 The <code class="kw">dir</code> attribute</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-dir-attribute">HTML5, 3.2.3.6 The <code class="kw">dir</code> attribute</a></p>
           </li>
         </ul>
       </div>
@@ -1789,10 +1929,10 @@ function toggleExtra (trigger, target) {
         <h5 class="tests">Tests</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-dir-attribute/results-dir-basics">HTML5, dir basics</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/the-dir-attribute">HTML5, dir basics</a></p>
           </li>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-pre-element/results-pre">HTML5, the pre element</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/bidi-text-rendering#pre">HTML5, the pre element</a></p>
           </li>
         </ul>
       </div>
@@ -1800,19 +1940,26 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#direction">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+
+
+
+
+<details class="sec" id="formdir">
+<summary class="h3">Managing text direction in form controls</summary>
     <div class="resource-box" id="sec_formdir">
-      <h3 id="formdir">Managing text direction in form controls</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+         <div class="xref">
+          <h5>See also</h5>
+          <p>See also <span class="link"><a href="#blocks">Setting direction on block elements</a></span>.</p>
+        </div>
+     <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Add <code class="kw">dir="auto"</code> to <code class="kw">input</code> tags to automatically align text to the correct side of an input field. <a href="/International/questions/qa-html-dir#autoinput">more</a></li>
           <li class="bp">Add <code class="kw">dir="auto"</code> to <code class="kw">textarea</code> and <code class="kw">pre</code> tags to make paragraphs align to the left or right according to the intial strong character <a href="/International/questions/qa-html-dir#autotextarea">more</a></li>
           <li class="bp">Consider using the <code class="kw">dirname</code> attribute to pass information to the server about the direction of  text in a text or search form control. <a href="/International/questions/qa-html-dir#reportingdirection">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>See also <span class="link"><a href="#blocks">Setting direction on block elements</a></span>.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -1849,10 +1996,10 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-dir-attribute">HTML5, 3.2.3.6 The <code class="kw">dir</code> attribute</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-dir-attribute">HTML5, 3.2.3.6 The <code class="kw">dir</code> attribute</a></p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/forms.html#attr-input-dirname">HTML5, 4.10.7.3.2 The <code class="kw">dirname</code> attribute</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/forms.html#attr-input-dirname">HTML5, 4.10.7.3.2 The <code class="kw">dirname</code> attribute</a></p>
           </li>
         </ul>
       </div>
@@ -1860,13 +2007,13 @@ function toggleExtra (trigger, target) {
         <h5 class="tests">Tests</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-dir-attribute/results-dir-auto">HTML5, dir=auto &amp; bdi</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/the-bdi-element#bdi_other">HTML5, dir=auto &amp; bdi</a></p>
           </li>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-textarea-element/results-textarea">HTML5, the textarea element</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/bidi-text-rendering#textarea">HTML5, the textarea element</a></p>
           </li>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-dirname-attribute/results-dirname">HTML5, the dirname attribute</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/the-dirname-attribute">HTML5, the dirname attribute</a></p>
           </li>
         </ul>
       </div>
@@ -1874,31 +2021,41 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#direction">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+
+<details class="sec" id="inline">
+<summary class="h3">Mixing text direction inline</summary>
     <div class="resource-box" id="sec_inline">
-      <h3 id="inline">Mixing text direction inline</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
-        <ul>
-          <li class="bp">Tightly wrap every opposite-direction phrase in markup that sets its base direction. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
-          <li class="bp">HTML4: If you know the phrase's direction, or can work it out for injected text,        use the <code class="kw">dir</code> attribute to set the direction of the phrase. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
-          <li class="bp">HTML4: If  the tightly-wrapped phrase  is followed inline (possibly after some intervening neutral characters) by a number or a logically separate opposite-direction phrase, then add a directional mark (RLM or LRM) immediately after the markup of that phrase. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
-          <li class="bp">HTML5: If you know the phrase's direction, or can work it out for injected text,  wrap the phrase in a <code class="kw">bdi</code> element and add a <code class="kw">dir</code> attribute with <code class="kw">rtl</code> or <code class="kw">ltr</code>. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
-          <li class="bp">HTML5: If you don't know the phrase's direction, ie. unknown text that will be injected at run time, then either     wrap the phrase in bdi (no dir attribute needed), or  if the phrase is tightly wrapped by an element already,  just add dir="auto" to that element. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
-          <li class="bp"><span class="rule">Use  Unicode control characters for bidirectional control only  for attribute text or element text that allows no internal markup</span>. <a href="/International/questions/qa-bidi-controls">more</a></li>
-          <li class="bp">Consider using  Unicode control characters to set the base direction around bidirectional text that will be displayed as tooltips, page titles, or on JavaScript dialog boxes. <a href="/International/questions/qa-bidi-controls">more</a></li>
-          <li class="bp">Do not leave white space at the end of inline elements that mark a directional boundary. <a href="/International/questions/qa-bidi-space">more</a></li>
-        </ul>
-        <div class="xref">
+          <div class="xref">
           <h5>See also</h5>
           <p>Related sections include <span class="link"><a href="#mirrored">Handling parentheses and other mirrored characters</a></span>, and <span class="link"><a href="#bdo">Overriding the Unicode bidirectional algorithm</a></span>.</p>
         </div>
+    <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
+        <ul>
+          <li class="bp">Tightly wrap every opposite-direction phrase in markup that sets its base direction. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
+          <li class="bp"><strong>If you know the phrase's direction</strong>,  wrap it in an element with a <code class="kw">dir</code> attribute. If you don't already have an element around the text, use  <code class="kw">span</code> or <code class="kw">bdi</code>. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
+         <li class="bp"><strong>If you don't know the phrase's direction</strong>, ie. unknown text that will be injected at run time, then either wrap the phrase in <code class="kw" translate="no">bdi</code> (no <code class="kw" translate="no">dir</code> attribute needed), or  if the phrase is tightly wrapped by an element already,  just add <code>dir="auto"</code> to that element. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
+           <li class="bp">To bulletproof the code for Edge or legacy browsers, if the tightly-wrapped phrase is followed inline (possibly after some intervening neutral characters) by a number, or is one of a list of separate phrases with the same direction, then add a directional mark (RLM or LRM) immediately after the markup of that phrase. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
+        
+          
+          <!--li class="bp">HTML4: If you know the phrase's direction, or can work it out for injected text,        use the <code class="kw">dir</code> attribute to set the direction of the phrase. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
+          <li class="bp">HTML4: If  the tightly-wrapped phrase  is followed inline (possibly after some intervening neutral characters) by a number or a logically separate opposite-direction phrase, then add a directional mark (RLM or LRM) immediately after the markup of that phrase. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
+          <li class="bp">HTML5: If you know the phrase's direction, or can work it out for injected text,  wrap the phrase in a <code class="kw">bdi</code> element and add a <code class="kw">dir</code> attribute with <code class="kw">rtl</code> or <code class="kw">ltr</code>. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li>
+          <li class="bp">HTML5: If you don't know the phrase's direction, ie. unknown text that will be injected at run time, then either     wrap the phrase in bdi (no dir attribute needed), or  if the phrase is tightly wrapped by an element already,  just add dir="auto" to that element. <a href="/International/articles/inline-bidi-markup/#whattodo">more</a></li-->
+          
+          <li class="bp"><span class="rule">Only use  Unicode control characters for bidirectional control in attribute text or element text that allows no internal markup</span>. <a href="/International/questions/qa-bidi-controls">more</a></li>
+          <li class="bp">Consider using  Unicode control characters to set the base direction around bidirectional text that will be displayed as tooltips, page titles, or on JavaScript dialog boxes. <a href="/International/questions/qa-bidi-controls">more</a></li>
+          <li class="bp">Do not leave white space at the end of inline elements that mark a directional boundary. <a href="/International/questions/qa-bidi-space">more</a></li>
+        </ul>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline
-              markup</a></p>
+            <p class="link"><a href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></p>
             <p class="desc">How to use markup in HTML4 and new HTML5 features for inline bidirectional text. Introduces you gently to the bidi algorithm, if you need that. Includes:</p>
             <ul>
               <li>
@@ -1934,10 +2091,10 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/dom.html#the-dir-attribute">HTML5, 3.2.3.6 The <code class="kw">dir</code> attribute</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/dom.html#the-dir-attribute">HTML5, 3.2.3.6 The <code class="kw">dir</code> attribute</a></p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/forms.html#attr-input-dirname">HTML5, 4.6.23 The <code class="kw">bdi</code> element</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/forms.html#attr-input-dirname">HTML5, 4.6.23 The <code class="kw">bdi</code> element</a></p>
           </li>
         </ul>
       </div>
@@ -1945,10 +2102,10 @@ function toggleExtra (trigger, target) {
         <h5 class="tests">Tests</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-dir-attribute/results-dir-auto">HTML5, dir=auto &amp; bdi</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/the-bdi-element#bdi_other">HTML5, dir=auto &amp; bdi</a></p>
           </li>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-br-element/results-br">HTML5, the br element</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/bidi-text-rendering#br">HTML5, the br element</a></p>
           </li>
         </ul>
       </div>
@@ -1956,10 +2113,15 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#direction">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+    
+<details class="sec" id="mirrored">
+<summary class="h3">Handling parentheses and other mirrored characters</summary>
     <div class="resource-box" id="sec_mirrored">
-      <h3 id="mirrored">Handling parentheses and other mirrored characters</h3>
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp"><span class="rule">Treat mirrored characters as if any word <code class="kw">left</code> in the name meant '<span class="qterm">opening</span>', and <code class="kw">right</code> meant '<span class="qterm">closing</span>'</span>. <a href="/International/articles/inline-bidi-markup/#mirrored">more</a></li>
         </ul>
@@ -1967,9 +2129,8 @@ function toggleExtra (trigger, target) {
       <div>
         <h5 class="howto">How to's</h5>
         <ul>
-          <li class="w3">
-            <p class="link"><a href="/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline
-              markup</a></p>
+          <li class="w3">  
+            <p class="link"><a href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></p>
             <p class="desc">How to use markup in HTML4 and new HTML5 features for inline bidirectional text. Introduces you gently to the bidi algorithm, if you need that. Includes:</p>
             <ul>
               <li>
@@ -1984,10 +2145,15 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#direction">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+    
+<details class="sec" id="bdo">
+<summary class="h3">Overriding the Unicode bidirectional algorithm</summary>
     <div class="resource-box" id="sec_bdo">
-      <h3 id="bdo">Overriding the Unicode bidirectional algorithm</h3>
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp"><span class="rule">Use the <code class="kw">bdo</code> element to force the directionality of a sequence of inline characters</span>. <a href="/International/questions/qa-html-dir#userexplicit">more</a></li>
         </ul>
@@ -1996,8 +2162,7 @@ function toggleExtra (trigger, target) {
         <h5 class="howto">How to's</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="/International/articles/inline-bidi-markup/">What you need to know about the bidi algorithm and inline
-              markup</a></p>
+            <p class="link"><a href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></p>
             <p class="desc">How to use markup in HTML4 and new HTML5 features for inline bidirectional text. Introduces you gently to the bidi algorithm, if you need that. Includes:</p>
             <ul>
               <li>
@@ -2012,7 +2177,7 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/html5/text-level-semantics.html#the-bdo-element">HTML5, 4.6.24 The <code class="kw">bdo</code> element</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/html5/text-level-semantics.html#the-bdo-element">HTML5, 4.6.24 The <code class="kw">bdo</code> element</a></p>
           </li>
         </ul>
       </div>
@@ -2020,7 +2185,7 @@ function toggleExtra (trigger, target) {
         <h5 class="tests">Tests</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/the-bdo-element/results-bdo">HTML5, the bdo element</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/the-bdo-element">HTML5, the bdo element</a></p>
           </li>
         </ul>
       </div>
@@ -2028,26 +2193,83 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#direction">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-  </section>
-  <section id="sec_style">
-    <h2 id="style">Styling & layout</h2>
-    <div class="summary">
-      <h3>In this section</h3>
-      <ul>
-        <li><a href="#gsstyle">Getting started</a></li>
-        <li><a href="#textexpansion">Preparing for text expansion during translation</a></li>
-        <li><a href="#langstyle">Styling by language</a></li>
-        <li><a href="#liststyle">Styling lists </a></li>
-        <li><a href="#verticaltext">Creating vertical text </a></li>
-        <li><a href="#linebreaks">Managing line breaks </a></li>
-        <li><a href="#justification">Justifying and aligning text</a></li>
-        <li><a href="#rubystyle">Styling ruby text </a></li>
-        <li><a href="#typography">Applying various script-specific typographic conventions</a></li>
-      </ul>
+    </details>
+    
+    
+    
+<details class="sec" id="verticaltext">
+<summary class="h3">Creating vertical text</summary>
+    <div class="resource-box" id="sec_verticaltext">
+      <div class="checklist"> </div>
+      <div>
+        <h5 class="howto">How to's</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-drafts/articles/vertical-text.en">Styling vertical Chinese, Japanese, Korean and Mongolian text (Draft)</a></p>
+            <p class="desc">How to use CSS to create vertical text, and what is currently supported. Includes:</p>
+            <ul>
+              <li>
+                <p class="link"><a href="https://w3c.github.io/i18n-drafts/articles/vertical-text.en.html#writing-mode">Basic setup</a></p>
+                <p class="desc">Use writing-mode to achieve the basic direction.</p>
+              </li>
+              <li>
+                <p class="link"><a href="https://w3c.github.io/i18n-drafts/articles/vertical-text.en.html#upright">Changing the glyph orientation for embedded text</a></p>
+                <p class="desc">How to make non-native text stand upright, rather than flow down the page.</p>
+              </li>
+              <li>
+                <p class="link"><a href="https://w3c.github.io/i18n-drafts/articles/vertical-text.en.html#tcy">Horizontal-in-vertical text</a></p>
+                <p class="desc">Make numbers and short texts run horizontally within the vertical line.</p>
+              </li>
+              <li>
+                <p class="link"><a href="https://w3c.github.io/i18n-drafts/articles/vertical-text.en.html#forms_etc">Forms, lists and tables</a></p>
+                <p class="desc">Working with forms, lists and tables.</p>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="specs">Spec links</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="https://www.w3.org/TR/css3-writing-modes/">CSS Writing Modes Module Level 3</a></p>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="otherlinks">Other links</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="/International/articles/css3-text/#Slide0080">Text direction </a></p>
+            <p class="desc">Preview of upcoming proposals for CSS3. In W3C article, CSS3 and International Text.</p>
+          </li>
+        </ul>
+      </div>
+      <div class="goto">
+        <h5>Go to:</h5>
+        <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="showhide"><a onclick="openAll('style', 'h3','');" href="#_">Open All</a> <a onclick="closeAll('style', 'h3','');" href="#_">Close All</a></div>
+    </details>
+    </details>
+  </section>
+
+
+
+
+
+
+
+
+
+
+<section id="sec_style">
+<details class="sec" id="style">
+<summary class="h2">Styling &amp; layout</summary>
+    
+
+<details class="sec" id="gsstyle">
+<summary class="h3">Getting started</summary>
     <div class="resource-box" id="sec_gsstyle">
-      <h3 id="gsstyle">Getting started</h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -2062,10 +2284,15 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_textexpansion">
-      <h3 id="textexpansion">Preparing for text expansion during translation</h3>
+    </details>
+    
+    
+    
+<details class="sec" id="textexpansion">
+<summary class="h3">Preparing for text expansion during translation</summary>
+<div class="resource-box" id="sec_textexpansion">
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp"> Ensure that your graphic backgrounds can automatically expand with the  text they are related to, avoid highly constrained  spaces, and anticipate that the box containing  your text may grow during translation. <a href="/International/questions/qa-resizing-backgrounds#answer">more</a></li>
         </ul>
@@ -2100,17 +2327,22 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+    
+    
+<details class="sec" id="langstyle">
+<summary class="h3">Styling by language</summary>   
     <div class="resource-box" id="sec_langstyle">
-      <h3 id="langstyle">Styling by language</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
-        <ul>
-          <li class="bp"><span class="rule">Use :lang to set language-specific styling</span>. <a href="/International/questions/qa-css-lang#answer">more</a></li>
-        </ul>
-        <div class="xref">
+         <div class="xref">
           <h5>See also</h5>
           <p>Related sections include <span class="link"><a href="#textprocessing">Using attributes to declare language</a></span>, and <span class="link"><a href="#langvalues">Choosing language values</a></span>.</p>
         </div>
+     <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
+        <ul>
+          <li class="bp"><span class="rule">Use :lang to set language-specific styling</span>. <a href="/International/questions/qa-css-lang#answer">more</a></li>
+        </ul>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -2139,13 +2371,13 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/selectors/Overview.html#lang-pseudo">Selectors Level 3, 6.6.3 The language pseudo-class :lang</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/selectors/Overview.html#lang-pseudo">Selectors Level 3, 6.6.3 The language pseudo-class :lang</a></p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/selectors/#attribute-selectors">Selectors Level 3, 6.3 Attribute selectors</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/selectors/#attribute-selectors">Selectors Level 3, 6.3 Attribute selectors</a></p>
           </li>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/css3-namespace/">CSS Namespaces Module</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/css3-namespace/">CSS Namespaces Module</a></p>
           </li>
         </ul>
       </div>
@@ -2153,7 +2385,7 @@ function toggleExtra (trigger, target) {
         <h5 class="tests">Tests</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="/International/tests/html5/css3-selectors-lang/results-lang">CSS3 Selectors, language selectors</a></p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/lang-selectors">CSS3 Selectors, language selectors</a></p>
           </li>
         </ul>
       </div>
@@ -2161,91 +2393,131 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+<details class="sec" id="liststyle">
+<summary class="h3">Styling  lists</summary>   
     <div class="resource-box" id="sec_liststyle">
-      <h3 id="liststyle">Styling  lists</h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
         <ul>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/predefined-counter-styles/">Predefined Counter Styles</a></p>
-            <p class="desc">Provides cut and paste templates for a large number of international counter styles that can be used for ordered lists and other such counters.</p>
+           <li class="nonw3">
+            <p class="link"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@counter-style">MDN: @counter-style</a></p>
+            <p class="desc">How to define your own counter styles when the pre-defined styles aren't fitting your needs.</p>
+          </li>
+         <li class="w3">
+            <p class="link"><a href="https://www.w3.org/TR/predefined-counter-styles/">Ready-made Counter Styles</a></p>
+            <p class="desc">Cut-and-paste templates for a large number of international counter styles that can be used for ordered lists and other such counters.</p>
           </li>
         </ul>
       </div>
-      <div>
-        <h5 class="specs">Spec links</h5>
+         <div>
+        <h5 class="refs">Useful reference links</h5>
         <ul>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/css-counter-styles-3/">CSS Counter Styles Level 3</a></p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/css3-lists/">CSS Lists and Counters Module Level 3</a></p>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <h5 class="otherlinks">Other links</h5>
-        <ul>
-          <li class="nonw3">
-            <p class="link"><a href="http://rishida.net/tools/numberconverter/index.php">Number converter</a></p>
+           <li class="nonw3">
+            <p class="link"><a href="http://r12a.github.io/apps/counterconverter/">Counter styles converter</a></p>
             <p class="desc">Allows you to convert ASCII numbers into other representations that can be used for ordered list counters, headings, etc, using the algorithms described by CSS3 Counter Styles.</p>
           </li>
           <li class="w3">
-            <p class="link"><a href="/International/articles/css3-text/#Slide0040">CSS3 and International Text: Lists</a></p>
-            <p class="desc">Preview of upcoming proposals for CSS3 written in 2003.</p>
+            <p class="link"><a href="https://w3c.github.io/typography/#counters">Typography index: Lists, counters, etc</a></p>
+            <p class="desc">Links to information about lists and counter-styles in the typography index.</p>
           </li>
         </ul>
       </div>
-      <div>
-        <h5 class="tests">Tests</h5>
-        <ul>
-          <li class="w3">
-            <p class="link"><a href="/International/tests/html5/css3-counter-styles/results-cstyles">CSS3 Counter Styles, predefined counters</a></p>
-          </li>
-        </ul>
-      </div>
-      <div class="goto">
-        <h5>Go to:</h5>
-        <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
-    </div>
-    <div class="resource-box" id="sec_verticaltext">
-      <h3 id="verticaltext">Creating vertical text </h3>
-      <div class="checklist"> </div>
-      <div>
+     <div>
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/css3-writing-modes/">CSS Writing Modes Module Level 3</a></p>
+            <p class="link"><a href="https://www.w3.org/TR/css-counter-styles-3/">CSS Counter Styles Level 3</a></p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://www.w3.org/TR/css3-lists/">CSS Lists and Counters Module Level 3</a></p>
           </li>
         </ul>
       </div>
-      <div>
-        <h5 class="otherlinks">Other links</h5>
+       <div>
+        <h5 class="tests">Tests</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="/International/articles/css3-text/#Slide0080">Text direction </a></p>
-            <p class="desc">Preview of upcoming proposals for CSS3. In W3C article, CSS3 and International Text.</p>
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/custom-counter-styles">Custom counter styles</a></p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/predefined-counter-styles">CSS3 Counter Styles, predefined styles</a></p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/counter-styles">CSS3 Counter Styles</a></p>
           </li>
         </ul>
       </div>
+      <div>
+      <details>
+      <summary class="h5">Show more links</summary>
+        <ul class="extraLinks">
+          <li class="w3">
+            <p class="link"><a href="https://www.w3.org/International/articles/css3-text/#Slide0040">CSS3 and International Text: Lists</a></p>
+            <p class="desc">Preview of upcoming proposals for CSS3 written in 2003.</p>
+          </li>
+        </ul>
+        </details>
+        </div>
       <div class="goto">
         <h5>Go to:</h5>
-        <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
+        <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="https://www.w3.org/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+
+<details class="sec" id="linebreaks">
+<summary class="h3">Managing line breaks</summary>   
     <div class="resource-box" id="sec_linebreaks">
-      <h3 id="linebreaks">Managing line breaks</h3>
-      <div class="checklist"> </div>
-      <div>
+    <div class="xref">
+          <h5>See also</h5>
+          <p>Line-breaking behaviour is closely associated with justification. For the latter, see <span class="link"><a href="#justification">Justifying &amp; aligning text</a></span>.</p>
+        </div>
+     <div class="checklist"> </div>
+     <div>
         <h5 class="howto">How to's</h5>
         <ul>
           <li class="nonw3">
-            <p class="link"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens#Notes_on_supported_languages">Hyphens</a></p>
-            <p class="desc">Mozilla documentation describing how to use the CSS hyphens property. Also includes a table of supported languages in browsers.</p>
+            <p class="link"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/word-break">MDN: word-break</a></p>
+            <p class="desc">Specifies whether or not the browser should insert line breaks wherever the text would otherwise overflow its content box.</p>
+          </li>
+          <li class="nonw3">
+            <p class="link"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/line-break">MDN: line-break</a></p>
+            <p class="desc">CSS property used to specify how (or if) to break lines when working with punctuation and symbols. Only affects text in Chinese, Japanese, or Korean (CJK).</p>
+          </li>
+          <li class="nonw3">
+            <p class="link"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens#Notes_on_supported_languages">MDN: hyphens</a></p>
+            <p class="desc">Specifies how words should be hyphenated when text wraps across multiple lines. Also includes a table of supported languages in browsers.</p>
           </li>
         </ul>
       </div>
-      <div>
+        <div>
+        <h5 class="refs">Useful reference links</h5>
+        <ul>
+           <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/typography/#line_breaking">Typography index: Line-breaking</a></p>
+            <p class="desc">Links to information about line-breaking in the typography index.</p>
+          </li>
+           <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/typography/#hyphenation">Typography index: Hyphenation</a></p>
+            <p class="desc">Links to information about hyphenation in the typography index.</p>
+          </li>
+        </ul>
+      </div>
+        <div>
+        <h5 class="background">Background reading</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="/International/articles/typography/linebreak.en">Approaches to line breaking</a></p>
+            <p class="desc">High level summary of various typographic strategies for wrapping text at the end of a line, for a variety of scripts.</p>
+          </li>
+        </ul>
+      </div>
+     <div>
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
@@ -2256,45 +2528,77 @@ function toggleExtra (trigger, target) {
           </li>
         </ul>
       </div>
-      <div>
-        <h5 class="otherlinks">Other links</h5>
+       <div>
+        <h5 class="tests">Tests</h5>
         <ul>
           <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/line-breaking">CSS3 Text, Line breaking, BA, OP, CL and NS</a></p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/line-breaks-glwj">CSS3 Text, Non-tailorable line breaking</a></p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/word-break">CSS3 Text, word-break</a></p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/line-breaks-jazh">Japanese &amp; Chinese line breaks</a></p>
+          </li>
+        </ul>
+      </div>
+        <div>
+      <details>
+      <summary class="h5">Show more links</summary>
+        <ul id="justification_other" class="extraLinks">
+         <li class="w3">
             <p class="link"><a href="/International/articles/css3-text/#Slide0090">CSS3 and international text: Line breaking </a></p>
             <p class="desc">Preview of upcoming proposals for CSS3 written in 2003.</p>
           </li>
         </ul>
-      </div>
-      <div>
-        <h5 class="tests">Tests</h5>
-        <ul>
-          <li class="w3">
-            <p class="link"><a href="/International/tests/html5/css3-text-line-break-baspglwj/results-ba">CSS3 Text, Line break, BA: Break after</a></p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="/International/tests/html5/css3-text-line-break-opclns/results-opclns"> CSS3 Text, Line break, OP, CL and NS</a></p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="/International/tests/html5/css3-text-line-break-jazh/results-ja"> CSS3 Text, Line break, Japanese</a></p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="/International/tests/html5/css3-text-line-break-jazh/results-zh"> CSS3 Text, Line break, Chinese</a></p>
-          </li>
-        </ul>
-      </div>
-      <div class="goto">
+        </details>
+        </div>
+     <div class="goto">
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+<details class="sec" id="justification">
+<summary class="h3">Justifying and aligning text</summary>   
     <div class="resource-box" id="sec_justification">
-      <h3 id="justification">Justifying and aligning text</h3>
-      <div class="checklist"> </div>
+    <div class="xref">
+          <h5>See also</h5>
+          <p>Justification behaviour is closely associated with line-breaking and hyphenation. For more information on those topics, see <span class="link"><a href="#linebreaks">Managing line breaks</a></span>.</p>
+        </div>
+     <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
         <ul>
           <li class="nonw3">
-            <p class="link"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/hyphens#Notes_on_supported_languages">Hyphens</a></p>
-            <p class="desc">Mozilla documentation describing how to use the CSS hyphens property. Also includes a table of supported languages in browsers.</p>
+            <p class="link"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-align">MDN: text-align</a></p>
+            <p class="desc">Specifies the horizontal alignment of an inline or table-cell box, including the value <code class="kw" translate="no">justify</code>, which is used to turn on justification.</p>
+          </li>
+          <li class="nonw3">
+            <p class="link"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/text-align">MDN: text-align</a></p>
+            <p class="desc">Defines what type of justification should be applied to text when it is justified (ie. when <code class="kw" translate="no">text-align:justify</code> is set). Values include <code class="kw" translate="no">inter-word</code> and <code class="kw" translate="no">inter-character</code>.</p>
+          </li>
+        </ul>
+      </div>
+        <div>
+        <h5 class="refs">Useful reference links</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/typography/#justification">Typography index: Justification &amp; line-end alignment</a></p>
+            <p class="desc">Links to information about justification in the typography index.</p>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="background">Background reading</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="/International/articles/typography/justification">Approaches to justification</a></p>
+            <p class="desc">High level summary of various typographic strategies for fully justifying text on a line and in a paragraph for a variety of scripts, and some advice for authors and implementers.</p>
           </li>
         </ul>
       </div>
@@ -2309,10 +2613,22 @@ function toggleExtra (trigger, target) {
           </li>
         </ul>
       </div>
-      <div>
-        <h5 class="otherlinks">Other links</h5>
+       <div>
+        <h5 class="tests">Tests</h5>
         <ul>
           <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/text-align#justify">CSS3 Text, text-align:justify</a></p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/text-align#textjustify">CSS3 Text, text-justify</a></p>
+          </li>
+        </ul>
+      </div>
+       <div>
+      <details>
+      <summary class="h5">Show more links</summary>
+        <ul id="justification_other" class="extraLinks">
+         <li class="w3">
             <p class="link"><a href="/International/articles/css3-text/#Slide0090">CSS3 and international text: Line breaking </a></p>
             <p class="desc">Preview of upcoming proposals for CSS3 written in 2003.</p>
           </li>
@@ -2321,25 +2637,26 @@ function toggleExtra (trigger, target) {
             <p class="desc">Preview of upcoming proposals for CSS3 written in 2003.</p>
           </li>
         </ul>
-      </div>
-      <div class="goto">
+        </details>
+        </div>
+    <div class="goto">
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
-    <div class="resource-box" id="sec_rubystyle">
-      <h3 id="rubystyle">Styling ruby text</h3>
-      <div class="checklist">
-        <div class="xref">
-          <h5>See also</h5>
-          <p>This section is specifically about styling ruby text. For more information about markup for ruby see <span class="link"><a href="#ruby">Using ruby markup</a></span>.</p>
-        </div>
-      </div>
+    </details>
+
+
+
+<details class="sec" id="hyphenation">
+<summary class="h3">Hyphenation</summary>   
+    <div class="resource-box" id="sec_hyphenation">
+     <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
         <ul>
-          <li class="w3">
-            <p class="link"><a href="/International/tutorials/ruby/#Slide0170">Ruby style</a></p>
-            <p class="desc">Introduction to styling ruby with CSS3 Ruby Module. In W3C article, Ruby Markup and Styling. </p>
+          <li class="nonw3">
+            <p class="link"><a href="http://clagnut.com/blog/2395/">All you need to know about hyphenation in CSS</a></p>
+            <p class="desc">The various CSS properties and settings to manage hyphenation.</p>
           </li>
         </ul>
       </div>
@@ -2347,11 +2664,61 @@ function toggleExtra (trigger, target) {
         <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/css3-ruby/">CSS3 Ruby Module</a></p>
+            <p class="link"><a href="https://drafts.csswg.org/css-text-3/#hyphenation">CSS Text Module Level 3, 5.4 Hyphenation: the hyphens property</a></p>
+          </li>
+          <li class="w3">
+            <p class="link"><a href="https://drafts.csswg.org/css-text-4/#hyphenation">CSS Text Module Level 4, 8. Breaking Within Words</a></p>
+          </li>
+        </ul>
+      </div>
+       <div>
+        <h5 class="tests">Tests</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/hyphens">CSS Text, hyphens</a></p>
+          </li>
+        </ul>
+      </div>
+    <div class="goto">
+        <h5>Go to:</h5>
+        <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
+    </div>
+    </details>
+
+
+
+<details class="sec" id="rubystyle">
+<summary class="h3">Styling ruby text</summary>   
+    <div class="resource-box" id="sec_rubystyle">
+         <div class="xref">
+          <h5>See also</h5>
+          <p>This section is specifically about <em>styling</em> ruby text. For more information about markup for ruby see <span class="link"><a href="#ruby">Using ruby markup</a></span>.</p>
+        </div>
+     <div class="checklist">
+      </div>
+     <div>
+        <h5 class="howto">How to's</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-drafts/articles/ruby/styling.en.html">Ruby Styling (draft!)</a></p>
+            <p class="desc">Discusses how to use CSS styling to affect the rendering of ruby content.</p>
+          </li>
+          <li class="nonw3">
+            <p class="link"><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/ruby-align">MDN: ruby-align</a></p>
+            <p class="desc">Defines the distribution of the different ruby elements over the base.</p>
           </li>
         </ul>
       </div>
       <div>
+        <h5 class="refs">Useful reference links</h5>
+        <ul>
+         <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/typography/#ruby_annotation">Typography index: Ruby annotation</a></p>
+            <p class="desc">Links to requirements for ruby in the typography index.</p>
+          </li>
+        </ul>
+      </div>
+        <div>
         <h5 class="background">Background reading</h5>
         <ul>
           <li class="w3">
@@ -2365,33 +2732,45 @@ function toggleExtra (trigger, target) {
           </li>
         </ul>
       </div>
-      <div>
-        <h5 class="otherlinks">Other links</h5>
+     <div>
+        <h5 class="specs">Spec links</h5>
         <ul>
           <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/jlreq/#ruby_and_emphasis_dots">Requirements for Japanese text layout: 3.3 Ruby and Emphasis Dots</a></p>
-            <p class="desc">Detailed descriptions of how ruby should work in Japanese text layout.</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="http://www.w3.org/TR/jlreq/#positioning_of_jukugoruby">Requirements for Japanese text layout: Appendix F Positioning of Jukugo-ruby</a></p>
-            <p class="desc">Detailed descriptions of how ruby should work in Japanese text layout&nbsp;with particular respect to 'jukugo' ruby.</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="/International/articles/ruby/Overview#Slide0170">Ruby markup &amp; styling: Ruby style</a></p>
-            <p class="desc">Introduction to styling ruby with CSS3 Ruby Module.</p>
-          </li>
-          <li class="w3">
-            <p class="link"><a href="/International/articles/css3-text/#Slide0240">CSS3 and international text: Ruby styling </a></p>
-            <p class="desc">Preview of upcoming proposals for CSS3 written in 2003.</p>
+            <p class="link"><a href="https://www.w3.org/TR/css3-ruby/">CSS3 Ruby Module</a></p>
           </li>
         </ul>
       </div>
-      <div class="goto">
+       <div>
+        <h5 class="tests">Tests</h5>
+        <ul>
+          <li class="w3">
+            <p class="link"><a href="https://w3c.github.io/i18n-tests/results/text-align#justify">CSS3 Ruby</a></p>
+            <p class="desc">Includes tests for <code class="kw" translate="no">ruby-position</code>, <code class="kw" translate="no">ruby-align</code>, <code class="kw" translate="no">ruby-merge</code>, and ruby autohide</p>
+          </li>
+        </ul>
+      </div>
+      <div>
+      <details>
+      <summary class="h5">Show more links</summary>
+        <ul id="rubystyle_other" class="extraLinks">
+           <li class="w3">
+            <p class="link"><a href="/International/tutorials/ruby/#Slide0170">Ruby style</a></p>
+            <p class="desc">Introduction to styling ruby with CSS3 Ruby Module. In W3C article, Ruby Markup and Styling. </p>
+          </li>
+        </ul>
+        </details>
+        </div>
+     <div class="goto">
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+
+<details class="sec" id="typography">
+<summary class="h3">Applying various script-specific typographic conventions</summary>   
     <div class="resource-box" id="sec_typography">
-      <h3 id="typography">Applying various script-specific typographic conventions</h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="otherlinks">Other links</h5>
@@ -2414,8 +2793,13 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+
+<details class="sec" id="fonts">
+<summary class="h3">Using fonts &amp; webfonts</summary>   
     <div class="resource-box" id="sec_fonts">
-      <h3 id="fonts">Using fonts & webfonts</h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -2425,7 +2809,7 @@ function toggleExtra (trigger, target) {
             <p class="desc">Useful tutorial on how to use webfonts, and some things to look out for.</p>
           </li>
           <li class="nonw3">
-            <p class="link"><a href="http://rishida.net/scripts/fontlist/">Fonts supplied with Windows and Mac OS X, by script</a></p>
+            <p class="link"><a href="https://r12a.github.io/scripts/fontlist/">Fonts supplied with Windows and Mac OS X, by script</a></p>
             <p class="desc">Lists of fonts provided by the Windows7/8 and Mac OS X SnowLeopard/Lion operating systems, grouped by non-Latin script. Useful to set font-family styles for CSS.</p>
           </li>
         </ul>
@@ -2434,8 +2818,12 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+<details class="sec" id="localdata">
+<summary class="h3">Working with date formats</summary>   
     <div class="resource-box" id="sec_localdata">
-      <h3 id="localdata">Working with date formats</h3>
       <div class="checklist"> </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -2450,10 +2838,15 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+
+<details class="sec" id="localnames">
+<summary class="h3">Working with personal names</summary>   
     <div class="resource-box" id="sec_localnames">
-      <h3 id="localnames">Working with personal names</h3>
       <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Ask yourself whether you really need to have separate fields for given name and family name. <a href="/International/questions/qa-personal-names#singlefield">more</a></li>
           <li class="bp">Make input fields long enough to enter long names, and ensure that if the name is displayed on a web page later there is enough space for it. <a href="/International/questions/qa-personal-names#singlefield">more</a></li>
@@ -2489,20 +2882,27 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#style">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    </details>
   </section>
-  <section id="sec_navigation">
-    <h2 id="navigation">Navigation</h2>
-    <div class="summary">
-      <h3>In this section</h3>
-      <ul>
-        <li><a href="#gsnavigation">Getting started</a></li>
-        <li><a href="#linkloc">Linking to localized content </a></li>
-        <li><a href="#contentneg">Using content negotiation</a></li>
-      </ul>
-    </div>
-    <div class="showhide"><a onclick="openAll('navigation', 'h3','');" href="#_">Open All</a> <a onclick="closeAll('navigation', 'h3','');" href="#_">Close All</a></div>
-    <div class="resource-box" id="sec_gsnavigation">
-      <h3 id="gsnavigation">Getting started</h3>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ <section id="sec_navigation">
+<details class="sec" id="navigation">
+<summary class="h2">Navigation</summary>
+    
+
+<details class="sec" id="gsnavigation">
+<summary class="h3">Getting started</summary>
+     <div class="resource-box" id="sec_gsnavigation">
       <div class="checklist"> </div>
       <div>
         <h5 class="background">Background reading</h5>
@@ -2525,10 +2925,19 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#navigation">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+
+
+
+<details class="sec" id="linkloc">
+<summary class="h3">Linking to localized content</summary>
     <div class="resource-box" id="sec_linkloc">
-      <h3 id="linkloc">Linking to localized content </h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
+          <div class="xref">
+          <h5>See also</h5>
+          <p>See also <a href="#linkdestination">Indicating the language of a link destination</a> in the Language section.</p>
+        </div>
+    <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
         <ul>
           <li class="bp">Use server-based, language-related content negotiation to point the user to the page that matches their browser preferences, but also add links to each page so that the user can change languages easily if they prefer. <a href="/International/questions/qa-site-conneg#location">more</a></li>
           <li class="bp">Consider how to indicate to the user where the in-page language links are, and if the page is available in a long list of languages, consider whether or not to use something like a select control (and if so, how to make it obvious what its function is). <a href="/International/questions/qa-site-conneg#location">more</a></li>
@@ -2541,10 +2950,6 @@ function toggleExtra (trigger, target) {
           <li class="bp">Decide whether to add a description alongside each option, using the language of the current page, so that users can tell what the native word means. <a href="/International/questions/qa-navigation-select#descriptions">more</a></li>
           <li class="bp">Find the most appropriate way of ordering the list of options. <a href="/International/questions/qa-navigation-select#order">more</a></li>
         </ul>
-        <div class="xref">
-          <h5>See also</h5>
-          <p>See also <a href="#linkdestination">Indicating the language of a link destination</a> in the Language section.</p>
-        </div>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -2567,19 +2972,24 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#navigation">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    
+
+
+<details class="sec" id="contentneg">
+<summary class="h3">Using content negotiation</summary>
     <div class="resource-box" id="sec_contentneg">
-      <h3 id="contentneg">Using content negotiation</h3>
-      <div class="checklist">
-        <h5 class="best">Best practices checklist</h5>
-        <ul>
-          <li class="bp">Use server-based, language-related content negotiation to point the user to the page that matches their browser preferences, but also add links to each page so that the user can change languages easily if they prefer. <a href="/International/questions/qa-site-conneg#location">more</a></li>
-          <li class="bp">If the user switches to a different language, offer them the opportunity to remember that choice and serve up subsequent pages in that language, overriding their browser settings. <a href="/International/questions/qa-site-conneg#location">more</a></li>
-        </ul>
-        <div class="xref">
+         <div class="xref">
           <h5>See also</h5>
           <p>See also <a href="#linkdestination">Indicating the language of a link destination</a> in the Language section.</p>
           <p>Also the <span class="link"><a href="International/techniques/server-setup#language">Language</a></span> section in the Server Setup page.</p>
         </div>
+     <div class="checklist">
+        <!--h5 class="best">Do's and dont's</h5-->
+        <ul>
+          <li class="bp">Use server-based, language-related content negotiation to point the user to the page that matches their browser preferences, but also add links to each page so that the user can change languages easily if they prefer. <a href="/International/questions/qa-site-conneg#location">more</a></li>
+          <li class="bp">If the user switches to a different language, offer them the opportunity to remember that choice and serve up subsequent pages in that language, overriding their browser settings. <a href="/International/questions/qa-site-conneg#location">more</a></li>
+        </ul>
       </div>
       <div>
         <h5 class="howto">How to's</h5>
@@ -2607,27 +3017,53 @@ function toggleExtra (trigger, target) {
         <h5>Go to:</h5>
         <a href="#navigation">top of this section</a> &#x2022; <a href="#contentstart">top of this page</a> &#x2022; <a href="/International/technique-index">techniques home page</a></div>
     </div>
+    </details>
+    </details>
   </section>
   
   <!-- ##################################################################### --> 
   <!-- ##################################################################### --> 
   
+
 </div>
+
+  <div class="content">
+    <p>You can link to this page and open specific items by using the <code>open</code> parameter in the URL. For example, <code translate="no"><a href="authoring-html.en?open=language&amp;open=langvalues">authoring-html.en?open=language&amp;open=langvalues</a></code> will automatically open the sections <samp>Language</samp> and <samp>Choosing language tags</samp>. The necessary parameter values are shown to the right of each heading. These are links, to help you create a URL for sharing. The query <a href="authoring-html.en?open=all">?open=all</a> expands all sections.</p>
+    </div>
+
+
 <footer id="thefooter"></footer>
-<script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script> 
-<script type="text/javascript">
+<script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script> 
+<script>
 completePage();
 
+// add prompts for ids
+var summaries = document.querySelectorAll('summary')
+for (let i=0;i<summaries.length;i++) {
+    let eclink = '<a href="authoring-html.en?'
+    if (summaries[i].parentNode.parentNode.nodeName.toLowerCase() === 'details') eclink += 'open='+summaries[i].parentNode.parentNode.id+'&amp;'
+    eclink += 'open='+summaries[i].parentNode.id+'">'+summaries[i].parentNode.id+'</a>'+summaries[i].textContent
+    summaries[i].innerHTML = eclink
+    }
+
 // check for parameters and take appropriate action
-parameters = location.search.split('&');
+var parameters = location.search.split('&');
 parameters[0] = parameters[0].substring(1);
+var fragid = ''
 for (var p=0;p<parameters.length;p++) {  
 	pairs = parameters[p].split('=');
-	if (pairs[0] == 'collapse') {  collapseAll(); }
+	if (pairs[0] == 'open' && pairs[1] && pairs[1] === 'all') {  
+        sections=document.querySelectorAll('details.sec')
+        for (let i=0;i<sections.length;i++) sections[i].open=true
+        }
 	if (pairs[0] == 'open' && pairs[1] && document.getElementById(pairs[1])) {
-		revealContent(document.getElementById(pairs[1]));
+		document.getElementById(pairs[1]).open = 'true'
+        fragid = pairs[1]
 		}
 	}
+if (fragid) window.location = (""+window.location).replace(/#[A-Za-z0-9_]*$/,'')+"#"+fragid
+// document.getElementById(fragid).scrollIntoView(true)
 </script>
+<div style="margin-top:60em;">.</div>
 </body>
 </html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Normalization in HTML and CSS</title>
+<meta name="description" content="What are normalization forms, and why do I need to know about them when creating HTML and CSS content?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-html-css-normalization' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-html-css-normalization' // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-10' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-10', time:'14:48'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-02-05', time:'20:08'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-html-css-normalization-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article_new.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2018.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Normalization in HTML and CSS</h1>
+</header>
+
+
+<section id="sidebarExtras">
+  <section>
+    <h2 class="notoc"><a id="quicktest" href="quicktest">Quick check</a></h2>
+    <form action="http://validator.w3.org/i18n-checker/index" method="get" class="quickcheck">
+      <p>Check for normalization mismatches in id and class names</p>
+      <p>
+        <input type="text" value="URI of page to check" name="docAddr" onfocus="this.value=''" />
+      </p>
+      <p>
+        <button type="submit">Check</button>
+      </p>
+      <p><span class="guide">Look for the "Class &amp; id names" field in the Information table.</span></p>
+    </form>
+  </section>
+</section>
+
+
+<section>
+  <div id="audience">
+    <!--p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders,
+      Web project managers, and anyone who  is unfamiliar with Unicode normalization and how it can affect the success of HTML and CSS authoring.</p-->
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+<!--p class="question">What are normalization forms, and why do I need to know about them when creating HTML and CSS content?</p-->
+</section>
+
+
+<section>
+  <!--h2 id="answer"><a href="#answer">Answer</a></h2-->
+<p>Normalization is something you need to be aware of if you are authoring HTML pages with CSS style sheets in UTF-8 (or any other Unicode encoding), particularly if you are dealing with text in a  script that uses accents or other diacritics. This article explains  what normalization is, and why you need to be aware.</p>
+  
+  <section>
+  <h2 id="n11nwhat"><a href="#n11nwhat">What are normalization forms?</a></h2>
+    <p>In Unicode it is possible to produce the same text with different sequences of characters. For example, take the Hungarian word <span class="qterm">világ</span>. The fourth letter could be stored in memory as a <dfn>precomposed</dfn> U+00E1   LATIN SMALL LETTER A WITH ACUTE (a single character) or as a <dfn>decomposed</dfn> sequence of U+0061   LATIN SMALL LETTER A followed by U+0301   COMBINING ACUTE ACCENT (two characters). </p>
+    <p><img src="qa-html-css-normalization-data/vilag.png" alt=" " /></p>
+    <p>The Unicode Standard allows either of these alternatives, but requires that both  be treated as identical. To improve efficiency, an application will usually <dfn>normalize</dfn> text before performing searches or comparisons. Normalization, in this case, means converting the text to use all precomposed or all decomposed characters.</p>
+    <p>There are four <dfn>normalization forms</dfn> specified by the Unicode Standard: NFC, NFD, NFKC and NFKD. The <span class="qchar">C</span> stands for (pre-)composed, and the <span class="qchar">D</span> for decomposed. The <span class="qchar">K</span> stands for compatibility. To improve interoperability, the W3C recommends the use of <strong>NFC</strong> normalized text on the Web.</p>
+  </section>
+  
+  <section>
+    <h2 id="n11nhow"><a href="#n11nhow">What do I need to know about normalization?</a></h2>
+    <p style="">Unfortunately, normalization doesn't always take place before content is compared. A particularly important case is the use of selectors and class names or ids in HTML and CSS. If the word <span class="qterm">világ</span> is used in precomposed form in the HTML (eg. <code>&lt;span class=&quot;világ&quot;&gt;</code>), but in decomposed form in the CSS (eg. <code>.vila&#x0301;g { font-style: italic; }</code>), then the selector won't match the class name.</p>
+    <p style="">What this means is that when producing content you should ensure that selectors and class or id names are character-for-character the same. This is particularly likely to be a  issue if the markup and the CSS are being authored or maintained by different people.</p>
+    <p style="">The best way to ensure that these match is to use one particular Unicode normalization form for all authored content. As we said above, the W3C recommends NFC.</p>
+    <p style="">Most keyboards for European languages output text in NFC already, but this is less likely to be the case if dealing with many non-European languages.</p>
+    <p style="">In some cases your editor may allow you to save data in a choice of normalization forms. The picture below shows  an option for setting a particular normalization form as the default when opening new files in Dreamweaver (NFC is selected). You are shown a similar choice when saving a document.</p>
+    <p style=""><img src="qa-html-css-normalization-data/dwprefs-nfc.png" alt="Unicode normalization form preferences on a dialog panel, showing NFC selected." /></p>
+  </section>
+  
+  <section>
+    <h2 id="checking"><a href="#checking">How can I check pages for problems?</a></h2>
+    <p style="">You can find out whether an HTML page contains  class names and id values that are not normalized according to NFC by using the <a class="print" href="http://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a>.</p>
+    <p style="">If you do have problems, you should find an editor or conversion tool that allows you to specify the normalization form, and use that to re-save your page.</p>
+  </section>
+</section>
+
+
+<section>
+<h2 id="endlinks" class="notoc"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Getting started? <a href="/International/getting-started/characters"><cite>Introducing Character Sets and Encodings</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Techniques, <cite>Authoring HTML &amp; CSS</cite></p>
+      		<ul>
+            <li><a href="/International/techniques/authoring-html?open=charset">Characters</a></li>
+      		<li><a href="/International/techniques/authoring-html?open=charset&open=normalization">Handling normalization</a></li>
+      		</ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

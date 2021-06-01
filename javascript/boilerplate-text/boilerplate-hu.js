@@ -60,10 +60,15 @@ s.techIndexText = "Módszerek"
 s.gotoW3cHome = "Tovább a W3C Kezdőoldalára"
 s.gotoI18nHome = "Tovább az Internacionalizációs Tevékenység Kezdőoldalára"
 s.internationalizationTitle = "Internacionalizációs Tevékenység"
+s.worldwide = "Hogy a Világháló valóban az egész világé lehessen!"
 s.i18nActivityHomePage = "Internacionalizációs Tevékenység Kezdőoldala."
 s.home = "Kezdőoldal"
-s.aboutI18nActivity = "Az Internacionalizációs Tevékenységünkről."
-s.about = "Magunkról"
+s.contactI18nActivity = "Az Internacionalizációs Tevékenységünkről."
+s.contact = "Magunkról"
+s.aboutI18nActivity = "About W3C Internationalization."
+s.about = "About"
+s.askI18nActivity = "Ask for help or information."
+s.ask = "Ask"
 s.groupsThatMakeUp = "Csoportok akik az Internacionalizációs Tevékenységgel foglalkoznak."
 s.groups = "Csoportok"
 s.topicIndexForInformation = "Témák névmutatója az oldalon található információkhoz."
@@ -131,4 +136,7 @@ s.longeranswer = "Részletek" // heading
 s.additionalinfo = "További információ" // heading that sometimes follows 'Details'
 s.acknowledgements = "Közreműködésükért és átvett megjegyzéseikért köszönjük:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Amennyiben hozzájárul ahhoz, hogy a böngészője elfogadjon egy sütit, a W3C Nemzetköziesítés Fejlesztési Tevékenység lapjait, ha rendelkezésre állnak, az ön által választott nyelven tudja elérni. Hozzájárul a süti használatához?" // this text is to be copied to another location
-s.supercededTranslation = '<strong>Figyelmeztetés:</strong> Ez a dokumentumnak egy lejárt verziója! Olvassa inkább a <a href="'+g.filename+f.clang+'">legfrissebb verziót</a> és, ha lehetséges, változtassa meg azt a linket vagy könyvjelzőt amelynek révén ide jött.'
+//s.supercededTranslation = '<strong>Figyelmeztetés:</strong> Ez a dokumentumnak egy lejárt verziója! Olvassa inkább a <a href="'+g.filename+f.clang+'">legfrissebb verziót</a> és, ha lehetséges, változtassa meg azt a linket vagy könyvjelzőt amelynek révén ide jött.'
+s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

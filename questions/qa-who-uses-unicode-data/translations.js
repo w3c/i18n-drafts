@@ -2,7 +2,7 @@ var trans = { }
 
 trans.versions = ['en','sv'];
 
-trans.outofdatetranslations = [];
+trans.outofdatetranslations = ['sv'];
 
 trans.updatedtranslations = ['sv'];
 

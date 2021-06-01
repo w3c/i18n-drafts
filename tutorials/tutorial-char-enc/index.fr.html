@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Gestion de l’encodage des caractères en HTML et CSS (tutoriel)</title>
+<meta name="description" content="Tutoriel W3C i18n : Ce qu’il vous faut connaître au sujet des caractères et de leur encodage en HTML et CSS." />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'tutorials/tutorial-char-enc'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-char-enc'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-12', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-07-14', time:'13:00'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Jean-Christophe Helary, K.K. DOUBLET'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="jean.christophe.helary@traduction-libre.org"; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'characters';
+</script>
+<script src="tutorial-char-enc-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-fr.js"> </script><!--TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article.js"> </script>
+<script src="../../javascript/articletoc-html5.js"></script><!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<link rel="stylesheet" href="../../style/article-2016.css" />
+<link rel="copyright" href="#copyright"/>
+
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav>
+  <script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  <h1>Gestion de l’encodage des caractères en HTML et CSS (tutoriel)</h1>
+</header>
+
+
+<div id="sidebarExtras">
+  <section>
+    <h2 id="whyread" class="notoc">Pourquoi faut-il lire ce document ?</h2>
+    <p>Si un navigateur n’est pas capable de détecter l’encodage des caractères utilisés dans une page, les contenus peuvent devenir illisibles. Les informations dans ce tutoriel sont particulièrement importantes pour les personnes qui gèrent ou développent un site multilingue. Déclarer l’encodage des caractères d’un document est cependant important pour <em>toutes</em> les personnes qui produisent du HTML ou du CSS et qui utilisent des caractères non-ASCII, car même si l’apparence d’un document semble correcte, les paramètres des navigateurs des lecteurs peuvent avoir une incidence sur la lisibilité. Ce tutoriel vous permettra de comprendre ces problématiques et de faire ainsi les bons choix.</p>
+  </section>
+  <section id="objectives">
+    <h2 class="notoc">Objectifs</h2>
+    <p>À la fin de ce tutoriel, vous devriez</p>
+    <ul>
+      <li>comprendre les facteurs relatifs au choix d’un encodage pour les documents HTML et être conscient des bénéfices associés à l’utilisation d’Unicode</li>
+      <li>savoir quand et comment déclarer un encodage de caractère (jeu de caractères) pour des documents à l’aide de HTML et CSS</li>
+      <li>comprendre le sens des termes <i class="termref">indicateur d’ordre des octets (byte-order mark - BOM)</i> et <i class="termref">normalisation</i>, comprendre l’incidence qu’ils peuvent avoir sur vos documents et savoir comment en tenir compte</li>
+      <li>comprendre quand et comment utiliser les séquences d’échappement pour représenter des caractères</li>
+    </ul>
+  </section>
+</div>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Public visé&nbsp;:</span> auteurs de contenus HTML et CSS. Ce contenu s’applique également à la création de documents dans un éditeur ou par l’intermédiaire d’un script.</p>
+    <div id="updateInfo"></div>
+    <script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+  </div>
+  <p>Ce tutoriel rassemble et relie des articles qui, pris dans leur ensemble, vous aident à comprendre comment gérer les aspects essentiels de la création de contenus en HTML et CSS en rapport avec les caractères et leur encodage.</p>
+</section>
+
+
+<div id="nutshell">
+  <h2 id="quicksummary"><a href="#quicksummary">En bref</a></h2>
+  <p>Enregistrez vos pages en UTF-8.</p>
+  <p>Déclarez systématiquement l’encodage de votre document. Utilisez l’en-tête HTTP si possible. Utilisez également systématiquement une déclaration dans le document. </p>
+  <div class="example">
+  <p><code translate="no">&lt;meta charset="utf-8"/&gt;</code></p>
+  </div>
+  <p>Vous pouvez utiliser <code class="kw" translate="no">@charset</code> ou les en-têtes HTTP pour déclarer l’encodage de votre feuille de style, mais ceci est seulement nécessaire si celle-ci contient des caractères non-ASCII ou si, pour une raison particulière, il ne vous est pas possible de vous assurer que les encodages du HTML et des feuilles de style associées sont identiques.</p>
+  <p>Essayez d’éviter d’utiliser l’indicateur d’ordre des octets (byte-order mark - BOM) en UTF-8 et assurez vous que votre code HTML est enregistré en Unicode forme de normalisation C (normalization form C - NFC).</p>
+  <p>Évitez d’utiliser des séquences d’échappement, à l’exception des caractères invisibles ou ambigus. Et n’utilisez pas les caractères de contrôle Unicode si vous pouvez utiliser des balises à leur place.</p>
+</div>
+
+
+<section>
+  <h2 id="Slide0030"><a href="#Slide0030">Informations contextuelles essentielles</a></h2>
+  <p>Si vous n’êtes pas familier à ce sujet, il vous sera nécessaire de comprendre un certain nombre de concepts fondamentaux afin de suivre les différentes parties du tutoriel. Si ces concepts vous sont familiers, vous pouvez <a href="#Slide0110">passer à la section suivante</a>.</p>
+  <ul>
+    <li><a class="print" href="/International/questions/qa-what-is-encoding">Les encodages de caractères pour débutants</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#unicode">Unicode</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#charsets">Jeux de caractères, jeux de caractères codés, encodages</a>.</li>
+    <li><a class="print" href="/International/articles/definitions-characters/#doccharset">Le jeu de caractères du document</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#escapes">Séquences d’échappement</a></li>
+    <li><a class="print" href="/International/articles/definitions-characters/#httpheader">En-têtes HTTP</a></li>
+    <li><a class="print" href="/International/articles/serving-xhtml/#mime">Types de MIME</a></li>
+    <li> <a class="print" href="/International/articles/serving-xhtml/#quirks">Mode « standards » et mode « quirks »</a></li>
+  </ul>
+</section>
+
+
+<section>
+  <h2 id="Slide0110"><a href="#Slide0110">Choisir et appliquer un encodage de caractères</a></h2>
+  <p>Un contenu est composé d’une séquence de caractères. Les caractères représentent des lettres de l’alphabet, des signes de ponctuation, etc. Mais ce contenu est stocké dans l’ordinateur en une séquence d’octets, qui sont eux des valeurs numériques. Parfois, il faut plus d’un octet pour représenter un seul caractère. Comme les codes utilisés par les espions, la manière dont la séquence d’octets est convertie en caractères dépend de la clé qui a été utilisée pour encoder le texte. Dans notre contexte, la clé est appelée encodage de caractères. Il existe de nombreux encodages de caractères à notre disposition. </p>
+  <p><a href="/International/questions/qa-choosing-encodings" class="maintitle print"><cite>Choisir et appliquer un encodage de caractères</cite></a> vous propose des conseils simples pour choisir l’encodage de caractères qui convient à votre contenu et comment appliquer celui-ci.</p>
+</section>
+<section>
+  <h2 id="declaring"><a href="#declaring">Comment déclarer un encodage de caractères</a></h2>
+  <p>Vous devriez toujours spécifier l’encodage utilisé pour une page HTML ou XML au risque que les caractères de votre contenu soient incorrectement interprétés.  Il ne s’agit pas seulement de lisibilité pour votre public, car les machines ont également besoin de plus en plus de comprendre vos données. Il est aussi nécessaire de vérifier que vous n’avez pas spécifié plusieurs encodages différents en différents emplacements.</p>
+  <p><a href="/International/questions/qa-html-encoding-declarations" class="maintitle print"><cite>Déclarer un encodage de caractères en HTML</cite></a> offre des recommandations rapides à ceux qui veulent juste savoir quoi faire, et des informations plus détaillées pour ceux qui en ont besoin. </p>
+  <p><a href="/International/questions/qa-css-charset" class="maintitle print"><cite>Déclarer un encodage de caractères en CSS</cite></a> offre des informations relatives à CSS.</p>
+</section>
+<section>
+  <h2 id="bom"><a href="#bom">L’indicateur d’ordre des octets</a> (<abbr title="Indicateur d’ordre des octets">BOM</abbr>)</h2>
+  <p>L’indicateur d’ordre des octets, ou BOM, est un concept que vous allez rencontrer quand vous utiliserez un encodage de caractères de type Unicode, tel que UTF-8 ou UTF-16. Dans certains cas vous devrez retirer le BOM, dans d’autres l’ajouter. </p>
+  <p> <a href="/International/questions/qa-byte-order-mark" class="maintitle print"><cite>L’indicateur d’ordre des octets (BOM) en HTML</cite></a> vous permet de comprendre ces questions.</p>
+</section>
+
+
+<section>
+  <h2 id="n11n"><a href="#n11n">Formes de normalisation Unicode</a></h2>
+  <p>La normalisation est quelque chose dont vous devez avoir conscience si vous créez des contenus en UTF-8, que ce soit des pages HTML ou des feuilles de style CSS, en particulier si vous avez affaire à des textes dont l’écriture utilise les accents et autres signes diacritiques. </p>
+  <p> <a href="/International/questions/qa-html-css-normalization" class="maintitle print"><cite>Normalisation en HTML et CSS</cite></a> vous donne plus d’explications.</p>
+</section>
+
+
+<section>
+  <h2 id="Slide0420"><a href="#Slide0420">Utiliser les séquences d’échappement</a></h2>
+  <p>Vous pouvez utiliser des séquences d’échappement pour représenter n’importe quel caractère en HTML, XML ou CSS avec exclusivement des caractères ASCII. </p>
+  <p><a href="/International/questions/qa-escapes" class="maintitle print"><cite>Utilisation des séquences d’échappement dans des documents balisés et en CSS</cite></a> vous indique les meilleures pratiques pour l’utilisation des séquences d’échappement et vous explique comment les utiliser quand elles sont nécessaires.</p>
+</section>
+
+
+<section>
+  <h2 id="Slide0490"><a href="#Slide0490">Caractères ou balises ?</a></h2>
+  <p>Pour finir, il existe un certain nombre de caractères Unicode similaires à des caractères de contrôle dont certains remplissent le même rôle que des balises. Il faut donc savoir lesquels utiliser et lesquels éviter. </p>
+  <p><a href="/International/questions/qa-chars-vs-markup" class="maintitle print"><cite>Caractères ou balises ?</cite></a> vous donne une réponse.</p>
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Pour en savoir plus</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+	<ul id="full-links">
+	  <li>
+	    <p>Vous commencez ? <a href="/International/getting-started/characters"><cite>Introduction aux jeux et encodages de caractères</cite></a></p>
+      </li>
+	<li>
+      <p><cite>Créer du contenu HTML et CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Caractères</a> [anglais]</li>
+      </ul>
+      </li>
+      </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

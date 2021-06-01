@@ -59,10 +59,15 @@ s.techIndexText = "Yöntemler dizini"
 s.gotoW3cHome = "W3C ana sayfasına git"
 s.gotoI18nHome = "Internationalization Activity ana sayfasına git"
 s.internationalizationTitle = "Internationalization"
+s.worldwide = "Making the World Wide Web worldwide!"
 s.i18nActivityHomePage = "Internationalization Activity ana sayfası."
 s.home = "Home"
-s.aboutI18nActivity = "Çeviri etkinliği ile ilgili bilgiler."
+s.contactI18nActivity = "Çeviri etkinliği ile ilgili bilgiler."
+s.contact = "Contact"
+s.aboutI18nActivity = "About W3C Internationalization."
 s.about = "About"
+s.askI18nActivity = "Ask for help or information."
+s.ask = "Ask"
 s.groupsThatMakeUp = "Çeviri etkinliğine katılan gruplar."
 s.groups = "Groups"
 s.topicIndexForInformation = "Bu siteyle ilgili bilgilerin konu dizini."
@@ -130,3 +135,6 @@ s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

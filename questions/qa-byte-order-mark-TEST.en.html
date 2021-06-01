@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>The byte-order mark (BOM) in HTML</title>
+<meta name="description" content="What is the byte-order mark, and what do I need to know about it when creating HTML?" />
+<script type="text/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-byte-order-mark' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-byte-order-mark' // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-10' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2013-01-31', time:'17:18'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2016-04-20', time:'11:10'} // date and time of latest edits to this document/translation
+f.contributors = 'Albert Lunde, Asmus Freytag, Björn Höhrmann, Henri Sivonen, John Cowan, Leif Halvard Silli, Norbert Lindenberg' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script type="text/javascript" src="qa-byte-order-mark-data/translations.js"> </script>
+<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
+<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script type="text/javascript" src="../javascript/doc-structure/article_new.js"> </script>
+<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2018.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>The byte-order mark (BOM) in HTML</h1>
+</header>
+
+
+<section id="sidebarExtras">
+  <section>
+    <h2 class="notoc">Quick check</h2>
+    <form action="https://validator.w3.org/i18n-checker/" method="get" class="quickcheck">
+      <p>Check for byte-order marks in a page</p>
+      <p>
+        <input type="text" value="URI of page to check" name="docAddr" onfocus="this.value=''" />
+      </p>
+      <p>
+        <button type="submit">Check</button>
+      </p>
+      <p><span class="guide">Look in the "Character encoding" area of the Information table. If the page has non-initial BOMs there will be a warning message lower down.</span></p>
+    </form>
+  </section>
+</section>
+
+
+<section>
+  <div id="audience">
+    <!--p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, Web project managers, and anyone who  needs to better understand what the BOM is, and how it affects HTML.</p-->
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+  <!--h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">What is the byte-order mark, and what do I need to know about it when creating HTML?</p-->
+</section>
+
+
+<section>
+  <!--h2 id="answer"><a href="#answer">Answer</a></h2-->
+  
+  <section>
+  <p>This article describes what the byte-order mark is, and what you need to know about it when creating HTML.</p>
+  </section>
+
+  <section>
+    <h2 id="bomwhat"><a href="#bomwhat"> What is a byte-order mark?</a></h2>
+    <div class="sidenoteGroup">
+      <p>At the beginning of a page that uses a <a class="termref" href="/International/articles/definitions-characters/#unicode">Unicode</a> <a class="termref" href="/International/articles/definitions-characters/#charsets">character encoding</a> you may find some bytes that represent the Unicode code point U+FEFF BYTE ORDER MARK (abbreviated as <dfn>BOM</dfn>).</p>
+      <div class="insideinfonote">
+        <p class="info">The name BYTE ORDER MARK is an alias for the original character name ZERO WIDTH NO-BREAK SPACE (ZWNBSP). With the introduction of U+2060 WORD JOINER, there's no longer a need to ever use U+FEFF for its ZWNSP effect, so from that point on, and with the availability of a formal alias, the name ZERO WIDTH NO-BREAK SPACE is no longer helpful, and we will use the alias here.</p>
+      </div>
+    </div>
+    <p>The BOM, when correctly used, is invisible.</p>
+    <p>Before UTF-8 was introduced in early 1993, the expected way for transferring Unicode text was using 16-bit code units using an encoding called UCS-2 which was later extended to UTF-16. 16-bit code units can be expressed as bytes in two ways: the most significant byte first (<span class="qterm">big-endian</span>) or the least significant byte first (<span class="qterm">little-endian</span>). To communicate which byte order was in use,  U+FEFF (the byte-order mark) was used at the start of the stream as a magic number which is not logically part of the text.</p>
+    <p>The picture below shows the bytes used in a sequence of two-byte characters. Each 2-digit hexadecimal number represents a byte in the stream of text. You can see that the order of the two bytes that represent a single character is reversed for big endian vs. little endian storage. The byte-order mark indicates which order is used, so that applications can immediately decode the content.</p>
+    <p><img src="qa-byte-order-mark-data/bom.png" alt="Bytes representing the BOM." /></p>
+    <p>In the UTF-8 encoding, the presence of the BOM is not essential because, unlike the UTF-16 encodings, there is no
+      alternative sequence of bytes in a character. However, the BOM may still occur in UTF-8 encoded text, either as a by-product of an encoding
+      conversion or because it was added by an editor to flag the content as UTF-8. In this situation, the BOM is often called a <dfn>UTF-8 signature</dfn>.</p>
+  </section>
+  
+  
+  
+  <section>
+    <h2 id="bomhow"><a href="#bomhow"> What do I need to know about the BOM?</a></h2>
+    <p>Most of the time you will not have to worry about the byte-order mark in UTF-8. You will find that some editors (such as Notepad on Windows) will always add a BOM when you save a file with the UTF-8 encoding, others will offer you a choice.</p>
+    <p>In HTML5 browsers are required to recognize the UTF-8 BOM and use it to detect the encoding of the page, and recent versions of major browsers handle the BOM as expected when used for UTF-8 encoded pages.</p>
+    <p>The UTF-8 BOM offers reliable encoding detection, since it is  extremely short and stable,  works in XML and HTML, and works whether your page is read over the network or not (unlike HTTP declarations). However, bear in mind that it is always a good idea to declare the encoding of your page using the meta element, in addition to the BOM, so that the encoding is apparent to people looking at the source text. </p>
+    <p>Also there are a number of situations where the BOM, particularly because it is invisible, may cause a problem. See the section below for more information about those. </p>
+    <p>If you use a UTF-16 encoding for your page (and we strongly recommend that you don't), there are some <a href="#bytheway">additional considerations</a>.</p>
+
+
+
+<section>
+    <h3 id="detect"><a href="#detect">Detecting the BOM</a></h3>
+    <p>You can find out whether a page contains a BOM at the start or further down in the content by using the <a href="https://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a>. A BOM at the start of the page will be reported in the Information panel. A BOM that is included in the page lower down (typically due to content being added to the page from an external source) will be reported in the Detailed Report section.</p>
+    <div class="sidenoteGroup">
+      <p>You can try looking for a UTF-8 signature in your content in your editor, but if your editor handles the BOM correctly you probably won't be able to
+        see it. With a binary editor capable of
+        displaying the hexadecimal byte values in the file, the UTF-8 signature displays as EF BB BF.</p>
+      <div class="sideinfonote">
+        <p class="info">If your editor or browser applies the wrong character encoding to a UTF-8 encoded file with a BOM, you are likely to see a sequence of bytes at the start of the file. These are the bytes that compose BOM represented as the characters those bytes represent in that encoding. With the Latin 1 (ISO 8859-1) character encoding, the signature displays as characters ï»¿.</p>
+      </div>
+    </div>
+    <p>Alternatively, your editor may tell you in a status bar or a menu what encoding your file is in, including information about the
+      presence or not of the UTF-8 signature. For example, if you use Save As in Dreamweaver and your file has a BOM at the start you will see a check mark in the box labeled 'Include Unicode Signature (BOM)'. You can also specify in your preferences (see illustration) whether new documents should use a BOM by default.</p>
+    <p><img src="qa-byte-order-mark-data/dwprefs-bom.png" alt="BOM preferences on a dialog panel." /></p>
+  </section>
+  
+  
+  <section>
+    <h3 id="problems"><a href="#problems">Potential issues with the UTF-8 BOM</a></h3>
+    <p>What follows are some situations where the byte-order mark has been known to cause problems. </p>
+    <p>In general, these issues are fading away as people adopt newer versions of browsers and editing tools. It is worth knowing about them if your user base still uses older technology. However, this is not solely about legacy issues. </p>
+    <section>
+      <h4 id="phpincludes">PHP includes</h4>
+      <p>At the time this article was written, if you include some external file in a page using PHP and that file starts with a BOM, it may create blank lines.</p>
+      <p>This is because the BOM is not stripped before inclusion into the page, and acts like a character occupying a line of text. <a target="examples" href="examples/phpbomtest.php">See an example</a>. In the example, a blank line containing the BOM appears above the first item of included text.</p>
+      <p>You should ensure that the included files do not start with a BOM.</p>
+      <p>You may also find that the BOM causes problems for an ordinary PHP page. When sending custom HTTP headers the code to set the header must be called before output begins. A BOM at the start of the file causes the page to begin output before the header command is interpreted, and may lead to error messages and other problems in the displayed page.</p>
+    </section>
+    <section>
+      <h4 id="scripting">Processing with program code</h4>
+      <p>You need to be careful to take the BOM into account in scripts or program code that automatically process files that start with a BOM. For example, when pattern matching at the start of a file that begins with a BOM you need additional code to test for the presence of the BOM and ignore it if found. </p>
+      <p>The UTF-8 encoding without a BOM has the property that a document which contains only characters from the US-ASCII range is encoded byte-for-byte the same way as the same document encoded using the US-ASCII encoding.  Such a document can be processed and understood when encoded either as UTF-8 or as US-ASCII.  Adding a BOM inserts additional non-ASCII bytes, so this is no longer true. If you have processes or scripts that assume that the content is comprised of US-ASCII characters only, you will need to avoid the BOM.</p>
+    </section>
+    <section>
+      <h4 id="transcoding">HTTP precedence</h4>
+      <p>Changes introduced with HTML5 mean that the byte-order mark overrides any encoding declaration in the HTTP header when detecting the encoding of an HTML page. This can be very useful when the author of the page cannot control the character encoding setting of the server, or is unaware of its effect, and the server is declaring pages to be in an encoding other than UTF-8. If the BOM has a higher precedence than the HTTP headers, the page should be correctly identified as UTF-8. </p>
+      <div class="sidenoteGroup">
+        <p>At the time of writing, not all browsers do this, so you should not rely on all readers of your page benefitting from this just yet.</p>
+        <div class="sideinfonote">
+          <p class="info">Previous versions of Internet Explorer gave the BOM precedence over HTTP, but IE10 and IE11 give a higher precedence to HTTP. It is hoped that the next version of Internet Explorer will revert to the previous behaviour, which will then be in line with the other major browsers.</p>
+        </div>
+      </div>
+      <!--p>According to the HTML specification, the HTTP header overrides any in-document encoding. However, some browsers ignore the HTTP header encoding declaration if the file starts with a BOM, and they assume that the file is encoded as UTF-8.</p-->
+      <p>In <a href="http://www.w3.org/International/tests/repository/html5/the-input-byte-stream/results-basics#precedence">browsers where the HTTP header still overrides the byte-order mark</a> and the server is declaring pages to have a non-Unicode character encoding, you are likely to find unexpected characters at the start of the page (such as ï»¿ in a page labelled in HTTP as ISO 8859-1) as well as problems displaying non-ASCII characters on the page.</p>
+    </section>
+    <section>
+      <h4 id="bom">Other issues</h4>
+      <p>If you use applications or scripts in the back end of your site you should check that they are also able to recognize and handle the BOM.</p>
+      <p>We strongly recommend that you don't change the encoding of a UTF-8 file from a Unicode encoding to a non-Unicode encoding, but if, for some exceptional reason, you do you must ensure that the BOM is removed. If you don't,  either the browser will continue to treat your content as UTF-8, or you will see strange characters at the beginning of the page.</p>
+    </section>
+  </section>
+  
+  
+  <section>
+    <h3 id="remove"><a href="#remove">Removing the BOM</a></h3>
+    <p>If you need to remove the BOM, check whether your editor allows you to specify whether a UTF-8 signature is added or kept <a href="/International/questions/qa-setting-encoding-in-applications">while you save the file</a>. Such an editor provides a way of removing
+      the signature by simply reading the file in then saving it out again. For example, in editors such as Notepad++ on Windows and TextWrangler on the Mac, it is possible to select the encoding from a list while using the Save As function. The list has options to save as UTF-8 with or without the BOM.  Just choose the option without the BOM and save.</p>
+    <p>One of the benefits of using a script is that you can remove the signature quickly, and from multiple files. In fact the script could
+      be run automatically as part of your process. If you use Perl, you could use <a href="http://people.w3.org/rishida/blog/?p=102">a simple script</a> created by Martin Dürst.</p>
+    <p>Note: You should check the process impact of removing the signature. It may be that some part of your content development process
+      relies on the use of the signature to indicate that a file is in UTF-8. Bear in mind also that pages with a high proportion of Latin characters may look correct superficially but that occasional characters outside the ASCII range (U+0000 to U+007F) may be incorrectly encoded.</p>
+  </section>
+</section>
+
+
+
+<section>
+  <h2 id="additionalinfo"><a href="#additionalinfo">Additional information</a></h2>
+  <p>Here are some additional notes for those who are encoding their HTML pages using UTF-16. Note that, for HTML it's recommended that you use UTF-8 and that you avoid UTF-16. So for most people this section will be academic.</p>
+  <div class="sidenoteGroup">
+    <p>According to RFC 2718 and the Unicode Standard, if you declare the character encoding of your page using HTTP as either &quot;UTF-16LE&quot; or &quot;UTF-16BE&quot; then you should not use a byte-order mark at the beginning of the page. Only if the page is labelled in HTTP using IANA charset name &quot;UTF-16&quot; is a byte-order mark appropriate.</p>
+    <div class="sideinfonote">
+      <p class="warning">Note that this is solely about the <em>labeling</em> of the content.  Of course, the actual sequence of bytes is the same, whether you label content as UTF-16 and add a BOM, or whether you label it as UTF-16LE or UTF-16BE.</p>
+    </div>
+  </div>
+  <p>The HTML5 specification currently disallows the use of any other, text-based in-document encoding declaration for pages using the UTF-16 encoding. In effect, this means that the BOM is, itself, the declaration that you have to add.</p>
+  <p>The byte-order mark is also used for text labeled as UTF-32, and should not be used for text labeled as UTF-32BE or UTF-32LE. The use of UTF-32 for HTML content, however, is strongly discouraged and some implementations have removed support for it, so we haven't even mentioned it until now.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks" class="notoc"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Getting started? <a href="/International/getting-started/characters"><cite>Introducing Character Sets and Encodings</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Techniques, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html?open=charset">Characters</a></li>
+        <li><a href="/International/techniques/authoring-html?open=charset&open=indoc">Declaring the character encoding for HTML</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script type="text/javascript">completePage()</script>
+</body>
+</html>

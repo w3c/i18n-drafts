@@ -59,10 +59,15 @@ s.techIndexText = "Ευρετήριο τεχνικών"
 s.gotoW3cHome = "Μετάβαση στην αρχική σελίδα W3C"
 s.gotoI18nHome = "Μετάβαση στην αρχική σελίδα της Δραστηριότητας Διεθνοποίησης"
 s.internationalizationTitle = "Internationalization"
+s.worldwide = "Κάνοντας τον Παγκόσμιο Ιστό πραγματικά Παγκόσμιο"
 s.i18nActivityHomePage = "Αρχική σελίδα Δραστηριότητας Διεθνοποίησης."
 s.home = "Home"
-s.aboutI18nActivity = "Πληροφορίες για τη Δραστηριότητα Διεθνοποίησης."
-s.about = "Πληροφορίες"
+s.contactI18nActivity = "Πληροφορίες για τη Δραστηριότητα Διεθνοποίησης."
+s.contact = "Πληροφορίες"
+s.aboutI18nActivity = "About W3C Internationalization."
+s.about = "About"
+s.askI18nActivity = "Ask for help or information."
+s.ask = "Ask"
 s.groupsThatMakeUp = "Ομάδες που απαρτίζουν τη Δραστηριότητα Διεθνοποίησης."
 s.groups = "Ομάδες"
 s.topicIndexForInformation = "Ευρετήριο θεμάτων για πληροφορίες σχετικά με αυτόν τον ιστοχώρο."
@@ -130,3 +135,6 @@ s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

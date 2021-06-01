@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Tri des options de sélection</title>
+<meta name="description" content="Dans le cadre d'un formulaire, j'ai une liste de termes dans un menu déroulant. Pourquoi ne sont-elles pas correctement triées lorsque je traduis les éléments de la liste?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-select-sorting' // the file name WITHOUT extensions
+f.authors = 'Russ Rolfe, Microsoft Corporation' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-select-sorting' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-06-09' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2019-11-25', time:'17:54'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-11-05', time:'16:57'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://www.ibidem-traduction.com/francais.php">IBIDEM, Traductions Anglais - Français</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'forms'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-select-sorting-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-fr.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Tri des options de sélection</h1>
+</header>
+
+
+<div>
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+</div>
+
+
+<p>Dans le cadre d'un formulaire, vous pouvez avoir une liste de termes dans un menu déroulant. Cet article répond à la question : Pourquoi ne sont-elles pas correctement triées lorsque je traduis les éléments de la liste ?</p>
+ 
+ 
+<section>
+  <h2 id="answer"><a href="#answer">Réponse</a></h2>
+  <p>Bien que de nombreux langages de programmation aient des périphériques tels que des menus déroulants qui ont la capacité de trier une liste d'éléments avant de les afficher dans le cadre de leur fonctionnalité, l'élément de sélection <code class="kw" translate="no">select</code> n'a pas cette capacité. Il répertorie les éléments d' <code class="kw" translate="no">option</code> dans l'ordre reçu. Il faut donc trier au préalable les options traduites avant de les présenter au client. Cela se fait soit manuellement, soit en utilisant un processus conçu par le développeur (comme l'utilisation d'une transformation XSLT).</p>
+  <p>Par exemple, disons que nous avons une liste déroulante pour les types d'animaux domestiques. Dans la liste, nous avons ce qui suit par ordre alphabétique:</p>
+  <div class="example">
+    <pre>&lt;form .....&gt;
+    &lt;select size="1" name="pet"&gt;
+       &lt;option value='cat'&gt;chat&lt;/option&gt;
+       &lt;option value='dog'&gt;chien&lt;/option&gt;
+       &lt;option value='mouse'&gt;souris&lt;/option&gt;
+    &lt;/select&gt;
+...
+...
+&lt;/form&gt;</pre>
+  </div>
+  <p>Quand ceci est traduit en néerlandais, la liste devient:</p>
+  <div class="example">
+    <pre>&lt;form .....&gt;
+    &lt;select size="1" name="pet"&gt;
+       &lt;option value='cat'&gt;kat&lt;/option&gt;
+       &lt;option value='dog'&gt;hond&lt;/option&gt;
+       &lt;option value='mouse'&gt;muis&lt;/option&gt;
+    &lt;/select&gt;
+...
+...
+&lt;/form&gt;</pre>
+  </div>
+  <p>Mais pour que l'ordre alphabétique néerlandais soit correct, nous devrons réorganiser la liste:</p>
+  <div class="example">
+    <pre>&lt;form .....&gt;
+    &lt;select size="1" name="pet"&gt;
+       &lt;option value='dog'&gt;hond&lt;/option&gt;
+       &lt;option value='cat'&gt;kat&lt;/option&gt;
+       &lt;option value='mouse'&gt;muis&lt;/option&gt;
+    &lt;/select&gt;
+...
+...
+&lt;/form&gt;
+</pre>
+  </div>
+  <p>Ceci doit être fait pour chaque langue à afficher.</p>
+</section>
+
+
+<section>
+<h2 id="bytheway"><a href="#bytheway">À propos</a></h2>
+  <p>Notez que les paramètres des valeurs ne sont pas convertis dans les exemples ci-dessus. Cette séparation entre le matériel à afficher à l'utilisateur et les données à traiter à l'arrière-plan permet au développeur de conserver le même traitement à l'arrière-plan. Ils n'ont donc pas à changer ce qu'ils s'attendent à recevoir de l'utilisateur à chaque fois qu'une nouvelle langue est prise en charge.</p>
+</section>
+
+
+<section>
+<h2 id="endlinks"><a href="#endlinks">Lecture supplémentaire</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+ 
+<ul id="full-links">
+    <li>
+      <p><cite>Rédaction HTML et CSS</cite></p>
+      <ul>
+	  <li><a href="/International/techniques/authoring-html#cultural">Questions culturelles</a></li>
+	  </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

@@ -61,10 +61,15 @@ s.techIndexText = "Techniques index"
 s.gotoW3cHome = "Перейти на головну сторінку W3C"
 s.gotoI18nHome = "Перейти на головну сторінку операцій інтернаціонализації"
 s.internationalizationTitle = "Інтернаціоналізація"
+s.worldwide = "Making the World Wide Web worldwide!"
 s.i18nActivityHomePage = "Головна сторінка операцій інтернаціоналізації."
 s.home = "Home"
-s.aboutI18nActivity = "Дані про операції інтернаціоналазації."
-s.about = "Дані"
+s.contactI18nActivity = "Дані про операції інтернаціоналазації."
+s.contact = "Дані"
+s.aboutI18nActivity = "About W3C Internationalization."
+s.about = "About"
+s.askI18nActivity = "Ask for help or information."
+s.ask = "Ask"
 s.groupsThatMakeUp = "Групи, задіяні для виконання операцій інтернаціоналізації."
 s.groups = "Групи"
 s.topicIndexForInformation = "Алфавітний показник тематичних розділів даного веб-сайту."
@@ -132,3 +137,6 @@ s.longeranswer = "Детальна відповідь" // heading
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
+s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
+
+s.lastChanged = "Last changed "

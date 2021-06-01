@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Internationalization tips for linking to headings &amp; figures</title>
+<meta name="description" content="What do I need to consider when generating links to sections and figures in a multilingual environment?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-reference-links' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-reference-links' // blog search string - usually the filename without extensions
+f.firstPubDate = '2019-08-16' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2019-08-16', time:'12:09'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-08-16', time:'12:09'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'markup'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-reference-links-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="filename-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Internationalization tips for linking to headings &amp; figures</h1>
+</header>
+<section>
+  <div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+    
+</section>
+  
+ 
+
+<section>
+<p>It can be very helpful, especially for longer documents, to use scripting so that an HTML page automatically generates the content of a link that points to a heading, a figure, or a table. For example, the script might pull the actual heading text into the link, and if the headings are automatically numbered using CSS, may also pull in the number of the heading. As the document evolves, and the heading text changes, or its position in the document changes, there is no need to update all the links pointing to that heading.</p>
+<p>If you are linking to headings and figures for a page that will be translated into another language, or for a multilingual page, this article looks at things you need to bear in mind and provides markup templates that will be helpful.</p>
+<p>We won't provide script code to do the job in this article, but will focus instead on the markup you should aim to produce. Most of the examples of markup in the article represent the <em>outcome</em> of the link generation process, rather than the markup that the content author actually uses.</p>
+
+</section>
+
+
+
+
+
+<section>
+<h2 id="summary">Summary</h2>
+
+<p>Here we summarise the bare bones of the solution. Read the rest of the article for more detail.</p>
+
+<p>The  markup used by the content author can vary, but should allow them to easily see what the link will eventually point to. The following is just an example.</p>
+<figure class="example">
+<p><code>&lt;p&gt;A description of &lt;a&gt;#myFigure&lt;/a&gt; is provided in &lt;a&gt;#myHeading&lt;/a&gt;.&lt;/p&gt;</code></p>
+</figure>
+<p>This article focuses on the <em>outcome</em> of the link generation process, rather than the markup that the content author actually uses.</p>
+
+
+
+<p>Links to <strong>unnumbered headings</strong> would typically benefit from a structure such as the following.</p>
+<figure class="example">
+<code>&lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot; lang=&quot;cy&quot; dir=&quot;ltr&quot;&gt;<span class="ja">Gwneud y we fyd-eang yn &lt;em&gt;wirioneddol&lt;/em&gt; fyd-eang!</span>&lt;/a&gt;</code>
+</figure>
+<p>However, for <strong>numbered headings</strong>, the number should be isolated from the rest of the heading text, and the <code class="kw" translate="no">lang</code> and <code class="kw" translate="no">dir</code> attributes should be applied to the latter, as in this example.</p>
+<figure class="example"> <code>&lt;a class=&quot;secref&quot; href=&quot;#myHeading4&quot;&gt;2. &lt;span lang=&quot;arb&quot; dir=&quot;rtl&quot;&gt;<span class="arb" dir="rtl">نشاط التدويل، W3C</span>&lt;/span&gt;&lt;/a&gt; </code> </figure>
+
+<p>For the link text, include all the markup inside the heading tag, not just the characters. </p>
+<p>Also identify the type of link using semantic class names, so that, for example, links to headings can be styled differently from links to figures.</p>
+<p>The <code class="kw" translate="no">lang</code> attribute indicates the computed language of the heading itself. </p>
+<p>The <code class="kw" translate="no">dir</code> attribute  indicates the computed direction of the heading itself.</p>
+<p><strong>If your code generates text,</strong> such as &quot;Fig.&quot; to be included in the link text, ensure that it is easily localised for translated content. Also, don't assume that spacing and punctuation will be the same for all languages: ensure that the punctuation and spacing are part of the localised string. For example, a link to <a class="figref" href="#myFigure">Fig. 12</a> would become <a class="figref" href="#myFigure">図12</a> in Japanese.</p>
+<p>The rest of the article provides additional details.</p>
+</section>
+
+
+
+
+
+<section>
+<h2 id="extraction">Extracting header text</h2>
+
+<p>Make sure that you extract the markup inside the heading, rather than just the characters.</p>
+
+
+<p>Avoid using <code class="kw" translate="no">.textContent</code> to access the text of a heading. Instead use a method that copies all the nodes inside the heading tag.</p>
+<p>Apart from the fact that it often makes the link text more readable when you include the inline markup that the heading contained, this is particularly important if the heading text  contains markup that sets the language or direction of the text it contains.</p>
+<p>For example, the following heading uses two important spans. The first makes it possible to apply a font capable of handling the diacritics in the transcription, and the second both supplies language (enabling use of an appropriate Syriac Estrangelo font) and direction information. It's important to carry that markup into the link text.</p>
+<figure class="example">
+<p><code>&lt;h2&gt;Using &lt;span class=&quot;transcription&quot;&gt;maǧlīyānā&lt;/span&gt; (&lt;span lang=&quot;syr-Syre&quot; dir=&quot;rtl&quot;&gt;ܡܓ̰ܠܝܢܐ‎&lt;/span&gt;) to reproduce classical phonemes&lt;/h2&gt;</code></p>
+</figure>
+
+</section>
+
+
+
+
+
+<section>
+<h2 id="differentiation">Differentiating header links, figure links, etc.</h2>
+
+<p>In some languages is may be desirable to style links containing heading text differently from links containing figure pointers.</p>
+
+
+<p>For this reason it is useful to distinguish the various different types of link from each other, using class names to indicate the semantics of the markup.</p>
+<p>Here's an example of  class names that distinguish the figure from the header.</p>
+<figure class="example">
+<p><code>&lt;p&gt;A description of &lt;a <strong>class=&quot;figref&quot;</strong> href=&quot;#myFigure&quot;&gt;Fig. 12&lt;/a&gt; is provided in &lt;a <strong>class=&quot;secref&quot;</strong> href=&quot;#myHeading&quot;&gt;Description of the figure&lt;/a&gt;.&lt;/p&gt;</code></p>
+</figure>
+</section>
+
+
+
+
+
+<section>
+<h2 id="generated_text">Generated text</h2>
+
+<p>In a multilingual document or a translation of a document it may be necessary to adapt any text generated by your script.</p>
+
+
+<p>For instance, the example in the previous section generates the text &quot;Fig. &quot; and inserts it into the link text alongside the number of that figure. If the same script is used for a Japanese translation of the document, or is applied to a section of the document that is in Japanese rather than in English, it would be necessary to replace the generated text with &quot;図&quot;.</p>
+<p>Note, significantly, that no period or space is needed for the Japanese version. It's important not to assume in your script that all languages will use punctuation and spacing in the same way. Those characters should be part of the localised replacement string, rather than added by a separate line of code.</p>
+<p>The box below shows what the generated link markup could look like. (Note also that there is no space inserted around the link text &quot;<code>図12</code>&quot;, either.)</p>
+<figure class="example">
+<p><code>&lt;p&gt;&lt;a class=&quot;figref&quot; href=&quot;#myFigure&quot;&gt;図12&lt;/a&gt;の説明は&lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot;&gt;図の説明&lt;/a&gt;にあります。&lt;/p&gt;</code></p>
+</figure>
+</section>
+
+
+
+
+
+<section>
+<h2 id="context">Applying important contextual information</h2>
+<p>The following guidelines are particularly important when dealing with a heading in a different language from the paragraph containing the link, but some aspects may also be important in monolingual situations. Including this markup should not cause any problems for the general case.</p>
+
+<section>
+<h3>The language of the link text</h3>
+<p>Take an example of an English paragraph that refers to a section heading in Japanese. Here's the section heading:</p>
+<div class="figWrap">
+<figure id="h4_ja">
+<h4 id="heading1" lang="ja" style="text-align: left; padding:1em; margin:0; border: 1px solid #ccc;">国際化活動 W3C</h4>
+<figcaption>A Japanese heading.</figcaption>
+</figure>
+</div>
+
+<p>The markup for the heading is as follows. The language is indicated in the <code class="kw" translate="no">h4</code> tag in this case, but it may be indicated in a previous tag and inherited by the <code class="kw" translate="no">h4</code> tag.</p>
+<figure class="example">
+<p><code>&lt;h4 id=&quot;myHeading&quot; lang=&quot;ja&quot;&gt;<span class="ja">国際化活動 W3C</span>&lt;/h4&gt;</code></p>
+</figure>
+
+<p>It's important to ensure that a Japanese font gets associated with the Japanese text in the link, rather than a Chinese font which is the default for ideographic characters in some browsers.  However,  if we only pull out  the nodes <em>inside</em> the heading tag, we lose the information about the language being Japanese.</p>
+<figure class="example">
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=""/> Incorrect result.</span></div>
+<p><code>This is a paragraph that points to the section &lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot;&gt;<span class="ja">国際化活動 W3C</span>&lt;/a&gt;.</code></p>
+</figure>
+<p> The code inserting the  reference link into the paragraph needs to get the computed language of the heading (as a whole) and apply that to the anchor tag.  The end result we are seeking is like this.</p>
+<figure class="example">
+<p><code>This is a paragraph that points to the section &lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot; <strong>lang=&quot;ja&quot;</strong>&gt;<span class="ja">国際化活動 W3C</span>&lt;/a&gt;.</code></p>
+</figure>
+</section>
+
+
+
+
+
+
+<section>
+<h3 id="base_direction">The base direction</h3>
+<p>There are similar considerations for documents containing text that runs in multiple directions; for example, when embedding Arabic, Hebrew, Dhivehi, etc text into a Latin context. It is essential to apply the correct base direction for a sequence of characters that is inserted into a paragraph, and this requires finding the computed direction of the markup around the original heading.</p>
+<p>For example, take a heading such as: </p>
+<figure class="example">
+<p><code>&lt;h4 id="myHeading" lang="ar" dir="rtl"><span lang="ar">نشاط التدويل، W3C</span>&lt;/h4> </code></p>
+</figure>
+
+<p>In this case the direction is declared on the heading tag itself, but it could be declared on an element further up the hierarchy. This code displays as shown just below. Note the location of the text &quot;W3C&quot;.</p>
+
+<div class="figWrap">
+<figure id="h4_ar">
+<h4 id="myHeading" lang="ar" dir="rtl" style="text-align: right; padding:1em; margin:0; border: 1px solid #ccc;">نشاط التدويل، W3C</h4>
+<figcaption>An Arabic heading with Latin text at the end.</figcaption>
+</figure>
+</div>
+
+
+<!--h4 id="myHeading" lang="ar" dir="rtl">نشاط التدويل، W3C</h4-->
+<p>Drop just the inner HTML  of the heading tag into our previous paragraph, and you get the "W3C"  on the wrong side of the Arabic text</p>
+<figure class="example">
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=""/> Incorrect result.</span></div>
+<p>This is a paragraph that points to <a class="secref" href="#myHeading"><span lang="ar">نشاط التدويل، W3C</span></a>.</p>
+</figure>
+<p>If, on the other hand, we apply a <code class="kw" translate="no">dir</code> attribute with the appropriate direction value around the inserted text ...</p>
+<figure class="example">
+<p><code>This is a paragraph that points to &lt;a class=&quot;secref&quot; href=&quot;#myHeading&quot; lang=&quot;ar&quot; <strong>dir=&quot;rtl&quot;</strong>&gt;<span lang="ar">نشاط التدويل، W3C</span>&lt;/a&gt;.</code></p>
+</figure>
+<p>... then this produces the expected result:</p>
+<figure class="example">
+<p>This is a paragraph that points to <a class="secref" href="#myHeading" lang="ar" dir="rtl">نشاط التدويل، W3C</a>.</p>
+</figure>
+</section>
+
+
+
+
+
+
+<section>
+<h3 id="isolation">Bidirectional isolation</h3>
+<p>In bidirectional text, it generally makes sense to  isolate strings or markup fragments that are dropped into a location in an HTML file, so that the text inside the string doesn't interact directionally with text outside it.  In HTML5 the <code class="kw" translate="no">dir</code> attribute isolates the content of the tag it is attached to from the surrounding text, so we have been isolating the reference from the surrounding paragraph already.</p>
+<p>However, let's suppose that we want the reference link to include the number of the heading, as well as the heading text.</p>
+<p>Suppose our heading looks like this in its original RTL context.</p>
+
+<div class="figWrap">
+<figure id="h4_ar_numbered">
+<h4 id="myHeading4" lang="ar" dir="rtl" style="text-align: right; padding:1em; margin:0; border: 1px solid #ccc;">2. نشاط التدويل، W3C</h4>
+<figcaption>A numbered Arabic heading.</figcaption>
+</figure>
+</div>
+
+<!--h4 id="myHeading4" lang="ar" dir="rtl">2. نشاط التدويل، W3C</h4-->
+
+<p>We would expect to see something like this in an English paragraph:</p>
+<figure class="example">
+<p>This is a paragraph that points to <a class="secref" href="#myHeading4"><bdi>2.</bdi> <bdi lang="ar" dir="rtl">نشاط التدويل، W3C</bdi></a>.</p>
+</figure>
+
+<p>Unfortunately, if we simply follow the advice given so far (to put <code class="kw" translate="no">dir</code> on the anchor tag), we would see the following:</p>
+<figure class="example">
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=""/> Incorrect result.</span></div>
+<p>This is a paragraph that points to <a class="secref" href="#myHeading4" lang="ar" dir="rtl">2. نشاط التدويل، W3C</a>.</p>
+</figure>
+
+<p>The "W3C" is in the right place, but the section number looks wrong.  To make this work as expected, we need to also isolate the section number from the heading text, and add the directional information to the heading text, rather than to the anchor tag as a whole. The following code would do the job.
+</p>
+<figure class="example">
+<p><code>&lt;p&gt;This is a paragraph that points to &lt;a class=&quot;secref&quot; href=&quot;#myHeading4&quot;&gt;2. &lt;span lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;نشاط التدويل، W3C&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;
+</code></p>
+</figure>
+
+<p>You could also, if you wanted, move the &quot;2&quot; out of the link altogether, like this:</p>
+<figure class="example">
+<p><code>&lt;p&gt;This is a paragraph that points to 2. &lt;a class=&quot;secref&quot; href=&quot;#myHeading4&quot; lang=&quot;ar&quot; dir=&quot;rtl&quot;&gt;نشاط التدويل، W3C&lt;/a&gt;.&lt;/p&gt; </code></p>
+</figure>
+<p>This approach would still produce expected results if the text was dropped into a RTL paragraph. In that case we <em>do</em> want the section number to appear to the right. There is no need to change the markup for this to happen.</p>
+<figure class="example">
+<p dir="rtl">هذه فقرة تشير إلى <a class="secref" href="#heading1"><bdi>2.</bdi> <bdi dir="rtl">نشاط التدويل، W3C</bdi></a>.</p>
+</figure>
+
+<p>It also works with alphabetic section numbers.</p>
+</section>
+
+
+
+<section>
+<h3 id="auto">Should I use <code class="kw" translate="no">dir=auto</code> ?</h3>
+
+<p>The <code class="kw" translate="no">auto</code> value of the <code class="kw" translate="no">dir</code> attribute looks at the incoming data, finds the first strong directional character (in the examples just above, an Arabic letter), and sets the base direction for the contents of the anchor tag to that direction (for the examples above, RTL).</p>
+
+<p>If, however, the heading begins with ASCII characters (on the right), like this ...</p>
+
+<div class="figWrap">
+<figure id="h4_ar2">
+<h4 id="myHeading2" lang="ar" dir="rtl" style="text-align: right; padding:1em; margin:0; border: 1px solid #ccc;">HTML و CSS: تصميم و إنشاء مواقع الويب</h4>
+<figcaption>An Arabic heading with Latin text at the start.</figcaption>
+</figure>
+</div>
+
+<!--h4 id="myHeading2" lang="ar" dir="rtl">HTML و CSS: تصميم و إنشاء مواقع الويب</h4-->
+<p>... we have a problem.</p>
+<figure class="example">
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=""/> Incorrect result.</span></div>
+<p>This is a paragraph that points to <a class="secref" href="#myHeading" dir="auto"><span lang="ar">HTML و CSS: تصميم و إنشاء مواقع الويب</span></a>.</p>
+</figure>
+<p>Because the first strong bidirectional character happens to be "H" in this case,  the base direction for the inserted text is set to LTR.  </p>
+<p>In summary, since first-strong heuristics  can be fooled, it's better to ascertain the base direction of the heading by looking at the DOM, and apply that to the embedded link.</p>
+</section>
+</section>
+
+
+
+
+<h2 id="endlinks" class="notoc"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Getting started? <a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a></p>
+    </li>
+<li>
+  <p><cite>Authoring HTML &amp; CSS</cite></p>
+  <ul>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction#direction">Text direction</a></li>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction&open=bdo#bdo">Overriding the Unicode bidirectional algorithm</a></li>
+  </ul>
+</li>
+</ul>
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

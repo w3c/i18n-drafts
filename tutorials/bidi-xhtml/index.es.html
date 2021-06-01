@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Creación de páginas HTML en árabe, hebreo y otros scripts de derecha a izquierda (tutorial)</title>
+<meta name="description" content="Creación de páginas HTML en árabe, hebreo y otros scripts de derecha a izquierda." />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'tutorials/bidi-xhtml'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-bidi-xhtml'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-03-22'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-06-03', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-11-22', time:'16:28'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://www.traductor-jurado.org">Traductor Jurado Español</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact=""; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'direction';
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-es.js"> </script><!--TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article.js"> </script>
+<script src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Creación de páginas HTML en árabe, hebreo y otros scripts de derecha a izquierda (tutorial)</h1>
+</header>
+
+<div id="sidebarExtras">
+  <section>
+    <h2 id="whyread" class="notoc">¿Por qué debería leer esto?</h2>
+    <p>Conseguir que el texto bidireccional se muestre correctamente a veces puede parecer desconcertante y frustrante, pero no tiene por qué ser así. Si ha tenido problemas con esto o aún no ha empezado, este tutorial le ayudará a adoptar el mejor enfoque para marcar su contenido, y le explicará cómo funciona el algoritmo bidireccional para que pueda entender mucho mejor las causas de la mayoría de sus problemas. También abordaremos algunos conceptos erróneos comunes acerca de las cómo tratar el marcado de contenido bidireccional.</p>
+  </section>
+  <section id="objectives">
+    <h2 class="notoc">Objectivos</h2>
+    <p>Siguiendo este tutorial debería ser capaz de:</p>
+    <ul>
+      <li>crear páginas HTML efectivas que contengan texto escrito en árabe, hebreo u otro alfabeto de derecha a izquierda </li>
+      <li>Comprender los conceptos básicos de cómo funciona el algoritmo bidireccional Unicode, para que pueda entender por qué el texto bidireccional se comporta de la forma en que lo hace, y cómo trabajar en los problemas</li>
+      <li>aplicar las nuevas incorporaciones significativas en HTML5 a su marcado de bidi.</li>
+      <li>Tomar decisiones sobre la idoneidad de las alternativas al marcado</li>
+    </ul>
+    <p>Las escrituras de derecha a izquierda son utilizadas por numerosos idiomas, incluyendo árabe, hebreo, pashto, persa, sindhi, sirio, tailandés, urdu, yiddish, etc.</p>
+  </section>
+</div>
+
+
+<section>
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">Público al que va dirigido:</span> Autores de contenido HTML/XHTML y CSS que implementan páginas en scripts de derecha a izquierda como el árabe y el hebreo, o tienen que lidiar con texto de escritura incrustado de derecha a izquierda. Este material es aplicable tanto si crea documentos en un editor como a través de scripts.</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+        </div>
+  <p>Este tutorial reúne y organiza consejos para artículos que, en conjunto, le ayudan a entender los aspectos esenciales de cómo trabajar con lenguajes en scripts de derecha a izquierda y texto bidireccional cuando se crea HTML y CSS.</p>
+</section>
+
+
+<div id="nutshell">
+  <h2 id="quicksummary"><a href="#quicksummary">En resumen</a></h2>
+  <p>Añada un atributo <code class="kw" translate="no">dir</code> a la etiqueta <code class="kw" translate="no">html</code> para establecer la dirección base predeterminada de su página si es de derecha a izquierda. Utilice el atributo <code class="kw" translate="no">dir</code> en los elementos de bloque dentro de la página sólo cuando necesite cambiar la dirección de la base.</p>
+  <p>Para texto en línea, <a  class="termref" href="/International/articles/inline-bidi-markup/#unknownuc">ajuste bien</a> todas <a class="termref" href="/International/articles/inline-bidi-markup/#oppositedirection">las frases de dirección opuesta </a> con marcas de revisión que establezcan su dirección base.</p>
+  <p>Utilice <code>dir=auto</code> para establecer automáticamente la dirección base de los campos de formulario, <code class="kw" translate="no">pre</code> elementos o texto insertado en la página. Utilice el atributo <code class="kw" translate="no">dirname</code> si necesita pasar información sobre la dirección base de la entrada del formulario al servidor.</p>
+  <p>Evite utilizar CSS o códigos de control Unicode para gestionar la dirección en la que puede utilizar marcas de revisión.</p>
+  <p>Utilice el orden lógico del texto bidireccional, en lugar del orden visual, y deje que el Algoritmo Unicode Bidireccional se encargue de ello.</p>
+</div>
+
+
+<section>
+  <h2 id="definitions"><a href="#definitions">Definiciones</a></h2>
+  <dl>
+    <dt><dfn id="term_bidirectional">Texto bidireccional</dfn></dt>
+    <dd>En los lenguajes que utilizan scripts de derecha a izquierda, cualquier texto incrustado de un script de izquierda a derecha y todos los números, progresan visualmente de izquierda a derecha dentro del flujo visual de derecha a izquierda del texto. (Por supuesto, el texto en inglés de esta página también podría contener texto bidireccional si incluye, por ejemplo, ejemplos en árabe y hebreo.)</dd>
+    <dd>El texto bidireccional es común en guiones de derecha a izquierda como el árabe, el hebreo, el siríaco y el tailandés. Numerosos idiomas diferentes están escritos con estas escrituras, incluyendo árabe, hebreo, pashtún, persa, sindhi, siríaco, dhivehi, urdu, yiddish, etc.</dd>
+    <dt><dfn id="term_bidi">Bidi</dfn></dt>
+    <dd>Un término abreviado de 'bidireccional'.</dd>
+    <dt><dfn id="term_rtl">RTL</dfn></dt>
+    <dd>Un término abreviado de 'derecha a izquierda'.</dd>
+    <dt><dfn id="term_ltr">LTR</dfn></dt>
+    <dd>Un término abreviado de 'izquierda a derecha'.</dd>
+    <dt><dfn id="term_base_direction">Dirección base</dfn></dt>
+    <dd>Para que el texto se vea bien cuando se muestra una página HTML, necesitamos establecer el contexto direccional de ese texto. Nos referimos a ese contexto direccional como la "dirección base".</dd>
+    <dd>IEs fundamentalmente importante establecer la dirección base apropiada para el texto de modo que el algoritmo bidireccional produzca el orden esperado del texto cuando se muestre. La especificación correcta de la dirección base también establece una alineación por defecto adecuada para el texto.</dd>
+    <dd>En HTML, la dirección base se establece explícitamente por el elemento principal más cercano que utiliza el atributo <span class="kw" translate="no">dir</span> o, en ausencia de dicho atributo, la dirección base se hereda de la dirección predeterminada del documento, que es de izquierda a derecha (LTR).</dd>
+    <dt><dfn id="term_uba">Algoritmo Unicode Bidireccional</dfn></dt>
+    <dd>El Algoritmo Unicode Bidireccional (UBA), al que a menudo se hace referencia como el "algoritmo bidi", forma parte del estándar Unicode. Describe un algoritmo utilizado para determinar la direccionalidad del texto Unicode bidireccional y es ampliamente soportado por los navegadores web y otras aplicaciones. Para más detalles, ver <a href="http://www.unicode.org/reports/tr9/">Unicode Standard Anexo #9</a>.</dd>
+  </dl>
+</section>
+
+
+<section>
+  <h2 id="markup"><a href="#markup">Marcado para la dirección del texto</a></h2>
+  <p>En esta sección cubrimos los aspectos básicos del marcado de la dirección del texto.</p>
+  <p><a href="/International/articles/inline-bidi-markup/uba-basics" class="maintitle print"><cite>Conceptos básicos de los algoritmos bidireccionales Unicode</cite></a> proporciona una introducción básica sobre cómo funciona el algoritmo bidi, resaltando conceptos y terminología que necesitará para entender cómo trabajar con texto bidireccional.</p>
+  <p><a href="/International/questions/qa-html-dir" class="maintitle print"><cite>El marcado estructural y el texto de derecha a izquierda en HTML</cite></a> habla sobre el uso básico del atributo <code class="kw" translate="no">dir</code> a nivel de documento y el marcado estructural en HTML, por ejemplo, cosas como párrafos, tablas y formularios. También examina los nuevos desarrollos en HTML5 para tratar la dirección en los elementos del formulario, los <code class="kw" translate="no">pre</code> elementos y el texto insertado.</p>
+  <p><a href="/International/articles/inline-bidi-markup/" class="maintitle print"><cite>El marcado en línea y el texto bidireccional en HTML </cite></a> comienzan por describir situaciones en las que el Algoritmo Unicode Bidireccional necesita ayuda para el marcado. El Algoritmo Unicode Bidireccional es la base para el control direccional del texto en todos los navegadores, pero tiene sus necesidades, y estas deben estar cubiertas con el marcado. El artículo examina los problemas y propone soluciones sencillas. Esto es algo más complicado que el artículo anterior, porque es donde hay que manejar el texto bidireccional.</p>
+  <p><a href="/International/questions/qa-visual-vs-logical" class="maintitle print"><cite>El orden visual vs. lógico del texto </cite></a> compara los enfoques visuales vs. lógicos para almacenar texto bidireccional y plantea el caso para el modelo lógico. Hoy en día, es poco probable que tenga que lidiar con contenido ordenado visualmente.</p>
+</section>
+
+
+<section>
+  <h2 id="browser"><a href="#browser">CSS y caracteres de control  Unicode</a></h2>
+  <p>En términos generales, debería gestionar la dirección del texto en HTML utilizando marcado en lugar de CSS o de caracteres de control  Unicode, aunque hay lugares en los que este último es el único recurso. En estos artículos se examinan en detalle las razones.</p>
+  <p><a href="/International/questions/qa-bidi-css-markup" class="maintitle print"><cite>CSS vs. marcado para el soporte de bidi</cite></a></p>
+  <p><a href="/International/questions/qa-bidi-controls" class="maintitle print"><cite>Controles Unicode vs. marcado para soporte de bidi</cite></a> discute por qué el marcado es mejor que el de caracteres de control Unicode, donde está disponible.</p>
+  <p><a href="/International/questions/qa-bidi-unicode-controls" class="maintitle print"><cite>El uso de controles Unicode para texto bidi</cite></a> explica cómo usar caracteres de control Unicode donde éstos son la única opción. </p>
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Lectura complementaria</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+	<ul id="full-links">
+	<li>
+      <p>Enlaces relacionados, <cite>Autoría HTML y CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#direction">Dirección del texto</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

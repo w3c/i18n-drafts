@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<title>Darstellungsprobleme durch das UTF-8-BOM</title>
+<meta name="description" content="When using UTF-8 encoded pages in some user agents, I get an extra line or unwanted characters at the top of my web page or included file. How do I remove them?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-utf8-bom' // the file name WITHOUT extensions
+f.authors = 'Deborah Cawkwell, BBC World Service' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.searchString = 'qa-utf8-bom' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-11-27' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2007-07-17 18:19', time:'12:09'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2019-05-23', time:'11:03'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="http://bittersmann.de/">Gunnar Bittersmann</a> mit <a href="http://julianewuensche.de/">Juliane Wünsche</a>' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-utf8-bom-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="utf8-bom-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Darstellungsprobleme durch das UTF-8-BOM</h1>
+</header>
+<section>
+  <div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+    
+</section>
+  
+ 
+
+<section>
+<p class="question">Bei UTF-8-codierten Seiten werden in einigen Browsern eine Leerzeile oder unerwünschte Zeichen am Seitenanfang bzw. am Anfang einer eingefügten Datei dargestellt. Wie lassen sich diese entfernen?</p>
+</section>
+
+
+
+
+
+<section>
+<h2 id="answer">Antwort</h2>
+
+<p>Wird eine Datei in UTF-8 codiert, dann kann die UTF-8-Signatur (<span lang="en" xml:lang="en">Byte Order Mark</span>, BOM) Darstellungsprobleme hervorrufen, wenn das Nutzerprogramm (Browser) diese nicht erkennt. This used to be a problem for static HTML files, but is no longer  in recent versions of major browsers. However, if you use PHP to generate your HTML, this was still an issue with PHP version 5.3.6.</p>
+<p>Das BOM befindet sich ganz am Anfang einer Datei, deshalb sind solche Darstellungsprobleme am Seitenanfang zu erwarten. Es können aber auch Leerzeilen innerhalb einer Seite auftreten, wenn Text aus einer anderen Datei eingefügt wird, die mit einem BOM beginnt.</p>
+<p>Dieser Artikel soll Ihnen helfen zu erkennen, ob UTF-8 Ursache des Problems ist. Wenn kein BOM am Dateianfang vorhanden ist, muss woanders nach der Lösung gesucht werden.</p>
+
+
+
+<section>
+<h3 id="bom"><a href="#bom">Was ist die UTF-8-Signatur  (BOM)?</a></h3>
+<div class="sidenoteGroup"> 
+	<p>Einige Anwendungen fügen am Anfang einer Datei eine spezielle Folge von Bytes ein um anzuzeigen, dass es sich bei dem Text in der Datei um Unicode handelt. Diese Bytefolge wird <strong>Signatur</strong> oder <strong><span lang="en" xml:lang="en">Byte Order Mark</span> (BOM)</strong> genannt. Einige Progamme (z.B. Texteditoren oder Browser) stellen das BOM als Leerzeile dar, andere stellen unerwartete Zeichen dar (ï»¿).</p>
+	<p>Weitere Informationen zum BOM finden Sie in der Randbemerkung.</p>
+	<div class="sidenote"> 
+		<p class="info">Das BOM ist der Unicode-Zeichencode U+FEFF, der dem Zeichen ZERO WIDTH NO-BREAK SPACE entspricht. (Anmerkung des Übersetzers: Inzwischen dient das Zeichen U+FEFF ausschließlich als BOM. Es sollte nicht mehr als nullbreites geschütztes Leerzeichen verwendet werden; diesen Zweck erfüllt das Zeichen U+2060 WORD JOINER.)</p>
+		<p>Bei den Zeichencodierungen UTF-16 und UTF-32 ist das BOM erforderlich, damit der Dateiinhalt korrekt interpretiert werden kann (wenn nicht ein anderer Indikator für die Bytereihenfolge vorhanden ist). Jedes Zeichen wird durch 2 bzw. 4 Bytes repräsentiert, wobei deren Reihenfolge wichtig ist. Das BOM gibt diese Reihenfolge an.</p>
+		<p>Bei UTF-8 ist im Gegensatz dazu kein BOM erforderlich, denn dort gibt es nur eine mögliche Reihenfolge der Bytes. Das BOM kann dennoch in UTF-8-codiertem Text auftreten, entweder als Nebenprodukt einer Umwandlung der Zeichencodierung oder weil es durch ein Editorprogramm hinzugefügt wurde.</p>
+	</div>
+</div>
+</section>
+
+
+
+<section>
+
+<h3 id="detect"><a href="#detect">Das BOM erkennen</a></h3>
+<p>Zunächst ist zu prüfen, ob tatsächlich ein BOM am Dateianfang vorhanden ist.</p>
+<p>Sie können versuchen, das BOM im Dateiinhalt zu erkennen, doch wenn Ihr Editor das BOM richtig behandelt, wird es nicht zu sehen sein. Ein Editor, der das BOM nicht richtig behandelt, zeigt die Zeichen an, die den Bytes in der eingestellten Zeichencodierung entsprechen. (Bei Latin-1 (ISO 8859-1) sind dies die Zeichen ï»¿.) Ein Hex-Editor, der die einzelnen Bytewerte anzeigt, zeigt das BOM als EF BB BF.</p>
+<p>Möglicherweise zeigt Ihr Editor in der Statuszeile oder einem Menü, welche Zeichencodierung verwendet wird und ob ein BOM vorhanden ist oder nicht.</p>
+<p>Andernfalls könnte ein Test-Script (siehe unten) hilfreich sein. (Wenn Sie das Problem in einer per PHP o.a. Mechanismus eingefügten Datei vermuten, geben Sie den URI der <em>eingefügten</em> Datei an.)</p>
+</section>
+
+
+
+
+<section>
+<h3 id="remove"><a href="#remove">Das BOM entfernen</a></h3>
+
+<p>In einem Editor, der das BOM als unerwünschte Zeichen darstellt, können Sie diese löschen. Wahrscheinlicher ist aber, dass ein vorhandenes BOM gar nicht zu sehen ist.</p>
+<p>Überprüfen Sie, ob Ihr Editor ermöglicht einzustellen, ob <a href="http://www.w3.org/International/questions/qa-setting-encoding-in-applications">beim Speichern</a> ein BOM hinzugefügt wird bzw. erhalten bleibt. Solch ein Editor erlaubt es Ihnen, auf einfache Weise das BOM zu entfernen: die Datei einlesen und wieder speichern. Wenn z.B. Dreamweaver ein BOM erkennt, dann ist in der Dialogbox „Speichern unter“ eine Checkbox „Unicode-Signatur (BOM) einschließen“. Dort einfach das Häkchen entfernen und speichern.</p>
+<p>Ein Script bietet u.a. den Vorteil, dass es das BOM schnell entfernen kann – auch in mehreren Dateien. Solch ein Script könnte automatisch als Teil des Arbeitsprozesses laufen. Wenn Sie Perl verwenden, können Sie <a href="http://people.w3.org/rishida/blog/?p=102">dieses einfache Script</a> von Martin Dürst nutzen.</p>
+<p>Anmerkung: Überprüfen Sie, welchen Einfluss die Entfernung des BOM hat. Es könnte sein, dass irgendein Teil in ihrem Arbeitsprozess das BOM benötigt um zu erkennen, dass eine Datei UTF-8-codiert ist. Beachten Sie auch, dass Seiten mit einem hohen Anteil an lateinischen Buchstaben auf den ersten Blick korrekt aussehen, aber vereinzelte Nicht-ASCII-Zeichen (außerhalb des Bereichs U+0000 bis U+007F) nicht korrekt codiert sein könnten.</p>
+</section>
+
+</section>
+
+
+
+
+
+
+
+  
+  <section>
+  <h2 id="bytheway"><a href="#bytheway">Übrigens</a></h2>
+    <p>Einige Texteditoren wie bspw. Windows Notepad fügen immer ein BOM ein, wenn eine Datei UTF-8-codiert gespeichert wird.</p>
+<p>Ein BOM am Anfang einer CSS-Datei kann in einigen Browsern dazu führen, dass die erste Regel ignoriert wird.</p>
+<p>Wenn ein BOM vorhanden ist, interpretieren manche Browser den Text als UTF-8-codiert, auch wenn eine andere Zeichencodierung angegeben ist.</p>
+</section>
+<h2 id="endlinks" class="notoc"><a href="#endlinks">Literaturhinweise</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="http://www.unicode.org/unicode/faq/utf_bom.html">Unicode-FAQ zum BOM</a><a href="http://www.unicode.org/faq/utf_bom.html#BOM"></a></p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-setting-encoding-in-applications">instellung der Zeichencodierung in Webeditoren und Texteditoren</a><a href="http://www.unicode.org/International/questions/qa-setting-encoding-in-applications"></a></p>
+    </li>
+    <li>
+      <p><a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a></p>
+    </li>
+<li>
+  <p><cite>Authoring HTML &amp; CSS</cite></p>
+  <ul>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=charset">Characters</a></li>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction&open=bomhandling">Handling the byte-order mark</a></li>
+  </ul>
+</li>
+</ul>
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
