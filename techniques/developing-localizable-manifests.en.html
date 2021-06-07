@@ -68,9 +68,9 @@
 
         <p>Some specifications on the Web deal with defining sets of files or resources to be consumed together. A common design pattern is to provide a manifest or configuration file that defines how various resources should be used or to provide various kinds of metadata about a collection of resources.</p>
         
-        <p>Some examples of specifications like this include Webapp [[WEBAPPMANIFEST]], Miniapp [[MINIAPP-MANIFEST]], and [[EPUB]].</p>
+        <p>Some examples of specifications like this include Webapp [[APPMANIFEST]], Miniapp [[MINIAPP-MANIFEST]], and ePub [[EPUB-33]].</p>
 
-        <p>Manifest files generally contain a mix of [localizable content] and syntactic or user-defined content that is non-localizable. A specification that defines such a format needs to provide a means for users to localize the manifest into different languages. This document covers the pros and cons of common designs, along with some best practices related to building and managing manifests.</p>      
+        <p>Manifest files generally contain a mix of <a href="https://w3c.github.io/i18n-glossary/#def_localizable_content">localizable content</a> and <a href="https://w3c.github.io/i18n-glossary/#def_syntactic_content">syntactic</a> or <a href="https://w3c.github.io/i18n-glossary/#def_user_supplied_value">user-supplied values</a> that are not localizable. A specification that defines such a format needs to provide a means for users to localize the manifest into different languages. This document covers the pros and cons of common designs, along with some best practices related to building and managing manifests.</p>      
         
         <p>These (and many other) best practices, along with links to supporting materials, can also be found in the <cite>Internationalization Best Practices for Spec Developers</cite> [[INTERNATIONAL-SPECS]]. In addition to the best practices found here, additional best practices relating to language metadata on the Web can be found in [[STRING-META]].</p>
         
@@ -83,12 +83,12 @@
         
       </section>
       <section id="use-cases">
-		  <h2>Use Cases</h2>
+		  <h2>Requirements and Use Cases</h2>
 		  <p>There are different ways that manifest files might be used on the Web and these affect the choice of manifest localization strategy.</p> 
 
-          <p>Some manifests are packaged with other files to form an application or document. Since the manifest is generally consumed as part of the larger set of content and the content is downloaded as a single unit, localization strategies that are modular, consisting of multiple files, are easier to use.</p>
+          <p><dfn data-lt="packaged">Packaged Manifest.</dfn> Some manifests are packaged with other files to form an application or document. Since the manifest is generally consumed as part of the larger set of content and the content is downloaded as a single unit, localization strategies that are modular, consisting of multiple files, are easier to use.</p>
           
-          <p>Other manifests are meant to be used as a shorthand description of the document or application. Manifests like this are often downloaded by the client: retrieving multiple files has latency, size, and storage implications that point toward fewer files or less modular approaches.</p>
+          <p><dfn data-lt="shorthand">Shorthand Description Manifest.</dfn> Other manifests are meant to be used as a shorthand description of the document or application. Manifests like this are often downloaded by the client: retrieving multiple files has latency, size, and storage implications that point toward fewer files or less modular approaches.</p>
 
           <p>Another consideration is the <a href="https://w3c.github.io/i18n-glossary/#dfn-language-negotiation">language negotiation</a> strategy employed by the specification.</p>
           
@@ -96,13 +96,46 @@
       </section>
       <section id="common-approaches">
 		  <h2>Common Approaches</h2>
+		  <p>There are several common approaches to creating localized manifests. Each offers certain advantages (and suffers from certain drawbacks):</p>
+		  
 		  <section id="unitary">
 			  <h3>Unitary Manifest Files</h3>
 			  <p>A unitary manifest approach provides for localization by defining localizable fields using an array of language values.</p>
+			  
+			  <aside class="example">
+				  <p>Example of a unitary manifest:</p>
+				  <pre>{
+   "appId": "myApplication",
+   "releaseDate": "2021-06-07",
+   "releaseUrl": "https://example.com/path/to/myApplication",
 
-              <p>The advantages of a unitary manifest include that is it a single file, allowing for easy of downloading. It is easier to ensure that the correct version of the resources in every language are being used. Language defaulting may be easier to manage.</p>
+   // localizable values
+   "title": {
+       "en": "My Application",
+       "fr": "Mon application",
+       "de": "Mein Bewerbund",
+       "zh-Hans": "我的应用程序"
+   },
+   "author": {
+       "en": "Example Corporation",
+       "fr": "Société Exemple"
+   }</pre>
+			  </aside>
 
-              <p>There are also disadvantages to this approach. If the manifest is rendered into many languages, the file’s size may grow disproportionately. Localization processes are generally optimized to create “file copies”: creating, managing, and synchronizing localization in a highly multilingual file may be more complex than using separate files per language. Generating the manifest via scripts or tooling is one approach to managing this complexity.</p>
+              <p>The advantages of a unitary manifest include:</p>
+              
+              <ol>
+				  <li>The manifest is a single file, allowing for ease of downloading. 
+				  <li>It is easier to ensure that the correct version of the resources in every language are being used.
+				  <li>Language defaulting may be easier to manage.
+              </ol>
+
+              <p>There are also disadvantages to this approach:</p>
+              
+              <ol>
+                  <li>If the manifest is rendered into many languages, the file's size may grow disproportionately.
+                  <li>Localization processes are generally optimized to create files that are copies of the original, only with the language-bearing materials replaced. Creating, managing, and synchronizing localization in a highly multilingual file may be more complex than using separate files per language. Generating the manifest via scripts or tooling is one approach to managing this complexity.
+              </ol>
               
               <p>Unitary manifests work best with smaller source files with a limited number of localizable content fields and/or a limited number of languages. Most unitary manifests define some type of “language indexing” scheme (such as found in [[JSON-LD]]) to perform the actual selection.</p>
 		  </section>
@@ -110,16 +143,49 @@
 		  <section id="locale-specific">
 			  <h3>Language or Locale-specific Manifest Files</h3>
 			  
-			  <p>Locale-specific manifests create a separate file for each supported language or locale. Usually the locale-specific file will choose either <code>path</code> or <code>filename</code> based organizational scheme.</p>
+			  <p>Locale-specific manifests create a separate file for each supported language or locale. Usually the locale-specific file will <a href="#path-vs-file">choose</a> either <code>path</code> or <code>filename</code> based organizational scheme.</p>
 			  
-              <p>The advantages of locale-specific manifests include that managing the creation or addition of locales is generally easier. Localization processes are generally optimized for “creating a localized copy” of a given source file.</p>
+			  <aside class="example">
+				  <p>Example of language specific manifest files:</p>
+				  <p><code>/manifest/MyApplicationManifest.json</code></p>
+				  <pre>{
+   "appId": "myApplication",
+   "releaseDate": "2021-06-07",
+   "language": "en"
+   "releaseUrl": "https://example.com/path/to/myApplication",
+   "title": "My Application",
+   "author": "Example Corporation",
+   // etc.
+</pre>
+				  <p><code>/manifest/MyApplicationManifest-fr.json</code></p>
+				  <pre>{
+   "appId": "myApplication",
+   "releaseDate": "2021-06-07",
+   "language": "fr"
+   "releaseUrl": "https://example.com/path/to/myApplication",
+   "title": "Mon application",
+   "author": "Société Exemple",
+   // etc.
+</pre>
+			  </aside>
+			  
+              <p>The advantages of locale-specific manifests include:</p>
+              
+              <ol>
+				  <li>Managing the creation or addition of locales is generally easier. Localization processes are generally optimized for “creating a localized copy” of a given source file.
+		      </ol>
 
-              <p>The disadvantages include that even simple locale fallback chains can require the client to search for or retrieve multiple files. Because the files are separate, versioning of the content must be rigorously controlled. It may be necessary to test many more variations to ensure proper operation.</p>
+              <p>The disadvantages include:</p> 
+              
+              <ol>
+				  <li>Even simple locale fallback chains can require the client to search for or retrieve multiple files.
+				  <li>Because the files are separate, versioning of the content must be rigorously controlled. 
+				  <li>It may be necessary to test many more variations to ensure proper operation.</p>
 		  </section>
 		  
 		  <section id="hybrid">
 			  <h3>Hybrid Approaches</h3>
-			  <p>A common compromise is to have a central manifest file that contains most or all of the non-localizable content, coupled with separate files that contains the localizable content. In some cases, the central manifest file contains defaults for the localizable content. In some cases, the central manifest contains a directory or list of available locales (or the URL of language-specific manifests) so that clients only need to try to retrieve localized files that are actually available.</p>
+			  <p>A common compromise is to have a central manifest file that contains most or all of the non-localizable content, coupled with separate files that contains the localizable content. In some cases, the central manifest file contains defaults for the localizable content. The central manifest might also contain a directory or list of available locales (or the URL of language-specific manifests) so that clients only need to try to retrieve localized files that are actually available.</p>
 		  </section>
       </section>
       
