@@ -38,9 +38,15 @@
 	       "Mark Davis",
 	       "CLDR Contributors"
 	 ]}
-    }
-
-      };
+    "I18N-GLOSSARY": {
+		title:    "Internationalization (I18N) Glossary",
+		href:     "https://w3c.github.io/i18n-glossary", <!-- fix me -->
+		publisher: "W3C I18N WG",
+		authors: [
+		   "Richard Ishida"
+		   ]}
+     }
+     };
 
     </script>
     <link rel="stylesheet" href="local.css" />
@@ -66,13 +72,13 @@
     <section id="introduction">
       <h2>Introduction</h2>
 
-        <p>Some specifications on the Web deal with defining sets of files or resources to be consumed together. A common design pattern is to provide a manifest or configuration file that defines how various resources should be used or to provide various kinds of metadata about a collection of resources.</p>
+        <p>Some specifications on the Web deal with defining sets of files or resources to be consumed together. A common design pattern is to provide a manifest or configuration file that defines which resources are available and how various resources should be used or to provide various kinds of metadata about a collection of resources.</p>
         
         <p>Some examples of specifications like this include Webapp [[APPMANIFEST]], Miniapp [[MINIAPP-MANIFEST]], and ePub [[EPUB-33]].</p>
 
-        <p>Manifest files generally contain a mix of <a href="https://w3c.github.io/i18n-glossary/#def_localizable_content">localizable content</a> and <a href="https://w3c.github.io/i18n-glossary/#def_syntactic_content">syntactic</a> or <a href="https://w3c.github.io/i18n-glossary/#def_user_supplied_value">user-supplied values</a> that are not localizable. A specification that defines such a format needs to provide a means for users to localize the manifest into different languages. This document covers the pros and cons of common designs, along with some best practices related to building and managing manifests.</p>      
+        <p>Manifest file formats usually contain <a href="https://w3c.github.io/i18n-glossary/#def_syntactic_content">syntactic</a> or <a href="https://w3c.github.io/i18n-glossary/#def_user_supplied_value">user-supplied values</a> that are not localizable. But most manifest file formats also contain at least some <a href="https://w3c.github.io/i18n-glossary/#def_localizable_content">localizable content</a> fields. A specification that defines a manifest file format that includes localizable content values needs to provide a means for users to localize the manifest into different languages. This document covers the pros and cons of common designs, along with some best practices related to building and managing manifests.</p>      
         
-        <p>These (and many other) best practices, along with links to supporting materials, can also be found in the <cite>Internationalization Best Practices for Spec Developers</cite> [[INTERNATIONAL-SPECS]]. In addition to the best practices found here, additional best practices relating to language metadata on the Web can be found in [[STRING-META]].</p>
+        <p>These (and many other) best practices, along with links to supporting materials, can also be found in the <cite>Internationalization Best Practices for Spec Developers</cite> [[INTERNATIONAL-SPECS]]. In addition to the best practices found here, additional best practices relating to language metadata on the Web can be found in [[STRING-META]]. Core terminology can also be found in the <cite>Internationalization Glossary</cite> [[I18N-GLOSSARY]].</p>
         
         <aside class="note">
            <p>In this document [[RFC2119]] keywords have their usual meaning. Best practices and definitions are set off from the remainder of the text with special formatting.</p>
@@ -147,21 +153,21 @@
 			  
 			  <aside class="example">
 				  <p>Example of language specific manifest files:</p>
-				  <p><code>/manifest/MyApplicationManifest.json</code></p>
+				  <p>Filename: <code>/manifest/MyApplicationManifest.json</code></p>
 				  <pre>{
    "appId": "myApplication",
    "releaseDate": "2021-06-07",
-   "language": "en"
+   "language": "en",
    "releaseUrl": "https://example.com/path/to/myApplication",
    "title": "My Application",
    "author": "Example Corporation",
    // etc.
 </pre>
-				  <p><code>/manifest/MyApplicationManifest-fr.json</code></p>
+				  <p>Filename: <code>/manifest/MyApplicationManifest-fr.json</code></p>
 				  <pre>{
    "appId": "myApplication",
    "releaseDate": "2021-06-07",
-   "language": "fr"
+   "language": "fr",
    "releaseUrl": "https://example.com/path/to/myApplication",
    "title": "Mon application",
    "author": "Société Exemple",
@@ -186,6 +192,37 @@
 		  <section id="hybrid">
 			  <h3>Hybrid Approaches</h3>
 			  <p>A common compromise is to have a central manifest file that contains most or all of the non-localizable content, coupled with separate files that contains the localizable content. In some cases, the central manifest file contains defaults for the localizable content. The central manifest might also contain a directory or list of available locales (or the URL of language-specific manifests) so that clients only need to try to retrieve localized files that are actually available.</p>
+			  
+			  <aside class="example">
+				  <p>Example of a hybrid manifest:</p>
+				  <p>Filename: <code>/manifest/MyApplicationManifest.json</code></p>
+				  <pre>{
+   "appId": "myApplication",
+   "releaseDate": "2021-06-07",
+   "defaultLanguage": "en",
+   "availableLanguages": [ "ar-AE", "ar-EG", "en", "fr", "fr-CA", "zh-Hans-CN" ],
+   "releaseUrl": "https://example.com/path/to/myApplication",
+   "title": "My Application",
+   "author": "Example Corporation",
+   // etc.
+</pre>
+				  <p>Filename: <code>/manifest/MyApplicationManifest-en.json</code></p>
+				  <pre>{
+   "appId": "myApplication",
+   "language": "en",
+   "title": "My Application",
+   "author": "Example Corporation",
+   // etc.
+</pre>
+				  <p>Filename: <code>/manifest/MyApplicationManifest-fr.json</code></p>
+				  <pre>{
+   "appId": "myApplication",
+   "language": "fr",
+   "title": "Mon application",
+   "author": "Société Exemple",
+   // etc.
+</pre>
+			  </aside>
 		  </section>
       </section>
       
@@ -210,7 +247,7 @@ File-based: /manifests/myApplication-en-US.json
 		  <h2>Other Considerations</h2>
 		  <p>Note that manifest localization does not remove the need for the string content in a manifest to provide language and direction metadata for each separate data value. The manifest file can define a file-wide default for language and direction, but specific files should be able to override either value. See [[STRING-META]] for more information.</p>
 		  
-		  <p>Some manifests allow for “sparse population” of values in the localized file. For example, the <code>en-US</code> (English, United States) file might only contain one or two US-specific values, relying on the <code>en</code> (English) file for most of its content. Specifications need to be explicit about whether sparse population is allowed and how it works to avoid misconfiguration errors or missing translations.</p>
+		  <p>Some manifests allow for "sparse population" of values in the localized file. For example, the <code>en-US</code> (English, United States) file might only contain one or two US-specific values, relying on the <code>en</code> (English) file for most of its content. Specifications need to be explicit about whether sparse population is allowed and how it works to avoid misconfiguration errors or missing translations.</p>
       </section>
       </body>
       </html>
