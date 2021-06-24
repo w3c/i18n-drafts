@@ -16,7 +16,7 @@ f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-qa-html-dir'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2011-08-12'; // date of the first publication of the document (after review)
 f.lastSubstUpdate = { date:'2021-05-07', time:'12:31'}  // date and time of latest substantive changes to this document
-f.status = 'review';  // should be one of draft, review, published, or notreviewed
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
@@ -55,7 +55,7 @@ f.additionalLinks = ''
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
 <p>This article looks at ways of handling text direction for <em>structural</em> markup in HTML, ie. at the document level and for elements like paragraphs, tables and forms. </p>
-<p class="info">For handling <a href="/International/tutorials/bidi-xhtml/#term_bidirectional" class="termref print">bidirectional text</a> with <em>inline</em> markup you should  read the separate article, <cite><a class="print" href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></cite>. It also describes some other elements and attributes related to direction.</p>
+<p class="info">For handling <a href="https://w3c.github.io/i18n-glossary/#def_bidirectional_text" class="termref print">bidirectional text</a> with <em>inline</em> markup you should  read the separate article, <cite><a class="print" href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></cite>. It also describes some other elements and attributes related to direction.</p>
 <p>The <code class="kw" translate="no">dir</code> attribute is used to set the base direction of text for display. It is essential to support languages that use right-to-left scripts such as Adlam, Arabic, Hebrew, N'Ko, Syriac,  and Thaana. Many different languages are written with these scripts, including Arabic, Dhivehi, Hebrew, Mandinka, Pashto, Persian, Pular, Sindhi, Syriac,  Urdu, Yiddish, etc.</p>
 </section>
 
@@ -78,14 +78,21 @@ f.additionalLinks = ''
       <p class="info noprint">Examples in this document may be shown as images to avoid problems for those with a browser that doesn't produce what was intended.      </p>
 <p>Code samples containing Arabic and Hebrew text <a class="print" href="http://www.w3.org/TR/i18n-html-tech-bidi/#bidisource"> may be displayed  in different ways</a>, none of which are usually satisfactory. In this article right-to-left text in code samples may be represented by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase.</p>
   </div>
-<p>At the outset, it is important to understand the concept of <a href="/International/tutorials/bidi-xhtml/#term_uba" class="termref print">base direction</a> (see <a href="../articles/inline-bidi-markup/uba-basics">Unicode Bidirectional Algorithm basics</a> for a simple overview of how it works with the <a href="/International/tutorials/bidi-xhtml/#term_uba" class="termref print">Unicode bidirectional algorithm</a>).  </p>
+<p>At the outset, it is important to understand the concept of <a href="https://w3c.github.io/i18n-glossary/#def_base_direction" class="termref print">base direction</a> (see <a href="../articles/inline-bidi-markup/uba-basics">Unicode Bidirectional Algorithm basics</a> for a simple overview of how it works with the <a href="https://w3c.github.io/i18n-glossary/#def_uba" class="termref print">Unicode bidirectional algorithm</a>).  </p>
 <p>It is fundamentally important to establish the appropriate base direction for the text, so that the Unicode bidirectional algorithm can reorder the text appropriately when it is displayed. Correctly setting the base direction also sets the default paragraph alignment of the text.</p>
     <p>In HTML the base direction is either (a) set explicitly by the nearest parent element that uses the <span class="kw">dir</span> attribute (which could be the <code class="kw" translate="no">html</code> element), or, (b) in the absence of such an attribute,  left-to-right (LTR). </p>
 </section>
-  <section> </section>
+
+
+
+
+
+
+
 <section>
 <h3 id="rtlsetup"><a href="#rtlsetup">Setting up a right-to-left page</a></h3>
-    <p> Add <code>dir="rtl"</code> to the <span class="kw">html</span> tag any time the overall document direction is right-to-left (RTL). This sets the default base direction for the whole document. All block elements in the document will inherit this setting unless the direction is explicitly overridden. </p>
+
+<p> Add <code>dir="rtl"</code> to the <span class="kw">html</span> tag any time the overall document direction is right-to-left (RTL). This sets the default base direction for the whole document. All block elements in the document will inherit this setting unless the direction is explicitly overridden. </p>
 <figure class="example">
   <blockquote><code>&lt;!DOCTYPE html&gt;<br>
         &lt;html <span style="color:red;">dir=&quot;rtl&quot;</span> lang=&quot;ar&quot;&gt;<br>
@@ -138,7 +145,7 @@ f.additionalLinks = ''
 
 <p>The text that appears in the <code class="kw" translate="no">title</code> element at the top of an HTML file is often displayed in tab headings, bookmarks, etc. When so displayed, the browser should automatically apply the base direction that the <code class="kw" translate="no">title</code> element had in the original document. For example, if the <code class="kw" translate="no">html</code> tag declares the document direction to be RTL, the <code class="kw" translate="no">title</code> element text should be displayed with a RTL base direction.</p>
 <p>At the time of writing, browsers tend to display RTL title text from right-to-left, and vice versa. However, they do this not by examining the direction applied to the text by the markup, but instead by finding the first strongly directional character in the title and assuming that that indicates the appropriate base direction.</p>
-<p>Much of the time this will produce the desired result. However, if the title text in a RTL document begins with, say, an  acronym in the Latin script, the order will be incorrect when the text is displayed (<a class="print" href="../../i18n-tests/results/native-user-interfaces#windowheader" target="_blank">see some tests</a>).</p>
+<p>Much of the time this will produce the desired result. However, if the title text in a RTL document begins with, say, an  acronym in the Latin script, the order will be incorrect when the text is displayed (<a class="print" href="../../../i18n-tests/results/native-user-interfaces#windowheader" target="_blank">see some tests</a>).</p>
 <p>A workaround for this scenario is to add <code>&amp;rlm;</code> at the beginning of the title text when it doesn't begin with a RTL character. This adds <span class="codepoint" translate="no"><span class="uname">U+200F RIGHT-TO-LEFT MARK</span></span> at the start, which is an invisible, strongly directional RTL character.</p>
 <p>If you have a LTR text that begins with a strong RTL character, use <code>&amp;lrm;</code> at the start, instead.</p>
 </section>
@@ -160,6 +167,7 @@ f.additionalLinks = ''
 
 <section>
 <h3 id="no_css"><a href="#no_css">Don't use CSS for direction!</a></h3>
+
 <p>Do <em>not</em> use CSS to apply base direction in HTML pages. </p>
 <p>Basically, this is because you want the directional information to be available even when the CSS is not. The directional information can affect the semantics of your content, and so should be part of the markup. (See a <a class="print" href="/International/questions/qa-bidi-css-markup">longer explanation</a>). </p>
 <p>Both the CSS and HTML specs echo this same admonition.</p>
