@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Can we derive base direction from language?</title>
+<meta name="description" content="Issues related to labelling of text for script direction." />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-direction-from-language'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-direction-from-language'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2021-05-06'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2021-05-06', time:'16:56'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2021-05-06', time:'16:56'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'style';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-direction-from-language-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script><!-- TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<!--link rel="stylesheet" href="qa-direction-from-language-data/local.css" /-->
+<link rel="copyright" href="#copyright"/>
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Can we derive base direction from language?</h1>
+</header>
+
+
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+</div>
+
+<p>Sometimes people wonder whether it's possible to obtain a definitive list of language tags which indicate a RTL base direction,  so that there would be no need for separate direction metadata. This article looks into whether that is really feasible. (Spoiler: The W3C Internationalization Working Group believes it is not a feasible approach.)</p>
+<p>For an introduction to language tags and the subtags that can be combined to form them, see <a href="https://www.w3.org/International/articles/language-tags/">Language tags in HTML and XML</a>.</p>
+
+
+<section>
+<h2 id="summary"><a href="#summary">Summary</a></h2>
+<p>W3C Internationalization Working Group feels that it is inappropriate to use language tags to specify direction for the following reasons.</p>
+<ul>
+<li>
+It isn’t clear that the (constantly growing) list of language subtags and combinations of language subtag with other subtags would be able to produce an exhaustive list of language tags for which RTL direction is appropriate.</li>
+<li>
+It is expected that human use of language tags may fail to provide sufficient precision in the use of tags to clarify expected direction.</li>
+<li>
+Language metadata may be unavailable, and if direction metadata is available there is no good way to represent it alone in language tags.</li>
+<li>
+Language metadata may be incorrect, causing incorrect assignments of base direction by the consumer.</li>
+<li>
+There is a significant processing overhead involved in deriving direction from language tags that is not necessary if direction metadata is provided separately, and this may be significant for technologies such as WoT, or simple string processing applications.</li>
+<li>
+There are fundamental differences in what one is trying to achieve when using language metadata and direction metadata; for example, language tags cannot represent the auto value of direction.</li>
+<li>
+Approaches where direction metadata are handled separately from language metadata avoid all of the problems listed above, and are simple to use.</li>
+</ul>
+</section>
+
+
+
+
+
+
+
+<section id="problems">
+<h2><a href="#problems">Problems in determining the direction of a string from its language tag</a></h2>
+
+<section id="inherent">
+<h3><a href="#inherent">The bounding problem</a></h3>
+
+<p>In order to derive base direction from language metadata we would need to ascertain exhaustively and accurately which language tags represent text that is displayed with a right-to-left (RTL) base direction.</p>
+<p>BCP47 currently defines 8,152 language subtags. (Some of those languages don’t have standardised written forms, however any language <em>can</em> be written as a transcription, phonetic or otherwise.)</p>
+<p>The specific number of language subtags associated with text that has a RTL base direction can be hard to determine because many languages have multiple orthographies, some of which are LTR and others RTL. For example, the Northern Azerbaijani language,azj, is normally written in the Latin script since the country became independent in 1991 (it was Cyrillic before that), but prior to 1929 was written in the Arabic script. Another language subtag for Azerbaijani, az, can represent either the South Azerbaijani [azb] or the North Azerbaijani [azj] languages – the former typically written with the Arabic (RTL) script, and the latter with the Latin (LTR) script. Similarly, the language subtag dv (Dhivehi) represents a single language which at the present day has two different orthographies, one Latin-script based (LTR) and the other Thaana-based (RTL). Many languages have orthographies that, historically or concurrently, can be written using either a RTL or a LTR orthography.</p>
+<p>BCP47 makes it possible to address the above ambiguities by adding script subtags to a language subtag to indicate the script that the text is written in. (Note that this is not always a simple list: a script can have multiple script subtags, depending on the style of writing, so Syriac script, for example, can be represented using <code class="kw" translate="no">syrc</code> (General Syriac), <code class="kw" translate="no">syre</code> (Estrangela), <code class="kw" translate="no">syrn</code> (Serṭā), <code class="kw" translate="no">syrn</code> (Maḏnḥāyā).) But a basic recommendation when using BCP47 is to keep the language tag as short as possible, and this means omitting script subtags unless you see a clear need for them.</p>
+<p>Thus a user may use language tags ambiguously, eg. they may just use <code class="kw" translate="no">uz</code> to label Uzbeck, rather than <code class="kw" translate="no">auz</code>, or <code class="kw" translate="no">uzn</code>, or <code class="kw" translate="no">uzs</code>, <code class="kw" translate="no">uz-Arab</code>, etc., and because subtags after the language subtag in BCP47 language tags are intended for contrastive use, they may feel, rightly, that that may be adequate for their needs. (<code class="kw" translate="no">uz</code> could represent either a RTL or LTR orthography). It may not be adequate, however, if that text is scraped up and used in a contex that wasn’t originally envisaged.</p>
+<p>An additional problem that arises where humans are labelling text for language is that, given that the list of language subtags representing strings with a RTL base direction has a long tail, we can’t really expect that users will remember accurately which tags need additional script-related information and which don’t.</p>
+<p>It is also possible to combine other types of subtag with language tags in a way that can change the appropriate or likely base direction. For example, a list of language tags derived from CLDR included <code class="kw" translate="no">az-IR</code> and <code class="kw" translate="no">az-IQ</code>, which describe Azeri as used in Iran and Iraq, respectively. There is no explicit information there, and if one assumes that this refers to Azeri written in the Arabic script (rather than Latin or Cyrillic) it may not actually be the case.</p>
+<p>Variant subtags can also signal a change in the base direction. For example, ar-alalc97 indicates a latin script transliteration of Arabic text, and similarly <code class="kw" translate="no">-fonipa</code>, <code class="kw" translate="no">-fonapa</code>, <code class="kw" translate="no">-fonupa</code> can be associated with languages that are normally written with RTL scripts but that are in this case written with a LTR phonetic transcription.</p>
+<p>A particular issue here is that the list of language subtags grows over time.</p>
+<p>Given that variants subtags are often created for historical orthographies, and that many languages currently written with a LTR base direction (Latin, Cyrillic, Malayalam, or other) have historically been written using the Arabic script (especially in Central Asia, but also in many other parts of Asia), it would be quite easy to think of examples where the application of a new variant subtag would be associated with a new base direction for a given language. (For example, a possible new variant that indicates the Arabic orthography for Malayalam which was used at the start of the 20thC, or the Syriac orthography for Suriyani Malayalam, used widely by christians in the 19thC. Another example would be a variant subtag to indicate the Latin-based 'Yekgirtú' Kurdish Unified Alphabet currently being promoted for future use by the Kurdish Academy of Language for all Kurdish dialects, including <code class="kw" translate="no">ckb</code>, which these days is usually written in Arabic script. And so on.)</p>
+<p>If applications try to infer the base direction from a language tag, and the list of language tags associated with RTL base direction grows over time, it is necessary for those applications to constantly update the list they use to spot RTL text. Otherwise interoperability will suffer. Updating such lists may not always be timely or easy, especially in contexts such as the Web of Things.</p>
+<p>One response to the issue of human fallibility is to have a short list of common language tags that are recognised to be RTL without additional clarification, and then require users to provide script subtags for all others. For example, the list of tags exempt from using script tags could include all language tags that have <code class="kw" translate="no">suppressscript</code> metadata in BCP47. (There are only 6 of them: <code class="kw" translate="no">ar</code>, <code class="kw" translate="no">fa</code>, <code class="kw" translate="no">ps</code>, <code class="kw" translate="no">ur</code>, <code class="kw" translate="no">dv</code>, <code class="kw" translate="no">nqo</code>. Three of those are macrolanguage subtags, and none of the subtags they represent (eg. <code class="kw" translate="no">arb</code>, <code class="kw" translate="no">pbu</code>, etc.) have <code class="kw" translate="no">suppressscript</code> metadata.)</p>
+<p>This strategy of requiring script tags has two issues. Firstly, users applying language tags may ignore the list, or may not remember which items need script subtags and which don’t. And secondly, we are subverting the rules of BCP47, which say that language tags should be kept as short as possible, and script tags should normally only be used in a contrastive manner. Here we would be requiring them a lot (probably most) of the time, but only to service the extraction of directional information, not to necessarily contrast them with other strings. (This is not to mention the fact that typing script tags everywhere metadata is needed is a nuisance for content authors.)</p>
+<p>So, we need to be concerned that (a) it is hard to be sure that we can exhaustively identify a list of language tags that indicate RTL base direction, and (b) we can’t be sure that the user creating the metadata will provide adequate accuracy and completeness when using language tags to allow the correct inferences to be made by the consumer from the language of the string.</p>
+
+<!--div class="figWrap">
+<figure id="fig_bn_vowel_signs">
+<img src="qa-indic-graphemes-data/bn_vowel_signs.png" alt="কু কৌ কি" data-notes="72px Solaimonlipi">
+<figcaption>Vowel-signs (coloured) creating the sounds /ku/, /ko/, and /ki/ in Bengali.</figcaption>
+</figure>
+</div-->
+</section>
+
+
+
+
+
+<section id="conjuncts">
+<h3><a href="#conjuncts">Missing/incorrect language data</a></h3>
+
+<p>There are, however, additional factors which complicate the situation further.</p>
+<p>Language information may be missing, or misleading. Most formats don’t force the user to provide language tags, and if the user omits this metadata there are serious repercussions for the consumer when it needs to apply base direction.</p>
+<p>Even worse, especially if the strings are harvested from form fields in HTML pages, the language data may exist but may be incorrect. Take, for example, a situation where a user types a title of a book in Hebrew into a form field on an English page. It would be possible to derive the necessary base direction for the string (by running first-strong heuristics against the input text, or by obtaining the computed direction of the field if users manually setting the direction of the form field), however the language information (derived from that of the surrounding English language form) will be incorrect. If the language tag is the only thing that is stored, the consumer will get the wrong message about base direction, and all these strings will be incorrectly rendered.</p>
+<p>Even in an HTML page solely in Arabic (or some other language using RTL script), it’s possible that the content author forgot to add language information to the page, or in some cases forgot to change it when they translated the page. Both these scenarios create a problem for encoding metadata about text direction.</p>
+<p>Note, furthermore, that t is quite possible that, in the scenario where the language information is missing, the direction information is actually available, even though the language metadata is not. However, BCP47 has no way to represent direction alone, and fudging by using an arbitrary script subtag such as <code class="kw" translate="no">&quot;mystring&quot;@und-Arab&quot;</code> is misrepresenting the data (it might be Hebrew, or Thaana, etc).</p>
+<p>This is also problematic for strings that represent things such as telephone numbers or part numbers, which need to have the right base direction applied, but which are not in any particular language. In other words, text direction can exist independently of language.</p>
+<p>So, using language metadata to derive base direction can run into serious problems where the language metadata is missing or incorrect.</p>
+</section>
+
+
+
+
+<section id="visible">
+<h3><a href="#visible">Processing issues</a></h3>
+
+<p>There are also significant differences between the amount of processing needed to derive direction from language, rather than from a separate metadata source.</p>
+<p>Even if a language tag contains a script subtag, it is necessary to parse the tag to extract the script, and then compare the script against a list that gives you the base direction. If there is no script subtag, the list to scan may be quite long. For a single string or even a few strings, this may be negligible. However, we only really need to know the base direction (rather than testing the first strong character) in situations where the consumer would otherwise get it wrong – eg. where an Arabic string begins with a Latin letter, or where there are no strongly directional characters, such as telephone numbers). On the other hand, if you have a resource full of strings, you should have language metadata for every string. Because metadata trumps heuristics, in such a case you would never resort to heuristics, and would have to take the longer route of looking up and parsing the language tags for each and every string in the resource (rather than just checking for direction metadata), in order to determine the base direction. This may not take long with modern computers, but it may be more of an issue for devices in the Web of Things. It may also make it much more difficult for amateurs writing code, since they need to add a language tag parser in order to get simple information about the base direction of a string.</p>
+
+<!--div class="figWrap">
+<figure id="fig_tamil_segments">
+<img src="qa-indic-graphemes-data/tamil_segments.png" alt="யா+வ+ற்+றை+யு+ம்" data-notes="42px Noto Serif Tamil">
+<figcaption>Segmentation for the Tamil word '<span class="ipa">ʋɪrpənəj</span>', showing how the cluster 'rp' is split into 2 segments.</figcaption>
+</figure>
+</div-->
+
+<p>It may be useful to step back a little at this point. We have been looking at whether it would make life easier to obtain base direction from language tags, but we have seen that there are logistical issues and human issues involved that actually make it more complicated than it initially seemed. Even if we do make it happen, it seems that having separate direction-related metadata (only when needed), would offer a much simpler solution.</p>
+</section>
+
+
+
+
+
+<section id="messy"><h3><a href="#messy">Semantic differences</a></h3>
+
+<p>Other issues arise because language and direction are fundamentally and semantically different things, and they require somewhat incompatible models of representation for metadata.</p>
+<p>Direction attributes in HTML, CSS, SVG, etc. allow you to explicitly apply <code class="kw" translate="no">dir=&quot;auto&quot;</code> to some content. You can’t do that using language tags – they aren’t designed to carry such information.</p>
+<p>Apart from all the above, having to provide language tag values rather than dir attribute values when you want to change the language, is more complicated for content authors, and less amenable to validation checking. It can also seem an odd thing to repeat the language if you only want to apply a directional override (eg. <code class="kw" translate="no">bdo</code>), rather than change the language.</p>
+<p>Further concerns arise if we were to attempt to rely on language tags for directional information for technologies beyond the detection of overall base direction for strings. For example, in HTML, CSS, SVG, XML applications, etc.</p>
+<p>For one thing, direction controls should apply isolation to elements, so as to avoid 'spillover effects' related to the bidirectional algorithm in certain circumstances, such as for lists or adjacent numbers. This isolation comes with the HTML markup, can be specified by CSS, and is recommended when choosing Unicode formatting characters. Without it, many things break in content that is bidirectional. Language attributes in HTML and other markup don’t apply isolation.</p>
+<p>Another illustration of the fact that language and direction metadata are semantically different things can be seen in situations where it is not possible to link direction with language. For example, suppose you want to display Chinese, Japanese, Berber, or Egyptian hieroglyphic text from right to left. To do so in HTML you are likely to apply some styling or use the <code class="kw" translate="no">bdo</code> element to override the Unicode Bidirectional Algorithm and order the characters as needed. The bdo element requires some direction to be specified, but this has nothing to do with the language of the text, and the override factor cannot be derived from the language. Here we are using direction metadata in a way that is completely disconnected way from the language involved. That direction may also need to be scriptable, separately from the language.</p>
+</section>
+
+
+
+
+
+<section id="legacy"><h3><a href="#legacy">Legacy usage</a></h3>
+
+<p>Reengineering HTML to derive direction information from lang attributes would require a massive amount of change to HTML and its parser (for little perceived benefit). Apart from adding support for the vital property of bidi isolation to the handling of the lang attribute, inheritance models would need to be carefully coordinated, behaviour would need to be changed for more than just the <code class="kw" translate="no">dir</code> attribute, including <code class="kw" translate="no">bdi</code>, <code class="kw" translate="no">bdo</code>, <code class="kw" translate="no">output</code>, and <code class="kw" translate="no">form</code> fields, CSS would need to be changed to enable partially matched selectors to be applied to tags with language attributes for any language, and even then computed values would need to be maintained and scripted separately anyway (eg. to allow the base direction to be changed for text in Chinese); etc, etc.</p>
+<p>(Note that language metadata in the <code class="kw" translate="no">lang</code> attribute has no bearing on the operation of the Unicode Bidirectional Algorithm.)</p>
+<p>In addition to the engineering problem, having worked to help users understand how to work with bidi content for quite some time now, we should expect quite a bit of confusion to arise when there are different approaches available. And there'd be new things to learn, eg. users would need to begin using language tags for ISBN numbers or MAC addresses, where they didn't before.</p>
+</section>
+</section>
+
+
+
+
+
+
+
+<section>
+<h2 id="examples"><a href="#examples">Can we add information to the language tag to express base direction?</a></h2>
+<p>It is possible to add private use extensions to language tags to express direction. For example, the language tag <code class="kw" translate="no">aii-IQ-fonipa-x-dir-ltr</code> could be taken to mean that, although this is Aramaic as spoken in Iraq, it is an IPA phonetic transcription which should have a base-direction of LTR (although this is using private-use semantics, that are not interoperable).</p>
+<p>This approach is different from what we discussed previously because effectively bolts directional information onto the language tag, rather than trying to infer the direction. Consumers can test for the presence of the extension tag, and if there can be fairly confident that the information it contains is correct. It only needs to be used for cases where first-strong heuristics would otherwise fail, and its use being intentional it is likely to be correct.</p>
+<p>Another advantage of this approach is that you can represent an auto value in addition to <code class="kw" translate="no">rtl</code> and <code class="kw" translate="no">ltr</code>. This is because we are adding direction information to the language tag, rather than inferring it from the language tag.</p>
+<p>The use of <code class="kw" translate="no">-x</code> is not appropriate as a standard way to indicate direction, since its meaning is intended only for private agreements between designated parties. Used as a stop-gap, however, for a particular technology, it may be easier to handle than inferring direction from the language information in a language tag.</p>
+<p>The suggestion was made that we could change BCP47 to carry a <code class="kw" translate="no">-d</code> extension, for example <code class="kw" translate="no">aii-IQ-fonipa-d-ltr</code>. This would work like the <code class="kw" translate="no">-x</code> private use extension, but it would be greatly different in that it makes the mechanism for associating direction with language tags generally available to anyone using BCP47. (It would need to be proposed and accepted as an extension.)</p>
+<p>This would suggest an alternative approach for specifying direction for any vocabulary or format, which people would inevitably begin using, whether or not applications are ready for the change. To support this approach, all applications and formats would need to be reengineered to parse language tags for direction information and apply that in the same way they do for separate direction information. Considering the amount of work involved in that, and the fact that separate direction metadata currently works well and is simple to apply, it’s hard to imagine that application developers would be quick to make such changes.</p>
+<p>The W3C Internationalization WG sees problems with this, since such an approach would conflict with well-established alternative approaches in use for HTML, CSS, SVG, XML vocabularies, and such. We expect that this would create confusion. We also note that it requires use of language tags in places where a user really only wants to change the directional behaviour (such as when applying a bidi override), or assign direction to a telephone number.</p>
+</section>
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><cite>Developing specifications</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/international-specs/#text_direction">Text direction</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

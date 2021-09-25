@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Declaring language in HTML</title>
+<meta name="description" content="How should I set the language of the content in my HTML page?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-html-language-declarations'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-html-language-declarations'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2011-09-15'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2021-06-23', time:'16:14'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2021-06-23', time:'16:14'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-html-language-declarations-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script><!-- TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+<link rel="copyright" href="#copyright"/>
+<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Declaring language in HTML </h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script></div>
+  <h2 id="question"><a href="#question">Question</a></h2>
+    <p class="question">How should I set the language of the content in my HTML page?</p>
+<p> This page describes how to  mark up an HTML page so that it gives information about the language of the page. It begins with an overall summary, then provides additional details in subsequent sections.</p>
+</section>
+
+
+<section id="nutshell">
+<h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+
+<p>Always use a language attribute on the <code class="kw" translate="no">html</code> tag to declare the default language of the text in the page. This is inherited by all other elements. For example:</p>
+<figure class="example">
+<p><code>&lt;html lang="en"&gt;</code></p>
+</figure>
+<p>Note that you should use the <code class="kw" translate="no">html</code> element rather than the <code class="kw" translate="no">body</code> element, since the <code class="kw" translate="no">body</code> element doesn't cover  the text inside the document's <code class="kw" translate="no">head</code> element. </p>
+<p>When the page contains content in another language, add a language attribute to an element surrounding that content. This allows you to style or process it differently. For example:</p>
+
+<figure class="example">
+<p><code>&lt;p&gt;The title is &quot;&lt;span lang="fr"&gt;Le Bon Usage&lt;/span&gt;&quot;.</code></p>
+</figure>
+
+<p>Use the <code class="kw" translate="no">lang</code> attribute for pages served as HTML. (For pages served as XML, including XHTML 1.x and HTML5 polyglot documents, see <a href="#attributes">Choosing the right attribute</a>.)</p>
+
+<p>Use language tags from the <a class="print" href="http://www.iana.org/assignments/language-subtag-registry"><cite>IANA Language Subtag Registry</cite></a>. You can find subtags using the unofficial <a class="print" href="https://r12a.github.io/app-subtags/">Language Subtag Lookup</a> tool. (<a href="#langvalues">more</a>)</p>
+<p>In some parts of your code you may have a problem. If you have multilingual text in the <code class="kw" translate="no">title</code> element, you cannot mark up parts of the text for different languages because the <code class="kw" translate="no">title</code> attribute only allows characters – no markup. The same goes for multiple languages in attribute values. There is no good solution for this at the moment.</p>
+<p>Use nested elements to take care of content and attribute values on the same element that are in different languages. (<a href="#contentvsattribute">more</a>)</p>
+<p>You should never use a <code class="kw" translate="no">meta</code> element with the <code class="kw" translate="no">http-equiv</code> attribute set to <code class="kw" translate="no">Content-Language</code> to indicate the language of a page, but in certain circumstances you may want to serve language information with the HTTP header to indicate the <em>intended audience</em> of your page. Whether or not you use the HTTP header, you should always declare the language of the text in a page using a language attribute on the <code class="kw" translate="no">html</code> tag. For more information see the companion article, <a href="qa-http-and-lang">HTTP headers, <code class="kw" translate="no">meta</code> elements and language information</a>.</p>
+</section>
+
+
+<section>
+<h2 id="details"><a href="#details">Details</a></h2>
+  
+<div class="sidenoteGroup">
+<p>This section provides more detailed information on a variety of topics related to declaring language in HTML.</p>
+<aside class="sideinfonote">
+<p class="info">Don't forget to also use the <code class="kw" translate="no">dir</code> attribute when dealing with bidirectional text, such as Arabic, Hebrew, etc.</p>
+</aside>
+</div>
+  
+  
+  <section>
+    <h3 id="contentvsattribute"><a href="#contentvsattribute">What if element content and attribute values are in different languages?</a></h3>
+    <p>Occasionally the language of the text in an
+      attribute and the element content are in different languages. For example, at the top right corner of this article there are links to translated versions of this page. The
+      link text shows the language of the target page  using the language of the target page, but an associated <code class="kw" translate="no">title</code> attribute contains a hint in the
+      language of the current page:</p>
+    <figure> <img src="qa-html-language-declarations-data/translation-title.en.png" alt="Screen snap showing a tooltip containing the word 'Spanish' popping up from the document text 'Español'."/></figure>
+    <p>If your code looks as follows, the language
+      attributes would actually indicate that not only the content but also the <code class="kw" translate="no">title</code> attribute text is in Spanish.
+      This is obviously incorrect.</p>
+    <figure class="example">
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span></div>
+      <p><code>&lt;a lang="es" title="Spanish"
+        href="qa-html-language-declarations.es"&gt;<span lang="es">Español</span>&lt;/a&gt;</code></p>
+    </figure>
+
+<p>Instead, move the attribute containing text in a different language to another element, as shown  in this example, where  the <code class="kw" translate="no">a</code> element inherits the default <code class="kw" translate="no">en</code> setting of the <code class="kw" translate="no">html</code> element.</p>
+
+<figure class="example">
+<p><code>&lt;a title=&quot;Spanish&quot; href=&quot;qa-html-language-declarations.es&quot;&gt;&lt;span lang=&quot;es&quot;&gt;Español&lt;/span&gt;&lt;/a&gt;</code></p>
+</figure>
+</section>
+  
+  <section>
+    <h3 id="usingspan"><a href="#usingspan">What  if there's no element to hang your attribute on?</a></h3>
+    <p>If you want to specify the language of some content but there is no markup around it, use an element such as <code class="kw" translate="no">span</code>, <code class="kw" translate="no">bdi</code> or <code class="kw" translate="no">div</code> around the content.
+      Here is an example:</p>
+    <figure class="example">
+      <p><code>&lt;p&gt;You'd say that in  Chinese as &lt;span lang="zh-Hans"&gt;中国科学院文献情报中心&lt;/span&gt;.&lt;/p&gt;</code></p>
+    </figure>
+  </section>
+  
+  <section>
+    <h3 id="langvalues"><a href="#langvalues">Choosing language values</a></h3>
+    <p>To be sure that all user agents recognize which language you mean, you need to follow a standard approach when providing language attribute values.
+      You also need to consider how to refer in a standard way to dialectal differences between languages, such as the difference between US English and
+      British English, which diverge significantly in terms of spelling and pronunciation.</p>
+    <p>The rules for creating language attribute values are  described by an IETF specification called <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>. In addition to specifying how to use simple <span class="newterm">language tags</span>, such as <code class="kw" translate="no">en</code> for English or <code class="kw" translate="no">fr</code> for French, BCP 47 describes
+      how to compose language tags that allow you specify regional dialects, scripts and other variants related to that language.</p>
+    <div class="sidenoteGroup">
+      <p>BCP 47 incorporates, but goes beyond, the ISO sets of language and country codes. To find relevant codes you should consult the <a class="print" href="http://www.iana.org/assignments/language-subtag-registry"><cite>IANA Language Subtag Registry</cite></a>.</p>
+      <aside class="sideinfonote">
+        <p class="info">An unofficial <a class="print" href="https://r12a.github.io/apps/subtags/">Language Subtag Lookup</a> tool  provides a user-friendly front-end tool to the IANA registry.</p>
+      </aside>
+    </div>
+    <p class="info">For a gentle but fairly thorough introduction to the syntax of BCP 47 tags, read <a class="print" href="/International/articles/language-tags/"><cite>Language
+      tags in HTML and XML</cite></a>. For help in choosing the right language tag out of the many possible tags and combinations, see <a class="print" href="/International/questions/qa-choosing-language-tags"><cite>Choosing a language tag</cite></a>.</p>
+  </section>
+
+
+
+
+
+<section>
+<h3 id="attributes"><a href="#attributes">Choosing the right attribute</a></h3>
+<p>If your document is  HTML (ie. served as <code class="kw" translate="no">text/html</code>), use the <code class="kw" translate="no">lang</code> attribute to set the language of the
+document or a range of text. For example, the following sets the default language to French:</p>
+<figure class="example">
+<p><code>&lt;html lang="fr"&gt;</code></p>
+</figure>
+<p>When serving XHTML 1.x or polyglot pages as <code class="kw" translate="no">text/html</code>,  use both the <code class="kw" translate="no">lang</code> attribute <em>and</em> the <code
+class="kw">xml:lang</code> attribute together every time you want to set the language. The <code class="kw" translate="no">xml:lang</code> attribute is the standard way to identify language information in XML. Ensure that the values for both attributes are identical.</p>
+<figure class="example">
+<p><code>&lt;html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml"&gt;</code></p>
+</figure>
+<p>The <code class="kw" translate="no">xml:lang</code> attribute is not actually useful for handling the file as HTML, but takes over from the <code class="kw" translate="no">lang</code> attribute any time you process or serve the document as XML. The <code class="kw" translate="no">lang</code> attribute is allowed by the syntax of  XHTML, and may also be recognized by browsers. When using other XML parsers, however (such as the <code class="kw" translate="no">lang()</code> function in XSLT) you can't rely on the <code class="kw" translate="no">lang</code> attribute being recognized.</p>
+<p>If you are serving your page as XML (ie. using a MIME type such as <code class="kw" translate="no">application/xhtml+xml</code>),  you do
+not need the <code class="kw" translate="no">lang</code> attribute. The <code
+class="kw">xml:lang</code> attribute alone will suffice.</p>
+<figure class="example">
+<p><code>&lt;html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml"&gt;</code></p>
+</figure>
+</section>
+
+</section>
+
+
+<section>
+<h2 id="additionalinfo"><a href="#additionalinfo">Additional information</a></h2>
+
+<p>The information in this section is less likely to be useful, but is provided for completeness.</p>
+
+
+<section>
+<h3 id="metadata"><a href="#metadata">Specifying metadata about the audience language </a></h3>
+<p><span style="margin-top: 6em;">In addition to including an in-page language attribute on the <code class="kw" translate="no">html</code> tag (which you should always do), you may also have come across language declarations  in the HTTP header (which is served with the page), or as  <code class="kw" translate="no">meta</code> elements. </span></p>
+<p>Importantly, the in-page language declaration always overrides the HTTP information when it comes to determining the actual language of the text, but the HTTP information may provide more general information about the <em>intended use</em> of the resource. Use of <span style="margin-top: 6em;"><code class="kw" translate="no">meta</code> elements in the HTML page for declaring language is not recommended</span>.</p>
+<p class="info">For  information about <code class="kw" translate="no">Content-Language</code> in HTTP and in <code class="kw" translate="no">meta</code> elements see <a class="print" href="qa-http-and-lang"><cite>HTTP headers, <code class="kw" translate="no">meta</code> elements and language information</cite></a>.</p>
+</section>
+
+  <section>
+    <h3 id="irrelevant"><a href="#irrelevant">Various things that are irrelevant</a></h3>
+    <p> Just for good measure, and for the sake of thoroughness, it is perhaps worth mentioning a few other points that are <strong>not</strong> relevant to this discussion.</p>
+    <p>Firstly, it is not possible to declare the language of text using CSS.</p>
+    <p>Secondly, the <code class="kw" translate="no">DOCTYPE</code> that should start any  HTML file may contain what looks to some people like a language declaration. The <code class="kw" translate="no">DOCTYPE</code> in the example below contains the text EN, which stands for 'English'. This, however, indicates the language of the <em>schema</em> associated with this document –  it has nothing to do with the language of the document itself.</p>
+    <figure class="example">
+      <p><code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</code></p>
+    </figure>
+    <p>Thirdly, sometimes people assume that information about natural language could be inferred from the character encoding. However, a character encoding does not enable unambiguous identification of a natural language: there <em>must</em> be a one-to-one mapping between encoding and language for this inference to work, and there isn't one. For example, a single character encoding could be used for many languages, eg. Latin 1 (ISO-8859-1) could encode both French and English, as well as a great many other languages. In addition, the character encoding can vary over a single language, for example Arabic could use encodings such as 'Windows-1256' or 'ISO-8859-6' or 'UTF-8'.</p>
+    <p>All these encoding examples, however, are nowadays moot, since all content should be authored in UTF-8, which covers all but the rarest of languages in a single character encoding.</p>
+    <aside class="insideinfonote">
+      <p class="info">In some scripts, such as Arabic and Hebrew, displayed text is read predominantly from right to left, although within that flow, numbers and text from other scripts are displayed from left to right. Markup such as the <code class="kw" translate="no">dir</code> attribute is needed to set the overall right-to-left context, and in some circumstances markup is needed to correctly render bidirectional text, but this cannot be done using language markup.</p>
+    </aside>
+    <p>The same goes for text direction.  As with encodings and language, there is not always a one-to-one mapping between language and script, and therefore directionality. For example, Azerbaijani can be written using both right-to-left (Arabic) and left-to-right (Latin or Cyrillic) scripts, and the language code <code class="kw" translate="no">az</code> can be relevant for either. In addition, text direction markup used with inline text applies a range of different values to the text, whereas language is a simple switch that is not up to the tasks required.</p>
+  </section>
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Getting started? <a href="/International/getting-started/language"><cite>Language on the Web</cite></a></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/language-decl/"><cite>Working with language in HTML</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#language">Language</a></li>
+        <li><a href="/International/techniques/authoring-html#textprocessing">Using attributes to declare language</a></li>
+        <li><a href="/International/techniques/authoring-html#langvalues">Choosing language values</a></li>
+        <li><a href="/International/techniques/authoring-html#indoclang">Identifying in-document language changes</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

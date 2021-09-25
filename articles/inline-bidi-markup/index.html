@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Inline markup and bidirectional text in HTML</title>
+<meta name="description" content="Provides background on the Unicode bidirectional algorithm and inline markup to help you implement Arabic, Hebrew and other right-to-left scripts in markup." />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/inline-bidi-markup'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C, Aharon Lanin, Google'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-inline-bidi-markup'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-29'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2021-06-25', time:'12:43'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2021-06-25', time:'12:43'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction';
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script><!--TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article.js"> </script>
+<script src="../../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../../style/article-2016.css" />
+<style>
+.injectionexamples {
+	margin: 0 0 0px 0;
+    width: 100%;
+	}
+.injectionexamples td {
+	text-align: left;
+	border: 0;
+	padding-bottom: 12px;
+	font-size: 90%;
+	}
+ins {
+	background-color: #FF0
+	}
+del {
+	color: #999;
+	}
+li ol {
+	margin-right: 20px;
+	}
+.example {
+	margin-bottom: 2em;
+	}
+.hide {
+	background-color: #FCC;
+	}
+.example1 {
+	margin-bottom: 2em;
+	}
+.injectionexamples .example_code { font-size: 120%; font-family: serif; text-align: start; }
+</style>
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Inline markup and bidirectional text in HTML</h1>
+</header>
+
+
+<div>
+  <div id="audience">
+    <!--p><span id="intendedAudience" class="leadin">Intended audience:</span> content developers working with right-to-left scripts, HTML and SVG coders (using editors or scripting), script developers (PHP, JSP, etc.), schema developers (DTDs, XML Schema, RelaxNG, etc.), and anyone who is struggling to understand how to make their mixed direction text look right in markup.</p-->
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+  <p>Arabic, Hebrew, and other languages that use right-to-left scripts commonly include numerals or include text written in the Latin or other scripts: both of these typically flow  left-to-right within the overall right-to-left  context. </p>
+  <p>This article tells you how to write HTML where text with different writing directions is mixed <em>within a paragraph or other HTML block</em> (ie. <dfn id="term_inline">inline or phrasal</dfn> content).</p>
+<p class="info">A companion article <a class="print" href="https://www.w3.org/International/questions/qa-html-dir"><cite>Structural markup and right-to-left text in HTML</cite></a> tells you how to use HTML markup for  elements such as <code translate="no" class="kw">html</code>, and structural markup such as <code translate="no" class="kw">p</code> or <code translate="no" class="kw">div</code>, and forms.</p>
+<p>The article is focused on markup usage in HTML, but most of the concepts are also relevant for other markup languages.</p>
+</div>
+
+
+<div id="nutshell">
+<h2 id="quick"><a href="#quick">Quick answer</a></h2>
+
+<p><em>The advice here is only for use with inline elements, such as <code class="kw" translate="no">span</code>, <code class="kw" translate="no">cite</code>, <code class="kw" translate="no">em</code>, etc. See the article mentioned above when working with block elements.</em></p>
+
+
+
+<p><strong>If you know the direction of all the text involved</strong>, <a class="termref" href="#tightwrap">tightly wrap</a> <em>every</em> <a class="termref" href="#oppositedirection">opposite-direction phrase</a> in markup, and use the <code translate="no" class="kw">dir</code> attribute on  that markup. Be sure to nest markup to show the structure.</p>
+  <figure class="example">
+    <p><code>&lt;p&gt;the title is &lt;cite dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO &lt;span dir=&quot;ltr&quot;&gt;c++&lt;/span&gt;&lt;/cite&gt; in arabic.&lt;/p&gt;</code></p>
+      <div class="demolink"><a href="index-data/basic_tight_wrap.html" target="_blank">Test in your browser.</a></div>
+</figure>
+  <p>If  you want to bullet-proof your code for legacy or non-conformant browsers  where tightly-wrapped text is followed inline by a number or a logically-separate opposite-direction phrase, add<code translate="no" class="kw"> &amp;rlm;</code> or <code translate="no" class="kw">&amp;lrm; </code> (choose the one corresponding to the base direction of the surrounding text) immediately after  the phrase.</p>
+  <figure class="example">
+    <p><code>&lt;p&gt;we find the phrase '&lt;span dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY&lt;/span&gt;&amp;lrm;' 5 times on the page.&lt;/p&gt;</code></p>
+<div class="demolink"><a href="index-data/basic_bulletproof.html" target="_blank">Test in your browser.</a></div>
+</figure>
+  <p><strong>If you <em>don't</em> know the direction of  text</strong> that will be inserted at run time, add <code>dir=auto</code> to any markup that tightly wraps the location. If there is no markup, wrap the  location  with a <code translate="no" class="kw">bdi</code> element.</p>
+  <figure class="example">
+    <p><code class="code1">foreach $restaurant</code> <code class="code2">echo "&lt;p&gt;&lt;bdi&gt;$restaurant['name']&lt;/bdi&gt; - $restaurant['count'] reviews&lt;/p&gt;";</code> </p>
+<div class="demolink"><a href="index-data/basic_dir_auto.html" target="_blank">Test in your browser.</a></div>
+  </figure>
+</div>
+
+
+
+
+
+
+
+
+<section>
+<h2 id="how"><a href="#how">How the bidi algorithm works</a></h2>
+  <p>If you're not really familiar with the Unicode Bidirectional Algorithm, then before reading further you should  read the <a href="uba-basics">basic introduction to how the bidi algorithm works</a>.</p>
+<p>If you need it, there is also a <a href="bidi_examples#aboutmarkup">description of the various elements and attributes</a> that we will refer to in this article.</p>
+</section>
+
+
+
+
+
+
+
+<section>
+  <h2 id="where"><a href="#where">Where the bidi algorithm needs help</a></h2>
+  <aside class="insideinfonote">
+<p class="info">Many examples in this document are shown as images to avoid problems for those with a browser that doesn't produce what was intended or doesn't have non-ASCII fonts.</p>
+<p>Code samples containing Arabic and Hebrew text <a class="print" href="http://www.w3.org/TR/i18n-html-tech-bidi/#bidisource"> may be displayed  in different ways</a> depending on which editor is used. In this article right-to-left text in code samples is represented by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase. All text in code samples reflects the direction of characters as stored in memory, rather than the displayed result. The original version of text in uppercase translations would be read from right-to-left.</p>
+<p> To see the full source, click on the &quot;Test in your browser&quot; links and view the source of the page that displays.</p>
+
+</aside>
+  <p>In the sections below, we will examine specific examples of what can go wrong, why it goes wrong, and what fixes it. Nevertheless, it is important to realize that, basically, the problems all occur when content in one direction  includes an <em>inline</em> phrase in the opposite direction. We will call these <span class="newterm" id="oppositedirection">opposite-direction phrases</span>. An opposite-direction phrase may be a single directional run (such as a word), or may be a set of embedded directional runs with embedded changes in base direction. </p>
+  <p>In the following example, the English sentence contains an opposite-direction phrase between the quotation marks. That phrase, itself,  contains a nested opposite-direction phrase (the word C++), and an exclamation mark that has to appear at the end of the Arabic phrase (ie. alongside the left-hand quote mark). The arrows  show the opposite-direction phrases.</p>
+  <div class="figWrap">
+  <figure>
+    <p><img src="index-data/nested_directions.png" alt="Displayed result of previous code" /></p>
+  </figure>
+  </div>
+  <p>Common examples of such phrases include URLs, quotations, titles of books, articles or plays, formatted numbers (e.g. phone numbers and MAC addresses), street and email addresses, and various names, such as brand names, acronyms, part numbers, site names,  place names, file names (and paths), etc. </p>
+  <p>The problem is worse in applications that drop text into a page, say from a database. The application often does not know a-priori whether such text is (or perhaps contains) an opposite-direction phrase, and has to estimate its direction at  run-time by checking the Unicode ranges of its characters.</p>
+  <p>Whenever an opposite-direction phrase occurs, things can go wrong. That is, something will go wrong if the text includes, without any special wrapping, an inline opposite-direction phrase that:</p>
+  <ul>
+    <li>begins or ends with neutral characters,</li>
+    <li>begins with a number,</li>
+    <li>is followed by a number,</li>
+    <li>is followed by another, but logically separate, opposite-direction phrase,</li>
+    <li>contains one or more nested phrases whose base direction is opposite to that of the phrase.</li>
+  </ul>
+  <p>Although this list seems daunting, there is no need to determine which, if any, of these cases applies to a particular phrase. There is a simple, default way of wrapping opposite-direction phrases that will prevent problems in all of the cases above, and do no harm when none of them apply. The steps that follow describe how do such wrapping.</p>
+</section>
+
+
+
+
+
+
+<section>
+<h2 id="whattodo"><a href="#whattodo">How to mark up inline bidi text</a></h2>
+<div class="sidenoteGroup">
+  <p>Here we  summarize  default guidelines for working with bidirectional inline  text. Often alternative approaches will work, but the approaches outlined here are simple to apply and should work for all cases. </p>
+<p>Sometimes, the bidirectional text will work fine without intervention – for example, when the opposite-direction phrase is a single word that is not part of a list or followed by a number. However if you want to keep life simple and avoid having to think too carefully about whether or not you need to add markup, then just follow these guidelines for <em>all</em> direction changes. Using the approaches outlined  will not cause problems where they are not needed, but may sometimes become useful later as text is edited.</p>
+<p class="info">A companion document provides <a href="bidi_examples#aboutmarkup">descriptions of the markup</a> used, and a set of <a href="bidi_examples#staticexamples">worked examples</a> with a little more discussion and exploration of alternatives.</p>
+
+<aside class="sideinfonote">
+<p class="info">If the text to be marked up is tightly wrapped by a <em>non-inline</em> element you would usually add the <code translate="no" class="kw">dir</code> attribute to that element. In some cases this can lead to the block of text being aligned on the page in a way that is not desirable. To avoid this, you can add an inline element immediately inside the tags of the existing markup, and follow the rules below for marking up that inline element. For more information about handling direction in non-inline elements, see <a class="print" href="https://www.w3.org/International/questions/qa-html-dir"><cite>Structural markup and right-to-left text in HTML</cite></a>.</p>
+</aside>
+</div>
+
+
+
+
+
+<section>
+<h3 id="html5markup"><a href="#html5markup">If you know the direction of the phrase</a></h3>
+
+<p> The best way to  address bidi issues in your content is to tightly wrap <em>every</em> <a class="termref" href="#oppositedirection">opposite-direction phrase</a> in markup that sets its base direction. By <dfn id="tightwrap">tightly wrap</dfn>, we mean that the element contains the entire opposite-direction phrase, and nothing but the opposite-direction phrase. </p>
+
+<p>If the phrase is already tightly wrapped in an inline element (ie. it is already wrapped in markup), you can use the existing element. Otherwise, tightly wrap the opposite-direction phrase with a <code class="kw" translate="no">span</code> element.</p>
+<p>Then add a <code translate="no" class="kw">dir</code> attribute. Most of the  problems pointed out <a href="#where">earlier</a> simply melt away when you do this. Not only does the attribute apply the correct base direction to the phrase, but when browsers encounter the <code translate="no" class="kw">dir</code> attribute on an element they (directionally) <strong>isolate</strong> the text inside the element from the text surrounding it.</p>
+
+
+
+
+<section id="add_span">
+<h4>Adding a <code class="kw" translate="no">dir</code> attribute</h4>
+
+<p>Add a <code class="kw" translate="no">span</code> if there is no markup tightly wrapping the opposite-direction phrase.</p>
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td><em>Before:</em></td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>RTL_TEXT ltr_text<code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_span_bad.png" alt="&lt;p&gt;שם מוצר: Discover!&lt;/p&gt;"></td>
+</tr>
+<tr>
+<td><em>After:</em></td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>RTL_TEXT<code translate="no" class="kw"> &lt;span dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;</code>ltr_text<code translate="no" class="kw">&lt;/span&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_span_ok.png" alt="&lt;p&gt;שם מוצר: &lt;span dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;Discover!&lt;/span&gt;&lt;/p&gt;"></td>
+</tr>
+</tbody>
+</table>
+<div class="demolink"><a href="index-data/examples/dir_span.html" target="_blank">Test in your browser.</a></div>
+</div>
+
+
+<p>Or add   <code class="kw" translate="no">dir</code> to an existing element.</p>
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td><em>Before:</em></td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>RTL_TEXT <code translate="no" class="kw">&lt;cite lang=&quot;en&quot;&gt;</code>ltr_text<code translate="no" class="kw">&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_cite_bad.png" alt="&lt;p&gt;הספר הבא לקריאה: &lt;cite lang=&quot;en&quot;&gt;Who were the Elamites?&lt;/cite&gt;&lt;/p&gt;"></td>
+</tr>
+<tr>
+<td><em>After:</em></td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>RTL_TEXT <code translate="no" class="kw">&lt;cite dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;</code>ltr_text<code translate="no" class="kw">&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_cite_ok.png" alt="&lt;p&gt;הספר הבא לקריאה: &lt;cite dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;Who were the Elamites?&lt;/cite&gt;&lt;/p&gt;"></td>
+</tr>
+</tbody>
+</table>
+<div class="demolink"><a href="index-data/examples/dir_cite.html" target="_blank">Test in your browser.</a></div>
+</div>
+</section>
+
+
+
+
+<section id="nested_phrases">
+<h4>Nested phrases</h4>
+
+<p>Don't forget to fully mark up nested directional runs, and keep the nesting in the markup.</p>
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td><em>Before:</em></td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>ltr_text <code translate="no" class="kw">&lt;cite dir=&quot;rtl&quot;&gt;</code>RTL_TEXT  ltr_text_in_rtl<code translate="no" class="kw">&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="ltr"><img src="index-data/dir_nested_bad.png" alt="&lt;p&gt;The title is &lt;cite dir=&quot;rtl&quot;&gt;مدخل إلى C++&lt;/cite&gt; in Arabic.&lt;/p&gt;"></td>
+</tr>
+<tr>
+<td><em>After:</em></td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>ltr_text <code translate="no" class="kw">&lt;cite dir=&quot;rtl&quot;&gt;</code>RTL_TEXT <code translate="no" class="kw">&lt;span dir=&quot;ltr&quot;&gt;</code>ltr_text_in_rtl<code translate="no" class="kw">&lt;/span&gt;&lt;/cite&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="ltr"><img src="index-data/dir_nested_ok.png" alt="&lt;p&gt;The title is &lt;cite dir=&quot;rtl&quot;&gt;مدخل إلى &lt;span dir=&quot;ltr&quot;&gt;C++&lt;/span&gt;&lt;/cite&gt; in Arabic.&lt;/p&gt;"></td>
+</tr>
+</tbody>
+</table>
+<div class="demolink"><a href="index-data/examples/dir_nested.html" target="_blank">Test in your browser.</a></div>
+</div>
+</section>
+
+
+
+
+<section id="spillover_effects">
+<h4>Spillover effects</h4>
+
+<p>Avoiding spillover effects for following numbers that belong to a different directional run.</p>
+<div class="sidenoteGroup">
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td>Before:</td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;span lang=&quot;ar&quot;&gt;</code>RTL_TEXT<code translate="no" class="kw">&lt;/span&gt;</code> ### ltr_text<code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="ltr"><img src="index-data/wadi_rum_bad.png" alt="Wadi Rum – وادي القم – 321km from Amman, is a World Heritage site."></td>
+<!--td colspan="2" class="example_code" dir="ltr">Wadi Rum – وادي القم – 321km from Amman, is a World Heritage site.</td-->
+</tr>
+<tr>
+<td>After:</td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>ltr-text <code translate="no" class="kw">&lt;span dir=&quot;rtl&quot; lang=&quot;ar&quot;&gt;</code>RTL_TEXT<code translate="no" class="kw">&lt;/span&gt;</code> ### ltr_text<code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="ltr"><img src="index-data/wadi_rum_ok.png" alt="Wadi Rum – <span dir='rtl'>وادي القم</span> – 321km from Amman, is a World Heritage site."></td>
+<!--td colspan="2" class="example_code" dir="ltr">Wadi Rum – <span dir="rtl">وادي القم</span> – 321km from Amman, is a World Heritage site.</td-->
+</tr>
+</tbody>
+</table>
+<div class="demolink"><a href="index-data/examples/dir_spillover_number.html" target="_blank">Test in your browser.</a></div>
+</div>
+<div class="sideinfonote">
+<p>In fact, using the parentheses (rather than other punctuation) solves the problem here in Gecko and Blink browsers, but not at the time of writing in Webkit browsers. However, the problem <em>does</em> occur in Gecko and Blink if other punctuation is used, such as commas or en-spaces, etc.  Using the markup shown bulletproofs your code against browser variations and future edits.</p>
+</div>
+</div>
+<p>Making lists run in the correct order.</p>
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td>Before:</td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>RTL_TEXT ltr_text, ltr_text<code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_spillover_list_bad.png" alt="&lt;p lang=&quot;ar&quot;&gt;اتبع هذه الروابط بالترتيب: bidi_intro.net، bidi_advanced.net&lt;/p&gt;"></td>
+</tr>
+<tr>
+<td>After:</td>
+<td><code translate="no" class="kw">&lt;p&gt;</code>RTL_TEXT <code translate="no" class="kw">&lt;span dir=&quot;ltr&quot;&gt;</code>ltr_text<code translate="no" class="kw">&lt;/span&gt;</code>, <code translate="no" class="kw">&lt;span dir=&quot;ltr&quot;&gt;</code>ltr_text<code translate="no" class="kw">&lt;/span&gt;</code><code translate="no" class="kw">&lt;/p&gt;</code></td>
+</tr>
+<tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_spillover_list_ok.png" alt="&lt;p lang=&quot;ar&quot;&gt;اتبع هذه الروابط بالترتيب: &lt;span dir=&quot;ltr&quot;&gt;bidi_intro.net&lt;/span&gt;، &lt;span dir=&quot;ltr&quot;&gt;bidi_advanced.net&lt;/span&gt;&lt;/p&gt;"></td>
+</tr>
+</tbody>
+</table>
+<div class="demolink"><a href="index-data/examples/dir_spillover_list.html" target="_blank">Test in your browser.</a></div>
+</div>
+<p>Often, these spillover effects can be addressed by judiciously placing  <code class="kw" translate="no">&amp;lrm;</code> or <code class="kw" translate="no">&amp;rlm;</code> markup or in the appropriate place. This is discussed in more detail in the <a href="bidi_examples.html#staticexamples">worked examples page</a>. However, the wrapping approach shown here also works, and avoids the effort and attention required in being judicious.</p>
+<p><em>Nota bene:</em> RLM and LRM only address the <em>isolation</em> problem – they don't fix the previous examples that we looked at. Note also that much of the time you will want to wrap these phrases in markup anyway so that you can apply the <code class="kw" translate="no">lang</code> attribute (which applies relevant fonts and other typographic behaviours, affects reading by voice browsers, spell checking, etc.).</p>
+</section>
+</section>
+  
+  <section>
+    <h3 id="html4markup"><a href="#html4markup">If you don't know the direction of the phrase</a></h3>
+<p>When text will be added at run time to your HTML page you may not be able to predict the base direction of the injected text in advance. To handle this eventuality you have two options.</p>
+
+<p>If the phrase is tightly wrapped by an element already, you could just add <code>dir="auto"</code> to that element. This directionally isolates the element's text and looks at the first strong character to determine what base direction to apply.</p>
+<div class="example">
+<p><code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;cite dir=&quot;auto&quot;&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/cite&gt;&lt;/p&gt;</code></p>
+</div>
+
+<p>Otherwise, wrap the phrase in a <code translate="no" class="kw">bdi</code> element (or in a <code translate="no" class="kw">span</code> element with <code class="kw" translate="no">dir</code> set to <code class="kw" translate="no">auto</code>, if you prefer.) Without a <code translate="no" class="kw">dir</code> attribute, the <code translate="no" class="kw">bdi</code> element behaves as if <code>dir=&quot;auto&quot;</code> had been applied.</p>
+<div class="example">
+<p><code translate="no" class="kw">&lt;p&gt;</code>static-text <code translate="no" class="kw">&lt;bdi&gt;</code><em>injected-text</em><code translate="no" class="kw">&lt;/bdi&gt;&lt;/p&gt;</code></p>
+</div>
+</section>
+</section>
+
+
+
+
+
+
+
+<section>
+<h2 id="nomarkup"><a href="#nomarkup">What if I can't use markup?</a></h2>
+  <p>There are some situations where you may not be able to use the markup described in the previous section. In HTML these include the <code translate="no" class="kw"><code translate="no" class="kw">title</code></code> element and any attribute value.</p>
+  <p>In these situations you have to use the invisible Unicode characters	that	produce	the	same results.</p>
+  <p>To replicate the effect of the markup described in the example above related to nested base directions, we can use pairs of characters to surround the embedded text. The first character is one of <span class="uname">⁧ U+2067 RIGHT-TO-LEFT ISOLATE (RLI)</span> or <span class="uname">⁦ U+2066 LEFT-TO-RIGHT ISOLATE (LRI)</span>. These are placed in the same location as the opening <code class="kw" translate="no">&lt;span dir=&quot;...&quot;&gt; </code> tag. The second character is<span class="uname"> ⁩ U+2069 POP DIRECTIONAL ISOLATE (PDI</span>), and it corresponds to the <code class="kw" translate="no">&lt;/span&gt;</code><code></code> in the markup. Here's an example.</p>
+  <div class="sidenoteGroup">
+    <figure class="example">
+<p><code>&lt;title&gt;the title says  &quot;&amp;#x2066;<span dir="rtl">INTERNATIONALIZATION ACTIVITY, w3c</span>&amp;#x2069;&quot; in hebrew.&lt;/title&gt;</code></p>
+<div class="demolink"><a href="index-data/rle.html" target="_blank">Test in your browser.</a></div>
+    </figure>
+    <aside class="sideinfonote">
+    <p class="info">Because the characters are invisible you may prefer to actually type in a numeric character reference, as we have here.</p>
+    </aside>
+  </div>
+  <p>To simulate the use of the <code class="kw" translate="no">auto</code> value of <code class="kw" translate="no">dir</code>, or <code class="kw" translate="no">bdi</code>, you can use <span class="uname">⁨ U+2068 FIRST STRONG ISOLATE</span> at the beginning of the phrase.</p>
+<p>These control characters should only be used for inline phrases, not for block elements such as paragraphs. In general, <a class="print" href="https://www.w3.org/International/questions/qa-bidi-controls">it is recommended</a> that you use markup where it is available, rather than these character pairs, because it is easier to see and therefore manage the markup, and it is consistent with the approach used for block elements. Where markup is not available, of course, this is the only option.</p>
+  <p>There is another set of characters which change the base direction: <span class="uname">U+202B RIGHT-TO-LEFT EMBEDDING (RLE)</span>, <span class="uname">U+202A LEFT-TO-RIGHT EMBEDDING (LRE)</span>, and <span class="uname"> U+202C POP DIRECTIONAL FORMATTING (PDF</span>), but they don't directionally isolate the phrases they surround, so it's best not to use them.</p>
+<p>The two characters we already met in the above text, <span class="uname">U+200F RIGHT-TO-LEFT MARK</span> (RLM) and <span class="uname">U+200E LEFT-TO-RIGHT MARK</span> (LRM) can also be used, where appropriate. In addition to the numeric references, these characters also have named entity references, <code class="kw" translate="no">&amp;rlm;</code> and <code class="kw" translate="no">&amp;lrm;</code>.</p>
+  <figure class="example">
+<p><code>&lt;title&gt;the title says &quot;INTERNATIONALIZE THE WEB!&amp;rlm;&quot; in arabic.&lt;/title&gt;</code></p>
+<div class="demolink"><a href="index-data/rlm.html" target="_blank">Test in your browser.</a></div>
+  </figure>
+<p>Note that in the example just shown the Arabic text is no longer marked up for language or styling – which is one reason to use markup rather than these code points where you can.</p>
+</section>
+
+
+<section>
+<h2 id="mirrored"><a href="#mirrored">Mirrored characters</a></h2>
+<p>The Unicode Bidirectional Algorithm has  rules for displaying <dfn>mirrored characters</dfn>.  The visible shape of these characters depends on whether they are displayed in a LTR or RTL context. These are commonly pairs of characters such as parentheses, brackets, and the like, but also include some characters that are not typically paired, such as <span class="codepoint"><span lang="en" class="qchar">&#x2260;</span> [<span class="uname">U+2260 NOT EQUAL TO</span>]</span>.</p>
+<div class="sidenoteGroup">
+<div class="figWrap">
+<figure>
+<img src="index-data/mirrored_chars_he.png" alt="basic vertical japanese" />
+<figcaption style="max-width: 450px; margin:auto;">The character <span class="codepoint"><span lang="en" class="qchar">&#x003E;</span> [<span class="uname">U+003E GREATER-THAN SIGN</span>]</span> points to the right when displayed in a LTR context, but to the left in an RTL context.
+    <span class="demolink"><a href="index-data/mirrored_chars.html" target="text">Test in your browser</a></span></figcaption>
+</figure>
+</div>
+      <aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/>   <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+</aside>
+</div>
+
+<p>This is completely automatic. You do not have to change the character for the shape to change. </p>
+<p>The ends of an opening parenthesis always face in the direction of the text flow, and closing parentheses face the other way. This means that, whether the stored content is in Arabic/Hebrew or Latin script, you would use the same <span class="codepoint"><span lang="en" class="qchar">&#x0028;</span> [<span class="uname">U+0028 LEFT PARENTHESIS</span>]</span> character at the beginning of the parenthesized text. In other words, treat mirrored characters as if any word <code translate="no" class="kw">left</code> in the name meant '<span class="qterm">opening</span>', and <span class="kw">right</span> meant '<span class="qterm">closing</span>'. </p>
+<p>But up-to-date implementations of the bidi algorithm go further, and attempt to balance parentheses. In the picture below, the higher lines show how parenthesis used to look (without intervention), and the bottom shows how they look with the balancing in play. </p>
+<div class="sidenoteGroup">
+  <div class="figWrap">
+<figure>
+<img src="index-data/mirrored-parens.png" alt="basic vertical japanese" />
+<figcaption style="max-width: 450px; margin:auto;">Parentheses, as they used to be (top) and balanced (bottom) using the Unicode Bidirectional Algorithm.
+    <span class="demolink"><a href="index-data/mirrored-parens.html" target="text">Test in your browser</a></span></figcaption>
+</figure>
+</div>
+       <aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+<p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+</aside>
+</div>
+<p>Again, you don't need to take any action to enable these improvements. The browser should just do this.</p>
+</section>
+
+
+<section>
+<h2 id="override"><a href="#override">Overriding the algorithm</a></h2>
+  <p>There may be occasions where you don't want the bidi algorithm to do its reordering work at all. In these cases you need some additional
+    markup to surround the text you want left unordered. In HTML  this is achieved using the inline <span class="kw">bdo</span> element. Note that you shouldn't find yourself using <code class="kw" translate="no">bdo</code> for normal management of bidi text – it's only for special cases, mostly educational. And  don't confuse it with <code class="kw" translate="no"><a href="bidi_examples#bdi">bdi</a></code>.</p>
+<p>Examples that show the characters as ordered in memory use the <code translate="no" class="kw">bdo</code> tag to achieve that effect. You must provide a <code class="kw" translate="no">dir</code> attribute with the <code class="kw" translate="no">bdo</code> element, and the value must be either <code class="kw" translate="no">rtl</code> or <code class="kw" translate="no">ltr</code> (it cannot be <code class="kw" translate="no">auto</code>). For example, the picture below shows Hebrew text as ordered in memory.</p>
+  <div class="figWrap">
+  <figure>
+    <p><img src="index-data/override.png" alt="Shows Hebrew text in the order stored in memory." /></p>
+    <figcaption>Text using a bidirectional override (bottom line).</figcaption>
+  </figure>
+  </div>
+<p>For the bottom line we would use the following markup in HTML:</p>
+<div class="sidenoteGroup">
+<figure class="example">
+<p><code>&lt;p&gt;&lt;bdo dir=&quot;ltr&quot;&gt;<span dir="rtl">INTERNATIONALIZATION ACTIVITY, w3c</span>&lt;/bdo&gt;&lt;/p&gt;</code></p>
+     <div class="demolink"><a href="index-data/bdo.html" target="_blank">Test in your browser.</a></div>
+</figure>
+<p>In other XML applications, such as XHTML2, it may be implemented as a value of <code translate="no" class="kw">rlo</code> or <code translate="no" class="kw">lro</code> on the <code translate="no" class="kw">dir</code> attribute, enabling it to be applied to any element. There are also Unicode control
+    characters you could use to achieve the same result, but because they create states with invisible boundaries this is generally <a class="print" href="https://www.w3.org/International/questions/qa-bidi-controls">not recommended</a>.</p>
+      <aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/>   <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+</aside>
+</div>
+  <!--p>That the CSS shim described earlier in this article contains code that applies isolation to the <code translate="no" class="kw">bdo</code> element.</p-->
+</section>
+
+
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+ <ul id="full-links">
+    <li>
+      <p>Tutorial, <a href="https://www.w3.org/International/tutorials/bidi-xhtml/"><cite>Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts</cite></a></p>
+    </li>
+    <li>
+      <p><a href="https://www.w3.org/International/questions/qa-html-dir"><cite>Structural markup and right-to-left text in HTML</cite></a></p>
+    </li>
+    <li>
+      <p><a href="http://www.unicode.org/reports/tr9/"><cite>Unicode Standard Annex #9, The Unicode Bidirectional Algorithm</cite></a></p>
+    </li>
+    <li>
+      <p><a href="https://r12a.github.io/scripts/tutorial/part4" title="A tutorial on writing systems characteristics"><cite>Non-Latin scripts tutorial, Text direction</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#direction">Text direction</a></li>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#inline">Mixing text direction inline</a></li>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#mirrored">Handling parentheses and other mirrored characters</a></li>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#bdo">Overriding the Unicode bidirectional algorithm</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring SVG</cite></p>
+      <ul>
+        <li>
+          <p><a href="https://www.w3.org/International/techniques/authoring-svg#direction">Specifying text direction</a></p>
+        </li>
+      </ul>
+    </li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Structural markup and right-to-left text in HTML</title>
+<meta name="description" content="How should I use the dir attribute to set text direction on structural elements in HTML?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-html-dir'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-html-dir'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2011-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2021-06-25', time:'12:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2021-06-25', time:'12:31'} // date and time of latest edits to this document/translation
+f.contributors = 'Mati Allouche, Aharon Lanin, Norbert Lindenberg, Tomer Mahlin'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-html-dir-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script><!-- TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../javascript/doc-structure/article.js"> </script>
+<script src="../javascript/articletoc-html5.js"></script>
+<link rel="stylesheet" href="../style/article-2016.css" />
+</head>
+
+<body>
+<header> 
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Structural markup and right-to-left text in HTML</h1>
+</header>
+
+<div>
+  <div id="audience">
+    <!--p><span id="intendedAudience" class="leadin">Intended audience:</span>
+     XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), Web project managers, and anyone who needs to better understand how to markup up right-to-left text on a Web page.</p-->
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+<p>This article looks at ways of handling text direction for <em>structural</em> markup in HTML, ie. at the document level and for elements like paragraphs, tables and forms. </p>
+<p class="info">For handling <a href="https://w3c.github.io/i18n-glossary/#def_bidirectional_text" class="termref print">bidirectional text</a> with <em>inline</em> markup you should  read the separate article, <cite><a class="print" href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></cite>. It also describes some other elements and attributes related to direction.</p>
+<p>The <code class="kw" translate="no">dir</code> attribute is used to set the base direction of text for display. It is essential to support languages that use right-to-left scripts such as Adlam, Arabic, Hebrew, N'Ko, Syriac,  and Thaana. Many different languages are written with these scripts, including Arabic, Dhivehi, Hebrew, Mandinka, Pashto, Persian, Pular, Sindhi, Syriac,  Urdu, Yiddish, etc.</p>
+</div>
+
+
+<section id="nutshell">
+<h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+  <p>If the overall document direction is right-to-left, add <code>dir=&quot;rtl&quot;</code> to the <code class="kw" translate="no">html</code> tag.</p>
+  <p>Below the <code class="kw" translate="no">html</code> tag, only use the <code class="kw" translate="no">dir</code> attribute on structural elements on the rare occasions when the base direction needs to change in order for the text to display correctly. </p>
+<p>Never use CSS to apply the base direction. But do use logical ('end' and 'start') on properties or values related to margins, padding, alignment, etc. to make it easy to manage direction changes during localisation. Avoid HTML attributes with values of 'right' and 'left'.</p>
+  <p>Set the <code class="kw" translate="no">dir</code> attribute to <code class="kw" translate="no">auto</code> on forms and inserted text in order to automatically detect the direction of content supplied at run-time. Consider using the <code class="kw" translate="no">dirname</code> attribute on forms to send information about direction to the server in addition to the usual form data.</p>
+  <p>Handling bidirectional <em>inline</em> text is  dealt with in the separate article, <cite><a class="print" href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></cite>.</p>
+</section>
+
+
+<section>
+<h2 id="documentlevel"><a href="#documentlevel">Setting  direction  at the document level</a></h2>
+  <section>
+    <h3 id="basedirection"><a href="#basedirection">Base direction</a></h3>
+    <div class="insideinfonote">
+      <p class="info noprint">Examples in this document may be shown as images to avoid problems for those with a browser that doesn't produce what was intended.      </p>
+<p>Code samples containing Arabic and Hebrew text <a class="print" href="http://www.w3.org/TR/i18n-html-tech-bidi/#bidisource"> may be displayed  in different ways</a>, none of which are usually satisfactory. In this article right-to-left text in code samples may be represented by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase.</p>
+  </div>
+<p>At the outset, it is important to understand the concept of <a href="https://w3c.github.io/i18n-glossary/#def_base_direction" class="termref print">base direction</a> (see <a href="../articles/inline-bidi-markup/uba-basics">Unicode Bidirectional Algorithm basics</a> for a simple overview of how it works with the <a href="https://w3c.github.io/i18n-glossary/#def_uba" class="termref print">Unicode bidirectional algorithm</a>).  </p>
+<p>It is fundamentally important to establish the appropriate base direction for the text, so that the Unicode bidirectional algorithm can reorder the text appropriately when it is displayed. Correctly setting the base direction also sets the default paragraph alignment of the text.</p>
+    <p>In HTML the base direction is either (a) set explicitly by the nearest parent element that uses the <span class="kw">dir</span> attribute (which could be the <code class="kw" translate="no">html</code> element), or, (b) in the absence of such an attribute,  left-to-right (LTR). </p>
+</section>
+
+
+
+
+
+
+
+<section>
+<h3 id="rtlsetup"><a href="#rtlsetup">Setting up a right-to-left page</a></h3>
+
+<p> Add <code>dir="rtl"</code> to the <span class="kw">html</span> tag any time the overall document direction is right-to-left (RTL). This sets the default base direction for the whole document. All block elements in the document will inherit this setting unless the direction is explicitly overridden. </p>
+<figure class="example">
+  <blockquote><code>&lt;!DOCTYPE html&gt;<br>
+        &lt;html <span style="color:red;">dir=&quot;rtl&quot;</span> lang=&quot;ar&quot;&gt;<br>
+        &lt;head&gt;<br>
+        &lt;meta charset=&quot;utf-8&quot;&gt;<br>
+        ... </code></blockquote>
+    </figure>
+    <p>No <span class="kw">dir</span> attribute is needed for documents that have a base direction of left-to-right, since this is the default, but it doesn't hurt to use it with a value of <code class="kw" translate="no">ltr</code>.</p>
+<p> This simple addition <code></code> to the <span class="kw">html</span> element will have the following effects throughout the rendered page.</p>
+<ol style="list-style-type: lower-alpha;">
+<li>Paragraphs and other blocks will be right-aligned.</li>
+<li>Bidirectional text will correctly flow from right-to-left.</li>
+<li>Punctuation will appear in the correct place relative to the text.</li>
+<li>Table columns will progress from right-to-left, and their contents will be right-aligned.</li>
+<li>Input in form fields will automatically start at the right, by default.</li>
+<li>If you write the style sheet correctly, CSS will automatically mirror the layout.</li>
+<li>It will set the direction of overflows.</li>
+</ol>
+<div class="figWrap">
+<figure>
+<a href="qa-html-dir-data/html-dir-results_ltr.png" target="_blank"><img style="width: 48%;" src="qa-html-dir-data/html-dir-results_ltr.png" alt="" /></a> &nbsp; <a href="qa-html-dir-data/html-dir-results_rtl.png" target="_blank"><img style="width: 48%;" src="qa-html-dir-data/html-dir-results_rtl.png" alt="" /></a>
+<figcaption>What content looks like	before (left) and after (right) the <code class="kw" translate="no">dir</code> attribute is added to the <code class="kw" translate="no">html</code> tag. (Click on the images to enlarge them.)</figcaption>
+</figure>
+</div>
+
+
+
+
+<section id="lang_tags">
+<h4>Language tags</h4>
+
+<p>While you are declaring the directionality of the document in the <span class="kw">html</span> tag, don't forget to also declare the <em>language</em> of the document using the <span class="kw">lang</span>  attribute (see <a class="print" href="/International/questions/qa-html-language-declarations">Declaring language in HTML</a>). However, do not make the mistake of assuming that language declarations indicate directionality, or vice versa! Even if the language declaration has a script tag it won't affect the directionality of the text in the user agent. You must always declare the directionality using the <span class="kw">dir</span> attribute.</p>
+</section>
+
+    
+    
+    
+<section id="scrollbars">
+<h4>Scroll bars</h4>
+
+<p>The LTR/RTL direction of the page shouldn't affect the location of scrollbars, since these are part of the browser chrome that is determined by the user, rather than by the language of the page.</p>
+</section>
+</section>
+
+    
+    
+    
+<section id="title_element">
+<h3>The <code class="kw" translate="no">title</code> element</h3>
+
+<p>The text that appears in the <code class="kw" translate="no">title</code> element at the top of an HTML file is often displayed in tab headings, bookmarks, etc. When so displayed, the browser should automatically apply the base direction that the <code class="kw" translate="no">title</code> element had in the original document. For example, if the <code class="kw" translate="no">html</code> tag declares the document direction to be RTL, the <code class="kw" translate="no">title</code> element text should be displayed with a RTL base direction.</p>
+<p>At the time of writing, browsers tend to display RTL title text from right-to-left, and vice versa. However, they do this not by examining the direction applied to the text by the markup, but instead by finding the first strongly directional character in the title and assuming that that indicates the appropriate base direction.</p>
+<p>Much of the time this will produce the desired result. However, if the title text in a RTL document begins with, say, an  acronym in the Latin script, the order will be incorrect when the text is displayed (<a class="print" href="https://www.w3.org/International/i18n-tests/results/native-user-interfaces#windowheader" target="_blank">see some tests</a>).</p>
+<p>A workaround for this scenario is to add <code>&amp;rlm;</code> at the beginning of the title text when it doesn't begin with a RTL character. This adds <span class="codepoint" translate="no"><span class="uname">U+200F RIGHT-TO-LEFT MARK</span></span> at the start, which is an invisible, strongly directional RTL character.</p>
+<p>If you have a LTR text that begins with a strong RTL character, use <code>&amp;lrm;</code> at the start, instead.</p>
+</section>
+</section>
+  
+  
+  
+  
+
+
+
+<section>
+<h2 id="blockelements"><a href="#blockelements">Setting direction on block elements</a></h2>
+
+
+
+
+
+
+<section>
+<h3 id="no_css"><a href="#no_css">Don't use CSS for direction!</a></h3>
+
+<p>Do <em>not</em> use CSS to apply base direction in HTML pages. </p>
+<p>Basically, this is because you want the directional information to be available even when the CSS is not. The directional information can affect the semantics of your content, and so should be part of the markup. (See a <a class="print" href="/International/questions/qa-bidi-css-markup">longer explanation</a>). </p>
+<p>Both the CSS and HTML specs echo this same admonition.</p>
+</section>
+
+
+
+
+
+
+<section>
+<h3 id="basicmarkup"><a href="#basicmarkup">Only use markup for special circumstances</a></h3>
+<p>Use the <span class="kw">dir</span> attribute on a block element only when you need to <em>change</em> the base direction of content in that block.</p>
+<p>Having established the base direction at the <span class="kw">html</span> tag level, you may have no need to use the attribute for any block elements on the page, since the direction set at the start of the page percolates down to all block elements.</p>
+<p>(You may however need to use it for <em>inline</em> stretches of bidirectional text. That is described in more detail in <cite><a class="print" href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></cite>.)</p>
+<p>The following is an example of how to mark up a block element  with a left-to-right base direction in a right-to-left document.</p>
+<figure class="example">
+<blockquote><code>&lt;blockquote dir=&quot;ltr&quot;  lang=&quot;en&quot; cite=&quot;Romeo and Juliet (II, ii, 1-2)&quot;&gt;But, soft! What light through yonder window breaks?
+It is the east, and Juliet is the sun.&lt;/blockquote&gt;</code></blockquote>
+</figure>
+</section>
+
+
+
+
+
+
+<section>
+<h3 id="alignment"><a href="#alignment">Using logical properties in CSS</a></h3>
+    <p>Text that is aligned to the right in an English page generally needs to be aligned to the left in a RTL page. It is possible to make that happen automatically, without the hassle of changing all the CSS in your style sheet. The solution is to use 'logical properties' when setting up your style: ie. use 'start' and 'end', rather than 'left' or 'right'.</p>
+<p>Using logical properties by default makes it much easier to localise your content in the future or include text with a different direction. After a while, thinking about start and end rather than left and right becomes natural, and will be useful to you when dealing with  layout methods such as CSS grid layout or flexbox which follow the same patterns.</p>
+<p>Left and right values may still be useful, occasionally, if you want the item you are positioning to remain in a fixed location, independent of the language of the text.  Learning to distinguish when to use the left/right terms rather than the default start/end terms helps you to be more aware of your design intent.</p>
+
+<p>Logical values or property names that enjoy interoperable support on the major browser engines include:</p>
+<div class="sidenoteGroup">
+<div class="figWrap">
+<pre>
+text-align: start | end
+justify-content: flex-start | flex-end ...
+align-content: flex-start | flex-end ...
+grid-column-start: &lt;value&gt;
+grid-column-end: &lt;value&gt;
+inline-size: &lt;width&gt;
+margin-inline-start/end: &lt;value&gt;
+padding-inline-start/end: &lt;value&gt;
+border-inline-start/end-width: &lt;value&gt;
+border-inline-start/end-style: &lt;value&gt;
+border-inline-start/end-color: &lt;value&gt;
+etc.
+</pre>
+</div>
+<div class="sideinfonote">
+<p>For many of these properties it is also possible to replace <code class="kw" translate="no">inline</code> with <code class="kw" translate="no">block</code>. This facilitates changing between horizontal and vertical modes when dealing with Chinese, Japanese, Mongolian, etc.</p>
+</div>
+</div>
+<p>When you use these properties in your style sheet and set the direction of your content to RTL, the alignment of that content treats start as right, and end as left.  If you change the direction of the text, you don't have to worry about also adapting the style sheet.</p>
+<p>At the time of writing, additional properties are still awaiting adoption by some of the main browser engines. These include <code class="kw" translate="no">float</code>, <code class="kw" translate="no">caption-side</code>, <code class="kw" translate="no">clear</code>, and <code class="kw" translate="no">border-radius</code>. Also, the shortcut properties for margin and padding are not yet implemented. See a set of <a href="https://www.w3.org/International/i18n-tests/results/css-logical">test results for major browsers</a>.</p>
+<p>Other recommendations include: </p>
+<ul>
+<li>only use <code class="kw" translate="no">text-align</code> where you really need to override the alignment produced by setting the base direction with <code class="kw" translate="no">dir</code>.</li>
+<li>avoid using HTML attributes with values of <code class="kw" translate="no">left</code> and <code class="kw" translate="no">right</code>. Instead add selectors to your CSS stylesheet. This allows you to use logical properties, but also makes it easier to change things during localisation.</li>
+</ul>
+</section>
+  
+
+
+
+
+<section>
+<h3 id="tables"><a href="#tables">Working with tables</a></h3>
+    <p>The <span class="kw">dir</span> attribute setting also affects the flow of columns in a table. The following picture shows a table in a
+      right-to-left document (ie. the <code class="kw" translate="no">html</code> tag includes <code>dir="rtl"</code>). The content of the table cells is right-aligned, the flow of content in each cell is right-to-left, and the columns also run right-to-left.</p>
+    <figure>
+    <p style="text-align:right;"><img class="shadow" src="qa-html-dir-data/table-rtl.png" alt="Picture of table." /></p>
+     <div class="demolink"><a href="qa-html-dir-data/examples/table_rtl.html" target="_blank">Test in your browser.</a></div>
+    </figure>
+    <p>In the table just below, the code <code>dir="ltr"</code> has been added to the <span class="kw">table</span> element, like this:</p>
+    <blockquote><code>&lt;table dir="ltr"&gt; … &lt;/table&gt;</code></blockquote>
+    <p>Note how the order of columns has changed, how the contents of the cells are now left aligned (look at the numbers), and how the flow of words within each cell is now left-to-right (although the words themselves are still read, character by character, in the same direction).</p>
+    <figure>
+      <p style="text-align:right;"><img class="shadow" src="qa-html-dir-data/table-ltr.png" alt="Picture of table." /></p>
+     <div class="demolink"><a href="qa-html-dir-data/examples/table_ltr.html" target="_blank">Test in your browser.</a></div>
+    </figure>
+    <p>What hasn't changed, however, is the alignment of the table itself within its containing block. It is still over to the right.</p>
+    <p>If, for some reason, you wanted to use markup (rather than styling) to make the table appear over on the left as well as reorder the columns (perhaps because you see the table as part of a left-to-right direction block), you would need to wrap it in something like a <span class="kw">div</span> element, and add
+      the <code>dir="ltr"</code> to that element to achieve that effect. (Don't use CSS <code class="kw" translate="no">text-align</code> because that will affect the table cells!) See the third rendering of the table below, which is now left-aligned. </p>
+    <figure>
+      <p><img class="shadow" src="qa-html-dir-data/table-ltr.png" alt="Picture of table." /></p>
+      <div class="demolink"><a href="qa-html-dir-data/examples/table_align_left.html" target="_blank">Test in your browser.</a></div>
+   </figure>
+    <p>Note that we don"t have to repeat the <span class="kw">dir</span> attribute on the table itself, but that the columns run left-to-right.</p>
+  </section>
+</section>
+
+
+
+
+
+<section id="dirauto">
+<h2><a href="#dirauto">dir=auto</a></h2>
+<p>If the value of  the <span class="kw">dir</span> attribute is set to <span class="kw">auto</span>, the browser will look at the first strongly typed character in the element and work out from that what the base direction of the element should be. If it's a Hebrew (or Arabic, etc.) character, the element will get a direction of <span class="kw">rtl</span>.  If it's, say, a Latin character, the direction will be <span class="kw">ltr</span>.</p>
+<p>There are some  corner cases where this may not give the desired outcome, but in the vast majority of cases it should produce the expected result.</p>
+<p>Applied to block elements, the  <code class="kw" translate="no">auto</code> value comes in handy when you don't know in advance the direction of the text inserted into a page. It is also particularly useful for working with forms.</p>
+
+
+
+
+<section id="insertedtext">
+<h3><a href="#insertedtext">Inserting<code class="kw"></code> text into a page with the correct base direction</a></h3>
+<p>Applications often insert text into a page at run time  by pulling information from a database or other location, be it via server-side scripting such as PHP,  using AJAX, or some other method. Such text can  be multilingual/multiscript, and  the direction of the text may not be known in advance. (Multiscript text is much more common in pages that are predominantly right-to-left than in other pages.)</p>
+<p class="hide">Such inserted text is commonly inline, and the <code class="kw" translate="no">auto</code> value of the <code class="kw" translate="no">dir</code> attribute and another element called <code class="kw" translate="no">bdi</code>  play a useful role in handling such situations.  Their use for inline markup is described in more detail in the article <cite><a class="print" href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></cite>.</p>
+<p>It is  sometimes useful to also label <em>block</em> level content. For example, in a forum where posts are in both Urdu and English, or where text in a single post is a mixture of Hebrew and English paragraphs. Simply add <code>dir=&quot;auto&quot;</code> to the element that surrounds each post and the first strongly-typed character in the element will determine the direction of that element's content.</p>
+<p>The HTML5 specification gives an example related to a chat session. Given the following markup:</p>
+<figure class="example"><code>&lt;p dir=&quot;auto&quot; class=&quot;u1&quot;&gt;&lt;bdi&gt;S&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;How do you write &quot;What's your name?&quot; in Arabic?&lt;/span&gt;&lt;/p&gt;<br />
+&lt;p dir=&quot;auto&quot; class=&quot;u2&quot;&gt;&lt;bdi&gt;T&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt; ما اسمك؟&lt;/span&gt;&lt;/p&gt;<br />
+&lt;p dir=&quot;auto&quot; class=&quot;u1&quot;&gt;&lt;bdi&gt;S&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;Thanks.&lt;/span&gt;&lt;/p&gt;<br />
+&lt;p dir=&quot;auto&quot; class=&quot;u2&quot;&gt;&lt;bdi&gt;T&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;That's written &quot;شكرًا&quot;.&lt;/span&gt;&lt;/p&gt;<br />
+&lt;p dir=&quot;auto&quot; class=&quot;u2&quot;&gt;&lt;bdi&gt;T&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;Do you know how to write &quot;Please&quot;?&lt;/span&gt;&lt;/p&gt;<br />
+&lt;p dir=&quot;auto&quot; class=&quot;u1&quot;&gt;&lt;bdi&gt;S&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;&quot;من فضلك&quot;, right?&lt;/span&gt;&lt;/p&gt;</code></figure>
+<p>The browser will display the following:</p>
+<figure>
+<p><img class="shadow" src="qa-html-dir-data/im.png" alt="Picture of output" /></p>
+      <div class="demolink"><a href="qa-html-dir-data/examples/auto" target="_blank">Test in your browser.</a></div>
+</figure>
+<p>Note how, when searching for the first strongly-typed character, the browser skips over text in a <code class="kw" translate="no">bdi</code> element. It also skips text in <code class="kw" translate="no">script</code>, <code class="kw" translate="no">style</code>, and <code class="kw" translate="no">textarea</code> elements, and any element with a <code class="kw" translate="no">dir</code> attribute. </p>
+<p>Note, also, how this approach is not foolproof: the final paragraph in this example is misinterpreted as being right-to-left text, since it begins with an Arabic character. This causes the line to be right-aligned and the text &quot;right?&quot; to be to the left of the Arabic text, with the question mark at the far left.</p>
+</section></section>
+  
+  
+  
+
+<section>
+<h2 id="unknowndirection"><a href="#unknowndirection">Working with forms</a></h2>
+  
+<p>Many web applications with a right-to-left-language interface or a right-to-left-language data source need to display and/or accept as input both LTR and RTL data. The application often doesn't know, and cannot control, the direction of the data.</p>
+  
+  
+  <section>
+    <h3 id="autoinput"><a href="#autoinput">Correctly displaying text in the <code class="kw" translate="no">input</code> element</a></h3>
+    <p>An online book store that carries books in many languages needs to work with the original book titles regardless of the language of the user interface. Thus, a Hebrew or Arabic book title may appear in an English interface, and vice-versa (this problem is actually much more widespread in RTL pages). The direction of the title may be available as a separate attribute, but more likely it isn't. </p>
+    <p>In the following example we  search for a Hebrew title, <cite lang="he" dir="rtl" style="white-space:nowrap;">הצהחת קידוד תװי CSS</cite>, in an English user interface. </p>
+    <p>Without taking steps to prevent it,  you'll notice that (a) the word 'CSS' comes out in the wrong place (it should be on the left), and (b) the text remains left-aligned rather than over to the right.  Perhaps even worse, the user experience of typing opposite-direction data can be quite awkward in some cases due to the cursor and punctuation jumping around during data entry and difficulty in selecting text. </p>
+    <figure>
+      <p><img class="shadow" src="qa-html-dir-data/googlebooks-incorrect.png" alt="Picture of code with dir attributes on every element." /></p>
+     <div class="demolink"><a href="qa-html-dir-data/examples/books_ltr.html" target="_blank">Test in your browser.</a></div>
+    </figure>
+    
+<p>The solution is to  just  add <code>dir=&quot;auto&quot;</code> to the <code class="kw" translate="no">input</code> tag.</p>
+    <figure>
+      <p><img class="shadow" src="qa-html-dir-data/googlebooks-correct.png" alt="Picture of code with dir attributes on every element." /></p>
+      <div class="demolink"><a href="qa-html-dir-data/examples/books_rtl.html" target="_blank">Test in your browser.</a></div>
+   </figure>
+    <p>Since the first strong character is right-to-left, the <code class="kw" translate="no">auto</code> value causes the input field to be right-to-left too.</p>
+<p>If the next book that the user searches for has an English title, the text will automatically be left-aligned and the base direction will be set to LTR.  </p>
+</section>
+
+
+
+
+
+
+<section  id="autotextarea">
+<h3><a href="#autotextarea">Alternating directionality in  <code class="kw" translate="no">textarea</code> (and <code class="kw" translate="no">pre</code>) paragraphs</a></h3>
+<p>Both <code class="kw" translate="no">textarea</code> and <code class="kw" translate="no">pre</code> elements can contain more than one paragraph of text, and it is not possible to apply markup to those paragraphs.</p>
+<p>If a <code class="kw" translate="no">textarea</code> element inherits or sets a direction of <code class="kw" translate="no">rtl</code>, all paragraphs will be right-aligned, but the paragraphs that should have a LTR base direction won't have it. For example, in the following picture the exclamation mark associated with the word 'two' should appear to the right, not the left.</p>
+<div class="figWrap">
+<figure style="text-align: end;">
+<img class="shadow" src="qa-html-dir-data/textarea_rtl.png" alt="">
+     <div class="demolink"><a href="qa-html-dir-data/examples/textarea_rtl" target="_blank">Test in your browser.</a></div>
+</figure>
+</div>
+<p>If you set <code class="kw" translate="no">dir</code> to <code class="kw" translate="no">auto</code> on the element then base direction is assigned to each paragraph independently, according to the direction of the first strong character in that paragraph. RTL and LTR paragraphs are also aligned differently.</p>
+<div class="figWrap">
+<figure style="text-align: end;">
+<img class="shadow" src="qa-html-dir-data/textarea_auto.png" alt="">
+     <div class="demolink"><a href="qa-html-dir-data/examples/textarea_auto" target="_blank">Test in your browser.</a></div>
+</figure>
+</div>
+<p>When a line contains no strong directional characters, such as '123-456', a LTR base direction is used for the arrangement of the characters, however the <em>alignment</em> of the line currently varies by browser. Webkit browsers keep the text right-aligned, whereas Blink and Gecko browsers left-align it. It is likely that in future all browsers will base the alignment of such lines on that of the previous paragraph.</p>
+</section>
+
+
+
+
+<section id="reportingdirection">
+<h3><a href="#reportingdirection">Reporting direction to the server with <code class="kw" translate="no">dirname</code></a></h3>
+
+<div class="sidenoteGroup">
+<p>When you cause the browser to dynamically apply the correct direction to text in a form field, either by using <code>dir=&quot;auto&quot;</code>, by using JavaScript, or even by using <a href="#userexplicit">browser-specific keystrokes</a> or context menus,  the <code class="kw" translate="no">dirname</code> attribute  allows you to pass that information to the server, so that it can be re-used when the text is displayed in another context.</p>
+<aside class="implnote">
+<p class="impl"><img src="../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/>  <img src="../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/><img src="../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+<p><img src="../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+</aside>
+</div>
+
+  <p>Here's an example of it in use:</p>
+  <figure class="example">
+    <p style="text-align:left;"><code>&lt;form action=&quot;addcomment.cgi&quot; method=&quot;get&quot;&gt; <br>
+      &lt;p&gt;&lt;label&gt;Comment: &lt;input type=&quot;text&quot; name=&quot;comment&quot; dirname=&quot;commentdir&quot; required&gt;&lt;/label&gt;&lt;/p&gt; <br>
+      &lt;p&gt;&lt;button name=&quot;mode&quot; type=submit value=&quot;add&quot;&gt;Post Comment&lt;/button&gt;&lt;/p&gt; <br>
+      &lt;/form&gt;</code></p>
+      <div class="demolink"><a href="qa-html-dir-data/examples/dirname" target="_blank">Test in your browser.</a></div>
+ </figure>
+  <p>The value of <code class="kw" translate="no">dirname</code> can be whatever you want (but not empty). When it is set, the form passes the direction of the element to the server, using the name you have provided. So if the user switches the direction of the form entry field in the example above to RTL and enters <span class="foreign" lang="ar" style="font-style:normal">مرحبا, </span>then when the form  is submitted, the submission body will look like this:</p>
+  <div class="sidenoteGroup">
+    <figure class="example">
+      <p><code>comment=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7&amp;commentdir=rtl&amp;mode=add</code></p>
+    </figure>
+    <aside class="sideinfonote">
+      <p class="info">The percent escaped code represents the Arabic word that the user typed.</p>
+    </aside>
+  </div>
+  <p>The  directional information can then be used to apply the correct direction to the text when it is displayed on another page. </p>
+  <p>This attribute can, of course, also be used to submit the direction of the input field when <code class="kw" translate="no">dir</code> is set to <code class="kw" translate="no">rtl</code> or <code class="kw" translate="no">ltr</code>. This could be useful for a database that stores data in a variety of languages.</p>
+</section>
+
+
+
+  <section>
+  <h3 id="userexplicit"><a href="#userexplicit">Setting direction on forms manually</a></h3>
+    <p>Browsers may allow users to set the base direction of form entry fields using key strokes. Having the right base direction set can significantly improve the user's experience, especially if the text they are inputting contains punctuation and numbers. Unfortunately, each browser has a different way of doing this. This section lists how to do it for some major desktop browsers. </p>
+    <p>In some cases you will need to set up your system for this to work. For example, for Internet Explorer you may need to install the Hebrew package <em>and</em> enable the Hebrew keyboard before this will work.</p>
+    <p><b class="leadin">Chrome:</b> Right-click on <code class="kw" translate="no">input</code> or <code class="kw" translate="no">textarea</code> elements to reveal the <samp>Writing Direction</samp> submenu. Choose either <samp>Right to Left</samp> or <samp>Left to Right</samp>. This sets the value of the element's <code class="kw" translate="no">dir</code> attribute, which is then available to scripts.</p>
+    <p><b class="leadin">Safari:</b> Right-click on <code class="kw" translate="no">input</code> or <code class="kw" translate="no">textarea</code> elements to reveal the <samp>Paragraph Direction</samp> submenu. Choose either <samp>Right to Left</samp> or <samp>Left to Right</samp>. This sets the value of the element's <code class="kw" translate="no">dir</code> attribute, which is then available to scripts.</p>
+    <p><b class="leadin">Firefox:</b> Set direction using the <kbd>CTRL/CMD+SHIFT+X</kbd> keyboard shortcut, which cycles through LTR and RTL. It does not set the value of the element's <code class="kw" translate="no">dir</code> attribute, and is thus invisible to scripts.</p>
+    <p><b class="leadin">Internet Explorer:</b> Use <kbd>CTRL+LEFT SHIFT</kbd> for LTR and <kbd>CTRL+RIGHT SHIFT</kbd> for RTL. (These key combinations are also adopted for this purpose by most Microsoft products, e.g. Windows dialogs, Notepad and Word.) They set the value of the element's <code class="kw" translate="no">dir</code> attribute, which is then available to scripts.</p>
+	<p>Try it:</p>
+	<p style="text-align: center;"><textarea style="border: 1px solid #ccc; border-radius: 5px; width: 25em; font-size: 1em;">פעילות הבינאום, W3C!</textarea></p>
+  </section>
+</section>
+<section> 
+<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><cite><a href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></cite></p>
+    </li>
+    <li>
+      <p>Tutorial, <a href="/International/tutorials/bidi-xhtml/"><cite>Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts</cite></a></p>
+    </li>
+    <li>
+      <p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#direction">Text direction</a></li>
+        <li><a href="/International/techniques/authoring-html#using">Setting up a right-to-left page</a></li>
+        <li><a href="/International/techniques/authoring-html#blocks">Changing the direction of a block element</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
