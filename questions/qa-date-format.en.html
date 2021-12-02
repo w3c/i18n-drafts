@@ -21,7 +21,7 @@ f.path = '../' // what you need to prepend to a URL to get to the /International
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2016-01-22', time:'14:00'} // date and time of latest edits to this document/translation
-f.contributors = '' // people providing useful contributions or feedback during review or at other times
+f.contributors = 'Fuqiao Xue, W3C' // people providing useful contributions or feedback during review or at other times
 
 // TRANSLATORS should fill in these assignments:
 f.translators = '' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
@@ -50,7 +50,6 @@ f.additionalLinks = ''
 
 <section>
 <div id="audience">
-  <p><span id="intendedAudience" class="leadin">Intended audience:</span> XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), Web project managers, and anyone who wants to know how to handle international date formats.</p>
   <div id="updateInfo"></div>
   <script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
 </div>
@@ -64,15 +63,75 @@ f.additionalLinks = ''
   <p>Your first impulse may be to assume this problem will be taken care of during localization of the web pages - i.e. let the translator fix
     it. Resist this impulse. Do you really want to keep separate copies of documents for the U.S. and the U.K. that differ only in date format? In any
     case you still have to deal with multilingual users like the one in our example above.</p>
-  <p>You have three options to consider, all with advantages and drawbacks:</p>
+
+  <p>
+    There are mainly two types of problems related to date processing on the Web: <a href="#input">how the user enters a date</a> and <a href="#display">how the author displays a date</a>.
+  </p>
+
+	<section>
+    <h3 id="input">The <code>&lt;input&gt;</code> element</h3>
+
+    <p>
+      HTML5 introduced <code>&lt;input&gt;</code> elements of type <code>date</code>, <code>time</code>, <code>datetime-local</code>, <code>month</code>, and <code>week</code>, which let the user easily enter a date or a time, like:
+    </p>
+
+    <p>
+    <label for="date">&lt;input type="<strong>date</strong>"&gt;</label>
+      <input type="date" id="date" name="date"
+       value="2021-12-07"
+       min="2021-12-05" max="2021-12-10">
+    </p>
+      <p>
+       <label for="time">&lt;input type="<strong>time</strong>"&gt;</label>
+      <input type="time" id="time" name="time"
+       min="09:00" max="18:00" required>
+      </p>
+      <p>
+       <label for="datetime-local">&lt;input type="<strong>datetime-local</strong>"&gt;</label>
+      <input type="datetime-local" id="datetime-local"
+       name="datetime-local" value="2021-12-07T18:00"
+       min="2021-12-05T00:00" max="2021-12-10T00:00">
+      </p>
+      <p>
+       <label for="month">&lt;input type="<strong>month</strong>"&gt;</label>
+      <input type="month" id="month"
+       name="month" value="2021-01"
+       min="2021-01">
+      </p>
+      <p>
+       <label for="week">&lt;input type="<strong>week</strong>"&gt;</label>
+      <input type="week" id="week"
+       name="week" min="2021-W01"
+       min="2021-W05">
+      </p>
+
+    <p>
+      Each browser has its own way of rendering these elements, and browsers that do not support them will fall back to a single-line text field.
+    </p>
+
+    <p>
+      <a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#dates-and-times">HTML</a> uses a variation of the <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> standard for its date and time strings. The date and time strings do not include the time zone data. The time zone data can be stored on the server-side separately if needed.
+    </p>
+
+    <p>
+      You can set a default value for the input by using the <code>value</code> attribute or restrict the date or time using the <code>min</code> and <code>max</code> attributes.
+    </p>
+
+  </section>
+
+<section>
+  <h3 id="display"><a href="#display">Store and display a date</a></h3>
+
+  <p>You have four options to consider, all with advantages and drawbacks:</p>
   <ol>
     <li>Use a locale neutral format</li>
     <li>Make the month and year obvious</li>
     <li>Use the Accept-Language HTTP header</li>
+    <li>Use JavaScript</li>
   </ol>
 
 	<section>
-    <h3 id="opt1"><a href="#opt1">Option One: Use a locale neutral format</a></h3>
+    <h4 id="opt1"><a href="#opt1">Option One: Use a locale neutral format</a></h3>
     <p>ISO 8601 specifies a format of YYYY-MM-DD. 2003-04-02 is clearer than 03/04/02. (Some prefer to modify ISO 8601 by using an
       abbreviation for the month to make it more clear, for example 2003-Apr-02, but then it is no longer locale neutral.). </p>
     <p><strong>Pros:</strong></p>
@@ -91,7 +150,7 @@ f.additionalLinks = ''
   </section>
 
 	<section>
-    <h3 id="opt2"><a href="#opt2">Option Two: Make the month and year obvious</a></h3>
+    <h4 id="opt2"><a href="#opt2">Option Two: Make the month and year obvious</a></h3>
     <p>To do this use a name for the month (abbreviated or not) and use 4 digits for all Gregorian year numbers. For example, 2 April
       2003.</p>
     <p><strong>Pros:</strong></p>
@@ -108,7 +167,7 @@ f.additionalLinks = ''
   </section>
 
 	<section>
-    <h3 id="opt3"><a href="#opt3">Option Three: Use the Accept-Language HTTP header</a></h3>
+    <h4 id="opt3"><a href="#opt3">Option Three: Use the Accept-Language HTTP header</a></h3>
     <p>The HTTP Accept-Language header only specifies the user's language preferences, but is commonly used to determine locale preferences
       as well.</p>
     <p>This method works well for dynamically generated web documents when inserting a date from some back-end storage into a page, as long
@@ -121,27 +180,20 @@ f.additionalLinks = ''
       <li>Displaying a generated date in a Japanese date format such as <span lang="ja">２００３年４月２日</span> in an English page
         would probably look out of place.</li>
     </ul>
-    <p>How this is done will vary depending on your development environment. Here are some pointers for some common environments.</p>
-    <div class="example">
-      <h4>Java/JSP</h4>
-      <p>Call the <code>getLocale</code> method of the <code>ServletRequest</code> or <code>HttpServletRequest</code> object. Use the
-        returned <code>Locale</code> object to call <code>DateFormat</code>. Note that the SHORT format uses only numbers. If you want unambiguous formats
-        use FULL. In some locales even LONG is all numeric. <!--(<a href="http://www.honomichl.com/java.html">Sample code</a>)--></p>
-      <p>See also <a class="print" href="http://icu-project.org/">ICU4J</a> since it contains   more up-to-date data (and more functionality) than the JDK routines.</p>
-    </div>
-    <div class="example">
-      <h4>ASP</h4>
-      <p>Use <code>Request.ServerVariables('HTTP_ACCEPT_LANGUAGE')</code> to get the user's preferences. Parse the first locale from the list
-        of accepted locales. You'll have to do your own mapping from the alphabetic locale code to a numeric Locale Identifier. Set <code>Session.LCID</code> to the resulting value. Call <code>FormatDateTime</code> to format the date.</p>
-      <p>Use vbLongDate to avoid ambiguity.</p>
-    </div>
-    <div class="example">
-      <h4>Perl</h4>
-      <p>Use <code>$ENV{'HTTP_ACCEPT_LANGUAGE'}</code> to get the preferred language. Use <code>POSIX:strftime</code> to format date values.
-        You'll have to do your own mapping of the accepted languages value to a date format string.</p>
-    </div>
+    <p>How this is done will vary depending on your development environment.</p>
   </section>
-  
+
+  <section>
+    <h4 id="opt4"><a href="#opt4">Option Four: Use JavaScript</a></h3>
+    <p>
+      The JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> object represent a single moment in time in a platform-independent format. It is specified as the number of milliseconds that have elapsed since midnight on January 1, 1970, UTC.
+    </p>
+    <p>
+      There are several methods in <code>Date</code> to return a string representation of a particular current date and time in various formats and perform time zone conversions. For example, the <code>toLocaleString</code> method returns a string with a language sensitive representation of this date.
+    </p>
+  </section>
+</section>
+
 	<section>
     <h3 id="summary"><a href="#summary">Summary</a></h3>
     <p>No ideal solution exists for this problem. Weigh the options and choose according to your preferences and your situation.</p>
@@ -164,21 +216,7 @@ f.additionalLinks = ''
 
   <ul id="full-links">
     <li>
-      <p><a href="http://java.sun.com/j2ee/sdk_1.3/techdocs/api/javax/servlet/ServletRequest.html">ServletRequest API description, including
-        getLocale method</a></p>
-    </li>
-    <li>
-      <p><a href="http://java.sun.com/j2se/1.4.2/docs/api/java/text/DateFormat.html">Use of the Java DateFormat class</a></p>
-    </li>
-    <li>
-      <p><a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/script56/html/vsfctformatdatetime.asp">About VBScript
-        FormatDateTime function</a></p>
-    </li>
-    <li>
-      <p><a href="http://www.microsoft.com/globaldev/getWR/steps/wrg_date.mspx#web">Date formatting in the .NET Framework</a></p>
-    </li>
-    <li>
-      <p><a href="http://www.honomichl.com/java.html">Java/JSP sample code</a></p>
+      <p><a href="https://html.spec.whatwg.org/multipage/input.html#the-input-element">The <code>&lt;input&gt;</code> element in the HTML Standard</a></p>
     </li>
   </ul>
 </section>
