@@ -36,10 +36,10 @@ f.additionalLinks = ''
 <script src="../javascript/doc-structure/article-dt.js"> </script>
 <script src="../javascript/boilerplate-text/boilerplate-fr.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
 <script src="../javascript/doc-structure/article.js"> </script>
-<script src="../javascript/articletoc-html5.js"></script><!-- remove the following local css declaration if there is nothing to add --><!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<script src="../javascript/articletoc-html5.js"></script><!-- remove the following local css declaration if there is nothing to add -->
+<link rel="stylesheet" href="../style/article-2016.css" />
 
-<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<link rel="stylesheet" href="filename-data/local.css" />
 <link rel="copyright" href="#copyright"/>
 
 </head>
@@ -59,8 +59,12 @@ f.additionalLinks = ''
   
  
 
-<p><span style="margin-top: 6em;">En plus de l’attribut <a class="print termref" href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"><code class="kw" translate="no">lang</code></a> (ou <a class="print termref" href="http://www.w3.org/TR/2004/REC-xml-20040204/#sec-lang-tag"><code class="kw" translate="no">xml:lang</code></a>) du marqueur <code class="kw" translate="no">html</code>, il est possible de trouver des informations concernant la langue dans les éléments <code class="kw" translate="no">meta</code> de l’HTML ou dans les en-têtes HTTP servis avec une page HTML.</span> Nous discutons ici  de l’utilité ainsi que de l’utilisation idéale de ces informations pour déclarer une langue dans du contenu HTML.</p>
-<p class="info">Cet article aborde plus particulièrement les déclarations de langue dans les en-têtes HTTP et dans les éléments <code class="kw" translate="no">meta</code>. Il ne s’agit pas d’un guide général pour spécifier la langue d’une page HTML. Pour ceci, consultez <a href="qa-html-language-declarations">Déclarer la langue en HTML</a><!--, or  try the <a href="#relatedhead">Related links</a-->.</p>
+<p><span style="margin-top: 6em;">En plus de l’attribut <a class="print termref" href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"><code class="kw" translate="no">lang</code></a> (ou <a class="print termref" href="https://www.w3.org/TR/2004/REC-xml-20040204/#sec-lang-tag"><code class="kw" translate="no">xml:lang</code></a>) du marqueur <code class="kw" translate="no">html</code>, il est possible de trouver des informations concernant la langue dans les éléments <code class="kw" translate="no">meta</code> de l’HTML ou dans les en-têtes HTTP servis avec une page HTML.</span> Nous discutons ici  de l’utilité ainsi que de l’utilisation idéale de ces informations pour déclarer une langue dans du contenu HTML.</p>
+
+<p class="info">Cet article aborde plus particulièrement les déclarations de langue dans les en-têtes HTTP et dans les éléments <code class="kw" translate="no">meta</code>. Il ne s’agit pas d’un guide général pour spécifier la langue d’une page HTML. Pour ceci, consultez <a href="qa-html-language-declarations">Déclarer la langue en HTML</a>.</p>
+
+<p><span class="info">This article builds on the distinction between (1)  using
+file metadata to identify the audience for the document, and (2) specifying the language used for the purpose of processing content. If you want to better understand the distinction see the article <a href="qa-text-processing-vs-metadata">Types of language declaration</a>.</span></p>
 
 
 <section>
@@ -79,7 +83,7 @@ f.additionalLinks = ''
 
   <section>
     <h2 id="http_summary"><a href="#http_summary">En-têtes HTTP</a></h2>
-<p>Lorsqu’un serveur vous fournit une page ou une ressource, celui-ci envoie avec elle des informations diverses à son propos (des métadonnées). Il utilise un format que l’on appelle <a class="print" href="http://tools.ietf.org/html/rfc2616#section-14.12">en-têtes HTTP</a>. L’un des éléments de ces métadonnées concerne la langue, comme vous pouvez le voir dans cet exemple qui montre la réponse HTTP qui accompagne cet article. </p>
+<p>Lorsqu’un serveur vous fournit une page ou une ressource, celui-ci envoie avec elle des informations diverses à son propos (des métadonnées). Il utilise un format que l’on appelle <a class="print" href="https://tools.ietf.org/html/rfc2616#section-14.12">en-têtes HTTP</a>. L’un des éléments de ces métadonnées concerne la langue, comme vous pouvez le voir dans cet exemple qui montre la réponse HTTP qui accompagne cet article. </p>
 <figure class="example">
 <pre>HTTP/1.1 200 OK
 Date: Sat, 23 Jul 2011 07:28:50 GMT
@@ -87,7 +91,7 @@ Server: Apache/2
 Content-Location: qa-http-and-lang.en.php
 Vary: negotiate,accept-language,Accept-Encoding
 TCN: choice
-P3P: policyref="http://www.w3.org/2001/05/P3P/p3p.xml"
+P3P: policyref="https://www.w3.org/2001/05/P3P/p3p.xml"
 Connection: close
 Transfer-Encoding: chunked
 Content-Type: text/html; charset=utf-8
@@ -98,7 +102,7 @@ Content-Type: text/html; charset=utf-8
 <p><code>Content-Language: en, hi, pa</code></p>
 </figure>
 <p>L’en-tête <code class="kw" translate="no">Content-Language</code> est associé à une page donnée grâce à un paramétrage du serveur ou à un script côté serveur. Il est par exemple courant de trouver un en-tête <code class="kw" translate="no">Content-Language</code> dans les métadonnées HTTP quand le serveur héberge plus d’une version d’une ressource, chacune dans une langue différente. Si le serveur utilise l’information dont il dispose à votre sujet pour sélectionner automatiquement une version linguistique donnée (« négociation de contenu »), la version choisie sera identifiée dans l’en-tête HTTP.</p>
-<p>L’en-tête HTTP <code class="kw" translate="no">Content-Language</code> peut fournir des données linguistiques utiles relatives à la page où à la ressource que vous demandez, mais la <a class="print" href="http://tools.ietf.org/html/rfc2616#section-14.12">spécification HTTP</a> indique que la finalité de cette information est d’offrir des métadonnées au sujet du <em>public</em> visé, plutôt que d’indiquer la langue du document lui-même. Ces métadonnées peuvent être utilisées pour effectuer des recherches, offrir une version linguistique correcte, gérer l’écoulement des tâches, la classification, etc.  Voir aussi <a href="#http">Déduire la langue d’un texte à partir d’un en-tête HTTP</a>.</p>
+<p>L’en-tête HTTP <code class="kw" translate="no">Content-Language</code> peut fournir des données linguistiques utiles relatives à la page où à la ressource que vous demandez, mais la <a class="print" href="https://tools.ietf.org/html/rfc2616#section-14.12">spécification HTTP</a> indique que la finalité de cette information est d’offrir des métadonnées au sujet du <em>public</em> visé, plutôt que d’indiquer la langue du document lui-même. Ces métadonnées peuvent être utilisées pour effectuer des recherches, offrir une version linguistique correcte, gérer l’écoulement des tâches, la classification, etc.  Voir aussi <a href="#http">Déduire la langue d’un texte à partir d’un en-tête HTTP</a>.</p>
 <p>L’information linguistique dans l’en-tête HTTP étant envoyée par le serveur, celle-ci n’est simplement pas à disposition si vous accédez à votre page à partir d’un disque dur, d’une clé USB ou d’un autre système non doté de serveur. Il n’existe pas, à l’heure actuelle, de méthode globalement acceptée pour représenter dans une page ce type de données.</p>
 </section>
 
@@ -144,8 +148,8 @@ Content-Type: text/html; charset=utf-8
     </figure>
     <p>Si le nom de l’élément <code class="kw" translate="no">meta</code> n’était pas suffisamment clair, le fait que la valeur accepte plusieurs langues indique que cet élément fournit vraiment des métadonnées au sujet du document. Il est nécessaire d’être spécifique si vous devez indiquer la langue d’une partie d’un texte. Il ne peut s’agir que d’une langue à la fois. L’élément <code class="kw" translate="no">meta</code> est ainsi dans le document un lieu qui fournit des métadonnées au sujet de la langue du public visé par le document dans son ensemble.</p>
     <p>Encore récemment, peu de navigateurs faisaient attention à cet élément meta. Plusieurs navigateurs importants ont alors commencé à l’utiliser pour spécifier la langue par défaut du texte du document s’il n’existait pas d’attribut langue dans le marqueur <code class="kw" translate="no">html</code> (ce pour quoi cet attribut du marqueur <code class="kw" translate="no">html</code> est fait). Chaque navigateur ayant sa propre implémentation, le système était peu fiable.</p>
-    <p>À cause de confusions et d’implémentations non homogènes de ce type de déclarations, le groupe de travail HTML prit la décision en 2011 de rendre <a class="print" href="http://www.w3.org/TR/html5/semantics.html#pragma-directives">non-conformes en HTML</a> les éléments <code class="kw" translate="no">meta</code> contenant un <code class="kw" translate="no">http-equiv</code> dont la valeur était <code class="kw" translate="no">Content-Language</code>. Ceci veut dire que vous ne devriez plus l’utiliser en HTML5 et que, bien que techniquement non illégal dans d’autres types de HTML, il est mieux de ne l’utiliser nulle part.</p>
-    <p>HTML5 a cependant fait une <a class="print" href="http://www.w3.org/TR/html5/semantics.html#pragma-set-default-language">concession</a> par souci de compatibilité descendante&nbsp;: s’il existe dans le code un élément meta avec un <code class="kw" translate="no">http-equiv</code> ayant pour valeur <code class="kw" translate="no">Content-Language</code> et s’il n’y a pas d’attributs de langue dans le marqueur <code class="kw" translate="no">html</code>, et si l’élément meta a pour valeur un seul code de langue, alors un navigateur doit utiliser cette information pour deviner la langue par défaut du texte de la page. Ceci étant dit, il ne s’agit que de compatibilité descendante et vous ne devriez plus avoir à utiliser cette approche. Utilisez tout simplement un attribut langue sur le marqueur <code class="kw" translate="no">html</code>.</p>
+    <p>À cause de confusions et d’implémentations non homogènes de ce type de déclarations, le groupe de travail HTML prit la décision en 2011 de rendre <a class="print" href="https://www.w3.org/TR/html5/semantics.html#pragma-directives">non-conformes en HTML</a> les éléments <code class="kw" translate="no">meta</code> contenant un <code class="kw" translate="no">http-equiv</code> dont la valeur était <code class="kw" translate="no">Content-Language</code>. Ceci veut dire que vous ne devriez plus l’utiliser en HTML5 et que, bien que techniquement non illégal dans d’autres types de HTML, il est mieux de ne l’utiliser nulle part.</p>
+    <p>HTML5 a cependant fait une <a class="print" href="https://www.w3.org/TR/html5/semantics.html#pragma-set-default-language">concession</a> par souci de compatibilité descendante&nbsp;: s’il existe dans le code un élément meta avec un <code class="kw" translate="no">http-equiv</code> ayant pour valeur <code class="kw" translate="no">Content-Language</code> et s’il n’y a pas d’attributs de langue dans le marqueur <code class="kw" translate="no">html</code>, et si l’élément meta a pour valeur un seul code de langue, alors un navigateur doit utiliser cette information pour deviner la langue par défaut du texte de la page. Ceci étant dit, il ne s’agit que de compatibilité descendante et vous ne devriez plus avoir à utiliser cette approche. Utilisez tout simplement un attribut langue sur le marqueur <code class="kw" translate="no">html</code>.</p>
     </section>
     
 
