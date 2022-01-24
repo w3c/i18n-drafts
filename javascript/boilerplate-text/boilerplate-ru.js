@@ -49,7 +49,7 @@ s.moreResourcesOfThisType = "Больше ресурсов данного тип
 s.accessKeyN ='Ускоряющая клавиша n предназначена для пропусков при навигации по страницам. <a href="#contentstart">Пропуск для перехода на начало контента.</a>'
 s.examplesInAnotherScript = "Настоящий документ содержит примеры на других языках/скриптах."
 s.worldMap = "Карта мира"
-s.searchI18nSite = "Поиск веб-сайта I18n" 
+s.searchI18nSite = "Поиск веб-сайта I18n"
 s.translationDisclaimer ='Данный документ является переводом. В случае каких-либо несоответствий и ошибок <a href="'+f.filename+'.en">последняя версия документа на английском языке</a> должна рассматриваться в качестве официальной. <a href="#copyright">Первоначальное авторское право</a> принадлежит W3C, как то указано ниже.'
 s.translator = "Переводчик:"
 s.relatedLinks = "Связанные ссылки"
@@ -116,12 +116,12 @@ s.codedInUtf8 = "Кодировка UTF-8!"
 
 s.translatedFromEnglishVer = "Перевод с английского: "+dt.enVersion+". Последнее внесение изменений в перевод: "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Вы можете отслеживать историю изменений документа здесь: <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">новостная лента</a> (существенные изменения) или <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">список Github коммитов</a> (все правки с января 2016).'
+s.historyOfDocumentChanges = 'Вы можете отслеживать историю изменений документа здесь: <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">новостная лента</a> (существенные изменения) или <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">список Github коммитов</a> (все правки с января 2016).'
 s.untranslatedChanges = '<strong>Внимание:</strong> <a href="'+f.filename+'.en">Оригинал на английском языке</a> был изменен после того, как был создан данный перевод. Изменения были добавлены к текущей странице, так что вы можете видеть некоторые блоки текста на английском языке до тех пор, пока не будет обновлен перевод.'
 s.unlinkedTranslation = '<strong>Предупреждение:</strong> Оригинал на английском языке существенно измененился с того момента, как документ был переводен. Рекомендуется читать <a href="'+f.filename+'.en">версию на английском языке</a> до тех пор, пока перевод не будет обновлен.'
-s.new="Новое"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Новое"// placed alongside new articles at http://www.w3.org/International/articlelist
 s.updated="Обновленое" // same as New
-s.translation_updated="Обновление перевода:" // date appears after colon 
+s.translation_updated="Обновление перевода:" // date appears after colon
 
 s.aboutThisArticle="Об этой статье" // title in the right column near the top of the page
 s.status_draft="Эта статья представляет собой проект, который еще не прошел публичное обозрение. Если есть вещи, которые нужно исправить, пожалуйста, отправьте нам ваши отзывы с помощью <a href='#survey'>ссылки внизу страницы</a>.."

@@ -50,11 +50,11 @@ s.moreResourcesOfThisType = "Mais recursos desse tipo."
 s.accessKeyN = 'A tecla de acesso \'n\'  salta para outro local na navegação da página. <a href="#contentstart">Saltar para o início do conteúdo.</a>'
 s.examplesInAnotherScript = "Este documento contém exemplos em outro idioma/script."
 s.worldMap = "Mapa Mundi"
-s.searchI18nSite = "Busca do site de I18n" 
+s.searchI18nSite = "Busca do site de I18n"
 s.translationDisclaimer = 'Este documento é uma tradução produzida por um voluntário. Em caso de discrepâncias ou erros, o <a href="'+f.filename+'.en">último original em inglês do</a> deve ser considerado fidedigno.<a href="#copyright">Os direitos autorais do original </a> pertenceem à W3C, como mostrado abaixo.'
 s.translator = "Tradutor:"
 s.relatedLinks = "Links relacionados"
-s.articles = "Artigos" // used in breadcrumbs, top right of page 
+s.articles = "Artigos" // used in breadcrumbs, top right of page
 s.topicIndexText = "Índice de tópicos"
 s.techIndexText = "Índice de técnicas"
 s.gotoW3cHome = "Acessar página inicial do W3C"
@@ -117,12 +117,12 @@ s.codedInUtf8 = "Codificado em UTF-8!"
 
 s.translatedFromEnglishVer = "Traduzido de conteúdo em inglês datado de "+dt.enVersion+". Última versão traduzida modificada "+dt.thisVersionPlain+"n GMT"
 
-s.historyOfDocumentChanges = 'Para obter o histórico de alterações do documento, veja o <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">feed de notícias</a> para mudanças de maior relevância, e a <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">lista de compromissos Github </a> para todas as mudanças desde janeiro de 2016.'
+s.historyOfDocumentChanges = 'Para obter o histórico de alterações do documento, veja o <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">feed de notícias</a> para mudanças de maior relevância, e a <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">lista de compromissos Github </a> para todas as mudanças desde janeiro de 2016.'
 s.untranslatedChanges = '<strong>Nota:</strong> Foram feitas alterações no <a href="'+f.filename+'.en">original em inglês</a> desde que este documento foi traduzido. Essas mudanças foram incorporadas a esta página, de modo que você poderá ver algumas passagens em inglês até que a tradução seja atualizada.'
 s.unlinkedTranslation = '<strong>Aviso:</strong> Alterações relevantes foram feitas no original em inglês desde que este documento foi traduzido. Aconselhamos que você leia <a href="'+f.filename+'">uma versão em outro idioma </a> até que esta tradução tenha sido atualizada.'
-s.new="Novo"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Novo"// placed alongside new articles at http://www.w3.org/International/articlelist
 s.updated="Atualizado" // same as New
-s.translation_updated="Tradução atualizada:" // date appears after colon 
+s.translation_updated="Tradução atualizada:" // date appears after colon
 
 
 s.aboutThisArticle="Sobre este artigo" // title in the right column near the top of the page

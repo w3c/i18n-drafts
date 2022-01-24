@@ -49,11 +49,11 @@ s.moreResourcesOfThisType = "이 유형의 추가 리소스."
 s.accessKeyN = '페이지 탐색에서 액세스 키를 n번 건너뜁니다. <a href="#contentstart">컨텐츠 시작 페이지로 건너뛰기</a>'
 s.examplesInAnotherScript = "이 문서에는 다른 언어/스크립트 예제가 들어 있습니다."
 s.worldMap = "세계지도"
-s.searchI18nSite = "I18n 사이트 검색" 
+s.searchI18nSite = "I18n 사이트 검색"
 s.translationDisclaimer = '이 문서는 번역본입니다. 일치하지 않는 사항이나 오류가 있는 경우에는 <a href="'+f.filename+'.en">최신 영문 원본</a> 을 참고하십시오. <a href="#copyright">원본 저작권</a> 은 아래와 같이 W3C에게 있습니다.'
 s.translator = "번역:"
 s.relatedLinks = "관련 링크"
-s.articles = "Articles" // used in breadcrumbs, top right of page 
+s.articles = "Articles" // used in breadcrumbs, top right of page
 s.topicIndexText = "항목 색인"
 s.techIndexText = "기술 색인"
 s.gotoW3cHome = "W3C 홈 페이지로 이동"
@@ -116,12 +116,12 @@ s.codedInUtf8 = "UTF-8로 인코딩됨!"
 
 s.translatedFromEnglishVer = dt.enVersion+" 기준 영어 컨텐츠를 번역한 것입니다. "+dt.thisVersionPlain+" GMT에 번역본이 마지막으로 변경되었습니다."
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
 s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="'+f.filename+'.en">the English original</a> since this document was translated. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
 s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
-s.new="New"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="New"// placed alongside new articles at http://www.w3.org/International/articlelist
 s.updated="Updated" // same as New
-s.translation_updated="Translation updated:" // date appears after colon 
+s.translation_updated="Translation updated:" // date appears after colon
 
 s.aboutThisArticle="이 문서 정보" // title in the right column near the top of the page
 s.status_draft="이 문서는 아직 공개 검토를 거치지 않은 초안 자료입니다. 저희가 확인해야 할 사항이 있으면 페이지 하단에 있는 링크를 사용하여 피드백을 보내 주십시오."
@@ -132,7 +132,7 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

@@ -51,11 +51,11 @@ s.moreResourcesOfThisType = "Mai multe resurse de acest tip"
 s.accessKeyN = 'Cheia de acces n sare la<a href="#internal-links" accesskey="n">nagigarea in pagina</a>. <a href="#contentstart">Sari la inceputul continutului.</a>'
 s.examplesInAnotherScript = "Acest document contine exemple in alta limba/script."
 s.worldMap = "Harta lumii"
-s.searchI18nSite = "Cauta in site-ul I18n" 
+s.searchI18nSite = "Cauta in site-ul I18n"
 s.translationDisclaimer = 'Acest document e o traducere. In caz ca apare vreo eroare sau discrepanta, <a href="'+f.filename+'.en">ultima versiune in Engleza</a> este cea autoritativa. <a href="#copyright">Copyright-ul original</a> apartine W3C, dupa cum e aratat mai jos.'
 s.translator = "Traducator:"
 s.relatedLinks = "Alte linkuri"
-s.articles = "Articole" // used in breadcrumbs, top right of page 
+s.articles = "Articole" // used in breadcrumbs, top right of page
 s.topicIndexText = "Indexul subiectelor"
 s.techIndexText = "Indexul tehnicilor"
 s.gotoW3cHome = "Pagina principala a W3C"
@@ -118,12 +118,12 @@ s.codedInUtf8 = "Incodat cu UTF-8!"
 
 s.translatedFromEnglishVer = "Tradus din engleza: "+dt.enVersion+". Ultima modificare a traducerii: "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
 s.untranslatedChanges = '<strong>Nota:</strong> Au fost efectuate modificari asupra  <a href="'+f.filename+'.en">versiunii originale in Engleza</a> dupa ce a fost tradus. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
 s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
-s.new="Nou"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Nou"// placed alongside new articles at http://www.w3.org/International/articlelist
 s.updated="Actualizat" // same as New
-s.translation_updated="Translation updated:" // date appears after colon 
+s.translation_updated="Translation updated:" // date appears after colon
 
 s.aboutThisArticle="About this article" // title in the right column near the top of the page
 s.status_draft="This article is a draft that has not yet gone through public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
@@ -135,7 +135,7 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

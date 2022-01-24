@@ -116,7 +116,7 @@ s.codedInUtf8 = "Zakodowano w UTF-8!"
 
 s.translatedFromEnglishVer = "Angielska wersja dokumentu z dnia "+dt.enVersion+". Tłumaczenie wykonano dnia "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Aby przesledzić historię zmian dokumentu zobacz <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">kanał wiadomości</a> dla większych zmian, oraz <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'..en.html">listę na Github</a> dla wszystkich zmian od stycznia 2016.'
+s.historyOfDocumentChanges = 'Aby przesledzić historię zmian dokumentu zobacz <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">kanał wiadomości</a> dla większych zmian, oraz <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'..en.html">listę na Github</a> dla wszystkich zmian od stycznia 2016.'
 s.untranslatedChanges = '<strong>Uwaga:</strong> Wprowadzono zmiany do <a href="'+f.filename+'.en">angielskiego oryginału</a> od kiedy dokument został przetłumaczony. Zmiany zostały tu wpisane dlatego możesz widzieć fragmenty w języku angielskim dopóki nie uaktualnimy tłumaczenia.'
 s.unlinkedTranslation = '<strong>Uwaga:</strong> Wprowadzono istotne zmiany do dokumentu po wykonaniu tłumaczenia. Doradza się przeczytanie <a href="'+f.filename+'.en">angielskiej wersji</a> dopóki tłumaczenie nie zostanie zaktualizowane.'
 s.new="Nowość"// placed alongside new articles at http://www.w3.org/International/articlelist 

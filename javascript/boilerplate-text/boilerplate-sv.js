@@ -52,11 +52,11 @@ s.moreResourcesOfThisType = "Fler resurser av denna typ."
 s.accessKeyN = 'Använd accesskey \'n\' för att hoppa till de interna navigationslänkarna i dokumentet. <a href="#contentstart">Hoppa till början av innehållet.</a>'
 s.examplesInAnotherScript = "Detta dokument innehåller exempel uttryckta i andra språk/skript."
 s.worldMap = "Världskarta"
-s.searchI18nSite = "Sök på I18n:s webbplats" 
+s.searchI18nSite = "Sök på I18n:s webbplats"
 s.translationDisclaimer = 'Detta dokument är en översättning av ett engelskt original, utfört av frivilliga. Om det finns tveksamheter eller fel i detta dokument, så är <a href="'+f.filename+'.en">senaste version av det engelska originalet</a> den auktoritativa versionen. <a href="#copyright">Copyright</a> tillhör W3C, enligt nedan.'
 s.translator = "Översättare:"
 s.relatedLinks = "Näraliggande länkar"
-s.articles = "Artiklar" // used in breadcrumbs, top right of page 
+s.articles = "Artiklar" // used in breadcrumbs, top right of page
 s.topicIndexText = "Index över ämnen"
 s.techIndexText = "Index över tekniker"
 s.gotoW3cHome = "Gå till W3C:s hemsida"
@@ -119,10 +119,10 @@ s.codedInUtf8 = "Kodad i UTF-8!"
 
 s.translatedFromEnglishVer = "Översatt från engelskt innehåll skapat/ändrat "+dt.enVersion+". Översättningen senast ändrad "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Om du vill se en logg över hur dokumentet ändrats, titta på <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">nyhetstråden</a> där viktiga ändringar noterats, och <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">listan över inlägg i Github</a> för alla ändringar gjords sedan januari 2016.'
+s.historyOfDocumentChanges = 'Om du vill se en logg över hur dokumentet ändrats, titta på <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">nyhetstråden</a> där viktiga ändringar noterats, och <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">listan över inlägg i Github</a> för alla ändringar gjords sedan januari 2016.'
 s.untranslatedChanges = '<strong>Obs:</strong> Det  <a href="/International/'+f.directory+f.filename+'.en">engelska originaldokumentet</a> har ändrats sedan det översattes. De ändringarna har lagts in i denna sida, så du kan råka se vissa delar formulerade i engelska, till dess att översättningen uppdaterats.'
 s.unlinkedTranslation = '<strong>Varning:</strong> Viktiga ändringar har gjorts i det engelska originalet efter att denna översättning gjordes. Vi rekommenderar att du läser <a href="'+f.filename+'">en version i ett annat språk</a> i väntan på att denna översättning blir uppdaterad.'
-s.new="Ny"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Ny"// placed alongside new articles at http://www.w3.org/International/articlelist
 s.updated="Uppdaterad" // same as New
 s.translation_updated="Översättning uppdaterad:" // date appears after colon
 

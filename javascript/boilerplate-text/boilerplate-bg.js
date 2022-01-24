@@ -116,7 +116,7 @@ s.codedInUtf8 = "Енкодинк UTF-8!"
 
 s.translatedFromEnglishVer = "Превод от Английско съдържание от дата "+dt.enVersion+". Последна ревизия на преведената версия: "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'За история на промените в документа, виж <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">новинарски фиид</a> за съществени промени, и <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">списък с промени в Github</a> за всички промени след Януари 2016.'
+s.historyOfDocumentChanges = 'За история на промените в документа, виж <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">новинарски фиид</a> за съществени промени, и <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">списък с промени в Github</a> за всички промени след Януари 2016.'
 s.untranslatedChanges = '<strong>Забележка:</strong> Направени са промени в <a href="'+f.filename+'.en">Английският оригинал</a> спрямо последния превод. Промените са вмъкнати в тази страница и затова някои пасажи може все още да бъдат на Английски докато превода не бъде актуализиран.'
 s.unlinkedTranslation = '<strong>Предупреждение:</strong> Значителни промени са направени в Английския оригинал откакто този документ последно е преведен. Съветваме ви да прочетете <a href="'+f.filename+'">на друг език</a> докато този превод не бъде актуализиран.'
 s.new="Ново"// placed alongside new articles at http://www.w3.org/International/articlelist 

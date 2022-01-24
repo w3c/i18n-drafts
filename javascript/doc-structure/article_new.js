@@ -44,7 +44,7 @@ if (f.clang != 'en') { g.isTranslation = true } else { g.isTranslation = false }
 
 
 function showExample (path) {
-	var exampleWindow = window.open(path, 'exampleWindow'); 
+	var exampleWindow = window.open(path, 'exampleWindow');
 	exampleWindow.focus();
 	}
 
@@ -73,7 +73,7 @@ function stickyConneg (filename, cLang, targetLang) {
 g.siteSearch = '<form method="get" action="https://www.w3.org/International/site-search.php" enctype="application/x-www-form-urlencoded" style="margin: 0;"><div id="searchSite"><input name="q" type="text" value="'+s.searchI18nSite+'" onfocus="this.value=\'\'" id="searchField" accesskey="E" maxlength="255"/></div></form>'
 
 g.breadcrumbs = "<a href='https://www.w3.org/International/'>"+s.home+"</a> &gt; <a href='https://www.w3.org/International/resources'>"+s.resources+"</a> &gt; "
-if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='https://www.w3.org/International/tests/'>"+s.tests+"</a>" 
+if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='https://www.w3.org/International/tests/'>"+s.tests+"</a>"
 else g.breadcrumbs += "<a href='https://www.w3.org/International/articlelist#"+f.breadcrumb+"'>"+s.articles+"</a>"
 
 g.about = "<h2 id='abouthead' class='notoc'>"+s.aboutThisArticle+"</h2>\n"
@@ -99,7 +99,7 @@ if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length ==
 	versionList += '</p>';
 	}
 
-if (g.isTranslation) g.disclaimer = '<div id="disclaimer"><p>'+s.translationDisclaimer+'</p><p>'+s.translator+' '+f.translators+'</p></div>' 
+if (g.isTranslation) g.disclaimer = '<div id="disclaimer"><p>'+s.translationDisclaimer+'</p><p>'+s.translator+' '+f.translators+'</p></div>'
 else g.disclaimer = ''
 
 
@@ -116,15 +116,15 @@ var mainNavigation = '<aside id="mainNavigation">'+
 '	<div id="aboutdoc" class="noprint">'+g.about+'</div>'+
 '	</aside>'+
 '	<nav id="boilerplate">'+
-'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="https://www.w3.org/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
+'	<div id="siteicons"><a href="https://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="https://www.w3.org/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
 s.internationalizationTitle+'</a></div>'+
 '	<div id="sitelinks" class="noprint">'+
 //'	<bdi><a href="https://www.w3.org/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a></bdi>&#xA0;'+s.rlm+
 '	<bdi><a href="https://www.w3.org/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
 '	<bdi><a href="https://www.w3.org/International/resources" title="'+s.informationResources+'">'+s.resources+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="https://www.w3.org/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+ 
-'	<bdi><a href="https://www.w3.org/International/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+ 
-//'	<bdi><a href="https://www.w3.org/International/resource-index" title="'+s.topicIndexForInformation+'">'+s.topics+'</a></bdi>&#xA0;'+s.rlm+ 
+'	<bdi><a href="https://www.w3.org/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+
+'	<bdi><a href="https://www.w3.org/International/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+
+//'	<bdi><a href="https://www.w3.org/International/resource-index" title="'+s.topicIndexForInformation+'">'+s.topics+'</a></bdi>&#xA0;'+s.rlm+
 '	<bdi><a href="https://www.w3.org/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>&#xA0;'+s.rlm+
 '	&#xA0; </div><div id="line">&#xA0;</div>'+
 '	</nav>'
@@ -134,7 +134,7 @@ s.internationalizationTitle+'</a></div>'+
 // UPDATES
 
 var outOfDateTranslation = false
-if (trans.outofdatetranslations.length > 0) { 
+if (trans.outofdatetranslations.length > 0) {
 	for (var lang in trans.outofdatetranslations) {
 		if (f.clang == trans.outofdatetranslations[lang]) {
 			outOfDateTranslation = true
@@ -143,7 +143,7 @@ if (trans.outofdatetranslations.length > 0) {
 		}
 	}
 var unlinkedTranslation = false
-if (trans.unlinkedtranslations.length > 0) { 
+if (trans.unlinkedtranslations.length > 0) {
 	for (var lang in trans.unlinkedtranslations) {
 		if (f.clang == trans.unlinkedtranslations[lang]) {
 			unlinkedTranslation = true
@@ -152,7 +152,7 @@ if (trans.unlinkedtranslations.length > 0) {
 		}
 	}
 var updatedTranslation = false
-if (trans.updatedtranslations.length > 0) { 
+if (trans.updatedtranslations.length > 0) {
 	for (var lang in trans.updatedtranslations) {
 		if (f.clang == trans.updatedtranslations[lang]) {
 			updatedTranslation = true
@@ -165,8 +165,8 @@ g.updated = ''
 if (! g.isTranslation && f.firstPubDate && f.lastSubstUpdate && f.firstPubDate != f.lastSubstUpdate) {
 	g.updated = "<p class='updated'>"+s.updated+" <time datetime='"+f.lastSubstUpdate.date+"T"+f.lastSubstUpdate.time+"Z'>"+f.lastSubstUpdate.date+" "+f.lastSubstUpdate.time+"</time></p>"
 	}
-if (outOfDateTranslation) g.updated += "<p class='outofdate'>"+s.untranslatedChanges+" </p>" 
-else if (unlinkedTranslation) g.updated += "<p class='unlinked'>"+s.unlinkedTranslation+" </p>" 
+if (outOfDateTranslation) g.updated += "<p class='outofdate'>"+s.untranslatedChanges+" </p>"
+else if (unlinkedTranslation) g.updated += "<p class='unlinked'>"+s.unlinkedTranslation+" </p>"
 else if (g.isTranslation && updatedTranslation) {g.updated ="<p class='updated'>"+s.translation_updated+" <time datetime='"+f.thisVersion.date+"T"+f.thisVersion.time+"Z'>"+f.thisVersion.date+" "+f.thisVersion.time+"</time></p>" }
 
 // put a redirect or warning banner on articles on github
@@ -192,8 +192,8 @@ g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
 			'<p><a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A%0A">'+s.sendAComment+'</a></p>'+
 			'<p style="margin-top:1em">'+s.followOurNews+'</p>'+
 			'<p><a class="interaction" href="http://twitter.com/webi18n" title="Twitter: @webi18n"><img src="'+f.path+'icons/twitter-bird.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n</a></p>'+
-			'<p><a class="interaction" href="http://www.w3.org/blog/International/feed/rdf/" title="RSS"><img src="'+f.path+'icons/rssLink.png" alt=" " /> RSS</a></p>'
-			
+			'<p><a class="interaction" href="https://www.w3.org/blog/International/feed/rdf/" title="RSS"><img src="'+f.path+'icons/rssLink.png" alt=" " /> RSS</a></p>'
+
 
 
 // BOTTOM OF PAGE
@@ -249,7 +249,7 @@ function getLink2GHIssues () {
 
 function completePage () {
     var related = ''
-    if (document.getElementById('full-links')) { 
+    if (document.getElementById('full-links')) {
         related = "<h2 id='relatedhead' class='notoc'>"+s.relatedLinks+"</h2>\n"
         related +=  '<ul id="relatedLinkList">\n'
         related += document.getElementById('full-links').innerHTML
@@ -285,7 +285,7 @@ function fillinTranslations () {
 function getURLs () {
 	// makes a list of URLs and adds footnote markers and footnotes to the bottom of the page
 	// this is revealed only when printing, and applies only to a tags with class print
-	
+
 	var links = document.querySelectorAll('a.print')
 	var out = '<h3 class="notoc"><a href="#printLinks">Links in this document:</a></h3><ol>\n'
 	for (var l=0;l<links.length;l++) {
@@ -297,5 +297,5 @@ function getURLs () {
 	container.id = "printLinks"
 	container.innerHTML = out
 	document.querySelector('#endlinks').parentNode.appendChild(container)
-	
+
 	}

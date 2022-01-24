@@ -17,7 +17,7 @@ f.searchString = 'qa-htaccess-charset' // blog search string - usually the filen
 f.firstPubDate = '2004-07-02' // date of the first publication of the document (after review)
 f.lastSubstUpdate = { date:'2004-07-09', time:'16:27'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
-f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+f.path = '../' // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2016-03-01', time:'04:26'} // date and time of latest edits to this document/translation
@@ -45,18 +45,18 @@ f.additionalLinks = ''
 <body>
 <header>
   <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
-  
+
   <h1>Einstellung der Zeichencodierungsangabe ('charset') in .htaccess</h1>
 </header>
 
 
 <section>
   <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span>
     Webmaster und alle, die Rat suchen, wie serverseitige Direktiven bei Apache zu ändern sind, um die Zeichencodierung im HTTP-Header zu setzen. Für diese Änderungen sind gewisse Rechte und Zugriff auf den Server erforderlich. Technisch weniger Versierte sollten sich an ihren Provider oder den Server-Administrator wenden.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
-    
+
   <h2 id="question"><a href="#question">Question</a></h2>
     <p class="question">Wie verwendet man .htaccess-Direktiven bei einem Apache-Server, um Dateien mit einer bestimmten Zeichencodierung auszuliefern?</p>
   </section>
@@ -65,7 +65,7 @@ f.additionalLinks = ''
 <section>
   <h2 id="background"><a href="#background">Hintergrund</a></h2>
   <p>Es ist wichtig, dafür zu sorgen, dass sämtliche Angaben des Servers über die Zeichencodierung korrekt sind, denn die Angaben im HTTP-Header überschreiben die im Dokument vorhandenen Angaben.</p>
-  <p>Viele Apache-Server sind so konfiguriert, dass sie Dateien mit der Codierung ISO 8859-1 (Latin-1) ausliefern. In den Beispielen dieser FAQ gehen wir davon aus, dass eine oder mehrere Dateien mit einer anderen Codierung als der in Grundeinstellung festgelegten ausgeliefert werden sollen. (Für Hinweise zur Wahl der Zeichencodierung siehe das Tutorial <a class="print" href="http://www.w3.org/International/questions/qa-choosing-encodings"><cite>Zeichensätze und Zeichencodierungen in XHTML, HTML und CSS</cite></a>.)</p>
+  <p>Viele Apache-Server sind so konfiguriert, dass sie Dateien mit der Codierung ISO 8859-1 (Latin-1) ausliefern. In den Beispielen dieser FAQ gehen wir davon aus, dass eine oder mehrere Dateien mit einer anderen Codierung als der in Grundeinstellung festgelegten ausgeliefert werden sollen. (Für Hinweise zur Wahl der Zeichencodierung siehe das Tutorial <a class="print" href="https://www.w3.org/International/questions/qa-choosing-encodings"><cite>Zeichensätze und Zeichencodierungen in XHTML, HTML und CSS</cite></a>.)</p>
   <p>Es folgt ein Beispiel eines HTTP-Headers, der zu einer an ein Nutzerprogramm (einen Browser) gesendeten Datei gehört. In diesem Fall ist die Angabe der Zeichencodierung im Content-Type-Header in der vorletzten Zeile enthalten.</p>
   <div class="example">
     <pre>HTTP/1.1 200 OK
@@ -87,7 +87,7 @@ Content-Language: en</pre>
   </div>
   <div class="sidenoteGroup">
     <p>In diesem Beispiel gibt der Content-Type-Header sowohl den Medientypen (MIME-Typen) der Datei als auch die Zeichencodierung an. Der Medientyp beschreibt das Format der gesendeten Datei. HTML-Dateien werden üblicherweise als text/html ausgeliefert. Die Zeichencodierung ('<span class="qterm">charset</span>'*) dieser Datei ist UTF-8.</p>
-    <div class="sideinfonote"><p class="footnote">'charset' steht hier nicht für Zeichensatz, sondern für Zeichencodierung. Beide Begriffe sollten sorgfältig <a class="print" href="http://www.w3.org/International/questions/qa-what-is-encoding#what">unterschieden</a> werden. (Anmerkung des Übersetzers)</p></div>
+    <div class="sideinfonote"><p class="footnote">'charset' steht hier nicht für Zeichensatz, sondern für Zeichencodierung. Beide Begriffe sollten sorgfältig <a class="print" href="https://www.w3.org/International/questions/qa-what-is-encoding#what">unterschieden</a> werden. (Anmerkung des Übersetzers)</p></div>
   </div>
   <p>Wie man Einblick in den HTTP-Header erhält, ist im Artikel <a class="print" href="/International/questions/qa-headers-charset"><cite>HTTP-Header überprüfen</cite></a> beschrieben.</p>
   <p>Dateien auf einem Apache-Server werden eventuell mit einer Zeichencodierungsangabe im HTTP-Herader ausgeliefert, die nicht der wirklichen Zeichencodierung der Datei entspricht. Die vom Server gesendete Codierung kann die bei der Serverinstallation gesetzte Grundeinstellung, eine vom Systemadministrator gesetzte Grundeinstellung oder das Ergebnis verschiedener Apache-Direktiven sein. In anderen Fällen wird gar keine Zeichencodierungsangabe vom Server gesendet, obwohl es erforderlich wäre.</p>
@@ -99,7 +99,7 @@ Content-Language: en</pre>
   <h2 id="answer"><a href="#answer">Answer</a></h2>
   <p>Verschiedene Szenarien sind zu berücksichtigen. Zum einen könnte gewünscht sein, die Einstellung für alle Dateien mit derselben Datei-Endung in einem Verzeichnis zu ändern. Oder es soll die Einstellung für eine einzelne oder wenige Dateien geändert werden. Wir werden dies nacheinander durchgehen.</p>
   <p>In unseren Beispielen nehmen wir an, dass der Server per Grundeinstellung Dateien als ISO 8859-1 ausliefert, aber gewünscht ist, dass die Datei(en) als UTF-8 ausgeliefert werden. (Eine äußerst vernünftige Strategie!)</p>
-  
+
   <section>
     <h3 id="scope"><a href="#scope">Ist diese Antwort für mich von Bedeutung?</a></h3>
     <p>Dieser Artikel ist eher für Seitenautoren als für Systemadministratoren geschrieben. Die Grundeinstellung des Servers zu setzen, ist nicht Teil dieses Artikels.</p>
@@ -108,7 +108,7 @@ Content-Language: en</pre>
     <p>Zu beachten sind auch die auf dem Server verwendeten Konventionen zur Verknüpfung von Zeichencodierungsangaben mit Datei-Endungen. In manchen Fällen könnte der Server so eingestellt sein, dass er spezifische Endungen für die Zeichencodierungen erwartet, z.B. example.html.utf8; wobei es das .utf8 ist, was mit einer Zeichencodierung zu verknüpfen ist, nicht das .html (was mit dem Dateitypen verknüpft sein kann).</p>
     <p>Wenn diese Ansätze scheitern, sollte die Apache-Dokumentation (siehe <a href="#endlinks">Links</a>) oder der Server-Administrator konsultiert werden.</p>
   </section>
-  
+
   <section>
     <h3 id="extension"><a href="#extension">Festlegung anhand der Datei-Endung</a></h3>
     <p>Mit der <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a>-Direktive wird eine Zeichencodierung mit allen Dateien mit einer bestimmten Datei-Endung im aktuellen Verzeichnis <em>und allen Unterverzeichnissen</em> verknüpft. Um beispielsweise alle Dateien mit der Endung .html als UTF-8 auszuliefern, ist die .htaccess-Datei in einem Texteditor zu öffnen und folgende Zeile einzutragen:</p>
@@ -143,7 +143,7 @@ Content-Language: en</pre>
       </blockquote>
     </div>
   </section>
-  
+
   <section>
     <h3 id="odd"><a href="#odd">Änderung für einzelne Dateien</a></h3>
     <p>Nehmen wir nun an, dass eine einzelne Datei aus einem großen Verzeichnis als UTF-8 ausgeliefert werden soll, während alle anderen älteren Dateien korrekt als ISO 8859-1 ausgeliefert werden sollen. Die als UTF-8 auszuliefernde Datei sei example.html. Dann die .htaccess-Datei in einem Texteditor öffnen und folgendes eintragen:</p>
@@ -167,7 +167,7 @@ ForceType 'text/html; charset=UTF-8'
     </div>
     <p><strong>Anmerkung:</strong> Alle Dateien mit demselben Namen in Unterverzeichnissen des aktuellen Verzeichnisses werden dann auch als UTF-8 ausgeliefert, wenn nicht in dem betreffenden Unterverzeichnis eine gegenteilige Direktive zur Anwendung kommt.</p>
   </section>
-  
+
   <section>
     <h3 id="more"><a href="#more">Komplexere Szenarien</a></h3>
     <p>Wenn Regeln für zwei Datei-Endungen auf dasselbe Dokument zutreffen, ist die Reihenfolge der Endungen entscheidend. Im folgenden Beispiel</p>

@@ -17,7 +17,7 @@ f.searchString = 'qa-utf8-bom' // blog search string - usually the filename with
 f.firstPubDate = '2003-11-27' // date of the first publication of the document (after review)
 f.lastSubstUpdate = { date:'2007-07-17 18:19', time:'12:09'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
-f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+f.path = '../' // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2019-05-23', time:'11:03'} // date and time of latest edits to this document/translation
@@ -47,17 +47,17 @@ f.additionalLinks = ''
 <body>
 <header>
   <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
-  
+
   <h1>Megjelenítési problémák amelyeket az UTF-8 BOM okoz</h1>
 </header>
 <section>
   <div id="audience">
 <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
 </div>
-    
+
 </section>
-  
- 
+
+
 
 <section>
 <p class="question">Amikor UTF-8-ba kódolt oldalt nézek, néhány böngészőben egy plusz sort vagy nemkívánt karaktert látok a weboldal vagy fájl tetején. Hogyan távolíthatom el ezeket?</p>
@@ -71,7 +71,7 @@ f.additionalLinks = ''
 <h2 id="answer">Válasz</h2>
 
 <p>Ha UTF-8-ba kódolt fájllal van dolgunk, a megjelenítési problémákat okozhatja az UTF-8 jelzés (BOM) jelenléte, amit a böngésző nem ismer fel. This used to be a problem for static HTML files, but is no longer  in recent versions of major browsers. However, if you use PHP to generate your HTML, this was still an issue with PHP version 5.3.6.</p>
-<p>A BOM mindig a fájl elején van, ezért normális esetben a megjelenítési problémákra az oldal tetején számítunk. Azonban emellett üres sorokat is találhatunk ha 
+<p>A BOM mindig a fájl elején van, ezért normális esetben a megjelenítési problémákra az oldal tetején számítunk. Azonban emellett üres sorokat is találhatunk ha
 olyan szöveget illesztünk be egy másik fájlból, ami UTF-8 jelzéssel kezdődik.</p>
 <p>Ez a cikk segít eldönteni hogy az UTF-8 okozza-e a problémánkat. Ha nincs bizonyíték az UTF-8 jelzésre a fájl elején akkor máshol kell keresnünk a megoldást.</p>
 
@@ -79,11 +79,11 @@ olyan szöveget illesztünk be egy másik fájlból, ami UTF-8 jelzéssel kezdő
 
 <section>
 <h3 id="bom"><a href="#bom">Mi az az UTF-8 jelzés (BOM)?</a></h3>
-<div class="sidenoteGroup"> 
+<div class="sidenoteGroup">
 	<p>Néhány applikáció egy egyéni bájtkombinációt helyez el a fájl elején, így jelezve, hogy a szöveg a fájlban Unicode. Ezt a bájtkombinációt nevezi <strong>UTF-8 signature (UTF-8 jelzés/aláírás)</strong>-nek
 	vagy <strong>Byte Order Mark (BOM)</strong>-nak. Néhány program - mint például egy szövegszerkesztő vagy egy böngésző - a BOM-ot extra sorként fogja megjeleníteni a fájlban, míg mások váratlan karakterként, mint például ez: ï»¿.</p>
 	<p>Részletesebb információt a BOM-ról a jobb oldalon találhat.</p>
-	<div class="sidenote"> 
+	<div class="sidenote">
 		<p class="info">A BOM egy Unicode karakter, ami az U+FEFF résznél található a kódban. Ez egy nulla szélességű sortörés nélküli köz, tehát általában nem látható.</p>
 		<p>Az UTF-16 és UTF-32 kódolásokban, hacsak nincs valami más alternatív jelzés, a BOM biztosítja a fájl tartalmának a megfelelő értelmezését. Minden
 		karakter a fájlban 2 vagy 4 bájtos adatban van kifejezve és ezeknek a bájtoknak a sorrendje igen jelentős; a BOM jelzi ezt a sorrendet.</p>
@@ -98,12 +98,12 @@ olyan szöveget illesztünk be egy másik fájlból, ami UTF-8 jelzéssel kezdő
 
 <h3 id="detect"><a href="#detect">A BOM Észlelése</a></h3>
 <p>Elsőként ellenőriznünk kell, hogy valóban van-e BOM a fájl elején.</p>
-<p>Megpróbálhatjuk a tartalmunkban is keresni a BOM-ot, de ha a szerkesztőnk jól kezeli az UTF-8 jelzést, akkor feltehetőleg nem fogjuk látni. 
-				Egy szerkesztő, amely nem kezeli jól az UTF-8 jelzést, az a jelzést kifejező bájtokat mutatja az aktuális kódolásnak megfelelő karakterekkel. 
-				(A Latin 1 (ISO 8859-1) karakterkódolással a jelzés így fog kinézni: ï»¿.) Egy bináris szerkesztővel, amely képes a hexadecimális bájtértékeket megjeleníteni, az 
+<p>Megpróbálhatjuk a tartalmunkban is keresni a BOM-ot, de ha a szerkesztőnk jól kezeli az UTF-8 jelzést, akkor feltehetőleg nem fogjuk látni.
+				Egy szerkesztő, amely nem kezeli jól az UTF-8 jelzést, az a jelzést kifejező bájtokat mutatja az aktuális kódolásnak megfelelő karakterekkel.
+				(A Latin 1 (ISO 8859-1) karakterkódolással a jelzés így fog kinézni: ï»¿.) Egy bináris szerkesztővel, amely képes a hexadecimális bájtértékeket megjeleníteni, az
 UTF-8 jelzés így fog kinézni: EF BB BF.</p>
 <p>Bizonyos szerkesztők kijelzik, hogy milyen kódolású a fájl, illetve, hogy jelen van-e az UTF-8 jelzés.</p>
-<p>Ha nincs jelen, néhány szkript-alapú teszt (lásd alul) segíthet.  
+<p>Ha nincs jelen, néhány szkript-alapú teszt (lásd alul) segíthet.
 (Ha feltehetőleg egy olyan fájl okozza a problémát, amit a PHP vagy más mechanizmus illeszt be, akkor a <em>beillesztett</em> fájl URI-jét kell beírni.)</p>
 </section>
 
@@ -114,12 +114,12 @@ UTF-8 jelzés így fog kinézni: EF BB BF.</p>
 <h3 id="remove"><a href="#remove">A BOM eltávolítása</a></h3>
 
 <p>Ha olyan szerkesztőnk van, ami az UTF-8 jelzést alkotó karaktereket is mutatja, akkor kézzel törölhetjük. Megvan az esély rá azonban, hogy a BOM ott van az elején, mivel nem láttuk.</p>
-<p>Ellenőrizzük hogy a szerkesztőnk engedi-e meghatározni vagy az UTF-8 jelzés egy <a href="http://www.w3.org/International/questions/qa-setting-encoding-in-applications">mentés közben</a> lett hozzáadva. Az ilyen szerkesztők lehetőséget biztosítanak az eltávolításra 
-				oly	módon, hogy behívjuk a fájlt és újra elmentjük. Például, ha a Dreamweaver észleli a BOM-ot, a Mentés Másként ablakban lesz egy opció arra, hogy a BOM-ot tartalmazva mentse el a fájlt. 
+<p>Ellenőrizzük hogy a szerkesztőnk engedi-e meghatározni vagy az UTF-8 jelzés egy <a href="https://www.w3.org/International/questions/qa-setting-encoding-in-applications">mentés közben</a> lett hozzáadva. Az ilyen szerkesztők lehetőséget biztosítanak az eltávolításra
+				oly	módon, hogy behívjuk a fájlt és újra elmentjük. Például, ha a Dreamweaver észleli a BOM-ot, a Mentés Másként ablakban lesz egy opció arra, hogy a BOM-ot tartalmazva mentse el a fájlt.
 Győzödjünk meg róla, hogy nincs kipipálva és mentsük úgy el.</p>
-<p>Az egyik előnye, ha szkriptet használunk, hogy gyorsan eltávolíthatjuk a jelzéseket, akár több fájlból is. Valójában a szkript automatikusan is futhat a folyamat egy részeként. Ha Perl-ben 
+<p>Az egyik előnye, ha szkriptet használunk, hogy gyorsan eltávolíthatjuk a jelzéseket, akár több fájlból is. Valójában a szkript automatikusan is futhat a folyamat egy részeként. Ha Perl-ben
 programozunk, használhatjuk ezt az <a href="http://people.w3.org/rishida/blog/?p=102">egyszerű szkriptet</a>, amit Martin Dürst készített..</p>
-<p>Megjegyzés: Ellenőrizzük a jelzés eltávolításának hatását a folyamatunkban. Lehet hogy néhány része a fejlesztési folyamatnak épp erre az UTF-8 jelzésre támaszkodik. Szintén vegyük 
+<p>Megjegyzés: Ellenőrizzük a jelzés eltávolításának hatását a folyamatunkban. Lehet hogy néhány része a fejlesztési folyamatnak épp erre az UTF-8 jelzésre támaszkodik. Szintén vegyük
 figyelembe, hogy a Latin karakteres oldalak nagy része látszólag jól néz ki, de esetenként az ASCII tartományon kívűl eső karakterek (U+0000 - U+007F) helytelenül lehetnek kódolva.</p>
 </section>
 
@@ -131,7 +131,7 @@ figyelembe, hogy a Latin karakteres oldalak nagy része látszólag jól néz ki
 
 
 
-  
+
   <section>
   <h2 id="bytheway"><a href="#bytheway">Mellesleg</a></h2>
     <p>You will find that some text editors such as Windows Notepad will automatically add a UTF-8 signature to any file you save as UTF-8.</p>

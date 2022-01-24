@@ -17,7 +17,7 @@ f.searchString = 'article-serving-xhtml' // blog search string - usually the fil
 f.firstPubDate = '2004-03-18' // date of the first publication of the document (after review)
 f.lastSubstUpdate = { date:'2010-08-20', time:'07:40'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
-f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2016-02-21', time:'05:47'} // date and time of latest edits to this document/translation
@@ -59,14 +59,14 @@ figcaption {
 <body>
 <header>
   <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
-  
+
   <h1>Ejecución de HTML &amp; XHTML</h1>
 </header>
 
 
 <section>
   <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    <p><span id="intendedAudience" class="leadin">Intended audience:</span>
     codificadores de XHTML/HTML (que usen editores o lenguaje de script), desarrolladores de CSS, desarrolladores de sistemas de escritura (PHP, JSP, etc.), gerentes de proyectos web, y todo aquel que necesite una introducción sencilla sobre los modos standards y quirks, y acerca de qué rol desempeñan las declaraciones DOCTYPE y XML en relación con dichos elementos. También resulta muy útil como material de referencia para aquellos de deseen saber cómo declarar la codificación de caracteres de sus documentos.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
@@ -74,8 +74,8 @@ figcaption {
   <p>En este artículo se describe brevemente cómo el servidor envía el XHTML al agente de usuario (por ejemplo, un navegador), y cómo los agentes de usuario comunes procesan el lenguaje de etiquetado que reciben. Se describen temas vinculados específicamente con la implementación más que estándares W3C.</p>
   <p>Estos temas se relacionan con el material <a class="print" href="/International/questions/qa-html-encoding-declarations">cómo declarar la codificación de caracteres de un documento HTML o XHTML.</a> Esta información también resulta de gran utilidad para explicar por qué ciertos aspectos de estilos CSS no aparecen de la manera esperada, o varían de un agente de usuario a otro.</p>
   </section>
-  
- 
+
+
 <section>
   <h2 id="mime"><a href="#mime">Tipos de MIME</a></h2>
   <p>Cuando el servidor ejecuta (es decir, envía) un documento al navegador, envía también cierta información adicional junto con el documento, lo que se conoce como <a href="/International/articles/definitions-characters/#httpheader" class="dfn print">encabezado HTTP</a>.</p>
@@ -102,11 +102,11 @@ Content-Language: en</pre>
   </div>
   <p>El tipo de MIME <code class="kw" translate="no">text/html</code> es la alternativa natural para archivos HTML. Cuando el navegador recibe un archivo con este tipo de MIME, asume que el lenguaje de etiquetado sigue la sintaxis HTML y <em>utiliza un analizador de HTML para interpretar el significado de dicho lenguaje</em>. </p>
   <p> A diferencia del HTML, el XHTML es un lenguaje de etiquetado basado en XML. La sintaxis del XML es ligeramente diferente de la del HTML, y los procesadores XML son más rigurosos ante los errores.  En el desarrollo de contenidos en XML, se da mucha relevancia a la validez y a la formación adecuada, y es posible una integración perfecta con todas las herramientas de procesamiento, de datos y de automatización disponibles en el mundo del XML. Muchos desarrolladores prefieren utilizar XHTML debido a las ventajas que ofrece el rigor del XML en la edición o procesamiento de documentos.</p>
-  <p>Para enviar lenguaje de etiquetado XHTML a un navegador con un tipo de MIME que indique que es XML, es necesario emplear uno de los siguientes tipos de MIME: <code class="kw" translate="no">application/xhtml+xml</code>, <code class="kw" translate="no">application/xml</code> o <code class="kw" translate="no">text/xml</code>. El W3C <a class="print" href="http://www.w3.org/TR/2002/NOTE-xhtml-media-types-20020801/">recomienda</a> la ejecución de XHTML como XML utilizando únicamente el primero de estos tipos de MIME, es decir, <code class="kw" translate="no">application/xhtml+xml</code>.</p>
+  <p>Para enviar lenguaje de etiquetado XHTML a un navegador con un tipo de MIME que indique que es XML, es necesario emplear uno de los siguientes tipos de MIME: <code class="kw" translate="no">application/xhtml+xml</code>, <code class="kw" translate="no">application/xml</code> o <code class="kw" translate="no">text/xml</code>. El W3C <a class="print" href="https://www.w3.org/TR/2002/NOTE-xhtml-media-types-20020801/">recomienda</a> la ejecución de XHTML como XML utilizando únicamente el primero de estos tipos de MIME, es decir, <code class="kw" translate="no">application/xhtml+xml</code>.</p>
   <p>Para leer XML, el navegador <em>usa un analizador de XML, no de HTML</em>.</p>
   <p> Lamentablemente, hasta la versión 8 inclusive, Internet Explorer no soporta archivos ejecutados como XML, a diferencia de otros navegadores. Para dejar en claro que no todos los navegadores soportan contenidos ejecutados como XML, muchos archivos XHTML se ejecutan, en realidad, mediante el tipo de MIME <code class="kw" translate="no">text/html</code>. En este caso, <em>el agente de usuario leerá el archivo como si fuera HTML y utilizará el analizador de HTML</em>.</p>
   <p>Como el navegador considera que el XML es, en realidad, HTML, se deben tener en cuenta ciertas diferencias entre los dos formatos al escribir el código XHTML para garantizar que las variaciones de sintaxis entre XML y HTML no generen confusión en el navegador. Esto incluye las distintas formas de declarar la codificación de caracteres o las declaraciones de idioma dentro del documento.</p>
-  <p>En el <a class="print" href="http://www.w3.org/TR/xhtml1/#guidelines">Apéndice C</a> de la especificación XHTML se recomiendan unos pocos lineamientos sobre compatibilidad para la ejecución de XHTML como HTML. Dichos lineamientos resultan particularmente importantes para versiones de navegadores más antiguas. Allí se recomienda, entre otras cosas, dejar un espacio antes de "/&gt;" al final de una etiqueta vacía (como <code class="kw" translate="no">img</code>, <code class="kw" translate="no">hr</code> o <code class="kw" translate="no">br</code>), usar el atributo <code class="kw" translate="no">lang</code> de HTML y el atributo <code class="kw" translate="no">xml:lang</code> de XML, y utilizar siempre tanto los atributos <span
+  <p>En el <a class="print" href="https://www.w3.org/TR/xhtml1/#guidelines">Apéndice C</a> de la especificación XHTML se recomiendan unos pocos lineamientos sobre compatibilidad para la ejecución de XHTML como HTML. Dichos lineamientos resultan particularmente importantes para versiones de navegadores más antiguas. Allí se recomienda, entre otras cosas, dejar un espacio antes de "/&gt;" al final de una etiqueta vacía (como <code class="kw" translate="no">img</code>, <code class="kw" translate="no">hr</code> o <code class="kw" translate="no">br</code>), usar el atributo <code class="kw" translate="no">lang</code> de HTML y el atributo <code class="kw" translate="no">xml:lang</code> de XML, y utilizar siempre tanto los atributos <span
 					class="kw">id</span> como <code class="kw" translate="no">name</code> para identificadores de fragmentos.</p>
 </section>
 
@@ -114,7 +114,7 @@ Content-Language: en</pre>
 <section>
   <h2 id="quirks"><a href="#quirks">Modos "Standards" versus "Quirks"</a></h2>
   <p>Los principales navegadores actuales están preparados para mostrar un archivo HTML en modo <dfn>standards</dfn> o <dfn>quirks</dfn>. Esto significa que se aplican distintas normas para la visualización del archivo. En un caso, según la interpretación del comportamiento esperado de acuerdo con las normas W3C; en el otro caso, según el comportamiento esperado de los navegadores más antiguos que no responden a las normas actuales.</p>
-  <p>En las últimas versiones de los principales navegadores, el modo standards se activa por la presencia de una <dfn><a class="print" href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">declaración DOCTYPE</a></dfn>. La ausencia de una declaración DOCTYPE puede dar lugar a diferentes resultados de visualización de un navegador a otro.</p>
+  <p>En las últimas versiones de los principales navegadores, el modo standards se activa por la presencia de una <dfn><a class="print" href="https://www.w3.org/QA/2002/04/valid-dtd-list.html">declaración DOCTYPE</a></dfn>. La ausencia de una declaración DOCTYPE puede dar lugar a diferentes resultados de visualización de un navegador a otro.</p>
   <p>A continuación se muestra una captura de pantalla en la que se pueden ver algunas de estas diferencias.</p>
   <figure><a class="print" href="index-data/standards.html"><img src="index-data/standards-scan.png" alt="Imagen de la visualización del mismo archivo en modo quirks." /></a>
       <figcaption>Visualización del documento en modo standards.</figcaption>
@@ -140,30 +140,30 @@ Content-Language: en</pre>
   <div class="example-wide">
     <pre><span style="color: red;  font-style: italic;">&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
 	  &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;</span>
-&lt;html xml:lang=&quot;en&quot; lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt; 
-&lt;head&gt; 
-    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt; 
-    &lt;title&gt;XHTML document&lt;/title&gt; 
+&lt;html xml:lang=&quot;en&quot; lang=&quot;en&quot; xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+&lt;head&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=utf-8&quot; /&gt;
+    &lt;title&gt;XHTML document&lt;/title&gt;
     &lt;style type=&quot;text/css&quot;&gt;
     body { background: white; color: black; font-family: arial, sans-serif; font-size: 12px; }
     p { font-size: 100%; }
     h1 { font-size: 16px; }
     div { margin: 20px; width: 170px; padding: 50px; border: 6px solid teal; }
     table { border: 1px solid teal; }
-    &lt;/style&gt; 
-    &lt;/head&gt; 
+    &lt;/style&gt;
+    &lt;/head&gt;
 
-&lt;body&gt; 
-    &lt;h1&gt;Test file for Standards/Quirks&lt;/h1&gt; 
+&lt;body&gt;
+    &lt;h1&gt;Test file for Standards/Quirks&lt;/h1&gt;
     &lt;div&gt;
         A div with CSS width:170px, margin:20px, padding:50px and border:6px.
-        &lt;/div&gt; 
+        &lt;/div&gt;
     &lt;p&gt;Text in a p element.&lt;/p&gt;
-    &lt;table&gt; 
-        &lt;tr&gt;&lt;td&gt;Text in a table.&lt;/td&gt;&lt;/tr&gt; 
+    &lt;table&gt;
+        &lt;tr&gt;&lt;td&gt;Text in a table.&lt;/td&gt;&lt;/tr&gt;
         &lt;/table&gt;
-    &lt;/body&gt; 
-&lt;/html&gt; 
+    &lt;/body&gt;
+&lt;/html&gt;
 			</pre>
   </div>
   <p>Frecuentemente se dice que los navegadores que alternan de esta forma entre modos standards y quirks realizan <dfn>DOCTYPE switching</dfn>.</p>
@@ -196,13 +196,13 @@ Content-Language: en</pre>
 
   <ul id="full-links">
     <li>
-      <p><a href="http://www.w3.org/TR/2002/NOTE-xhtml-media-types-20020801/"><cite>Tipos de medios XHTML</cite></a> </p>
+      <p><a href="https://www.w3.org/TR/2002/NOTE-xhtml-media-types-20020801/"><cite>Tipos de medios XHTML</cite></a> </p>
     </li>
     <li>
-      <p><a href="http://www.w3.org/TR/xhtml1/#guidelines"><cite>XHTML™ 1.0 - El lenguaje de etiquetado hipertextual extensible</cite>, C. Lineamientos de compatibilidad HTML</a> </p>
+      <p><a href="https://www.w3.org/TR/xhtml1/#guidelines"><cite>XHTML™ 1.0 - El lenguaje de etiquetado hipertextual extensible</cite>, C. Lineamientos de compatibilidad HTML</a> </p>
     </li>
     <li>
-      <p><a href="http://www.w3.org/QA/2002/04/valid-dtd-list"><cite>Lista de DTD válidos que puede usar en sus documentos</cite></a> </p>
+      <p><a href="https://www.w3.org/QA/2002/04/valid-dtd-list"><cite>Lista de DTD válidos que puede usar en sus documentos</cite></a> </p>
     </li>
     <li>
       <p><a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnie60/html/cssenhancements.asp"><cite>Doctype switching en Internet Explorer</cite></a> </p>

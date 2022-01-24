@@ -116,7 +116,7 @@ s.codedInUtf8 = "UTF-8 में एनकोडेड!"
 
 s.translatedFromEnglishVer = "अंग्रेजी सामग्री से अनुवादित दिनांक "+dt.enVersion+". पिछले परिवर्तित संस्करण अनुवादित "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'दस्तावेज़ परिवर्तन के इतिहास के लिए, जनवरी 2016 से मूल परिवर्तनों के लिए <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">न्यूज फीड</a>, और सभी परिवर्तनों के लिए <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">गिटहब कमिट सूची</a> देखें।'
+s.historyOfDocumentChanges = 'दस्तावेज़ परिवर्तन के इतिहास के लिए, जनवरी 2016 से मूल परिवर्तनों के लिए <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">न्यूज फीड</a>, और सभी परिवर्तनों के लिए <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">गिटहब कमिट सूची</a> देखें।'
 s.untranslatedChanges = '<strong>टिप्पणी:</strong> जब से इस दस्तावेज़ का अनुवाद हुआ है, <a href="'+f.filename+'.en">मूल अंग्रेजी</a> में परिवर्तन किए गए हैं। परिवर्तनों को इस पृष्ठ में शामिल किया गया था, इसलिए अनुवाद के अद्यतन होने तक अंग्रेजी में आप कुछ अवतरणों को देख सकते हैं।'
 s.unlinkedTranslation = '<strong>चेतावनी:</strong> इस दस्तावेज़ के अनुवादित होने के बाद से अंग्रेजी मूल में काफी बदलाव किए गए हैं। आपको सलाह दी जाती है कि जब तक यह अद्यतन नहीं हो जाता है, आप <a href="'+f.filename+'.en">अंग्रेजी संस्करण</a> पढ़ें।'
 s.new="नया"// placed alongside new articles at http://www.w3.org/International/articlelist 

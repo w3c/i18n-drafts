@@ -116,7 +116,7 @@ s.codedInUtf8 = "UTF-8 编码!"
 
 s.translatedFromEnglishVer = "翻译以格林尼治标准时间 "+dt.enVersion+" 的英语内容为准，并于格林尼治标准时间 "+dt.thisVersionPlain+" 作最新修改。"
 
-s.historyOfDocumentChanges = '有关文档更新的历史记录，请参阅主要更新的<a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">新闻源</a>，以及自2016年1月以来所有更改的 <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Git 提交列表</a>。'
+s.historyOfDocumentChanges = '有关文档更新的历史记录，请参阅主要更新的<a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">新闻源</a>，以及自2016年1月以来所有更改的 <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Git 提交列表</a>。'
 s.untranslatedChanges = '<strong>注意：</strong>在此文件翻译以后<a href="'+f.filename+'.en.php">英文版本</a> 已有改变。这些更改已合并到此页面中，因此您可能会看到一些英文段落，直到翻译更新为止。'
 s.unlinkedTranslation = '<strong>警告：</strong>本文的英文原文自翻译以来进行了实质性修改，建议您在此版本更新之前阅读<a href="'+f.filename+'.en">英文版本</a>。'
 s.new="新"// placed alongside new articles at http://www.w3.org/International/articlelist 

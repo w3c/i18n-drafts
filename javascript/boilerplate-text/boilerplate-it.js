@@ -49,11 +49,11 @@ s.moreResourcesOfThisType = "Altre risorse di questo tipo."
 s.accessKeyN = 'Accesskey n salta alla navigazione della pagina. <a href="#contentstart">Salta al contentuo.</a>'
 s.examplesInAnotherScript = "Questo documento contiene esempi in un'altra lingua."
 s.worldMap = "Mappa del mondo"
-s.searchI18nSite = "Ricerca nel sito I18n" 
+s.searchI18nSite = "Ricerca nel sito I18n"
 s.translationDisclaimer = 'Questo documento è una traduzione. In caso di differenze o errori, dovrebbe essere considerato la fonte più autorevole <a href="'+f.filename+'.en">l\'ultimo documento originale Inglese</a>. <a href="#copyright">Il copyright originale</a> appartiene al W3C, come mostrato in basso.'
 s.translator = "Traduttore:"
 s.relatedLinks = "Link correlati"
-s.articles = "Articles" // used in breadcrumbs, top right of page 
+s.articles = "Articles" // used in breadcrumbs, top right of page
 s.topicIndexText = "Indice dei Temi"
 s.techIndexText = "Indice delle Tecniche"
 s.gotoW3cHome = "Vai alla Home Page del W3C"
@@ -116,12 +116,12 @@ s.codedInUtf8 = "Codificato in UTF-8!"
 
 s.translatedFromEnglishVer = "Tradotto dal contenuto Inglese datato "+dt.enVersion+". Ultima modifica della versione tradotta "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Per la cronologia delle modifiche apportate al documento, vedi  <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> fper le modifiche sostanziali e <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la lista dei commit Github</a> per tutte le modifiche apportate da gennaio 2016.'
+s.historyOfDocumentChanges = 'Per la cronologia delle modifiche apportate al documento, vedi  <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> fper le modifiche sostanziali e <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la lista dei commit Github</a> per tutte le modifiche apportate da gennaio 2016.'
 s.untranslatedChanges = '<strong>Nota:</strong> Sono state apportate delle modifiche alla <a href="'+f.filename+'.en">versione originale in inglese</a> dal momento in cui il presente documento é stato tradotto. Le modifiche sono state inserite nella presente pagina. Per tale ragione, potrai visualizzare alcuni passaggi in inglese fino a che non aggiornerai la traduzione.'
 s.unlinkedTranslation = '<strong>Avviso:</strong> Delle modifiche sostanziali sono state apportate alla versione originale in inglese dal momento in cui il presente documento é stato tradotto. Ti consigliamo di leggere <a href="'+f.filename+'.en">la versione originale in inglese</a> fino al momento in cui la traduzione non é stata aggiornata.'
-s.new="Nuovo"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Nuovo"// placed alongside new articles at http://www.w3.org/International/articlelist
 s.updated="Aggiornato" // same as New
-s.translation_updated="Traduzione aggiornata:" // date appears after colon 
+s.translation_updated="Traduzione aggiornata:" // date appears after colon
 
 s.aboutThisArticle="Riguardo all’articolo" // title in the right column near the top of the page
 s.status_draft="Il presente articolo é una bozza non ancora sottoposta ai lettori. Per pubblicare un commento, per favore utilizza <a href='#survey'>il link vicino al fondo della pagina</a>."
@@ -133,7 +133,7 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Risposta rapida" // heading
 s.longeranswer = "Dettagli" // heading that follows 'Quick answer'
 s.additionalinfo = "Informazioni complementari" // heading that sometimes follows 'Details'
-s.acknowledgements = "Un ringraziamento anche a coloro il cui contributo o riscontro é stato incluso:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.acknowledgements = "Un ringraziamento anche a coloro il cui contributo o riscontro é stato incluso:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "Se consenti al browser di impostare un cookie, continuerai a visualizzare le pagine W3C Internationalization Activity (ove disponibili) nella lingua selezionata. Vuoi impostare il cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTA!</strong> &nbsp; Questo é solo una bozza dell’articolo del redattore. Tutti i link e i preferiti dovrebbero rimandare a <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>versione sul sito di W3C</a>." // used for github-based versions of published articles
 

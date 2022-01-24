@@ -49,11 +49,11 @@ s.moreResourcesOfThisType = "更多此類資源"
 s.accessKeyN = 'n 鍵跳至 <a href="#internal-links" accesskey="n">内頁瀏覽</a>. <a href="#contentstart">跳至内容</a>'
 s.examplesInAnotherScript = "此文檔包含其他語言/程式的例子"
 s.worldMap = "世界地圖"
-s.searchI18nSite = "I18n 網站搜索" 
+s.searchI18nSite = "I18n 網站搜索"
 s.translationDisclaimer = '此文檔為翻譯。如有不同或錯誤<a href="'+f.filename+'.en">最新的英語原文</a> 應為依照標準.<a href="#copyright">原始版權</a>屬于 W3C, 文件内容翻譯如下所示.'
 s.translator = "譯者:"
 s.relatedLinks = "相關鏈接"
-s.articles = "文章" // used in breadcrumbs, top right of page 
+s.articles = "文章" // used in breadcrumbs, top right of page
 s.topicIndexText = "内容索引"
 s.techIndexText = "技術索引"
 s.gotoW3cHome = "回到 W3C 主頁"
@@ -116,12 +116,12 @@ s.codedInUtf8 = "UTF-8! 編碼"
 
 s.translatedFromEnglishVer = "從 "+dt.enVersion+" 英文文件翻譯而來. 翻譯版本 "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
 s.untranslatedChanges = '<strong>注意:</strong> 在此文件翻譯以後<a href="'+f.filename+'.en">英文版本</a> 已有改變。 The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
 s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
-s.new="新"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="新"// placed alongside new articles at http://www.w3.org/International/articlelist
 s.updated="已更新" // same as New
-s.translation_updated="更新譯本:" // date appears after colon 
+s.translation_updated="更新譯本:" // date appears after colon
 
 s.aboutThisArticle="關於本文" // title in the right column near the top of the page
 s.status_draft="This article is a draft that has not yet gone through public review. If you have comments, please send them using the <a href='#survey'>link near the bottom of this page</a>."
@@ -133,7 +133,7 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 
