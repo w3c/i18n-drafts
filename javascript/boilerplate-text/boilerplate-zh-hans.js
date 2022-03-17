@@ -50,7 +50,7 @@ s.accessKeyN = '快捷键及跳转页面导航。<a href="#contentstart">跳转�
 s.examplesInAnotherScript = "本文档包括其它语言/字符示例。"
 s.worldMap = "世界地图"
 s.searchI18nSite = "国际化站点搜索" 
-s.translationDisclaimer = '本文档译自其它语种。如有任何偏差或错误的话，请以<a href="'+f.filename+'.en">最新英文原文</a>为准。如下所示，<a href="#copyright">原文版权</a>属于 W3C。.'
+s.translationDisclaimer = '本文档译自其它语种。如有任何偏差或错误的话，请以<a href="'+f.filename+'.en">最新英文原文</a>为准。如下所示，<a href="#copyright">原文版权</a>属于 W3C。'
 s.translator = "翻译:"
 s.relatedLinks = "相关链接"
 s.articles = "文章" // used in breadcrumbs, top right of page 
