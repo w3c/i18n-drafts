@@ -32,8 +32,8 @@ s.currLang = {
   'tr':'土耳其文',
   'uk':'乌克兰文',
   'vi':'越南文',
-  'zh-hans':'中文（简体）',
-  'zh-hant':'中文（繁体）',
+  'zh-hans':'简体中文',
+  'zh-hant':'繁体中文',
 }
 
 s.suppStylesheets = ''
