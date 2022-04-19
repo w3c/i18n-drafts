@@ -73,7 +73,9 @@ function stickyConneg (filename, cLang, targetLang) {
 		var path = ";path=/"
 		document.cookie = 'w3ci18nlang='+targetLang+expires+path
 		}
-	document.location.assign(filename+'.'+targetLang)
+	if (targetLang === 'en') targetLang = '.html'
+	else targetLang = '.'+targetLang+'.html'
+	document.location.assign(filename+targetLang)
 	}
 
 
