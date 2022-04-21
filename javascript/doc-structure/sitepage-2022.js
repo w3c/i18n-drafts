@@ -138,10 +138,10 @@ var mainNavigation = '<div id="search">'+g.siteSearch+'</div>'+
                 versionList+
                 g.disclaimer+
 '                </div>'
-if (f.toc && f.toc === 'no') { } //do nothing
+if (f.toc && f.toc === 'no') { console.log('Doing nothing wrt toc.') } //do nothing
 else mainNavigation += '<nav class="noprint" id="level2toc">'+
 '            <h2 id="internal-links" class="notoc">'+s.onThisPage+'</h2>'+
-'            <div id="toclocation"> </div>'+
+'            <div id="toc"> </div>'+
 '            </nav>'+
 '        <nav id="relatedlinks"></nav>'+
 '        </div>'
@@ -252,7 +252,7 @@ function completePage () {
 		document.getElementById('relatedlinks').innerHTML = sidebarExtras
 		}
 	fillinTranslations()
-	if (document.getElementById("toclocation")) createtoc(false);
+	if (document.getElementById("toc")) createtoc(3);
 	getURLs()
 	}
 
