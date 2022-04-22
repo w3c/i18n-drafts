@@ -135,7 +135,7 @@ var mainNavigation = '<div id="search">'+g.siteSearch+'</div>'+
 '	<bdi><a href="'+base+'/International/i18n-drafts/nav/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+ 
 '	&#xA0; </div><div id="line">&#xA0;</div>'+
 '	</nav>'+
-'	<div class="directory"><div id="site-navigation">'+
+'	<div class="directory"><div id="site-navigation" style="font-family: \'noto sans\', \'noto naskh arabic\';">'+
                 versionList+
                 g.disclaimer+
 '                </div>'
