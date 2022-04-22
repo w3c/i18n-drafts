@@ -234,7 +234,7 @@ var copyright = '<span class="copyright">Copyright © '+
 
 g.bottomOfPage = 
 '<div id="referencesList"></div>'+
-'<hr style="margin-top: 3em;"/>'+
+'<hr style="margin-top: 3em; margin-inline: 5rem;">'+
 '<div class="section">'+
 '<div class="smallprint">'+
 	copyright+'<br />'+g.dateStamp+'.'+
