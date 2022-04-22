@@ -243,7 +243,7 @@ g.bottomOfPage =
 
 // COMPLETE PAGE
 
-function completePage () {
+function completePageOLD () {
 	var sidebarExtras = ''
 	if (document.getElementById('sidebarExtras')) {
 		sidebarExtras = document.getElementById('sidebarExtras').innerHTML
@@ -251,6 +251,19 @@ function completePage () {
 		}
 	//fillinTranslations()
 	if (document.getElementById("toc")) createtoc(3);
+	getURLs()
+	}
+
+
+function completePage (depth) {
+	if (typeof depth === 'undefined') depth = 2
+	var sidebarExtras = ''
+	if (document.getElementById('sidebarExtras')) {
+		sidebarExtras = document.getElementById('sidebarExtras').innerHTML
+		document.getElementById('relatedlinks').innerHTML = sidebarExtras
+		}
+	//fillinTranslations()
+	if (document.getElementById("toc")) createtoc(depth)
 	getURLs()
 	}
 
