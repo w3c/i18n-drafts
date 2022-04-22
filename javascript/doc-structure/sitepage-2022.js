@@ -121,7 +121,7 @@ var mainNavigation = '<div id="search">'+g.siteSearch+'</div>'+
 '<!--div  style="float:left;"><a href="https://www.w3.org/"><img src="https://www.w3.org/Icons/w3c_home" alt="W3C" height="48" width="72" /></a></div-->'+
 '<div id="banner"><a href="'+base+'/International"><p id="sitename" style="font-family: Arial, Helvetica, sans-serif; font-size: 22px; border-bottom: 2px solid brown; color: #4c5c9c; margin:0; display: inline-block;">Internationalization (i18n)</p>'+
 '	<p id="subtitle" style="margin:0; font-size:12px; font-style:italic; color: #4c5c9c;">'+s.worldwide+'</p></a></div>'+
-'   <br style="clear:both;" />'+
+//'   <br style="clear:both;" />'+
 '	<nav id="boilerplate">'+
 '	<div id="sitelinks" class="noprint">'+
 '	<bdi><a href="'+base+'/International/i18n-drafts/nav/learn" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
@@ -249,7 +249,7 @@ function completePage () {
 		sidebarExtras = document.getElementById('sidebarExtras').innerHTML
 		document.getElementById('relatedlinks').innerHTML = sidebarExtras
 		}
-	fillinTranslations()
+	//fillinTranslations()
 	if (document.getElementById("toc")) createtoc(3);
 	getURLs()
 	}
