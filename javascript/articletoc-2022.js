@@ -37,7 +37,7 @@ function createtoc (maxlevel) {
             // check for h3Nodes
             h3Nodes = h2Nodes[i].parentNode.querySelectorAll('h3')
             if (h3Nodes.length > 0) ololNode = olNode.appendChild(document.createElement('ol'))
-            for (var k=0; k<h3Nodes.length; k++) {
+            for (k=0; k<h3Nodes.length; k++) {
                 if (h3Nodes[k].className.match(/notoc/)) continue
                 h3InnerHTML = h3Nodes[k].innerHTML
 
