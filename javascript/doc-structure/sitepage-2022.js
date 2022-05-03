@@ -134,8 +134,8 @@ var mainNavigation = '<div id="search">'+g.siteSearch+'</div>'+
 '	</nav>'+
 '	<div class="directory"><div id="site-navigation" style="font-family: \'noto sans\', \'noto naskh arabic\';">'+
                 versionList+
-                g.disclaimer+
-'                </div>'
+'                </div>'+
+                g.disclaimer
 if (f.toc && f.toc === 'no') { console.log('Doing nothing wrt toc.') } //do nothing
 else mainNavigation += '<nav class="noprint" id="level2toc">'+
 '            <h2 id="internal-links" class="notoc">'+s.onThisPage+'</h2>'+
