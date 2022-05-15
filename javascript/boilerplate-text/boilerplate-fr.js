@@ -119,10 +119,10 @@ s.codedInUtf8 = "Codé en UTF-8 !";
 
 s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" GMT."; 
 
-s.historyOfDocumentChanges = 'Pour l’historique des modifications du document, veuillez consulter <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">le flux d’actualité</a> pour les changements conséquents, et <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la liste des « commits » sur Github</a> pour voir toutes les modifications apportées depuis janvier 2016.'
+s.historyOfDocumentChanges = 'Pour l’historique des modifications du document, veuillez consulter <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">le flux d’actualité</a> pour les changements conséquents, et <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la liste des « commits » sur Github</a> pour voir toutes les modifications apportées depuis janvier 2016.'
 s.untranslatedChanges = '<strong>Remarque :</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. Les changements ont été intégrés à cette page, et il est possible que certains passages s\'affichent en anglais en attendant que la traduction soit mise à jour.'
 s.unlinkedTranslation = '<strong>Avertissement :</strong> Des modifications importantes ont été apportées à la version originale en anglais depuis qu’elle a été traduite. Il est recommandé de lire  <a href="'+f.filename+'.en">une version dans une autre langue</a> en attendant que cette traduction soit mise à jour.'
-s.new="Nouveau";// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Nouveau";// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="Mis à jour"; // same as New
 s.translation_updated="Traduction mise à jour:"; // date appears after colon 
 
@@ -131,7 +131,7 @@ s.status_draft="Cet article est un brouillon qui n’a pas encore été proposé
 s.status_review="Cet article est proposé à relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
 s.status_published="Cet article a été relu par le Groupe de Travail Internationalisation du W3C et a subi un processus de relecture publique pour le rendre aussi précis que possible. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
 s.status_notreviewed="Cet article n’a pas fait l’objet d’une relecture publique. Si certains points vous semblent à débattre, merci d’envoyer vos remarques en utilisant <a href='#survey'>le lien de bas de page</a>.";
-s.status_obsolete="Cet article est maintenant dépassé. Il n’est plus entretenu et est probablement inexact. Pour plus de renseignements sur la mise à jour, consulter la <a href='http://www.w3.org/International/'>page d’accueil des Activités d’internationalisation</a>."
+s.status_obsolete="Cet article est maintenant dépassé. Il n’est plus entretenu et est probablement inexact. Pour plus de renseignements sur la mise à jour, consulter la <a href='https://www.w3.org/International/'>page d’accueil des Activités d’internationalisation</a>."
 s.tests=""; // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Réponse courte"; // heading
 s.longeranswer = "Détails"; // heading

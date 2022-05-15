@@ -116,10 +116,10 @@ s.codedInUtf8 = "UTF-8 编码!"
 
 s.translatedFromEnglishVer = "翻译以格林尼治标准时间 "+dt.enVersion+" 的英语内容为准，并于格林尼治标准时间 "+dt.thisVersionPlain+" 作最新修改。"
 
-s.historyOfDocumentChanges = '有关文档更新的历史记录，请参阅主要更新的<a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">新闻源</a>，以及自2016年1月以来所有更改的 <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Git 提交列表</a>。'
+s.historyOfDocumentChanges = '有关文档更新的历史记录，请参阅主要更新的<a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">新闻源</a>，以及自2016年1月以来所有更改的 <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Git 提交列表</a>。'
 s.untranslatedChanges = '<strong>注意：</strong>在此文件翻译以后<a href="'+f.filename+'.en.php">英文版本</a> 已有改变。这些更改已合并到此页面中，因此您可能会看到一些英文段落，直到翻译更新为止。'
 s.unlinkedTranslation = '<strong>警告：</strong>本文的英文原文自翻译以来进行了实质性修改，建议您在此版本更新之前阅读<a href="'+f.filename+'.en">英文版本</a>。'
-s.new="新"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="新"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="已更新" // same as New
 s.translation_updated="更新译本:" // date appears after colon 
 
@@ -128,7 +128,7 @@ s.status_draft="此篇文章为未经公开审阅的拟定草稿。如有信息�
 s.status_review="此篇文章目前正供公开审阅，请发送您的宝贵意见到 <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20$filename'>www-international@w3.org</a><span class='noprint'> (<a href='https://lists.w3.org/Archives/Public/www-international/'>订阅</a>)</span>."
 s.status_published="此篇文章已由 W3C 国际化工作组（W3C Internationalization Working Group）审阅，并经过公开审阅以尽可能的确保文章的正确性。如有信息需要及时补充或订正，请您使用页面下的网络链接及时反馈给我们。"
 s.status_notreviewed="此篇文章尚未经过公开审阅。如有信息需要及时补充或订正，请您使用页面下的网络链接及时反馈给我们。"
-s.status_obsolete="这篇文章现已过时，不会继续维护，且信息可能不准确。有关更多最新信息，请参阅<a href='http://www.w3.org/International/'>国际化活动主页</a>。"
+s.status_obsolete="这篇文章现已过时，不会继续维护，且信息可能不准确。有关更多最新信息，请参阅<a href='https://www.w3.org/International/'>国际化活动主页</a>。"
 s.tests="测试" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "简约回复" // heading
 s.longeranswer = "详情" // heading that follows 'Quick answer'

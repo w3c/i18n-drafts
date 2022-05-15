@@ -116,7 +116,7 @@ var mainNavigation = '<aside id="mainNavigation">'+
 '	<div id="aboutdoc" class="noprint">'+g.about+'</div>'+
 '	</aside>'+
 '	<nav id="boilerplate">'+
-'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="https://www.w3.org/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
+'	<div id="siteicons"><a href="https://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="https://www.w3.org/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
 s.internationalizationTitle+'</a></div>'+
 '	<div id="sitelinks" class="noprint">'+
 //'	<bdi><a href="https://www.w3.org/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a></bdi>&#xA0;'+s.rlm+
@@ -192,7 +192,7 @@ g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
 			'<p><a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A%0A">'+s.sendAComment+'</a></p>'+
 			'<p style="margin-top:1em">'+s.followOurNews+'</p>'+
 			'<p><a class="interaction" href="http://twitter.com/webi18n" title="Twitter: @webi18n"><img src="'+f.path+'icons/twitter-bird.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n</a></p>'+
-			'<p><a class="interaction" href="http://www.w3.org/blog/International/feed/rdf/" title="RSS"><img src="'+f.path+'icons/rssLink.png" alt=" " /> RSS</a></p>'
+			'<p><a class="interaction" href="https://www.w3.org/blog/International/feed/rdf/" title="RSS"><img src="'+f.path+'icons/rssLink.png" alt=" " /> RSS</a></p>'
 			
 
 

@@ -116,10 +116,10 @@ s.codedInUtf8 = "بترميز UTF-8!"
 
 s.translatedFromEnglishVer = "مترجم عن محتوى مكتوب باللغة الإنجليزية بتاريخ "+dt.enVersion+". تغيرت النسخة المترجمة لأخر مرة في "+dt.thisVersionPlain+" بتوقيت جرينيتش"
 
-s.historyOfDocumentChanges = 'لمعرفة تاريخ التغييرات في الوثيقة يرجى مراجعة <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">موجز الأخبار</a> لمعرفة التغييرات الجوهرية، و<a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">قائمة التعهدات «commits» على Github</a>  للاطلاع على جميع التغييرات التي تمت منذ يناير 2016.'
+s.historyOfDocumentChanges = 'لمعرفة تاريخ التغييرات في الوثيقة يرجى مراجعة <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">موجز الأخبار</a> لمعرفة التغييرات الجوهرية، و<a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">قائمة التعهدات «commits» على Github</a>  للاطلاع على جميع التغييرات التي تمت منذ يناير 2016.'
 s.untranslatedChanges = '<strong>ملاحظة:</strong> تم إجراء تغييرات على <a href="'+f.filename+'.en">النص الأصلي بالإنجليزية</a> منذ ترجمته. تم دمج التغييرات في هذه الصفحة ، وقد يتم عرض بعض الفقرات باللغة الإنجليزية حتى يتم تحديث الترجمة.'
 s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
-s.new="جديد"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="جديد"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="محدث" // same as New
 s.translation_updated="تم تحديث الترجمة:" // date appears after colon 
 
@@ -128,7 +128,7 @@ s.status_draft="هذا المقال عبارة عن مسودة لم يتم اق�
 s.status_review="هذا المقال  متاح حاليًا لمراجعة عامة. إذا كانت هناك تعليقات، فيرجى إرسالها باستخدام <a href='#survey'>الرابط بالقرب من أسفل هذه الصفحة</a>."
 s.status_published="تمت مراجعة هذا المقال من قِبل مجموعة عمل التدويل لدى W3C وخضع لمراجعة العامة لجعلها دقيقة قدر الإمكان.</p><p>إذا كان لديك تعليقات، فيرجى <a href='#survey'>إعلامنا</a>."
 s.status_notreviewed="تم نشر هذا المقال دون مراجعة عامة. إذا كانت هناك تعليقات، فيرجى إرسالها باستخدام <a href='#survey'>الرابط بالقرب من أسفل هذه الصفحة</a>."
-s.status_obsolete="هاه المقال قديم الآن. لم تعد صيانته ومن المحتمل أن يكون غير دقيق. لمزيد من المعلومات الحديثة، انظر <a href='http://www.w3.org/International/'>الصفحة الرئيسية لنشاط التدويل</a>."
+s.status_obsolete="هاه المقال قديم الآن. لم تعد صيانته ومن المحتمل أن يكون غير دقيق. لمزيد من المعلومات الحديثة، انظر <a href='https://www.w3.org/International/'>الصفحة الرئيسية لنشاط التدويل</a>."
 s.tests="اختبارات" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "جواب سريع" // heading
 s.longeranswer = "تفاصيل" // heading

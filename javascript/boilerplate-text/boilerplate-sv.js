@@ -119,10 +119,10 @@ s.codedInUtf8 = "Kodad i UTF-8!"
 
 s.translatedFromEnglishVer = "Översatt från engelskt innehåll skapat/ändrat "+dt.enVersion+". Översättningen senast ändrad "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Om du vill se en logg över hur dokumentet ändrats, titta på <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">nyhetstråden</a> där viktiga ändringar noterats, och <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">listan över inlägg i Github</a> för alla ändringar gjords sedan januari 2016.'
+s.historyOfDocumentChanges = 'Om du vill se en logg över hur dokumentet ändrats, titta på <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">nyhetstråden</a> där viktiga ändringar noterats, och <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">listan över inlägg i Github</a> för alla ändringar gjords sedan januari 2016.'
 s.untranslatedChanges = '<strong>Obs:</strong> Det  <a href="/International/'+f.directory+f.filename+'.en">engelska originaldokumentet</a> har ändrats sedan det översattes. De ändringarna har lagts in i denna sida, så du kan råka se vissa delar formulerade i engelska, till dess att översättningen uppdaterats.'
 s.unlinkedTranslation = '<strong>Varning:</strong> Viktiga ändringar har gjorts i det engelska originalet efter att denna översättning gjordes. Vi rekommenderar att du läser <a href="'+f.filename+'">en version i ett annat språk</a> i väntan på att denna översättning blir uppdaterad.'
-s.new="Ny"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Ny"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="Uppdaterad" // same as New
 s.translation_updated="Översättning uppdaterad:" // date appears after colon
 
@@ -131,7 +131,7 @@ s.status_draft="Denna artikel är ett utkast som ännu inte genomgått en öppen
 s.status_review="Denna artikel är nu publicerad för öppen granskning. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
 s.status_published="Denna artikel har granskats av W3C:s arbetsgrupp för internationalisering, och har genomgått öppen granskning, för att säkerställa att den är så korrekt som möjligt. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
 s.status_notreviewed="Denna artikel publicerades utan att ha blivit granskad. Om det finns saker som behöver åtgärdas, meddela i så fall oss, genom att använda <a href='#survey'>länken längst ner på denna sida</a>."
-s.status_obsolete="Detta dokument är föråldrat. Det vidmakthålles inte längre och innehåller troligen felaktiheter. Mer aktuell information kan du finna på <a href='http://www.w3.org/International/'>Internationaliseringsarbetets hemsida</a>."
+s.status_obsolete="Detta dokument är föråldrat. Det vidmakthålles inte längre och innehåller troligen felaktiheter. Mer aktuell information kan du finna på <a href='https://www.w3.org/International/'>Internationaliseringsarbetets hemsida</a>."
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Snabbt svar" // heading
 s.longeranswer = "Detaljer" // heading

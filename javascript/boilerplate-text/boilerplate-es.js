@@ -116,10 +116,10 @@ s.codedInUtf8 = "Codificado en UTF-8"
 
 s.translatedFromEnglishVer = "Traducido del inglés con fecha "+dt.enVersion+". Traducción modificada por última vez el "+dt.thisVersionPlain+" GMT."
 
-s.historyOfDocumentChanges = 'Para el historial de cambios del documento, consultar la <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">fuente de noticias</a> para ver los cambios sustanciales, y la <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">lista de commits de Github</a> para ver todos los cambios desde enero 2016.'
+s.historyOfDocumentChanges = 'Para el historial de cambios del documento, consultar la <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">fuente de noticias</a> para ver los cambios sustanciales, y la <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">lista de commits de Github</a> para ver todos los cambios desde enero 2016.'
 s.untranslatedChanges = '<strong>Nota:</strong> Desde la traducción de este documento se han producido modificaciones en el <a href="'+f.filename+'.en.php">original en inglés</a>. Los cambios se incorporaron en esta página, por lo cual es posible que vea algunas partes en inglés hasta que se actualice la traducción.'
 s.unlinkedTranslation = '<strong>Advertencia:</strong> Desde que se tradujo este documento, se introdujeron cambios sustanciales en la versión original en inglés. Le sugerimos leer <a href="'+f.filename+'.en">una versión en otro idioma</a> hasta que esta traducción haya sido actualizada.'
-s.new="¡Nuevo!"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="¡Nuevo!"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="¡Actualizado!" // same as New
 s.translation_updated="Traducción actualizada el:" // date appears after colon 
 
@@ -129,7 +129,7 @@ s.status_draft="Este artículo es un borrador que todavía no se ha sometido a r
 s.status_review="En este momento, este artículo está expuesto para revisión pública. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
 s.status_published="El Grupo de Trabajo de Internacionalización de W3 ha revisado este artículo y se lo ha sometido a revisión pública para hacerlo tan preciso como sea posible. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
 s.status_notreviewed="Este artículo se publicó sin revisión pública. Si hay asuntos que es necesario tratar, envíenos sus comentarios mediante <a href='#survey'>el enlace ubicado cerca del final de la página</a>."
-s.status_obsolete="Este artículo ahora es obsoleto. Ya no recibe mantenimiento y es probable que no contenga información precisa. Para información más actualizada, vea la <a href='http://www.w3.org/International/'>página de Actividad de Internacionalización</a>."
+s.status_obsolete="Este artículo ahora es obsoleto. Ya no recibe mantenimiento y es probable que no contenga información precisa. Para información más actualizada, vea la <a href='https://www.w3.org/International/'>página de Actividad de Internacionalización</a>."
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Respuesta rápida" // heading
 s.longeranswer = "Respuesta extensa" // heading

@@ -116,10 +116,10 @@ s.codedInUtf8 = "Zakodowano w UTF-8!"
 
 s.translatedFromEnglishVer = "Angielska wersja dokumentu z dnia "+dt.enVersion+". Tłumaczenie wykonano dnia "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Aby przesledzić historię zmian dokumentu zobacz <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">kanał wiadomości</a> dla większych zmian, oraz <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'..en.html">listę na Github</a> dla wszystkich zmian od stycznia 2016.'
+s.historyOfDocumentChanges = 'Aby przesledzić historię zmian dokumentu zobacz <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">kanał wiadomości</a> dla większych zmian, oraz <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'..en.html">listę na Github</a> dla wszystkich zmian od stycznia 2016.'
 s.untranslatedChanges = '<strong>Uwaga:</strong> Wprowadzono zmiany do <a href="'+f.filename+'.en">angielskiego oryginału</a> od kiedy dokument został przetłumaczony. Zmiany zostały tu wpisane dlatego możesz widzieć fragmenty w języku angielskim dopóki nie uaktualnimy tłumaczenia.'
 s.unlinkedTranslation = '<strong>Uwaga:</strong> Wprowadzono istotne zmiany do dokumentu po wykonaniu tłumaczenia. Doradza się przeczytanie <a href="'+f.filename+'.en">angielskiej wersji</a> dopóki tłumaczenie nie zostanie zaktualizowane.'
-s.new="Nowość"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Nowość"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="Nowa wersja" // same as New
 s.translation_updated="Tłumaczenie uaktualnione:" // date appears after colon 
 
@@ -128,7 +128,7 @@ s.status_draft="Ten artykuł to szkic, który nie był jeszcze podany publicznej
 s.status_review="Artykuł podlega obecnie publicznej ocenie. Jeśli masz jakieś uwagi prześlij je używając <a href='#survey'>odnośnika na dole strony</a>."
 s.status_published="Ten artykuł został oceniony przez Grupę Internacjonalizacji W3C i był poddany publicznej ocenie w cell zachowania najwyższej jakości. Jeśli masz jakieś uwagi wyślij je używając <a href='#survey'>odnośnika na dole strony</a>."
 s.status_notreviewed="Ten artykuł został opublikowany bez publicznej oceny. Jeśli masz jakieś uwagi wyślij je używając <a href='#survey'>odnośnika na dole strony</a>."
-s.status_obsolete="Ten artykuł jest już przestarzały. Nie jest już aktualizowany i może zawierać błędy. Aby uzyskać bardziej aktualne informacje zobacz <a href='http://www.w3.org/International/'>stronę główną internacjonalizacji</a>."
+s.status_obsolete="Ten artykuł jest już przestarzały. Nie jest już aktualizowany i może zawierać błędy. Aby uzyskać bardziej aktualne informacje zobacz <a href='https://www.w3.org/International/'>stronę główną internacjonalizacji</a>."
 s.tests="Testy" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Krótka odpowiedź" // heading
 s.longeranswer = "Szczegóły" // heading

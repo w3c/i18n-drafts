@@ -116,10 +116,10 @@ s.codedInUtf8 = "Кодировка UTF-8!"
 
 s.translatedFromEnglishVer = "Перевод с английского: "+dt.enVersion+". Последнее внесение изменений в перевод: "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Вы можете отслеживать историю изменений документа здесь: <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">новостная лента</a> (существенные изменения) или <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">список Github коммитов</a> (все правки с января 2016).'
+s.historyOfDocumentChanges = 'Вы можете отслеживать историю изменений документа здесь: <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">новостная лента</a> (существенные изменения) или <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">список Github коммитов</a> (все правки с января 2016).'
 s.untranslatedChanges = '<strong>Внимание:</strong> <a href="'+f.filename+'.en">Оригинал на английском языке</a> был изменен после того, как был создан данный перевод. Изменения были добавлены к текущей странице, так что вы можете видеть некоторые блоки текста на английском языке до тех пор, пока не будет обновлен перевод.'
 s.unlinkedTranslation = '<strong>Предупреждение:</strong> Оригинал на английском языке существенно измененился с того момента, как документ был переводен. Рекомендуется читать <a href="'+f.filename+'.en">версию на английском языке</a> до тех пор, пока перевод не будет обновлен.'
-s.new="Новое"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Новое"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="Обновленое" // same as New
 s.translation_updated="Обновление перевода:" // date appears after colon 
 
@@ -128,7 +128,7 @@ s.status_draft="Эта статья представляет собой прое
 s.status_review="Эта статья в настоящее время проходит публичное обозрение. Если есть вещи, которые нужно исправить, пожалуйста, отправьте нам ваши отзывы с помощью <a href='#survey'>ссылки внизу страницы</a>."
 s.status_published="Эта статья рассмотрена Рабочей Группой W3C Интернационализации и прошла публичное обозрение, чтобы сделать ее как можно более точной. Если есть вещи, которые нужно исправить, пожалуйста, отправьте нам ваши отзывы с помощью <a href='#survey'>ссылки внизу страницы</a>."
 s.status_notreviewed="Эта статья была опубликована без публичного обозрения. Если есть вещи, которые нужно исправить, пожалуйста, отправьте нам ваши отзывы с помощью <a href='#survey'>ссылки внизу страницы</a>."
-s.status_obsolete="Эта статья устарела. Она больше не поддерживается и может быть неточной. Для получения более актуальной информации, смотрите <a href='http://www.w3.org/International/'>Главную страницу Internationalization Activity</a>."
+s.status_obsolete="Эта статья устарела. Она больше не поддерживается и может быть неточной. Для получения более актуальной информации, смотрите <a href='https://www.w3.org/International/'>Главную страницу Internationalization Activity</a>."
 s.tests="Тесты" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Быстрый ответ" // heading
 s.longeranswer = "Подробный ответ" // heading

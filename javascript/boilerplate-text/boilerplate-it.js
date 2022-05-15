@@ -116,10 +116,10 @@ s.codedInUtf8 = "Codificato in UTF-8!"
 
 s.translatedFromEnglishVer = "Tradotto dal contenuto Inglese datato "+dt.enVersion+". Ultima modifica della versione tradotta "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Per la cronologia delle modifiche apportate al documento, vedi  <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> fper le modifiche sostanziali e <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la lista dei commit Github</a> per tutte le modifiche apportate da gennaio 2016.'
+s.historyOfDocumentChanges = 'Per la cronologia delle modifiche apportate al documento, vedi  <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> fper le modifiche sostanziali e <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la lista dei commit Github</a> per tutte le modifiche apportate da gennaio 2016.'
 s.untranslatedChanges = '<strong>Nota:</strong> Sono state apportate delle modifiche alla <a href="'+f.filename+'.en">versione originale in inglese</a> dal momento in cui il presente documento é stato tradotto. Le modifiche sono state inserite nella presente pagina. Per tale ragione, potrai visualizzare alcuni passaggi in inglese fino a che non aggiornerai la traduzione.'
 s.unlinkedTranslation = '<strong>Avviso:</strong> Delle modifiche sostanziali sono state apportate alla versione originale in inglese dal momento in cui il presente documento é stato tradotto. Ti consigliamo di leggere <a href="'+f.filename+'.en">la versione originale in inglese</a> fino al momento in cui la traduzione non é stata aggiornata.'
-s.new="Nuovo"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Nuovo"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="Aggiornato" // same as New
 s.translation_updated="Traduzione aggiornata:" // date appears after colon 
 
@@ -128,7 +128,7 @@ s.status_draft="Il presente articolo é una bozza non ancora sottoposta ai letto
 s.status_review="Il presente articolo é attualmente soggetto alla revisione dei lettori. Per pubblicare un commento, per favore utilizza <a href='#survey'>il link vicino al fondo della presente pagina</a>."
 s.status_published="Il presente articolo é stato sottoposto alla revisione del W3C Internationalization Working Group e dei lettori al fine di garantire la massima precisione. Per pubblicare un commento, per favore utilizza <a href='#survey'>il link vicino al fondo della presente pagina</a>."
 s.status_notreviewed="Il presente articolo é stato pubblicato senza essere stato sottoposto alla revisione dei lettori. Per pubblicare un commento, per favore utilizza il <a href='#survey'>il link vicino al fondo della presente pagina</a>."
-s.status_obsolete="Il presente articolo risulta obsoleto. Non é piú sottoposto a revisione e potrebbe contenere imprecisioni. Per maggiori informazioni aggiornate, vedi l’<a href='http://www.w3.org/International/'>home page dell’Internationalization Activity</a>."
+s.status_obsolete="Il presente articolo risulta obsoleto. Non é piú sottoposto a revisione e potrebbe contenere imprecisioni. Per maggiori informazioni aggiornate, vedi l’<a href='https://www.w3.org/International/'>home page dell’Internationalization Activity</a>."
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Risposta rapida" // heading
 s.longeranswer = "Dettagli" // heading that follows 'Quick answer'

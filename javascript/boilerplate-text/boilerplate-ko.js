@@ -116,10 +116,10 @@ s.codedInUtf8 = "UTF-8로 인코딩됨!"
 
 s.translatedFromEnglishVer = dt.enVersion+" 기준 영어 컨텐츠를 번역한 것입니다. "+dt.thisVersionPlain+" GMT에 번역본이 마지막으로 변경되었습니다."
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
 s.untranslatedChanges = '<strong>Note:</strong> Changes have been made to <a href="'+f.filename+'.en">the English original</a> since this document was translated. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
 s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
-s.new="New"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="New"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="Updated" // same as New
 s.translation_updated="Translation updated:" // date appears after colon 
 
@@ -128,7 +128,7 @@ s.status_draft="이 문서는 아직 공개 검토를 거치지 않은 초안 �
 s.status_review="이 문서는 현재 공개 검토 중에 있습니다. 의견이 있으시면 <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20$filename'>www-international@w3.org</a><span class='noprint'> (<a href='http://lists.w3.org/Archives/Public/www-international/'>구독</a>)로 보내 주십시오.</span>."
 s.status_published="이 문서는 W3C Internationalization Working Group에서 검토하였으며, 가능한 한 정확성을 유지하기 위해 공개 검토 과정을 거쳤습니다. 저희가 확인해야 할 사항이 있으면 페이지 하단에 있는 링크를 사용하여 피드백을 보내 주십시오."
 s.status_notreviewed="이 문서는 공개 검토 없이 게시되었습니다. 저희가 확인해야 할 사항이 있으면 페이지 하단에 있는 링크를 사용하여 피드백을 보내 주십시오."
-s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
+s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='https://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'

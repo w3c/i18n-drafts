@@ -118,10 +118,10 @@ s.codedInUtf8 = "Кодування UTF-8!"
 
 s.translatedFromEnglishVer = "Переклад Англійського контенту від "+dt.enVersion+". Переклад останнього оновлення "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
+s.historyOfDocumentChanges = 'For the history of document changes, see the <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">news feed</a> for substantive changes, and the <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">Github commit list</a> for all changes since Jan 2016.'
 s.untranslatedChanges = '<strong>Примітка:</strong> Зміни були внесені до <a href="'+f.filename+'.en.php">написаного англійською мовою оригіналу</a>, так як цей документ був переведений. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
 s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
-s.new="Нове"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Нове"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="Оновлене" // same as New
 s.translation_updated="Оновлення перекладу:" // date appears after colon 
 
@@ -130,7 +130,7 @@ s.status_draft="Ця стаття являє собою проект, який �
 s.status_review="Ця стаття в даний час проходить публічний огляд. Якщо є речі, які потрібно виправити, будь ласка, відправте нам ваші відгуки <a href='#survey'>за допомогою посилання внизу сторінки</a>."
 s.status_published="Ця стаття розглянута Робочою Групою W3C Інтернаціоналізації і пройшла публічний огляд, щоб зробити її якомога більш точною. Якщо є речі, які потрібно виправити, будь ласка, відправте нам ваші відгуки <a href='#survey'>за допомогою посилання внизу сторінки</a>."
 s.status_notreviewed="Ця стаття була опублікована без публічного огляду. Якщо є речі, які потрібно виправити, будь ласка, відправте нам ваші відгуки <a href='#survey'>за допомогою посилання внизу сторінки</a>."
-s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='http://www.w3.org/International/'>Internationalization Activity home page</a>."
+s.status_obsolete="This article is now obsolete. It is no longer maintained and is likely to be inaccurate. For more up-to-date information, see the <a href='https://www.w3.org/International/'>Internationalization Activity home page</a>."
 s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Швидка відповідь" // heading
 s.longeranswer = "Детальна відповідь" // heading

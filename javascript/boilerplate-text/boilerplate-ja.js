@@ -116,10 +116,10 @@ s.codedInUtf8 = "UTF-8 でエンコードされています!"
 
 s.translatedFromEnglishVer = dt.enVersion+" (UTC) 版の英文コンテンツから翻訳されました。翻訳文書の最終更新は "+dt.thisVersionPlain+" GMT に行われました。"
 
-s.historyOfDocumentChanges = '文書の更新履歴については、実質的な変更については<a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">ニュースフィード</a>を、2016年1月以降の完全な変更履歴については<a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">GitHubのコミット</a>を、それぞれ参照してください。'
+s.historyOfDocumentChanges = '文書の更新履歴については、実質的な変更については<a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">ニュースフィード</a>を、2016年1月以降の完全な変更履歴については<a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">GitHubのコミット</a>を、それぞれ参照してください。'
 s.untranslatedChanges = '<strong>注意:</strong> この文書が翻訳された後に<a href="'+f.filename+'.en">オリジナルである英語版</a>へ変更が加えられています。変更がこの翻訳に取り込まれており、翻訳の更新まで一部分が英語で表示されている可能性があります。。'
 s.unlinkedTranslation = '<strong>警告:</strong> この文書が翻訳された後に英語版に本質的な変更が加えられています。翻訳が更新されるまで、<a href="'+f.filename+'">他の言語の版</a>を参照することを推奨します。'
-s.new="新着"// placed alongside new articles at http://www.w3.org/International/articlelist
+s.new="新着"// placed alongside new articles at https://www.w3.org/International/articlelist
 s.updated="更新" // same as New
 s.translation_updated="翻訳更新日時:" // date appears after colon
 
@@ -128,7 +128,7 @@ s.status_draft="この記事は、公開レビュー前の草案です。対処�
 s.status_review="この記事は現在公開レビュー中です。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
 s.status_published="この記事には、W3C 国際ワーキンググループによるレビュー及びできる限り正確にするための公開レビューが行われました。</p><p>コメントがありましたら<a id='linktoGHissues' href='#survey'>ご指摘ください</a>。"
 s.status_notreviewed="この記事は公開レビューなしで公開されました。対処すべき部分がある場合は、<a href='#survey'>ページ下部近くにあるリンク</a>からフィードバックを送ってください。"
-s.status_obsolete="この記事は廃止されました。もはや保守されることはなく、不正確です。最新の情報については、<a href='http://www.w3.org/International/'>W3C 国際化アクティビティのホームページ</a>を参照してください。"
+s.status_obsolete="この記事は廃止されました。もはや保守されることはなく、不正確です。最新の情報については、<a href='https://www.w3.org/International/'>W3C 国際化アクティビティのホームページ</a>を参照してください。"
 s.tests="テスト" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "端的な回答" // heading
 s.longeranswer = "詳細な回答" // heading
