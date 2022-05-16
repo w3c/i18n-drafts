@@ -13,6 +13,7 @@ g.nativeText = {
 'en':'English',
 'es':'Español',
 'fr':'Français',
+'gl':'Galego',
 'he':'עברית',
 'hi':'हिन्दी',
 'hu':'Magyar',

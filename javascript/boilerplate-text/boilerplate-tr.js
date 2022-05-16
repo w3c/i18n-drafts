@@ -15,6 +15,7 @@ s.currLang = {
   'en':'İngilizce',
   'es':'İspanyolca',
   'fr':'Fransızca',
+  'gl':'Galiçyaca',
   'he':'İbranice',
   'hi':'Hintçe',
   'hu':'Macarca',
