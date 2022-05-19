@@ -219,7 +219,11 @@ var modCredit = ''
 if (f.modifiers && f.modifiers != '') modCredit = s.modifiedBy+' '+f.modifiers+s.sentenceDelimiter
 
 var translatorCredit = ''
-if (g.isTranslation) translatorCredit = s.translatedBy+' '+f.translators+s.sentenceDelimiter
+if (g.isTranslation) {
+	// Remove the space in Chinese
+	if (document.documentElement.lang === 'zh-hans' || document.documentElement.lang === 'zh-hant')	translatorCredit = s.translatedBy+f.translators+s.sentenceDelimiter
+	else translatorCredit = s.translatedBy+' '+f.translators+s.sentenceDelimiter
+}
 
 var credits = "<p>"+s.author+' '+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
 if (f.contributors && f.contributors != '') credits += "<p class='acknowledgements'>"+s.acknowledgements+" "+f.contributors+"</p>"
