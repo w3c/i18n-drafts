@@ -135,7 +135,7 @@ s.additionalinfo = "Información adicional" // heading that sometimes follows 'D
 s.acknowledgements = "Grazas ás seguintes persoas, que contribuiron cos seus comentarios, os cales foron incluídos:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Se deixas que o navegador configure unha cookie, continuará a ver páxinas da Actividade de Internacionalización da W3C (onde está dispoñible) no idioma que escolliches. Queres configurar a cookie?" // this text is to be copied to another location
 //s.supercedsTranslation = '<strong>Aviso: </ strong> Esta é unha versión non actualizada do documento! Recomendamos ler <a href="'Asg.betterfilename+'.en">a última versión</a> e se podes, modificar o marcador ou a ligazón que redirecciona aquí. '
-s.githubRedirect = "<strong>NOTA!</strong> &nbsp; Este é só un borrador do editor deste artigo. Todas as ligazóns e os marcadores deben redirixir á <a href='https://www.w3.org/International/"+ f.directory + f.filename +". "+ f.clang +"'>versión no sitio da W3C</a>, e non a esta páxina." // used for github-based versions of published articles
+s.githubRedirect = "<strong>NOTA!</strong> &nbsp; Este é só un borrador do editor deste artigo. Todas as ligazóns e os marcadores deben redirixir á <a href='https://www.w3.org/International/"+ f.directory + f.filename +"."+ f.clang +"'>versión no sitio da W3C</a>, e non a esta páxina." // used for github-based versions of published articles
 
 s.lastChanged = "Último cambio "
 
