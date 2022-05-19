@@ -2,7 +2,7 @@ var g = { }
 
 var base = '/i18n-drafts/' 
 
-if (! window.location.href.match('www.w3.org')) {
+if (window.location.href.match('www.w3.org')) {
     base = 'https://www.w3.org/International/i18n-drafts/'
     }
 
