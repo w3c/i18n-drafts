@@ -62,33 +62,25 @@ f.additionalLinks = ''
   <p>语言协商是HTTP协议的一项功能，允许服务器根据URL和浏览器发送的用户偏好信息（特别是在<code class="kw" translate="no">Accept-Language</code>头中）在页面的多个语言版本中进行选择。这与基于浏览器IP地址的页面选择或用户在语言选择页面上的手动选择都不同。如果浏览器表达的偏好与服务器上可用的语言不匹配，则显示语言选择页面或提供默认语言。</p>
   
   <p>在许多情况下，用户的默认语言设置是没有问题的。例如，如果您用的是日文版浏览器，浏览器通常会假定您更喜欢日文页面，并将此信息发送到服务器。主流浏览器允许您修改这些语言首选项。有关详细信息，请参阅<a class="print" href="qa-lang-priorities"><cite>在浏览器中设置语言首选项</cite></a>。</p>
-  <p>This article addresses the question of when it is appropriate (or not) to set up language negotiation on the server.</p>
+  <p>本文解决了何时适合（或不适合）在服务器上设置语言协商的问题。</p>
 </section>
 
 
 <section>
-  <h2 id="answer"><a href="#answer">Answer</a></h2>
-  <p>The short answer is: <em>always</em>.</p>
-  <p>A slightly longer answer is: <em>almost</em> always, <em>but not alone</em>.</p>
-  <p>Language negotiation <a href="#shortcomings">does not always work as intended</a>; there are techniques to <a href="#overrides">make up
-    for the shortcomings</a>; one should also provide for <a href="#stickyness">stickyness in navigation</a>.</p>
+  <h2 id="answer"><a href="#answer">答案</a></h2>
+  <p>简短的回答是：<strong>任何时候都适合</strong>。</p>
+  <p>稍微长一点的答案是：几乎总是适合，<strong>但不能只用语言协商</strong>。</p>
+  <p>语言协商的行为<a href="#shortcomings">并不总和用户的预期一致</a>，有<a href="#overrides">弥补其不足的技术</a>，还应该在<a href="#stickyness">导航中提供粘性</a>。</p>
     
   <section>
-    <h3 id="shortcomings"><a href="#shortcomings">Shortcomings of language negotiation</a></h3>
-    <p>Language negotiation is evidently a useful thing, but before implementing it across the board, it is important to understand its
-      limits. To illustrate these, we will use the example of a site, www.example.be, that offers its content in Flemish, French and German, implements
-      language negotiation and defaults to Flemish for all pages. Our visitor, Sylvia, will be Italian-speaking, but able to deal with German. Several
-      situations may arise:</p>
+    <h3 id="shortcomings"><a href="#shortcomings">语言协商的缺点</a></h3>
+    <p>语言协商显然是有用的，但在全面实施语言协商之前，了解它的局限性很重要。为了说明这些，我们将使用www.example.be这个网站作为例子，该网站以佛兰德语、法语和德语提供其内容，启用了语言协商，所有页面默认为佛兰德语。一个用户名为Sylvia，她的母语是意大利语，但也会说德语。可能会出现几种情况：</p>
     <ol>
-      <li>Sylvia's browser is correctly configured, expressing preferences for Italian first, German second. Italian is not available at
-        www.example.be, the pages are returned in German, the visitor is fairly happy, all is well. This is what language negotiation is for!</li>
-      <li>Sylvia is a non-technical person who has never heard of HTTP language negotiation and has never felt a need to alter the settings
-        of her browser. The latter is an Italian version which (correctly) defaults to expressing a preference for Italian. Hitting www.example.be, Italian
-        is not available and the site-default Flemish is returned, even though German is available. Bad.</li>
-      <li>Sylvia is not using her own browser, she's sitting in an Internet café in Moscow. The browser there was configured for (or
-        defaulted to) Russian. She gets Flemish again. Bad.</li>
+      <li>Sylvia的浏览器配置正确，用户偏好首先是意大利语，其次是德语。www.example.be上没有意大利语，页面以德语返回，Sylvia很开心，一切都很好。这就是语言协商的目的！</li>
+      <li>Sylvia是一个非技术人员，从未听说过HTTP语言协商，也从未修改过浏览器设置。浏览器的语言是意大利语，默认表达用户对意大利语的偏好（这里没有问题）。点击www.example.be，发现没有意大利语，所以只能返回网站默认的佛兰德语，即使网站有德语版。这种情况不太好。</li>
+      <li>Sylvia没有使用自己的浏览器，而是坐在莫斯科的一家网吧里。那里的浏览器被配置为（或默认是）俄语。她看到的网站又是佛兰德语。这种情况同样不好。</li>
     </ol>
-    <p>Hopefully the picture is now clear: language negotiation does not always give the intended result.</p>
+    <p>现在情况很清楚了：语言协商并不总是能给出预期的结果。</p>
     <p id="equivalence">Additionally, language negotiation is not even <em>relevant</em> when pages are not
       equivalent, i.e. do not have essentially the same content in different languages. The article <a class="print" href="/International/questions/qa-mono-multilingual"><cite>Monolingual vs. multilingual
       Web sites</cite></a> sheds some light on this, see in particular the "<em>Multilingual, same content</em>" and "<em>Multilingual, changed content</em>"
