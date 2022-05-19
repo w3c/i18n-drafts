@@ -98,7 +98,11 @@ function setFigRefs () {
         var id = figrefs[i].textContent.replace(/#/,'')
         if (figures[id] === null) console.log('Section not found: ',id)
         else {
-            figrefs[i].innerHTML = 'Figure '+figures[id]
+            if (document.documentElement.lang === "zh-hans") {
+                figrefs[i].innerHTML = '图'+figures[id]
+            } else {
+                figrefs[i].innerHTML = 'Figure '+figures[id]
+            }
             figrefs[i].href = '#'+id
             }
         }
