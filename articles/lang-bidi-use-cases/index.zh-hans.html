@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8" />
+<title>Web上的双向文本和语言元数据用例</title>
+<meta name="description" content="Web上的双向文本和语言元数据用例。" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/lang-bidi-use-cases'+'/'; // the name of the directory this file is in
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C, Addison Phillips, Amazon' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-lang-bidi-use-cases' // blog search string - usually the filename without extensions
+f.firstPubDate = '2021-05-06' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2021-05-06', time:'12:45'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2022-05-19', time:'12:45'} // date and time of latest edits to this document/translation
+f.contributors = 'Ivan Herman, Najib Tounsi' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="" // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<!-- TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css" />
+
+<link rel="stylesheet" href="../../style/article-2022.css" />
+<link rel="stylesheet" href="index-data/local.css" />
+<link rel="copyright" href="#copyright"/>
+<style>
+.flexAnnotation .demolink {
+    font-size: 70%;
+    position: absolute;
+    bottom: 0.5em;
+    right: 1em;
+	margin: 0;
+	}
+figure pre {
+	margin: 16px 0 0 0;
+	}
+#testlinks td, #testlinks th { text-align: start; border: 0; padding: 0 0 0 30px; }
+.cpref { font-size: 80%; }
+</style>
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Web上的双向文本和语言元数据用例</h1>
+</header>
+
+<section>
+    <div id="audience">
+        <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <p>W3C国际化工作组建议数据格式和字符串数据始终包含书写方向和语言信息，以确保正确显示数据。本文探讨了对此类信息的需求的用例。</p>
+</section>
+
+
+
+
+<section id="examples">
+<h2>例子</h2>
+
+<section id="ebook_example">
+<h3>电子书目录</h3>
+
+<p>假设您正在构建一个显示用户所有书籍的网页。电子书存在于一个数据目录中，由普通的数据值组成。单个条目的 JSON 文件可能如下所示：</p>
+
+<div class="figWrXXXap">
+<figure id="fig_example">
+<!--
+ Title below is actually "HTML and CSS: Design and Build Websites"
+ ASIN: 1118871642
+ ISBN-13: 978-1118871645
+ ISBN-10: 1118871642
+-->
+<pre><code class="language-json">{   "id": "123-4-56789-0",
+    "title": "<span dir="rtl">HTML &#x0648; CSS: &#x062A;&#x0635;&#x0645;&#x064A;&#x0645; &#x0648; &#x0625;&#x0646;&#x0634;&#x0627;&#x0621; &#x0645;&#x0648;&#x0627;&#x0642;&#x0639; &#x0627;&#x0644;&#x0648;&#x064A;&#x0628;</span>",
+    "authors": [ "Jon Duckett" ],
+    "language": "ar",
+    "pubDate": "2008-01-01",
+    "publisher": "مكتبة",
+    "coverImage": "https://example.com/images/html_and_css_cover.jpg",
+
+    // etc.
+    },
+{   "id": "098-7-65432-1",
+    "title": "Easy as one שתיים three",
+    "authors": [ "<span dir="rtl">פעילות הבינאום, W3C</span>" ],
+    "language": [&quot;en&quot;, &quot;he&quot;],
+    "pubDate": "2006-01-01",
+    "publisher": "ספרים בינלאומיים!",
+    "coverImage": "https://example.com/images/easy_123_cover.jpg",
+
+    // etc.
+    },</code></pre>
+<figcaption>需要书写方向和语言元数据的字符串的数据示例。</figcaption>
+</figure>
+</div>
+
+<p>以上每一项都是数据库中的一个字段。请注意，所提供的语言信息（<code class="kw" translate="no">"language": "ar"</code>）表示书籍的语言，而不是数据库记录中文本的语言。</p>
+
+<p>一个国际化的目录将包括上面显示的额外元数据。也就是说，对于包含自然语言文本的每个字段，例如<kbd>title</kbd>和<kbd>authors</kbd>字段，应该有语言和基方向（base direction）信息作为元数据。（还可能有其他值，例如用于对使用某些东亚的文本信息进行排序时所需的发音元数据等。）数据的消费者使用这些元数据值来处理并显示这些项目。由于JSON数据结构没有提供存储或交换这些值的机制，构建国际化的应用较为困难。</p>
+</section>
+
+
+
+
+<section id="example2">
+<h3>带注释的手稿</h3>
+
+<p>北山先生正在阅读一份敦煌古藏文手稿。他用来阅读手稿的工具可以访问学者创建的注释，这些学者在<a href="https://zh.wikipedia.org/wiki/%E5%9B%BD%E9%99%85%E6%95%A6%E7%85%8C%E9%A1%B9%E7%9B%AE">国际敦煌项目</a>使用各种语言工作。</p>
+<p>他目前正在查看的手稿里有中文、日文和俄文的评论。每一条评论都存在一条单独的注释中，但这些注释指向目标文档中的同一个地方。</p>
+<p>每篇评注主要以学者自己的语言撰写，但可能包含从藏文手稿里或其他地方摘录的文本，以及引用的中英文文本。一些评论可能包含多个语言的版本，比如有一些评论被翻译成了日文、中文和藏文。</p>
+
+<p>北山先生的母语是日语，所以他通常希望看到日语的评论。</p>
+</section>
+</section>
+
+
+
+
+
+
+<section id="definitions">
+<h2>定义</h2>
+
+<p><dfn id="def_langmeta">语言元数据</dfn>通常指示整个资源（resource）的预期语言受众，并且可以想象的是，对于多语言的资源，语言元数据也可能是一个语言列表。语言元数据属性可能包含多个值，因为它旨在描述信息的所有潜在用户。</p>
+
+<p><dfn id="def_tpl">文本处理语言</dfn>指的是特定范围文本的语言（可以是整个资源，也可以只是其中的一部分）。表示文本处理语言的属性只能有一个值，因为它让拼写检查器、字体选择器、断行算法、大小写转换器、语音浏览器和其他对语言敏感的应用程序了解应该将哪组规则或资源应用于特定范围的文本。这类应用程序通常需要明确指出正在使用的语言才能正常工作。</p>
+<p><dfn id="def_base_direction">基方向</dfn>（base direction）确定显示双向文本时内容的总体书写方向。<a href="https://unicode.org/reports/tr9/">Unicode双向文本算法</a>（UBA）主要侧重于根据字符属性（character property）排列相邻字符，而基方向在更高层次上起作用，并规定：（1）显示强类型LTR和RTL字符排列的视觉顺序和方向；（2）在存在弱类型字符（如标点符号）的地方，如何放置它们。</p>
+<p><dfn id="def_language_negotiation">语言协商</dfn>指的是基于内容的语言来选择或过滤的一切过程。通常这意味着当内容可能存在多种语言或区域设置时找到最佳匹配值来选择单一语言的内容（或回退到一个可用的默认语言）。一些常见的语言协商算法包括<a href="https://www.rfc-editor.org/info/bcp47">BCP47</a>中的Lookup算法或<a href="https://tc39.es/ecma402/">ECMA-402</a>中的BestFitMatcher。</p>
+</section>
+
+
+
+
+
+
+<section id="language_identification">
+<h2>识别内容的语言</h2>
+
+
+
+ <section id="language_metadata">
+   <h3>获得受众的语言</h3>
+   <p>北山先生想找日文的手稿注释（请参阅<a class="secref">example2</a>）。</p>
+<p>包含日语评论的注释的<code class="kw" translate="no">language</code>属性为“<code class="kw" translate="no">ja</code>”（日语）。他使用的工具知道他想阅读日文的评论，使用附在注释上的元数据来选择并向他展示日文文本。在这里，语言信息和<em>目标受众</em>有关——它向执行检索的应用表明该信息的目标消费者是想要日语内容的人。</p>
+
+   <p>一些注释包含不止一种语言的文本。例如，有几个评论里有中文、日文和藏文。对于这些注释，将<code class="kw" translate="no">language</code>属性设置为“<code class="kw" translate="no">ja,zh,bo</code>”是合适的。这表示所有日语、中文和藏语读者都可能想找到它。</p>
+   <p>这里的语言标记很可能是在整个资源层级，而不是字符串层级。</p>
+ </section>
+
+
+
+<section id="text_processing">
+<h3>获得文本处理语言</h3>
+  <p>在确定了要呈现给北山先生的相关注释文本后，他使用的应用程序必须显示这些文本，这样北山先生才可以阅读这些文本。而在渲染文本时，应用正确的字体非常重要。在<a class="figref">fig_ja_zh_fonts</a>中，第一行和第二行分别被标记为 <code class="kw" translate="no">ja</code>（日语）和<code class="kw" translate="no">zh-Hant</code>（繁体中文）。两行中的字符<a href="https://www.w3.org/TR/i18n-glossary/#def_code_point">码位</a>相同，但日文和中文的读者希望看到的字形是有不同的。将正确的字符形式与正确的语言联系起来很重要，否则您可能会让读者感到不舒服或不开心。</p>
+
+<div class="figWrap">
+<figure id="fig_ja_zh_fonts">
+  <p class="cjk-demo"><img src="index-data/ja_zh_fonts.png" alt="雪, 刃, 直, 令, 垔"></p>
+  <!--p class="cjk-demo"> 雪, 刃, 直, 令, 垔 </p>
+  <p class="cjk-demo" lang="ja"> 雪, 刃, 直, 令, 垔 </p>
+  <p class="cjk-demo" lang="zh-Hans"> 雪, 刃, 直, 令, 垔 </p>
+  <p class="cjk-demo" lang="zh-Hant"> 雪, 刃, 直, 令, 垔 </p-->
+  <figcaption>以日文（上方）和繁体中文（下方）字体显示的相同码位。（<a class="cpref" href="index-data/codepoints#fig_ja_zh_fonts" target="_blank">查看码位</a>）
+  </figcaption>
+</figure>
+</div>
+
+
+  <p>因此，将日文字体应用于北山先生正在阅读的日文文本很重要。文本在行尾换行的方式在不同语言里也有所不同。由于这些原因，我们需要确定应用在选择文本字体或换行算法时的所选择的语言。</p>
+
+	<p>另一个可能需要考虑的因素是文本到语音的转换。语音浏览器需要知道注释中包含的汉字是使用日语还是中文发音，并选用合适的语音和字典。</p>
+
+	<p>很多其他文本渲染或分析工具需要知道它们正在处理的文本的语言，许多不同种类的文本处理都需要内容语言的信息才能进行正确的处理，而这不仅仅是简单的呈现文本。例如，如果北山先生想要搜索注释，应用可能会提供全文搜索功能。为了索引注释中的单词，应用需要根据单词边界分割文本。在日语和汉语中，单词之间不使用空格，所以一般需要使用特定于语言的词典和启发式算法来分词。</p>
+
+    <p>我们还需要一种把注释中的一部分评论语言更改为中文或藏文的方法，以便在那里可以应用适当的字体和换行算法。</p>
+<p> 通过查看我们前面提到的资源级语言标签，可以假设资源中字符串的文本处理语言，因为这个语言标签指示着目标受众，但前提是它是单一语言标签。如果标签包含“<code class="kw" translate="no">ja,zh,bo</code>”，则不清楚文本的哪些部分应该被视为日语，哪些是中文，哪些是藏语。因此，我们需要额外的元数据来指示文本各部分的文本处理语言分别是什么，理想情况下，我们应该使用整个资源范围的语言标签声明作为默认值，并且能够更改内容的部分的语言。</p>
+</section>
+
+
+
+
+<section id="inline_language">
+<h3>内联语言更改</h3>
+
+<p>句子（或上面的出版物清单示例中的字符串）里可能会发生语言的变化，而如果我们要应用正确的字体和样式，声明这些变化也很重要，所以必须要有某种方式来指示新的文本处理语言段的开始和结束的位置。</p>
+</section>
+
+
+
+
+<section id="additional_requirements">
+<h3>本地化的更多需求</h3>
+
+<p>看过他感兴趣的评论后，北山先生意识到他需要另一本参考书，但他不知道目录号。他使用一个应用来搜索目录条目，这个应用是用JavaScript编写的，可以根据用户偏好在多种语言之间切换。实现这项功能的一种方法是在每次用户选择一种新语言时从服务器重新加载应用的UI。然而，由于这个应用体积相对较小，开发者选择使用JavaScript打包所有翻译（有几个开源项目允许运行时选择语言环境）。同样，目录搜索服务会发回所有可用语言的记录，而不是根据用户当前的语言偏好预先选择。</p>
+
+<p><a href="#ebook_example">电子书目录示例</a>中展示了一个单一语言的数据记录。但是某些应用（例如目录搜索工具及其支持服务）可能需要能够为同一字段发送多种语言的能力（例如在本地化应用或数据有多种语言时）。在应用有自己的<a href="#def_language_negotiation">语言协商机制</a>，或在消费者不知道哪种或哪几种语言会被选择时尤其如此。</p>
+
+<p>因此，支持这一点的序列化协议需要能够表示同一字段的几种不同语言形式。例如，在上面的电子书示例中，<kbd>title</kbd>或<kbd>description</kbd>的值可能都有非英语版的翻译。还有一种可能是，应用可以消费者可以在运行时选择的已被本地化的字符串。在某些情况下，应用可能会向用户显示所有语言版本。在其他情况下，作为<a href="#def_language_negotiation">语言协商</a>的一部分，不同的语言值可能会与用户偏好相匹配，以选择最合适的语言来显示。</p>
+
+<p>当可以使用多种语言表示时，序列化可能会提供一种方法（这种方法会在这种格式的规范中定义），用于为整个文档设置语言或书写方向的默认值。这样，序列化后的文档在与默认值匹配的情况下，就可以省略各字段中的语言和书写方向元数据。</p>
+</section>
+</section>
+
+
+
+
+
+<section id="bidi_use_case">
+<h2>确定内容的基方向</h2>
+
+  <p>为了使应用正确显示双向文本，例如在以下用例中，消费者必须有一种方法来确定每个字符串的<a href="#def_base_direction">基方向</a>。仅仅依靠<a href="https://unicode.org/reports/tr9/">Unicode双向文本算法</a>来解决这些问题是不够的，我们还需要一种方法来建立显示字符串的整体书写方向上下文（这也是“基方向”的含义）。</p>
+<p>如果您不熟悉RTL文本和Unicode双向文本算法，您可能会觉得这个<a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics.en">简单的介绍文章</a>有用。</p>
+<p>这些用例说明了不关联基方向可能会产生的问题。大多数例子都与让事物出现在正确的位置有关。</p>
+
+
+
+
+<section id="bidiCase1">
+<h3>标点符号和基本书写方向布局</h3>
+<p>上面的<a href="#ebook_example">电子书目录</a>示例显示了一个希伯来语书籍条目。以下是分别是出版商和作者姓名字符串的正确显示方式。</p>
+
+<div class="figWrap">
+<figure id="fig_international_books">
+<img src="index-data/position_string.png" alt="פעילות הבינאום, W3C    ספרים בינלאומיים!" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>上方是出版商的名称（国际图书！），下方是作者（W3C国际化活动）。（<a class="cpref" href="index-data/codepoints#fig_international_books" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+<p>我们把这些字符串被插入到描述这本书的页面中。该页面有英语（LTR）和希伯来语（RTL）版本。</p>
+<p>将这些字符串放入RTL的希伯来语上下文中，如下图所示，它们看起来没问题。</p>
+
+<div class="figWrap">
+<figure id="fig_position_RTL">
+<img src="index-data/position_RTL.png" alt="" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>放入RTL页面的作者和出版商名称。（<a class="cpref" href="index-data/codepoints#fig_position_RTL" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+<p>但是，将其放到英文LTR页面中，感叹号和单词“W3C”会出现在错误的位置。它们是被插入字符串的一部分，应显示在左侧。</p>
+
+<div class="figWrap">
+<figure id="fig_position_LTR">
+<img src="index-data/position_LTR.png" alt="Publisher: ספרים בינלאומיים!   Author: פעילות בינלאומית W3C" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>插入到LTR页面中的作者和出版商名称没有书写方向信息。（<a class="cpref" href="index-data/codepoints#fig_position_LTR" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+<p>通过应用Unicode双向文本算法 (UBA)，希伯来语字符会自动从右至左排列。但是，UBA不能使感叹号或拉丁文本出现在它所属的位置，除非围绕插入的字符串的基方向被设置为RTL。</p>
+<p>在使用HTML时，要在LTR上下文中实现这一点，我们需要将字符串插入到具有值<code class="kw" translate="no">rtl</code>的<code class="kw" translate="no">dir</code>属性的元素中，这样就会产生预期的结果：</p>
+
+<div class="figWrap">
+<figure id="fig_position_LTR_corrected">
+<img src="index-data/position_LTR_corrected.png"  alt="Publisher: ספרים בינלאומיים!   Author: פעילות בינלאומית W3C" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>插入LTR页面时应显示的作者和出版商名称。（<a class="cpref" href="index-data/codepoints#fig_position_LTR_corrected" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+<p>或者您也可以将字符串插入到<code class="kw" translate="no">dir</code>设置为<code class="kw" translate="no">auto</code>的元素中，或者插入到<code class="kw" translate="no">bdi</code>元素中。在任何一种情况下，浏览器都会通过查找字符串中第一个强方向字符的方向来自动将RTL方向应用于这个字符串。</p>
+</section>
+
+
+
+
+
+
+
+<section id="bidiCase3">
+  <h3>管理多个不同方向的文本段</h3>
+<p>当书写方向相反的文本既不在开头也不在结尾，而是在字符串的中间时，结果可能会更加混乱。</p>
+<p>此处正确显示了这本希伯来语书的标题，标题字符串中包含三个不同方向的文本段。</p>
+
+<div class="figWrap">
+<figure id="fig_easy">
+<img src="index-data/easy.png" alt="Easy as one שתיים three" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>电子书目录中希伯来语书的名称。（<a class="cpref" href="index-data/codepoints#fig_easy" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+
+
+<!--p lang="he" dir="rtl" style="text-align:center; font-size: 1.8em;"><code>
+<bdo dir="ltr">&quot;one שתיים three&quot;</bdo>
+</code></p-->
+<p>如果将字符串放入英文（LTR）文档中，它将正确显示。</p>
+
+<div class="figWrap">
+<figure id="fig_easy_LTR">
+<img src="index-data/easy_LTR.png" alt="Book title: Easy as one שתיים three" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>将没有书写方向信息的书名字符串插入英语页面。（<a class="cpref" href="index-data/codepoints#fig_easy_LTR" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+
+<p>把这段文字放入希伯来语（RTL）页面，如果没有规定字符串的基方向，文字的行进顺序将发生变化，并开始变得不可读或具有误导性。</p>
+
+<div class="figWrap">
+<figure id="fig_easy_RTL">
+<img src="index-data/easy_RTL.png" alt="כותרת הספר: Easy as one שתיים three" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>将没有书写方向信息的书名字符串插入希伯来语页面。（<a class="cpref" href="index-data/codepoints#fig_easy_RTL" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+
+<p>如果将双向文本字符串插入LTR上下文而未指定插入字符串的基方向为RTL，则可能会产生无法理解的文本。这就是一个例子。</p>
+<p>字符串中不同方向的文本段越多，文本就越难理解。</p>
+
+<div class="figWrap">
+<figure id="fig_xhtml">
+<img src="index-data/xhtml.png" alt="Translation: في XHTML 1.0 يتم تحقيق ذلك بإضافة العنصر المضمن bdo." data-notes="20px Noto Sans Arabic + Noto Sans">
+<img src="index-data/xhtml_LTR.png" alt="Translation: في XHTML 1.0 يتم تحقيق ذلك بإضافة العنصر المضمن bdo." data-notes="20px Noto Sans Arabic + Noto Sans">
+<figcaption>将一个具有四个不同方向文本段的字符串插入到LTR上下文中，上方是正确的显示方式，下方是没有指定基方向的情况。（<a class="cpref" href="index-data/codepoints#fig_xhtml" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+<p id="withMarkup">当文本和标点符号或标记语言结合使用时，情况可能会更糟。这段代码在RTL页面的教育上下文环境中呈现给用户：<code>&lt;span&gt;one שתיים three&lt;/span&gt;</code>。如果字符串的基方向未指定为LTR，您将看到下面的结果。</p>
+
+<div class="figWrap">
+<figure id="fig_markup_scrambled">
+<img src="index-data/markup_scrambled.png" alt="&lt;span>one שתיים three&lt;/span>" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>在希伯来语页面中显示的HTML代码示例，没有更改基方向。（<a class="cpref" href="index-data/codepoints#fig_markup_scrambled" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+<p>（发生这种情况是因为Unicode双向文本算法将 <code>span&gt;one</code> 视为一个文本段，并将 <code>three&lt;/span</code> 视为另一个文本段。最外面的尖括号由算法来平衡。）</p>
+</section>
+
+
+
+
+
+
+
+<section id="bidiCase2">
+<h3>如果RTL字符串的开头是拉丁字母</h3>
+<p><a class="figref">fig_initial</a>显示了<a href="#ebook_example">电子书目录</a>的第一部分中的书名的正确书写方向。正确的阅读顺序是首先读在标题的开头的“HTML”和“CSS”这两个词。</p>
+
+<div class="figWrap">
+<figure id="fig_initial">
+<img src="index-data/initial.png" alt="HTML و CSS: تصميم و إنشاء مواقع الويب" data-notes="27px Noto Sans Arabic + Noto Sans">
+<figcaption>电子书目录中阿拉伯语示例中的书名（HTML和CSS：网站设计和创建）。（<a class="cpref" href="index-data/codepoints#fig_initial" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+<p>如前文所述，浏览器可以检测字符串中的第一个强方向字符，以猜测字符串的基方向。而在这时，这种启发式算法将产生错误的结果。</p>
+
+<div class="figWrap">
+<figure id="fig_initial_LTR">
+<img src="index-data/initial_LTR.png" alt="Book title: HTML و CSS: تصميم و إنشاء مواقع الويب" data-notes="27px Noto Sans Arabic + Noto Sans">
+<figcaption>电子书目录的阿拉伯语示例中的书名，字符串不包含书写方向信息。（<a class="cpref" href="index-data/codepoints#fig_initial_LTR" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+<p>虽然启发式算法在大多数情况下都很有用，但对于上述情况，或者用拉丁字母写的主题标签或“@昵称”出现在一段微博的开头时，启发式算法将会产生错误的结果。所以我们需要把一些元数据与字符串关联，让字符串以正确的方向显示。</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section id="bidiCase5">
+<h3>中性LTR文本</h3>
+<p>这个用例的文本可以是电话号码、产品目录号、MAC地址等，也可以是<a href="#ebook_example">电子书目录示例</a>中的国际标准书号（ISBN号）。</p>
+
+<div class="figWrap">
+<figure id="fig_isbn">
+<img src="index-data/isbn.png" alt="123-4-56789-0" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>一个ISBN号。（<a class="cpref" href="index-data/codepoints#fig_isbn" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+
+<!--p lang="he" dir="rtl" style="text-align:center; font-size: 1.8em;"><code><bdo dir="ltr">&quot;123 456 789&quot;</bdo></code></p-->
+<p>当前面有阿拉伯语文本时，把这个字符串放入RTL上下文中，您将得到下面的结果。这是不正确的，因为字符顺序是错误的，这对读者来说甚至可能不明显，他们会期望从左到右阅读这些数字：</p>
+
+<div class="figWrap">
+<figure id="fig_isbn_RTL">
+<img src="index-data/isbn_RTL.png" alt="المعرف: 123-4-56789-0" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>在未注意基方向变更的阿拉伯语页面上显示的ISBN号。（<a class="cpref" href="index-data/codepoints#fig_isbn_RTL" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+
+<p>这个字符串中没有强方向字符，因此在显示时字符串本身无法指示应用预期的书写方向。</p>
+<p>事实上，保持强LTR基方向的需要更多地与字符串中的信息种类有关，而不是与字符本身有关。范围和数学表达式等类型的内容在阿拉伯语中<em>从右到左</em>阅读（尽管数字本身是从左至右书写的）。此外，不同的分隔符对书写方向的影响不同。所以，我们可能需要方向信息来指示这是什么类型的数据。</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="bidiCase7">
+<h3>溢出效应</h3>
+<p>回到刚才的那个常见用例，也就是在运行时插入页面或用户界面的数据字符串的情况。假设在一个<span class="nowrap">LTR页面</span>上，应用显示每本书的书名和收到的书评数量，顺序如下：</p>
+
+<div class="figWrap">
+<figure id="fig_spillover">
+<img src="index-data/spillover.png" alt="$title + ' – ' + $reviewTally + 'reviews'" data-notes="27px Noto Sans">
+<figcaption>显示给定书名的书评数量的代码。</figcaption>
+</figure>
+</div>
+
+
+
+<p>当您插入一本标题为阿拉伯语的书时，您会期望看到以下内容：</p>
+
+<div class="figWrap">
+<figure id="fig_spillover_right">
+<img src="index-data/spillover_right.png" alt="تصميم و إنشاء مواقع الويب  - 4 reviews" data-notes="27px Noto Sans Arabic + Noto Sans">
+<figcaption>左边是书名，右边是书评数。（<a class="cpref" href="index-data/codepoints#fig_spillover_right" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+
+<p>而您实际看到的是这样的：</p>
+
+<div class="figWrap">
+<figure id="fig_spillover_wrong">
+<img src="index-data/spillover_wrong.png" alt="تصميم و إنشاء مواقع الويب  - 4 reviews" data-notes="27px Noto Sans Arabic + Noto Sans">
+<figcaption>如果不使用方向隔离，文本段的排列顺序会出现错误。（<a class="cpref" href="index-data/codepoints#fig_spillover_wrong" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+
+<p>此问题是由溢出效应引起的，原因是Unicode双向文本算法对字符串内部和外部的文本进行操作时不进行任何区分。</p>
+<p>解决这个问题的方法是<strong>方向隔离</strong>（bidi isolation）：标题的书写方向要与文本剩下的部分隔离开来。</p>
+</section>
+
+
+
+
+
+
+
+<section id="bidiCase4">
+  <h3>解释HTML代码</h3>
+<p>在这个用例中，字符串里包含HTML代码。</p>
+
+<div class="figWrap">
+<figure id="fig_markup">
+<img src="index-data/markup.png" alt="&lt;span dir='ltr'>one שתיים three&lt;/span>" data-notes="27px Noto Sans Hebrew + Noto Sans">
+<figcaption>包含HTML代码的字符串。（<a class="cpref" href="index-data/codepoints#fig_markup" target="_blank">查看码位</a>）</figcaption>
+</figure>
+</div>
+
+<p>在前面的示例中，HTML代码会直接展示给读者。而在这个示例中，当字符串插入页面时，HTML代码会被解析并添加到DOM。这是一种通过<code class="kw" translate="no">dir</code>属性来为字符串指定基方向的方法。</p>
+<p>然而，这种方法依赖于消费者期望接收HTML并知道如何处理包含双向文本的标记语言代码。它还要求生产者采取明确的行动来识别字符串的基方向并设置所需的标记来表明这一点。</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="what_consumers_do">
+<h3>字符串的消费者需要做什么</h3>
+<p>鉴于本节中的用例，很明显字符串或数据库内容的消费者不能直接将字符串插入目标位置，而是需要进行一些准备工作。首先，要为插入的字符串建立适当的基方向。其次，要在字符串周围应用方向隔离。</p>
+<p>字符串两端需要有标记语言代码（译注：如HTML）或Unicode格式控制字符。如果字符串的基方向与插入的上下文的书写方向相反，则标记语言或控制字符需要紧紧包裹着字符串。相邻插入的字符串都需要单独包装以避免我们在上一节中看到的溢出问题。</p>
+<p>对于任何内联元素，HTML5提供使用<code class="kw" translate="no">dir</code>属性的基方向控制功能及使用<code class="kw" translate="no">bdi</code>元素的方向隔离功能。而将字符串插入纯文本环境时，需要使用Unicode隔离字符。</p>
+<p>在大多数情况下，我们可以使用启发式算法确定字符串的书写方向。但是在某些情况下，启发式算法会失败，在这些情况下我们需要有一种方法来存储和传达字符串的基方向。</p>
+<p>关于如何正确渲染插入到HTML页面中的字符串，请参阅<a href="https://www.w3.org/International/articles/strings-and-bidi/">字符串和双向文本</a>。</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="inline_direction">
+<h3>字符串内的书写方向变化</h3>
+
+<p>在到目前为止我们看到的所有示例中，我们识别的都是<strong>整个字符串的方向</strong>。我们之前所关注的基方向建立了一个整体的方向上下文，使字符串正确呈现出来。</p>
+<p>事实上，字符串也可能包含基方向不同的子字符串。在这种情况下，需要一种方法来指示片段的开始和结束。</p>
+</section>
+</section>
+
+
+
+
+
+<section id="conclusion">
+<h2>总结</h2>
+
+<p>总之，当内容和字符串存储在数据库中时，需要有某种方法来识别它们的语言和书写方向。这些属性中的一些可能与谁可能使用该信息有关，而另一些与使信息在呈现给用户时显示或行为正确有关。这些信息既需要在资源级别可用，也需要满足资源内的变化，包括单个项目的不同元数据，以及字符串或子字符串内的不同元数据。</p>
+<p>国际化工作组有一份面向标准编辑的<a href="https://www.w3.org/TR/string-meta/">文档</a>，描述了与Web上的字符串中的语言和书写方向元数据相关的最佳实践。</p>
+</section>
+
+
+
+
+
+
+
+<section id="endlinks">
+<h2>进一步阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+    <ul id="full-links">
+      <li>
+        <p><cite><a href="https://www.w3.org/International/articles/strings-and-bidi/">字符串和双向文本</a></cite></p>
+
+      </li>
+      <li>
+          <p><cite>创作HTML和CSS</cite></p>
+          <ul>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction#direction">文字书写方向</a></li>
+</ul>
+      </li>
+    </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
