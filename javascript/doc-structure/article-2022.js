@@ -93,8 +93,9 @@ if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length ==
 	versionList = '<p class="noprint">'
 	for (lang=0; lang<trans.versions.length; lang++) {
 		if (f.clang != trans.versions[lang]) {
-			versionList += '<span title="'+s.currLang[trans.versions[lang]]+'"><a href="#" onclick="stickyConneg(\''+f.filename+'\',\''+f.clang+'\',\''+trans.versions[lang]+'\'); return false;" lang="'+trans.versions[lang]+
-			'" translate="no" dir="auto">'+g.nativeText[trans.versions[lang]]+'</a></span>'+s.rlm+'&nbsp; ';
+			versionList += '<bdi title="'+s.currLang[trans.versions[lang]]+'"><a href="#" onclick="stickyConneg(\''+f.filename+'\',\''+f.clang+'\',\''+trans.versions[lang]+'\'); return false;" lang="'+trans.versions[lang]+
+			'" translate="no" dir="auto">'+g.nativeText[trans.versions[lang]]+'</a></bdi>'+s.rlm+'&#x202F;';
+			if (lang < trans.versions.length-1) versionList += '• &#x202F;'
 			}
 		}
 	versionList += '</p>';
