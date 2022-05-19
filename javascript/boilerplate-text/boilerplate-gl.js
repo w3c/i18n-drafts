@@ -115,10 +115,10 @@ s.codedInUtf8 = "Codificado en UTF-8!"
 
 s.translatedFromEnglishVer = "Traducido do contido en inglés datado "+dt.enVersion+". Versión traducida modificada por última vez "+dt.thisVersionPlain+" GMT"
 
-s.historyOfDocumentChanges = 'Para ver o historial de cambios dos documentos, consulte <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">noticias</a> para cambios sustanciais, e <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">lista de confirmaciones de Github </a> para tódolos cambios desde xaneiro de 2016.'
+s.historyOfDocumentChanges = 'Para ver o historial de cambios dos documentos, consulte <a href="https://www.w3.org/blog/International/tag/'+f.searchString+'/">noticias</a> para cambios sustanciais, e <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">lista de confirmaciones de Github </a> para tódolos cambios desde xaneiro de 2016.'
 s.untranslatedChanges = '<strong>Nota:</strong> Fixéronse cambios no <a href="'+f.filename+'.en">orixinal en inglés</a> desde que se traduciu este documento. Os cambios se incorporaron a esta páxina, polo que é posible que vexa alguns pasaxes en inglés ata que se actualice a tradución.'
 s.unlinkedTranslation = '<strong>Advertencia:</strong> Fixéronse cambios sustanciais no orixinal en inglés desde que se traduciu este documento. Recoméndase ler <a href="'+f.filename+'">unha versión noutro idioma</a> ata que se actualice esta tradución.'
-s.new="Engadido"// placed alongside new articles at http://www.w3.org/International/articlelist 
+s.new="Engadido"// placed alongside new articles at https://www.w3.org/International/articlelist 
 s.updated="Actualizado" // same as New
 s.translation_updated="Tradución actualizada:" // date appears after colon 
 
@@ -127,7 +127,7 @@ s.status_draft="Este artigo é un borrador que aínda non foi revisado públicam
 s.status_review="Este artigo non está dispoñible para revisión pública. Se tes comentarios, envíaos empregando a <a href='#survey'>ligazón preto da parte inferior desta páxina</a>."
 s.status_published="Este artigo foi revisado polo Grupo de Traballo Internacionalización da W3C e pasou por unha revisión pública para que sexa o máis preciso posible.</p><p> Se tes comentarios, por favor <a id='linktoGHissues' href='# enquisa'>fáinolos chegar</a>."
 s.status_notreviewed="Este artigo foi publicado sen revisión pública. Se tes comentarios, envíaos usando a <a href='#survey'>ligazón preto da parte inferior desta páxina</a>."
-s.status_obsolete="Este artigo está obsoleto. Xa non se mantén e é probable que sexa inexacto. Para obter información máis actualizada, consulta a <a href='http://www.w3.org/international/'>Páxina de inicio de Actividade de Internacionalización</a>."
+s.status_obsolete="Este artigo está obsoleto. Xa non se mantén e é probable que sexa inexacto. Para obter información máis actualizada, consulta a <a href='https://www.w3.org/International/'>Páxina de inicio de Actividade de Internacionalización</a>."
 s.tests="Probas" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Resposta rápida" // heading
 s.longeranswer = "Detalles" // heading that follows 'Quick answer'
@@ -135,7 +135,7 @@ s.additionalinfo = "Información adicional" // heading that sometimes follows 'D
 s.acknowledgements = "Grazas ás seguintes persoas, que contribuiron cos seus comentarios, os cales foron incluídos:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Se deixas que o navegador configure unha cookie, continuará a ver páxinas da Actividade de Internacionalización da W3C (onde está dispoñible) no idioma que escolliches. Queres configurar a cookie?" // this text is to be copied to another location
 //s.supercedsTranslation = '<strong>Aviso: </ strong> Esta é unha versión non actualizada do documento! Recomendamos ler <a href="'Asg.betterfilename+'.en">a última versión</a> e se podes, modificar o marcador ou a ligazón que redirecciona aquí. '
-s.githubRedirect = "<strong>NOTA!</strong> &nbsp; Este é só un borrador do editor deste artigo. Todas as ligazóns e os marcadores deben redirixir á <a href='https://www.w3.org/internacional/"+ f.directory + f.filename +". "+ f.clang +"'>versión no sitio da W3C</a>, e non a esta páxina." // used for github-based versions of published articles
+s.githubRedirect = "<strong>NOTA!</strong> &nbsp; Este é só un borrador do editor deste artigo. Todas as ligazóns e os marcadores deben redirixir á <a href='https://www.w3.org/International/"+ f.directory + f.filename +". "+ f.clang +"'>versión no sitio da W3C</a>, e non a esta páxina." // used for github-based versions of published articles
 
 s.lastChanged = "Último cambio "
 
