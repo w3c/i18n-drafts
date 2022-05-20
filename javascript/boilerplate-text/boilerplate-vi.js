@@ -15,6 +15,7 @@ s.currLang = {
   'en':'Tiếng Anh',
   'es':'Tiếng Tây Ban Nha',
   'fr':'Tiếng Pháp',
+  'gl':'Tiếng Galician',
   'he':'Tiếng Hê-brơ',
   'hi':'Tiếng Hin-đi',
   'hu':'Tiếng Hung-ga-ri',
