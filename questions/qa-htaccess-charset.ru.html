@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Настройка charset информации в .htaccess</title>
 <meta name="description" content="Как я должен использовать директивы .htaccess на сервере Apache для обслуживания файлов со специфической кодировкой?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,14 +32,14 @@ f.breadcrumb = 'characters'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-htaccess-charset-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<script src="qa-htaccess-charset-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-ru.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 
 <body>
@@ -50,20 +50,19 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
-  <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    вебмастера и всете , кто нуждается в руководстве в том, как изменить серверные директивы на сервере Apache чтобы установить кодировку символов, которая отправляется в заголовке HTTP. Обратите внимание, вы должны иметь определенные права и доступ к серверу, чтобы сделать эти изменения. Пользователи, которые являются новичками в данном вопросе должны поговорить со своим провайдером или человеком, который управляет сервером. </p>
+
+<div id="audience">
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
-  <h2 id="question"><a href="#question">Question</a></h2>
+<section id="question">
+<h2>Вопрос</h2>
     <p class="question">Как я должен использовать директивы .htaccess на сервере Apache для обслуживания файлов со специфической кодировкой?</p>
-  </section>
+</section>
 
 
-<section>
-  <h2 id="background"><a href="#background">Вводная информация</a></h2>
+<section id="background">
+<h2>Вводная информация</h2>
   <p>Важно обеспечить, чтобы любая информация о кодировке символов, отправленная сервером была правильной, так как информация в HTTP
     заголовке переопределяет информацию в самом документе.</p>
   <p>Многие серверы Apache настроены, чтобы отправлять файлы с использованием кодировки ISO-8859-1 (Latin-1). В примерах в этом документе, мы будем считать, что
@@ -102,16 +101,16 @@ Content-Language: en</pre>
 </section>
 
 
-<section>
-  <h2 id="answer"><a href="#answer">Answer</a></h2>
+<section id="answer">
+<h2>Ответ</h2>
   <p>Имейте в виду, что есть несколько различных сценариев. В первую очередь, вы возможно захотите изменить в директории значения по умолчанию для всех файлов
     с одинаковым расширением. Кроме того, вы возможно захотите изменить значение по умолчанию для одного файла или небольшого числа файлов. Мы исследуем это
     по очереди.</p>
   <p>В наших примерах мы будем считать, что сервер по умолчанию настроен обслуживать файлы в кодировке ISO-8859-1, но вы хотите, чтобы он обслуживал ваш файл или 
     файлы используя кодировку UTF-8 (очень умная стратегия!).</p>
   
-  <section>
-    <h3 id="scope"><a href="#scope">Этот ответ вам подходит?</a></h3>
+  <section id="scope">
+<h3>Этот ответ вам подходит?</h3>
     <p>Эта статья написана для авторов контента, а не для системных администраторов. Настройки кодирования сервера по умолчанию выходят за
       рамки данной статьи.</p>
     <p>Этот совет подходит только тогда, когда вы согласны назначить кодировку символов документа с помощью HTTP заголовка. В некоторых случаях
@@ -127,8 +126,8 @@ Content-Language: en</pre>
       вашего сервера.</p>
   </section>
   
-  <section>
-    <h3 id="extension"><a href="#extension">Спецификация по расширению</a></h3>
+  <section id="extension">
+<h3>Спецификация по расширению</h3>
     <p>Используйте директиву <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a> чтобы связать кодирование 
       символов со всеми файлами, которые имеют определенное расширение в текущем каталоге <em>и его подкаталогах</em>. Например, чтобы обслуживать все файлы с
       расширением .html как UTF-8, откройте .htaccess файл в текстовом редакторе и введите следующую строку:</p>
@@ -173,8 +172,8 @@ Content-Language: en</pre>
     </div>
   </section>
   
-  <section>
-    <h3 id="odd"><a href="#odd">Изменение случайного файла</a></h3>
+  <section id="odd">
+<h3>Изменение случайного файла</h3>
     <p>Давайте теперь предположим, что вы хотите обслуживать только один файл как UTF-8 в большом каталоге, где все остальные старые файлы правильно
       обслуживаются как ISO-8859-1. Файл, который вы хотите обслуживать как UTF-8 имеет название example.html. Откройте .htaccess файл в текстовом редакторе и введите 
       следующее:</p>
@@ -202,8 +201,8 @@ ForceType 'text/html; charset=UTF-8'
       создадите противоположную директиву в соответствующем каталоге.</p>
   </section>
   
-  <section>
-    <h3 id="more"><a href="#more">Более комплексные сценарии</a></h3>
+  <section id="more">
+<h3>Более комплексные сценарии</h3>
     <p>Когда два правила расширение применяется к одному и тому же документу важным является порядок расположения расширений. Так, как в следующем примере</p>
     <div class="example">
       <blockquote>
@@ -217,8 +216,8 @@ AddCharset windows-1252 .html
 </section>
 
 
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Дополнительные материалы</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
@@ -251,7 +250,7 @@ AddCharset windows-1252 .html
  </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>
