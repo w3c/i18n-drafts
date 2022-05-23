@@ -34,12 +34,14 @@ f.additionalLinks = ''
 </script>
 <script src="qa-link-lang-data/translations.js"> </script>
 <script src="../javascript/doc-structure/article-dt.js"> </script>
-<script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script src="../javascript/doc-structure/article.js"> </script>
-<script src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" />
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
 </head>
 
 <body>
@@ -50,23 +52,21 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
   <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    HTML coders (using editors or scripting),  CSS coders,  Web project managers, and anyone who is wondering how to indicate the language of a resource at the end of a link.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
-  <h2 id="question"><a href="#question">Question</a></h2>
+<section id="question">
+<h2>Question</h2>
     <p class="question">What should I bear in mind if I want to indicate to the reader that  a link points to a page in a different language?</p>
 </section>
 
 
-<section>
-  <h2 id="answer"><a href="#answer">Answer</a></h2>
+<section id="answer">
+<h2>Answer</h2>
 
-  <section>
-    <h3 id="proscons"><a href="#proscons">Pros and cons</a></h3>
+  <section id="proscons">
+<h3>Pros and cons</h3>
     <p>If a visitor to a web page follows a link, only to find out that they cannot read the target document, this wastes time and, if it happens enough, introduces fatigue. Eventually they may  lack confidence when faced with links that actually do go to  pages they can read.</p>
     <p>If you add some text or graphic to the link indicating that the target document is in another language, it may allow the reader to decide in advance whether or not to follow the link, according to their language skill, and therefore avoid these problems.</p>
     <p>There are, however, potential problems with this approach if a newly translated version of the target document  becomes available at a later date. </p>
@@ -75,8 +75,8 @@ f.additionalLinks = ''
     <p>You need to assess these pros or cons when deciding whether or not to mark links in this way.</p>
   </section>
   
-  <section>
-    <h3 id="hreflang"><a href="#hreflang">Using hreflang with CSS to indicate the language</a></h3>
+  <section id="hreflang">
+<h3>Using hreflang with CSS to indicate the language</h3>
     <p>If you do decide that you  want to indicate the language of a resource at the end of a link, one  way people have done this in the past is to use an <code class="kw" translate="no">hreflang</code> attribute and some CSS to provide the information to the reader.</p>
     <p>In HTML, the <code class="kw" translate="no">hreflang</code> attribute on an <code class="kw" translate="no">a</code> element is supposed to indicate the language of the document at the other end of the link. Note that the <a class="print" href="https://html.spec.whatwg.org/multipage/links.html#attr-hyperlink-hreflang">HTML spec says</a> that <code class="kw" translate="no">hreflang</code> information  should not be used by the browser to affect the choice of language version.  When fetching the resource, browsers must use only language information associated with the resource to determine its language, not metadata included in the link to the resource.</p>
     <p>Taking into account the pros and cons mentioned earlier, <code class="kw" translate="no">hreflang</code> could provide a means of indicating to the reader the language of the resource at the end of the link for simple cases. However, there are also significant problems.</p>
@@ -87,22 +87,22 @@ f.additionalLinks = ''
       <p>There is also a page describing <a href="https://www.w3.org/International/articles/serving-xhtml/index.sv">why a DOCTYPE is useful</a><sup style="color:#999;"> [sv]</sup>.</p>
     </figure>
 	<p>You could achieve this with the following markup:</p>
-    <figure class="example"><code>&lt;p&gt;There is also a page describing &lt;a href=&quot;swedish-doc.html&quot; hreflang=&quot;sv&quot;&gt;why a DOCTYPE is useful&lt;/a&gt;.&lt;/p&gt;</code></figure>
+    <figure class="example"><code class="language-html">&lt;p&gt;There is also a page describing &lt;a href=&quot;swedish-doc.html&quot; hreflang=&quot;sv&quot;&gt;why a DOCTYPE is useful&lt;/a&gt;.&lt;/p&gt;</code></figure>
     <p>The code to enable this in CSS may be something like:</p>
     <figure class="example">
-      <pre>a[hreflang]:after { 
+      <pre><code class="language-css">a[hreflang]:after { 
     content: &quot; [&quot; attr(hreflang) &quot;]&quot;; 
     color: #999;
     vertical-align: super;
     font-size: 70%;
-    } </pre>
+    }</code></pre>
     <div class="demolink"><a href="qa-link-lang-data/sv" target="text">See live demo.</a></div>
     </figure>
     <p>For each <code class="kw" translate="no">a</code> element with an <code class="kw" translate="no">hreflang</code> attribute, the CSS adds the value of that attribute in square parentheses after the link. </p>
     <p>You could just as easily append text or even a graphic after the link by associating it with the <code class="kw" translate="no">content</code> property, rather than the <code class="kw" translate="no">attr(hreflang)</code>. This might be better if you are not sure that readers will recognize the ISO abbreviations.</p>
     <p>Here is the CSS. You would need style rules for each   language you are dealing with.</p>
     <figure class="example">
-      <pre>a[hreflang]:after { 
+      <pre><code class="language-css">a[hreflang]:after { 
     color: #999;
     vertical-align: super;
     font-size: 70%;
@@ -113,7 +113,7 @@ a[hreflang = 'sv']:after {
 a[hreflang = 'fi']:after { 
     content: " [Finnish]"; 
     } 
-etc.</pre>
+etc.</code></pre>
      <div class="demolink"><a href="qa-link-lang-data/swedish" target="text">See live demo.</a></div>
    </figure>
     <p>For Swedish, the displayed result would be:</p>
@@ -122,8 +122,8 @@ etc.</pre>
     </figure>
     </section>
     
-    <section>
-    <h3 id="flags"><a href="#flags">Don't use flags to indicate languages!</a></h3>
+    <section id="flags">
+<h3>Don't use flags to indicate languages!</h3>
     <p>Flags represent countries, not languages. </p>
     <p>Numerous countries use the same language as another country, and numerous countries have more than one official language. Flags don't map well onto these permutations. </p>
     <p>In addition, flags have nationalistic connotations that may be unwelcome for people of other countries, even though they speak the same language.</p>
@@ -132,8 +132,8 @@ etc.</pre>
 </section>
 
 
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Further reading</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
   <ul id="full-links">
