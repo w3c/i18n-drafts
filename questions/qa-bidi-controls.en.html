@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Unicode controls vs. markup for bidi support</title>
 <meta name="description" content="To correctly format bidi text in (X)HTML or XML content, should I use Unicode control codes or markup?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,17 +32,17 @@ f.breadcrumb = 'direction'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-bidi-controls-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
-<!-- remove the following local css declaration if there is nothing to add -->
-<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<script src="qa-bidi-controls-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<style type="text/css" media="all">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+<style media="all">
 .visualascii {
 	font-weight: bold;
 }
@@ -57,39 +57,38 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
   <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), schema developers
-      (DTDs, XML Schema, RelaxNG, etc.), Web project managers, and anyone who is wondering whether they should use Unicode control characters in markup to
-      achieve proper text flow for right-to-left scripts. </p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
   </div>
   
-  <h2 id="question"><a href="#question">Question</a></h2>
+<section id="question">
+<h2>Question</h2>
     <p class="question">To correctly format bidi text in (X)HTML or XML content, should I use Unicode control codes or markup?</p>
     <p> The Unicode Bidirectional Algorithm needs a little explicit help to produce the correct display of characters and objects (see <cite><a href="/International/questions/qa-html-dir">Structural markup and right-to-left text in HTML</a></cite> and <cite><a href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></cite>). Such explicit control can be exerted using markup or, in some cases, special formatting control characters found in Unicode. This article looks at whether, given a choice, you should use markup or control codes for HTML and XML.</p>
     <p>For information about how Unicode control characters work, including a table of correspondences between markup and  control characters, see <cite><a href="/International/questions/qa-bidi-unicode-controls#basedirection">How to use Unicode controls for bidi text</a></cite>.</p>
 </section>
+
+
+
 <section id="nutshell">
-   <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+   <h2 id="quickanswer">Quick answer</h2>
     <p>Unicode control codes are not useful for  bidi formatting when working with structural or paragraph-level markup.</p>
     <p>For inline content we recommend that, wherever possible, you use markup  in HTML and XML,  rather than the Unicode control characters.</p>
     <p>There are some places, even in HTML and XML documents, where markup is not available, and then there is no alternative but to use control codes (however, language developers ought to eliminate such cases wherever they can).</p>
 </section>
 
 
-<section>
-<h2 id="details"><a href="#details">Details</a></h2>
+<section id="details">
+<h2>Details</h2>
 
-<section>
-  <h3 id="structural"><a href="#structural">Inappropriate for structural markup</a></h3>
+<section id="structural">
+<h3>Inappropriate for structural markup</h3>
   <p>You will  need to use markup to establish the default direction for a document as a whole (eg. in the <code class="kw" translate="no">html</code> tag), and for block container elements. Because control codes don't cross paragraph (read as <span class="qterm">block element</span>) boundaries, and because control codes cannot manage inheritance and scoping through the markup hierarchy, they are only appropriate for inline use.</p>
   <p>It is theoretically possible to use control codes at the start and end of block markup (eg. the <code class="kw" translate="no">p</code> tag in HTML) that only contains inline text, but it would result in a lot more work than using markup, not only because you would need to add the control codes to every such element rather than just using inheritance, but also because you would have to take additional steps to add right-alignment.</p>
   <p>Control codes can't be used to do things such as reverse table column direction or set the default input direction for form fields.</p>
 </section>
-<section>
-  <h3 id="reasons"><a href="#reasons">Things to consider for inline use</a></h3>
+<section id="reasons">
+<h3>Things to consider for inline use</h3>
   <p>Explicit inline control is only required when managing bidirectional text for which the Unicode Bidirectional Algorithm needs assistance. Unicode control characters could perform this task, but there are  reasons to recommend that you use markup instead of the paired control characters.</p>
   <div class="sidenoteGroup">
   <p>The main issue is that control codes are invisible, unless you use escaped forms. This invisibility makes it easy to create overlapping or unterminated ranges. </p>
@@ -101,8 +100,8 @@ f.additionalLinks = ''
   <p>Apart from these potential difficulties, it is often just easier for content developers to use markup. Often there is already markup around inline ranges of text to which you need to apply direction – for example, a <code class="kw" translate="no">cite</code> element, or a <code class="kw" translate="no">span</code> used to supply language information or styling. It could also be argued that it's simpler to consistently use markup throughout the document, rather than using markup in some higher level parts of the document and then switching to control codes for the lower levels.</p>
   <p>Another, hopefully temporary, issue at the time of writing is that the Unicode Consortium and the W3C recommend applying isolation to embedded ranges of text where the base direction is changed. This means that you should use the RLI, LRI and PDI control codes, rather than the RLE, LRE and PDF ones. Currently, the adoption of those new control codes is lagging in browsers, whereas isolation can be applied already using markup. (At the moment you can use a <a href="https://www.w3.org/International/articles/inline-bidi-markup/index#cssshim">CSS shim</a>, or dedicated elements such as <code class="kw" translate="no">bdi</code>, but browsers are also working on applying isolation to the use of the <code class="kw" translate="no">dir</code> attribute by default.)</p>
 </section>
-<section>
-  <h3 id="problems"><a href="#problems">Unicode controls <em>are</em> needed for plain text</a></h3>
+<section id="problems">
+<h3>Unicode controls <em>are</em> needed for plain text</h3>
     <p>Apart from formats that are based on plain text rather than markup, there are also places in an HTML or XML file where markup cannot be used, and the Unicode formatting  characters are therefore
       the only recourse. </p>
     <p>It is not possible to apply directional markup to attribute values, so any text in attributes will need to use Unicode characters to
@@ -114,8 +113,8 @@ f.additionalLinks = ''
     <p>For advice on how to use Unicode control characters in these cases, see <cite><a href="/International/questions/qa-bidi-unicode-controls">How to use Unicode controls for bidi text</a></cite>.</p>
   </section>
   
-<section>
-  <h3 id="exceptions"><a href="#exceptions">RLM and LRM characters</a></h3>
+<section id="exceptions">
+<h3>RLM and LRM characters</h3>
     <p>Two other invisible but non-paired directional control characters provided by Unicode do not usually have corresponding markup. These characters are less problematic because they are used singly, not in pairs to delimit ranges
       of text like the other control characters we have discussed. </p>
   <ul>
@@ -124,8 +123,13 @@ f.additionalLinks = ''
     </ul>
     <p>If you tightly wrap opposite-direction phrases with isolating markup there are few places, if any, where you would need to use these two characters. For more on this, see <a href="/International/articles/inline-bidi-markup/"><cite>Inline markup and bidirectional text in HTML</cite>.</a></p>
 </section>
-<section>
-  <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+</section>
+
+
+
+
+<section id="endlinks">
+<h2>Further reading</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 <ul id="full-links">
   <li>
@@ -144,7 +148,7 @@ f.additionalLinks = ''
 </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>
