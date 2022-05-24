@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Strings and bidi</title>
 <meta name="description" content="How to set text vertically using CSS for Japanese, Chinese and Mongolian." />
-<script type="application/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,16 +32,18 @@ f.breadcrumb = 'styling'
 
 f.additionalLinks = ''
 </script>
-<script type="application/javascript" src="index-data/translations.js"> </script>
-<script type="application/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
-<script type="application/javascript" src="../../javascript/boilerplate-text/boilerplate-en.js"> // TRANSLATORS must change -en to the subtag for their language! </script>  
-<script type="application/javascript" src="../../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
-<link rel="stylesheet" href="index-data/local.css" type="text/css" />
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<style type="text/css">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+<link rel="stylesheet" href="index-data/local.css">
+<style>
 .figWrap figure.card { 
 	text-align: start; 
 	background-color: rgba(249,237,221,1.00);
@@ -88,23 +90,24 @@ h2 {
 <h1>Strings and bidi</h1>
 </header>
 
-<section>
     <div id="audience"> 
-        <p><span id="intendedAudience" class="leadin">Intended audience:</span>  authors of HTML and other markup, JavaScript coders,  spec developers dealing with strings, and anyone who  needs to better understand what problems can arise when using the same strings in different directional contexts.</p>
         <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
-    
-    <p>This article illustrates  problems that can arise when strings are inserted into text and then displayed to users in different directional contexts: left-to-right (LTR) vs. right-to-left (RTL).</p>
-  <p class="note" style="clear:none;"><strong>Nota bene!</strong> The examples on this page are not intended to show you how to write code to handle bidi strings. They are simply meant to illustrate certain causes and effects.</p>
-  <p>Red, circled digits indicate places where there are problems. Look at the  list item with the same number (below the example) to find an explanation of the issue at hand.</p>
-  <p>The example cards were actually generated using scripting, however we have  converted the examples to images in this page, to ensure you see what is intended. You can click on the &quot;Test in your browser&quot; links to see live examples.</p>
+
+<p>This article illustrates  problems that can arise when strings are inserted into text and then displayed to users in different directional contexts: left-to-right (LTR) vs. right-to-left (RTL).</p>
+<p class="note" style="clear:none;"><strong>Nota bene!</strong> The examples on this page are not intended to show you how to write code to handle bidi strings. They are simply meant to illustrate certain causes and effects.</p>
+<p>Red, circled digits indicate places where there are problems. Look at the  list item with the same number (below the example) to find an explanation of the issue at hand.</p>
+<p>The example cards were actually generated using scripting, however we have  converted the examples to images in this page, to ensure you see what is intended. You can click on the &quot;Test in your browser&quot; links to see live examples.</p>
 <p class="info">For a more in-depth discussion of the issues illustrated here, and possible solutions, see <a href="https://www.w3.org/TR/string-meta/"><cite>Strings on the Web: Language and Direction Metadata</cite></a>.</p>
-</section>
-<section> 
-<h2 id="writing-mode"><a href="#writing-mode">The strings</a></h2>
+
+
+
+
+<section id="writing-mode">
+<h2>The strings</h2>
 <p>The strings we'll use represent data from a single book record. Here they are:</p>
 <figure class="example">
-<pre>{
+<pre><code class="language-javascript">{
 "isbn":         "978-0-1234-5678-7",
 "title":        "CSS: A new adventure!",
 "translations": [
@@ -123,14 +126,14 @@ h2 {
 "reviews":      [{"name":"Alan", "score":4}, 
                  {"name":"أحمد", "score":5}
                  ]
-}</pre>
+}</code></pre>
 </figure>
 </section>
         
         
         
-<section> 
-<h2 id="upright"><a href="#upright">Presented in English</a></h2>
+<section id="upright">
+<h2>Presented in English</h2>
 <p>Here we take the strings, programmatically, and simply add them to <code class="kw" translate="no">span</code> elements in an HTML template for viewing by a British user.	</p>
 <div class="figWrap">
   <figure class="card">
@@ -154,8 +157,8 @@ h2 {
 </section>
         
         
-<section> 
-<h2 id="tcy"><a href="#tcy">Presented in Arabic, with no special steps</a></h2>
+<section id="tcy">
+<h2>Presented in Arabic, with no special steps</h2>
 
 <p>Here we add the strings to a template that applies no extra information around the strings when it inserts them. This is an Arabic template, and the overall direction is RTL.</p>
 
@@ -194,8 +197,8 @@ h2 {
 
 
 
-<section> 
-<h2 id="isolation"><a href="#isolation">Presented in Arabic, with isolation</a></h2>
+<section id="isolation">
+<h2>Presented in Arabic, with isolation</h2>
 
 <p>Here we add <code class="kw" translate="no">bdi</code> elements around each string as it is inserted into the HTML. The <code class="kw" translate="no">bdi</code> element isolates the string directionally from its surroundings, and sets the string's base direction to that of the first strong directional character in the string.</p>
 
@@ -229,8 +232,8 @@ h2 {
 
 
 
-<section> 
-<h2 id="third"><a href="#third">Presented in Arabic, third attempt</a></h2>
+<section id="third">
+<h2>Presented in Arabic, third attempt</h2>
 
 <p>For this third attempt we resort to a couple of additional strategies to fix the remaining problems.</p>
 
@@ -266,8 +269,8 @@ h2 {
   <p>It may be worthwhile to reflect a little on the three strategies employed for item 2.</p>
   
   
-  <section>
-  <h3 id="rlmmarker"><a href="#rlmmarker">Adding an RLM marker</a></h3>
+  <section id="rlmmarker">
+<h3>Adding an RLM marker</h3>
   <p>Putting an RLM at the start of a string that would otherwise be incorrectly interpreted, seems like a simple fix. It does, however, change the identity of the string, which may be a concern. The other question it raises is how that RLM got there.</p>
   <p>It is unlikely that users will add RLMs to strings when they create them. The mechanics of such characters are not well understood by many users (how many English-speaking people do you know who would be able to use an LRM in the converse situation?), and actually keyboards on mobile devices generally don't even provide them. Moreover, if a user is typing in the book name into, say, an HTML page where the form they are using inherits a <code class="kw" translate="no">dir=&quot;rtl&quot;</code> setting, they won't see any need to use an RLM, since the text will look fine to them without one (because the form they are using is applying a RTL base direction).</p>
   <p>If the application which stores the string can detect the directional context in which it was created, it would be able to then add an RLM to the beginning of the string automatically. There are dangers here, though, besides that of changing the identity of the string. For example, the application may not make the right assumption sometimes, and may fail to detect the original directional context in others.</p>
@@ -275,14 +278,14 @@ h2 {
 </section>
   
   
-<section>
-  <h3 id="directionfield"><a href="#directionfield">Using a direction field</a></h3>
+<section id="directionfield">
+<h3>Using a direction field</h3>
   <p>Adding an additional field to the JSON to store the directional information of problematic bidi strings may avoid some of the latter problems. However, it is even less likely that users will create this metadata at the same time as they create the string, so we will again need to rely on the application which stores the string to detect the original directional context and store that in the <code class="kw" translate="no">direction</code> property. (HTML5 provides a mechanism for that, by the way, with <code class="kw" translate="no">dirname</code>.) It does, however, create an overhead for the complexity of the data and the application consuming that data, which has to be aware of the existence of the direction value-pair, and know what to do with it.</p>
 </section>
   
   
-<section>
-  <h3 id="languagelookup"><a href="#languagelookup">Language-direction lookup</a></h3>
+<section id="languagelookup">
+<h3>Language-direction lookup</h3>
   <p>For the hebrew translation, to guess at the required direction we took advantage of the fact that we had information about the language of the text, and that we know that Hebrew is typically written with a RTL script.</p>
   <p>In the general case, such as in an HTML document, it's  <strong>actually a bad idea</strong> to rely on language information to apply direction because <code class="kw" translate="no">lang</code> and <code class="kw" translate="no">dir</code> tags have very different uses and effects. In this particular case, we got lucky because the usage is unspecific.</p>
   <p>An obvious drawback of this approach is that it relies on language information being available. Another drawback of this approach is that every time an application wants to use a string that will be viewed by a user it needs to do a lookup, to see whether the language corresponds to a RTL script.</p>
@@ -291,8 +294,8 @@ h2 {
 	</section>
 </section>
  
- <section> 
- <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+ <section id="endlinks">
+<h2>Further reading</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
     <ul id="full-links">

@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Ustawianie informacji dotyczącej kodowania znaków w .htaccess</title>
 <meta name="description" content="Jak używać dyrektyw .htaccess na Apache do serwowania dokumentów z pożądanym kodowaniem znaków?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,14 +32,14 @@ f.breadcrumb = 'characters'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-htaccess-charset-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-pl.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<script src="qa-htaccess-charset-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-pl.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 
 <body>
@@ -50,20 +50,18 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
-  <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    webmasterzy i każdy kto potrzebuje pomocy na temat zmian dyrektyw po stronie serwera na  Apache dotyczących kodowania znaków w nagłówkach HTTP. Należy posiadać uprawnienia dostępu, aby takowe zmiany wprowadzać. Użytkownicy, którzy nie maja odpowiedniego przeszkolenia technicznego, powinni zwracać się do swoich usługodawców hostingowych lub osób, które zajmują się obsługą serwera. </p>
+<div id="audience">
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
-  <h2 id="question"><a href="#question">Question</a></h2>
+<section id="question">
+  <h2>Pytania</h2>
     <p class="question">Jak używać dyrektyw  .htaccess na serwerze Apache do wysyłania plików z określonym kodowaniem znaków?</p>
-  </section>
+</section>
 
 
-<section>
-  <h2 id="background"><a href="#background">Tło informacyjne</a></h2>
+<section id="background">
+<h2>Tło informacyjne</h2>
   <p>Ważnym jest aby upewnić się, że informacja o kodowaniu znaków wysyłana przez serwer jest poprawna, ponieważ informacje w nagłówku HTTP są nadrzędne w stosunku do informacji w znacznikach meta dokumentu. </p>
   <p>Wiele serwerów  Apache jest skonfigurowana do przesyłania plików z kodowaniem ISO-8859-1 (Latin-1). W poniższym dokumencie, zakładamy, że webmaster chciałby podawać pliki z innym kodowaniem niż domyślne. (Porady dotyczące kodowania dostępne są w tutorialu <a class="print" href="/International/questions/qa-choosing-encodings"><cite>Choosing &amp; applying a character encoding</cite></a>.)</p>
   <p>Poniżej zamieszczony jest przykład nagłówka  HTTP, który serwowany jest przeglądarkom. W tym przypadku, kodowanie znaków jest zawarte w nagłówku  Content-Type na drugiej linii of końca.</p>
@@ -92,13 +90,13 @@ Content-Language: en</pre>
 </section>
 
 
-<section>
-  <h2 id="answer"><a href="#answer">Answer</a></h2>
+<section id="answer">
+<h2>Odpowiedź</h2>
   <p>Istnieje tutaj kilka możliwych scenariuszy. Po pierwsze, można zmienić ustawienia domyślne dla wszystkich plików dla danej ścieżki z takim samym rozszerzeniem. Można również zmienić ustawienia domyślne dla pojedynczych plików lub grupy plików. </p>
   <p>W przykładach zakładamy, że domyślna konfiguracja plików serwera to  ISO-8859-1 i że webmaster chce zmienić te ustawienia na UTF-8 ( jest to rozsądna strategia!).</p>
   
-  <section>
-    <h3 id="scope"><a href="#scope">Czy znajdziesz tu to czego szukasz?</a></h3>
+  <section id="scope">
+<h3>Czy znajdziesz tu to czego szukasz?</h3>
     <p>Artykuł jest napisany z myślą o autorach treści a nie administratorach systemu. Ustawianie domyślnego kodowania znaków serwera nie jest podmiotem tego artykułu. </p>
     <p>Porady zawarte w ponższym dokumencie są przeznaczone jedynie dla tych, którzy chcą zmienić kodownaie znaków poprzez nagłówek  HTTP. W niektórych przypadkach <a class="print" href="/International/tutorials/tutorial-char-enc/#declaring">może to nie być właściwym rozwiązaniem</a>.</p>
     <p>Niniejższy dokument również zakłada, że serwer pozwala na dostęp do <a
@@ -107,8 +105,8 @@ Content-Language: en</pre>
     <p>Jeśli poniższe przykłady nie odniosą pożądanego skutku, można odwołać się do instrukcji  Apache (<a href="#endlinks">linki</a>) lub skonsultować się z administratorem serwera. </p>
   </section>
   
-  <section>
-    <h3 id="extension"><a href="#extension">Określenie za pomocą rozszerzenia</a></h3>
+  <section id="extension">
+<h3>Określenie za pomocą rozszerzenia</h3>
     <p>Użycie dyrektyw <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a> do kojarzenia kodowania znaków ze wszystkimi plikami o określonem rozszerzeniu w <em>folderze i podfolderach</em>. Na przykład, podawanie wszystkich plików z rozszerzeniem  .html jako UTF-8. W tym celu należy otworzyc plik  .htaccess w edytorze i dodać nastepującą linię:</p>
     <div class="example">
       <blockquote>
@@ -143,8 +141,8 @@ Content-Language: en</pre>
     </div>
   </section>
   
-  <section>
-    <h3 id="odd"><a href="#odd">Zmiana poszczególnych plików</a></h3>
+  <section id="odd">
+<h3>Zmiana poszczególnych plików</h3>
     <p>Załóżmy, że chcemy serwować tylko jeden plik z kodowaniem   UTF-8 znajdujący się w dużym folderze gdzie inne pliki podawane są jako ISO-8859-1. Plik, który podajemy w  UTF-8 nazywa się nazwa.html. Otwieramy plik .htaccess w edytorze i dodajemy następujący kod:</p>
     <div class="example">
       <blockquote>
@@ -167,8 +165,8 @@ ForceType 'text/html; charset=UTF-8'
     <p><strong>Uwaga:</strong> Pliki o tej samej nazwie w podfolderach będą również podawane jako  UTF-8, chyba, że stowrzy się przeciwną dyrektywę dla danych podfolderów.</p>
   </section>
   
-  <section>
-    <h3 id="more"><a href="#more">Bardziej skomplikowane scenariusze</a></h3>
+  <section id="more">
+<h3>Bardziej skomplikowane scenariusze</h3>
     <p>Kiedy dwie reguły dotyczące rozszerzeń odnoszą się do tego samego dokumentu, kolejność jest istotna. Dlatego w poniższym przykładzie:</p>
     <div class="example">
       <blockquote>
@@ -182,8 +180,8 @@ AddCharset windows-1252 .html
 </section>
 
 
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Warto przeczytać</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
@@ -214,7 +212,7 @@ AddCharset windows-1252 .html
   </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>
