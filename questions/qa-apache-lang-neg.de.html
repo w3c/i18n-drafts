@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Einrichtung von MultiViews-Sprachvereinbarung auf Apache</title>
 <meta name="description" content="Wie setze ich MultiViews auf einem Apache-Webserver ein, um Ressourcen automatisch in der per HTTP-Request angefragten Sprache auszuliefern?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,14 +32,14 @@ f.breadcrumb = 'characters'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-apache-lang-neg-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<script src="qa-apache-lang-neg-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-de.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 
 <body>
@@ -50,21 +50,17 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
-  <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    Webmaster, Server-Administratoren und alle, die besser verstehen möchten, wie Inhaltsvereinbarung (Sprachvereinbarung) auf dem Apache-Server gemacht wird</p>
+<div id="audience">
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
 
-  <h2 id="question"><a href="#question">Question</a></h2>
+<section id="question">
+<h2>Frage</h2>
     <p class="question">Wie setze ich MultiViews auf einem Apache-Webserver ein, um Ressourcen automatisch in der per HTTP-Request angefragten Sprache auszuliefern?</p>
-  </section>
 
 
-<section>
-  <h2 id="background"><a href="#background">Background</a></h2>
-  <p>Wenn ein Browser ein Dokument von einem Server anfragt, wird üblicherweise die Information über die vom Nutzer bevorzugten Sprachen im
+
+<p>Wenn ein Browser ein Dokument von einem Server anfragt, wird üblicherweise die Information über die vom Nutzer bevorzugten Sprachen im
     HTTP-Accept-Language-Header zum Server geschickt. Wenn der Server eine Webseite in mehr als einer Sprachversion vorrätig hat, kann diese HTTP-Information dazu benutzt werden,
     dass der Nutzer die Webseite in seiner bevorzugten Sprache erhält, wenn diese verfügbar ist. Wenn es nur eine Version auf dem Server gibt, wird diese ausgeliefert.</p>
   <p>Der Mechanismus, dem Nutzer anhand der Accept-Language-Information im HTTP-Request die für ihn relevante Seite auszuliefern, wird <dfn>Sprachvereinbarung</dfn> (engl. <dfn lang="en">language negotiation</dfn>) genannt.</p>
@@ -78,8 +74,8 @@ f.additionalLinks = ''
 </section>
 
 
-<section>
-  <h2 id="answer"><a href="#answer">Answer</a></h2>
+<section id="answer">
+<h2>Antwort</h2>
   <p>Bedenken Sie zuerst, dass Sprachvereinbarung der beste Ansatz sein kann oder auch nicht, um Ihre mehrsprachigen Inhalte an Ihre Leser zu bringen.
     In einigen Fällen können lokalisierte Websites bspw. am besten gehandhabt werden, indem man die übersetzten Versionen einer Website in verschiedenen Verzeichnissen voneinander getrennt hält
     oder indem man beide Ansätze kombiniert. Welcher Ansatz der jeweils passende ist, wird Thema eines zukünftigen Artikels sein.</p>
@@ -99,8 +95,8 @@ f.additionalLinks = ''
   <p>Wir verwenden folgendes Beispiel: Ein Dokument example.html sei in 3 Sprachen verfügbar: englisch, französisch und deutsch, die
     Voreinstellung sei englisch. Obwohl sich das Beispiel auf .html-Dateien beschränkt, kann Sprachvereinbarung auch bei anderen Dateitypen angewandt werden.</p>
 
-  <section>
-    <h3 id="naming"><a href="#naming">Dateinamen</a></h3>
+  <section id="naming">
+<h3>Dateinamen</h3>
     <p>Jede Sprache wird durch eine spezielle Dateiendung angezeigt, die vor oder nach der Endung .html stehen kann. Bei der Anwendung muss man
       einige Überlegungen zur Position dieser Dateiendung anstellen.</p>
     <p>Wenn die Sprach-Endung als letztes steht, kann die Datei mit oder ohne .html-Endung angefordert werden. Das kann es allerdings erschweren,
@@ -130,8 +126,8 @@ f.additionalLinks = ''
       unabhängig von den Spracheinstellungen des Nutzers.</p>
   </section>
 
-  <section>
-    <h3 id="directives"><a href="#directives">Server-Direktiven</a></h3>
+  <section id="directives">
+<h3>Server-Direktiven</h3>
     <p>Normalerweise verwendet man die <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_mime.html#addlanguage">AddLanguage</a></span>-Direktive um
       anzugeben, welche Dateiendung mit welcher per HTTP für den Inhalt angegebenen Sprache verknüpft ist.</p>
     <p>Die folgene Direktive verknüpft z.B. den HTTP-Request nach Inhalt auf Französisch mit der Dateiendung .fr: </p>
@@ -143,8 +139,8 @@ f.additionalLinks = ''
       Solch eine Datei heißt üblicherweise <code class="kw" translate="no">.htaccess</code>.</p>
   </section>
 
-  <section>
-    <h3 id="defaults"><a href="#defaults">Default-Dateien</a></h3>
+  <section id="defaults">
+<h3>Default-Dateien</h3>
     <div class="sidenoteGroup">
       <p>Es ist wichtig, eine Default-Datei festzulegen, denn Nutzer, die weder Englisch noch Französisch noch Deutsch in der Liste ihrer
         bevorzugten Sprachen haben (z.B. ein spanischer Nutzer), oder deren Nutzerprogramm (Browser) keine Inhaltsvereinbarung unterstützt, würden sonst einen HTTP-Fehler 406
@@ -160,8 +156,8 @@ f.additionalLinks = ''
       Wahl für einen Default angesichts dessen, wie weit verbreitet Englisch ist).</p>
   </section>
 
-  <section>
-    <h3 id="specdef2"><a href="#specdef2">Default-Dateien in Apache ab 2.0.30 festlegen</a> </h3>
+  <section id="specdef2">
+<h3>Default-Dateien in Apache ab 2.0.30 festlegen </h3>
     <p>Ab Version 2.0.30 gibt es auf Apache-Servern eine saubere Lösung, um eine Default-Datei festzulegen: die Direktiven <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_negotiation.html#forcelanguagepriority">ForceLanguagePriority</a></span> und <span class="kw"><a class="print" href="http://httpd.apache.org/docs-2.0/mod/mod_negotiation.html#languagepriority">LanguagePriority</a></span>. (Folgen Sie den Links
       zu ausführlichen Beschreibungen, wie diese Direktiven arbeiten).</p>
     <p>Für das obige Beispiel können wir durch folgende zwei Zeilen den Default auf Englisch setzen:</p>
@@ -173,8 +169,8 @@ f.additionalLinks = ''
       ausgeliefert, d.h. das, was als erstes in der <code class="kw" translate="no">LanguagePriority</code>-Liste steht.</p>
   </section>
 
-  <section>
-    <h3 id="specdef1"><a href="#specdef1">Default-Dateien in Apache 1.3.4 bis 2.0.29 festlegen</a></h3>
+  <section id="specdef1">
+<h3>Default-Dateien in Apache 1.3.4 bis 2.0.29 festlegen</h3>
     <p>Wenn die Server-Version älter als 2.0.30 ist, hat man mehr Arbeit damit, die Default-Datei festzulegen, denn die <code class="kw" translate="no">ForceLanguagePriority</code>-Direktive steht nicht zur Verfügung. Das Vorgehen hängt dann davon ab, ob die Sprach-Endung vor oder hinter der .html-Endung
       steht.</p>
     <p>Betrachten wir zuerst den Fall, dass die Sprach-Endung vor der .html-Endung steht (die Ressource also immer ohne die .html-Endung
@@ -194,8 +190,8 @@ f.additionalLinks = ''
 </section>
 
 
-<section>
-  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+<section id="bytheway">
+<h2>Übrigens</h2>
   <p>Wenn es in einem Verzeichnis nur eine Datei mit einem bestimmten Namen gibt und sie keine Sprach-Endung hat, dann wird diese ausgeliefert,
     unabhängig von den bevorzugten Sprachen des Nutzers.</p>
   <p>Diese Technik kann auch für andere Dateitypen als HTML angewandt werden. Wir haben HTML hier als Beispiel verwendet, weil dies ein oft auftretender Fall
@@ -203,8 +199,8 @@ f.additionalLinks = ''
 </section>
 
 
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Literaturhinweise</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
@@ -231,7 +227,7 @@ f.additionalLinks = ''
   </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>
