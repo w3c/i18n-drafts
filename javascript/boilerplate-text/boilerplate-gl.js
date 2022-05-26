@@ -52,7 +52,7 @@ s.examplesInAnotherScript = "Este documento contén exemplos noutro idioma/scrip
 s.worldMap = "Mapa mundial"
 s.searchI18nSite = "Procura no sitio de I18n"
 s.translationDisclaimer = 'Este documento é unha tradución proporcionada por un voluntario/voluntaria. No caso de ter algunha discrepancia ou erro, o <a href="'+f.filename+'.en">último texto orixinal en inglés</a> será o que prevaleza.<a href="#copyright">. O copyright orixinal</a> pertence á W3C, como aparece abaixo.'
-s.translator = "Tradutor/tradutora:"
+s.translator = "Traducido por:"
 s.relatedLinks = "Ligazóns relacionadas"
 s.articles = "Artigos" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Temas indexados"
@@ -108,7 +108,7 @@ s.sentenceDelimiter = "."
 s.author = "De:" // followed by name of author(s)
 s.previousAuthors = "Previamente por:" // followed by name of previous author(s), before substantive changes were made by the current author
 s.modifiedBy = "Cambiado por:" // person's name appears after colon
-s.translatedBy = "Tradutor/tradutora:"
+s.translatedBy = "Traducido por:"
 s.validXHTML = "XHTML 1.0 válido!"
 s.validCSS = "CSS válido!"
 s.codedInUtf8 = "Codificado en UTF-8!"
