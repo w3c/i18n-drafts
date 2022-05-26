@@ -136,12 +136,12 @@ var mainNavigation = '<aside id="mainNavigationAside">'+
 
 
 '	<div id="sitelinks" class="noprint">'+
-'	<bdi><a href="'+base+'nav/learn" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="'+base+'nav/find" title="'+s.informationResources+'">'+s.resources+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="'+base+'nav/ask" title="'+s.askI18nActivity+'">'+s.ask+'</a></bdi>&#xA0;'+s.rlm+ 
-'	<bdi><a href="'+base+'nav/follow" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="'+base+'nav/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+ 
-'	<bdi><a href="'+base+'nav/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+ 
+'<bdi><a href="'+base+'nav/learn" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>'+s.rlm+
+'<bdi><a href="'+base+'nav/find" title="'+s.informationResources+'">'+s.resources+'</a></bdi>'+s.rlm+
+'<bdi><a href="'+base+'nav/ask" title="'+s.askI18nActivity+'">'+s.ask+'</a></bdi>'+s.rlm+ 
+'<bdi><a href="'+base+'nav/follow" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>'+s.rlm+
+'<bdi><a href="'+base+'nav/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>'+s.rlm+ 
+'<bdi><a href="'+base+'nav/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>'+s.rlm+ 
 
 '	&#xA0; </div>'+
 //' <div id="line">&#xA0;</div>'+
