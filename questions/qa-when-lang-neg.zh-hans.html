@@ -86,68 +86,48 @@ f.additionalLinks = ''
     
   <section>
     <h3 id="overrides"><a href="#overrides">弥补不足</a></h3>
-    <p>尽管有其局限性，语言协商仍然是一个有用的功能，我们也希望在多语言站点中实现它。但是，我们必须设法弥补语言协商的不足。简而言之，重要的是为访问者提供在语言协商结果不正确时<strong>覆盖</strong>自动选择的语言的方法。这意味着在页面中放置可以链接到其他语言的组件（我们在这里将它们称为语言控件）。当然，这些控件对不熟悉当前页面语言的用户来说必须要清晰易懂。</p>
+    <p>尽管有其局限性，语言协商仍然是一个有用的功能，我们也希望在多语言站点中实现它。但是，我们必须设法弥补语言协商的不足。简而言之，重要的是为访问者提供在语言协商结果不正确时<strong>覆盖</strong>自动选择的语言的方法。这意味着在页面中放置可以链接到其他语言的组件（我们在这里将它们称为<strong>语言控件</strong>）。当然，这些控件对不熟悉当前页面语言的用户来说必须要清晰易懂。</p>
     <p>那么问题来了：我们应该对所有页面实现语言协商和手动语言控制，还是只对主页实施？最好的答案是“所有页面”，除了那些不够<a href="#equivalence">等价</a>的页面以外。语言协商很好，因为如果Jaap将www.example.be网站上的链接通过电子邮件发送给Pierre，即使Jaap访问的是佛兰德语版的页面，Pierre看到了法语版也会很高兴。无论是否实现语言协商，网站都必须提供语言控制。如果没有协商，Pierre将需要手动从Jaap的链接切换到法语版本；即使有语言协商，Sylvia也需要在上述情况2和3中手动切换到德语。</p>
     <p>顺便说一句，当用户偏好与网站的可用语言不匹配时，一些网站会选择返回一个专门的语言选择页面（www.example.be可以这样做而不是返回佛兰德语）。这样做的好处是可以清楚地说明情况，并且不会让一种语言优先于其他语言，因为这可能是一个政治敏感问题。然而，有些网站总是返回这个语言选择页面（用于主页）而不是实现语言协商。这会迫使每个人总是浏览该页面，却没有提供明显的优势，这样对用户不够友好。</p>
   </section>
     
   <section>
-    <h3 id="stickyness"><a href="#stickyness">Navigation</a></h3>
-    <p>Suppose Sylvia visits www.example.be and gets Flemish (situation 2 or 3). She then clicks on the German control and reads on, no real
-      trouble. But she then clicks on a link to get to an interesting page within the site. Oops, Flemish again! Fortunately, the German control is still
-      there, but after a couple of such detours she's getting understandably frustrated. Can't www.example.be just remember that she can't read Flemish?
-      What is needed here is some <em>stickyness</em> of the explicit language selection.</p>
-    <p>There are a couple of ways that www.example.be can provide this stickyness. Which one to choose will depend on the underlying
-      technology available on the server and on the level of effort that can be expended.</p>
-    <p>If the site implements a <em>session</em> mechanism (for instance using <a class="print" href="ftp://ftp.rfc-editor.org/in-notes/rfc2965.txt">cookies</a>), then it is a fairly simple matter to arrange for language to be part of the
-      session state. Once Sylvia clicks on the German control, this gets stored (either in the cookie itself or in the server, to be matched by a <em>session number</em> in the cookie) and from then on she gets German when navigating the site. The cookie can even be made persistent (although
-      this makes privacy issues more acute), so that Sylvia gets German pages automatically the next time she returns to www.example.be. Sites that provide
-      a login mechanism can also store language preferences as part of each user's profile, and serve pages accordingly. Language negotiation is then used
-      only for users that have not yet logged in.</p>
+    <h3 id="stickyness"><a href="#stickyness">页面导航</a></h3>
+    <p>假设Sylvia访问www.example.be后看到的是佛兰德语页面（情况2或3），然后切换到德语并继续阅读，这不算太麻烦。但她随后点了一个链接以访问该站点中一个有趣的页面。哎呀，又是佛兰德语！幸运的是，她还可以切换到德语。但经过几次这样的弯路之后，她感到沮丧也是可以理解的。难道www.example.be就不能记住她不懂读佛兰德语吗？这里需要的是显式语言选择的<strong>粘性</strong>。</p>
+    <p>www.example.be可以通过多种方式来实现这种粘性。选择哪一个将取决于服务器端的底层技术以及可花费的时间。</p>
+    <p>如果站点实现了会话（session）机制（例如使用<a class="print" href="https://www.rfc-editor.org/info/rfc6265">cookie</a>），那么把语言变成会话状态的一部分是一件相当简单的事情。一旦Sylvia切换到了德语，她的选择就会被存储（在cookie本身或服务器中，以与cookie中的<strong>会话号</strong>匹配），从那时起，她在浏览的网页就会是德语版的。我们甚至可以使cookie持久化（尽管这会使隐私问题更加严重），以便Sylvia下次返回www.example.be时自动获取德语页面。有登录机制的站点还可以将语言偏好存储为用户设置的一部分，并相应地提供正确语言的页面，而语言协商仅用于没有登录的用户。</p>
     <div class="sidenoteGroup">
-      <p>Another way to diminish frustration is to make all internal links within the site be <em>language-specific</em>. In the German home
-        page, links to deeper pages would be of the form <code>href="company/about<b>.de</b>.html"</code> (instead of <code>company/about.html</code>, which
-        would be <em>language-generic</em>)*. Navigation is then constrained to remain in German, until overriden by the special language controls. This has
-        a couple of downsides, however. One is that all internal links become translatable material, increasing the cost of translation as well as the
-        potential for errors. Another is that if Jaap sends a link to Pierre, the URL (picked up from the browser's address bar) will be language-specific;
-        Pierre will then get the Flemish page. Neither of these downsides are horrible, however, so using language-specific links is probably the way to go
-        if stickyness cannot be provided through a session state or profile mechanism.</p>
-      <aside class="sideinfonote"><p class="footnote">Note that the particular forms of language-specific and language-generic URLs shown here
-        (company/about<b>.de</b>.html vs company/about.html) depend on the technology used on the server side to implement language negotiation. Using <a class="print" href="/International/questions/qa-apache-lang-neg">Apache MultiViews</a>, one would rather see company/about.html<b>.de</b> and company/about.html or, forgoing the
-        .html extension entirely, company/about<b>.de</b> and company/about.</p></aside>
+      <p>另一种减少用户挫败感的方法是把站点内的所有内链都变为<strong>语言特定的链接</strong>。在德语主页中，指向更深页面的链接将采用<code>href="company/about<b>.de</b>.html"</code>的形式（而不是<code>company/about.html</code>，因为这是一个<strong>各语言通用的链接</strong>）*。然后页面间跳转就被限制为了德语，直到被语言控件覆盖。然而这种方法有两个缺点。一是所有的内部链接都变成了可翻译的材料，增加了翻译成本以及出错的可能性。另一个是如果Jaap向Pierre发送链接，则从浏览器的地址栏中获取到的链接将是特定语言的，Pierre就会打开佛兰德语的页面。不过，这些缺点都不是致命的，在无法通过会话状态或用户设置机制提供粘性时，使用语言特定链接可能是一个可行的方案。</p>
+      <aside class="sideinfonote"><p class="footnote">请注意，此处提到的语言特定和各语言通用的链接的特定形式取决于服务器端用于实现语言协商的技术。使用<a class="print" href="/International/questions/qa-apache-lang-neg">Apache MultiViews</a>，用户看到的是company/about.html<b>.de</b>和company/about.html，或者完全放弃.html扩展名，也就是company/about<b>.de</b>和company/about。</p></aside>
     </div>
   </section>
 </section>
 
 
 <section>
-  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
-  <p>The HTTP <code class="kw" translate="no">Accept-Language</code> header is not the only source of language information available. All browsers also send a <code class="kw" translate="no">User-Agent</code> header identifying the browser's make, version number and in some cases language version. This can be used to guess at the
-    user's preferred language if the <code class="kw" translate="no">Accept-Language</code> header is missing, but it is less reliable and more limited (one language only) than
-    Accept-Language. Use with extreme care.</p>
-  <p>Language negotiation is only one aspect of HTTP content negotiation. Other aspects that can be automatically negotiated are the media
-    type (i.e. the format: HTML, PDF or plain text for instance), the character encoding and the transfer encoding (encrypted, compressed, etc.).
-    Language negotiation is the most useful and most used.</p>
+  <h2 id="bytheway"><a href="#bytheway">顺便一提</a></h2>
+  <p>HTTP <code class="kw" translate="no">Accept-Language</code>头不是用户可使用的语言信息的唯一来源。浏览器还会发送<code class="kw" translate="no">User-Agent</code>头，包含浏览器的品牌、版本号，在某些情况下还包括语言版本。在缺少<code class="kw" translate="no">Accept-Language</code>头的情况下，<code class="kw" translate="no">User-Agent</code>可用于猜测用户的首选语言，但它比<code class="kw" translate="no">Accept-Language</code>更不可靠且更受限制（仅限一种语言），所以在使用时需要格外小心。</p>
+  <p>语言协商只是HTTP内容协商的一个方面。其他可以自动协商的包括媒体类型（也就是格式，如HTML、PDF或纯文本）、字符编码和传输编码（加密、压缩等）。语言协商是最有用和最常用的。</p>
 </section>
 
 
 <section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<h2 id="endlinks"><a href="#endlinks">扩展阅读</a></h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
     <li>
-      <p><a href="qa-lang-priorities"><cite> Setting language preferences in a browser</cite></a> </p>
+      <p><a href="qa-lang-priorities"><cite>在浏览器中设置语言首选项</cite></a> </p>
     </li>
     <li>
-      <p><a href="qa-apache-lang-neg"><cite> Apache MultiViews language negotiation set up</cite></a> </p>
+      <p><a href="qa-apache-lang-neg"><cite>Apache MultiViews语言协商设置</cite></a> </p>
     </li>
     <li>
-      <p>Related links, <cite>Setting up a server</cite></p>
+      <p>配置服务器的相关链接</p>
       <ul>
-      <li><a href="/International/techniques/server-setup#language">Language</a></li>
-      <li><a href="/International/techniques/server-setup#multiviews">Setting up MultiViews language negotiation on Apache</a></li>
-      <li><a href="/International/techniques/server-setup#langvalues">Choosing language values</a></li>
+      <li><a href="/International/techniques/server-setup#language">语言</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">在Apache上设置MultiViews语言协商</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">选择语言值</a></li>
       </ul>
     </li>
   </ul>
