@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Зачем использовать атрибут языка?</title>
 <meta name="description" content="Почему я должен использовать атрибут языка на веб-страницах?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,14 +32,16 @@ f.breadcrumb = 'language'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-lang-why-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<script src="qa-lang-why-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-ru.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
 </head>
 
 <body>
@@ -50,14 +52,12 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
   <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    шифровальщики HTML (используя редакторы или скрипты), разработчики скриптов (PHP, JSP, и т.д.), и каждый, кто задается вопросом, почему он должен использовать языковые атрибуты в HTML.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
   </div>
     
-  <h2 id="question"><a href="#question">Question</a></h2>
+ <section id="question">
+<h2>Вопрос</h2>
   <p class="question">Почему я должен использовать атрибут языка на веб-страницах?</p>
 
   <p>Атрибут <code class="kw" translate="no">lang</code> (или иногда атрибут <code class="kw" translate="no">xml:lang</code> ) указывает естественный язык контента веб страницы. Атрибут в <code class="kw" translate="no">html</code> тэге устанавливает язык для всего текста на странице. Если часть страницы использует текст на разных языках, то вы можете добавить к элементу что окружает тот контент языковой атрибут с разными значениями. Для получения информации о том, как использовать языковые атрибуты смотрите <a class="print" href="/International/questions/qa-html-language-declarations"><cite>Назначение языка в HTML</cite></a>.</p>
@@ -65,33 +65,35 @@ f.additionalLinks = ''
 
 
 <section id="nutshell">
-    <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+    <h2 id="quickanswer">В двух словах</h2>
   <p>Определение языка вашего контента позволяет автоматически сделать ряд вещей, от изменения внешнего вида и поведения страницы, к добыванию информации, изменению способа работы приложения. Некоторые из языковых программ работают на уровне документа в целом, некоторые работают с соответствующими отмеченными фрагментами документа.</p>
   <p>Лучше всего
     добавить информацию о языке к вашему контенту сейчас для того, чтобы пожинать плоды тогда, когда появятся новые разработки. Это легко сделать при создании контента, но сложнее модернизировать позже.</p>
 </section>
 
 
-<section>
-  <h2 id="detail"><a href="#detail">Details</a></h2>
+<section id="detail">
+<h2>Details</h2>
   <p>Здесь перечислены некоторые из случаев, в которых информация о языке полезна в данный момент, однако, так как спецификации и браузеры развиваются, то в будущем может быть много дополнительных программ для установки информации о языке. </p>
-  <section>
-    <h3 id="rendering"><a href="#rendering">Стилизация страниц</a></h3>
+  <section id="rendering">
+<h3>Стилизация страниц</h3>
     <p>Языковые атрибуты позволяют варьировать стиль вашего контента за счет языка. Дополнительные сведения о том, как это сделать, смотрите <a class="print" href="/International/questions/qa-css-lang"><cite>Стилизация с помощью использованием атрибута lang</cite></a>. </p>
     <p>Например, возможно, потребуется изменить шрифты и межстрочный интервал, 
       чтобы разместить различные алфавиты, кавычки сгенерированные с помощью стиля могут отличаться языком, ударение, возможно, надо будет выразить способами, которые
       зависят от языка, и т.д.</p>
     <p>Следующий пример показывает, как можно было бы установить определенный шрифт для встроенного Арабского текста на странице.</p>
     <figure class="example" translate="no">
-      <p><code class="code1">body {</code> <code class="code2">font-family: &quot;Palatino Linotype&quot;, 
-        &quot;Book Antiqua&quot;, Palatino, serif;</code> <code class="code2">}</code> <code class="code1">:lang(ar) {</code> <code class="code2">font-family: &quot;Traditional Arabic&quot;, 
-        &quot;Al Bayan&quot;, serif;</code> <code class="code2">}</code></p>
+      <pre><code class="language-css">body {
+    font-family: &quot;Palatino Linotype&quot;, &quot;Book Antiqua&quot;, Palatino, serif;
+    }
+:lang(ar) {
+    font-family: &quot;Traditional Arabic&quot;, &quot;Al Bayan&quot;, serif;}</code></pre>
     </figure>
     <p>Другой пример зависящего от языка поведения - это переносы. Правила переноса очень зависят от языка. <a class="print" href="http://www.w3.org/TR/css3-text/#hyphenation">Описание свойства <code class="kw" translate="no">дефисов</code> в CSS</a> (которое на момент написания только начинает видеть принятия браузеров) говорит &quot;Правильная автоматическая расстановка переносов требует, чтобы перенос ресурса соответствовало языку текста. Итак, в UA нужна только автоматическая расстановка переносов для которых автор назначил язык (например в HTML - <code class="kw" translate="no">lang</code> или в XML - <code class="kw" translate="no">xml:lang</code>) и для которых есть соответствующий ресурс расстановки переносов. &quot;</p>
     <p>Other typographic and layout features that are affected by language include line-breaking, justification, and case conversion, and more are coming as the specifications develop.</p>
   </section>
-  <section>
-    <h3 id="fonts"><a href="#fonts">Выбор шрифта</a></h3>
+  <section id="fonts">
+<h3>Выбор шрифта</h3>
     <p>Клиентские приложения могут использовать (и используют) информацию о языке для выбора соответствующих языку шрифтов, что улучшает общее впечатление пользователя от страницы.</p>
     <p>Например, на странице закодированной в Unicode, текст на Упрощенном Китайском, Традиционном Китайском,
       Японском, и Корейском языках может разделять ту же самую точку кода для идеографических символов, но люди, которые
@@ -102,29 +104,29 @@ f.additionalLinks = ''
       <p><img src="qa-lang-why-data/ideographs.png" alt=" " /></p>
     </figure>
   </section>
-  <section>
-    <h3 id="searching"><a href="#searching">Поиск</a></h3>
+  <section id="searching">
+<h3>Поиск</h3>
     <p>Хотя автоматическое определение языка обычно используется крупными поисковиками для определения языка ресурсов, внутренняя разметка страницы может использоваться для улучшения качества результатов поиска, которые основанные на лингвистических предпочтениях пользователя. </p>
   </section>
   <section>
   </section>
-  <section>
-    <h3 id="authoring"><a href="#authoring">Программы для проверки орфографии и грамматики</a></h3>
+  <section id="authoring">
+<h3>Программы для проверки орфографии и грамматики</h3>
     <p>Средства разработки могут приспосабливать проверки правописания и грамматики, которые базируются на языке контента, или игнорировать контент, который не написан языком программы, которая проверяет правописание. Это может значительно повысить эффективность при проверке орфографии.</p>
     <p>Браузеры также недавно начали позволять пользователям проверять написание текста который они напечатали в формах или элементах с установленным атрибутом <code class="kw" translate="no">contenteditable</code>. Браузер, который учитывает информацию о языке контента может обеспечить пользователям получение более эффективного опыта.</p>
   </section>
-  <section>
-    <h3 id="translation"><a href="#translation">Перевод</a></h3>
+  <section id="translation">
+<h3>Перевод</h3>
     <p>Инструменты для перевода могут использовать языковые атрибуты для определения страниц или разделов текста на определенном языке и автоматически настроить рабочий процесс или защитить текст от изменений переводчиком в инструментах для перевода.</p>
   </section>
-  <section>
-    <h3 id="access"><a href="#access">Программы для чтения нетекстового контента</a></h3>
+  <section id="access">
+<h3>Программы для чтения нетекстового контента</h3>
     <p>Информация о языке помогает синтезаторам речи и переводчикам Брайля выдавать полезные результаты. Эти
       приложения должны знать могут ли они выдавать результат в тексте, или же, возможно, им необходимо переключиться на другой языковой режим.</p>
     <p>Простановка языковых тэгов <a class="print" href="http://www.w3.org/TR/WCAG20-TECHS/H58.html">рекомендуемая</a> Руководством Веб Доступности W3C, которое введено государственной политикой в некоторых странах, например в UK (Великобритании) - Закон о дискриминации инвалидов (UK).</p>
   </section>
-  <section>
-    <h3 id="parsing"><a href="#parsing">Анализаторы и скрипты</a></h3>
+  <section id="parsing">
+<h3>Анализаторы и скрипты</h3>
     <p>Отметка контента информацией о языке также позволяет специфическую языковую обработку. </p>
     <p>Например, скрипт или таблица стилей XSLT могут использоваться для различных вещей, включая:</p>
     <ul>
@@ -139,8 +141,8 @@ f.additionalLinks = ''
 </section>
 
 
-<section>
-<h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+<section id="bytheway">
+<h2>Кстати говоря</h2>
   <p>За последние годы увеличилась польза отметки языка, так как технология прогрессировала, и будет улучшаться по мере продвижения вперед. Во многих случаях эти программы могут и не быть вам важными, когда вы впервые разрабатываете свой ​​контент, но с течением времени их значение может возрасти. Тем не менее, в настоящее время
     мы сталкиваемся с круговой проблемой. Люди, которые не видят приложений с информацией о языке не обеспечивают такой информацией свой
     контент. Приложения, связанные с языком разворачиваться медленно, пока эта информация не будет широко применяться к контенту. Этот цикл может быть нарушен
@@ -148,8 +150,8 @@ f.additionalLinks = ''
 </section>
 
 
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Дополнительные материалы</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
@@ -171,7 +173,7 @@ f.additionalLinks = ''
   </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>

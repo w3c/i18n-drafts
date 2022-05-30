@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>HTTP-Header, meta-Elemente und Sprachinformationen</title>
 <meta name="description" content="Wozu dienen HTTP- und Metasprachinformationen in HTML, wie funktionieren sie, und sollten wir sie einsetzen?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,16 +32,16 @@ f.breadcrumb = 'language'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-http-and-lang-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" />
-<!-- remove the following local css declaration if there is nothing to add -->
-<link rel="stylesheet" href="filename-data/local.css" />
+<script src="qa-http-and-lang-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-de.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
 </head>
 
 <body>
@@ -63,19 +63,19 @@ f.additionalLinks = ''
 
 <p class="info">Dieser Artikel basiert auf einer Unterscheidung zwischen 1) dem Gebrauch von Metadaten, um das Publikum eines Dokuments zu bestimmen und 2) der Angabe der Sprache, die zur Verarbeitung seines Inhalts gebraucht wird. Wenn Sie sich näher mit dieser Unterscheidung beschäftigen wollen, beachten Sie bitte <a href="qa-text-processing-vs-metadata"><cite>Types of language declaration</cite></a>.</p>
 
-<section>
-  <h2 id="meta_summary"><a href="#meta_summary"><code class="kw" translate="no">meta</code>-Element</a></h2>
+<section id="meta_summary">
+<h2><code class="kw" translate="no">meta</code>-Element</h2>
   <p>Sie können ein sprachbezogenenes <code class="kw" translate="no">meta</code>-Element am Anfang einer HTML-Datei vorfinden. Es sieht wie folgt aus:</p>
   <figure class="example">
     <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Schlechter Code. Nicht kopieren!</span></div>
-    <p><code>&lt;meta http-equiv=&quot;content-language&quot; content=&quot;de&quot; /&gt;</code></p>
+    <p><code class="language-html">&lt;meta http-equiv=&quot;content-language&quot; content=&quot;de&quot; /&gt;</code></p>
   </figure>
   <p>Der <code class="kw" translate="no">content-language</code>-Wert des <code class="kw" translate="no">http-equiv</code>-Attributs wurde von der HTML-Spezifikation als veraltet erklärt, und sollte nicht mehr verwendet werden. Statt dessen sollten Sie immer von einem <code class="kw" translate="no">lang</code>-Attribut auf dem <code class="kw" translate="no">html</code>-Start-Tag Gebrauch machen, um die Sprache des Textes auf einer Seite zu deklarieren.</p>
   <p class="info">Wenn Sie mehr darüber erfahren wollen, warum dieser Ansatz veraltet ist, beachten Sie <a href="#meta">untenstehende Informationen</a>. Um zu lernen, wie das <code class="kw" translate="no">lang</code>-Attribut zu verwenden ist, beachten Sie <a href="qa-html-language-declarations"><cite>Angabe der Sprache in HTML</cite></a>.</p>
 </section>
 
-<section>
-  <h2 id="http_summary"><a href="#http_summary">HTTP-Header</a></h2>
+<section id="http_summary">
+<h2>HTTP-Header</h2>
   <p>Wenn Sie eine Website oder -ressource von einem Server anfordern, sendet der Server verschiedene Informationen zu dem Objekt zurück, das Sie anfordern (Metadaten). Er benutzt dabei ein Format, das als <a class="print" href="http://tools.ietf.org/html/rfc2616#section-14.12">HTTP-Header</a> bezeichnet wird. Eines der Dinge, die Sie in solchen Metadaten finden können, ist sprachbezogen. Achten Sie auf die letzte Zeile im folgenden Beispiel, welches die zu diesem Artikel gehörende HTTP-Antwort zeigt.</p>
   <figure class="example"><pre>HTTP/1.1 200 OK
 Date: Sat, 23 Jul 2011 07:28:50 GMT
@@ -97,34 +97,34 @@ Content-Type: text/html; charset=utf-8
   <p>Dadurch, dass Sprachinformationen im HTTP-Header vom Server gesendet werden, sind diese Informationen nicht verfügbar, wenn auf Ihre Seite von einer Festplatte, einem Memory-Stick oder einem anderen, nicht-serverbasierten Ort zugegriffen wird. Es gibt aktuell keine gemeinhin anerkannte Lösung, um diese Metadaten innerhalb einer Seite wiederzugeben.</p>
 </section>
 
-<section>
-  <h2 id="processing"><a href="#processing">Spezifizieren der Textverarbeitungssprache</a></h2>
+<section id="processing">
+<h2>Spezifizieren der Textverarbeitungssprache</h2>
   <p>Das <code translate="no" class="kw">lang</code>-Attribut in HTML sollte dazu verwendet werden, die Sprache der Textinhalte anzugeben, so dass der Browser diese Inhalte korrekt anzeigen und verarbeiten kann (z.B. für Silbentrennung, Formatierung, Rechtschreibprüfung und so weiter). Sie sollten es stets auf dem <code class="kw" translate="no">html</code>-Element einsetzen, und es dann auf allen anderen Elementen gebrauchen, die Fragmente von Inhalten in anderen Sprachen beinhalten.</p>
   <p><span class="info">Wenn Sie den Unterschied zwischen 1) dem Gebrauch von Dateimetadaten zur Identifikation des Publikums eines Dokuments und 2) der Spezifizierung der Sprache zur Verarbeitung des Inhalts besser verstehen wollen, beachten Sie den Artikel <a href="qa-text-processing-vs-metadata"><cite>Types of language declaration</cite></a>.</span></p>
   <p class="info">Für weitere Informationen, wie das <code class="kw" translate="no">lang</code>-Attribut eingesetzt werden kann, beachten Sie bitte <a href="qa-html-language-declarations"><cite>Angabe der Sprache in HTML</cite></a>.</p>
 </section>
 
-<section>
-  <h2 id="http"><a href="#http">Die Textsprache von einem HTTP-Header ableiten</a></h2>
+<section id="http">
+<h2>Die Textsprache von einem HTTP-Header ableiten</h2>
   <p>Wenn auf dem <code class="kw" translate="no">html</code>-Element keine Sprache deklariert wird, nehmen die meisten (aber nicht alle) verbreiteten Browser den Wert für die geltende Textsprache an, der im HTTP-Header gesetzt wird. Selbst in einem Browser, der so vorgeht, wird diese Information nur auf manche Funktionen angewandt, und nicht auf alle, die einen Bezug zu Sprache haben. Die HTML-Spezifikation sagt, dass wenn kein <code class="kw" translate="no">lang</code>-Attribut auf dem <code class="kw" translate="no">html</code>-Element vorliegt, und es auch kein <code class="kw" translate="no">meta</code>-Element gibt, das ein <code class="kw" translate="no">http-equiv</code>-Attribut mit <code class="kw" translate="no">Content-Language</code> setzt, und es nur eine einzelne Sprachangabe in der HTTP-Header-Deklaration gibt, dass ein Browser diese Information verwenden muss, um die für den auf der Seite vorliegenden Text geltende Sprache zu ermitteln.</p>
   <p>Da Sie jedoch jederzeit ein Sprachattribut (<code class="kw" translate="no">lang</code>) auf dem <code class="kw" translate="no">html</code>-Element verwenden sollten, und da dieses Sprachattribut die HTTP-Header-Informationen stets überschreibt, wird dies zu einer Randnotiz. Der HTTP-Header sollte nur dazu benutzt werden, Metadaten zum beabsichtigten Publikum des Dokuments als Ganzem zu liefern, und das Sprachattribut auf <code class="kw" translate="no">html</code>, um die Standardsprache des Inhalts zu deklarieren.</p>
 </section>
 
-<section>
-  <h2 id="additionalinfo"><a href="#additionalinfo">Zusätzliche Informationen</a></h2>
+<section id="additionalinfo">
+<h2>Zusätzliche Informationen</h2>
   <p>Die Informationen in diesem Abschnitt sind wahrscheinlich nur am Rande nützlich, werden aber der Vollständigkeit halber ebenfalls bereitgestellt.</p>
 
-  <section>
-    <h3 id="meta"><a href="#meta">Warum Sie das <code class="kw" translate="no">meta</code>-Element nicht verwenden sollten</a></h3>
+  <section id="meta">
+<h3>Warum Sie das <code class="kw" translate="no">meta</code>-Element nicht verwenden sollten</h3>
     <p>Der Gebrauch des <code class="kw" translate="no">meta</code>-Elements innerhalb des <code class="kw" translate="no">head</code> eines Dokuments, mit dem <code class="kw" translate="no">http-equiv</code>-Attribut auf <code class="kw" translate="no">Content-Language</code> lautend, wird nicht von der HTML-4.01-Spezifikation erwähnt. Dennoch gibt es inoffizielle Dokumentation, die die Kennzeichnung von Sprache von HTML-Seiten behandelt, die diese Methode vorschlägt. Dazu gab es HTML-Autorenwerkzeuge, die solche Elemente automatisch erzeugten, wenn Sie in einem Dialog der entsprechenden Software Angaben zur Sprache machten. Hier ist ein Beispiel, das als Sprache Englisch deklariert.</p>
     <figure class="example">
       <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Schlechter Code. Nicht kopieren!</span></div>
-      <p><code>&lt;meta http-equiv="Content-Language" content="en"&gt;</code></p>
+      <p><code class="language-html">&lt;meta http-equiv="Content-Language" content="en"&gt;</code></p>
     </figure>
     <p>Anders als bei den <code class="kw" translate="no">lang</code>- und <code class="kw" translate="no">xml:lang</code>-Attributen kann der Wert des <code class="kw" translate="no">content</code>-Attributs eine Liste von kommaseparierten Sprachauszeichnungen enthalten. Das folgende Beispiel zeichnet die Hauptsprachen des Dokuments als (in gleichen Teilen) Deutsch, Französisch und Italienisch aus.</p>
     <figure class="example">
       <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Schlechter Code. Nicht kopieren!</span></div>
-      <p><code>&lt;meta http-equiv="Content-Language" content="de, fr, it"&gt;</code></p>
+      <p><code class="language-html">&lt;meta http-equiv="Content-Language" content="de, fr, it"&gt;</code></p>
     </figure>
     <p>Wenn der Name des <code class="kw" translate="no">meta</code>-Elements noch keinen eindeutigen Hinweis gibt, sollte die Tatsache, dass der Wert mehrere Sprachen akzeptiert, Hinweis genug sein, dass sich dieses Element um Dokumentmetadaten dreht. Wenn Sie die Sprache eines Textabschnitts kennzeichnen wollen, müssen Sie spezifischer sein – Text kann nur einer Sprache zur Zeit entsprechen. Das <code class="kw" translate="no">meta</code>-Element bietet eine Gelegenheit innerhalb eines Dokuments, Metadaten zur Sprache des avisierten Publikums des Dokuments als Ganzem auszudrücken.</p>
     <p>Bis vor kurzem achteten wenige Browser auf dieses Metaelement. Dann fingen einige größere Browser an, darauf zurückzugreifen, wenn kein Sprachattribut auf dem <code class="kw" translate="no">html</code>-Tag vorlag, um die Standardsprache des Dokumenttextes zu bestimmen (wofür Sie eigentlich ein Sprachattribut auf dem <code class="kw" translate="no">html</code>-Start-Tag gebrauchen sollten). Wie dies implementiert wurde, war von Browser zu Browser verschieden und damit nicht zuverlässig.</p>
@@ -132,20 +132,20 @@ Content-Type: text/html; charset=utf-8
     <p>HTML hat zur Abwärtskompatibilität jedoch auch ein <a class="print" href="http://www.w3.org/TR/html5/semantics.html#pragma-set-default-language">Zugeständnis</a> gemacht. Wenn es ein Metaelement gibt, dessen <code class="kw" translate="no">http-equiv</code>-Attribut einen Wert <code class="kw" translate="no">Content-Language</code> hat, und wenn auf dem <code class="kw" translate="no">html</code>-Start-Tag kein Sprachattribut vorliegt, und wenn das Metaelement einen Wert hat, der eine einzelne Sprache angibt, dann muss der Browser diese Information verwenden, um sie als Sprache des Textes anzunehmen. Dies dient jedoch nur der Abwärtskompatibilität, und Sie sollten diese Methode sonst nicht wählen. Benutzen Sie statt dessen ein Sprachattribut auf dem <code class="kw" translate="no">html</code>-Element.</p>
   </section>
 
-  <section>
-    <h3 id="internal_meta"><a href="#internal_meta">Dokumentinterne Metadaten</a></h3>
+  <section id="internal_meta">
+<h3>Dokumentinterne Metadaten</h3>
     <p>Eine Implikation davon, dass HTML den Einsatz des <code class="kw" translate="no">meta</code>-Elements zur Sprachkennzeichnung fallen lässt, ist dass es nun keinen offensichtlichen Weg gibt, Metadaten über ein Dokument innerhalb des Dokuments anzugeben. Theoretisch wäre dies nützlich für Content-Management-Systeme, Übersetzungsprozesse und ähnliches. Diese Art der Information kann über einen HTTP-Header übertragen werden (wie wir im nächsten Abschnitt sehen werden), aber solche Systeme und Prozesse neigen dazu, mit Dokumenten zu arbeiten, die nicht von einem Server unter Angabe eines HTTP-Headers ausgeliefert werden, wofür Metadaten innerhalb des Dokuments nützlich wären.</p>
     <p>Vielleicht kann ein anderer Ansatz wie <a class="print" href="http://wikipedia.org/wiki/RDFa">RDFa</a> eine Möglichkeit darstellen, solche Informationen zukünftig abzubilden.</p>
     <p>Die <a rel="noopener" href="https://wiki.whatwg.org/wiki/MetaExtensions" class="external external-icon">MetaExtensions-Seite des WHATWG-Wikis</a> bietet eine erweiterte Liste von Werten, die als <code class="kw" translate="no">name</code>-Wert des <code class="kw" translate="no">meta</code>-Elements verwendet werden können, obwohl keiner davon bisher akzeptiert wurde. Einer dieser Werte ist <code translate="no">dc.language</code>, der dazu dient, Sprache im Rahmen von <a class="print" href="http://en.wikipedia.org/wiki/Dublin_core">Dublin Core</a> auszudrücken.</p>
     <figure class="example">
-      <p><code>&lt;meta name="dc.language" content="en"&gt;</code></p>
+      <p><img src="../icons//dontcopy.png" alt="Do not use this" title="Do not use this" class="dontuse"/> <code class="language-html">&lt;meta name="dc.language" content="en"&gt;</code></p>
     </figure>
     <p>Es ist unklar, ob diese Information je von Browsern beachtet wird, oder in welchem Umfang sie von anderen Anwendungen benutzt würde. Die WHATWG-Seite empfiehlt, statt dessen das <code class="kw" translate="no">lang</code>-Attribut zu verwenden. Diese Empfehlung ist gut, um die Textverarbeitungssprache zu deklarieren, aber gibt nicht ihren möglichen Gebrauch als Ausdruck von Metadaten über eine Seite als Ganzes wieder.</p>
   </section>
 </section>
 
-<section>
-  <h2 id="endlinks" class="notoc"><a href="#endlinks">Literaturhinweise</a></h2>
+<section id="endlinks">
+  <h2>Literaturhinweise</h2>
   <aside class="section" id="survey"></aside>
   <script>
     document.getElementById('survey').innerHTML = g.survey
@@ -169,7 +169,7 @@ Content-Type: text/html; charset=utf-8
   </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>

@@ -33,10 +33,11 @@ f.additionalLinks = ''
 </script>
 <script src="qa-indic-graphemes-data/translations.js"> </script>
 <script src="../javascript/doc-structure/article-dt.js"> </script>
-<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script><!-- TRANSLATORS must change -en to the subtag for their language! -->
-<script src="../javascript/doc-structure/article.js"> </script>
-<script src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" />
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="stylesheet" href="qa-indic-graphemes-data/local.css" />
 <link rel="copyright" href="#copyright"/>
 </head>
@@ -66,12 +67,12 @@ f.additionalLinks = ''
 <p>CSS defines the <a href="https://www.w3.org/TR/css-text-3/#typographic-character-unit" class="dfn">typographic character unit</a> as a basic unit of text for use with these editing operations, however the meaning of  that term can vary according to the operation, and there are issues in working with such units in complex scripts. In this article we look at examples of some of those differences and issues.</p>
 
 
-<section>
-<h2 id="scenarios"><a href="#scenarios">Inherent vowels, conjuncts &amp; vowel-killers</a></h2>
+<section id="scenarios">
+<h2>Inherent vowels, conjuncts &amp; vowel-killers</h2>
 <p>In this section we set the scene by describing how most Brahmi-derived scripts work.</p>
 
 <section id="inherent">
-<h3><a href="#inherent">Inherent vowels &amp; vowel-signs</a></h3>
+<h3>Inherent vowels &amp; vowel-signs</h3>
 
 <p>Writing systems that derive from the former Brahmi script, whether in India or other parts of Asia, tend to automatically associate an <span class="newterm">inherent vowel </span>sound with each consonant. The specific sound varies with the language, and for some orthographies there can be different sounds in different contexts.</p>
 
@@ -109,7 +110,7 @@ f.additionalLinks = ''
 
 
 <section id="conjuncts">
-<h3><a href="#conjuncts">Consonant clusters &amp; conjunct forms</a></h3>
+<h3>Consonant clusters &amp; conjunct forms</h3>
 
 <p>The languages that use these scripts also have consonant <em>clusters</em>. There are a number of ways of indicating that the vowel is not pronounced between the consonants that make up a cluster. The shape of the clustered consonants may, for example, be merged, or one consonant may be stacked above the other, and so on. When the shapes of a sequence of consonants are  changed to indicate a cluster, this is referred to as a <span class="newterm">conjunct</span>.</p>
 <p>Conjunct formation is usually triggered in Unicode text by adding a combining character, the <span class="newterm">vowel-killer</span>, after each consonant that loses its vowel. When the vowel-killer causes a conjunct to form, it becomes invisible. In the following figure, the second syllable of the word 'shakti' in computer memory is  the sequence of characters KA+vowel_killer+TA+I.</p>
@@ -147,7 +148,7 @@ f.additionalLinks = ''
 
 
 <section id="visible">
-<h3><a href="#visible">Clusters with a visible vowel-killer</a></h3>
+<h3>Clusters with a visible vowel-killer</h3>
 
 <p>Rather than forming a conjunct, sometimes consonant clusters are indicated by the presence of a <em>visible</em> vowel-killer alongside the relevant consonant(s). In this case, no shape changes are produced. This is, in fact, the default approach for Tamil.</p>
 
@@ -167,13 +168,14 @@ f.additionalLinks = ''
 </div-->
 
 <p>The handling of left-positioned vowel-signs is also different from the case where conjuncts are produced. In Tamil, the left-positioned vowel-sign <em>does</em> push apart the consonants that make up the cluster, as can be seen in the  figure.</p>
-<p>In Unicode text the same code point is generally used for both the invisible conjunct-former and the visible vowel-killer, and the different display effects are produced by font rules.</p></section>
+<p>In Unicode text the same code point is generally used for both the invisible conjunct-former and the visible vowel-killer, and the different display effects are produced by font rules.</p>
+</section>
 
 
 
 
 
-<section id="messy"><h3><a href="#messy">The messy bits</a></h3>
+<section id="messy"><h3>The messy bits</h3>
 
 <p>Unfortunately, consonant cluster handling is not quite as clear-cut as implied above. Orthographies don't always indicate a consonant cluster using a conjunct or a vowel-killer.</p>
 <p>For example, as a general rule Hindi doesn't pronounce a vowel after the penultimate consonant in a word if there is a vowel-sign at the end. However, It doesn't indicate the vowel absence by a conjunct or vowel-killer.</p>
@@ -188,24 +190,24 @@ f.additionalLinks = ''
 
 <p>These differences, however, don't normally cause problems for text segmentation. A sequence of consonant glyphs that is actually a cluster, but which is not connected visually is treated as so many separate typographic character units, and can be handled using grapheme clusters (see below).</p>
 </section>
+</section>
 
 
 
 
 
 
-
-<section>
-<h2 id="examples"><a href="#examples">Problems with conjuncts</a></h2>
+<section id="examples">
+<h2>Problems with conjuncts</h2>
 <p>Now we examine some of the problems encountered when dealing with conjunct forms.</p>
-<section>
-<h3 id="patronymic"><a href="#patronymic">Grapheme clusters</a></h3>
+<section id="patronymic">
+<h3>Grapheme clusters</h3>
 <p>In order to approximate user-perceived character units for editing operations, Unicode uses a <a href="http://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries">set of generalised rules</a> to define <dfn id="def_grapheme_cluster">grapheme clusters</dfn> – sequences of adjacent code points that can be treated as a unit by applications. </p>
 <p>Typically, a grapheme cluster is a single base character plus any combining characters that follow it. A single alphabetic character like <span class="codepoint" translate="no"><span lang="en">&#x0065;</span> [<span class="uname">U+0065 LATIN SMALL LETTER E</span>]</span> is a grapheme cluster, but so also is  <span class="codepoint" translate="no"><span lang="vi">&#x0065;&#x0302;&#x0300;</span> [<span class="uname">U+0065 LATIN SMALL LETTER E</span> + <span class="uname">U+0302 COMBINING CIRCUMFLEX ACCENT</span> + <span class="uname">U+0300 COMBINING GRAVE ACCENT</span>]</span>.</p>
 </section>
 
-<section>
-<h3 id="partorder"><a href="#partorder">Grapheme clusters don't span conjuncts</a></h3>
+<section id="partorder">
+<h3>Grapheme clusters don't span conjuncts</h3>
 <p>The figure just below shows how the Bengali word 'jhilli' is split into its two orthographic syllables, 'ji' and 'lli'. The second orthographic syllable is a conjunct, representing a doubled 'l' sound followed by the sound 'i'.</p>
 
 <div class="figWrap">
@@ -228,8 +230,8 @@ f.additionalLinks = ''
 <p>This means that <mark>for scripts of this type, additional tailoring rules need to be applied, over and above grapheme cluster segmentation</mark>, in order to identify appropriate text boundaries. In this case, that means treating the whole orthographic syllable as a unit.</p>
 </section>
 
-<section>
-<h3 id="multiplefamily"><a href="#multiplefamily">Font-dependent segmentation</a></h3>
+<section id="multiplefamily">
+<h3>Font-dependent segmentation</h3>
 <p>Some applications successfully apply tailoring rules to treat conjunct clusters as unbreakable units, providing a way to address the problem just mentioned. There is, however, an additional problem which is somewhat less tractable.</p>
 <p>In a nutshell, <mark>if the vowel-killer is hidden <abbr title="Consonant+vowel_killer+Consonant+Vowel_sign">CvCV</abbr> should be treated as an unbreakable unit, and if the vowel-killer is visible it should be treated as two separate segments (<abbr title="Consonant+vowel_killer">Cv</abbr> and <abbr title="Consonant+Vowel_sign">CV</abbr>)</mark>.</p>
 
@@ -264,7 +266,7 @@ The Unicode Standard recognises 3 types of vowel-killer. <a href="https://util.u
 
 
 <section id="glyphs">
-<h2><a href="#glyphs">Segmentation that splits glyphs</a></h2>
+<h2>Segmentation that splits glyphs</h2>
 
 <p>The figure just below shows a news column where the second line is a single word. The word is so long that there is no room to add another word to the line. To maintain the justified line ends, the word has been stretched to fit by inserting equal amounts of space between each grapheme cluster.</p>
 
@@ -322,8 +324,8 @@ The Unicode Standard recognises 3 types of vowel-killer. <a href="https://util.u
 
 
 
-<section> 
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Further reading</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8" />
+<title>O introducere in Adresele Web Multilingve</title>
+<meta name="description" content="How do I prepare my web pages to display varying international date formats?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/idn-and-iri'+'/'; // the name of the directory this file is in
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-idn-and-iri' // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-01-14' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2008-05-09', time:'15:32'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2022-05-25', time:'11:00'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="" // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+// also make sure that the lang attribute on the html tag is correct!
+
+f.breadcrumb = 'webaddress'
+
+f.additionalLinks = ''
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-ro.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  <h1>O introducere in Adresele Web Multilingve</h1>
+</header>
+
+<div id="audience">
+<div id="updateInfo"></div>
+  <script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+</div>
+
+
+
+  <p>O <dfn>adresa Web</dfn> este folosita pentru a indica o <dfn>resursa</dfn> in Web cum ar fi o pagina Web.
+  Dezvoltari recente va permit sa adaugati caractere non-ASCII adreselor Web. Acest articol ofera o introducere amanuntita despre cum functioneaza. A fost scris pentru autorii de continut si utilizatorii obisnuiti care care vor sa inteleaga baza fara prea multe detalii tehnice complicate. Pentru a fi mai simplu, vom folosii exemple bazate pe HTML si HTTP. Vom demonstra cum functioneaza atat pentru numele domeniului cat si informatia de cale intr-o retea.</p>
+
+
+
+<section id="why">
+<h2>De ce adrese Web Multilingve?</h2>
+
+<p>In acest moment adresele Web sunt exprimate in mod normal folosind <dfn>Resurse Uniforme de Identificare</dfn> sau <dfn>URI</dfn>. Sintaxa URI definita in <a href="http://www.ietf.org/rfc/rfc3986">RFC 3986 STD 66</a> (<cite><dfn>Resurse Uniforme de Identificare</dfn> (URI): Sintaxa Generica</cite>) restrictioneaza adresele Web la un numar mic de caractere: in principiu, doar caractere mari si mici din alfabetul limbii engleze, numere europene si un numar mic de simboluri.</p>
+<p>Motivul original pentru aceasta a fost ajutorarea transcrierii si folosirii atat in sisteme computerizate cat si a comunicatiilor ce nu tin de calculatoare, evitarea suprapunerii cu caractere folosite in mod conventional ca delimitatoare in jurul URI-urilor, si pentru a facilita introducerea folosind acele facilitati de intrare disponibile majoritatii utilizatorilor Internetului.</p>
+<p>Asteptarile utilizatorului si folosirea Internetului au avansat de atunci, si exista acum o nevoie in crestere de activare a caracterelor din orice limbaj in adresele Web. O adresa Web in limbajul si alfabetul propriu este usor de creat, memorat, transcris, interpretat, ghicit si asociat. Este de asemenea important pentru recunoasterea emblemei. Acesta este un lucru mai bun pentru afaceri, pentru gasirea unor lucruri si pentru comunicare. Pe scurt, mai bun pentru Web.</p>
+<div class="example">
+<p>Imaginati-va de exemplu, ca toate adresele web ar trebui scrise in japoneza katakana, asa cum este ilustrat in exemplul de mai jos. Cat de usor ar fi pentru dumneavoastra, daca nu a-ti fi japonez,sa faceti lucruri cum ar fi recunoasterea proprietarului sitului, scrierea adresei in browser, scrierea URI-ului pe hartie, etc?</p>
+<ul>
+<li>http://ヒキワリ.ナットウ.ニホン</li>
+</ul>
+</div>
+<p>Au aparut mai multe dezvoltari recente care incep sa faca acest lucru posibil.</p>
+</section>
+
+
+
+
+<section id="problem">
+<h2>Concepte de baza</h2>
+
+<p>Ne vom referi la adresele Web care permit utilizarea de caractere dintr-o gama larga de scripturi ca <dfn>Identificatoare de Resurse Internationalizate </dfn> sau<dfn> IRI</dfn>. Pentru ca IRI sa functioneze, exista patru cerinte de baza:</p>
+<ol>
+<li>sintaxa formatului unde sunt folosite IRI (ex. HTML, XML, SVG, etc) trebuie sa suporte folosirea de caractere non-ASCII in adresele Web</li>
+<li> aplicatiile unde sunt folosite IRI (ex. browsere, parsere, etc.) trebuie sa suporte datele introduse si folosirea de caractere non-ASCII in adresele Web</li>
+<li>trebuie sa fie posibila transferarea informatiei intr-un IRI prin protocolul necesar (ex. HTTP, FTP, IMAP, etc.)</li>
+<li>Trebuie sa fie posibila compararea de siruri de caractere din adresa Web cu numele unei resurse tinta din sistemul de fisiere unde este stocat.</li>
+</ol>
+<p>Diverse formate de fisiere si specificatii suporta deja IRI. Exemplele includ HTML 4.0, XML 1.0 identificatoare de sistem, atributul href XLink, tipul de date XMLSchema <span class="kw">anyURI</span>, etc. Vom vedea de asemenea mai tarziu ca majoritatea browserelor suporta deja utilizarea IRI.</p>
+<p>Din nefericire, nu prea multe protocoale permit IRI sa treaca neschimbat. De obicei necesita ca adresa sa fie specificata folosind caractere ASCII definite pentru URI. Exista totusi, cai bine specificate in jurul acesteia, si le vom descrie pe scurt in acest articol.</p>
+<p>A patra cerinta necesita ca un sir de caractere sa fie comparat cu un altul chiar daca aceste caractere sunt reprezentate de acelasi tip de codare sau nu, ie. bytes. Acest lucru este facut folosind UTF-8 ca separator.</p>
+<p>Vom folosi urmatoarea adresa Web fictiva in majoritatea exemplelor de pe aceasta pagina: </p>
+<p><img src="parts.gif" height="108" width="363" alt="http://JP納豆.例.jp/引き割り/おいしい.html" title="http://JP納豆.例.jp/引き割り/おいしい.html" lang="ja" /></p>
+
+<!--<div class="example"><code>http://JP納豆.例.jp/引き割り/おいしい.html</code></div>--> 
+<!--<div class="example"><code>http://JP納豆.例.jp/dir1/引き割り.html</code></div>-->
+<p>Acesta este un IRI simplu compus din trei parti. </p>
+<div class="sidenoteGroup">
+<ul>
+<li><code>http://</code> contine informatii despre <dfn>schema</dfn> care va fi folosita. Observatii cum caractere non-ASCII
+nu sunt folosite aici.</li>
+<li>Urmatoarea parte , <code lang="ja" xml:lang="ja">JP納豆.例.jp</code>, reprezinta <dfn>numele domeniului</dfn>.</li>
+<li>Restul adresei este o <dfn>cale</dfn> (din care o parte o reprezinta un nume de fisier compus din doua caractere kanji si doua hiragana) care indica locatia curenta a resursei indicata din radacina serverului.</li>
+</ul>
+<div class="sideinfonote">
+<p class="info"><strong>Ce inseamna totul.</strong> Numele domeniului(JP納豆.例.jp) incepe cu 'JP' astfel incat in exemple va putem arata ce se intampla unui text ASCII intr-un nume de domeniu. Restul numelui domeniului este citit '<em>natto</em> (o delicatesa Japoneza obtinuta din boabe fermentate de soia) <em>dot rei</em> (insemnand exemplu) <em>dot jp</em> (codul de tara al Japoniei)'. Calea se citeste '<em>dir1 slash hikiwari</em> (un fel de natto) <em>punct html</em>'.</p>
+</div>
+</div>
+<!--<p class="ed">Add a note about fragment ids and queries.</p>-->
+<p>Cand vine vremea sa ne ocupam de cerintele de la doi la patru de mai sus, exista <strong>o solutie pentru numele domeniului si o solutie diferita pentru cale</strong>. Le vom explora pe fiecare pe rand.</p>
+</section>
+
+
+
+
+
+<section id="idn">
+<h2>Manevrarea numelui de domeniu</h2>
+
+<p>Numele de domenii sunt alocate si manevrate de organizatii de inregistrare a domeniilor imprastiate in intreaga lume. </p>
+<p>O abordare standard a manevrarii numelor de domenii multilingve a fost stabilita de IETF in Martie 2003. Este definita in RFC <a href="http://www.faqs.org/rfcs/rfc3490.html" title="Internationalizing Domain Names in Applications (IDNA)">3490</a>, <a href="http://www.faqs.org/rfcs/rfc3491.html" title="Nameprep: A Stringprep Profile for Internationalized Domain Names (IDN)">3491</a>, <a href="http://www.faqs.org/rfcs/rfc3492.html"
+				title="Punycode: A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)">3492</a> si <a href="http://www.faqs.org/rfcs/rfc3454.html" title='Preparation of Internationalized Strings ("stringprep")'>3454</a>, si este bazata pe <a href="http://www.unicode.org/">Unicode 3.2</a>. Se face referinta la ea folosind termenul <dfn>Nume de Domeniu Internationalizat </dfn> sau <dfn><acronym title="Internationalized Domain Names">IDN</acronym></dfn>.</p>
+
+
+
+
+<section id="socially">
+<h3>Inregistrarea domeniilor</h3>
+
+<p>Registerul numelor de domenii fixeaza lista de caractere pe care oamenii pot sa cere sa fie folosita in tara lor sau in domenii de top.
+Totusi, cand o persoana cere un nume de domeniu care foloseste aceste caractere le este de dapt alocat un echivalent al numelui domeniului folosind o reprezentare denumita punycode. </p>
+<p><dfn>Punycode</dfn> este o cale de a reprezenta puncte de cod Unicode folosind doar caractere ASCII.</p>
+</section>
+
+
+
+
+  <section id="idnoverview">
+<h3>Privire de ansamblu la nivel inalt</h3>
+<p>Dam un exemplu ceva mai detaliat in urmatoarea sectiune dar, pe scurt, adresa Web dorita este stocata intr-un link dintr-un document sau scrisa in bara de adrese a clientului folosind caracterele native relevante, dar cand un utilizator da click pe link sau initializeaza cererea, agentul utilizatorului(ie. browserul sau orice alt client care cere resursa) trebuie sa converteasca orice caractere native de script din adresa Web in reprezentari punycode. </p>
+<p>(Binenteles, daca agentul utilizatorului nu este capabil sa faca asta, este oricand posibil sa exprimam locatia direct in punycode, chiar daca nu este foarte usor de folosit.)</p>
+</section>
+
+
+
+
+<section id="resolvedomain">
+<h3>Rezolvarea unui nume de domeniu</h3>
+<p>Sa examinam pasii facuti in rezolvarea unui Nume de Domeniu International de la utilizator la identificarea resursei. (Sa ne amintim ca vedem doar cum este manevrat domeniul. Informatia de cale este tratata diferit si va fi descrisa mai tarziu.)</p>
+<p>Utilizatorul da click pe un hyperlink sau introduce IRI in bara de adrese a unui agent de utilizator. In acest punct IRI contine caractere non-ASCII
+care pot exista in orice codare de caractere. Acesta este numele de domeniu care apare in exemplul de mai sus.</p>
+<div class="example">
+<blockquote>JP納豆.例.jp</blockquote>
+</div>
+<p>Daca sirul care reprezinta numele domeniului nu este in Unicode, agentul utilizatorului converteste sirul in Unicode. Apoi executa niste functii de normalizare asupra sirului pentru a elimina alte posibile ambiguitati care ar putea exista in textul codat Unicode.</p>
+<p><dfn>Normalizarea</dfn> presupune lucruri ca si convertirea caracterelor mari in caractere mici, reducerea reprezentarilor alternative(eg.
+convertirea jumatatii de latime kana la intreg), eliminarea caracterelor interzise (ex. spatii), etc.</p>
+<p>Apoi, agentul utilizatorului converteste fiecare <dfn>eticheta</dfn> (ie. bucati de text dintre puncte) din sirul Unicode in reperzentatie punycode.
+Un marker special ('<code>xn--</code>') este adaugat la inceputul fiecarei etichete care contine caractere non-ASCII pentru a arata ca eticheta nu a fost originala ASCII. Rezultatul final nu este foarte prietenos pentru utilizator, dar reprezinta cu acuratete sirul original de caractere folosind doar caracterele care au fost acceptate anterior pentru numele de domenii . Exemplul nostru arata acum asa:</p>
+<div class="example">
+<blockquote>xn--jp-cd2fp15c.xn--fsq.jp</blockquote>
+</div>
+<p>Observati cum caracterele ASCII cu litera mare de la inceputul numelui de domeniu sunt acum cu litera mica, dar inca de recunoscut. Orice caractere existente ASCII dintr-o eticheta apar primele, urmate de un apostrof si apoi de o reprezentare bazata pe ASCII a tuturor caracterelor non-ASCII.</p>
+<p>Apoi, punycode este transformat de serverul numelui de domeniu intr-o adresa numerica de IP(la fel cum orice alt nume de domeniu este transformat).</p>
+<p>In sfarsit, agentul utilizatorului trimite cererea pentru pagina. Din moment ce punycode nu contine caractere altele decat cele permise de protocoale ca HTTP, nu este nici o problema cu transmiterea adresei. Ar trebui sa se potriveasca cu un nume de domeniu inregistrat.</p>
+<p>Observati ca majoritatea codurilor de tara de nivel mare, de exemplu, .jp de la sfarsitul <span lang="ja" xml:lang="ja">JP納豆.例.jp</span>, trebuie sa fie in continuare in caractere latine. Din 2010, totusi, IANA a inceput sa introduca progresiv coduri de tara internationalizate pentru domenii de top, cum ar fi  مصر. pentru Egipt, si .рф pentru Rusia.</p>
+<p>In practica, are sens sa inregistram doua nume pentru domeniu. Unul in scriptul nativ, si unul folosind caractere ASCII. Ultimul va fi memorabil si mai usor de scris pentru oamenii care nu citesc si nu scriu in limba nativa. De exemplu, putem inregistra o transcriere a limbii Japoneze in script Latin, ca:</p>
+<div class="example"><code>http://JPnatto.rei.jp/</code></div>
+</section>
+</section>
+
+
+
+
+<section id="path">
+<h2>Manevrarea caii</h2>
+
+<p>Oriunde autoritatile inregistrarii domeniilor pot fi de acord sa accepte numele domeniilor intr-o forma si codare particulara(punycode bazat pe ASCII), <dfn>numele caii</dfn> multi-script identifica resurse aflate pe mai mulet tipuri de platforme, a caror distem de fisiere folosesc si vor continua sa foloseasca multe tipuri de codare. Acest lucru faca calea mult mai dificil de manevrat decat numele domeniului.</p>
+<p>Avand de a face cu numele domeniului folosind punycode, trebuie acum sa ne descurcam cu calea parte a unui IRI. Standardul Propus IETF <a href="http://www.ietf.org/rfc/rfc3987">RFC 3987</a> (Identificatori de Resurse Internationalizate (IRI)) defineste cum manevram acest lucru.</p>
+
+
+
+<section id="iriproblem">
+<h3>Provocarea potrivirii sirurilor</h3>
+
+<p>Exista deja un mecanism in specificatia URI pentru reprezentarea caracterelor non-ASCII din URI-uri. Trebuie sa reprezentam <strong>bitii</strong> anteriori folosind ceea ce numim 'scaparea-procentuala' (in specificatie, termenul mai putin folosit de 'codare-procentuala' este folosit). Deci, in pagina in care citim acum, care este codata in UTF-8, am putea reprezenta numele fisierului 引き割り.html din exemplul anterior asa cum este ilustrat dupa acest paragraf. Ceea ce vedem sunt numere hexadecimale formate din 2 numere precedate de %. Acestea reprezinta bitii folositi pentru a coda in UTF-8 caracterele Japoneze din sir. Fiecare caracter Japonez este reprezentat de 3 biti, care sunt transformati in trei scapari-procentuale.</p>
+<div class="example">
+<p>%E5%BC%95%E3%81%8D%E5%89%B2%E3%82%8A.html</p>
+</div>
+<p>In afara faptului ca nu este foarte prietenos pentru utilizatori, exista o si mai mare problema aici. O alta persoana ar putea vrea sa urmareasca acelasi link dintr-o pagina care foloseste o codare Shift-JIS, in loc de UTF-8. In acest caz, daca ar fi sa folosim scaparea-procentuala pentru a transforma (aceleasi) caractere din adresa pentru a se conforma cu cerintele URI-ului, ne-am baza scaparile pe bitii care reprezinta 引き割り.html in
+Shift-JIS. Sunt doar doi biti pentru fiecare caracter Japonez Shift-JIS, si sunt diferiti de cei folositi in UTF-8. Deci acest lucru ar produce secventa total diferita de biti de mai jos.</p>
+<div class="example">
+<p>%88%F8%82%AB%8A%84%82%E8.html</p>
+</div>
+<p>Deci, aici vedem ca, desi mecanismul de scapare a URI-ului permite ca adresa Japoneza sa fie specificata, rezultatul propriu zis va diferii in functie de pagina de origine. Cum este deci posibil sa stim cum sa mapam intr-o secventa de caractere care se va potrivii cu numele resursei asa cum este expusa de sistemul unde rezida?</p>
+<p>Marea dificultate aici este faptul ca nu exista nicio data meta asociata codarii cu sirurile URI care indica ce caractere reprezinta. Chiar daca aceasta informatie ar fi disponibila, numarul total de mapari pe care uns erver ar trebui sa il suporte pentru a converti orice string primit in codarea corecta ar fi foarte mare.</p>
+<div class="sidenoteGroup">
+<p>Nu numai asta, dar sistemul de fisiere de care apartine de fapt resursa poate expune numele fisierului folosind o cu totul alta codare, cum ar fi EUC-JP. Daca e asa, secventa de bit anterioara care reprezinta numele fisierului asa cum <em>sistemul</em> o cunoaste ar fi din nou diferita.
+Deci cum vom sti ca aceste secvente de biti se refera toate la aceasi resursa?</p>
+<div class="sideinfonote">
+<p class="info">Observati ca numele fisierului poate fi stocat si expus in diferite codari. In Windows NT sau Windows XP , IIS sau Apache 2 expun numele fisierului ca UTF-8, chiar daca sistemul de operare il stocheaza ca UTF-16.</p>
+</div>
+</div>
+</section>
+
+
+
+
+<section id="irioverview">
+<h3>Lista la nivel inalt</h3>
+<p>Specificatiile IRI utilizeaza Unicode ca agent. Specifica ca inaintea transformarii pentru a scapa, IRI ar trebui convertit in UTF-8. Pentru IDN, daca o conversie este ceruta de protocol, utilizatorul agent este responsabil de schimbare cand o cerere este facuta pentru resursa.</p>
+<p>Serversul trebuie de asemenea sa recunoasca caracterele Unicode in adresa web de intrare si sa le mapam in codificarea folosita pentru resursele reale.</p>
+<div class="sidenoteGroup">
+<p>(Tineti minte ca deja ne-am confruntat cu partea numelui domeniului IRI folosind IDN. Regulile din specificatiile IRI sunt in mod normal aplicate partea caii adreselor Web multilingvistice.)</p>
+<div class="sideinfonote">
+<p class="info">Este de asemenea posibil sa aplici procentul-evadare pe numele domeniului inaintea convertirii, dar clientii deseori convertesc direct in punycode.</p>
+</div>
+</div>
+</section>
+
+
+
+
+<section id="iritechnical">
+<h3>Sa rezolvi o cale</h3>
+<p>Lasa-ne sa ne uitam la ce face clientul pentru a trimite partea caii unei adrese web unui server HTTP. Aici este partea caii exemplului anterior al adresei Web.</p>
+<div class="example"> <code>/dir1/引き割り.html</code></div>
+<p>Cand utilizatorul da click pe un hyperlink sau intra in IRI din bara de adrese a unui utilizator agent, adresa poate fi in orice codificare a caracterelor, dar acea codificare este de obicei cunoscuta.</p>
+<p>Daca sirul este introdus de utilizator sau sticat intr-un codificator non-Unicode, este convertit la Unicode, normalizat folosind Forma C a Normalizarii Unicode si codificat de codificatorul UTF-8.</p>
+<p>Agentul utilizator care converteste bitii non-ASCII pentru procente-scapari. Exemplul nostru arata astfel:</p>
+<div class="example"> <code>/dir1/%E5%BC%95%E3%81%8D%E5%89%B2%E3%82%8A.html</code></div>
+<p>Sirul este acum in forma URI si va fi acceptat de protocoale ca HTTP. Memorati cum caracterele ASCII 'dir1' sunt trecute fara modificari, din moment ce aceste caractere sunt codificare in acelasi mod in ASCII si in UTF-8.</p>
+<p>Agentul utilizator trimite cerinta pentru pagina.</p>
+<p>Cand aceasta cerinta ajunge la server, una din doua lucruri trebuie sa se intample:</p>
+<div class="sidenoteGroup">
+<ul>
+<li>daca serverul expune numele fisierelor in UTF-8, serverul acceseaza simplu resursa</li>
+<li>daca serverul utilizeaza alta cifrare, serverul va fi envoit sa o converteasca la forma UTF-8.</li>
+</ul>
+<div class="sideinfonote">
+<p class="info">Martin Dürst a scris un modul Apache numit <a href="http://www.w3.org/2003/06/mod_fileiri/">mod_fileiri</a> pentru a converti cerintele din UTF-8 in codificarea serverului.</p>
+</div>
+</div>
+<p>Asta acopera baza. Sunt unele parti aditionale ale specificarii care confrunta puncte mai fine, ca manevrarea textului bidirectional in IRI si asa mai departe.</p>
+</section>
+</section>
+
+
+
+
+
+
+<section id="sample">
+<h2>O mostra a antetului HTTP</h2>
+
+<p>Aceasta este prima parte a antetului HTTP pentru pagina ceruta generata de exemplul nostru. Arata ca numele gazda ca in IDN si calea utilizand procentul-scapare au fost potrivite.</p>
+<div class="example">
+<blockquote>
+<pre>GET /dir1/%E5%BC%95%E3%81%8D%E5%89%B2%E3%82%8A.html HTTP/1.1
+Host: xn--jp-cd2fp15c.xn--fsq.jp
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; 
+en-US; rv:1.5a) Gecko/20030728 Mozilla Firebird/0.6.1
+…
+</pre>
+</blockquote>
+</div>
+</section>
+
+
+
+
+
+
+<section id="work">
+<h2>Functioneaza?</h2>
+
+
+
+<section id="works">
+<h3>Cautarea numelui domeniului</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Internationalized_domain_name#DNS_registries_known_to_have_adopted_IDNA">Numeroase autoritati ale numelui domeniului</a> deja ofera inregistrarea numelui de domeniu internationalizata. Acestea includ furnizori pentru levele de top din tara domenii ca:  as .cn, .jp, .kr,
+etc., si levele globale de top cu domenii ca: .info, .org si .museum.</p>
+<p>Sprijinul din partea clientului pentru IDN apare in versiunile recente ale marilor browsere ce includ Internet Explorer 7, Firefox, Mozilla,
+Netscape, Opera, si Safari. Functioneaza doar in Internet Explorer 6 daca downloadezi un plug-in  (paginile de suport Microsofts ofera niste <a href="http://support.microsoft.com/?kbid=842848">sugestii</a>). Aceasta inseamna ca poti sa utilizezi IDN in valori href sau bara de adrese si browserul va converti IDN-ul in punycode si va cauta gazda.</p>
+<p>Poti sa faci un test de baza sa vezi daca IDN-ul functioneaza in sistemul tau utilizand acest<a href="/International/tests/sec-idn-1"> test simplu</a>.</p>
+<p>A fost o problema pana acum faptul ca IDN nu a fost sustinut Internet Explorer,cu uriasa sa cota de piata. Desi plug-in-urile sunt disponibile, nu toti oamenii vor stii cum sa o faca, vor dori, sau vor fi capabili sa le instaleze. Totusi, IE7 sau sucesoarele ei, care sprijina IDN-ul vor inlocui, cu timpul, cele mai multe din instalarile IE6.</p>
+<p>Tine cont de faptul ca, ca o solutie de rezerva simpla pana cand IDN este sustinut pe scara larga, autorii de continut care vor sa puncteze o resursa folosind IDN pot scrie textul link-ului in caractere native si pot sa puna o reprezentare punycode in atributul href. Aceste garantii ca utilizatorul va putea sa se lege de resursa, indiferent de platforma folosita.</p>
+<p>Daca, din diferite motive, ti-ai dori, este posibil sa opresti suportul IDN in IE7, Firefox si Mozilla.</p>
+</section>
+
+
+
+
+<section id="phishing">
+<h3>Nume de domenii si phishing-ul</h3>
+<div class="sidenoteGroup">
+<p>Una din problemele asociate cu suportul IDN in browsere este ca poate facilita phishingul prin asa-numitele 'atacuri homografe'. In concesinta, majoritatea browserelor care suporta IDN de asemenea pun in aplicare niste garanntii care protejeaza utilizatorii de asemenea frauda. </p>
+<div class="sideinfonote">
+<p class="info">Multumiri speciale lui  Michael Monaghan si Greg Aaron pentru cintributiile lor in aceasta sectiune.</p>
+</div>
+</div>
+<div class="sidenoteGroup">
+<p>Modul in care browserele alerteaza in mod normal utilizatorul de posibilitatea unui atac homograf este de a arata URI-ul in bara de adrese si statusul barei de adrese utilizand punycode, mai degraba decat in caracterele originale Unicode. Utilizatorii ar trebui asadar sa verifice intotdeauna bara de adrese dupa ce pagina este incarcata sau bara de status inainte de a accesa un link. Totusi, luati in considerare ca:</p>
+<div class="sideinfonote">
+<p class="info">'Atacurile homografe' se refera la <a href="http://en.wikipedia.org/wiki/Homograph_spoofing_attack">mixul caracterelor care arata la fel vizual</a>  in URI pentru a insela pe cineva in legatura cu site-ul pe care il acceseaza. De exemplu, in unele fonturi, litera 'I' seamana destul de mult cu 'l' astfel ca URI-ul  'www.paypaI.com' pare sa te duca pe un site Paypal , dar de fapt, cel mai probabil te ghideaza intr-un loc unde cineva va incerca sa culeaga informatiile tale personale.</p>
+</div>
+</div>
+<ul>
+<li>
+<p>Browsere diferite utilizeaza strategii diferite pentru a afla daca URI-ul ar trebui aratat in IUnicode sau punycode. </p>
+</li>
+<li>
+<p>Daca o adresa apare ca punycode, nu inseamna neaparat ca este un site fals 'ai grija utilizatorule'. Este dupa preferinta utilizatorului sa incerce sa-si dea seama daca site-ul ar trebui evitat sau nu
+.</p>
+</li>
+<li>
+<p>Detectarea potentialelor atacuri homografe este de obicei o parte din mecanismul total folosit de browser pentru a detecta daca un site este phishing sau nu.</p>
+</li>
+</ul>
+<p><b class="leadin">Internet Explorer 7</b> arata adresa ca punycode daca una din conditiile este adevarata:</p>
+<ul>
+<li>
+<p> Numele domeniului contine un caracter de la un script care nu este folosit pentru limbile incluse in <a href="http://www.w3.org/International/questions/qa-lang-priorities">preferintele lingvistice ale utilizatorului</a>.Limbile care folosesc scriptul Latin sunt impartite in Engleza (ASCII doar) si altele (pentru care orice caracter Latin non-ASCII este valid). De exemplu,  bäcker.com nu va functiona daca preferintele voastre lingvistice includ doar Engleza, dar vor functiona daca aveti Germana in preferintele voastre ( sau, sa spune, Franceza, din ,moment ce caracterele cu accent nu sunt specifice limbii).</p>
+</li>
+<li>
+<p>Orice etichete in numele domeniului (ie. o insiruire de caractere intre puncte) contine caractere dintr-un amestec de scripturi care nu apar impreuna intr-o singura limba. De exemplu, numele de domeniu ελληνικάрyccĸий.org va fi afisat capunycode deoarece caracterele Grecesti nu pot amesteca Chirilicul intr-o singura eticheta. Pe de alta parte,  ελληνικά.рyccĸий.org ar fi bine. De asemenea, o combinatie de Japoneza kanji si kana este acceptabila, ex. 全国温泉ガイド.jp.</p>
+<p>IE7 permite unui IDN sa fie afisat caUnicode daca combina caracterele ASCII cu o un singur alt script dintr-o <a href="http://blogs.msdn.com/ie/archive/2006/07/31/684337.aspx"> lista data</a>. Chirilicul nu este unul nin acele scripturi, asadar 
+pаypаl.com (unde caracterele 'a' sunt din blocul Chirilic decat din cel Latint) ar fi afisat ca punycode.</p>
+</li>
+<li>Numele domeniului contine caractere care nu fac parte din nici un script, ex I♥NY.museum</li>
+</ul>
+<p>Legand comportamentul la lista limbilor din preferintele browserelor inseamna, de asemenea ca o limba care nu este in lista standard furnizata de IEE va produce intotdeauna punycode. De examplu, Amharic in textul Ethiopian va fi afisat ca punycode chiar daca adaugi ajutor la preferintele browserului. (Din fericire, nu par sa fie registre care sa furnizeze IDN-urile Amharicin acest moment.)</p>
+<p>Unele domenii de dume frauduloase ar putea sa se strecoare pe acest net. In acest caz, protectia normala a phishingul IE7 ar pasi inauntru pentru a compara domeniile cu site-turi raportate. IE7 poate, de asemenea, sa 'aplice euristica suplimentara pentru a determina daca numele unui domeniu este ambiguu vizual'. Aceasta este de ajutor cand scrisori din acelasi scirpt sunt similare vizual.</p>
+<p>Pentru afisarea IDN-urilor suspecte in bara de adrese in punycode, IE7 utilizeaza de asemenea Bara de Informatii pentru a avertiza posibilul pericol utilizatorului. Mai utilizeaza si o pictograma ce poate fi apasata, situata la capatul barei de adrese pentru a te anunta cand un URL contine o non-ASCI, caracter I. De asemenea, afiseaza bara de adrese in toate ferestrele.</p>
+<p><b class="leadin">Firefox 2.x </b>utilizeaza o abordare diferita. Afiseaza numai numele de domenii in Unicode pentru anumite domenii de nivel de top din lista alba.  Firefox selecteaza Domenii de Nivel de Top (TLD) care au stabilit politici pentru numele de domenii, au permis inregistrarea si apoi se sprijina pe procesele de inregistrare pentru crearea de IDN-uri sigure. Poti gasi o <a href="http://www.mozilla.org/projects/security/tld-idn-policy-list.html">lista a suporturilor TLD</a> pe site-ul Mozilla. Daca un  IDN este dintr-un TLD
+care nu este pe lista, adresa web va aparea in forma punycode in bara de status si de adrese. In unele cazuri, declaratiile politicii TLD ar trebui sa includa reguli despre managementul caracterelor vizuale similare din setul de caractere permise.</p>
+<p>In plus, IDN-urile ce contin caractere (ex. fractie-linie), chiar cu TLD-uri de incredere sunt tratate cu suspiciune si face ca eticheta sa fie afissata ca punycode.</p>
+<p><b class="leadin">Opera 9.x</b> utilizeaza o abordare similara cu Firefox, desi este putin diferita in implementare.
+Oficial, afiseaza doar numele de domenii in Unicode pentru TLD-uri din lista alba, listate in opera6.ini, care este actualizata automat.</p>
+<p>Pentru TLD-ru ce nu se afla pe lista, Opera spune ca permite numelor de domenii sa utilizeze caractere 1 Latine, ex. caractere Latine cu accente care sprijina limbile Vest Europene. Toate celelalte nume de domenii sunt afisate ca punycode.</p>
+<p>In realitate, testele arata ca Opera afiseaza acum caracterele ca Unicode, indiferent daca un TLD este pe lista alba sau nu. O exceptie gasita este scriptul Devanagari, care este afisat ca punycode daca TLD-ul nu este pe lista.</p>
+<p>Opera ,totusi, afiseaza anumite combinari de scripturi ca  punycode. Testarile au aratat ca este real pentru combinatii de caractere din Greaca si Chirilica cu caractere Latine. </p>
+<p>De asemenea, lista Operei de caractere ilegale este putin mai lunga decat lista oficiala IDN. Unele IDN-uri, in timp ce sunt afisate ca punycode in alte browsere, sunt complet ilegale in Opera. </p>
+<p><b class="leadin">Safari 9.x</b> furnizeaza o lista editabila a utilizatorilor cu scripturi care sunt permise in numele de domenii native. Daca un caracter apare intr-un nume de domeniu si nu apartine unui script din lista, URI-ul este afisat ca punycode.</p>
+<p> La momentul scrierii, lista initiala contine Arabic, Armenian, Bopomofo, Canadian_Aboriginal, Devanagari, Deseret,
+					Gujarati, Gurmukhi, Hangul, Han, Hebrew, Hiragana, Katakana_Or_Hiragana, Katakana, Latin, Tamil, Thai, si Yi. Scripturi ca  Cyrillic, Cherokee si
+Greek sunt excluse in mod special deoarece contin caractere care sunt usor confundate cu caracterele Latine.</p>
+<p> Daca lista este golita, orice caracter non-ASCII face ca adresa sa fie afisata ca punycode. </p>
+<p><b class="leadin">Mozilla 1.7x</b> afiseaza toate IDN-urile ca punycode.</p>
+<p><b class="leadin">Example.</b> Este o pagina de <a href="/International/tests/test-idn-display-1">test</a> pe care o poti folosi pentru a vedea cum afiseaza browserul tau IDN-urile in bara de status. Vezi de asemenea pagina care aduna <a
+					href="/International/tests/results/results-idn-display">rezultatele </a> pentru un numar de browsere.</p>
+<p><b class="leadin">Alte ingrijorari phishing si solutii de nivel de inregistrare.</b> Unele aspecte potentiale ale  controlului necesita adresarea de catre autoritatile de inregistrare si construite ppe politicile lor de inregistrari IDN.</p>
+<p>Unele autoritati de inregistrare trebuie sa se gandeasca cu grija cum sa gaseasca moduri echivalente de a scrie acelasi cuvant. De examplu , cuvantul 
+'hindi' poate fi scris in  Devanagari fie ca r हिंदी (folosind o anusvara) ori ca हिन्दी (folosind o glyph speciala pentru  NA).</p>
+<p>Este o problema similara in utilizarea caracterelor simplificate vs. traditionale in scriptul  Chinese Han.</p>
+<div class="sidenoteGroup">
+<p>Alta probleme reiese atunci cand doua caractere sau combinatii de caractere dintr-un singur script cu aparenta similara, de exemplu litera Tamil KA க si cifra Tamil unu  ௧ sunt indistinctibile. In alte cazuri, diacriticele atasate la caractere pot fi dificil de deosebit in fonturi de marime mica.</p>
+<div class="sideinfonote">
+<p class="info">Asa cum a fost mentionat mai devreme, aceste probleme exista chiar si in setul de caractere in Latina (ASCII) . De examplu, litera O poate fi ocazional confundata cu cifra zero (0), si litera mica L (l) poate fi confundata cu cifra unu (1), in special in functie de fontul si dimensiunea afisarii folosite.</p>
+</div>
+</div>
+<p>Pe de alta parte, un singur registru poate de asemenea sa aiba de-a face cu caractere similare si potential confundabile in diferite scripturi. De examplu, Tamil si Malayalam sunt doua scripturi Indice diferite care pot fi manipulate de acelasi registru, iar litera Tamil  KA க
+(U+0B95) este foarte asemanatoare cu litera  Malayalam KA ക (U+0D15). Un alt exemplu este implicatia inregistrarii etichetei ера (care utilizeaza doar caractere  Chirilice) vs. epa (care utilizeaza doar caractere Latine) pentru un TLD ca .museum care nu are dea face cu scripturi multiple. Poate creea confuzii semnificative daca mai mult de un aplicant a fost capabil sa le inregistreze separat.</p>
+<p>In unele cazuri, aceste scenarii pot fi facute reguli care pot fi culese si aplicate de agentii utilizatori pentru detectarea phishing-ului, dar deseori sunt mai bine rezolvate in momentul inregistrarii. </p>
+<p>O abordare a nivelului de registru este aceea de a decide care caractere (ex. punctele Unicode) intr-o limba data vor fi permise in timpul inregistrarii. Aceste liste sunt numite tabele lingvistice si sunt dezvoltate de registre in cooperatie cu autoritati lingvistice calificate. De 
+examplu, autoritatea lingvistica  Indiana poate permite utilizarea literei  KA க (U+0B95), dar nu cifra Tamil unu ௧ (U+0BE7) in nume de domenii, astfel evitand un conflict.</p>
+<p>O alta abordare a nivelului de registru este aceea de a create tabele variate si capabilitati de inregistrare variate. Aceste tabele avriate arata care caractere sunt considerate confundabile vizual pentru limba sau scriptul ales. Daca numele domeniului contine un astfel de caracter, atunci versiunea numelui domeniului continand caracterul alternativ va fi automat rezervat pentru inregistrare. De  examplu, daca numele domeniului cerut  (
+					“domeniul primar”) contine litera Tamil  KA க (U+0BE7), sistemul registrului poate genera o varianta a numelui domeniului, subtituind litera  Malayalam
+KA ക (U+0D15) in locul literei Tamil KA. Toate variantele identificate pot fi automat interzise (de la a fi inregistrate sau create) ca parte a unui pachet asociat numelui primar inregistrat.</p>
+<p>Consortiul  Unicode dezvolta de asemenea un raport tehnic <a href="http://www.unicode.org/reports/tr36/"><cite>Consideratii de securitate Unicode </cite></a> care descrie probleme legate de spoofing-ul IDN si face recomandari pentru adresarea lor.</p>
+</section>
+
+
+
+
+
+<section id="iriworks">
+<h3>Cai</h3>
+<!--<p class="ed">Talk about specs, implementation, and policy.</p>-->
+<p>Procesul de conversie pentru parti ale IRI privind calea este deja nativ sustinuta in ultimele versiuni ale IE7, Firefox, Opera, Safari si Google Chrome. </p>
+<p>Functioneaza in Internet Explorer 6 daca optiunea <em>Tools&gt;Internet Options&gt;Advanced&gt;Always send URLs as UTF-8</em> este activata.
+Aceasta inseamna ca linkuri in HTML sau bare de adrese tastate in bara de adrese a browserului vor fi corect transformate in acei agenti utilizatori. Nu functioneaza in afara cutiei pentru Firefox 2 (desi poti obtine rezultate daca IRI si numele resursei sunt in aceeasi cifrare), dar alarma tehnica poate activa o optiune sa sustina asta  (set network.standard-url.encode-utf8 to true in about:config).</p>
+<p>Daca resursa este sau nu gasita pe server, totusi, este o intrebare diferita. Daca fisierul sistem este in  UTF-8, ar trebui sa nu existe probleme. Daca nu, si nu este nici un mecanism disponibil sa transforme adrese din UTF-8 intr-o cifrare potrivita, cerinta va esua.</p>
+<p>Fisierele sunt in mod normal expuse ca  UTF-8 de servere ca IIS si Apache 2 ope Windows si Mac OS X. Utilizatorii Unix si Linux pot stoca numele fisierului  in UTF-8, sau pot folosi <a href="http://www.w3.org/2003/06/mod_fileiri/">mod_fileiri module</a> mentionat mai devreme. Versiunea 1 a serverului Apache nu expune inca nume de fisiere ca 
+UTF-8.</p>
+<p>Poti face o testare rapida sa vezi daca functioneaza pentru clientul si resursa ta utilizand un <a href="/International/tests/sec-iri-3">simplu
+test</a>.</p>
+<p class="ednote">Noteaza ca, in timp ce baza poate functiona, sunt alte aspecte ale suportului IRI mai complicate, ca manuirea textelor bidirectionale  in Arabic sau Hebrew, care ar putea necesita timp aditional pentru implementare deplina.</p>
+</section>
+
+
+
+
+
+<section id="specdevt">
+<h3>Alte specificatii de lucru</h3>
+
+<p class="ednote">Sunt cateva imbunatatiri necesare specificatiilor pentru IDN si IRI, si acestea sunt puse in discutie. De
+examplu, este o nevoie de extindere a razei caracterelor Unicode care pot fi folosite in numele domeniilor pentru a acoperi ultimele versiuni Unicode si pentru a permite combinarea caracterelor de la capatul etichetelor de la dreapta la stanga scripturilor.</p>
+</section>
+</section>
+
+
+
+
+
+
+<section id="endlinks">
+<h2>Further reading</h2>
+
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><a href="http://idnsearch.net/domains/index/1">Example de IDN-uri inregistrate</a></p>
+</li>
+<li>
+<p><a href="http://download.microsoft.com/download/a/6/0/a60decbd-9044-42f1-b9c5-1c90c7a5a8ce/a6.pdf"><cite>IDN and URI</cite> [PDF]</a>, Michel
+Suignard</p>
+</li>
+<li>
+<p><a href="http://www.ietf.org/rfc/rfc3987"><cite>RFC 3987 Internationalized Resource Identifiers (IRIs)</cite></a>, IETF Proposed Standard,
+Martin Dürst, Michel Suignard</p>
+</li>
+<li>
+<p><a href="http://www.ietf.org/rfc/rfc3986"><cite>RFC 3986 STD 66 Uniform Resource Identifier (URI): Generic Syntax</cite></a>, IETF Standard, T.
+Berners-Lee, R. Fielding, L. Masinter</p>
+</li>
+<li>
+<p><a href="http://www.unicode.org/reports/tr36/"><cite>Unicode Technical Report #36 Unicode Security Considerations</cite></a></p>
+</li>
+<li>
+<p><a href="http://www.icann.org/announcements/announcement-31oct06.htm">IDNA Protocol Review and Proposals for Changes</a></p>
+</li>
+<li>
+<p><a href="http://www.ietf.org/rfc/rfc4690.txt"><cite>RFC 4690: Review and Recommendations for Internationalized Domain Names</cite></a>Probleme referitoare la caracterele specifice limbii unde este folosit acelasi script pentru diferite limbi, probleme legate de cazuri in acre limbile pot fi exprimate folosind mai mult de un scirpt, cazuri bi-directionale si problema caracterelor confundabile vizual.</p>
+</li>
+<li>
+<p><a href="http://www.icann.org/general/idn-guidelines-22feb06.htm"><cite>ICANN Guidelines for the Implementation of Internationalized
+Domain Names Version 2.1</cite></a> Ghidurile se aplica direct la registrele TLD si sunt destinate sa fie potrivite implementarii in alte registre si nivele inferioare.</p>
+</li>
+<li>
+<p><a href="/International/tests/#other">Pagini de teste IDN si IRI</a></p>
+</li>
+<li>
+<p><a href="http://www.w3.org/2003/06/mod_fileiri/">Martin Dürst's fileiri Apache module</a></p>
+</li>
+<li>
+<p><a href="http://blogs.msdn.com/ie/archive/2005/12/19/505564.aspx">International Domain Names in IE7</a></p>
+</li>
+<li>
+<p><a href="http://blogs.msdn.com/ie/archive/2006/07/31/684337.aspx">Changes to IDN in IE7 to now allow mixing of scripts</a></p>
+</li>
+<li>
+<p><a href="http://support.microsoft.com/?kbid=842848">Microsoft's recommended IDN plug-ins for IE6</a></p>
+</li>
+<li>
+<p> <a href="http://www.mozilla.org/projects/security/tld-idn-policy-list.html">IDN-enabled TLDs supported by Mozilla.org</a></p>
+</li>
+<li>
+<p> <a href="http://www.opera.com/support/search/supsearch.dml?index=788">Opera International Domain Name support</a> </p>
+</li>
+<li>
+<p> <a href="http://docs.info.apple.com/article.html?artnum=301116">Safari International Domain Name support</a></p>
+</li>
+<li>
+<p>Related links, <cite>Authoring HTML &amp; CSS</cite></p> 
+<ul><li><a href="/International/techniques/authoring-html#iris">Using non-ASCII web addresses</a></li></ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

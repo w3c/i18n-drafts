@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Setarea setului de caractere in .htaccess</title>
 <meta name="description" content="Cum modific directivele pentru servirea fisierelor cu o codificare specifica pentru un server Apache folosind .htaccess?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,14 +32,14 @@ f.breadcrumb = 'characters'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-htaccess-charset-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-ro.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<script src="qa-htaccess-charset-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-ro.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 
 <body>
@@ -50,20 +50,18 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
-  <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    administratori de site-uri sau oricine care are nevoie de ajutor in a schimba directivele serverului Apache pentru a specifica codificarea caracterelor in antetul HTTP. Nota: este nevoie de anumite drepturi si access la server pentru a efectua aceste schimbari. Utilizatorii care nu au cunostinte tehnice ar trebui sa vorbeasca cu firma sau persoana care le administreaza serverul. </p>
+<div id="audience">
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
-  <h2 id="question"><a href="#question">Question</a></h2>
+ <section id="question">
+ <h2>Intrebare</h2>
     <p class="question">Cum folosesc directivele .httaccess pe un server apache pentru a servi fisierele cu codificare anume ?</p>
-  </section>
+</section>
 
 
-<section>
-  <h2 id="background"><a href="#background">Introducere</a></h2>
+<section id="background">
+<h2>Introducere</h2>
   <p>Este important sa va asigurati ca informatia despre codificarea caracterelor trimisa la server este corecta deoarece informatia din antetul HTTP suprascrie informatia din document.</p>
   <p>Majoritatea serverelor Apache sunt configurate sa serveasca fisierele folosind codificarea ISO-8859-1 (Latin-1). In exemplele din acest articol vor pleca de la premisa ca doriti servirea fisierele folosind
     o codificare diferita fata de cea din specificatiile de baza ale serverului. Pentru sfaturi referitore la alegerea codificarii vizitati <a class="print" href="/International/tutorials/tutorial-char-enc/#choosing"><cite>Alegerea si aplicarea codificarii caracterelor</cite></a>.)</p>
@@ -93,13 +91,13 @@ Content-Language: en</pre>
 </section>
 
 
-<section>
-  <h2 id="answer"><a href="#answer">Answer</a></h2>
+<section id="answer">
+<h2>Raspuns</h2>
   <p>Exista mai multe scenarii pe care trebuie sa le luati in calcul. In instanta initiala, putem modifica setarea de baza pentru toata fisierele dintr-un director care au o extensie specifica. Alternativ putem modifica setarea de baza pentru un fisier sau un numar mic de fisiere. Vom investiga aceste cazuri pe rand.</p>
   <p>In exemplele noastre vom pleca de la premiza ca setarea de baza a serverului pentru servirea fisierelor este ISO-8859-1 si noi vrem ca fisierele sa fie servite folosind UTF-8 (o strategie rationala!)</p>
   
-  <section>
-    <h3 id="scope"><a href="#scope">Este acest raspuns relevant pentru tine ?</a></h3>
+  <section id="scope">
+<h3>Este acest raspuns relevant pentru tine ?</h3>
     <p>Acest articol se adreseaza propietarilor de site-uri, mai mult decat administratorilor de sistem. Modificarea setarilor de baza a sistemului depaste scopul acestui articol.</p>
     <p>Sfaturile oferite sunt relevante doar daca doriti setarea codificarii caracterelor documentului in antetul HTTP. In unele cazuri s-ar putea <a class="print" href="/International/questions/qa-html-encoding-declarations#httpheadwhat">sa nu fie ceea ce doriti</a>.</p>
     <p>Acest articol pleaca de la premiza ca serverul este configurat sa foloseasca <a
@@ -108,8 +106,8 @@ Content-Language: en</pre>
     <p>Daca aceste abordari dau gres va recomandam sa consultati manalul Apache (vezi <a href="#endlinks">link-urile</a>) sau contactati administratorul de sistem.</p>
   </section>
   
-  <section>
-    <h3 id="extension"><a href="#extension">Specificarea in functie de extensie</a></h3>
+  <section id="extension">
+<h3>Specificarea in functie de extensie</h3>
     <p>Folositi directiva<a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a> pentru a asocia o codificare a caracterelor pentru toate fisierele cu o extensie anume din directorul curent <em>si subdirectoarele acestuia</em>. De exemplu pentru a servi toate fisierele cu extensia .html folosind codificarea UTF-8, deschideti fisierul .htaccess intr-un editor text si adaugat urmatoarea linie de cod:</p>
     <div class="example">
       <blockquote>
@@ -143,8 +141,8 @@ Content-Language: en</pre>
     </div>
   </section>
   
-  <section>
-    <h3 id="odd"><a href="#odd">Schimbarea pentru un singur fisier</a></h3>
+  <section id="odd">
+<h3>Schimbarea pentru un singur fisier</h3>
     <p>Sa presupunem ca vreti sa serviti doar un fisier dintr-un director mare ca UTF-8 si restul fisierelor sunt servite corect ca ISO-8859-1. Fisierul pe care doriti sa il serviti ca UTF-8 se numeste exemplu.html. Deschideti fisierul .htaccess intr-un editor text si adaugati urmatorul cod: </p>
     <div class="example">
       <blockquote>
@@ -167,8 +165,8 @@ ForceType 'text/html; charset=UTF-8'
     <p><strong>Nota:</strong> Toate fisierele cu acelasi nume aflate intr-un subdirector a locatiei curente vor fi servite ca UTF-8, in cazul in care nu creati o directiva noua in directorul relevant.</p>
   </section>
   
-  <section>
-    <h3 id="more"><a href="#more">Cazuri mai complexe</a></h3>
+  <section id="more">
+<h3>Cazuri mai complexe</h3>
     <p>Cand doua reguli pentru extensii se aplica aceluiasi document ordinea extensiilor este importanta. Astfel in exemplul urmator:</p>
     <div class="example">
       <blockquote>
@@ -182,8 +180,8 @@ AddCharset windows-1252 .html
 </section>
 
 
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Alte materiale</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
@@ -219,7 +217,7 @@ AddCharset windows-1252 .html
   </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>

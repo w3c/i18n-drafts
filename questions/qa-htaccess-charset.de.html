@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Einstellung der Zeichencodierungsangabe ('charset') in .htaccess</title>
 <meta name="description" content="Wie verwendet man .htaccess-Direktiven bei einem Apache-Server, um Dateien mit einer bestimmten Zeichencodierung auszuliefern?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,14 +32,14 @@ f.breadcrumb = 'characters'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-htaccess-charset-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-de.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<script src="qa-htaccess-charset-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-de.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 
 <body>
@@ -50,20 +50,18 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
   <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    Webmaster und alle, die Rat suchen, wie serverseitige Direktiven bei Apache zu ändern sind, um die Zeichencodierung im HTTP-Header zu setzen. Für diese Änderungen sind gewisse Rechte und Zugriff auf den Server erforderlich. Technisch weniger Versierte sollten sich an ihren Provider oder den Server-Administrator wenden.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
-    </div>
+</div>
     
-  <h2 id="question"><a href="#question">Question</a></h2>
+<section id="question">
+  <h2>Frage</h2>
     <p class="question">Wie verwendet man .htaccess-Direktiven bei einem Apache-Server, um Dateien mit einer bestimmten Zeichencodierung auszuliefern?</p>
-  </section>
+</section>
 
 
-<section>
-  <h2 id="background"><a href="#background">Hintergrund</a></h2>
+<section id="background">
+<h2>Hintergrund</h2>
   <p>Es ist wichtig, dafür zu sorgen, dass sämtliche Angaben des Servers über die Zeichencodierung korrekt sind, denn die Angaben im HTTP-Header überschreiben die im Dokument vorhandenen Angaben.</p>
   <p>Viele Apache-Server sind so konfiguriert, dass sie Dateien mit der Codierung ISO 8859-1 (Latin-1) ausliefern. In den Beispielen dieser FAQ gehen wir davon aus, dass eine oder mehrere Dateien mit einer anderen Codierung als der in Grundeinstellung festgelegten ausgeliefert werden sollen. (Für Hinweise zur Wahl der Zeichencodierung siehe das Tutorial <a class="print" href="http://www.w3.org/International/questions/qa-choosing-encodings"><cite>Zeichensätze und Zeichencodierungen in XHTML, HTML und CSS</cite></a>.)</p>
   <p>Es folgt ein Beispiel eines HTTP-Headers, der zu einer an ein Nutzerprogramm (einen Browser) gesendeten Datei gehört. In diesem Fall ist die Angabe der Zeichencodierung im Content-Type-Header in der vorletzten Zeile enthalten.</p>
@@ -95,13 +93,13 @@ Content-Language: en</pre>
 </section>
 
 
-<section>
-  <h2 id="answer"><a href="#answer">Answer</a></h2>
+<section id="answer">
+<h2>Antwort</h2>
   <p>Verschiedene Szenarien sind zu berücksichtigen. Zum einen könnte gewünscht sein, die Einstellung für alle Dateien mit derselben Datei-Endung in einem Verzeichnis zu ändern. Oder es soll die Einstellung für eine einzelne oder wenige Dateien geändert werden. Wir werden dies nacheinander durchgehen.</p>
   <p>In unseren Beispielen nehmen wir an, dass der Server per Grundeinstellung Dateien als ISO 8859-1 ausliefert, aber gewünscht ist, dass die Datei(en) als UTF-8 ausgeliefert werden. (Eine äußerst vernünftige Strategie!)</p>
   
-  <section>
-    <h3 id="scope"><a href="#scope">Ist diese Antwort für mich von Bedeutung?</a></h3>
+  <section id="scope">
+<h3>Ist diese Antwort für mich von Bedeutung?</h3>
     <p>Dieser Artikel ist eher für Seitenautoren als für Systemadministratoren geschrieben. Die Grundeinstellung des Servers zu setzen, ist nicht Teil dieses Artikels.</p>
     <p>Die hier gegebenen Ratschläge sind nur von Bedeutung, wenn die Zeichencodierung der Dokumente im HTTP-Header angegeben werden soll. In einigen Fällen <a class="print" href="/International/tutorials/tutorial-char-enc/#declaring">ist das nicht angebracht</a>.</p>
     <p>Diese FAQ geht davon aus, dass der Server <a class="print" href="http://httpd.apache.org/docs-2.0/howto/htaccess.html">.htacces-Dateien</a> verwendet und dass die im Folgenden genannten Direktiven in .htaccess-Dateien auf dem Server auch <a class="print" href="http://httpd.apache.org/docs/mod/core.html#allowoverride">Wirkung zeigen</a>. Weiterhin wird davon ausgegangen, dass nicht einfach die Grundeinstellung des Servers geändert werden kann. Im Zweifelsfall sollte der Server-Administrator kontaktiert werden.</p>
@@ -109,8 +107,8 @@ Content-Language: en</pre>
     <p>Wenn diese Ansätze scheitern, sollte die Apache-Dokumentation (siehe <a href="#endlinks">Links</a>) oder der Server-Administrator konsultiert werden.</p>
   </section>
   
-  <section>
-    <h3 id="extension"><a href="#extension">Festlegung anhand der Datei-Endung</a></h3>
+  <section id="extension">
+<h3>Festlegung anhand der Datei-Endung</h3>
     <p>Mit der <a class="print" href="http://httpd.apache.org/docs/mod/mod_mime.html#addcharset">AddCharset</a>-Direktive wird eine Zeichencodierung mit allen Dateien mit einer bestimmten Datei-Endung im aktuellen Verzeichnis <em>und allen Unterverzeichnissen</em> verknüpft. Um beispielsweise alle Dateien mit der Endung .html als UTF-8 auszuliefern, ist die .htaccess-Datei in einem Texteditor zu öffnen und folgende Zeile einzutragen:</p>
     <div class="example">
       <blockquote>
@@ -144,8 +142,8 @@ Content-Language: en</pre>
     </div>
   </section>
   
-  <section>
-    <h3 id="odd"><a href="#odd">Änderung für einzelne Dateien</a></h3>
+  <section id="odd">
+<h3>Änderung für einzelne Dateien</h3>
     <p>Nehmen wir nun an, dass eine einzelne Datei aus einem großen Verzeichnis als UTF-8 ausgeliefert werden soll, während alle anderen älteren Dateien korrekt als ISO 8859-1 ausgeliefert werden sollen. Die als UTF-8 auszuliefernde Datei sei example.html. Dann die .htaccess-Datei in einem Texteditor öffnen und folgendes eintragen:</p>
     <div class="example">
       <blockquote>
@@ -168,8 +166,8 @@ ForceType 'text/html; charset=UTF-8'
     <p><strong>Anmerkung:</strong> Alle Dateien mit demselben Namen in Unterverzeichnissen des aktuellen Verzeichnisses werden dann auch als UTF-8 ausgeliefert, wenn nicht in dem betreffenden Unterverzeichnis eine gegenteilige Direktive zur Anwendung kommt.</p>
   </section>
   
-  <section>
-    <h3 id="more"><a href="#more">Komplexere Szenarien</a></h3>
+  <section id="more">
+<h3>Komplexere Szenarien</h3>
     <p>Wenn Regeln für zwei Datei-Endungen auf dasselbe Dokument zutreffen, ist die Reihenfolge der Endungen entscheidend. Im folgenden Beispiel</p>
     <div class="example">
       <blockquote>
@@ -183,8 +181,8 @@ AddCharset windows-1252 .html
 </section>
 
 
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Literaturhinweise</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
@@ -217,7 +215,7 @@ AddCharset windows-1252 .html
   </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>

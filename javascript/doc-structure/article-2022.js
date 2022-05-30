@@ -1,5 +1,10 @@
 var g = { }
 
+var base = '/i18n-drafts/' 
+
+if (window.location.href.match('www.w3.org')) {
+    base = 'https://www.w3.org/International/i18n-drafts/'
+    }
 
 
 // LANGUAGE RELATED STUFF
@@ -63,7 +68,7 @@ function stickyConneg (filename, cLang, targetLang) {
 		var path = ";path=/"
 		document.cookie = 'w3ci18nlang='+targetLang+expires+path
 		}
-	document.location.assign(filename+'.'+targetLang)
+	document.location.assign(filename+'.'+targetLang+'.html')
 	}
 
 
@@ -93,8 +98,9 @@ if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length ==
 	versionList = '<p class="noprint">'
 	for (lang=0; lang<trans.versions.length; lang++) {
 		if (f.clang != trans.versions[lang]) {
-			versionList += '<span title="'+s.currLang[trans.versions[lang]]+'"><a href="#" onclick="stickyConneg(\''+f.filename+'\',\''+f.clang+'\',\''+trans.versions[lang]+'\'); return false;" lang="'+trans.versions[lang]+
-			'" translate="no" dir="auto">'+g.nativeText[trans.versions[lang]]+'</a></span>'+s.rlm+'&nbsp; ';
+			versionList += '<bdi title="'+s.currLang[trans.versions[lang]]+'"><a href="#" onclick="stickyConneg(\''+f.filename+'\',\''+f.clang+'\',\''+trans.versions[lang]+'\'); return false;" lang="'+trans.versions[lang]+
+			'" translate="no" dir="auto">'+g.nativeText[trans.versions[lang]]+'</a></bdi>'+s.rlm+'&#x202F;';
+			if (lang < trans.versions.length-1) versionList += '• &#x202F;'
 			}
 		}
 	versionList += '</p>';
@@ -127,18 +133,16 @@ var mainNavigation = '<aside id="mainNavigationAside">'+
 
 
 
-//'	<div id="siteicons"><a href="http://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="'+f.path+'icons/w3c_home.gif" alt="'+s.gotoW3cHome+'"/></a><a href="https://www.w3.org/International/" title="'+s.gotoI18nHome+'" id="i18n-name">'+
-//s.internationalizationTitle+'</a></div>'+
 
 
 '	<div id="sitelinks" class="noprint">'+
-//'	<bdi><a href="https://www.w3.org/International/" title="'+s.i18nActivityHomePage+'">'+s.home+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="https://www.w3.org/International/technique-index" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="https://www.w3.org/International/resources" title="'+s.informationResources+'">'+s.resources+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="https://www.w3.org/International/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+ 
-'	<bdi><a href="https://www.w3.org/International/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+ 
-//'	<bdi><a href="https://www.w3.org/International/resource-index" title="'+s.topicIndexForInformation+'">'+s.topics+'</a></bdi>&#xA0;'+s.rlm+ 
-'	<bdi><a href="https://www.w3.org/International/log/description" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>&#xA0;'+s.rlm+
+'<bdi><a href="'+base+'nav/learn" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>'+s.rlm+
+'<bdi><a href="'+base+'nav/find" title="'+s.informationResources+'">'+s.resources+'</a></bdi>'+s.rlm+
+'<bdi><a href="'+base+'nav/ask" title="'+s.askI18nActivity+'">'+s.ask+'</a></bdi>'+s.rlm+ 
+'<bdi><a href="'+base+'nav/follow" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>'+s.rlm+
+'<bdi><a href="'+base+'nav/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>'+s.rlm+ 
+'<bdi><a href="'+base+'nav/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>'+s.rlm+ 
+
 '	&#xA0; </div>'+
 //' <div id="line">&#xA0;</div>'+
 '	</nav>'

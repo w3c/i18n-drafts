@@ -34,12 +34,14 @@ f.additionalLinks = ''
 </script>
 <script src="qa-no-language-data/translations.js"> </script>
 <script src="../javascript/doc-structure/article-dt.js"> </script>
-<script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script src="../javascript/doc-structure/article.js"> </script>
-<script src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" />
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
 </head>
 
 <body>
@@ -69,17 +71,17 @@ f.additionalLinks = ''
 
 
 <section id="nonlinguistic">
-  <h2><a href="#nonlinguistic">When the text is non-linguistic</a></h2>
+  <h2>When the text is non-linguistic</h2>
     <p>Use the subtag <span class="kw">zxx</span> when the text is <em>known to be</em> not in any language. </p>
     <p>This would apply for text such as type samples, part numbers, illustrations of binary data, etc. The definition of <span class="kw">zxx</span> in the <a class="print" href="http://www.iana.org/assignments/language-subtag-registry">IANA Language Subtag Registry</a> is 'no linguistic content'.</p>
     <p>For example:</p>
-    <div class="example"> <code>&lt;p&gt;Here is a list of part numbers: <span translate="no">&lt;span lang="zxx"&gt;9RUI34 8XOS12 3TYY85&lt;/span&gt;.&lt;/p&gt;</span></code> </div>
+    <div class="example"><code class="language-html">&lt;p&gt;Here is a list of part numbers: <span translate="no">&lt;span lang="zxx"&gt;9RUI34 8XOS12 3TYY85&lt;/span&gt;.&lt;/p&gt;</span></code></div>
   </section>
   
   <section id="undetermined">
-    <h2><a href="#undetermined">When the language is undetermined</a></h2>
-    <p>In HTML, use <code translate="no">lang=&quot;&quot;</code>. If you are using XML and the format you are using supports it, use <a class="print" href="http://www.w3.org/TR/REC-xml/#sec-lang-tag"><code translate="no">xml:lang=""</code></a>,
-      otherwise use <code translate="no">xml:lang="<span class="kw">und</span>"</code>.</p>
+    <h2>When the language is undetermined</h2>
+    <p>In HTML, use <code translate="no" class="language-html">lang=&quot;&quot;</code>. If you are using XML and the format you are using supports it, use <a class="print" href="http://www.w3.org/TR/REC-xml/#sec-lang-tag"><code translate="no" class="language-html">xml:lang=""</code></a>,
+      otherwise use <code translate="no" class="language-html">xml:lang="<span class="kw">und</span>"</code>.</p>
     <p>These values indicate that we cannot determine, for one reason or another, what the appropriate language information is, or whether the text is non-linguistic. For example, you might use an empty value for the language attribute if database text is included into a document but the database doesn't provide language information and you can't be reasonably sure what the language is. The effect would be to prevent any language information declared higher up the hierarchy of elements in the document from applying to the included text.</p>
     <p>However you should only tag text as undetermined if you can't just leave it as is. In practice, this means you should only use this markup if the undetermined text is embedded in  content that has already been labeled for language in some way, or if its use at the document level is required by the format you are using.</p>
   </section>
@@ -87,34 +89,31 @@ f.additionalLinks = ''
 
 
 <section id="advanced">
-<h2><a href="#advanced">Advanced topics</a></h2>
+<h2>Advanced topics</h2>
   <section id="xhtml">
-    <h3><a href="#xhtml">Implications for XHTML 1.0</a></h3>
-    <p>Legacy pages that use XHTML 1.0, and cannot be updated to HTML5 or XHTML5, should use <code translate="no">xml:lang="und"</code> if there is a need to
-      express the undefined nature of some text embedded in a document, because <code translate="no">xml:lang=""</code> is not allowed. On the very
+    <h3>Implications for XHTML 1.0</h3>
+    <p>Legacy pages that use XHTML 1.0, and cannot be updated to HTML5 or XHTML5, should use <code translate="no" class="language-html">xml:lang="und"</code> if there is a need to
+      express the undefined nature of some text embedded in a document, because <code translate="no" class="language-html">xml:lang=""</code> is not allowed. On the very
       rare occasion when the whole document is in an undefined language it is better to just not declare the default language of the document.</p>
   </section>
   <section id="xmlschemas">
-    <h3><a href="#xmlschemas">XML schema considerations</a></h3>
-    <p><code translate="no">xml:lang=""</code> only works if the schema that describes the format of your document allows an empty string as a value of <span class="kw" translate="no">xml:lang</span>. For example, because the XHTML 1.0 DTDs define <span class="kw">xml:lang</span> in such a way that an empty string value for the <span class="kw">xml:lang</span> attribute is <em>disallowed</em>, you can't use the empty string in XHTML 1.0. </p>
+    <h3>XML schema considerations</h3>
+    <p><code translate="no" class="language-html">xml:lang=""</code> only works if the schema that describes the format of your document allows an empty string as a value of <span class="kw" translate="no">xml:lang</span>. For example, because the XHTML 1.0 DTDs define <span class="kw">xml:lang</span> in such a way that an empty string value for the <span class="kw">xml:lang</span> attribute is <em>disallowed</em>, you can't use the empty string in XHTML 1.0. </p>
     <p>For those who are aware of how DTDs and other schemas work: The <span class="kw" translate="no">xml:lang</span> attribute takes NMTOKEN values in the XML schema, so they cannot be empty. In your XML DTD, if possible, declare <span class="kw" translate="no">xml:lang</span> as CDATA so that an empty value is allowed. For XML Schema users, rely on the XML schema document for the <a class="print" href="http://www.w3.org/2001/xml.xsd">XML namespace</a>.</p>
     <p>Martin Dürst <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2007JanMar/0136.html">points out</a> that you can redefine
-      the XHTML format within the document to create an XHTML page that validates while using <code translate="no">lang=""</code> or <code translate="no">xml:lang=""</code>.
+      the XHTML format within the document to create an XHTML page that validates while using <code translate="no" class="language-html">lang=""</code> or <code translate="no" class="language-html">xml:lang=""</code>.
       This is not recommended for widespread use, however, because such a document is no longer strictly conforming in the sense of XHTML 1.0.</p>
   </section>
 </section>
 
 
-<section>
-  <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
+<section id="bytheway">
+  <h2>By the way</h2>
   <p>This is a summary of a discussion in a <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2005JulSep/0163.html">thread</a> on
     www-international@w3.org, and a later <a class="print" href="http://lists.w3.org/Archives/Public/www-international/2007JanMar/0123.html">reprise</a> of those ideas
     to which several people contributed.</p>
 </section>
-
-
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<h2><a href="#endlinks">Further reading</a></h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
@@ -133,7 +132,7 @@ f.additionalLinks = ''
       </ul>
     </li>
   </ul>
-</section>
+
 
 <footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
 <script>completePage()</script>
