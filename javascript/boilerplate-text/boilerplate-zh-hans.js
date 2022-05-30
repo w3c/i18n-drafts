@@ -48,10 +48,10 @@ s.rlm = ""
 s.i18nActivityHome = "I18N 活动主页"
 s.moreResourcesOfThisType = "更多本类资源"
 s.accessKeyN = '快捷键及跳转页面导航。<a href="#contentstart">跳转到正文开始。</a>'
-s.examplesInAnotherScript = "本文档包括其它语言/字符示例。"
+s.examplesInAnotherScript = "本文档包括其他语言/字符示例。"
 s.worldMap = "世界地图"
 s.searchI18nSite = "国际化站点搜索" 
-s.translationDisclaimer = '本文档译自其它语种。如有任何偏差或错误的话，请以<a href="'+f.filename+'.en">最新英文原文</a>为准。如下所示，<a href="#copyright">原文版权</a>属于 W3C。'
+s.translationDisclaimer = '本文档译自其他语种。如有任何偏差或错误的话，请以<a href="'+f.filename+'.en">最新英文原文</a>为准。如下所示，<a href="#copyright">原文版权</a>属于 W3C。'
 s.translator = "翻译："
 s.relatedLinks = "相关链接"
 s.articles = "文章" // used in breadcrumbs, top right of page 
@@ -89,9 +89,9 @@ s.background = "背景"
 s.answer = "答案" // heading
 s.answerAlt = "答案"
 s.answerLink = "答案"
-s.byTheWayAlt = "其它有用信息"
-s.byTheWayLink = "其它信息"
-s.byTheWay = "其它信息"
+s.byTheWayAlt = "其他有用信息"
+s.byTheWayLink = "其他信息"
+s.byTheWay = "其他信息"
 s.furtherReadingAlt = "深入阅读"
 s.furtherReadingLink = "深入阅读"
 s.furtherReading = "深入阅读"
