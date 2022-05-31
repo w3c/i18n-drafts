@@ -105,10 +105,10 @@ s.homePageNews = "Home page news"
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
-s.author = "By:" // followed by name of author(s)
-s.previousAuthors = "Previously by:" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Changed by:" // person's name appears after colon
-s.translatedBy = "Translator:"
+s.author = "By:" + " " // followed by name of author(s)
+s.previousAuthors = "Previously by:" + " " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Changed by:" + " " // person's name appears after colon
+s.translatedBy = "Translator:" + " "
 s.validXHTML = "Valid XHTML 1.0!"
 s.validCSS = "Valid CSS!"
 s.codedInUtf8 = "Encoded in UTF-8!"

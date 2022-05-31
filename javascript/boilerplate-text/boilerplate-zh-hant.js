@@ -107,10 +107,10 @@ s.homePageNews = "主頁新聞 "
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
-s.author = "作者" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "修改" // person's name appears after colon
-s.translatedBy = "翻譯"
+s.author = "作者：" + "" // followed by name of author(s)
+s.previousAuthors = "前作者：" + "" // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "修改：" + "" // person's name appears after colon
+s.translatedBy = "翻譯：" + ""
 s.validXHTML = "有效的 XHTML 1.0!"
 s.validCSS = "有效的 CSS!"
 s.codedInUtf8 = "UTF-8! 編碼"
