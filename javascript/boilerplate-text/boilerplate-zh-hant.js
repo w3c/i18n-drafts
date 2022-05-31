@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'阿拉伯文',
   'bg':'保加利亞文',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant':'繁體中文',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N 活動主頁"
 s.moreResourcesOfThisType = "更多此類資源"
 s.accessKeyN = 'n 鍵跳至 <a href="#internal-links" accesskey="n">内頁瀏覽</a>. <a href="#contentstart">跳至内容</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "此文檔包含其他語言/程式的例子"
 s.worldMap = "世界地圖"
 s.searchI18nSite = "I18n 網站搜索" 
 s.translationDisclaimer = '此文檔為翻譯。如有不同或錯誤<a href="'+f.filename+'.en">最新的英語原文</a> 應為依照標準.<a href="#copyright">原始版權</a>屬于 W3C, 文件内容翻譯如下所示.'
-s.translator = "譯者:"
 s.relatedLinks = "相關鏈接"
 s.articles = "文章" // used in breadcrumbs, top right of page 
 s.topicIndexText = "内容索引"
@@ -107,13 +106,17 @@ s.homePageNews = "主頁新聞 "
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
-s.author = "作者" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "修改" // person's name appears after colon
-s.translatedBy = "翻譯"
 s.validXHTML = "有效的 XHTML 1.0!"
 s.validCSS = "有效的 CSS!"
 s.codedInUtf8 = "UTF-8! 編碼"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "作者：" // followed by name of author(s)
+s.previousAuthors = "前作者：" // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "修改：" // person's name appears after colon
+s.translatedBy = "翻譯："
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "從 "+dt.enVersion+" 英文文件翻譯而來. 翻譯版本 "+dt.thisVersionPlain+" GMT"
 
@@ -134,7 +137,6 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

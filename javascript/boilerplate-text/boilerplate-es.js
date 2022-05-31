@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Árabe',
   'bg':'Búlgaro',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant':'Chino tradicional'
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Página de inicio de internacionalización"
 s.moreResourcesOfThisType = "Más recursos relacionados con la internacionalización."
 s.accessKeyN = 'La tecla de acceso "n" lleva a la navegación de la página. <a href="#contentstart">Ir al inicio del contenido.</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "Este documento contiene ejemplos en otros idiomas y
 s.worldMap = "Mapa mundial"
 s.searchI18nSite = "Buscar en el sitio de internacionalización" 
 s.translationDisclaimer = 'Este documento es una traducción realizada por un voluntario. En el caso de discrepancias o errores, la <a href="'+f.filename+'.en">última versión original en inglés</a> será considerada como fidedigna. Los <a href="#copyright">derechos de autor originales</a> pertenecen a W3C, tal como se indica al final de la página.'
-s.translator = "Traductor:"
 s.relatedLinks = "Enlaces relacionados"
 s.articles = "Artículos" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Temario"
@@ -107,13 +106,17 @@ s.homePageNews = "Noticias de la página de inicio"
 s.followOurNews = "Siga nuestras noticias."
 s.sentenceDelimiter = "."
 
-s.author = "De:" // followed by name of author(s)
-s.previousAuthors = "Anteriormente de:" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Cambiado por:" // person's name appears after colon
-s.translatedBy = "Traductor:"
 s.validXHTML = "XHTML 1.0 válido"
 s.validCSS = "CSS válido"
 s.codedInUtf8 = "Codificado en UTF-8"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "De: " // followed by name of author(s)
+s.previousAuthors = "Anteriormente de: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Cambiado por: " // person's name appears after colon
+s.translatedBy = "Traducido por: "
+s.acknowledgements = "Agradecemos también a las siguientes personas cuyas contribuciones y opiniones fueron incluidas: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "Traducido del inglés con fecha "+dt.enVersion+". Traducción modificada por última vez el "+dt.thisVersionPlain+" GMT."
 
@@ -136,7 +139,6 @@ s.quickanswer = "Respuesta rápida" // heading
 s.longeranswer = "Respuesta extensa" // heading
 s.details = "Detalles" // heading
 s.additionalinfo = "Información adicional" // heading that sometimes follows 'Details'
-s.acknowledgements = "Agradecemos también a las siguientes personas cuyas contribuciones y opiniones fueron incluidas:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Si permite que el navegador establezca una cookie, continuará viendo las páginas de Actividad de Internacionalización de W3C (si existieran) en el idioma de su elección. ¿Quiere establecer la cookie?" // this text is to be copied to another location
 //s.supercededTranslation = '<strong>Advertencia:</strong> ¡Esta es una versión desactualizada de este documento! Le recomendamos leer  <a href="'+g.betterfilename+'.en">la última versión</a> et si vous le pouvez, y, si puede, cambiar la marca o el enlace que lo trajo aquí.'
 s.githubRedirect = "<strong>NOTA!</strong> &nbsp; Este es sólo un borrador del artículo del editor. Todos los enlaces y marcadores deben apuntar a  la <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>versión del sitio web de W3C</a>." // used for github-based versions of published articles

@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'阿拉伯文',
   'bg':'保加利亚文',
@@ -37,22 +45,18 @@ s.currLang = {
   'zh-hant':'繁体中文',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N 活动主页"
 s.moreResourcesOfThisType = "更多本类资源"
 s.accessKeyN = '快捷键及跳转页面导航。<a href="#contentstart">跳转到正文开始。</a>'
 s.examplesInAnotherScript = "本文档包括其他语言/字符示例。"
 s.worldMap = "世界地图"
 s.searchI18nSite = "国际化站点搜索" 
+<<<<<<< Updated upstream
 s.translationDisclaimer = '本文档译自其他语种。如有任何偏差或错误的话，请以<a href="'+f.filename+'.en">最新英文原文</a>为准。如下所示，<a href="#copyright">原文版权</a>属于 W3C。'
 s.translator = "翻译："
+=======
+s.translationDisclaimer = '本文档译自其它语种。如有任何偏差或错误的话，请以<a href="'+f.filename+'.en">最新英文原文</a>为准。如下所示，<a href="#copyright">原文版权</a>属于 W3C。'
+>>>>>>> Stashed changes
 s.relatedLinks = "相关链接"
 s.articles = "文章" // used in breadcrumbs, top right of page 
 s.topicIndexText = ""
@@ -107,13 +111,17 @@ s.homePageNews = "主页新闻"
 s.followOurNews = "关注我们的新闻源。"
 s.sentenceDelimiter = "."
 
+s.validXHTML = "正确的 XHTML 1.0!"
+s.validCSS = "正确的 CSS!"
+s.codedInUtf8 = "UTF-8 编码!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
 s.author = "作者：" // followed by name of author(s)
 s.previousAuthors = "前作者：" // followed by name of previous author(s), before substantive changes were made by the current author
 s.modifiedBy = "修改：" // person's name appears after colon
 s.translatedBy = "翻译："
-s.validXHTML = "正确的 XHTML 1.0!"
-s.validCSS = "正确的 CSS!"
-s.codedInUtf8 = "UTF-8 编码!"
+s.acknowledgements = "还要感谢以下人员的贡献或反馈：" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "翻译以格林尼治标准时间 "+dt.enVersion+" 的英语内容为准，并于格林尼治标准时间 "+dt.thisVersionPlain+" 作最新修改。"
 
@@ -134,7 +142,6 @@ s.tests="测试" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "简约回复" // heading
 s.longeranswer = "详情" // heading that follows 'Quick answer'
 s.additionalinfo = "更多信息" // heading that sometimes follows 'Details'
-s.acknowledgements = "还要感谢以下人员的贡献或反馈：" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "您可以让浏览器设置cookie，以继续使用您选择的语言浏览 W3C 国际化活动页面（如果有该语言的翻译的话）。请问您想设置cookie吗？" // this text is to be copied to another location
 s.githubRedirect = "<strong>注意！</strong> &nbsp; 这只是本文的编辑草案，所有链接和收藏都应指向 <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>W3C 网站上的版本</a>。" // used for github-based versions of published articles
 

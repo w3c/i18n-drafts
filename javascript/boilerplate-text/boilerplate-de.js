@@ -7,6 +7,15 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Arabisch',
   'bg':'Bulgarisch',
@@ -38,15 +47,6 @@ s.currLang = {
   'zh-hant':'Traditionelles Chinesisch',
 	}
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Startseite der I18n-Tätigkeit"
 s.moreResourcesOfThisType = "Weitere Ressourcen diesen Typs."
 s.accessKeyN = 'Accesskey n springt zur Seitennavigation. <a href="#contentstart">Springe zum Inhalt.</a>'
@@ -54,7 +54,6 @@ s.examplesInAnotherScript = "Dieses Dokument enthält Beispiele in einer anderen
 s.worldMap = "Weltkarte"
 s.searchI18nSite = "I18n-Suche" 
 s.translationDisclaimer = 'Dieses Dokument ist eine ehrenamtlich angefertigte Übersetzung. Im Falle von Abweichungen oder Fehlern sollte das <a href="'+f.filename+'.en">aktuelle englische Original</a> als maßgeblich angenommen werden. Das W3C besitzt das <a href="#copyright">Copyright am Original</a>, wie unten beschrieben.'
-s.translator = "Übersetzer:"
 s.relatedLinks = "Verwandte Links"
 s.articles = "Artikel" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Themenverzeichnis"
@@ -109,13 +108,17 @@ s.homePageNews = "News auf der Startseite"
 s.followOurNews = "Folgen Sie unserem Newsfeed."
 s.sentenceDelimiter = "."
 
-s.author = "Autor:" // followed by name of author(s)
-s.previousAuthors = "Vorheriger Autor:" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Geändert von:" // person's name appears after colon
-s.translatedBy = "Übersetzer:"
 s.validXHTML = "Valides XHTML 1.0!"
 s.validCSS = "Valides CSS!"
 s.codedInUtf8 = "Kodiert in UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Autor: " // followed by name of author(s)
+s.previousAuthors = "Vorheriger Autor: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Geändert von: " // person's name appears after colon
+s.translatedBy = "Übersetzer: "
+s.acknowledgements = "Vielen Dank für die Beiträge und Kommentare zu diesem Artikel an: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "Übersetzung der englischen Version vom "+dt.enVersion+". Letzte Änderung der übersetzten Version am "+dt.thisVersionPlain+" UTC."
 
@@ -136,7 +139,6 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Kurze Antwort" // heading
 s.longeranswer = "Details" // heading
 s.additionalinfo = "Weitere Informationen" // heading that sometimes follows 'Details'
-s.acknowledgements = "Vielen Dank für die Beiträge und Kommentare zu diesem Artikel an:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Wenn Sie der Verwendung eines Cookies zustimmen, werden Ihnen die Seiten der W3C-Internationalisierungstätigkeit (sofern verfügbar) in Ihrer gewählten Sprache angezeigt. Möchten Sie den Cookie setzen?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

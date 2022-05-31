@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'아랍어',
   'bg':'불가리아어',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant':'중국어 (번체)',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N 활동 홈"
 s.moreResourcesOfThisType = "이 유형의 추가 리소스."
 s.accessKeyN = '페이지 탐색에서 액세스 키를 n번 건너뜁니다. <a href="#contentstart">컨텐츠 시작 페이지로 건너뛰기</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "이 문서에는 다른 언어/스크립트 예제�
 s.worldMap = "세계지도"
 s.searchI18nSite = "I18n 사이트 검색" 
 s.translationDisclaimer = '이 문서는 번역본입니다. 일치하지 않는 사항이나 오류가 있는 경우에는 <a href="'+f.filename+'.en">최신 영문 원본</a> 을 참고하십시오. <a href="#copyright">원본 저작권</a> 은 아래와 같이 W3C에게 있습니다.'
-s.translator = "번역:"
 s.relatedLinks = "관련 링크"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
 s.topicIndexText = "항목 색인"
@@ -107,13 +106,17 @@ s.homePageNews = "홈 페이지 뉴스"
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
-s.author = "작성한 사람:" // followed by name of author(s)
-s.previousAuthors = "이전에 작성한 사람:" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "내용을 변경한 사람:" // person's name appears after colon
-s.translatedBy = "번역:"
 s.validXHTML = "Valid XHTML 1.0!"
 s.validCSS = "유효한 CSS!"
 s.codedInUtf8 = "UTF-8로 인코딩됨!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "작성한 사람: " // followed by name of author(s)
+s.previousAuthors = "이전에 작성한 사람: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "내용을 변경한 사람: " // person's name appears after colon
+s.translatedBy = "번역: "
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = dt.enVersion+" 기준 영어 컨텐츠를 번역한 것입니다. "+dt.thisVersionPlain+" GMT에 번역본이 마지막으로 변경되었습니다."
 
@@ -133,7 +136,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 
