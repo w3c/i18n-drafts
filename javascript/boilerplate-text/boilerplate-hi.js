@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'अरबी',
   'bg':'बल्गेरियाई',
@@ -36,14 +44,6 @@ s.currLang = {
   'zh-hant':'चीनी (पारम्परिक)',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N गतिविधि होम"
 s.moreResourcesOfThisType = "इस प्रकार के और अधिक संसाधनों."
 s.accessKeyN = 'पृष्ठ नेविगेशन करने के लिए <a href="#internal-links" accesskey="n">अच्सस्स्केय और स्किप्स</a>. <a href="#contentstart">सामग्री शुरू करने के लिए छोड़ें.</a>'
@@ -51,7 +51,6 @@ s.examplesInAnotherScript = "इस दस्तावेज़ स्क्र�
 s.worldMap = "दुनिया के नक्शे"
 s.searchI18nSite = "I18n साइट खोज" 
 s.translationDisclaimer = 'यह दस्तावेज एक अनुवाद है. किसी भी विसंगति या त्रुटि के मामले में <a href="'+f.filename+'.en">नवीनतम अंग्रेजी मूल</a> आधिकारिक विचार किया जाना चाहिए. <a href="#copyright">मूल कॉपीराइट</a> डब्ल्यू .3 सी. के अंतर्गत आता है, जैसा कि नीचे दिखाया गया है.'
-s.translator = "अनुवादक:"
 s.relatedLinks = "संबंधित लिंक"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
 s.topicIndexText = "विषय सूचकांक"
@@ -106,13 +105,17 @@ s.homePageNews = "मुख पृष्ठ समाचार"
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "।"
 
-s.author = "लेखक:" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "द्वारा संशोधित:" // person's name appears after colon
-s.translatedBy = "अनुवादक:"
 s.validXHTML = "वैध XHTML 1.0!"
 s.validCSS = "वैध CSS!"
 s.codedInUtf8 = "UTF-8 में एनकोडेड!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "लेखक: " // followed by name of author(s)
+s.previousAuthors = "Previously by: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "द्वारा संशोधित: " // person's name appears after colon
+s.translatedBy = "अनुवादक: "
+s.acknowledgements = "उन लोगों को भी धन्यवाद जिनके योगदान या प्रतिक्रिया को शामिल किया गया था: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "अंग्रेजी सामग्री से अनुवादित दिनांक "+dt.enVersion+". पिछले परिवर्तित संस्करण अनुवादित "+dt.thisVersionPlain+" GMT"
 
@@ -133,7 +136,6 @@ s.tests="परीक्षा" // used at the end of breadcrumbs for test relat
 s.quickanswer = "त्वरित उत्तर" // heading
 s.longeranswer = "विवरण" // heading that follows 'Quick answer'
 s.additionalinfo = "अतिरिक्त जानकारी" // heading that sometimes follows 'Details'
-s.acknowledgements = "उन लोगों को भी धन्यवाद जिनके योगदान या प्रतिक्रिया को शामिल किया गया था:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "यदि आप ब्राउज़र के द्वारा कुकी सेट करते हैं, तो आप अपने द्वारा चुनी गई भाषा में W3C अंतर्राष्ट्रीयकरण गतिविधि पृष्ठ (जहाँ उपलब्ध हो) देखना जारी रखेंगे। क्या आप कुकी सेट करना चाहते हैं?" // this text is to be copied to another location
 s.githubRedirect = "<strong>टिप्पणी!</strong> &nbsp; यह, इस आलेख का एक संपादकीय मसौदा है। सभी लिंक और बुकमार्क <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a> को निर्देशित होने चाहिए।" // used for github-based versions of published articles
 
