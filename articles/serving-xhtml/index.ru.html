@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>Обслуживание HTML и XHTML</title>
 <meta name="description" content="Краткое введение в: альтернативные способы обслуживания XHTML 1.0; режим standards или quirks; проблемы связанные с назначением XML." />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,14 +32,15 @@ f.breadcrumb = 'other'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="index-data/translations.js"> </script>
-<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-ru.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-ru.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
 <style>
 table td {
 	border: 0;
@@ -64,21 +65,16 @@ figcaption {
 </header>
 
 
-<section>
   <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    шифровальщики XHTML/HTML (используя редакторы или скрипты), разработчики скриптов (PHP, JSP, и т.д.), шифровальщики CSS, менеджеры Веб
-      проектов, и каждый нуждающийся в информации о режимах quirks или standards, и как назначение DOCTYPE и XML влияют на это. Предварительное чтение этой статьи также очень полезно для тех, кто хочет знать, как назначить кодировку своих документов.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
-    </div>
+</div>
 
   <p>В этой статье очень кратко описываются некоторые аспекты того, как XHTML посылается с сервера до клиентского приложения (например, в браузер), и как распространенные клиентские приложения обрабатывают ту разметку, которую они получают. Статья описывает решение конкретных проблем, а не стандарты W3C.</p>
   <p>Эти вопросы имеют отношение к тому <a class="print" href="/International/questions/qa-html-encoding-declarations">как назначить кодировку HTML или XHTML документа.</a> Эта информация будет также полезна при объяснении того, почему некоторые аспекты стилизации CSS не появляются такими, как их ожидают, или почему они отличаются в различных клиентских приложениях.</p>
-  </section>
   
  
-<section>
-  <h2 id="mime"><a href="#mime">MIME типы</a></h2>
+<section id="mime">
+<h2>MIME типы</h2>
   <p>Когда сервер обслуживает (то есть отправляет) документ браузеру, он также с документом посылает некоторую дополнительную информацию, которая называется <a href="/International/articles/definitions-characters/#httpheader" class="dfn print">HTTP заголовком</a>.</p>
   <p>Поле Content-Type заголовка HTTP описывает, какой это тип формата данных. Эта информация выражается с помощью
     пометки <dfn>MIME media type</dfn> (MIME медиа тип). Вот пример HTTP заголовка для HTML файла, используя MIME тип <code class="kw" translate="no">text/html</code>. Обратите внимание, что запись Content-Type также может
@@ -118,8 +114,8 @@ Content-Language: en</pre>
 </section>
 
 
-<section>
-  <h2 id="quirks"><a href="#quirks">Режим 'Standards' или 'Quirks'</a></h2>
+<section id="quirks">
+<h2>Режим 'Standards' или 'Quirks'</h2>
   <p>Современные основные браузеры могут отображать HTML файл как в <dfn>режиме standards</dfn> так и в <dfn>режиме 
     quirks</dfn>. Это означает, что для отображения файла применяются различные правила: одно отвечает интерпретации ожидаемого поведения в соответствии со стандартами W3C, другое - ожиданиям, основанным на нестандартном поведении старых браузеров.</p>
   <p>В последних версиях основных браузеров, режим standards включен за счет наличия <dfn><a class="print" href="http://www.w3.org/QA/2002/04/valid-dtd-list.html">назначения DOCTYPE</a></dfn>. Отсутствие DOCTYPE может привести к различной выдачи в разных браузерах.</p>
@@ -179,8 +175,8 @@ Content-Language: en</pre>
   <p>Браузеры, которые таким образом меняют режимы standards и quirks часто предлагают сделать <dfn>DOCTYPE переключение</dfn>.</p>
   <p>Как правило, это очень хорошо всегда обслуживать вашу страницу в режиме standards - то есть всегда включать назначения DOCTYPE.</p>
 
-  <section>
-    <h3 id="declaration"><a href="#declaration">Назначения XML и DOCTYPEs</a></h3>
+  <section id="declaration">
+<h3>Назначения XML и DOCTYPEs</h3>
     <p>Существует один аспект использования DOCTYPEs, что особенно важно для назначения кодировки символов и предполагаемых результатов моделирования. </p>
     <p>Поскольку XHTML 1.0 основана на XML, то <a class="dfn print" href="/International/questions/qa-html-encoding-declarations#xmldeclaration">XML назначение</a> можно добавить в начале разметки, даже если она обслуживается как HTML.
       Это сделало бы верхнюю часть вышеприведенного файла, похожим на это (XML назначение выделяется красным курсивом):</p>
@@ -206,8 +202,8 @@ Content-Language: en</pre>
 </section>
 
 
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Дополнительные материалы</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
   <ul id="full-links">
@@ -239,7 +235,7 @@ Content-Language: en</pre>
   </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>

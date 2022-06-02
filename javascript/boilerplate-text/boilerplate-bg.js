@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Арабски',
   'bg':'Български',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant':'Китайски (традиционен)',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N Начална страница"
 s.moreResourcesOfThisType = "Още ресурси от този тип."
 s.accessKeyN = 'Код за достъп n прескача към<a href="#internal-links" accesskey="n">навигацията във страницата</a>. <a href="#contentstart">Отиди в началото на съдържанието.</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "Този документ съдържа и при�
 s.worldMap = "Карта на света"
 s.searchI18nSite = "Търсене в сайта I18n" 
 s.translationDisclaimer = 'Този превод на документа е осигурен от доброволец. В случай на несъответствие или грешки, <a href="'+f.filename+'.en">последният Английски оригинал</a> следва да бъде считан за достоверен.<a href="#copyright">Оригиналното авторско право</a> принадлежи на W3C, както е означено по-долу.'
-s.translator = "Преводач:"
 s.relatedLinks = "Линкове по темата"
 s.articles = "Статии" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Topic index"
@@ -107,13 +106,17 @@ s.homePageNews = "Новините от началната страница"
 s.followOurNews = "Абонирай се за нашият новинарски фиид."
 s.sentenceDelimiter = "."
 
-s.author = "Автор:" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Редактирано от:" // person's name appears after colon
-s.translatedBy = "Преводач:"
 s.validXHTML = "Валиден XHTML 1.0!"
 s.validCSS = "Валиден CSS!"
 s.codedInUtf8 = "Енкодинк UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Автор: " // followed by name of author(s)
+s.previousAuthors = "Previously by: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Редактирано от: " // person's name appears after colon
+s.translatedBy = "Преводач: "
+s.acknowledgements = "Благодарности на следните хора чиито статии или коментари бяха включени: " // used at bottom of page to list people who provided feedback. The list comes after this text.
 
 s.translatedFromEnglishVer = "Превод от Английско съдържание от дата "+dt.enVersion+". Последна ревизия на преведената версия: "+dt.thisVersionPlain+" GMT"
 
@@ -134,7 +137,6 @@ s.tests="Тестове" // used at the end of breadcrumbs for test related page
 s.quickanswer = "Бърз отговор" // heading
 s.longeranswer = "Детайли" // heading that follows 'Quick answer'
 s.additionalinfo = "Допълнителна информация" // heading that sometimes follows 'Details'
-s.acknowledgements = "Благодарности на следните хора чиито статии или коментари бяха включени:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "Ако разрешите браузъра да запише бисквитка, ще продължите да виждате W3C Internationalization Activity страниците (където са налични) на избрания от вас език. Искате ли да запишете бисквиткат?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

@@ -7,6 +7,16 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Arabe',
   'bg':'Bulgare',
@@ -38,16 +48,6 @@ s.currLang = {
   'zh-hant':'Chinois traditionnel'
 	}
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Accueil de l'Activité I18N";
 s.moreResourcesOfThisType = "Autres ressources du même type.";
 s.accessKeyN = 'Utiliser la touche d\'accès n pour naviguer au sein de la page. <a href="#contentstart">Sauter au début du contenu.</a>'
@@ -110,15 +110,20 @@ s.homePageNews = "Les nouvelles de la page d'accueil";
 s.followOurNews = "Abonnez-vous à notre fil d’actualités."
 s.sentenceDelimiter = ".";
 
-s.author = "Par :"; // followed by name of author(s)
-s.previousAuthors = "Précédemment par :"; // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Modifié par :"; // person's name appears after colon
-s.translatedBy = "Traducteur :";
 s.validXHTML = "XHTML 1.0 valide !";
 s.validCSS = "CSS valide !";
 s.codedInUtf8 = "Codé en UTF-8 !";
 
 s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" UTC."; 
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Par : "; // followed by name of author(s)
+s.previousAuthors = "Précédemment par : "; // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Modifié par : "; // person's name appears after colon
+s.translatedBy = "Traducteur : ";
+s.acknowledgements = "Nous remercions également les personnes suivantes pour leur contribution ou leurs commentaires\u202F: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
+
+s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" GMT."; 
 
 s.historyOfDocumentChanges = 'Pour l’historique des modifications du document, veuillez consulter <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">le flux d’actualité</a> pour les changements conséquents, et <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la liste des « commits » sur Github</a> pour voir toutes les modifications apportées depuis janvier 2016.'
 s.untranslatedChanges = '<strong>Remarque :</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. Les changements ont été intégrés à cette page, et il est possible que certains passages s\'affichent en anglais en attendant que la traduction soit mise à jour.'
@@ -138,7 +143,6 @@ s.quickanswer = "Réponse courte"; // heading
 s.longeranswer = "Détails"; // heading
 s.details = "Détails"; // heading
 s.additionalinfo = "Information complémentaire" // heading that sometimes follows 'Details'
-s.acknowledgements = "Nous remercions également les personnes suivantes pour leur contribution ou leurs commentaires\u202F:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Si vous acceptez que votre navigateur crée un cookie, vous continuerez de voir les pages d’activité d’internationalisation de W3C (lorsque cela est possible) dans la langue de votre choix. Souhaitez-vous créer le cookie\u202F?" // this text is to be copied to another location
 //s.supercededTranslation = '<strong>Avertissement :</strong> Ceci est une version dépassée de ce document! Il est recommandé de lire <a href="'+g.betterfilename+'.en">la dernière version</a> et si vous le pouvez, de modifier le marque-page ou le lien qui vous a redirigé ici.'
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; Ceci est seulement un brouillon de l\’éditeur de cet article. Tous les liens et signets doivent pointer vers <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>la version sur le site du W3C</a>." // used for github-based versions of published articles

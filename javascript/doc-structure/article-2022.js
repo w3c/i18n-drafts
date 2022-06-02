@@ -106,7 +106,7 @@ if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length ==
 	versionList += '</p>';
 	}
 
-if (g.isTranslation) g.disclaimer = '<div id="disclaimer"><p>'+s.translationDisclaimer+'</p><p>'+s.translator+' '+f.translators+'</p></div>' 
+if (g.isTranslation) g.disclaimer = '<div id="disclaimer"><p>'+s.translationDisclaimer+'</p><p>'+s.translatedBy+f.translators+'</p></div>' 
 else g.disclaimer = ''
 
 
@@ -136,12 +136,12 @@ var mainNavigation = '<aside id="mainNavigationAside">'+
 
 
 '	<div id="sitelinks" class="noprint">'+
-'	<bdi><a href="'+base+'nav/learn" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="'+base+'nav/find" title="'+s.informationResources+'">'+s.resources+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="'+base+'nav/ask" title="'+s.askI18nActivity+'">'+s.ask+'</a></bdi>&#xA0;'+s.rlm+ 
-'	<bdi><a href="'+base+'nav/follow" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>&#xA0;'+s.rlm+
-'	<bdi><a href="'+base+'nav/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>&#xA0;'+s.rlm+ 
-'	<bdi><a href="'+base+'nav/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>&#xA0;'+s.rlm+ 
+'<bdi><a href="'+base+'nav/learn" title="'+s.taskBasedIndex+'">'+s.techniques+'</a></bdi>'+s.rlm+
+'<bdi><a href="'+base+'nav/find" title="'+s.informationResources+'">'+s.resources+'</a></bdi>'+s.rlm+
+'<bdi><a href="'+base+'nav/ask" title="'+s.askI18nActivity+'">'+s.ask+'</a></bdi>'+s.rlm+ 
+'<bdi><a href="'+base+'nav/follow" title="'+s.newsFiltersAndFeeds+'">'+s.news+'</a></bdi>'+s.rlm+
+'<bdi><a href="'+base+'nav/participate" title="'+s.groupsThatMakeUp+'">'+s.groups+'</a></bdi>'+s.rlm+ 
+'<bdi><a href="'+base+'nav/about" title="'+s.aboutI18nActivity+'">'+s.about+'</a></bdi>'+s.rlm+ 
 
 '	&#xA0; </div>'+
 //' <div id="line">&#xA0;</div>'+
@@ -224,16 +224,16 @@ var previousCredit = ''
 if (f.previousauthors && f.previousauthors != '') previousCredit = ' '+s.previousAuthors+' '+f.previousauthors+s.sentenceDelimiter
 
 var modCredit = ''
-if (f.modifiers && f.modifiers != '') modCredit = s.modifiedBy+' '+f.modifiers+s.sentenceDelimiter
+if (f.modifiers && f.modifiers != '') modCredit = s.modifiedBy+f.modifiers+s.sentenceDelimiter
 
 var translatorCredit = ''
-if (g.isTranslation) translatorCredit = s.translatedBy+' '+f.translators+s.sentenceDelimiter
+if (g.isTranslation) translatorCredit = s.translatedBy+f.translators+s.sentenceDelimiter
 
-var credits = "<p>"+s.author+' '+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
+var credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
 // Remove the space for Chinese
 if (document.documentElement.lang === "zh-hans" || document.documentElement.lang === "zh-hant") credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
 
-if (f.contributors && f.contributors != '') credits += "<p class='acknowledgements'>"+s.acknowledgements+" "+f.contributors+"</p>"
+if (f.contributors && f.contributors != '') credits += "<p class='acknowledgements'>"+s.acknowledgements+f.contributors+"</p>"
 if (f.sources && f.sources != '') credits += "<p class='acknowledgements'>"+f.sources+"</p>"
 
 
