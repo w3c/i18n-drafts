@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Tiếng A-rập',
   'bg':'Tiếng Bun-ga-ri',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant':'Tiếng Trung Quốc (Phồn thế)',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Trang Chủ Hoạt Động I18N"
 s.moreResourcesOfThisType = "Thêm nguồn thông tin về dạng này."
 s.accessKeyN = 'Phím truy cập và bỏ qua khi điều hướng trang. <a href="#contentstart">Bỏ qua để đến phần bắt đầu nội dung.</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "Tài liệu này bao gồm các ví dụ bằng cá
 s.worldMap = "Bản đồ thế giới"
 s.searchI18nSite = "Tìm kiếm trên trang I18n" 
 s.translationDisclaimer = 'TTài liệu này là một bản dịch. Trong trường hợp xảy ra bất kỳ sự không nhất quán hoặc có lỗi thì <a href="'+f.filename+'.en">bản tiếng Anh gốc mới nhất</a> được coi là bản chính thức. <a href="#copyright">Bản quyền gốc</a> thuộc về W3C, như được chỉ ra dưới đây.'
-s.translator = "Người dịch:"
 s.relatedLinks = "Các liên kết liên quan"
 s.articles = "Các bài báo" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Chỉ mục theo chủ đề"
@@ -107,13 +106,17 @@ s.homePageNews = "Các tin tức từ trang chủ"
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
-s.author = "Tác giả:" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Được thay đổi bởi:" // person's name appears after colon
-s.translatedBy = "Người dịch:"
 s.validXHTML = "Đúng theo tiêu chuẩn XHTML 1.0!"
 s.validCSS = "CSS hợp lệ!"
 s.codedInUtf8 = "Được mã hóa theo UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Tác giả: " // followed by name of author(s)
+s.previousAuthors = "Previously by: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Được thay đổi bởi: " // person's name appears after colon
+s.translatedBy = "Người dịch: "
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "Được dịch từ bản tiếng Anh vào ngày "+dt.enVersion+". Phiên bản dịch mới nhất được thay đổi vào "+dt.thisVersionPlain+" GMT"
 
@@ -134,7 +137,6 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

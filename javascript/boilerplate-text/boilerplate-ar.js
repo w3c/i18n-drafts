@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = " dir='rtl' "
+s.ltrAttribute = " dir='ltr' "
+s.rlm = "‏"
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'العربية',
   'bg':'البلغارية',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant':'الصينية التقليدية'
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = " dir='rtl' "
-s.ltrAttribute = " dir='ltr' "
-s.rlm = "‏"
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "الصفحة الرئيسية لنشاط I18N"
 s.moreResourcesOfThisType = "المزيد من هذا النوع من الموارد."
 s.accessKeyN = 'مفتاح الوصول n ينتقل<a href="#contentstart">إلى بداية المحتوى</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "تتضمن هذه الوثيقة أمثلة بلغ�
 s.worldMap = "خريطة العالم"
 s.searchI18nSite = "بحث موقع I18N" 
 s.translationDisclaimer = 'هذه الوثيقة ترجمة للأصل. في حالة وجود تعارض أو أخطاء، تكون <a href="'+f.filename+'.en">أحدث نسخة المستند الإنجليزي الأصلي</a> هي الموثوقة. <a href="#copyright">حقوق الطبع والنشر الأصلية</a> بملك W3C، كما هو موضح بأسفله.'
-s.translator = "المترجم:"
 s.relatedLinks = "روابط متعلقة"
 s.articles = "مقالات" // used in breadcrumbs, top right of page 
 s.topicIndexText = "فهرس المواضيع."
@@ -107,13 +106,17 @@ s.homePageNews = "الصفحة الرئيسية للأخبار."
 s.followOurNews = "تابع مجرى أخبارنا"
 s.sentenceDelimiter = "."
 
-s.author = "كتبه:‏" // followed by name of author(s)
-s.previousAuthors = "كتبت سابقا من قبل:‏" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "غيرت من قبل:‏" // person's name appears after colon
-s.translatedBy = "المترجم:"
 s.validXHTML = "XHTML 1.0 سليم!"
 s.validCSS = "CSS سليم!"
 s.codedInUtf8 = "بترميز UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "كتبه:‏ " // followed by name of author(s)
+s.previousAuthors = "كتبت سابقا من قبل:‏ " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "غيرت من قبل:‏ " // person's name appears after colon
+s.translatedBy = "المترجم: "
+s.acknowledgements = "شكرًا أيضًا للأشخاص التاليين لمساهماتهم أو تعليقاتهم: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "مترجم عن محتوى مكتوب باللغة الإنجليزية بتاريخ "+dt.enVersion+". تغيرت النسخة المترجمة لأخر مرة في "+dt.thisVersionPlain+" بتوقيت جرينيتش"
 
@@ -134,7 +137,6 @@ s.tests="اختبارات" // used at the end of breadcrumbs for test related pa
 s.quickanswer = "جواب سريع" // heading
 s.longeranswer = "تفاصيل" // heading
 s.additionalinfo = "معلومات إضافية" // heading that sometimes follows 'Details'
-s.acknowledgements = "شكرًا أيضًا للأشخاص التاليين لمساهماتهم أو تعليقاتهم:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "إذا سمحت للمتصفح بتعيين ملف تعريف الارتباط (Cookies)، فستستمر في مشاهدة صفحات نشاط التدويل W3C (إن وجدت) باللغة التي اخترتها. هل ترغب في إنشاء ملف تعريف الارتباط?" // this text is to be copied to another location
 s.githubRedirect = "<strong>ملاحظة!</strong> &nbsp; هذه مسودة المحرر لهذا المقال. يجب أن تشير جميع الروابط والإشارات إلى <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>الإصدار الموجود على موقع W3C</a>." // used for github-based versions of published articles
 

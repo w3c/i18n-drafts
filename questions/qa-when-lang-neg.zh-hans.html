@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>何时使用语言协商</title>
+<meta name="description" content="什么时候适合或不适合使用语言协商？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-when-lang-neg' // the file name WITHOUT extensions
+f.authors = 'François Yergeau' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-when-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-02-26' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-02-26', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2022-05-30', time:'16:32'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'navigation'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-when-lang-neg-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>何时使用语言协商</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+  <section id="question">
+    <h2>问题</h2>
+    <p class="question">什么时候适合或不适合使用语言协商？</p>
+  
+  <p>语言协商是HTTP协议的一项功能，允许服务器根据URL和浏览器发送的用户偏好信息（特别是在<code class="kw" translate="no">Accept-Language</code>头中的信息）在页面的多个语言版本中进行选择。这与基于浏览器IP地址的页面选择或用户在语言选择页面上的手动选择都不同。如果浏览器表达的偏好与服务器上可用的语言不匹配，则显示语言选择页面或提供默认语言。</p>
+  
+  <p>在许多情况下，用户的默认语言设置是没有问题的。例如，如果您用的是日文版浏览器，浏览器通常会假定您更喜欢日文页面，并将此信息发送到服务器。主流浏览器允许您修改这些语言首选项。有关详细信息，请参阅<a class="print" href="qa-lang-priorities"><cite>在浏览器中设置语言首选项</cite></a>。</p>
+  <p>本文解决了何时适合（或不适合）在服务器上设置语言协商的问题。</p>
+</section>
+
+
+<section id="answer">
+  <h2>答案</h2>
+  <p>简短的回答是：<strong>任何时候都适合</strong>。</p>
+  <p>稍微长一点的答案是：几乎总是适合，<strong>但不能只用语言协商</strong>。</p>
+  <p>语言协商的行为<a href="#shortcomings">并不总和用户的预期一致</a>，有<a href="#overrides">弥补其不足的技术</a>，还应该在<a href="#stickyness">导航中提供粘性</a>。</p>
+    
+  <section id="shortcomings">
+    <h3>语言协商的缺点</h3>
+    <p>语言协商显然是有用的，但在全面实施语言协商之前，了解它的局限性很重要。为了说明这些，我们将使用www.example.be这个网站作为例子，该网站以佛兰德语、法语和德语提供其内容，启用了语言协商，所有页面默认为佛兰德语。一个用户名为Sylvia，她的母语是意大利语，但也会说德语。可能会出现几种情况：</p>
+    <ol>
+      <li>Sylvia的浏览器配置正确，用户偏好首先是意大利语，其次是德语。www.example.be上没有意大利语，页面以德语返回，Sylvia很开心，一切都很好。这就是语言协商的目的！</li>
+      <li>Sylvia是一个非技术人员，从未听说过HTTP语言协商，也从未修改过浏览器设置。浏览器的语言是意大利语，默认表达用户对意大利语的偏好（这里没有问题）。点击www.example.be，发现没有意大利语，所以只能返回网站默认的佛兰德语，即使网站有德语版。这种情况不太好。</li>
+      <li>Sylvia没有使用自己的浏览器，而是坐在莫斯科的一家网吧里。那里的浏览器被配置为（或默认是）俄语。她看到的网站又是佛兰德语。这种情况同样不好。</li>
+    </ol>
+    <p>现在情况很清楚了：语言协商并不总是能给出预期的结果。</p>
+    <p id="equivalence">此外，当各语言的页面不等价，也就是内容有所不同时，语言协商甚至<strong>毫不相关</strong>。<a class="print" href="/International/questions/qa-mono-multilingual">单语言和多语言网站</a>一文对此进行了一些说明，请特别参阅<a href="/International/questions/qa-mono-multilingual#mlsc">多语言，相同内容</a>和<a href="/International/questions/qa-mono-multilingual#mlcc">多语言，内容适配</a>这两个小节。但是请注意，某些文化适应措施（例如更改货币）并不一定会使页面不等价；只有当一个<strong>网站</strong>的不同语言版本的页面无法相互对应时，才不适合使用语言协商。</p>
+  </section>
+    
+  <section id="overrides">
+    <h3>弥补不足</h3>
+    <p>尽管有其局限性，语言协商仍然是一个有用的功能，我们也希望在多语言站点中实现它。但是，我们必须设法弥补语言协商的不足。简而言之，重要的是为访问者提供在语言协商结果不正确时<strong>覆盖</strong>自动选择的语言的方法。这意味着在页面中放置可以链接到其他语言的组件（我们在这里将它们称为<strong>语言控件</strong>）。当然，这些控件对不熟悉当前页面语言的用户来说必须要清晰易懂。</p>
+    <p>那么问题来了：我们应该对所有页面实现语言协商和手动语言控制，还是只对主页实施？最好的答案是“所有页面”，除了那些不够<a href="#equivalence">等价</a>的页面以外。语言协商很好，因为如果Jaap将www.example.be网站上的链接通过电子邮件发送给Pierre，即使Jaap访问的是佛兰德语版的页面，Pierre看到了法语版也会很高兴。无论是否实现语言协商，网站都必须提供语言控制。如果没有协商，Pierre将需要手动从Jaap的链接切换到法语版本；即使有语言协商，Sylvia也需要在上述情况2和3中手动切换到德语。</p>
+    <p>顺便说一句，当用户偏好与网站的可用语言不匹配时，一些网站会选择返回一个专门的语言选择页面（www.example.be可以这样做而不是返回佛兰德语）。这样做的好处是可以清楚地说明情况，并且不会让一种语言优先于其他语言，因为这可能是一个政治敏感问题。然而，有些网站总是返回这个语言选择页面（用于主页）而不是实现语言协商。这会迫使每个人总是浏览该页面，却没有提供明显的优势，这样对用户不够友好。</p>
+  </section>
+    
+  <section id="stickyness">
+    <h3>页面导航</h3>
+    <p>假设Sylvia访问www.example.be后看到的是佛兰德语页面（情况2或3），然后切换到德语并继续阅读，这不算太麻烦。但她随后点了一个链接以访问该站点中一个有趣的页面。哎呀，又是佛兰德语！幸运的是，她还可以切换到德语。但经过几次这样的弯路之后，她感到沮丧也是可以理解的。难道www.example.be就不能记住她不懂读佛兰德语吗？这里需要的是显式语言选择的<strong>粘性</strong>。</p>
+    <p>www.example.be可以通过多种方式来实现这种粘性。选择哪一个将取决于服务器端的底层技术以及可花费的时间。</p>
+    <p>如果站点实现了会话（session）机制（例如使用<a class="print" href="https://www.rfc-editor.org/info/rfc6265">cookie</a>），那么把语言变成会话状态的一部分是一件相当简单的事情。一旦Sylvia切换到了德语，她的选择就会被存储（在cookie本身或服务器中，以与cookie中的<strong>会话号</strong>匹配），从那时起，她在浏览的网页就会是德语版的。我们甚至可以使cookie持久化（尽管这会使隐私问题更加严重），以便Sylvia下次返回www.example.be时自动获取德语页面。有登录机制的站点还可以将语言偏好存储为用户设置的一部分，并相应地提供正确语言的页面，而语言协商仅用于没有登录的用户。</p>
+    <div class="sidenoteGroup">
+      <p>另一种减少用户挫败感的方法是把站点内的所有内链都变为<strong>语言特定的链接</strong>。在德语主页中，指向更深页面的链接将采用<code>href="company/about<b>.de</b>.html"</code>的形式（而不是<code>company/about.html</code>，因为这是一个<strong>各语言通用的链接</strong>）*。然后页面间跳转就被限制为了德语，直到被语言控件覆盖。然而这种方法有两个缺点。一是所有的内部链接都变成了可翻译的材料，增加了翻译成本以及出错的可能性。另一个是如果Jaap向Pierre发送链接，则从浏览器的地址栏中获取到的链接将是特定语言的，Pierre就会打开佛兰德语的页面。不过，这些缺点都不是致命的，在无法通过会话状态或用户设置机制提供粘性时，使用语言特定链接可能是一个可行的方案。</p>
+      <aside class="sideinfonote"><p class="footnote">请注意，此处提到的语言特定和各语言通用的链接的特定形式取决于服务器端用于实现语言协商的技术。使用<a class="print" href="/International/questions/qa-apache-lang-neg">Apache MultiViews</a>，用户看到的是company/about.html<b>.de</b>和company/about.html，或者完全放弃.html扩展名，也就是company/about<b>.de</b>和company/about。</p></aside>
+    </div>
+  </section>
+</section>
+
+
+<section id="bytheway">
+  <h2>顺便一提</h2>
+  <p>HTTP <code class="kw" translate="no">Accept-Language</code>头不是用户可使用的语言信息的唯一来源。浏览器还会发送<code class="kw" translate="no">User-Agent</code>头，包含浏览器的品牌、版本号，在某些情况下还包括语言版本。在缺少<code class="kw" translate="no">Accept-Language</code>头的情况下，<code class="kw" translate="no">User-Agent</code>可用于猜测用户的首选语言，但它比<code class="kw" translate="no">Accept-Language</code>更不可靠且更受限制（仅限一种语言），所以在使用时需要格外小心。</p>
+  <p>语言协商只是HTTP内容协商的一个方面。其他可以自动协商的包括媒体类型（也就是格式，如HTML、PDF或纯文本）、字符编码和传输编码（加密、压缩等）。语言协商是最有用和最常用的。</p>
+</section>
+
+
+<section id="endlinks">
+<h2>扩展阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="qa-lang-priorities"><cite>在浏览器中设置语言首选项</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="qa-apache-lang-neg"><cite>Apache MultiViews语言协商设置</cite></a> </p>
+    </li>
+    <li>
+      <p>配置服务器的相关链接</p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#language">语言</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">在Apache上设置MultiViews语言协商</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">选择语言值</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

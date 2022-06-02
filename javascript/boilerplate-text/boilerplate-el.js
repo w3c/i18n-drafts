@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Αραβικά',
   'bg':'Βουλγαρικά',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant':'Κινεζικά Παραδοσιακά',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Αρχική σελίδα δραστηριοτήτων I18N"
 s.moreResourcesOfThisType = "Περισσότεροι πόροι αυτού του τύπου."
 s.accessKeyN = 'Το Accesskey n μεταβαίνει στην πλοήγηση εντός σελίδας. <a href="#contentstart">Μετάβαση στην έναρξη περιεχομένου</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "Το έγγραφο αυτό περιέχει πα�
 s.worldMap = "Παγκόσμιος χάρτης"
 s.searchI18nSite = "Αναζήτηση ιστοχώρου I18n" 
 s.translationDisclaimer = 'Το παρόν έγγραφο είναι μετάφραση. Σε περίπτωση τυχόν ασυμφωνιών ή σφαλμάτων, επίσημο θα πρέπει να θεωρηθεί <a href="'+f.filename+'.en">το πιο πρόσφατο αγγλικό πρωτότυπο</a>. Τα <a href="#copyright">πρωτότυπα πνευματικά δικαιώματα</a> ανήκουν στην W3C, όπως περιγράφεται παρακάτω.'
-s.translator = "Μεταφραστής:"
 s.relatedLinks = "Σχετικοί σύνδεσμοι"
 s.articles = "Άρθρα" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Ευρετήριο θεμάτων"
@@ -107,13 +106,17 @@ s.homePageNews = "Κεντρική σελίδα Νέων"
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
-s.author = "Συγγραφέας:" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Τροποποιήθηκε από:" // person's name appears after colon
-s.translatedBy = "Μεταφραστής:"
 s.validXHTML = "Έγκυρο XHTML 1.0!"
 s.validCSS = "Valid CSS!"
 s.codedInUtf8 = "Κωδικοποιημένο σε UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Συγγραφέας: " // followed by name of author(s)
+s.previousAuthors = "Previously by: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Τροποποιήθηκε από: " // person's name appears after colon
+s.translatedBy = "Μεταφραστής: "
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "Μεταφράστηκε από το αγγλικό περιεχόμενο την ημερομηνία "+dt.enVersion+". Τελευταία αλλαγή της μεταφρασμένης έκδοσης "+dt.thisVersionPlain+" GMT"
 
@@ -134,7 +137,6 @@ s.status_obsolete="This article is now obsolete. It is no longer maintained and 
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

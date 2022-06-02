@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'อาหรับ',
   'bg':'บัลแกเรีย',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant':'จีนดั้งเดิม',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N หน้า Activity"
 s.moreResourcesOfThisType = "ข้อมูลเพิ่มเติมประเภทดังกล่าว."
 s.accessKeyN = 'Accesskey n ใช้เพื่อข้ามไปยัง <a href="#internal-links" accesskey="n">หน้าในของ navigation</a>. <a href="#contentstart">ข้ามไปยังส่วนเริ่มต้นของเนื้อหา</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "เอกสารนี้ประกอบไป
 s.worldMap = "แผนที่โลก"
 s.searchI18nSite = "I18n ค้นหาไซด์" 
 s.translationDisclaimer = 'เอกสารฉบับนี้เป็นเอกสารฉบับแปลในกรณีที่มีข้อมูลไม่ตรงกันหรือมีข้อบกพร่อง <a href="'+f.filename+'.en">เอกสารดั้งเดิมฉบับภาษาอังกฤษ</a> จะถือว่าเป็นฉบับที่เป็นทางการ <a href="#copyright">ลิขสิทธิ์ดั้งเดิม</a> เป็นของ W3C, ดังที่แสดงไว้ข้างล่าง'
-s.translator = "ผู้แปล:"
 s.relatedLinks = "ลิงคฺ์ที่เกี่ยวข้อง"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
 s.topicIndexText = "สารบัญตามหัวข้อ"
@@ -107,13 +106,17 @@ s.homePageNews = "โฮมเพจรายงานข่าว"
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = " "
 
-s.author = "ผู้แต่ง:" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "ปรับปรุงโดย:" // person's name appears after colon
-s.translatedBy = "ผู้แปล:"
 s.validXHTML = "XHTML 1.0!ที่อ่านค่าได้"
 s.validCSS = "CSS! ที่อ่านค่าได้"
 s.codedInUtf8 = "ได้รับการแปลงโคดเป็น UTF-8! แล้ว"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "ผู้แต่ง: " // followed by name of author(s)
+s.previousAuthors = "Previously by: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "ปรับปรุงโดย: " // person's name appears after colon
+s.translatedBy = "ผู้แปล: "
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "แปลมาจากบทความภาษาอังกฤษลงวันที่ "+dt.enVersion+". เวอร์ชั่นแปลฉบับที่เปลี่ยนแปลงลครั้งล่าสุด "+dt.thisVersionPlain+" GMT"
 
@@ -134,7 +137,6 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Longer answer" // heading
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

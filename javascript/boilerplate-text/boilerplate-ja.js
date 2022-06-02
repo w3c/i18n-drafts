@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'アラビア語',
   'bg':'ブルガリア語',
@@ -15,7 +23,7 @@ s.currLang = {
   'en':'英語',
   'es':'スペイン語',
   'fr':'フランス語',
-  'gl':'ガリシア',
+  'gl':'ガリシア語',
   'he':'ヘブライ語',
   'hi':'ヒンディー語',
   'hu':'ハンガリー語',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant':'繁体中国語',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N アクティビティ ホーム"
 s.moreResourcesOfThisType = "この技術に関連する他のリソース"
 s.accessKeyN = 'アクセスキー n により、<a href="#internal-links" accesskey="n">ページ内ナビゲーション</a>へスキップします。<a href="#contentstart">文章の開始までスキップします。</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "この文書には、他の言語や文字で書か
 s.worldMap = "世界地図"
 s.searchI18nSite = "I18n サイト内検索:"
 s.translationDisclaimer = 'この文書はボランティアによる翻訳版です。エラーや訳の食い違いがある場合は、<a href="'+f.filename+'.en">英語で書かれた最新版のオリジナル文書</a>を信頼するようにしてください。<a href="#copyright">オリジナル文書の著作権</a>は W3C および、次に記す人間や団体に帰属します。'
-s.translator = "訳者:"
 s.relatedLinks = "関連するリンク"
 s.articles = "記事" // used in breadcrumbs, top right of page
 s.topicIndexText = "トピックインデックス"
@@ -107,13 +106,17 @@ s.homePageNews = "ホームページニュース"
 s.followOurNews = "最新ニュースをフォロー"
 s.sentenceDelimiter = "."
 
+s.validXHTML = "Valid な XHTML 1.0 です!"
+s.validCSS = "Valid な CSS です!"
+s.codedInUtf8 = "UTF-8 でエンコードされています!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
 s.author = "作成者:" // followed by name of author(s)
 s.previousAuthors = "前回の作成者:" // followed by name of previous author(s), before substantive changes were made by the current author
 s.modifiedBy = "更新者:" // person's name appears after colon
 s.translatedBy = "訳者:"
-s.validXHTML = "Valid な XHTML 1.0 です!"
-s.validCSS = "Valid な CSS です!"
-s.codedInUtf8 = "UTF-8 でエンコードされています!"
+s.acknowledgements = "この文書へ貢献またはフィードバックを送ってくださった以下の方々に感謝します:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 
 s.translatedFromEnglishVer = dt.enVersion+" (UTC) 版の英文コンテンツから翻訳されました。翻訳文書の最終更新は "+dt.thisVersionPlain+" GMT に行われました。"
 
@@ -134,7 +137,6 @@ s.tests="テスト" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "端的な回答" // heading
 s.longeranswer = "詳細な回答" // heading
 s.additionalinfo = "補足情報" // heading that sometimes follows 'Details'
-s.acknowledgements = "この文書へ貢献またはフィードバックを送ってくださった以下の方々に感謝します:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "ブラウザーのクッキーを許可すると、W3C 国際化アクティビティのページを(もしあるなら)選択した言語で続けて表示します。クッキーを設定しますか？" // this text is to be copied to another location
 s.githubRedirect = "<strong>注意!</strong> &nbsp; これは文書の著者ドラフト版です。リンクを張る場合は、このページではなく<a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>W3C サイトのバージョン</a>に向けてください。" // used for github-based versions of published articles
 

@@ -113,7 +113,7 @@ if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length ==
 	versionList += '</p>';
 	}
 
-if (g.isTranslation) g.disclaimer = '<div id="disclaimer"><p>'+s.translationDisclaimer+'</p><p>'+s.translator+' '+f.translators+'</p></div>' 
+if (g.isTranslation) g.disclaimer = '<div id="disclaimer"><p>'+s.translationDisclaimer+'</p><p>'+s.translatedBy+f.translators+'</p></div>' 
 else g.disclaimer = ''
 
 
@@ -216,13 +216,13 @@ var previousCredit = ''
 if (f.previousauthors && f.previousauthors != '') previousCredit = ' '+s.previousAuthors+' '+f.previousauthors+s.sentenceDelimiter
 
 var modCredit = ''
-if (f.modifiers && f.modifiers != '') modCredit = s.modifiedBy+' '+f.modifiers+s.sentenceDelimiter
+if (f.modifiers && f.modifiers != '') modCredit = s.modifiedBy+f.modifiers+s.sentenceDelimiter
 
 var translatorCredit = ''
-if (g.isTranslation) translatorCredit = s.translatedBy+' '+f.translators+s.sentenceDelimiter
+if (g.isTranslation) translatorCredit = s.translatedBy+f.translators+s.sentenceDelimiter
 
-var credits = "<p>"+s.author+' '+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
-if (f.contributors && f.contributors != '') credits += "<p class='acknowledgements'>"+s.acknowledgements+" "+f.contributors+"</p>"
+var credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
+if (f.contributors && f.contributors != '') credits += "<p class='acknowledgements'>"+s.acknowledgements+f.contributors+"</p>"
 
 
 
