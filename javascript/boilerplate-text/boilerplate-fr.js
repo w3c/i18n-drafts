@@ -55,7 +55,7 @@ s.examplesInAnotherScript = "Ce document contient des exemples dans une autre la
 s.worldMap = "Carte du monde";
 s.searchI18nSite = "Recherche sur le site I18N"; 
 s.translationDisclaimer = 'Ce document est une traduction fournie bénévolement. En cas de divergences ou d\'erreurs, la <a href="'+f.filename+'.en">dernière version originale en anglais</a> fait autorité. Comme indiqué ci-dessous, les <a href="#copyright">droits d\'auteur</a> reviennent au W3C.'
-s.translator = "Traducteur:";
+s.translator = "Traducteur :";
 s.relatedLinks = "Liens utiles";
 s.articles = "Articles"; // used in breadcrumbs, top right of page 
 s.topicIndexText = "Index des sujets";
@@ -68,10 +68,10 @@ s.i18nActivityHomePage = "Page d’accueil de l’activité d’internationalisa
 s.home = "Accueil";
 s.contactI18nActivity = "Pour obtenir de l'aide au sujet de l'internationalisation au W3C.";
 s.contact = "Contacter";
-s.aboutI18nActivity = "About W3C Internationalization."
-s.about = "About"
-s.askI18nActivity = "Ask for help or information."
-s.ask = "Ask"
+s.aboutI18nActivity = "Pour en savoir plus sur l'internationalisation au W3C."
+s.about = "En savoir plus"
+s.askI18nActivity = "Pour demander de l'aide ou des informations."
+s.ask = "Demander"
 s.groupsThatMakeUp = "Pour participer aux travaux du W3C relatifs à l'internationalisation.";
 s.groups = "Participer";
 s.topicIndexForInformation = "Pour effectuer des recherches dans le site.";
@@ -118,11 +118,11 @@ s.validXHTML = "XHTML 1.0 valide !";
 s.validCSS = "CSS valide !";
 s.codedInUtf8 = "Codé en UTF-8 !";
 
-s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" GMT."; 
+s.translatedFromEnglishVer = "Traduit d’un contenu en anglais daté du "+dt.enVersion+". Dernière modification de cette traduction le "+dt.thisVersionPlain+" UTC."; 
 
 s.historyOfDocumentChanges = 'Pour l’historique des modifications du document, veuillez consulter <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">le flux d’actualité</a> pour les changements conséquents, et <a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">la liste des « commits » sur Github</a> pour voir toutes les modifications apportées depuis janvier 2016.'
-s.untranslatedChanges = '<strong>Remarque :</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. Les changements ont été intégrés à cette page, et il est possible que certains passages s\'affichent en anglais en attendant que la traduction soit mise à jour.'
-s.unlinkedTranslation = '<strong>Avertissement :</strong> Des modifications importantes ont été apportées à la version originale en anglais depuis qu’elle a été traduite. Il est recommandé de lire  <a href="'+f.filename+'.en">une version dans une autre langue</a> en attendant que cette traduction soit mise à jour.'
+s.untranslatedChanges = '<strong>Remarque :</strong>  Des changements ont été apportés au <a href="'+f.filename+'.en">document original en anglais</a> depuis sa traduction. Les changements ont été intégrés à cette page, et il est possible que certains passages s\'affichent en anglais en attendant que la traduction soit mise à jour.'
+s.unlinkedTranslation = '<strong>Avertissement :</strong> Des modifications importantes ont été apportées à la version originale en anglais depuis qu’elle a été traduite. Il est recommandé de lire  <a href="'+f.filename+'.en">une version dans une autre langue</a> en attendant que cette traduction soit mise à jour.'
 s.new="Nouveau";// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="Mis à jour"; // same as New
 s.translation_updated="Traduction mise à jour:"; // date appears after colon 
