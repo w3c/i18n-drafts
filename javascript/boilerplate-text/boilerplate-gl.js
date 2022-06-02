@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
 'ar':'Árabe',
 'bg':'Búlgaro',
@@ -37,14 +45,6 @@ s.currLang = {
 'zh-hant':'Chinés tradicional'
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Actividade da Páxina de inicio de I18N"
 s.moreResourcesOfThisType = "Máis recursos deste tipo."
 s.accessKeyN = 'Accesskey n salta á <a href="#internal-links" accesskey="n">navegación da páxina</a>. <a href="#contentstart">Saltar ó inicio do contido.</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "Este documento contén exemplos noutro idioma/scrip
 s.worldMap = "Mapa mundial"
 s.searchI18nSite = "Procura no sitio de I18n"
 s.translationDisclaimer = 'Este documento é unha tradución proporcionada por un voluntario/voluntaria. No caso de ter algunha discrepancia ou erro, o <a href="'+f.filename+'.en">último texto orixinal en inglés</a> será o que prevaleza.<a href="#copyright">. O copyright orixinal</a> pertence á W3C, como aparece abaixo.'
-s.translator = "Traducido por:"
 s.relatedLinks = "Ligazóns relacionadas"
 s.articles = "Artigos" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Temas indexados"
@@ -105,13 +104,17 @@ s.homePageNews = "Noticias da páxina de inicio"
 s.followOurNews = "Segue as nosas novas."
 s.sentenceDelimiter = "."
 
-s.author = "De:" // followed by name of author(s)
-s.previousAuthors = "Previamente por:" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Cambiado por:" // person's name appears after colon
-s.translatedBy = "Traducido por:"
 s.validXHTML = "XHTML 1.0 válido!"
 s.validCSS = "CSS válido!"
 s.codedInUtf8 = "Codificado en UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "De: " // followed by name of author(s)
+s.previousAuthors = "Previamente por: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Cambiado por: " // person's name appears after colon
+s.translatedBy = "Traducido por: "
+s.acknowledgements = "Grazas ás seguintes persoas, que contribuiron cos seus comentarios, os cales foron incluídos: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "Traducido do contido en inglés datado "+dt.enVersion+". Versión traducida modificada por última vez "+dt.thisVersionPlain+" GMT"
 
@@ -132,7 +135,6 @@ s.tests="Probas" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Resposta rápida" // heading
 s.longeranswer = "Detalles" // heading that follows 'Quick answer'
 s.additionalinfo = "Información adicional" // heading that sometimes follows 'Details'
-s.acknowledgements = "Grazas ás seguintes persoas, que contribuiron cos seus comentarios, os cales foron incluídos:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Se deixas que o navegador configure unha cookie, continuará a ver páxinas da Actividade de Internacionalización da W3C (onde está dispoñible) no idioma que escolliches. Queres configurar a cookie?" // this text is to be copied to another location
 //s.supercedsTranslation = '<strong>Aviso: </ strong> Esta é unha versión non actualizada do documento! Recomendamos ler <a href="'Asg.betterfilename+'.en">a última versión</a> e se podes, modificar o marcador ou a ligazón que redirecciona aquí. '
 s.githubRedirect = "<strong>NOTA!</strong> &nbsp; Este é só un borrador do editor deste artigo. Todas as ligazóns e os marcadores deben redirixir á <a href='https://www.w3.org/International/"+ f.directory + f.filename +"."+ f.clang +"'>versión no sitio da W3C</a>, e non a esta páxina." // used for github-based versions of published articles

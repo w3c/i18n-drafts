@@ -8,6 +8,15 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Arabiska',
   'bg':'Bulgariska',
@@ -39,15 +48,6 @@ s.currLang = {
   'zh-hant':'Traditionell kinesiska',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N-aktivitetens hemsida"
 s.moreResourcesOfThisType = "Fler resurser av denna typ."
 s.accessKeyN = 'Använd accesskey \'n\' för att hoppa till de interna navigationslänkarna i dokumentet. <a href="#contentstart">Hoppa till början av innehållet.</a>'
@@ -55,7 +55,6 @@ s.examplesInAnotherScript = "Detta dokument innehåller exempel uttryckta i andr
 s.worldMap = "Världskarta"
 s.searchI18nSite = "Sök på I18n:s webbplats" 
 s.translationDisclaimer = 'Detta dokument är en översättning av ett engelskt original, utfört av frivilliga. Om det finns tveksamheter eller fel i detta dokument, så är <a href="'+f.filename+'.en">senaste version av det engelska originalet</a> den auktoritativa versionen. <a href="#copyright">Copyright</a> tillhör W3C, enligt nedan.'
-s.translator = "Översättare:"
 s.relatedLinks = "Näraliggande länkar"
 s.articles = "Artiklar" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Index över ämnen"
@@ -110,13 +109,17 @@ s.homePageNews = "Nyheter på hemsidan"
 s.followOurNews = "Följ våra nyhetsflöden."
 s.sentenceDelimiter = "."
 
-s.author = "Av:" // followed by name of author(s)
-s.previousAuthors = "Tidigare av:" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Ändrad av:" // person's name appears after colon
-s.translatedBy = "Översättare:"
 s.validXHTML = "Valid XHTML 1.0!"
 s.validCSS = "Valid CSS!"
 s.codedInUtf8 = "Kodad i UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Av: " // followed by name of author(s)
+s.previousAuthors = "Tidigare av: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Ändrad av: " // person's name appears after colon
+s.translatedBy = "Översättare: "
+s.acknowledgements = "Även tack till följande personer som bidragit eller gett kommentarer: "  // used at bottom of page to list people who provided feedback. The list comes after this text.
 
 s.translatedFromEnglishVer = "Översatt från engelskt innehåll skapat/ändrat "+dt.enVersion+". Översättningen senast ändrad "+dt.thisVersionPlain+" GMT"
 
@@ -137,7 +140,6 @@ s.tests="" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Snabbt svar" // heading
 s.longeranswer = "Detaljer" // heading
 s.additionalinfo = "Ytterligare information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Även tack till följande personer som bidragit eller gett kommentarer:"  // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "Om du tillåter webbläsaren att spara en kaka (cookie), så kommer du i fortsättningen att se sidor från W3C Internationalization Activity i det språk du valt (när sådana översättningar finns). Vill du spara kakan?" // this text is to be copied to another location
 //s.supercededTranslation = '<strong>Varning:</strong> Detta är en föråldrad version av dokumentet! Du bör läsa <a href="'+g.betterfilename+'.en">den senaste versionen</a> istället, och, om du kan, uppdatera det bokmärke eller länk som kan ha lett dig hit.'
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles

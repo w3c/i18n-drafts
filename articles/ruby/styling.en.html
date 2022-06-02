@@ -33,17 +33,14 @@ f.additionalLinks = ''
 </script>
 <script src="styling-data/translations.js"> </script>
 <script src="../../javascript/doc-structure/article-dt.js"></script>
-<script src="../../javascript/boilerplate-text/boilerplate-en.js"></script>
-<!--TRANSLATORS must change -en to the subtag for their language!-->
-<script src="../../javascript/doc-structure/article-2022.js"></script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
 <script src="../../javascript/articletoc-2022.js"></script>
-<script src="../../javascript/prism.js"></script>
-
-<link rel="stylesheet" href="../../style/article-2022.css">
-<link rel="stylesheet" href="../../style/prism.css">
-<link rel="stylesheet" href="styling-data/local.css" />
-
+<link rel="stylesheet" href="../../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
 
 <style>
 .rubyExample { font-size: 50px; font-family: "ms mincho"; margin: 0; }
@@ -93,13 +90,17 @@ anyone who wants to know how to use ruby annotations. </p-->
 <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
 </div>
 
-<p>Ruby is the name given to the small annotations in Japanese and Chinese content that are rendered alongside base text, usually to provide a pronunciation guide, but sometimes to provide other information. We will assume that you are familiar with ruby, and how you want it to look. (If not,  <a class="print" href="https://www.w3.org/International/articles/ruby/">see the short overview</a> of how ruby works.)</p>
+<p>Ruby is a name given to the small annotations in Japanese, Chinese and Traditional Mongolian content that are rendered alongside base text, usually to provide a pronunciation guide, but sometimes to provide other information. </p>
+
+<p>The term 'ruby' was adopted into Japanese typesetting after originally being used for British printing. In China these may be called 'interlinear annotations'. We'll use the word 'ruby' here because it is frequently referred to this way in specifications and implementations. </p>
+
+<p class="info">We will assume that you are familiar with ruby, and how you want it to look. (If not, <a class="print" href="https://www.w3.org/International/articles/ruby/">see the short overview</a> of how ruby works.)</p>
 
 <p class="info">This article will only discuss how to use CSS <em>styling</em> to affect the rendering of ruby content. For information about how to create the markup needed to support ruby, see <a href="https://www.w3.org/International/articles/ruby/markup" class="print">Ruby Markup</a>.</p>
 
 
-<aside class="insideimplnote">
-<p class="impl"> While the main body of the text explains how to achieve the result you want using CSS, as described in the editor's draft of the CSS Ruby Layout module, you'll find information in the margin that explain some of the associated caveats and issues, as well as identifying which features that are not supported by one browser or another.</p>
+<aside class="insideinfonote">
+<p class="info"> While the main body of the text explains how to achieve the result you want using CSS, as described in the editor's draft of the CSS Ruby Layout module, you'll find information in the margin that explain some of the associated caveats and issues, as well as identifying which features that are not supported by one browser or another.</p>
 </aside>
 
 
@@ -115,7 +116,7 @@ anyone who wants to know how to use ruby annotations. </p-->
 <section id="configs">
 <h2>Basic configurations</h2>
 
-<p>This section provides some suggestions for how to style annotations with Japanese and Chinese. The expected behavior is  based on the layout requirements documents for Japanese (JLReq) and Chinese (CLReq). Only the more common configurations are described here; subsequent sections explain how to do fine tuning.</p>
+<p>This section describes typical scenarios for Japanese and Chinese. The expected behavior is  based on the layout requirements documents for Japanese (<a href="https://www.w3.org/TR/jlreq/">JLReq</a>) and Chinese (<a href="https://www.w3.org/TR/clreq/">CLReq</a>). Only the more common configurations are described here; subsequent sections explain how to do fine tuning.</p>
 
 <p>What follows assumes that you have used markup to map ruby text annotations to base characters appropriately, as described in the article <a href="https://www.w3.org/International/articles/ruby/markup">Ruby Markup</a>.</p>
 
@@ -127,25 +128,16 @@ anyone who wants to know how to use ruby annotations. </p-->
 
 <p><a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc" class="termref">Mono ruby</a> is typically used to represent pronunciation of Japanese kanji characters. Each ideographic base character is mapped in markup to an annotation that indicates how to pronounce it (usually using hiragana).</p>
 
-<p>As you can see in the following example, the annotations don't overlap adjacent kanji characters, and they are normally centred over the base character (in Japanese this is called <span lang="ja" class="foreign">nakatsuke</span>). Lines can break between the base characters.</p>
+<p>As you can see in the following example, the annotations don't overlap adjacent kanji characters, and they are normally centred relative to the base character (in Japanese this is called <span lang="ja" class="foreign">nakatsuke</span>). Lines can break between the base characters.</p>
 
 <div class="figWrap">
 <figure>
-<p><img style="vertical-align:top;" src="styling-data/simple_ja_mono.png" alt="Horizontal ruby for 常用漢字表(じょうようかんじひょう)"></p>
+<p><img style="vertical-align:top;" src="styling-data/simple_ja_mono.png" alt="Horizontal ruby for 常用漢字表(じょうようかんじひょう)">
+<span style="margin-inline: 2rem;">&nbsp;</span>
+<img style="vertical-align:top;" src="styling-data/simple_ja_vert.png" alt="Vertical ruby for 常用漢字表(じょうようかんじひょう)"></p>
 <figcaption>Typical Japanese ruby.</figcaption>
 </figure>
 </div>
-
-<p>This is usually produced automatically by the default display behavior of browsers, however if you want to style it explicitly, you would use the following CSS.</p>
-
-<figure class="example">
-<pre><code class="language-css">ruby { 
-    ruby-position: over;
-    ruby-align: center;
-    }</code></pre>
-<div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">Test in your browser.</a></div>
-</figure>
-
 <p>If the annotation doesn't fit over the base character you can expect one of the following things to happen.</p>
 
 <ol>
@@ -158,8 +150,12 @@ anyone who wants to know how to use ruby annotations. </p-->
 
 <p>This behaviour is currently browser dependent, rather than specified in CSS.</p>
 
-<p>For a <span lang="ja" class="foreign">jukuji</span> annotation, where the kana don't map to individual base characters, such as for 田舎 (いなか), you will need to use <a href="https://www.w3.org/International/questions/qa-ruby#group" class="termref">group ruby</a>. A single annotation is mapped in markup to a range of base characters. A kana annotation is normally spread across the base text evenly, with a little extra space at either end. If the annotation is in the Latin script, however, it is normally centred on the base text. Base characters in group ruby are not split across line breaks.</p>
+<p>A <span lang="ja" class="foreign">jukuji</span>  annotation occurs where a sequence of base characters has a different pronunciation from what you would expect by looking at the individual base characters, eg. <span lang="ja">田舎</span> (pronounced <span lang="ja">いなか</span>). Because the kana don't map to individual base characters, you will need to use <a href="https://www.w3.org/International/questions/qa-ruby#group" class="termref">group ruby</a>: a  single annotation is mapped in markup to a range of base characters. The kana annotation is normally spread across the base text evenly, with a little extra space at either end. If the annotation is in the Latin script, however, it is normally centred on the base text. Base characters in group ruby are not split across line breaks.</p>
+<p>Sometimes ruby annotations appear on  opposite sides of a base character at the same time. In such cases, the top/right annotation is typically phonetic and uses mono ruby, and the bottom/left annotation is most likely group ruby and provides additional information about the base text.</p>
+<p>Annotations and base text may be aligned at the start in vertical text, but are usually centred on the base in horizontal text.</p>
+<p>The sections lower down this page indicate how you can change some of these basic styles.</p>
 
+<details>
 <p>Since this is different styling from the normal phonetic approach, you will need to indicate in markup, using a class name, the items that should be treated as group ruby. Assuming we used a class name of <code class="kw" translate="no">jukuji</code>, you could then add the following to your style sheet.</p>
 
 <figure class="example" lang="ja">
@@ -167,7 +163,7 @@ anyone who wants to know how to use ruby annotations. </p-->
     ruby-position: over;
     ruby-align: space-around;
     }</code></pre>
-<div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">Test in your browser.</a></div>
+<div class="demolink"><a href="styling-data/simple_ja_group.html" target="text">Test in your browser.</a></div>
 </figure>
 
 <p>If you want to apply a semantic, rather than phonetic, annotation, you will also need to use <a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc">group ruby</a>. The annotation is usually aligned as per the jukuji example just described. You may, however, want the annotation to appear on the other side of the base characters. To achieve this, you need to change the <code class="kw" translate="no">ruby-position</code> value. The following code snippet assumes that such annotations have been given a class of <code class="kw" translate="no">semanticRuby</code>.</p>
@@ -179,22 +175,14 @@ anyone who wants to know how to use ruby annotations. </p-->
     }</code></pre>
 <div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">Test in your browser.</a></div>
 </figure>
-</section>
 
 
 
 
-
-<section id="ja_variants">
-<h3>Japanese variants</h3>
-
-<div class="sidenoteGroup">
 <p>The sections lower down this page indicate how you can change some of these basic styles. For example, in vertical text you could set <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">start</code> to make the phonetic ruby annotations align with the start of the base text (called <span lang="ja" class="foreign" translate="no">katatsuke</span> in Japanese), or you could eliminate the extra space around a group-ruby annotation (by setting <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">space-between</code>).</p>
+</details>
 
-<aside class="sideinfonote">
-<p class="info">CSS will allow you to set <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">start</code> in horizontal text, but it is normally only used for vertical text.</p>
-</aside>
-</div>
+
 </section>
 
 
@@ -203,13 +191,13 @@ anyone who wants to know how to use ruby annotations. </p-->
 <section id="zh_hans_basics">
 <h3>Simplified Chinese</h3>
 
-<p>In  Mainland China phonetic annotations normally consist of pinyin transcriptions, which are written in the Latin script.  Content annotated with pinyin is usually only set horizontally, since Latin text would be sideways in vertical text and is harder to read.</p>
+<p>In  Mainland China phonetic annotations normally consist of pinyin transcriptions, which are written in the Latin script.  Content annotated with pinyin is usually only set horizontally, since Latin text would be sideways in vertical text, making it harder to read.</p>
 
 <p>There are two common approaches to phonetic annotation: character based and word based.</p>
 
 <p>Character based annotations are  common in text used for Chinese children, whereas word based annotations are often found in texts for those learning the Chinese language.</p>
 
-<p>For character based phonetic annotations, you will need to use the markup to map each ideographic base character to an annotation that indicates how to pronounce it. This is <a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc" class="termref">mono ruby</a>. The annotations usually appear above the base text.</p>
+<p>For character-based phonetic annotations, you will need to use  markup to map each ideographic base character to an annotation which indicates the pronunciation. This is <a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc" class="termref">mono ruby</a>. The annotations usually appear above the base text.</p>
 
 <div class="figWrap">
 <figure>
@@ -227,9 +215,9 @@ anyone who wants to know how to use ruby annotations. </p-->
 </figure>
 </div>
 
-<p>In both of these examples, the annotations are centred above the base text. This behaviour is usually produced by default by the browser, but if you want to explicitly style it you can use the following.</p>
-
-<p> Sometimes, however, the word-based approach places the annotation below the base text.</p>
+<p>In both of these examples, the annotations are centred above the base text.</p>
+<details>
+<p>This behaviour is usually produced by default by the browser.  Sometimes, however, the word-based approach places the annotation below the base text. If you want to explicitly style it you can use the following.</p>
 
 <figure class="example" lang="ja">
 <pre><code class="language-css">ruby { 
@@ -240,8 +228,12 @@ anyone who wants to know how to use ruby annotations. </p-->
 </figure>
 
 <p>To make the pinyin appear below the base text, change the value of <code class="kw" translate="no">ruby-position</code> to <code class="kw" translate="no">under</code>.</p>
+</details>
 
-<div class="figWrap">
+
+<p>Annotations representing meaning or commentaries  are common in light novels and translated works, and tend to describe phrases or words. They may contain casing, punctuation, and spaces, and may contain Chinese text explaining Latin base text, or vice versa, and they may appear on the opposite side of the base to phonetic annotations. Sometimes phonetic annotations are also placed below/left of the base.</p>
+
+<div class="figWrap"> 
 <figure>
 <p><img src="styling-data/simple_zh_word_under.png" alt="Horizontal word-based ruby for 他生怕被人笑话，立志要画得圆。 (tā shēng pà bèi rén xiào huà, li zhi yào huà de yuán.) displayed below the base text."></p>
 <figcaption>Word-based phonetic annotations using pinyin placed below the base characters.</figcaption>
@@ -268,7 +260,7 @@ anyone who wants to know how to use ruby annotations. </p-->
 <section id="zh_hant_basics">
 <h3>Traditional Chinese    </h3>
 
-<p>In Traditional Chinese, <a href="https://en.wikipedia.org/wiki/Bopomofo">bopomofo</a> (<span lang="zh-latn" class="foreign" translate="no">zhùyīn fúhào</span>) ruby nearly always appears to the right of the base character, whether the text is set horizontally or vertically. Furthermore, the bopomofo annotation is always set vertically and the tone marks (apart from the light tone) are displayed in an additional column to the right of the bopomofo characters.</p>
+<p>In Traditional Chinese, <a href="https://en.wikipedia.org/wiki/Bopomofo">bopomofo</a> (<span lang="zh-latn" class="foreign" translate="no">zhùyīn fúhào</span>) ruby nearly always appears to the right of the base character, whether the text is set horizontally or vertically. Furthermore, the bopomofo annotation is always set vertically and the tone marks (apart from the light tone) are displayed in an additional column to the right of the bopomofo characters. The tones are not combining marks, and the vertical position of the tone mark depends on the arrangement of the phonetic symbols in the previous column.</p>
 
 <div class="figWrap">
 <figure>
@@ -283,6 +275,7 @@ anyone who wants to know how to use ruby annotations. </p-->
 </figure>
 </div>
 
+<details>
 <p>What you  have to do in CSS is indicate that this will be bopomofo ruby, so that the annotation doesn't appear 'over' or 'under' the base text. To do that, you need the <code class="kw" translate="no">inter-character</code> value of <code class="kw" translate="no">ruby-position</code>.</p>
 
 <div class="annotatedCode">
@@ -295,6 +288,9 @@ anyone who wants to know how to use ruby annotations. </p-->
 </div>
 
 <p>The vertical placement for the bopomofo and the relative position of the tone characters within the invisible column to the right of the Han base character rely on the browser, or possibly font information. You don't need to specify anything more in CSS.</p>
+</details>
+
+<p>Find <a href="https://r12a.github.io/scripts/bopomofo/ontheweb">more information</a> about Bopomofo usage in Traditional Chinese.</p>
 </section>
 </section>
 
@@ -328,7 +324,7 @@ text.</p>
 </div>
 <br  style="clear:both;"/>
 
-<p>This is the default behavior, and you can expect browsers to produce this without CSS.<span style="color:red;"> @@@ make the example 紙芝居 kamishibai</span></p>
+<p>This is the default behavior, and you can expect browsers to produce this without CSS.</p>
 
 <p>If you need to place the ruby explicitly in this position, use:</p>
 
@@ -341,7 +337,7 @@ text.</p>
 <aside class="implnote">
 <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/>  <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
 <p>Works  well because this is the default rendering for ruby.</p>
-<p><a target="_blank" href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position_over">See test results for major browsers</a>.</p>
+<p><a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_position_basics">See test results for major browsers</a>.</p>
 </aside>
 </div>
 
@@ -373,8 +369,7 @@ text.</p>
 <div class="figWrap">
 <figure>
 <p><img src="styling-data/pinyin-under.png" width="267" height="190" alt=""/></p>
-<figcaption>An example of ruby on more than one side of the base characters.<br>
-<span class="ed">Change this example</span></figcaption>
+<figcaption>An example of ruby on more than one side of the base characters.</figcaption>
 </figure>
 </div>
 
@@ -387,10 +382,9 @@ text.</p>
 </figure>
 
 <aside class="implnote">
-<p><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/> <br>
-<img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> works only if you also use <code class="kw" translate="no">-webkit-ruby-position: after</code>.<br>
-<img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/><br>
-<a target="_blank" href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position_under">See test results for major browsers</a>.</p>
+<p><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/><br>
+<img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> works only if you also use <code class="kw" translate="no">-webkit-ruby-position: after</code>.<br>
+<a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_position_basics">See test results for major browsers</a>.</p>
 </aside>
 </div>
 </section>
@@ -430,7 +424,7 @@ text.</p>
 <aside class="implnote">
 <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
 <p>Very simple annotations can look ok in vertical text, because of the default vertical layout, but as soon as tone marks are added things look a mess.<br>
-<a target="_blank" href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_position_inter">See test results for major browsers</a>.</p>
+<a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_position_intercharacter">See test results for major browsers</a>.</p>
 </aside>
 </div>
 </section>

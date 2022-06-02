@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar' :  'Arabisch',
   'bg' :  'Bulgaars',
@@ -37,14 +45,6 @@ s.currLang = {
   'zh-hant' :  'Traditioneel Chinees',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N Activity Home"
 s.moreResourcesOfThisType = "More resources of this type."
 s.accessKeyN = 'Met de sneltoets n gaat u rechtstreeks naar <a href="#internal-links" accesskey="n">navigatie binnen de pagina</a>. <a href="#contentstart">Naar begin van de inhoud gaan.</a>'
@@ -52,7 +52,6 @@ s.examplesInAnotherScript = "Dit document bevat voorbeelden in een andere taal/s
 s.worldMap = "Wereldkaart"
 s.searchI18nSite = "Zoeken op de I18n site:" 
 s.translationDisclaimer = 'Dit document is een vertaling. In geval van afwijkingen of fouten, dient het <a href="'+f.filename+'.en">meest recente origineel in het Engels</a> dient als referentie te worden beschouwd. <a href="#copyright">Het origineel copyright</a> is eigendom van W3C, zoals hieronder getoond.'
-s.translator = "Vertaler:"
 s.relatedLinks = "Gerelateerde links"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Onderwerpsindex"
@@ -108,13 +107,17 @@ s.homePageNews = "Thuispaginanieuws"
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
-s.author = "By:" // followed by name of author(s)
-s.previousAuthors = "Previously by:" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Gewijzigd door:" // person's name appears after colon
-s.translatedBy = "Vertaler:"
 s.validXHTML = "Geldige XHTML 1.0!"
 s.validCSS = "Geldige CSS!"
 s.codedInUtf8 = "Gecodeerd in UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "By: " // followed by name of author(s)
+s.previousAuthors = "Previously by: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Gewijzigd door: " // person's name appears after colon
+s.translatedBy = "Vertaler: "
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "Vertaald vanuit de Engelse inhoud met datum "+dt.enVersion+". Vertaalde versie laatst gewijzigd op  "+dt.thisVersionPlain+" GMT"
 
@@ -135,7 +138,6 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 //s.supercededTranslation = '<strong>Avertissement :</strong> Ceci est une version dépassée de ce document! Il est recommandé de lire <a href="'+g.betterfilename+'.en">la dernière version</a> et si vous le pouvez, de modifier le marque-page ou le lien qui vous a redirigé ici.'
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>, rather than to this page." // used for github-based versions of published articles
