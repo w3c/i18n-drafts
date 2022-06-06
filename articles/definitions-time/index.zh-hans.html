@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>时间和日期：基本概念</title>
+<meta name="description" content="什么是“浮选时间”？我们如何在Web应用程序中处理浮选时间？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/definitions-time'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-definitions-time' // blog search string - usually the filename without extensions
+f.firstPubDate = '2016-06-23' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2016-07-18', time:'14:53'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2021-05-21', time:'15:25'} // date and time of latest edits to this document/translation
+f.contributors = 'Addison Phillips (especially since many of these definitions were originally based on text in his document, Working with Time Zones).' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://github.com/international-explore" title="Huan Cui - international-explore">' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'cultural'
+
+f.additionalLinks = ''
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-zh-hans.js"></script>
+<!--TRANSLATORS must change -en above to the subtag for their language!-->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>时间和日期：基本概念</h1>
+</header>
+
+
+<section>
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <p>本文主要介绍一些基本的术语和概念，有关于时区的处理以及Web上日期和时间的处理，这些基本概念在您阅读其他文章时也会遇到。</p>
+    <p><a href="https://www.w3.org/TR/timezone/">《时区使用》</a>这篇文档中，提供了这些问题更多的细节信息，以及Web上处理时间和日期的一些规范，深入阅读可以参考此文。</p>
+</section>
+
+
+
+
+
+  <section id="utc">
+  <h2>UTC</h2>
+  <p><dfn id="def_utc">UTC</dfn> 也被称为GMT（GMT是Greenwich Mean Time - 格林威治标准时间的三个英文首字母缩写），两者之间存在细微差异，但通常可以忽略。</p>
+  <p>UTC（UTC是Universal Coordinated Time - 协调世界时间的三个英文首字母缩写）是现代计时的基础。除此之外，它为<a href="#incremental_time" class="termref">累计时间</a>和<a href="#local_time" class="termref">本地时间</a>之间的转换提供了一条通用的基线。 </p>
+  <p>UTC的时区偏移量为0，在<a href="#field_based_time" class="termref">展示时间格式</a>中UTC通常用<code class="kw" translate="no">Z</code>标识。</p>
+  </section>
+
+
+  <section id="field_based_time">
+  <h2>展示时间格式</h2>
+  <p>当使用<dfn id="def_field_based_format">展示时间格式</dfn>书写时间时，需要将日期与时间划分为独立的字段，可以分为年、月、日、时、分、秒等，比如：<samp>2016-09-11T06:10:32</samp>。展示时间格式相较于其他格式，易读性会好很多，比如：<samp>1465621816590</samp> 也表示了同样的时间。</p>
+  <p>展示时间格式于<a href="#utc" class="termref">UTC</a>时间或者本地时间并没有强关联性，与特定的日历（例如公历）有一定的关联。 </p>
+  <p>ISO 8601标准用于描述展示时间格式。</p>
+  </section>
+
+
+  <section id="incremental_time">
+  <h2>累计时间</h2>
+  <p><dfn id="def_incremental_time">累计时间</dfn>是一种在计算机中标识时间的方式，从特定时间点（称为“纪元”）到当前时间累计的整数单位时间。</p>
+  <p> Java（和其他众多系统）的计时方式为，从 <a href="#utc" class="termref">UTC</a> 1970年1月1日午夜（0点）到当前累计的毫秒数（减去中间所有的闰秒）。不过，其他系统可能使用不同的累计单位和开始纪元。</p>
+  <p>举个例子，在书写本段文字时，我的浏览器中JavaScript的累计时间是<samp>1465621816590</samp>（即2016年6月11日上午6点BST）。</p>
+  <p>多数的编程语言和操作系统内部使用累计时间作为时间值。但用户层面通常不会看到累计时间，一般会转换为<a href="#field_based_time" class="termref">展示时间格式</a>方便人们使用。</p>
+</section>
+
+
+  <section id="local_time">
+  <h2>时钟时间/当地时间</h2>
+  <div class="sidenoteGroup">
+  <p> <dfn id="def_wall_time">时钟时间</dfn>或者<dfn id="def_local_time">本地时间</dfn>是一个时刻，加上时区信息后，就可以映射到累计时间的某个特定值上。通常，它对应着人们可识别的时间，获取方式可以通过查看安装在墙上的时钟与日历。</p>
+  <aside class="sideinfonote">
+  <p class="info">在HTML中，描述为<span class="qterm">local</span>的时间并不是指时钟时间。实际上<code class="kw" translate="no">datetime-local</code>的所描述的是一个<a href="#floating_time" class="termref">浮选时间</a>。</p>
+  </aside></div>
+  <div class="sidenoteGroup">
+  <p>举个例子，在写上一段的时候，我无意看了一眼电脑的显示时间，看到 <samp>6月11日星期六 06:10</samp>。结合时间与<a href="utc" class="termref">UTC</a>关联的相关知识（考虑到当时英国的夏令时，调整了一小时），本地时间可以转换为累计时间 <samp>1465621816590</samp>。</p>
+  <p>同时，本地时间也可以转换为另一个区域的本地时间，假如在旧金山，同一时刻计算机上的显示时间为 <samp>6月10日星期五 22:10</samp>。</p>
+  <aside class="sideinfonote">
+  <p class="info"><dfn id="def_observed_time">观测时间</dfn>是指一种依赖于物理观察来确定时间的方式，可以依赖于太阳，月亮或者星星等物理事物，不过当前基本废用了。观测时间里的中午是指太阳在空中的最高点，但对于仅仅相距几公里的人来说，实际的中午时间可能会有所不同。</p>
+  </aside></div>
+  </section>
+
+
+  <section id="floating_time">
+  <h2>浮选时间</h2>
+  <p>有些时间值并不能映射到<a href="incremental_time" class="termref">累计时间</a>中的某个特定时刻。与之相反，它们仅仅代表一个名义时间，在世界各地的所有时区都会以相同的方式呈现。</p>
+  <p>举个例子，2016年6月11日星期六是英国女王官方的90岁生日。由于不同国家的时钟设置差异，6月11日在英国开始或结束的具体时间，在其他国家实际上有可能是周五或者周日了，但该事件的日期始终是6月11日星期六。</p>
+  <p>由于没有对应明确的<a href="#incremental_time" class="termref">累计时间</a>，因此，我们通常称此类时间为<dfn id="def_floating_time">浮选时间</dfn>。当绑定上对应的时区信息后，浮选时间会生成<strong>一系列可被接收的累计时间的值</strong>。</p>
+  <p>浮选时间不会也不应该归属于某个特定的时区。</p>
+  <p>举一些其他浮选时间事件的例子，比如：报纸的出版日期、里约奥运会的开始日期、新年开始的时间、办公时间设置为“9点到5点”等等，均不需要考虑<a href="#time_zone">时区</a>。</p>
+  </section>
+
+
+<section id="time_zone">
+  <h2>时区</h2>
+  <p><dfn id="def_time_zone">时区</dfn>是一组用于确定本地时间（也叫时钟时间）的规则，它与特定地理区域的累计时间（在大多数的计算系统中使用）相关。</p>
+  <p>如果要关联到时钟时间，时区规则中必须要考虑<a href="#time_zone_offset" class="termref">时区偏移量</a><strong>和</strong>任何<a href="#dst" class="termref">夏令时</a>的变更。</p>
+  </section>
+
+
+<section id="zone_offset">
+  <h2>时区偏移量</h2>
+  <p><dfn id="def_zone_offset">时区偏移量</dfn>是一个数量，根据世界各地相对于本初子午线的位置，基于<a href="utc" class="termref">UTC时间</a>进行加减得到。通常偏移量以一小时为间隔单位，但也可以存在不同，比如30或45分钟。</p>
+  <p>通常，在展示时间格式中使用+/-后跟偏移量，来表示时区偏移量。举个例子，日本比UTC时间早9小时，看到的时间会被显示为：<samp>2016-06-11 05:10+09:00</samp>。</p>
+  <p>需要特别注意的是，时区偏移量没办法将时间转换为<a href="#dst" class="termref">夏令时</a>强制生效的时钟时间。</p>
+  </section>
+
+
+ <section id="dst">
+  <h2>夏令时</h2>
+  <p><dfn id="def_dst">夏令时</dfn> (DST) 或者“夏季时间”的目的，主要是为了让人们在晚上有更多日照时间。</p>
+  <p>夏令时在不同国家是不同的（甚至一个国家部分地区也不一样），并且常常会由于一些特殊事件，而进行一次性的修改。同时，并非所有地区都遵守夏令时，通常靠近赤道的地区不需要夏令时的。</p>
+  <p>在做时间转换时，了解当地什么时间引入夏令时，什么时间废除夏令时，以及夏令时什么时间开始，什么时间结束（每年可能有所不同），是非常重要的。</p>
+  <p>举个例子，韩国标准时间和日本标准时间当前使用了相同的<a href="#zone_offset" class="termref">时区偏移量</a>，也均未使用夏令时。然而，日本是在1951年废弃了夏令时，韩国在1988年废弃掉，因此，如果应用程序需要追溯当时的时间值，需要使用当时的时区信息。</p>
+  </section>
+
+
+  <section id="time_zone_ids">
+  <h2>时区标识</h2>
+  <p><dfn id="def_time_zone_id">时区标识</dfn>可以标识出当前时间与<a href="utc" class="termref">UTC</a>的特定差异，包括<a href="#time_zone_offset" class="termref">时区偏移</a>和<a href="#dst" class="termref">夏令时</a>。</p>
+  <p>最权威的时区规则集是<a href="https://www.iana.org/time-zones">TZ database</a>（也称为奥尔森时区数据库）, 他被众多系统使用，比如各种商业UNIX操作系统、Linux操作系统、Java语言、CLDR数据集、ICU组件，以及其他众多的操作系统和组件库。但也存在其他时区规则集，比如Microsoft Windows使用自己的时区数据集和标识符。</p>
+  <p>在TZ database中，时区的ID通常由地区和示例城市组成，示例城市是相关时区中人们所熟知的典型城市。比如，美国太平洋时区在TZ database中的ID是<code class="kw" translate="no">America/Los_Angeles</code>。同时，TZ database还为许多ID提供了别名， 比如<code class="kw" translate="no">Asia/Ulan Bator</code>也可以称为<code class="kw" translate="no">Asia/Ulaanbaatar</code>.</p>
+  <p>CLDR（通用本地数据集 Common Locale Data Repository的英文首字母缩写）可以为ID提供本地化的形式。需要注意，部分系统（比如苹果的Mac OS）会提供额外的示例城市。</p>
+  </section>
+
+
+  <section id="calendars">
+  <h2>公历和其他日历</h2>
+  <p><dfn id="def_gregorian_calendar">公历</dfn>是使用最广泛的历法。它是太阳历, 一年通常365天，包含“闰年”的概念。每4年为闰年，增加一天，但当年份可以被100整除时，不用增加（同时，如果年份可以被400整除，仍需要增加）。</p>
+
+  <p>世界各地还有许多其他历法。其中一部分是阴历；还有一部分基于公历，但开始时间不一样；还有一些历法随着某些重要人物的死亡而重置。通常这些历法用于宗教目的，但有时也被用于报纸和电子邮件，也可以是出生日期。</p>
+  <p>ICU或Dojo等技术可以支持不同日历之间的转换。</p>
+
+  </section>
+
+
+  <section id="html5_terms">
+  <h2>HTML5术语</h2>
+  <p>下面列举了一些HTML5规范中，展示时间格式的示例，以供参考。</p>
+
+  <dl>
+  <dt>全球日期和时间</dt>
+  <dd>6位日期格式，T或者空格，4-9位时间（必须），使用Z或者+/- 2位时区偏移量（必须），秒（可选）</dd>
+  <dd>2016-05-25T21:19:47.123+08</dd>
+  <dd>2016-05-25 21:19:47-08</dd>
+  <dd>2016-05-25 21:19:47Z</dd>
+  <dd>2016-05-25 21:19:00.123+23:45</dd>
+
+  <dt>标准化的全球日期和时间</dt>
+  <dd>整体同上, 但必须用T拼接, 秒如果是00可以省略，时区偏移量只能是Z。</dd>
+  <dd>2016-05-25T21:19:47.123Z</dd>
+  <dd>2016-05-25T21:19Z</dd>
+
+  <dt>浮选日期和时间</dt>
+  <dd>和全球时间和日期格式一致, 但没有时区偏移量信息</dd>
+  <dd>2016-05-25T21:19:47.123</dd>
+  <dd>2016-05-25 21:19:00</dd>
+
+  <dt>标准化的浮动日期和时间</dt>
+  <dd>整体同上, 但必须使用T拼接，秒如果是00也可以省略</dd>
+  <dd>2016-05-25T21:19:47.123</dd>
+  <dd>2016-05-25T21</dd>
+  </dl>
+  </section>
+
+
+
+
+
+<section id="endlinks">
+<h2>更多阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+  <li><p><cite><a href="https://www.w3.org/TR/timezone/">时区使用</a></cite></p></li>
+  <li>
+    <p><cite>HTML&CSS创作</cite></p>
+    <ul>
+      <li><a href="/International/techniques/authoring-html#localdata">日期格式化</a></li>
+      </ul>
+  </li>
+  <li>
+    <p><cite>标准开发指南</cite></p>
+    <ul>
+      <li><a href="/International/techniques/developing-specs#loc_time">时间使用</a></li>
+    </ul>
+  </li>
+</ul>
+</section>
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
