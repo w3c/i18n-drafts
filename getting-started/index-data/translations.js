@@ -1,9 +1,9 @@
 var trans = { }
 
-trans.versions = ['en', 'es', 'zh-hans']
+trans.versions = ['en', 'es', 'fr', 'zh-hans']
 
 trans.outofdatetranslations = []
 
 trans.updatedtranslations = ['es']
 
-trans.unlinkedtranslations = ['ar', 'de', 'fr', 'pt', 'pt-br', 'ro', 'ru', 'uk']
+trans.unlinkedtranslations = ['ar', 'de', 'pt', 'pt-br', 'ro', 'ru', 'uk']
