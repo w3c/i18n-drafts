@@ -64,10 +64,10 @@ s.i18nActivityHomePage = "الصفحة الرئيسية لنشاط التدوي�
 s.home = "الصفحة الرئيسية"
 s.contactI18nActivity = "الحصول على مساعدة في التدويل عند W3C."
 s.contact = "الاتصال"
-s.aboutI18nActivity = "About W3C Internationalization."
-s.about = "About"
-s.askI18nActivity = "Ask for help or information."
-s.ask = "Ask"
+s.aboutI18nActivity = "عن التدويل في W3C."
+s.about = "بشأن"
+s.askI18nActivity = "اطلب المساعدة أو المعلومات."
+s.ask = "اطلب"
 s.groupsThatMakeUp = "شارك في عمل W3C في التدويل ."
 s.groups = "شارك"
 s.topicIndexForInformation = "ابحث في هذا الموقع"
@@ -122,7 +122,7 @@ s.translatedFromEnglishVer = "مترجم عن محتوى مكتوب باللغة
 
 s.historyOfDocumentChanges = 'لمعرفة تاريخ التغييرات في الوثيقة يرجى مراجعة <a href="http://www.w3.org/blog/International/tag/'+f.searchString+'/">موجز الأخبار</a> لمعرفة التغييرات الجوهرية، و<a href="https://github.com/w3c/i18n-drafts/commits/gh-pages/'+f.directory+f.filename+'.en.html">قائمة التعهدات «commits» على Github</a>  للاطلاع على جميع التغييرات التي تمت منذ يناير 2016.'
 s.untranslatedChanges = '<strong>ملاحظة:</strong> تم إجراء تغييرات على <a href="'+f.filename+'.en">النص الأصلي بالإنجليزية</a> منذ ترجمته. تم دمج التغييرات في هذه الصفحة ، وقد يتم عرض بعض الفقرات باللغة الإنجليزية حتى يتم تحديث الترجمة.'
-s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
+s.unlinkedTranslation = '<strong>انتباه:</strong> تم إجراء تغييرات مادية على النسخة الأصلية الإنجليزية منذ ترجمة هذه الوثيقة. يُنصح بقراءة <a href="'+f.filename+'.en">النسخة الإنجليزية</a> حتى يتم تحديث هذه الترجمة.'
 s.new="جديد"// placed alongside new articles at http://www.w3.org/International/articlelist 
 s.updated="محدث" // same as New
 s.translation_updated="تم تحديث الترجمة:" // date appears after colon 
