@@ -124,7 +124,7 @@ s.historyOfDocumentChanges = 'For the history of document changes, see the <a hr
 s.untranslatedChanges = '<strong>注意:</strong> 在此文件翻譯以後<a href="'+f.filename+'.en">英文版本</a> 已有改變。 The changes were incorporated into this page, so you may see some passages in English until the translation is updated.'
 s.unlinkedTranslation = '<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="'+f.filename+'.en">the English version</a> until this translation has been updated.'
 s.new="新"// placed alongside new articles at http://www.w3.org/International/articlelist 
-s.updated="已更新" // same as New
+s.updated="更新：" // same as New
 s.translation_updated="更新譯本:" // date appears after colon 
 
 s.aboutThisArticle="關於本文" // title in the right column near the top of the page

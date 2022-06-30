@@ -124,7 +124,7 @@ s.historyOfDocumentChanges = '有关文档更新的历史记录，请参阅主�
 s.untranslatedChanges = '<strong>注意：</strong>在此文件翻译以后<a href="'+f.filename+'.en.php">英文版本</a> 已有改变。这些更改已合并到此页面中，因此您可能会看到一些英文段落，直到翻译更新为止。'
 s.unlinkedTranslation = '<strong>警告：</strong>本文的英文原文自翻译以来进行了实质性修改，建议您在此版本更新之前阅读<a href="'+f.filename+'.en">英文版本</a>。'
 s.new="新"// placed alongside new articles at http://www.w3.org/International/articlelist 
-s.updated="已更新" // same as New
+s.updated="更新：" // same as New
 s.translation_updated="更新译本:" // date appears after colon 
 
 s.aboutThisArticle="文章相关" // title in the right column near the top of the page
@@ -137,7 +137,7 @@ s.tests="测试" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "简约回复" // heading
 s.longeranswer = "详情" // heading that follows 'Quick answer'
 s.additionalinfo = "更多信息" // heading that sometimes follows 'Details'
-s.cookieMsg = "您可以让浏览器设置cookie，以继续使用您选择的语言浏览 W3C 国际化活动页面（如果有该语言的翻译的话）。请问您想设置cookie吗？" // this text is to be copied to another location
+s.cookieMsg = "您可以让浏览器设置cookie，以继续使用您选择的语言浏览W3C国际化标准计划（如果有该语言的翻译的话）。请问您想设置cookie吗？" // this text is to be copied to another location
 s.githubRedirect = "<strong>注意！</strong> &nbsp; 这只是本文的编辑草案，所有链接和收藏都应指向 <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>W3C 网站上的版本</a>。" // used for github-based versions of published articles
 
 s.lastChanged = "最后一次更新 "
