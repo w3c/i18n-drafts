@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8" >
 <title>Ruby Styling</title>
-<meta name="description" content="How to use CSS styling to support ruby text for Asian languages." />
+<meta name="description" content="How to use CSS styling to support ruby text for Asian languages." >
 <script>
 var f = { }
 
@@ -37,10 +37,11 @@ f.additionalLinks = ''
 <!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
 <script src="../../javascript/doc-structure/article-2022.js"> </script>
 <script src="../../javascript/articletoc-2022.js"></script>
-<link rel="stylesheet" href="../../style/article-2022.css" />
-<link rel="copyright" href="#copyright"/>
+<link rel="stylesheet" href="../../style/article-2022.css" >
+<link rel="copyright" href="#copyright">
 <script src="../../javascript/prism.js"></script>
 <link rel="stylesheet" href="../../style/prism.css">
+<link rel="stylesheet" href="styling-data/local.css">
 
 <style>
 .rubyExample { font-size: 50px; font-family: "ms mincho"; margin: 0; }
@@ -90,17 +91,17 @@ anyone who wants to know how to use ruby annotations. </p-->
 <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
 </div>
 
-<p>Ruby is a name given to the small annotations in Japanese, Chinese and Traditional Mongolian content that are rendered alongside base text, usually to provide a pronunciation guide, but sometimes to provide other information. </p>
+<p>Ruby is a name given to the small annotations, typically used in Japanese, Chinese and Traditional Mongolian content, that are rendered alongside base text, usually to provide a pronunciation guide, but sometimes to provide other information. </p>
 
-<p>The term 'ruby' was adopted into Japanese typesetting after originally being used for British printing. In China these may be called 'interlinear annotations'. We'll use the word 'ruby' here because it is frequently referred to this way in specifications and implementations. </p>
+<p>The term 'ruby' was adopted into Japanese typesetting after originally being used for British printing. In China these may be called 'interlinear annotations'. In this article we use the word 'ruby' to refer to the combination of 'base characters' plus their 'annotations'. </p>
 
 <p class="info">We will assume that you are familiar with ruby, and how you want it to look. (If not, <a class="print" href="https://www.w3.org/International/articles/ruby/">see the short overview</a> of how ruby works.)</p>
 
-<p class="info">This article will only discuss how to use CSS <em>styling</em> to affect the rendering of ruby content. For information about how to create the markup needed to support ruby, see <a href="https://www.w3.org/International/articles/ruby/markup" class="print">Ruby Markup</a>.</p>
+<p class="info">This article will only discuss how to use CSS <em>styling</em> to affect the rendering of ruby content. For information about how to create the <em>markup</em> needed to support ruby, see <a href="https://www.w3.org/International/articles/ruby/markup" class="print">Ruby Markup</a>.</p>
 
 
 <aside class="insideinfonote">
-<p class="info"> While the main body of the text explains how to achieve the result you want using CSS, as described in the editor's draft of the CSS Ruby Layout module, you'll find information in the margin that explain some of the associated caveats and issues, as well as identifying which features that are not supported by one browser or another.</p>
+<p class="info"> While the main body of the text explains how to achieve the result you want using CSS, as described in the editor's draft of the CSS Ruby Layout module, you'll find information in the margin that explain some of the associated caveats and issues, as well as identifying  features that are not supported by one browser or another.</p>
 </aside>
 
 
@@ -116,13 +117,9 @@ anyone who wants to know how to use ruby annotations. </p-->
 <section id="configs">
 <h2>Basic configurations</h2>
 
-<p>This section describes typical scenarios for Japanese and Chinese. The expected behavior is  based on the layout requirements documents for Japanese (<a href="https://www.w3.org/TR/jlreq/">JLReq</a>) and Chinese (<a href="https://www.w3.org/TR/clreq/">CLReq</a>). Only the more common configurations are described here; subsequent sections explain how to do fine tuning.</p>
+<p>This section describes typical scenarios for Japanese and Chinese. The expected behavior is  based on the layout requirements documents for Japanese (<a href="https://www.w3.org/TR/jlreq/">JLReq</a>) and Chinese (<a href="https://www.w3.org/TR/clreq/">CLReq</a>). Only the more common configurations are described here; subsequent sections will explain how to produce these configurations, and how to tailor the results.</p>
 
 <p>What follows assumes that you have used markup to map ruby text annotations to base characters appropriately, as described in the article <a href="https://www.w3.org/International/articles/ruby/markup">Ruby Markup</a>.</p>
-
-
-
-
 <section id="ja_basics">
 <h3>Japanese</h3>
 
@@ -148,41 +145,15 @@ anyone who wants to know how to use ruby annotations. </p-->
 <li>If the base character is next to the line start or end, a little extra space will be added alongside the base character so that the annotation doesn't stick into the margin.</li>
 </ol>
 
-<p>This behaviour is currently browser dependent, rather than specified in CSS.</p>
+<p>This behaviour is currently browser dependent, rather than specified using CSS.</p>
 
-<p>A <span lang="ja" class="foreign">jukuji</span>  annotation occurs where a sequence of base characters has a different pronunciation from what you would expect by looking at the individual base characters, eg. <span lang="ja">田舎</span> (pronounced <span lang="ja">いなか</span>). Because the kana don't map to individual base characters, you will need to use <a href="https://www.w3.org/International/questions/qa-ruby#group" class="termref">group ruby</a>: a  single annotation is mapped in markup to a range of base characters. The kana annotation is normally spread across the base text evenly, with a little extra space at either end. If the annotation is in the Latin script, however, it is normally centred on the base text. Base characters in group ruby are not split across line breaks.</p>
+<p>A <span lang="ja" class="foreign">jukuji</span> annotation occurs where a sequence of base characters has a different pronunciation from what you would expect by looking at the individual base characters, eg. <span lang="ja">田舎</span> (pronounced <span lang="ja">いなか</span>). Because the kana don't map to individual base characters, you will need to use <a href="https://www.w3.org/International/questions/qa-ruby#group" class="termref">group ruby</a>: a  single annotation is mapped in markup to a range of base characters. The kana annotation is normally spread across the base text evenly, with a little extra space at either end. If the annotation is in the Latin script, however, it is normally centred on the base text. Base characters in group ruby are not split across line breaks.</p>
+
+<p><span lang="ja" class="foreign"><a href="https://www.w3.org/International/questions/qa-ruby#jukugo" class="termref">Jukugo ruby</a></span> (note that this is a different term from <span lang="ja" class="foreign">jukuji</span>!) is a term used to describe special treatment of annotations for compound nouns (<span lang="ja" class="foreign">jukugo</span> in Japanese). Essentially the annotations for compound nouns can be spread across all of the base characters in the word, like group ruby, but a word can still be split at the end of a line, like mono ruby. Furthermore, the distribution of the annotations for a word may follow detailed rules with regards to allowable overlaps, so that they are not necessarily equally spaced as per group ruby. See <a href="https://www.w3.org/International/questions/qa-ruby#jukugo">some examples</a>.</p>
+
 <p>Sometimes ruby annotations appear on  opposite sides of a base character at the same time. In such cases, the top/right annotation is typically phonetic and uses mono ruby, and the bottom/left annotation is most likely group ruby and provides additional information about the base text.</p>
 <p>Annotations and base text may be aligned at the start in vertical text, but are usually centred on the base in horizontal text.</p>
 <p>The sections lower down this page indicate how you can change some of these basic styles.</p>
-
-<details>
-<p>Since this is different styling from the normal phonetic approach, you will need to indicate in markup, using a class name, the items that should be treated as group ruby. Assuming we used a class name of <code class="kw" translate="no">jukuji</code>, you could then add the following to your style sheet.</p>
-
-<figure class="example" lang="ja">
-<pre><code class="language-css">.jukuji { 
-    ruby-position: over;
-    ruby-align: space-around;
-    }</code></pre>
-<div class="demolink"><a href="styling-data/simple_ja_group.html" target="text">Test in your browser.</a></div>
-</figure>
-
-<p>If you want to apply a semantic, rather than phonetic, annotation, you will also need to use <a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc">group ruby</a>. The annotation is usually aligned as per the jukuji example just described. You may, however, want the annotation to appear on the other side of the base characters. To achieve this, you need to change the <code class="kw" translate="no">ruby-position</code> value. The following code snippet assumes that such annotations have been given a class of <code class="kw" translate="no">semanticRuby</code>.</p>
-
-<figure class="example" lang="ja">
-<pre><code class="language-css">.semanticRuby { 
-    ruby-position: under;
-    ruby-align: space-around;
-    }</code></pre>
-<div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">Test in your browser.</a></div>
-</figure>
-
-
-
-
-<p>The sections lower down this page indicate how you can change some of these basic styles. For example, in vertical text you could set <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">start</code> to make the phonetic ruby annotations align with the start of the base text (called <span lang="ja" class="foreign" translate="no">katatsuke</span> in Japanese), or you could eliminate the extra space around a group-ruby annotation (by setting <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">space-between</code>).</p>
-</details>
-
-
 </section>
 
 
@@ -191,7 +162,7 @@ anyone who wants to know how to use ruby annotations. </p-->
 <section id="zh_hans_basics">
 <h3>Simplified Chinese</h3>
 
-<p>In  Mainland China phonetic annotations normally consist of pinyin transcriptions, which are written in the Latin script.  Content annotated with pinyin is usually only set horizontally, since Latin text would be sideways in vertical text, making it harder to read.</p>
+<p>In  Mainland China phonetic annotations normally consist of pinyin transcriptions, which are written in the Latin script.  Content annotated with pinyin is usually only set horizontally. This is fortunate since Latin text would be set sideways in vertical text, making it harder to read.</p>
 
 <p>There are two common approaches to phonetic annotation: character based and word based.</p>
 
@@ -206,30 +177,16 @@ anyone who wants to know how to use ruby annotations. </p-->
 </figure>
 </div>
 
-<p>Word based phonetic annotations use <a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc">group ruby</a>, associating one annotation with more than one base character, and forbidding line breaks inside the annotation. Note how the top line below no longer breaks between the two parts of the word <span lang="zh-hans-latn" class="foreign" translate="no">lizhi</span>.</p>
+<p>Word based phonetic annotations use <a href="http://w3c.github.io/i18n-drafts/articles/ruby/markup.en.html#mono_group_etc">group ruby</a>, associating one annotation with more than one base character, and forbidding line breaks inside the annotation. Note how the top line in <a class="figref">fig_chinese_group_ruby</a> no longer breaks between the two parts of the word <span lang="zh-hans-latn" class="foreign" translate="no">lizhi</span>.</p>
 
 <div class="figWrap">
-<figure>
+<figure id="fig_chinese_group_ruby">
 <p><img src="styling-data/simple_zh_word.png" alt="Horizontal word-based ruby for 他生怕被人笑话，立志要画得圆。 (tā shēng pà bèi rén xiào huà, li zhi yào huà de yuán.)"></p>
 <figcaption>Word-based phonetic annotations using pinyin.</figcaption>
 </figure>
 </div>
 
 <p>In both of these examples, the annotations are centred above the base text.</p>
-<details>
-<p>This behaviour is usually produced by default by the browser.  Sometimes, however, the word-based approach places the annotation below the base text. If you want to explicitly style it you can use the following.</p>
-
-<figure class="example" lang="ja">
-<pre><code class="language-css">ruby { 
-    ruby-position: over;
-    ruby-align: center;
-    }</code></pre>
-<div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">Test in your browser.</a></div>
-</figure>
-
-<p>To make the pinyin appear below the base text, change the value of <code class="kw" translate="no">ruby-position</code> to <code class="kw" translate="no">under</code>.</p>
-</details>
-
 
 <p>Annotations representing meaning or commentaries  are common in light novels and translated works, and tend to describe phrases or words. They may contain casing, punctuation, and spaces, and may contain Chinese text explaining Latin base text, or vice versa, and they may appear on the opposite side of the base to phonetic annotations. Sometimes phonetic annotations are also placed below/left of the base.</p>
 
@@ -275,21 +232,6 @@ anyone who wants to know how to use ruby annotations. </p-->
 </figure>
 </div>
 
-<details>
-<p>What you  have to do in CSS is indicate that this will be bopomofo ruby, so that the annotation doesn't appear 'over' or 'under' the base text. To do that, you need the <code class="kw" translate="no">inter-character</code> value of <code class="kw" translate="no">ruby-position</code>.</p>
-
-<div class="annotatedCode">
-<div class="acFigure">
-<figure class="example" lang="ja">
-<pre><code class="language-css">ruby { ruby-position: inter-character; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_bopomofo" target="text">Test in your browser.</a></div>
-</figure>
-</div>
-</div>
-
-<p>The vertical placement for the bopomofo and the relative position of the tone characters within the invisible column to the right of the Han base character rely on the browser, or possibly font information. You don't need to specify anything more in CSS.</p>
-</details>
-
 <p>Find <a href="https://r12a.github.io/scripts/bopomofo/ontheweb">more information</a> about Bopomofo usage in Traditional Chinese.</p>
 </section>
 </section>
@@ -302,8 +244,8 @@ anyone who wants to know how to use ruby annotations. </p-->
 <section id="ruby_position">
 <h2>Positioning ruby relative to the base text</h2>
 
-<p> This section looks at how you make the ruby text appear above, below or to the side of the ruby base
-text.</p>
+<p> Here we look at how you make the ruby text appear above or below the ruby base text, or to the side for bopomofo ruby.</p>
+<p>A later section will describe how to display the annotation inline, ie. alongside the base with equal-sized characters.</p>
 
 
 
@@ -322,7 +264,7 @@ text.</p>
 <figcaption><code class="kw" translate="no">ruby-position</code> set to <code class="kw" translate="no">over</code>.</figcaption>
 </figure>
 </div>
-<br  style="clear:both;"/>
+<br  style="clear:both;">
 
 <p>This is the default behavior, and you can expect browsers to produce this without CSS.</p>
 
@@ -331,18 +273,23 @@ text.</p>
 <div class="sidenoteGroup">
 <figure class="example" lang="ja">
 <pre><code class="language-css">ruby { ruby-position: over; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_ruby_position_over" target="text">Test in your browser.</a></div>
 </figure>
 
+<div id="out_position_over" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>紙</rb><rt>かみ</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
+<p class="vertical" lang="ja"><ruby><rb>紙</rb><rt>かみ</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
+</div>
+</div>
+
+
 <aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/>  <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox">  <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
 <p>Works  well because this is the default rendering for ruby.</p>
 <p><a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_position_basics">See test results for major browsers</a>.</p>
 </aside>
 </div>
-
-
-<p>To position the ruby text below horizontal base text or to the left of vertical text, use <code>ruby-position: under</code>.</p>
 </section>
 
 
@@ -352,7 +299,8 @@ text.</p>
 <section id="position_under">
 <h3>Positioning ruby text 'under' the base</h3>
 
-<p>By 'under' we mean below horizontal text and to the left of vertical CJK text.</p>
+
+<p>To position the ruby text below horizontal base text or to the left of vertical text, use <code>ruby-position: under</code>.</p>
 
 <div class="figWrap">
 <figure>
@@ -368,7 +316,7 @@ text.</p>
 
 <div class="figWrap">
 <figure>
-<p><img src="styling-data/pinyin-under.png" width="267" height="190" alt=""/></p>
+<p><img src="styling-data/pinyin-under.png" width="267" height="190" alt=""></p>
 <figcaption>An example of ruby on more than one side of the base characters.</figcaption>
 </figure>
 </div>
@@ -378,12 +326,19 @@ text.</p>
 <div class="sidenoteGroup">
 <figure class="example" lang="ja">
 <pre><code class="language-css">ruby { ruby-position: under; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_ruby_position_under" target="text">Test in your browser.</a></div>
 </figure>
 
+<div id="out_position_under" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>紙</rb><rt>かみ</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
+<p class="vertical" lang="ja"><ruby><rb>紙</rb><rt>かみ</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
+</div>
+</div>
+
 <aside class="implnote">
-<p><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/><br>
-<img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> works only if you also use <code class="kw" translate="no">-webkit-ruby-position: after</code>.<br>
+<p><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"><br>
+<img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> works only if you also use <code class="kw" translate="no">-webkit-ruby-position: after</code>.<br>
 <a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_position_basics">See test results for major browsers</a>.</p>
 </aside>
 </div>
@@ -416,13 +371,21 @@ text.</p>
 <p>The vertical placement for the bopomofo and the relative position of the tone characters within the invisible column to the right of the Han base character rely on the browser, or possibly font information. You don't need to specify anything more in CSS. </p>
 
 <div class="sidenoteGroup">
-<figure class="example" lang="ja">
+<figure id="fig_bopomofo_position" class="example" lang="ja">
 <pre><code class="language-css">ruby { ruby-position: inter-character; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_bopomofo" target="text">Test in your browser.</a></div>
 </figure>
 
+
+<div id="out_bopomofo_position" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="zh-TW"><ruby><rb>電</rb><rt>ㄉㄧㄢˋ</rt><rb>腦</rb><rt>ㄋㄠˇ</rt></ruby></p>
+<p class="vertical" lang="zh-TW"><ruby><rb>電</rb><rt>ㄉㄧㄢˋ</rt><rb>腦</rb><rt>ㄋㄠˇ</rt></ruby></p>
+</div>
+</div>
+
 <aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"></p>
 <p>Very simple annotations can look ok in vertical text, because of the default vertical layout, but as soon as tone marks are added things look a mess.<br>
 <a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_position_intercharacter">See test results for major browsers</a>.</p>
 </aside>
@@ -465,15 +428,18 @@ text.</p>
 
 <p>you could use CSS like this:</p>
 
-<figure class="example" lang="ja">
+<figure id="fig_double_position" class="example" lang="ja">
 <pre><code class="language-css">ruby { ruby-position: over; }
 rtc { ruby-position: under; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_dbl_mono" target="text">Test in your browser.</a></div>
 </figure>
+
+<div id="out_double_position" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<p><ruby><rb>東</rb><rb>南</rb><rt>とう</rt><rt>なん</rt><rtc><rt>tou</rt><rt>nan</rt></rtc></ruby>の方角</p></div>
 
 <p>If you use nested markup, and you have markup such as the following:</p>
 
-<figure class="example" lang="ja">
+<figure id="fig_double_position2" class="example" lang="ja">
 <pre><code class="language-html">&lt;ruby&gt;&lt;ruby&gt;東&lt;rt&gt;とう&lt;/ruby&gt;&lt;rt&gt;tou&lt;rb&gt;&lt;ruby&gt;南&lt;rt&gt;なん&lt;/ruby&gt;&lt;rt&gt;nan&lt;/ruby&gt;の方角</code></pre>
 </figure>
 
@@ -482,17 +448,339 @@ rtc { ruby-position: under; }</code></pre>
 <figure class="example" lang="ja">
 <pre><code class="language-css">ruby { ruby-position: under; }<br>
 ruby  ruby { ruby-position: over; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_dbl_mono_nested" target="text">Test in your browser.</a></div>
 </figure>
+
+<div id="out_double_position2" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<p><ruby><ruby>東<rt>とう</rt></ruby><rt>tou</rt><rb><ruby>南<rt>なん</rt></ruby></rb><rt>nan</rt></ruby>の方角</p>
+</div>
 </section>
 </section>
+
+
+
+
+
+
+
+<section id="alignment">
+<h2>Aligning annotations and bases</h2>
+
+<div class="sidenoteGroup">
+<p>When the ruby text annotation is longer than the ruby base it belongs to, or vice-versa, there can be several different ways of dealing with the extra space that is lying around. The CSS Ruby spec deals with this mostly through the use of the <code class="kw" translate="no">ruby-align</code> property.</p>
+
+<aside class="sideinfonote">
+<p class="info">The examples in this section are slightly unusual in that they use group ruby and distort pinyin annotations in ways you might not normally, but which clearly illustrate the point being made. We also add red lines to help clarify positioning.</p>
+</aside> 
+</div>
+
+<p>It's best to use this property on the <code class="kw" translate="no">ruby</code> element.</p>
+
+<p>If you are working with inter-character bopomofo ruby, none of this  is relevant, since the positioning of the bopomofo characters and tone marks is fixed.</p>
+
+<p>Most examples in this section use the following markup:</p>
+
+<figure id="fig_aligning_markup" class="example" lang="ja">
+<pre><code class="language-html">&lt;ruby&gt;&lt;rb&gt;浮世絵&lt;rt&gt;うきよえ&lt;rb&gt;昔話&lt;rt&gt;むかしばなし&lt;/ruby&gt;</code></pre>
+</figure>
+
+<div id="out_aligning_markup" class="browser_output">
+<p class="browser_output_title">Output in your browser with no CSS specified:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>浮世絵<rt>うきよえ<rb>昔話<rt>むかしばなし</ruby></p>
+</div>
+</div>
+
+
+
+
+
+<section id="aligning_ends">
+<h3>Aligning to one edge</h3>
+
+<!--div class="sidenoteGroup"-->
+<div class="figWrap">
+<figure>
+<p><img src="styling-data/ruby-align-start.png" alt="Picture of start-aligned text."></p>
+</figure>
+</div>
+<!--p><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p-->
+<!--aside class="implnote">
+<p class="impl">Works as specified in Firefox. In Edge it only works if you use the value <code class="kw" translate="no">left</code>. Doesn't work in Chrome or Safari.<br>
+<a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align_start">See test results for major browsers</a>.</p>
+</aside>
+</div-->
+
+<p>If you want to align the edges of the annotation and the base, you can use the <code class="kw" translate="no">start</code> value of <code class="kw" translate="no">ruby-align</code>. (An older version of the Ruby CSS spec also included an <code class="kw" translate="no">end</code> value, but that has been removed from the current version of the spec.)</p>
+<p>This kind of alignment is mostly used for vertical Japanese text. (Horizontal Japanese text more often uses centering.)</p>
+
+<div id="fig_aligning_ends" class="sidenoteGroup">
+<figure class="example" lang="ja">
+<pre><code class="language-css">ruby { ruby-align: start; }</code></pre>
+</figure>
+
+<div id="out_aligning_ends" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p>
+<p lang="ja" class="vertical"><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p>
+</div>
+</div>
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> If there is a <code class="kw" translate="no">lang</code> attribute indicating that the content is Chinese (<code class="kw" translate="no">zh</code>...) then shorter text is centered. Otherwise, it acts as expected.</p>
+<p><!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"> only works if you use the value <code class="kw" translate="no">left</code>.<br-->
+<img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"></p>
+<p><a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_align_start">See test results for major browsers</a>.</p>
+</aside>
+</div>
+</section>
+
+
+
+
+
+<section id="aligning_centered">
+<h3>Centering shorter items of text</h3>
+
+<div class="figWrap">
+<figure>
+<p><img src="styling-data/ruby-align-center.png" alt="Picture of start-aligned text."></p>
+</figure>
+</div>
+
+<p>If you want the shorter of the ruby base or ruby text to be centered, with the characters set solid, rather than aligned with an edge, it will hardly come as a surprise to learn that you just need to set the value of <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">center</code>.</p>
+
+<div id="fig_aligning_centered" class="sidenoteGroup">
+<figure class="example">
+<pre><code class="language-css">ruby { ruby-align: center; }</code></pre>
+</figure>
+
+<div id="out_aligning_centered" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p>
+<p class="vertical" lang="ja"><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p>
+</div>
+</div>
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
+<p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"></p>
+<p><a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_align_center">See test results for major browsers</a>.</p>
+</aside>
+</div>
+</section>
+
+
+
+
+
+<section id="aligning_justified">
+<h3>Applying justification to shorter items of text in group ruby</h3>
+
+<p>This section applies when both the bases and the annotation contain multiple characters – in other words, <a href="../../questions/qa-ruby#group">group ruby</a>.</p>
+<p>If you want to use up redundant space by stretching the shorter text, be it the annotation or the base,  you have two choices: you can justify the shorter text from edge to edge of the longer one (<code class="kw" translate="no">space-between</code>), or justify across a space that is slightly smaller than the full width available (<code class="kw" translate="no">space-around</code>). Note, however, that the justification outcome differs according to what scripts are involved.</p>
+<p>The default setting is <code class="kw" translate="no">space-between</code>.</p>
+
+
+<section id="aligning_eastasian">
+<h4>Justifying Japanese annotations</h4>
+
+<p>Let's look first at what happens if the characters in your ruby annotation are kanji characters and kana characters. This is  likely to be the case for Japanese ruby, and will typically apply when dealing with jukuji or semantic annotations.</p>
+<p>To widen the shorter text to exactly the same width as the longer text, stretching the inter-character spaces equally, use the <code class="kw" translate="no">space-between</code> value of <code class="kw" translate="no">ruby-align</code>.</p>
+<div class="figWrap">
+<figure>
+<p><img src="styling-data/ruby-align-between.png" alt="Picture of start-aligned text."><!--p><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p-->  </p>
+</figure>
+</div>
+
+<div class="sidenoteGroup">
+<figure class="example" lang="ja" id="fig_aligning_space_between">
+<pre><code class="language-css">ruby { ruby-align: space-between; }</code></pre>
+</figure>
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> If there is a <code class="kw" translate="no">lang</code> attribute indicating that the content is Chinese (<code class="kw" translate="no">zh</code>...) then ruby text is just centered and set solid. Otherwise, it acts as expected for east asian characters.</p>
+<!--p><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"> only works if you use the proprietary <code class="kw" translate="no">distribute-letter</code> value.</p-->
+<p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"></p>
+<p><a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_align_space_between">See test results for major browsers</a>.</p>
+</aside>
+</div>
+
+<div id="out_aligning_space_between" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="zh"><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p>
+<p class="vertical" lang="ja"><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p>
+</div>
+</div>
+
+
+<p>Or you can stretch the text in the same way, but not quite so far, leaving half a character width of space on either side, as shown here. For this you use the <code class="kw" translate="no">space-around</code> value.</p>
+<div class="figWrap">
+<figure>
+<p><img src="styling-data/ruby-align-around.png" alt="Picture of start-aligned text."></p>
+<!--p><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p-->
+</figure>
+</div>
+
+<div class="sidenoteGroup">
+<figure class="example" lang="ja">
+<pre><code class="language-css">ruby { ruby-align: space-around; }</code></pre>
+</figure>
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> If there is a <code class="kw" translate="no">lang</code> attribute indicating that the content is Chinese (<code class="kw" translate="no">zh</code>...) then ruby text is centered and set solid. Otherwise, it acts as expected for east asian characters.</p>
+<p><!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
+<p>Works for east asian characters as specified  since this is the browser default</p>
+<p><a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_align_space_around">See test results for major browsers</a>.</p>
+</aside>
+</div>
+
+<div id="out_aligning_space_around" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p>
+<p class="vertical" lang="ja"><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p>
+</div>
+</div>
+</section>
+
+
+
+
+
+<section id="align_other">
+<h4>Justifying pinyin annotations</h4>
+
+<p>Here we look at what to expect if either the base or the annotation uses a script such as Latin  for pinyin. For Chinese ruby that doesn't use bopomofo, this is the most likely case. Occasionally, Japanese may also use Latin annotations, in which case the same rules apply.</p>
+
+<p>If a single word is used, you should expect it to be centered, as shown below on the left. </p>
+
+<p>If there are spaces in the shorter text, then it will be justified in the normal way for that script, ie. you can expect to see inter-word spacing for Latin text.</p>
+
+<!--p lang="zh-hans"><ruby><rb>頤和園</rb><rt>yíhéyuán</rt></ruby><ruby><rb>頤和園</rb><rt>yí hé yuán</rt></ruby></p-->
+
+<div class="figWrap">
+<figure id="fig_aligning_pinyin">
+<p><img src="styling-data/summer-palace.png" alt="Picture of start-aligned text."></p>
+<figcaption>The difference made by spaces between Latin text words.</figcaption>
+</figure>
+</div>
+
+
+
+<p>We are still working with the <code class="kw" translate="no">space-between</code> and <code class="kw" translate="no">space-around</code> values of the <code class="kw" translate="no">ruby-align</code> property, and they still affect whether the text is justified to the edge of the longer text or not. But the result varies according to whether or not the justified text contains spaces.</p>
+<p>The significant difference, of course, between this and what we saw before is that the space is not distributed between each character, as it is when the annotation uses kana or han characters. It is only added between words.</p>
+
+<div class="sidenoteGroup">
+<figure class="example" lang="ja">
+<pre><code class="language-css">ruby { ruby-align: space-between; }</code></pre>
+</figure>
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> In Gecko browsers, if there is a <code class="kw" translate="no">lang</code> attribute indicating that the content is Chinese (<code class="kw" translate="no">zh</code>...) then ruby text is just centered and set solid, regardless of whether the annotation is Latin with spaces or Asian characters. However, this only applies if the <code class="kw" translate="no">lang</code> attribute is set to something beginning with <code class="kw" translate="no">zh</code>; for example, language tags <code class="kw" translate="no">cmn</code> and <code class="kw" translate="no">yue</code> cause the alignment to revert to the default.</p>
+<!--p><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"> words are stretched to fit, with inter-character spacing, just like asian characters, rather than the standard inter-word justification you get in Firefox.</p-->
+<p> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari">  Both browser engines still fail to support <code class="kw" translate="no">space-between</code>, but handle the Latin text as shown in the diagram.</p>
+<p><a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_align_space_around">See test results for major browsers</a>.</p>
+</aside>
+</div>
+
+<div id="out_aligning_pinyin" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="zh"><ruby><rb>頤和園</rb><rt>yíhéyuán</rt></ruby><ruby><rb>頤和園</rb><rt>yí hé yuán</rt></ruby></p>
+</div>
+</div>
+
+<p>There is no difference in styling for the two example words shown above – we simply removed the spaces from the pinyin on the left.</p>
+</section>
+</section>
+
+
+
+
+<section id="jukugo">
+<h3>Working with jukugo ruby</h3>
+
+<div class="sidenoteGroup">
+<p>The CSS Ruby specification describes a method of handling jukugo ruby using the <code class="kw" translate="no">ruby-merge</code> property. This allows you to indicate, through styling, whether the annotations associated with a compound noun in Japanese should be applied like mono ruby, or spread across the whole word like group ruby. In the latter case, however, a line can be broken inside a compound noun, so it differs slightly from the normal group ruby in a way that jukugo handling typically works in Japanese.</p>
+<p>In the latter case, the browser could specify more detailed rules about how to align the annotations across the compound bases.  This allows rules of (internal) overlapping to be more fluid in jukugo ruby than in mono ruby.</p>
+<p>Unfortunately, at the time of writing, the <code class="kw" translate="no">ruby-merge</code> property is not supported by any of the major browser engines, so for now we will omit a description of how this works.</p>
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"><img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"></p>
+<p><a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_merge">See test results for major browsers</a>.</p>
+</aside>
+</div>
+</section>
+</section>
+
+
+
+
+
+<section id="gaps">
+<h2>Handling gaps in annotations</h2>
+
+<p>You may want to attach ruby annotations to a word such as 振り仮名 (furigana) without adding the redundant り. </p>
+<figure>
+<div class="multipleFigs">
+<div><img src="styling-data/autohide_hor.png" alt="Horizontal ruby for 振り仮名（ふりがな）"></div>
+<div><img src="styling-data/autohide_ver.png" alt="Vertical ruby for 振り仮名（ふりがな）"></div>
+</div>
+<figcaption>The word 'furigana' doesn't need a redundant hiragana character as an annotation, but is still treated as a single word when applying markup.</figcaption>
+</figure>
+<p>One way to achieve this would be to simply leave a blank <code class="kw" translate="no">rt</code> element, like this:</p>
+<div class="sidenoteGroup">
+
+<figure id="fig_gaps" class="example" lang="ja">
+<p><code class="language-html">&lt;ruby&gt;&lt;rb&gt;振&lt;rt&gt;ふ&lt;rb&gt;り&lt;rt&gt;&lt;rb&gt;仮&lt;rt&gt;が&lt;rb&gt;名&lt;rt&gt;な&lt;/rt&gt;&lt;/ruby&gt;</code></p>
+</figure>
+
+<div id="out_gaps" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>振</rb><rt>ふ</rt><rb>り</rb><rt></rt><rb>仮</rb><rt>が</rt><rb>名</rb><rt>な</rt></ruby></p>
+<p class="vertical" lang="ja"><ruby><rb>振</rb><rt>ふ</rt><rb>り</rb><rt></rt><rb>仮</rb><rt>が</rt><rb>名</rb><rt>な</rt></ruby></p>
+</div>
+</div>
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
+</aside>
+</div>
+<p>This would pose a problem, however, if you wanted to display the annotation inline: instead of <span lang="ja">振り仮名（ふりがな）</span> you would see 振り仮名（ふがな）. It can also present problems if you want to merge ruby annotations across a compound noun (something which may be introduced later).</p>
+<p>The CSS spec proposes a solution for this. If the base text and corresponding annotation are identical, browsers should not show the annotation unless it is part of an inline sequence. So you could use the following code to produce this effect, without any special styling, if the browser supports it.</p>
+
+<div class="sidenoteGroup">
+<figure id="fig_gaps2" class="example" lang="ja">
+<p><code class="language-html">&lt;ruby&gt;&lt;rb&gt;振&lt;rt&gt;ふ&lt;rb&gt;り&lt;rt&gt;り&lt;rb&gt;仮&lt;rt&gt;が&lt;rb&gt;名&lt;rt&gt;な&lt;/rt&gt;&lt;/ruby&gt;</code></p>
+</figure>
+
+<div id="out_gaps2" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>振</rb><rt>ふ</rt><rb>り</rb><rt>り</rt><rb>仮</rb><rt>が</rt><rb>名</rb><rt>な</rt></ruby></p>
+<p class="vertical" lang="ja"><ruby><rb>振</rb><rt>ふ</rt><rb>り</rb><rt>り</rt><rb>仮</rb><rt>が</rt><rb>名</rb><rt>な</rt></ruby></p>
+</div>
+</div>
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"><br>
+<!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"><img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"></p>
+<p><a target="_blank" href="https://w3c.github.io/i18n-tests/results/css-ruby#ruby_autohide">See test results for major browsers</a></p>
+</aside>
+</div>
+<p>&nbsp;</p>
+</section>
+
 
 
 
 
 
 <section id="inline_position">
-<h2>Rendering ruby text inline</h2>
+<h2>Rendering annotations inline</h2>
 
 <p>In some situations you may want the annotations to appear inline, after the base text. For example, the <a href="markup">Ruby markup</a> article describes how complicated kanji characters with ruby on top can create accessibility issues. In other cases you may want to do this because the user interface is too small for ruby text to be legible, or because you want to repurpose the content for another type of application, etc.</p>
 
@@ -543,16 +831,24 @@ rp { display: inline; }
 <p>In addition to making the <code class="kw" translate="no">rt</code> content display appropriately inline (as mentioned earlier), you will also need to surround each annotation with something, to set it off from the base text. Here we use the <code class="kw" translate="no">before</code> and <code class="kw" translate="no">after</code> pseudo-elements to surround it with parentheses.</p>
 
 
-<div class="sidenoteGroup">
+<div id="fig_inline_interleaved" class="sidenoteGroup">
 <figure class="example" lang="ja">
 <pre><code class="language-css">rt { display: inline; font: inherit; }
 rt::before { content: '（'; }
 rt::after { content: '）'; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_inline" target="text">Test in your browser.</a></div>
 </figure>
 
+<div id="out_inline_interleaved" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
+<p class="vertical" lang="ja"><ruby><rb>水</rb><rt>みず</rt><rb>芝</rb><rt>し</rt><rb>居</rb><rt>ばい</rt></ruby></p>
+</div>
+</div>
+
+
 <aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/>  <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox">  <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
 </aside>
 </div>
 </section>
@@ -582,7 +878,7 @@ rt::after { content: '）'; }</code></pre>
 
 
 <div class="sidenoteGroup">
-<figure class="example" lang="ja">
+<figure id="fig_inline_tabular" class="example" lang="ja">
 <pre><code class="language-css">rt { display: inline; font: inherit; }
 
 /* Parens around &lt;rtc&gt; */ 
@@ -594,247 +890,23 @@ rb  + rt::before, rtc + rt::before { content: &quot;（&quot;; }
 /* Parens after &lt;rt&gt; not inside &lt;rtc&gt; */
 rb ~ rt:last-child::after, rt + rb::before  { content: &quot;）&quot;; } 
 rt + rtc::before { content: &quot;）（&quot;; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_inline_tabular" target="text">Test in your browser.</a></div>
 </figure>
 
-<aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/>  <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
-</aside>
+<div id="out_inline_tabular" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="ja"><ruby><rb>水</rb><rb>芝</rb><rb>居</rb><rt>みず</rt><rt>ばい</rt><rt>し</rt></ruby></p>
+<p class="vertical" lang="ja"><ruby><rb>水</rb><rb>芝</rb><rb>居</rb><rt>みず</rt><rt>ばい</rt><rt>し</rt></ruby></p>
 </div>
-</section>
-</section>
-
-
-
-
-
-
-<section id="alignment">
-<h2>Aligning annotations and bases</h2>
-
-<div class="sidenoteGroup">
-<p>When the ruby text annotation is longer than the ruby base it belongs to, or vice-versa, there can be several different ways of dealing with the extra space that is lying around. The CSS Ruby spec deals with this mostly through the use of the <code class="kw" translate="no">ruby-align</code> property.</p>
-
-<aside class="sideinfonote">
-<p class="info">The examples in this section are slightly unusual in that they use group ruby and distort pinyin annotations in ways you might not normally, but which clearly illustrate the point being made. We also add red lines to help clarify positioning.</p>
-</aside> 
-</div>
-
-<p>It's best to use this property on the <code class="kw" translate="no">ruby</code> element.</p>
-
-<p>If you are working with inter-character bopomofo ruby, none of this  is relevant, since the positioning of the bopomofo characters and tone marks is fixed.</p>
-
-
-
-
-
-<section id="aligning_ends">
-<h3>Aligning to one edge</h3>
-
-<!--div class="sidenoteGroup"-->
-<div class="figWrap">
-<figure>
-<p><img src="styling-data/ruby-align-start.png" alt="Picture of start-aligned text."/></p>
-</figure>
-</div>
-<!--p><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p-->
-<!--aside class="implnote">
-<p class="impl">Works as specified in Firefox. In Edge it only works if you use the value <code class="kw" translate="no">left</code>. Doesn't work in Chrome or Safari.<br>
-<a href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align_start">See test results for major browsers</a>.</p>
-</aside>
-</div-->
-
-<p>If you want to align the edges of the annotation and the base, you can use the <code class="kw" translate="no">start</code> value of <code class="kw" translate="no">ruby-align</code>. (An older version of the Ruby CSS spec also included an <code class="kw" translate="no">end</code> value, but that has been removed from the current version.)</p>
-
-<div class="sidenoteGroup">
-<figure class="example" lang="ja">
-<pre><code class="language-css">ruby { ruby-align: start; }</code></pre>
-<div class="demolink"><a target="_blank" href="styling-data/eg_ruby_align_start">Test in your browser.</a></div>
-</figure>
-
-<aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> If there is a <code class="kw" translate="no">lang</code> attribute indicating that the content is Chinese (<code class="kw" translate="no">zh</code>...) then shorter text is centered. Otherwise, it acts as expected.</p>
-<p><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> only works if you use the value <code class="kw" translate="no">left</code>.<br>
-<img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
-<p><a target="_blank" href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align_start">See test results for major browsers</a>.</p>
-</aside>
-</div>
-</section>
-
-
-
-
-
-<section id="aligning_centered">
-<h3>Centering shorter items of text</h3>
-
-<div class="figWrap">
-<figure>
-<p><img src="styling-data/ruby-align-center.png" alt="Picture of start-aligned text."/></p>
-</figure>
-</div>
-
-<p>If you want the shorter of the ruby base or ruby text to be centered, with the characters set solid, rather than aligned with an edge, it will hardly be a surprise to learn that you just need to set the value of <code class="kw" translate="no">ruby-align</code> to <code class="kw" translate="no">center</code>.</p>
-
-<div class="sidenoteGroup">
-<figure class="example">
-<pre><code class="language-css">ruby { ruby-align: center; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_ruby_align_center" target="_blank">Test in your browser.</a></div>
-</figure>
-
-<aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
-<p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
-<p><a target="_blank" href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align_center">See test results for major browsers</a>.</p>
-</aside>
-</div>
-</section>
-
-
-
-
-
-<section id="aligning_justified">
-<h3>Applying justification to shorter items of text</h3>
-
-<p>If you want to use up redundant space by stretching the shorter text, be it the annotation or the base,  you have two choices: you can justify the shorter text from edge to edge of the longer one (<code class="kw" translate="no">space-between</code>), or justify across a space that is slightly smaller than the full width available (<code class="kw" translate="no">space-around</code>).</p>
-
-<p>Note, however, that the justification outcome differs according to what scripts are involved. </p>
-
-
-<section id="aligning_eastasian">
-<h4>Justifying East Asian characters</h4>
-
-<p>Let's look first at what happens if the characters in your ruby annotation are Han characters and kana characters. This is  likely to be the case for Japanese ruby.</p>
-<p>To widen the shorter text to exactly the same width as the longer text, stretching the inter-character spaces equally, use the <code class="kw" translate="no">space-between</code> value of <code class="kw" translate="no">ruby-align</code>.</p>
-<div class="figWrap">
-<figure>
-<p><img src="styling-data/ruby-align-between.png" alt="Picture of start-aligned text."/><!--p><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p-->  </p>
-</figure>
-</div>
-
-<div class="sidenoteGroup">
-<figure class="example" lang="ja">
-<pre><code class="language-css">ruby { ruby-align: space-between; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_ruby_align_space_between" target="_blank">Test in your browser.</a></div>
-</figure>
-<aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> If there is a <code class="kw" translate="no">lang</code> attribute indicating that the content is Chinese (<code class="kw" translate="no">zh</code>...) then ruby text is just centered and set solid. Otherwise, it acts as expected for east asian characters.</p>
-<p><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> only works if you use the proprietary <code class="kw" translate="no">distribute-letter</code> value.</p>
-<p><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
-<p><a target="_blank" href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align_space_between">See test results for major browsers</a>.</p>
-</aside>
-</div>
-
-<p>Or you can stretch the text in the same way, but not quite so far, leaving half a character width of space on either side, as shown here. For this you use the <code class="kw" translate="no">space-around</code> value.</p>
-<div class="figWrap">
-<figure>
-<p><img src="styling-data/ruby-align-around.png" alt="Picture of start-aligned text."/></p>
-<!--p><ruby><rb>浮世絵</rb><rt>うきよえ</rt></ruby><ruby><rb>昔話</rb><rt>むかしばなし</rt></ruby></p-->
-</figure>
-</div>
-
-<div class="sidenoteGroup">
-<figure class="example" lang="ja">
-<pre><code class="language-css">ruby { ruby-align: space-around; }</code></pre>
-<div class="demolink"><a href="styling-data/eg_ruby_align_space_around" target="_blank">Test in your browser.</a></div>
-</figure>
-<aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> If there is a <code class="kw" translate="no">lang</code> attribute indicating that the content is Chinese (<code class="kw" translate="no">zh</code>...) then ruby text is centered and set solid. Otherwise, it acts as expected for east asian characters.</p>
-<p><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
-<p>Works for east asian characters as specified  since this is the browser default</p>
-<p><a target="_blank" href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align_space_around">See test results for major browsers</a>.</p>
-</aside>
-</div>
-</section>
-
-
-
-
-
-<section id="align_other">
-<h4>Justifying other characters</h4>
-
-<p>Here we look at what to expect if either the base or the annotation uses a script such as Latin  for pinyin. For Chinese ruby that doesn't use bopomofo, this is the most likely case.</p>
-
-<p>We are still working with the <code class="kw" translate="no">space-between</code> and <code class="kw" translate="no">space-around</code> values of the <code class="kw" translate="no">ruby-align</code> property, and they still affect whether the text is justified to the edge of the longer text or not. But the result varies according to whether or not the justified text contains spaces.</p>
-
-<p>If a single word is used, you should expect it to be centered, as shown below on the left. </p>
-
-<p>If there are spaces in the shorter text, then it will be justified in the normal way for that script, ie. you can expect to see inter-word spacing for Latin text.</p>
-
-<!--p lang="zh-hans"><ruby><rb>頤和園</rb><rt>yíhéyuán</rt></ruby><ruby><rb>頤和園</rb><rt>yí hé yuán</rt></ruby></p-->
-
-<div class="sidenoteGroup">
-<div class="figWrap">
-<figure>
-<p><img src="styling-data/summer-palace.png" alt="Picture of start-aligned text."/></p>
-<figcaption>The difference made by spaces between Latin text words. <span class="demolink"><a href="styling-data/eg_ruby_align_space_around_latin" target="_blank">Test in your browser.</a></span></figcaption>
-</figure>
 </div>
 
 <aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> if there is a <code class="kw" translate="no">lang</code> attribute indicating that the content is Chinese (<code class="kw" translate="no">zh</code>...) then ruby text is just centered and set solid. Otherwise, it acts as shown in the diagram.</p>
-<p><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> words are stretched to fit, with inter-character spacing, just like asian characters, rather than the standard inter-word justification you get in Firefox.</p>
-<p> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/>  both browsers still fail to support <code class="kw" translate="no">space-between</code>, but handle the latin text as shown in the diagram.</p>
-<p><a target="_blank" href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_align_space_around">See test results for major browsers</a>.</p>
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox">  <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <!--img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"--> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
 </aside>
 </div>
-
-<p>There is no difference in styling for the two examples above – we simple removed the spaces from the pinyin on the left.</p>
-</section>
-
-
-
-
-
-<section id="aligning_defaults">
-<h3>The default alignment in browsers</h3>
-
-<p>The CSS specification contains a default style sheet for browsers, which says that if your content is Chinese – more specifically, if you have set the <code class="kw" translate="no">lang</code> attribute to something beginning with <code class="kw" translate="no">zh</code> – then the default behaviour will be that of <code class="kw" translate="no">ruby-align:center</code>. Otherwise, the default behaviour is the same as <code class="kw" translate="no">ruby-align:space-around</code>.</p>
-<p>Note that the latter behaviour is the default if you label your Chinese content as <abbr title="Mandarin Chinese"><code class="kw" translate="no">cmn</code></abbr> or <abbr title="Cantonese/Yue chinese"><code class="kw" translate="no">yue</code></abbr>. Only the generic <code class="kw" translate="no">zh</code>... label produces the automatic centering.</p>
 </section>
 </section>
 
-
-
-
-
-<section id="gaps">
-<h2>Handling gaps in annotations</h2>
-<p>You may want to attach ruby annotations to a word such as 振り仮名 (furigana) without adding the redundant り. </p>
-<figure>
-<div class="multipleFigs">
-<div><img src="styling-data/autohide_hor.png" alt="Horizontal ruby for 振り仮名（ふりがな）"></div>
-<div><img src="styling-data/autohide_ver.png" alt="Vertical ruby for 振り仮名（ふりがな）"></div>
-</div>
-<figcaption>The word 'furigana' doesn't need a redundant hiragana character as an annotation, but is still treated as a single word when applying markup.</figcaption>
-</figure>
-<p>One way to achieve this would be to simply leave a blank <code class="kw" translate="no">rt</code> element, like this:</p>
-<div class="sidenoteGroup">
-<figure class="example" lang="ja">
-<p><code class="language-html">&lt;ruby&gt;&lt;rb&gt;振&lt;rb&gt;り&lt;rb&gt;仮&lt;rb&gt;名&lt;rt&gt;ふ&lt;rt&gt;&lt;rt&gt;が&lt;rt&gt;な&lt;/rt&gt;&lt;/ruby&gt;</code></p>
-<div class="demolink"><a href="styling-data/eg_autohide_defective" target="_blank">Test in your browser.</a></div>
-</figure>
-<aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/><img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/></p>
-</aside>
-</div>
-<p>This would pose a problem, however, if you wanted to display the annotation inline: instead of <span lang="ja">振り仮名（ふりがな）</span> you would see 振り仮名（ふがな）. It can also present problems if you want to merge ruby annotations across a compound noun (something which may be introduced later).</p>
-<p>The CSS spec proposes a solution for this. If the base text and corresponding annotation are identical, browsers should not show the annotation unless it is part of an inline sequence. So you could use the following code to produce this effect, without any special styling, if the browser supports it.</p>
-<div class="sidenoteGroup">
-<figure class="example" lang="ja">
-<p><code class="language-html">&lt;ruby&gt;&lt;rb&gt;振&lt;rb&gt;り&lt;rb&gt;仮&lt;rb&gt;名&lt;rt&gt;ふ&lt;rt&gt;り&lt;rt&gt;が&lt;rt&gt;な&lt;/rt&gt;&lt;/ruby&gt;</code></p>
-<div class="demolink"><a href="styling-data/eg_autohide" target="_blank">Test in your browser.</a></div>
-</figure>
-<aside class="implnote">
-<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"/><br>
-<img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/><img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"/></p>
-<p><a target="_blank" href="https://www.w3.org/International/tests/repo/results/css-ruby#ruby_autohide">See test results for major browsers</a></p>
-</aside>
-</div>
-<p>&nbsp;</p>
-</section>
 
 
 
@@ -847,40 +919,24 @@ rt + rtc::before { content: &quot;）（&quot;; }</code></pre>
 <table border="0" summary="Table lists browsers and engines whose behavior is represented in the article.">
 <tbody>
 <tr>
-<th scope="col">Browser</th>
+<th scope="col">Browser engine</th>
 <th scope="col">Version</th>
-<th scope="col">Engine</th>
-<th scope="col">Other browsers using that engine</th>
+<th scope="col">Browsers using that engine</th>
 </tr>
 <tr>
-<td><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"/> Firefox</td>
+<td><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> Gecko</td>
 <td>51.0.1</td>
-<td>Gecko</td>
-<td>Conkeror, etc.</td>
+<td>Firefox, Conkeror, etc.</td>
 </tr>
 <tr>
-<td><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"/> Chrome</td>
+<td><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> Blink</td>
 <td>56.0.2924.87</td>
-<td>Blink</td>
-<td>Opera, Vivaldi, etc.</td>
+<td>Chrome, Edge, Brave, Opera, Vivaldi, etc.</td>
 </tr>
 <tr>
-<td><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"/> Safari</td>
+<td><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> WebKit</td>
 <td>10.0.3</td>
-<td>Webkit</td>
-<td>iOS-based browsers, Yandex, UC Browser, etc.</td>
-</tr>
-<tr>
-<td><img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> Edge</td>
-<td>38.14393</td>
-<td>EdgeHTML</td>
-<td>&nbsp;</td>
-</tr>
-<tr>
-<td><img src="../../icons/internet-explorer_16x16.png" width="16" height="16" alt="Edge" title="Edge"/> Internet Explorer</td>
-<td>11.0</td>
-<td>Trident</td>
-<td>&nbsp;</td>
+<td>Safari, iOS-based browsers, Yandex, UC Browser, etc.</td>
 </tr>
 </tbody>
 </table>
@@ -898,7 +954,7 @@ rt + rtc::before { content: &quot;）（&quot;; }</code></pre>
 
 
 
-<section id="todo">
+<!--section id="todo">
 <h2 class="notoc">To do</h2>
 <ul style="color:red;">
 <li>Link it to overhang (which gives more room by overlapping adjacent bases)</li>
@@ -908,7 +964,7 @@ rt + rtc::before { content: &quot;）（&quot;; }</code></pre>
 <li>setting line height</li>
 <li>making line head and end flush</li>
 </ul>
-</section>
+</section-->
 
 <section id="endlinks">
 <h2>Further reading</h2>
