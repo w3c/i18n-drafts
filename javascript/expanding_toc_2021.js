@@ -20,7 +20,8 @@ function createtoc (maxlevel) {
 	
 	var h2s = document.querySelectorAll('h2')
 	var toc = document.getElementById('css3menu')
-    toc.innerHTML = '<li class="topfirst off"><a onclick="return false;" href="#">&gt;</a></li>'
+    //toc.innerHTML = '<li class="topfirst off"><a onclick="return false;" href="#">&gt;</a></li>'
+    toc.innerHTML = ''
 	var h2, h3
 	
 	for (var i=0; i<h2s.length; i++) {
