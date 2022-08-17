@@ -1,3 +1,6 @@
+// THERE IS AN UPDATED VERSION OF THIS FILE. NEWLY CREATED PAGES SHOULD USE THE
+// UPDATED VERSION, WHICH IS sitepage_2021.js IN THE CURRENT DIRECTORY.
+
 var g = { }
 
 var base = '' 
@@ -33,7 +36,7 @@ g.nativeText = {
 'tr':'Türkçe',
 'uk':'Українська',
 'vi':'Tiếng&#xA0;Anh',
-'zh-hans':'简体汉语',
+'zh-hans':'简体中文',
 'zh-hant':'繁體中文'
 }
 
@@ -70,7 +73,9 @@ function stickyConneg (filename, cLang, targetLang) {
 		var path = ";path=/"
 		document.cookie = 'w3ci18nlang='+targetLang+expires+path
 		}
-	document.location.assign(filename+'.'+targetLang)
+	if (targetLang === 'en') targetLang = '.html'
+	else targetLang = '.'+targetLang+'.html'
+	document.location.assign(filename+targetLang)
 	}
 
 

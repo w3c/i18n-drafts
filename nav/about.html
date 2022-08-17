@@ -20,7 +20,7 @@ f.status = 'notreviewed';  // should be one of draft, review, published, notrevi
 f.path = '' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-05-06', time:'12:05'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2022-06-08', time:'12:05'} // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -34,9 +34,9 @@ f.additionalLinks = ''
 <script src="about-data/translations.js"> </script>
 <script src="../javascript/doc-structure/article-dt.js"> </script>
 <script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script src="../javascript/doc-structure/sitepage.js"> </script>
-<script src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/sitepage-2016.css" />
+<script src="../javascript/doc-structure/sitepage-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/sitepage-2022.css" />
 <link rel="copyright" href="#copyright"/>
 <style media="all">
 .articles { list-style-type: none; }
@@ -50,10 +50,20 @@ strong { font-weight: 500; }
   	<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
 	</header>
 
-<div class="content">  
-<h1>About the W3C Internationalization Activity</h1>
 
-<p>This page provides information about the internationalization groups and current goals.</p>
+
+
+<div class="content">  
+<h1>About  internationalization</h1>
+
+
+<p><img src="about-data/Internationalization1.png" alt="" style="width: 100%;"></p>
+
+<p>Access to a Web for All has been a fundamental concern and goal of the World Wide Web Consortium since the beginning, and is a natural requirement for Web-based applications, given that they can be accessed by people around the world. Unfortunately, it is easy to overlook the needs of people in cultures different to your own, or who use different languages or writing systems. If you do, you will build applications and content that, in fact, present barriers for the use of your technology or content by many people around the world.</p>
+
+
+
+
 
 <section id="sidebarExtras">
 <h2 id="i18n" class="notoc"><a href="#i18n">What is 'i18n'?</a></h2>
@@ -62,24 +72,143 @@ strong { font-weight: 500; }
 
 
 
-<section id="currentprojects">
-<h2><a href="#currentprojects">What is W3C I18n currently working on?</a></h2>
-	  <p>Key areas of work include: <a href="/International/i18n-drafts/nav/languagedev" class="eyecatcher">Language Enablement</a>, <a href="/International/i18n-drafts/nav/specdev" class="eyecatcher">Developer Support</a>, and <a href="/International/i18n-drafts/nav/contentdev" class="eyecatcher">Education &amp; Outreach</a>.</p>
-<p>For a list of <strong>current work projects</strong>, see the <a href="https://w3c.github.io/i18n-activity/projects" class="eyecatcher">Project RADAR</a>.</p>
-	  <p>For details of <strong>upcoming and current spec review work</strong>, see the <a href="https://github.com/w3c/i18n-request/projects/1" class="eyecatcher">Review RADAR</a>. </p>
-<p>For a list of <strong>active review comments</strong> see the <a href="https://w3.org/International/i18n-activity/reviews" class="eyecatcher">Review comment tracker</a>, or see the <a href="https://github.com/w3c/i18n-activity/issues">Github issues list</a>.</p>
-	  <p>For a list of <strong>issues raised against I18n documents and articles</strong>, see the <a href="https://w3c.github.io/i18n-activity/repostatus" class="eyecatcher">Document issue tracker</a>.</p>
-	  <p>For a list of   initiatives aimed at documenting <strong>requirements for typography and text layout</strong> on the Web and in digital publications for languages other than English see the <a href="layout" class="eyecatcher">Layout &amp; typography page</a>.</p>
+
+
+<section id="what">
+<h2>What is Internationalization?</h2>
+
+<p>Translation and localization are NOT what we mean by 'internationalization'. Surprised? Let me explain.</p>
+
+<p>If you internationalize, you design or develop your content, application, specification, and so on, in a way that ensures it will work well for, or can be easily adapted for, users from any culture, region, or language. This is where you address the first set of barriers: not the fact that your user can't read or relate to your product, but the barriers that make it difficult to <em>adapt</em> your product so that they can.</p>
+
+<p>It's essentially a Quality approach: one that sees you taking action early in the development cycle so that you avoid costly and sometimes prohibitive obstacles when it comes to rolling out your product to new marketplaces.</p>
+
+
+
+
+<section id="codebase">
+<h3>A universal code base</h3>
+
+<p>Fundamental to internationalization is ensuring that your product supports text in any writing system of the world. You should ensure that your product is built on the universal character set, Unicode. This means not only the HTML page that you serve to your user, but all the backend databases, content management systems, scripts, and so forth. There are plenty of examples of beautiful user interfaces that handle deftly any language that you need, but that return gobbledegook after the data has been processed behind the scenes.</p>
+
+<p>You'll also want to ensure that it's possible to easily swap in translations of any natural language text that will be read by humans (including error messages, JSON strings, etc.), but also carry metadata about the language and direction of that text. The language metadata is important to get the fonts right, and to allow for support of the different typographic styles used around the world (for things such as line-breaking, text justification, emphasis or other text decorations, text selection and units, etc.) </p>
+
+<p>It's advisable to clearly separate semantics (markup) from styling (CSS), and to avoid hard-coding content that assumes a particular order of text, or a particular set of punctuation marks, etc.</p>
 </section>
 
 
 
 
+
+<section id="direction">
+<h3>Text direction</h3>
+
+<p>Did you know that the most widely used writing system in the world after the Latin script is Arabic? The script is used for many languages, often with variations in the way that vowels are represented, or with slightly different repertoires. But what all these languages have in common is that they are read predominantly from right to left. This also has implications for layout: things such as table columns, spreadsheets, graphs, cascading menus, and even web page layout, are normally mirror-images of content produced in English. So instead of using values like 'left' and 'right' in your style sheet, you should use logical values such as 'start' and 'end': that way, when the direction of a page changes, the mirroring happens automatically and without the need for the translator to mess with your code.</p>
+<p>Actually, it's even more complicated than that. Arabic mixes right-to-left and left-to-right text on the same line, and it is important to be able to control the direction of the surrounding context for that to work properly. It's also important to handle data strings in a way that preserves information about their base direction, so that when they are used on the user interface they don't look mangled.</p>
+
+<figure id="fig_arabic">
+<img src="about-data/arabic.png"
+     style="width:100%;"
+     loading="lazy"
+     alt="">
+<figcaption>Bidirectional text in Arabic.</figcaption>
+</figure>
+                    
+<p>And it's not just Arabic. Right-to-left writing is used for Hebrew, for south Asian languages such as Dhivehi (Maldivian) and Rohingya, and for fast-growing African scripts such as Adlam and N'Ko.</p>
+</section>
+
+
+
+
+<section id="dataformats">
+<h3>Names, addresses, and such</h3>
+
+<p>If you are dealing with HTML forms or creating databases for information such as people's names and addresses, you will need to consider how to handle the many different approaches to formatting data that exist around the world. </p>
+<p>In some countries people only use a single name, or write their name using the family then given order. They may have single letter names, or very long names. Street addresses in Japanese go from the general (country or prefecture) to the specific (house location) from top to bottom, and there are plenty of variations on that theme. (In fact, Japanese homes typically don't have house numbers at all.) </p>
+<p>You'll need to consider how you'll cope with acquiring and storing this kind of data (and many others, with region-specific approaches). The more you can make your system flexible up-front, the easier a time you'll have when you want to support people in a new locale.</p>
+<p> Oh, and by the way, these people don't speak or write in English, and they tend to sort their data in very different ways, so you'll also need to figure out whether that's going to cause a problem for your backstore or back office, and put plans in place to address it as you localize.</p>
+</section>
+
+
+
+
+
+<section id="timezones">
+<h3>Time zones, currencies, dates, etc.</h3>
+
+<p>You will usually want to store data internally in one standard form, but display it in ways that look natural to local users. As well as the names and addresses already mentioned, does the person working with your app or content expect to see periods or commas for decimal points? How about the order of day, month, and year, or even which day begins the week in a calendar?</p>
+<p>You may also need to support alternative calendars, time zones and daylight savings, in both native plus transliterated forms, etc. Did you know that there are numerous countries around the world that have local calendars, and use them on a regular basis? Birth dates are typically recorded in the Imperial calendar in Japan, and newspapers in Thailand usually carry the date in the Buddhist calendar (the Western year 2022 is 2565 in Thailand).
+Any app you create needs to be able to adjust information for the appropriate time zone.</p>
+<p>If working with monetization, you'll need to consider how to handle users who work with a range of currencies. In addition to deciding how to format and represent monetary data when displayed to the user, you also should consider how to put in place mechanisms to manage diverse currency systems. How will you develop pricing models for different countries, which may have large variations in standard of living? How will you convert subscriptions and payments from one currency to another?</p>
+</section>
+
+
+
+
+<section id="culture">
+<h3>Cultural norms &amp; expectations</h3>
+<p>You'll also want to do some homework in advance about the cultural preferences and habits of the marketplaces where you want your application to be used, and choose flexible content design technologies and processes so that you can later support others.</p>
+<p>For example, symbolism can be culture-specific. The check mark means correct or OK in many countries, but in some countries, such as Japan, it can be used to mean that something is <em>incorrect</em>. Japanese localizers may need to convert check marks to circles (their symbol for 'correct') as part of the localization process.</p>
+
+<figure id="fig_yesno">
+<img src="about-data/Internationalization2.png" 
+    style="width: 100%;"
+    loading="lazy"
+    alt="">
+</figure>
+
+<p>If you want your product to appeal to users, you'll need to be using content management systems that give you the ability to flex colors, layout, and information structures, as well as introducing local color. But you'll also need to ensure that you are not hard-coding graphics or images that offend or alienate users in another region.</p>
+
+<p>And then there are quite fundamental questions for monetization applications. Is the community one that is familiar with credit card transactions? Does the population you want to reach have access to sufficient bandwidth (or even to the internet at all) when they need to use your application? Do the banking or other systems that your application interacts with support the language of the user? And remember that a large majority of users these days interface with the Web via mobile devices.</p>
+
+<p>And have you taken into account local regulatory and legal considerations in the various territories your application will reach to?</p>
+</section>
+
+
+
+
+<section id="localization">
+<h3>And <em>then</em> localize</h3>
+<p>The things we have discussed so far all need some attention and preparation <em>while you are planning and building your application</em>. Otherwise, you could be, instead, building barriers for yourself when it comes to the exciting phase where you translate and adapt your product for various local languages and markets.</p>
+<p>The localization phase is where you actually adapt for different users. You change the language via translation; you change the graphics and colors, where appropriate; you flick that text direction switch; you make available alternative data collection forms and processes; you write locally-relevant content, and so on.</p>
+<p>Internationalization means foreseeing and planning for that phase from the earliest possible moment, so that not only are you ready when the time comes, but you can avoid digging yourself into pit holes that may be costly to get out of later on down the line.</p>
+</section>		
+</section>
+
+
+
+
+
+
+<section id="i18n-activity">
+<h2>What the W3C Internationalization Activity does</h2>
+
+<p>The W3C Internationalization (I18n) Activity works with W3C working groups and liaises with other organizations to make it possible to use Web technologies around the world, regardless of language, writing system, or culture.</p>
+<p>The work covers three main areas:</p>
+
+<ul>
+<li><span class="leadin">Language enablement.</span> The W3C needs to make sure that the   text layout and typographic needs of scripts and languages around the world are built in to technologies such as HTML, CSS, SVG, etc. so that Web pages and eBooks can look and behave as people expect. We encourage experts from around the world to explain requirements and document gaps between what is needed and what is currently supported in browsers and ebook readers. <a href="../nav/languagedev">Get more details.</a> See <a href="https://www.w3.org/International/talks/1810-paris/index.html#language_enablement">examples of the work we do</a>.</li>
+<li><span class="leadin">Developer support.</span>  An important part of the mission of the Internationalization Activity at the W3C is to support developers by sharing advice and reviewing documents. The developers in question mostly include specification writers and browser implementers. (Content developers are mostly catered for by the Education &amp; outreach work we do.)  <a href="../nav/specdev">Get more details.</a> See <a href="https://www.w3.org/International/talks/1810-paris/index.html#developer_support">examples of the work we do</a>.</li>
+<li><span class="leadin">Education &amp; outreach</span> The W3C Internationalization Activity creates materials for content authors and developers that provides advice on how to create Web pages and applications that are internationalized. For guidelines related to spec developers and browser implementers, see Developer Support.  <a href="../nav/contentdev">Get more details.</a> See <a href="https://www.w3.org/International/talks/1810-paris/index.html#author_support">examples of the work we do</a>.</li>
+</ul>
+<p>Information about the work we are doing and the resources we make available can all be accessed via the <a href="https://www.w3.org/International/">Internationalization Activity home page</a>.  If you are new to internationalization, you may find our <a href="../getting-started/index.html">Getting Started</a> page a useful place to begin. See also the list of groups below.</p>
+</section>
+
+
+
+
+
+
+
+
 <section id="groups">
-<h2><a href="#groups">Active groups</a></h2>
+<h2><a href="#groups">Groups</a></h2>
+
+<section id="active">
+<h3><a href="#groups">Active groups</a></h3>
 <ol>
 	<li>
-<p><span class="eyecatcher">Internationalization  Working Group </span><br>
+<p><span class="eyecatcher" id="wg">Internationalization  Working Group </span><br>
 <em>Overseeing the language enablement work, reviewing specifications, providing internationalization guidance to Working Groups, &amp; creating educational materials for content authors.</em><br> 
 <a href="https://w3c.github.io/i18n-activity/i18n-wg/">Home page</a><br>
 GitHub: <a href="https://github.com/w3c/bp-i18n-specdev/">w3c/bp-i18n-specdev</a> •
@@ -99,6 +228,7 @@ GitHub: <a href="https://github.com/w3c/bp-i18n-specdev/">w3c/bp-i18n-specdev</a
 <a href="https://github.com/w3c/predefined-counter-styles/">w3c/w3c/predefined-counter-styles</a> •
 <a href="https://github.com/w3c/string-meta/">w3c/string-meta</a> •
 <a href="https://github.com/w3c/string-search/">w3c/string-search</a> •
+<a href="https://github.com/w3c/timezone/">w3c/timezone</a> •
 <a href="https://github.com/w3c/type-samples/">w3c/type-samples</a> •
 <a href="https://github.com/w3c/typography/">w3c/typography</a> •
 <a href="https://github.com/w3c/unicode-xml/">w3c/unicode-xml</a> <br>
@@ -126,7 +256,7 @@ Notification
 lists: <a href="https://lists.w3.org/Archives/Public/www-international/">www-international</a>, <a href="https://lists.w3.org/Archives/Public/public-i18n-its-ig/">public-i18n-its-ig</a></p>
 				<!--p>We encourage use of the <a href="https://github.com/w3c/i18n-discuss/">w3c/i18n-discuss</a> issue list, rather than the <a href="https://lists.w3.org/Archives/Public/www-international/">www-international</a> mailing list, for technical discussions or questions about internationalization topics. This provides access to the many advantages associated with using GitHub issues. The www-international list receives 2 daily digests of GitHub activity, one for open review comments, and the other for the i18n repos listed above. It also receives the i18n WG weekly teleconference minutes.</p--></li>
 <li>
-<p><span class="eyecatcher">African Layout Task Force</span><br>
+<p><span class="eyecatcher" id="afrlreq">African Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web in any African language or script.</em><br>
 <a href="https://w3c.github.io/afrlreq/home">Home page</a><br>
 <a href="https://github.com/w3c/afrlreq/issues/">Discussion threads</a><br>
@@ -136,7 +266,7 @@ Group-only list:
 <a href="https://lists.w3.org/Archives/Public/public-afrlreq-admin/">public-afrlreq-admin</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">Americas Layout Task Force</span><br>
+<p><span class="eyecatcher" id="amlreq">Americas Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web for  languages of the Americas.</em><br>
 <a href="https://w3c.github.io/amlreq/home">Home page</a><br>
 <a href="https://github.com/w3c/amlreq/issues">Discussion threads</a><br>
@@ -145,7 +275,7 @@ Notification list (public-i18n-americas): <a href="https://lists.w3.org/Archives
 Group-only list: <a href="https://lists.w3.org/Archives/Public/public-amlreq-admin/">public-alreq-amlreq</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">Arabic Layout Task Force</span><br>
+<p><span class="eyecatcher" id="alreq">Arabic Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web for Arabic &amp; Persian languages.</em><br>
 <a href="https://w3c.github.io/alreq/home">Home page</a><br>
 <a href="https://github.com/w3c/alreq/issues/">Discussion threads</a><br>
@@ -156,7 +286,7 @@ Related list (public-i18n-bidi):
 <a href="https://lists.w3.org/Archives/Public/public-i18n-bidi/">public-i18n-bidi</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">Chinese Layout Task Force</span><br>
+<p><span class="eyecatcher" id="clreq">Chinese Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web for Simplified &amp; Traditional Chinese.</em><br>
 <a href="https://w3c.github.io/clreq/home">Home page</a><br>
 <a href="https://github.com/w3c/clreq/issues/">Discussion threads</a><br>
@@ -166,7 +296,7 @@ Group-only list: <a href="https://lists.w3.org/Archives/Public/public-clreq-admi
 </p>
 </li>
 <li>
-<p><span class="eyecatcher">Ethiopic Layout Task Force</span><br>
+<p><span class="eyecatcher" id="elreq">Ethiopic Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web for Ethiopic-script languages.</em><br>
 <a href="https://w3c.github.io/elreq/home">Home page</a><br>
 <a href="https://github.com/w3c/elreq/issues/">Discussion threads</a><br>
@@ -175,7 +305,7 @@ Notification list (public-i18n-ethiopic): <a href="https://lists.w3.org/Archives
 Group-only list: <a href="https://lists.w3.org/Archives/Public/public-ethiopic-admin/">public-elreq-admin</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">European Layout Task Force</span><br>
+<p><span class="eyecatcher" id="eurlreq">European Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web for European languages.</em><br>
 <a href="https://w3c.github.io/eurlreq/home">Home page</a><br>
 <a href="https://github.com/w3c/eurlreq/issues/">Discussion threads</a><br>
@@ -184,7 +314,7 @@ Notification list (public-i18n-europe): <a href="https://lists.w3.org/Archives/P
 Group-only list: <a href="https://lists.w3.org/Archives/Public/public-eurlreq-admin/">public-eurlreq-admin</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">Hebrew Layout Task Force</span><br>
+<p><span class="eyecatcher" id="hlreq">Hebrew Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web for Hebrew.</em><br>
 <a href="https://w3c.github.io/hlreq/home">Home page</a><br>
 <a href="https://github.com/w3c/hlreq/issues/">Discussion threads</a><br>
@@ -194,7 +324,7 @@ Group-only list: <a href="https://lists.w3.org/Archives/Public/public-hlreq-admi
 Related list (public-i18n-bidi): <a href="https://lists.w3.org/Archives/Public/public-i18n-bidi/">public-i18n-bidi</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">India International Program</span><br>
+<p><span class="eyecatcher" id="iip">India International Program</span><br>
 <em>Identify and address barriers to use of the Web for  languages of India.</em><br>
 <a href="https://w3c.github.io/iip/home">Home page</a><br>
 <a href="https://github.com/w3c/iip/issues/">Discussion threads</a><br>
@@ -203,18 +333,19 @@ Notification list (public-i18n-indic): <a href="https://lists.w3.org/Archives/Pu
 Group-only list: <a href="https://lists.w3.org/Archives/Public/public-ilreq-admin/">public-ilreq-admin</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">Japanese Layout Task Force</span><br>
+<p><span class="eyecatcher" id="jlreq">Japanese Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web for  Japanese.</em><br>
 <a href="https://w3c.github.io/jlreq/home">Home page</a><br>
 <a href="https://github.com/w3c/jlreq/issues/">Discussion threads</a><br>
 GitHub: <a href="https://github.com/w3c/jlreq/">w3c/jlreq</a> •
+<a href="https://github.com/w3c/jlreq-d/">w3c/jlreq-d</a> •
 <a href="https://github.com/w3c/simple-ruby/">w3c/simple-ruby</a> •
 <a href="https://github.com/w3c/ruby-t2s-req/">w3c/ruby-t2s-req</a><br>
 Notification list (public-i18n-japanese): <a href="https://lists.w3.org/Archives/Public/public-i18n-japanese/">archive</a> • <a href="mailto:public-i18n-japanese-request@w3.org?subject=subscribe">subscribe!</a><br>
 Group-only list: <a href="https://lists.w3.org/Archives/Public/public-jlreq-admin/">public-jlreq-admin</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">Mongolian Layout Task Force</span><br>
+<p><span class="eyecatcher" id="mlreq">Mongolian Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web for  the Traditional Mongolian script.</em><br>
 <a href="https://w3c.github.io/mlreq/home">Home page</a><br>
 <a href="https://github.com/w3c/mlreq/issues/">Discussion threads</a><br>
@@ -223,7 +354,7 @@ Notification list (public-i18n-mongolian): <a href="https://lists.w3.org/Archive
 Group-only list: <a href="https://lists.w3.org/Archives/Public/public-mlreq-admin/">public-mlreq-admin</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">Southeast Asian Layout Task Force</span><br>
+<p><span class="eyecatcher" id="sealreq">Southeast Asian Layout Task Force</span><br>
 <em>Identify and address barriers to use of the Web for  SE Asian languages &amp; scripts.</em><br>
 <a href="https://w3c.github.io/sealreq/home">Home page</a><br>
 <a href="https://github.com/w3c/sealreq/issues/">Discussion threads</a><br>
@@ -232,8 +363,8 @@ Notification list (public-i18n-mongolian): <a href="https://lists.w3.org/Archive
 Group-only list: <a href="https://lists.w3.org/Archives/Public/public-sealreq-admin/">public-sealreq-admin</a></p>
 </li>
 <li>
-<p><span class="eyecatcher">Tibetan Layout Task Force</span><br>
-<em>Identify and address barriers to use of the Web for  SE Asian languages &amp; scripts.</em><br>
+<p><span class="eyecatcher" id="tlreq">Tibetan Layout Task Force</span><br>
+<em>Identify and address barriers to use of the Web for Tibetan.</em><br>
 <a href="https://w3c.github.io/tlreq/home">Home page</a><br>
 <a href="https://github.com/w3c/tlreq/issues/">Discussion threads</a><br>
 GitHub: <a href="https://github.com/w3c/tlreq/">w3c/tlreq</a><br>
@@ -247,16 +378,16 @@ Group-only list: <a href="https://lists.w3.org/Archives/Public/public-tlreq-admi
 
 
 <section>
-<h2 id="scope"><a href="#scope">Former groups</a></h2>
+<h3 id="scope"><a href="#scope">Former groups</a></h3>
 <ol>
 <li>
-<p><span class="eyecatcher">ITS (Internationalization Tag Set) Interest Group</span> <a href="https://w3c.github.io/i18n-activity/its-ig/">Home page</a> • List: <a href="https://lists.w3.org/Archives/Public/public-i18n-its-ig/">public-i18n-its-ig</a>.  The mailing list is still open, but now operates under the <a href="https://w3c.github.io/i18n-activity/i18n-ig/">Internationalization Interest Group</a>.</p>
+<p><span class="eyecatcher" id="its-ig">ITS (Internationalization Tag Set) Interest Group</span> <a href="https://w3c.github.io/i18n-activity/its-ig/">Home page</a> • List: <a href="https://lists.w3.org/Archives/Public/public-i18n-its-ig/">public-i18n-its-ig</a>.  The mailing list is still open, but now operates under the <a href="https://w3c.github.io/i18n-activity/i18n-ig/">Internationalization Interest Group</a>.</p>
 </li>
 <li>
 <p><span class="eyecatcher">Japanese Layout Multi-Group Task Force</span> <a href="/2007/02/japanese-layout/">Home page</a>  • Lists: <a href="https://lists.w3.org/Archives/Public/public-i18n-cjk/">public-i18n-cjk</a>, <a href="https://lists.w3.org/Archives/Member/member-japanese-layout-en/">member-japanese-layout-en*</a>, <a href="https://lists.w3.org/Archives/Member/member-japanese-layout-ja/">member-japanese-layout-ja*</a></p>
 </li>
 <li>
-  <p><span class="eyecatcher">MLW-LT (MultilingualWeb Language Technology) Working Group</span>  defined the Internationalization Tag Set (ITS) 2.0. This delivers metadata for web content (mainly HTML5) and &quot;deep Web&quot; content (or example a CMS or XML file from which HTML pages are generated). The metadata facilitates  interaction with multilingual technologies and localization processes. They  also produced reference implementations. The group was closed on 17 January 2014, having successfully published the <a href="/TR/its20/">Internationalization Tag Set (ITS) 2.0</a> specification as a Recommendation. the Working Group has started discussing ITS 2.0 best practices topics within the <a href="/International/its/ig/">Internationalization Tag Set Interest Group</a>. This is an open forum aiming to  generate discussion around future possible work in this area. To participate contribute to the <a href="http://www.w3.org/International/its/wiki/Main_Page">ITS IG wiki</a> and the <a href="https://lists.w3.org/Archives/Public/public-i18n-its-ig/">ITS IG mailling list</a>. <a href="/International/multilingualweb/lt/">[Home page]</a> <a href="http://www.w3.org/2011/12/mlw-lt-charter">[Charter]</a></p>
+  <p><span class="eyecatcher">MLW-LT (MultilingualWeb Language Technology) Working Group</span>  defined the Internationalization Tag Set (ITS) 2.0. This delivers metadata for web content (mainly HTML5) and &quot;deep Web&quot; content (for example a CMS or XML file from which HTML pages are generated). The metadata facilitates  interaction with multilingual technologies and localization processes. They  also produced reference implementations. The group was closed on 17 January 2014, having successfully published the <a href="/TR/its20/">Internationalization Tag Set (ITS) 2.0</a> specification as a Recommendation. the Working Group has started discussing ITS 2.0 best practices topics within the <a href="/International/its/ig/">Internationalization Tag Set Interest Group</a>. This is an open forum aiming to  generate discussion around future possible work in this area. To participate contribute to the <a href="http://www.w3.org/International/its/wiki/Main_Page">ITS IG wiki</a> and the <a href="https://lists.w3.org/Archives/Public/public-i18n-its-ig/">ITS IG mailing list</a>. <a href="/International/multilingualweb/lt/">[Home page]</a> <a href="http://www.w3.org/2011/12/mlw-lt-charter">[Charter]</a></p>
 </li>
 <li>
   <p><span class="eyecatcher">Internationalization GEO Working Group</span> worked to  make the internationalization aspects of W3C technology better understood and more widely and consistently used through guidelines, education and outreach. This WG was closed when the work was merged into that of the Internationalization Working Group in 2007. <a href="/International/geo/">[Home page]</a>  <a href="http://www.w3.org/2004/11/i18n-recharter/geo-charter">[Charter]</a></p>
@@ -265,16 +396,16 @@ Group-only list: <a href="https://lists.w3.org/Archives/Public/public-tlreq-admi
 </section>
 
 
-
 <section>
-<h2 id="contacts"><a href="#contacts">Contacts</a></h2>
+<h3 id="contacts"><a href="#contacts">Contacts</a></h3>
 <ul>
-<li><a href="mailto:addison@amazon.com">Addison Phillips (addison @ amazon.com)</a>, I18n Core Working Group Chair</li>
+<li><a href="mailto:addisoni18n@gmail.com">Addison Phillips (addisoni18n @ gmail.com)</a>, I18n Core Working Group Chair</li>
 <li><a href="mailto:ishida@w3.org">Richard Ishida (ishida @ w3.org)</a>, Activity Lead, Staff Contact for Core Working Group</li>
 <li><a href="mailto:xfq@w3.org">Fuqiao Xue (xfq @ w3.org)</a>, Staff Contact for Core Working Group</li>
 <li><a href="mailto:duerst@it.aoyama.ac.jp">Martin Dürst (duerst @ it.aoyama.ac.jp)</a>, Interest Group Chair</li>
-<li><a href="http://www.w3.org/International/Group/#liaison">Liaisons</a> (member only)</li>
+<li><a href="http://www.w3.org/International/Group/#liaison">Liaisons</a> (member-only link)</li>
 </ul>
+</section>
 </section>
 
 

@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Arapça',
   'bg':'Bulgarca',
@@ -15,6 +23,7 @@ s.currLang = {
   'en':'İngilizce',
   'es':'İspanyolca',
   'fr':'Fransızca',
+  'gl':'Galiçyaca',
   'he':'İbranice',
   'hi':'Hintçe',
   'hu':'Macarca',
@@ -36,14 +45,6 @@ s.currLang = {
   'zh-hant':'Geleneksel Çince',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N Activity Ana Sayfası"
 s.moreResourcesOfThisType = "Bu türdeki diğer kaynaklar."
 s.accessKeyN = 'Sayfada gezinmek için n erişim tuşunu kullanın. <a href="#contentstart">İçeriğin başına git.</a>'
@@ -51,7 +52,6 @@ s.examplesInAnotherScript = "Bu belge başka bir dilde yazılmış örnekler iç
 s.worldMap = "Dünya haritası"
 s.searchI18nSite = "I18n sitesinde ara" 
 s.translationDisclaimer = 'Bu belge bir çeviridir. Herhangi bir tutarsızlık veya hata durumunda, <a href="'+f.filename+'.en">en son tarihli İngilizce orijinal belge</a> esas alınmalıdır. <a href="#copyright">Orijinal belgenin telif hakkı</a> aşağıdaki belirtildiği gibi W3C\'ye aittir.'
-s.translator = "Çeviren:"
 s.relatedLinks = "İlgili bağlantılar"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Konu dizini"
@@ -106,13 +106,17 @@ s.homePageNews = "Ana sayfadaki haberler"
 s.followOurNews = "Follow our news feed."
 s.sentenceDelimiter = "."
 
-s.author = "Yazan:" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Değiştiren:" // person's name appears after colon
-s.translatedBy = "Çeviren:"
 s.validXHTML = "Geçerli XHTML 1.0!"
 s.validCSS = "Geçerli CSS!"
 s.codedInUtf8 = "UTF-8 ile kodlanmış!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Yazan: " // followed by name of author(s)
+s.previousAuthors = "Previously by: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Değiştiren: " // person's name appears after colon
+s.translatedBy = "Çeviren: "
+s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = dt.enVersion+" tarihli İngilizce içerikten çevrilmiştir. Çeviri en son "+dt.thisVersionPlain+" GMT tarihinde değiştirilmiştir"
 
@@ -133,7 +137,6 @@ s.tests="Tests" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
-s.acknowledgements = "Thanks also to the following people whose contribution or feedback was included:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>An Introduction to Multilingual Web Addresses</title>
+<meta name="description" content="A high-level introduction to using non-ASCII characters in Web addresses." />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/idn-and-iri'+'/'; // the name of the directory this file is in
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-idn-and-iri' // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-01-14' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2008-05-09', time:'15:32'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2022-05-25', time:'11:00'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact="" // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+// also make sure that the lang attribute on the html tag is correct!
+
+f.breadcrumb = 'webaddress'
+
+f.additionalLinks = ''
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  <h1>An Introduction to Multilingual Web Addresses</h1>
+</header>
+
+<div id="audience">
+<div id="updateInfo"></div>
+  <script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+</div>
+
+
+
+  <p>A <dfn>Web address</dfn> is used to point to a <dfn>resource</dfn> on the Web such as a Web page. Recent developments enable you to add non-ASCII characters to Web addresses. This article provides a high level introduction to how this works. It is aimed at content authors and general users who want to understand the basics without too many gory technical details. For simplicity, we will use examples based on HTML and HTTP. We will also address how this works for both the domain name and the remaining path information in a web.</p>
+
+
+
+<section id="why">
+<h2>Why multilingual Web addresses?</h2>
+
+<p>Web addresses are typically expressed using <dfn>Uniform Resource Identifiers</dfn> or <dfn>URIs</dfn>. The URI syntax defined in <a href="http://www.ietf.org/rfc/rfc3986">RFC 3986 STD 66</a> (<cite>Uniform Resource Identifier
+(URI): Generic Syntax</cite>) essentially restricts Web addresses to a small number of characters: basically, just upper and lower case letters of the
+English alphabet, European numerals and a small number of symbols.</p>
+<p>The original reason for this was to aid in transcription and usability, both in computer systems and in non-computer communications, to
+avoid clashes with characters used conventionally as delimiters around URIs, and to facilitate entry using those input facilities available to most
+Internet users.</p>
+<p>User's expectations and use of the Internet have moved on since then, and there is now a growing need to enable use of characters from
+any language in Web addresses. A Web address in your own language and alphabet is easier to create, memorize, transcribe, interpret, guess, and
+relate to. It is also important for brand recognition. This, in turn, is better for business, better for finding things, and better for
+communicating. In short, better for the Web.</p>
+<div class="example">
+<p>Imagine, for example, that all web addresses had to be written in Japanese katakana, as shown in the example below. How easy would it
+be for you, if you weren't Japanese, to  recognize the content or owner of the site, or type the address in your browser, or write the URI
+down on notepaper, etc.?</p>
+<ul>
+<li>http://ヒキワリ.ナットウ.ニホン</li>
+</ul>
+</div>
+<p>There have been several developments recently that begin to make this possible.</p>
+</section>
+
+
+
+
+<section id="problem">
+<h2>Basic concepts</h2>
+
+<p>We will refer to Web addresses that allow the use of characters from a wide range of scripts as <dfn>Internationalized
+Resource Identifiers</dfn> or <dfn>IRIs</dfn>. For IRIs to work, there are four main requirements:</p>
+<ol>
+<li> the syntax of the format where IRIs are used (eg. HTML, XML, SVG, etc) must support the use of non-ASCII characters in Web
+addresses</li>
+<li> the application where IRIs are used (eg. browsers, parsers, etc.) must support the input and use of non-ASCII characters in Web
+addresses</li>
+<li>it must be possible to carry the information in an IRI through the necessary protocol (eg. HTTP, FTP, IMAP, etc.)</li>
+<li>it must be possible to successfully match the string of characters in your Web address against the name of the target resource on the
+file system or registry where it is stored.</li>
+</ol>
+<p>Various document formats and specifications already support IRIs. Examples include HTML 4.0, XML 1.0 system identifiers, the XLink <code class="kw" translate="no">href</code> attribute, XMLSchema's <code class="kw" translate="no">anyURI</code> datatype, etc. We will also see later that major browsers support
+the use of IRIs already.</p>
+<p>Unfortunately, not so many protocols allow IRIs to pass through unchanged. Typically they require that the address be specified using the
+ASCII characters defined for URIs. There are, however, well specified ways around this, and we will describe them briefly in this article.</p>
+<p>The fourth requirement demands that a string of characters be matched against a target whether or not those characters are represented by
+the same encoding, ie. bytes. This is dealt with by using UTF-8 as a broker.</p>
+<p>We will use the following fictitious Web address in most of the examples on this page: </p>
+<p><img src="parts.gif" height="108" width="363" alt="http://JP納豆.例.jp/引き割り/おいしい.html" title="http://JP納豆.例.jp/引き割り/おいしい.html" lang="ja" /></p>
+
+<!--<div class="example"><code>http://JP納豆.例.jp/引き割り/おいしい.html</code></div>--> 
+<!--<div class="example"><code>http://JP納豆.例.jp/dir1/引き割り.html</code></div>-->
+<p>This is a simple IRI that is composed of three parts. </p>
+<div class="sidenoteGroup">
+<ul>
+<li>The <code>http://</code> contains information about the <dfn>scheme</dfn> to be used. Note that non-ASCII
+characters are not currently used here.</li>
+<li>The next part, <code lang="ja">JP納豆.例.jp</code>, is the <dfn>domain name</dfn>.</li>
+<li>The remainder of the address is a <dfn>path</dfn> (part of which is a filename consisting of two kanji and two
+hiragana characters) that indicates the actual location of the resource you are pointing to from the server root.</li>
+</ul>
+<div class="sideinfonote">
+<p class="info"><strong>What it all means.</strong> The domain name (JP納豆.例.jp) starts with 'JP' so that in the worked examples we
+can show what happens to ASCII text within a domain name. The rest of the domain name is read '<em>natto</em> (a Japanese delicacy made from
+fermented soya beans) <em>dot rei</em> (meaning example) <em>dot jp</em> (Japanese country code)'. The path reads '<em>dir1 slash hikiwari</em> (a
+type of natto) <em>dot html</em>'.</p>
+</div>
+</div>
+<!--<p class="ed">Add a note about fragment ids and queries.</p>-->
+<p>When it comes to dealing with requirements two to four above, there is <strong>one solution for the domain name and a different solution
+for the path</strong>. We will explore each of these in turn.</p>
+</section>
+
+
+
+
+
+<section id="idn">
+<h2>Handling the domain name</h2>
+
+<p>Domain names are allocated and managed by domain name registration organizations spread around the world.</p>
+<p>A standard approach to dealing with multilingual domain names was agreed by the IETF in March 2003. It is defined in RFCs <a href="http://www.faqs.org/rfcs/rfc3490.html" title="Internationalizing Domain Names in Applications (IDNA)">3490</a>, <a href="http://www.faqs.org/rfcs/rfc3491.html" title="Nameprep: A Stringprep Profile for Internationalized Domain Names (IDN)">3491</a>, <a href="http://www.faqs.org/rfcs/rfc3492.html" title="Punycode: A Bootstring encoding of Unicode for Internationalized Domain Names in Applications (IDNA)">3492</a> and <a href="http://www.faqs.org/rfcs/rfc3454.html" title="Preparation of Internationalized Strings ('stringprep')">3454</a>, and is based on <a href="http://www.unicode.org/">Unicode 3.2</a>. One refers to this using the term <dfn>Internationalized Domain Name</dfn> or <dfn><abbr title="Internationalized Domain Names">IDN</abbr></dfn>.</p>
+
+
+
+
+<section id="socially">
+<h3>Domain registration</h3>
+
+<p>The domain name registrar fixes the list of characters that people can request to be used in their country or top level domains.
+However, when a person requests a domain name using these characters they are actually allocated the equivalent of the domain name using a
+representation called punycode. </p>
+<p><dfn>Punycode</dfn> is a way of representing Unicode codepoints using only ASCII characters.</p>
+</section>
+
+
+
+
+  <section id="idnoverview">
+<h3>High level overview</h3>
+<p>We give a slightly more detailed worked example in the next section but, in summary, the desired Web address is stored in a document
+link or typed into the client's address bar using the relevant native characters, but when a user clicks on the link or otherwise initiates a
+request, the user agent (ie. the browser or other client requesting the resource) needs to convert any native script characters in the Web address to
+punycode representations. </p>
+<p>(Of course, if the user agent is unable to do this, it is always possible to express the location in the punycode directly, although
+it is not very user friendly.)</p>
+</section>
+
+
+
+
+<section id="resolvedomain">
+<h3>Resolving a domain name</h3>
+<p>Let's examine the steps in resolving an International Domain Name from the user to the identification of the resource. (Remember that
+this looks only at how the domain name is handled. The path information is treated differently and will be described later.)</p>
+<p>The user clicks on a hyperlink or enters the IRI in the address bar of a user agent. At this point the IRI contains non-ASCII
+characters that could be in any character encoding. Here is the domain name that appears in the example above.</p>
+<div class="example">
+<blockquote>JP納豆.例.jp</blockquote>
+</div>
+<p>If the string that represents the domain name is not in Unicode, the user agent converts the string to Unicode. It then performs some
+normalization functions on the string to eliminate ambiguities that may exist in Unicode encoded text.</p>
+<p><dfn>Normalization</dfn> involves such things as converting uppercase characters to lowercase, reducing alternative representations (eg.
+converting half-width kana to full), eliminating prohibited characters (eg. spaces), etc.</p>
+<p>Next, the user agent converts each of the <dfn>labels</dfn> (ie. pieces of text between dots) in the Unicode string to a punycode representation.
+A special marker ('<code>xn--</code>') is added to the beginning of each label containing non-ASCII characters to show that the label was not
+originally ASCII. The end result is not very user friendly, but accurately represents the original string of characters while using only the
+characters that were previously allowed for domain names. Our example now looks like this:</p>
+<div class="example">
+<blockquote>xn--jp-cd2fp15c.xn--fsq.jp</blockquote>
+</div>
+<p>Note how the uppercase ASCII characters <code translate="no">JP</code> at the beginning of the domain name are lowercased, but still recognizable. Any existing
+ASCII characters in a label appear first, followed by a single hyphen and then an ASCII-based representation of any non-ASCII characters.</p>
+<p>Next, the punycode is resolved by the domain name server into a numeric IP address (just like any other domain name is resolved).</p>
+<p>Finally the user agent sends the request for the page. Since punycode contains no characters outside those normally allowed for
+protocols such as HTTP, there is no issue with the transmission of the address. This should simply match against a registered domain name.</p>
+<p>Note that most top-level country codes, for example, the <code translate="no">.jp</code> at the end of <code lang="ja">JP納豆.例.jp</code>, still has to be in Latin characters at the moment. Since 2010, however, IANA has been progressively introducing internationalized country code top level domains, such as مصر. for Egypt, and .рф for Russia.</p>
+<p>In practice, it makes sense to register two names for your domain. One in your native script, and one using just regular ASCII
+characters. The latter will be more memorable and easier to type for people who do not read and write your language. For example, you could
+additionally register a transcription of the Japanese in Latin script, such as the following:</p>
+<div class="example"><code>http://JPnatto.rei.jp/</code></div>
+</section>
+</section>
+
+
+
+
+<section id="path">
+<h2>Handling the path</h2>
+
+<p>Whereas the domain registration authorities can all agree to accept domain names in a particular form and encoding (ASCII-based
+punycode), multi-script <dfn>path names</dfn> identify resources located on many kinds of platforms, whose file systems do and will continue to
+use many different encodings. This makes the path much more difficult to handle than the domain name.</p>
+<p>Having dealt with the domain name using punycode, we now need to deal with the path part of an IRI. The IETF Proposed Standard <a href="http://www.ietf.org/rfc/rfc3987">RFC 3987</a> (Internationalized Resource Identifiers (IRIs)) defines how to deal with this.</p>
+
+
+
+<section id="iriproblem">
+<h3>The string matching challenge</h3>
+
+<p>There is already a mechanism in the URI specification for representing non-ASCII characters in URIs. What you do is represent the
+underlying <em>bytes</em> using what is referred to as <dfn>percent-escaping</dfn> (in the specification, the less common term <dfn>percent-encoding</dfn> is
+used). Thus, in the page you are currently reading, which is encoded in UTF-8, we could represent the filename <span lang="ja">引き割り.html</span> from our previous example as
+shown just after this paragraph. What you are seeing are two-digit hexadecimal numbers, preceded by %. These represent the bytes used to encode in
+UTF-8 the Japanese characters in the string. Each Japanese character is represented by 3 bytes, which are transformed into three percent-escapes.</p>
+<div class="example">
+<p>%E5%BC%95%E3%81%8D%E5%89%B2%E3%82%8A.html</p>
+</div>
+<p>Apart from the fact that this is not terribly user friendly, there is a bigger issue here. Another person may want to follow the same
+link from a page that uses a Shift-JIS character encoding, rather than UTF-8. In this case, if we were to use percent-escaping to transform the (same)
+characters in the address so that they to conform to the URI requirements, we would base the escapes on the bytes that represent <span lang="ja">引き割り.html</span> in
+Shift-JIS. There are only two bytes per Japanese character in Shift-JIS, and they are different bytes from those used in UTF-8. So this would yield
+the totally different sequence of byte escapes shown below.</p>
+<div class="example">
+<p>%88%F8%82%AB%8A%84%82%E8.html</p>
+</div>
+<p>So here we see that, although the URI escape mechanism allows the Japanese address to be specified, the actual result will vary
+according to the page of origin. How then is it possible to know how to map that onto a sequence of characters that will match the name of the
+resource as exposed by the system where it resides?</p>
+<p>The chief difficulty here is that there is no encoding-related meta-data associated with the URI strings to indicate what characters
+they represent. Even if that information were available, the total number of mappings that a server would need to support to convert any incoming
+string to the appropriate encoding would be extremely high.</p>
+<div class="sidenoteGroup">
+<p>Not only that, but the file system on which the resource itself actually resides may expose the file name using a totally different
+encoding, such as EUC-JP. If so, the underlying byte sequence that represents the file name as the <em>system</em> knows it would be different again.
+So how are we going to know that these byte sequences all refer to the same resource?</p>
+<div class="sideinfonote">
+<p class="info">Note that the filename may be stored and <span class="newterm">exposed</span> in different encodings. Under
+Windows NT or Windows XP the IIS or Apache 2 server exposes the file name as UTF-8, even though the operating system stores it as UTF-16.</p>
+</div>
+</div>
+</section>
+
+
+
+
+<section id="irioverview">
+<h3>High level overview</h3>
+<p>The IRI specification uses Unicode as a broker. It specifies that, before conversion to escapes, the IRI should be converted to UTF-8.
+As for IDNs, if a conversion is required by the protocol, it is the user agent that is responsible for performing that change when a request is made
+for a resource.</p>
+<p>The server must also then recognize the Unicode characters in the incoming web address and map them to the encoding used for the
+actual resources.</p>
+<div class="sidenoteGroup">
+<p>(Remember that we have already dealt with the domain name part of the IRI using IDN. The rules in the IRI specification are
+typically only applied to the path part of the multilingual Web address.)</p>
+<div class="sideinfonote">
+<p class="info">It is also possible to apply percent-escaping to the domain name before conversion, but clients often simply
+convert directly to punycode.</p>
+</div>
+</div>
+</section>
+
+
+
+
+<section id="iritechnical">
+<h3>Resolving a path</h3>
+<p>Let us look at what the client does to send the path part of a web address to an HTTP server. Here is the path part of the earlier
+example Web address:</p>
+<div class="example"> <code>/dir1/引き割り.html</code></div>
+<p>When the user clicks on a hyperlink or enters the IRI in the address bar of a user agent, the address may be in any character
+encoding, but that encoding is usually known.</p>
+<p>If the string is input by the user or stored in a non-Unicode encoding, it is converted to Unicode, normalized using Unicode
+Normalization Form C, and encoded using the UTF-8 encoding.</p>
+<p>The user agent then converts the non-ASCII bytes to percent-escapes. Our example now looks like this:</p>
+<div class="example"> <code>/dir1/%E5%BC%95%E3%81%8D%E5%89%B2%E3%82%8A.html</code></div>
+<p>The string is now in URI form, and will be acceptable to protocols such as HTTP. Note how the ASCII characters 'dir1' and '.html' are
+just passed through without change, since these characters are encoded in the same way in both ASCII and UTF-8.</p>
+<p>The user agent sends the request for the page.</p>
+<p>When this request hits the server, one of two things need to happen:</p>
+<div class="sidenoteGroup">
+<ul>
+<li>if the server exposes the file names in UTF-8, the server simply accesses the resource</li>
+<li>if the server uses another encoding, the server needs to convert from UTF-8.</li>
+</ul>
+<div class="sideinfonote">
+<p class="info">Martin Dürst has written an Apache module called <a
+href="http://www.w3.org/2003/06/mod_fileiri/">mod_fileiri</a> to convert requests from UTF-8 to the encoding of the server.</p>
+</div>
+</div>
+<p>This covers the basics. There are some additional parts of the specification that deal with finer points, such as how to handle
+bidirectional text in IRIs, and so on.</p>
+</section>
+</section>
+
+
+
+
+
+
+<section id="sample">
+<h2>A sample HTTP header</h2>
+
+<p>Here is the first part of the HTTP header for the page request generated by our example. It shows the host name as an IDN, and the path
+using percent-escaping where appropriate:</p>
+<div class="example">
+<blockquote>
+<pre>GET /dir1/%E5%BC%95%E3%81%8D%E5%89%B2%E3%82%8A.html HTTP/1.1
+Host: xn--jp-cd2fp15c.xn--fsq.jp
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; 
+en-US; rv:1.5a) Gecko/20030728 Mozilla Firebird/0.6.1
+…
+</pre>
+</blockquote>
+</div>
+</section>
+
+
+
+
+
+
+<section id="work">
+<h2>Does it work?</h2>
+
+
+
+<section id="works">
+<h3>Domain Name lookup</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Internationalized_domain_name#DNS_registries_known_to_have_adopted_IDNA">Numerous domain name
+authorities</a> already offer registration of internationalized domain names. These include providers for top level country domains as .cn, .jp, .kr,
+etc., and global top level domains such as .info, .org and .museum.</p>
+<p>Client-side support for IDN is appears in the recent versions of major browsers, including Internet Explorer 7, Firefox, Mozilla,
+Netscape, Opera, and Safari. It only works in Internet Explorer 6 if you download a plug-in (Microsoft support pages provide some <a href="http://support.microsoft.com/?kbid=842848">suggestions</a>). This means that you can use IDNs in href values or the address bar, and the
+browser will convert the IDN to punycode and look up the host.</p>
+<p>You can run a basic check to see whether IDNs work on your system using this <a href="/International/tests/test-incubator/oldtests/sec-idn-1">simple
+test</a>.</p>
+<p>It has been an issue, until now, that IDN is not natively supported by Internet Explorer, with its huge market share. Although
+plug-ins are available, not all people will know how to, will want to, or will be able to install them. However, IE7 or its successors, which do support IDN, will,
+over time, replace most IE6 installs.</p>
+<p>Note that, as a simple fallback solution until IDN is widely supported, content authors who want to point to a resource using an IDN
+could write the link text in native characters, and put a punycode representation in the href attribute. This guarantees that the user would be able
+to link to the resource, whatever platform they used.</p>
+<p>If, for some reason, you wanted to, it is possible to turn off IDN support in IE7, Firefox and Mozilla.</p>
+</section>
+
+
+
+
+<section id="phishing">
+<h3>Domain names and phishing</h3>
+<div class="sidenoteGroup">
+<p>One of the problems associated with IDN support in browsers is that it can facilitate phishing through what are called 'homograph
+attacks'. Consequently, most browsers that support IDN also put in place some safeguards to protect users from such fraud.</p>
+<div class="sideinfonote">
+<p class="info">Special thanks to Michael Monaghan and Greg Aaron for their contributions to this section.</p>
+</div>
+</div>
+<div class="sidenoteGroup">
+<p>The way browsers typically alert the user to a possible homograph attack is to display the URI in the address bar and the status
+bar using punycode, rather than in the original Unicode characters. Users should therefore always check the address bar after the page has loaded, or
+the status bar before clicking on a link. However, note that:</p>
+<div class="sideinfonote">
+<p class="info">'Homograph attack' refers to <a href="http://en.wikipedia.org/wiki/Homograph_spoofing_attack">mixing characters
+that look alike visually</a> in a URI in order to deceive someone about which site they are linking to. For example, in some fonts the capital 'I'
+looks sufficiently like an 'l' that the URI 'www.paypaI.com' seems to be taking you to a Paypal site, whereas it is most probably routing you to a
+place where someone will try to harvest your personal information.</p>
+</div>
+</div>
+<ul>
+<li>
+<p>Different browsers use different strategies to determine whether the URI should be shown in Unicode or punycode.</p>
+</li>
+<li>
+<p>If an address appears as punycode, it doesn't necessarily mean that this is a bogus site – simply 'user beware'. It's up to the
+user to try and figure out whether the site should be avoided or not.</p>
+</li>
+<li>
+<p>Detecting potential homograph attacks is usually only one part of the overall mechanism a browser uses to detect whether a site
+is phishing or not.</p>
+</li>
+</ul>
+<p><b class="leadin">Internet Explorer 7</b> shows the address as punycode if one of the following conditions is true:</p>
+<ul>
+<li>
+<p> The domain name contains a character from a script that is not used for the languages included in the <a href="http://www.w3.org/International/questions/qa-lang-priorities">user's language preferences</a>. Languages that use the Latin script are split
+into English (ASCII only) and others (for which any non-ASCII Latin character is valid). For example, bäcker.com will not work if your language
+preferences include only English, but will work if you have German  in your preferences (or even, say, French, since the accented characters are not language-specific).</p>
+</li>
+<li>
+<p>Any labels in the domain name (ie. a run of characters between dots) contains characters from a mix of scripts that do not
+appear together within a single language. For instance, the domain name <span lang="el">ελληνικάрyccĸий.org</span> will be displayed as punycode, because Greek characters
+cannot mix with Cyrillic within a single label. On the other hand, <span lang="el">ελληνικά</span>.<span lang="ru">рyccĸий</span>.org would be fine. Note also that a combination of Japanese kanji
+and kana is also acceptable, eg. <span lang="ja">全国温泉ガイド</span>.jp.</p>
+<p>IE7 allows an IDN to be displayed as Unicode if it mixes ASCII characters with a single other script from <a href="http://blogs.msdn.com/ie/archive/2006/07/31/684337.aspx">a given list</a>. Note that cyrillic is <em>not</em> one of those scripts, so
+pаypаl.com (where the 'a' characters are from the Cyrillic block rather than Latin) would be displayed as punycode.</p>
+</li>
+<li>The domain name contains characters which are not a part of any script, eg. I♥NY.museum</li>
+</ul>
+<p>Binding the behavior to the list of languages in the browser preferences also means that a language that is not in the standard list
+supplied by IE will always produce punycode. For example, Amharic in Ethiopic text will be displayed as punycode even if you add am to the browser
+preferences. (Fortunately, there don't seem to be any registries providing Amharic IDNs at the moment.)</p>
+<p>Some fraudulent domain names may still slip through this net. In this case, IE7's normal phishing protection would step in to compare
+the domain with reported sites. IE7 can also, however, 'apply additional heuristics to determine if the domain name is visually ambiguous'. This is
+helpful when letters within the same script are visually similar.</p>
+<p>In addition to displaying suspect IDNs in the address bar in punycode, IE7 also uses its Information Bar to signal possible danger to
+the user. It also uses a clickable icon at the end of the address bar to notify you when an URL contains a non-ASCII character. It also displays the
+address bar in all windows.</p>
+<p><b class="leadin">Firefox 2.x</b> uses a different approach. It only displays domain names in Unicode for certain
+whitelisted top level domains. Firefox selects Top Level Domains (TLDs) that have established policies on the domain names they <em>allow to be
+registered</em> and then relies on the registration process to create safe IDNs. You can find a <a href="http://www.mozilla.org/projects/security/tld-idn-policy-list.html">list of supported TLDs</a> on the Mozilla site. If an IDN is from a TLD
+that is not on the list, the web address will appear in punycode form in the status and address bars. In some cases the TLD policy statements should
+include rules about managing visually similar characters within the set of characters allowed.</p>
+<p>In addition, IDNs that contain particular characters (e.g. fraction-slash), even within trusted TLDs, are treated suspiciously, and
+cause the label to be displayed as punycode.</p>
+<p><b class="leadin">Opera 9.x</b> uses a similar approach to Firefox, though it differs slightly in implementation.
+Officially, it only displays domain names in Unicode for whitelisted TLDs listed in opera6.ini, which is updated automatically.</p>
+<p>For TLDs that are not on the list, Opera says that it allows domain names to use Latin 1 characters, ie. Latin characters with accents
+that support Western European languages. All other domain names are displayed as punycode.</p>
+<p>In reality, tests show that Opera currently displays many characters as Unicode, regardless of whether a TLD is on the whitelist or
+not. One exception we found is Devanagari script, which is displayed as punycode if the TLD is not on the list.</p>
+<p>Opera does, however, also display certain mixtures of scripts as punycode. The testing revealed this is true for combinations of Greek
+or Cyrillic characters with Latin characters.</p>
+<p>Also, Opera's list of illegal characters is slightly longer than the official IDNA list. Some IDNs, while displayed as punycode in
+other browsers, are entirely illegal in Opera.</p>
+<p><b class="leadin">Safari 9.x</b> provides a user-editable list of scripts that are allowed to be displayed natively in
+domain names. If a character appears in a domain name and does not belong to a script in this list, the URI is displayed as punycode.</p>
+<p> At the time of writing, the initial whitelist contains Arabic, Armenian, Bopomofo, Canadian_Aboriginal, Devanagari, Deseret,
+Gujarati, Gurmukhi, Hangul, Han, Hebrew, Hiragana, Katakana_Or_Hiragana, Katakana, Latin, Tamil, Thai, and Yi. Scripts like Cyrillic, Cherokee and
+Greek are specifically excluded because they contain characters that are easily confused with Latin characters.</p>
+<p> If the whitelist is emptied, any non-ASCII character causes the address to be displayed as punycode.</p>
+<p><b class="leadin">Mozilla 1.7x</b> displays all IDNs as punycode.</p>
+<p><b class="leadin">Examples.</b> There is a <a href="/International/tests/test-incubator/oldtests/test-idn-display-1">test</a> page you can use to
+see how your browser displays IDNs in the status bar. See also the page that gathers <a
+href="/International/tests/test-incubator/oldtests/results/results-idn-display">results</a> for a number of browsers. </p>
+<p><b class="leadin">Other phishing concerns and registry-level solutions.</b> Some potential aspects of phishing control need
+to be addressed by the registration authorities, and built into their policies for IDN registration. </p>
+<p>Some registration authorities have to carefully consider how to manage equivalent ways of writing the same word. For example, the word
+'hindi' can be written in Devanagari as either <span lang="hi">हिंदी</span> (using an anusvara) or <span lang="hi">हिन्दी</span> (using a special glyph for NA).</p>
+<p>There is a similar issue with the use of simplified vs. traditional characters in the Chinese Han script.</p>
+<div class="sidenoteGroup">
+<p>Another issue arises where two characters or combinations of characters within a single script look very similar, for instance the
+Tamil letter KA <span lang="ta">க</span> and the Tamil digit one <span lang="ta">௧</span> are indistinguishable. In other cases, diacritic marks attached to characters may be difficult to
+distinguish in small font sizes.</p>
+<div class="sideinfonote">
+<p class="info">As mentioned earlier, these issues exist even in the Latin (ASCII) character set. For example, the letter O may
+occasionally be confused with the digit zero (0), and the lower case letter L (l) may be confused with the digit one (1), especially depending upon
+the font and display size used.</p>
+</div>
+</div>
+<p>On the other hand, a single registry may also have to deal with similar and potentially confusable characters across different
+scripts. For example, Tamil and Malayalam are two different Indic scripts that may both be handled by the same registry, and the Tamil letter KA க
+(U+0B95) is very similar to the Malayalam letter KA <span lang="ml">ക</span> (U+0D15). Another example is the implications of registering the label <span lang="ru" translate="no">ера</span> (which uses Cyrillic
+characters only) vs. <span translate="no">epa</span> (which uses Latin characters only) for a TLD such as .museum that has to deal with multiple scripts. It could cause
+significant confusion if more than one applicant was able to register them separately.</p>
+<p>In some cases these scenarios can be documented as rules that can be picked up and applied by user agents for phishing detection, but
+they are often best dealt with at the point of registration.</p>
+<p>One registry-level approach is to decide which characters (i.e. Unicode points) in a given language will be allowed during
+registration. These lists are called language tables, and are developed by registries in cooperation with qualified language authorities. For
+example, the Indian language authority could allow use of the Tamil letter KA <span lang="ta">க</span> (U+0B95) but not the Tamil digit one <span lang="ta">௧</span> (U+0BE7) in .in domain names,
+thereby avoiding a conflict.</p>
+<p>Another registry-level approach is to create variant tables and variant registration capabilities. These variant tables show which
+characters are considered visually confusable across chosen languages or scripts. If a domain name contains such a character, then the version of the
+domain name containing the alternate character will be automatically reserved for the registrant. For example, if the requested domain name (the
+“primary domain”) contains the Tamil letter KA <span lang="ta">க</span> (U+0BE7), the registry system can generate a variant of the domain name, substituting the Malayalam
+letter KA <span lang="ml">ക</span> (U+0D15) in the Tamil letter KA’s place. All identified variants may be automatically prohibited (from being registered or created) as
+part of a package associated with the primary registered name.</p>
+<p>The Unicode Consortium is also developing a technical report <a href="http://www.unicode.org/reports/tr36/"><cite>Unicode Security
+Considerations</cite></a> that describes issues relating to IDN spoofing and makes recommendations for addressing them.</p>
+</section>
+
+
+
+
+
+<section id="iriworks">
+<h3>Paths</h3>
+<!--<p class="ed">Talk about specs, implementation, and policy.</p>-->
+<p>The conversion process for parts of the IRI relating to the path is already supported natively in the latest versions of IE7, Firefox, Opera, Safari and Google Chrome. </p>
+<p>It works in Internet Explorer 6 if the option in <em>Tools&gt;Internet Options&gt;Advanced&gt;Always send URLs as UTF-8</em> is turned on.
+This means that links in HTML, or addresses typed into the browser's address bar will be correctly converted in those user agents. It doesn't work out of the box for Firefox 2 (although you may obtain results if the IRI and the
+resource name are in the same encoding), but technically-aware users can turn on an option  to support this (set network.standard-url.encode-utf8 to true in about:config).</p>
+<p>Whether or not the resource is found on the server, however, is a different question. If the file system is in UTF-8, there should be no
+problem. If not, and no mechanism is available to convert addresses from UTF-8 to the appropriate encoding, the request will fail.</p>
+<p>Files are normally exposed as UTF-8 by servers such as IIS and Apache 2 on Windows and Mac OS X. Unix and Linux users can store file
+names in UTF-8, or use the <a href="http://www.w3.org/2003/06/mod_fileiri/">mod_fileiri module</a> mentioned earlier. Version 1 of the Apache server
+doesn't yet expose filenames as UTF-8.</p>
+<p>You can run a basic check whether it works for your client and resource using this <a href="/International/tests/test-incubator/oldtests/sec-iri-3">simple
+test</a>.</p>
+<p class="ednote">Note that, while the basics may work, there are other somewhat more complicated aspects of IRI support, such as
+handling of bidirectional text in Arabic or Hebrew, which may need some additional time for full implementation.</p>
+</section>
+
+
+
+
+
+<section id="specdevt">
+<h3>Further specification work</h3>
+
+<p class="ednote">There are some improvements needed to the specifications for IDN and IRIs, and these are currently being discussed. For example, there is a need to extend the range of Unicode characters that can be used in domain names to cover later versions of Unicode, and to allow combining characters at the end of labels in right to left scripts.</p>
+</section>
+</section>
+
+
+
+
+
+
+<section id="endlinks">
+<h2>Further reading</h2>
+
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><a href="http://idnsearch.net/domains/index/1">Examples of registered IDNs</a></p>
+</li>
+<li>
+<p><a href="http://download.microsoft.com/download/a/6/0/a60decbd-9044-42f1-b9c5-1c90c7a5a8ce/a6.pdf"><cite>IDN and URI</cite> [PDF]</a>, Michel
+Suignard</p>
+</li>
+<li>
+<p><a href="http://www.ietf.org/rfc/rfc3987"><cite>RFC 3987 Internationalized Resource Identifiers (IRIs)</cite></a>, IETF Proposed Standard,
+Martin Dürst, Michel Suignard</p>
+</li>
+<li>
+<p><a href="http://www.ietf.org/rfc/rfc3986"><cite>RFC 3986 STD 66 Uniform Resource Identifier (URI): Generic Syntax</cite></a>, IETF Standard, T.
+Berners-Lee, R. Fielding, L. Masinter</p>
+</li>
+<li>
+<p><a href="http://www.unicode.org/reports/tr36/"><cite>Unicode Technical Report #36 Unicode Security Considerations</cite></a></p>
+</li>
+<li>
+<p><a href="http://www.icann.org/announcements/announcement-31oct06.htm">IDNA Protocol Review and Proposals for Changes</a></p>
+</li>
+<li>
+<p><a href="http://www.ietf.org/rfc/rfc4690.txt"><cite>RFC 4690: Review and Recommendations for Internationalized Domain Names</cite></a> Issues
+related to language specific character issues where the same script is used across different language, issues related to cases where languages can be
+expressed by using more than one script, bi-directional cases, and the topic of visually confusing characters.</p>
+</li>
+<li>
+<p><a href="http://www.icann.org/general/idn-guidelines-22feb06.htm"><cite>ICANN Guidelines for the Implementation of Internationalized
+Domain Names Version 2.1</cite></a> The Guidelines apply directly to the gTLD registries, and are intended to be suitable for implementation in other
+registries on the second and lower levels.</p>
+</li>
+<li>
+<p><a href="/International/tests/#other">IDN and IRI test pages</a></p>
+</li>
+<li>
+<p><a href="http://www.w3.org/2003/06/mod_fileiri/">Martin Dürst's fileiri Apache module</a></p>
+</li>
+<li>
+<p><a href="http://blogs.msdn.com/ie/archive/2005/12/19/505564.aspx">International Domain Names in IE7</a></p>
+</li>
+<li>
+<p><a href="http://blogs.msdn.com/ie/archive/2006/07/31/684337.aspx">Changes to IDN in IE7 to now allow mixing of scripts</a></p>
+</li>
+<li>
+<p><a href="http://support.microsoft.com/?kbid=842848">Microsoft's recommended IDN plug-ins for IE6</a></p>
+</li>
+<li>
+<p> <a href="http://www.mozilla.org/projects/security/tld-idn-policy-list.html">IDN-enabled TLDs supported by Mozilla.org</a></p>
+</li>
+<li>
+<p> <a href="http://www.opera.com/support/search/supsearch.dml?index=788">Opera International Domain Name support</a> </p>
+</li>
+<li>
+<p> <a href="http://docs.info.apple.com/article.html?artnum=301116">Safari International Domain Name support</a></p>
+</li>
+<li>
+<p>Related links, <cite>Authoring HTML &amp; CSS</cite></p> 
+<ul><li><a href="/International/techniques/authoring-html#iris">Using non-ASCII web addresses</a></li></ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

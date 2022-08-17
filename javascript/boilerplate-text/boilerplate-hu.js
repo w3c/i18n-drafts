@@ -6,6 +6,15 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Arab',
   'bg':'Bolgár',
@@ -15,6 +24,7 @@ s.currLang = {
   'en':'Angol',
   'es':'Spanyol',
   'fr':'Francia',
+  'gl':'Gallego',
   'he':'Héber',
   'hi':'Hindi',
   'hu':'Magyar',
@@ -36,15 +46,6 @@ s.currLang = {
   'zh-hant':'Hagyományos kínai'
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "I18N Tevékenység Kezdőoldala"
 s.moreResourcesOfThisType = "Több ehhez hasonló forrás."
 s.accessKeyN = 'Az n billentyű átugrik az <a href="#internal-links" accesskey="n">oldal navigációhoz</a>. <a href="#contentstart">Ugrás a szöveg elejére.</a>'
@@ -52,7 +53,6 @@ s.examplesInAnotherScript = "Ez a dokumentum más nyelvű példákat tartalmaz."
 s.worldMap = "Világtérkép"
 s.searchI18nSite = "Keresés az I18n oldalán" 
 s.translationDisclaimer = 'A dokumentumot önkéntesek fordították. Különbségek vagy hibák esetén a <a href="'+f.filename+'.en">legfrissebb, angol eredeti</a> a meghatározó. <a href="#copyright">Az eredeti szerzői jog</a> tulajdonosa a W3C, további részletek alább találhatók.'
-s.translator = "Fordító:"
 s.relatedLinks = "Kapcsolódó linkek"
 s.articles = "Articles" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Témák"
@@ -107,13 +107,17 @@ s.homePageNews = "Kezdőoldal hírek"
 s.followOurNews = "Kövesse hírlevelünket."
 s.sentenceDelimiter = "."
 
-s.author = "Szerző:" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Módosítás:" // person's name appears after colon
-s.translatedBy = "Fordító:"
 s.validXHTML = "Valid XHTML 1.0!"
 s.validCSS = "Valid CSS!"
 s.codedInUtf8 = "UTF-8-ben kódolva!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Szerző: " // followed by name of author(s)
+s.previousAuthors = "Previously by: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Módosítás: " // person's name appears after colon
+s.translatedBy = "Fordító: "
+s.acknowledgements = "Közreműködésükért és átvett megjegyzéseikért köszönjük: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "Angolról fordítva: "+dt.enVersion+". A lefordított verzió utolsó módosítása: "+dt.thisVersionPlain+" GMT"
 
@@ -134,7 +138,6 @@ s.tests="Teszt" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Gyors válasz" // heading
 s.longeranswer = "Részletek" // heading
 s.additionalinfo = "További információ" // heading that sometimes follows 'Details'
-s.acknowledgements = "Közreműködésükért és átvett megjegyzéseikért köszönjük:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Amennyiben hozzájárul ahhoz, hogy a böngészője elfogadjon egy sütit, a W3C Nemzetköziesítés Fejlesztési Tevékenység lapjait, ha rendelkezésre állnak, az ön által választott nyelven tudja elérni. Hozzájárul a süti használatához?" // this text is to be copied to another location
 //s.supercededTranslation = '<strong>Figyelmeztetés:</strong> Ez a dokumentumnak egy lejárt verziója! Olvassa inkább a <a href="'+g.filename+f.clang+'">legfrissebb verziót</a> és, ha lehetséges, változtassa meg azt a linket vagy könyvjelzőt amelynek révén ide jött.'
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles

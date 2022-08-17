@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Arabski',
   'bg':'Bułgarski',
@@ -15,6 +23,7 @@ s.currLang = {
   'en':'Angielski',
   'es':'Hiszpański',
   'fr':'Francuski',
+  'gl':'Galicyjski',
   'he':'Hebrajski',
   'hi':'Hindi',
   'hu':'Węgierski',
@@ -36,14 +45,6 @@ s.currLang = {
   'zh-hant':'Chiński (tradycyjny)',
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Strona Główna Działalności I18N"
 s.moreResourcesOfThisType = "Więcej źródeł tego typu."
 s.accessKeyN = 'Klucz dostępu n przeskakuje w nawigacji strony. <a href="#contentstart">Przejdź do początku.</a>'
@@ -51,7 +52,6 @@ s.examplesInAnotherScript = "Dokument ten zawiera przykłady w innym języku/skr
 s.worldMap = "Mapa świata"
 s.searchI18nSite = "Wyszukiwanie na stronie I18n" 
 s.translationDisclaimer = 'Ten document jest tłumaczeniem zapewnionym przez wolontariusza. W przypadku nieścisłości lubbłędów <a href="'+f.filename+'.en">ostatni angielski oryginał</a> powinien być brany pod uwagę.<a href="#copyright">Oryginalne prawa autorskie</a> Należą do W3C, jak wskazano poniżej.'
-s.translator = "Tłumacz:"
 s.relatedLinks = "Linki Pokrewne"
 s.articles = "Artykuły" // used in breadcrumbs, top right of page 
 s.topicIndexText = "Spis tematów"
@@ -106,13 +106,17 @@ s.homePageNews = "Wiadomość ze strony głównej"
 s.followOurNews = "Śledź nasz kanał wiadomości."
 s.sentenceDelimiter = "."
 
-s.author = "Autor:" // followed by name of author(s)
-s.previousAuthors = "" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Zmodyfikowano przez:" // person's name appears after colon
-s.translatedBy = "Tłumacz:"
 s.validXHTML = "Ważny XHTML 1.0!"
 s.validCSS = "Ważne CSS!"
 s.codedInUtf8 = "Zakodowano w UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Autor: " // followed by name of author(s)
+s.previousAuthors = "Previously by: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Zmodyfikowano przez: " // person's name appears after colon
+s.translatedBy = "Tłumacz: "
+s.acknowledgements = "Dziękujemy także osobom, które wniosły wkład: " // used at bottom of page to list people who provided feedback. The list comes after this text. 
 
 s.translatedFromEnglishVer = "Angielska wersja dokumentu z dnia "+dt.enVersion+". Tłumaczenie wykonano dnia "+dt.thisVersionPlain+" GMT"
 
@@ -133,7 +137,6 @@ s.tests="Testy" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Krótka odpowiedź" // heading
 s.longeranswer = "Szczegóły" // heading
 s.additionalinfo = "Dodatkowe informacje" // heading that sometimes follows 'Details'
-s.acknowledgements = "Dziękujemy także osobom, które wniosły wkład:" // used at bottom of page to list people who provided feedback. The list comes after this text. 
 s.cookieMsg = "Jeśli pozwolisz przeglądarce ustawić plik cookie będziesz kontynuować przeglądanie (tam gdzie to możliwe) stron Internaconalizacji W3C w języku, który wybierzesz. Czy chcesz ustawić plik cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>NOTE!</strong> &nbsp; This is only an editor\'s draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>version on the W3C site</a>." // used for github-based versions of published articles
 

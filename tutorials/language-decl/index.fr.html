@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
-<title>Travailler avec les langues en HTML</title>
-<meta name="description" content="Tutoriel W3C i18n : Comment déclarer et utiliser les langues dans les fichiers XHTML et HTML" />
-<script type="application/javascript">
+<title>Travailler avec les langues en HTML (tutoriel)</title>
+<meta name="description" content="Tutoriel W3C i18n : Comment déclarer et utiliser les langues dans les fichiers XHTML et HTML" />
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -29,15 +29,16 @@ f.translators = '<a href="https://www.languagemarketplace.ca/" title="French">Tr
 
 f.breadcrumb = 'characters';
 </script>
-<script type="text/javascript" src="language-decl-data/translations.js"> </script>
-<script type="text/javascript" src="../../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../../javascript/boilerplate-text/boilerplate-fr.js"> </script> <!--TRANSLATORS must change -en to the subtag for their language! -->
-<script type="text/javascript" src="../../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../../style/article-2016.css" type="text/css" />
+<script src="language-decl-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-fr.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
+
 
 <body>
 <header>
@@ -46,18 +47,16 @@ f.breadcrumb = 'characters';
 <h1>Travailler avec les langues en HTML (tutoriel)</h1>
 </header>
 
-
-<div id="sidebarExtras">
-  <section>
-    <h2 id="whyread" class="notoc">Pourquoi devriez-vous lire ces articles?</h2>
+<div>
+	<section id="sidebarExtras">
+    	<h2 id="whyread" class="notoc">Pourquoi faut-il lire ce document ?</h2>
         <p>Les informations sur la langue utilisée sur une page sont importantes pour des raisons d’accessibilité, de style, de recherche, et autres. De plus, les informations de langue généralement transmises entre l’agent utilisateur et le serveur peuvent être utilisées pour améliorer la navigation pour les utilisateurs et la localisabilité de votre site. Ce tutoriel vous aidera à tirer profit des occasions à votre portée dès maintenant et à l’avenir en déclarant vos informations de langue de manière appropriée.</p>
-      </section>
-<section id="objectives">
-     <h2 class="notoc">Objectifs</h2>
-        <p>À la fin de ce tutoriel, vous devez :</p>
+      	</section>
+	<section id="objectives">
+     	<h2 class="notoc">Objectifs</h2>
+        <p>À la fin de ce tutoriel, vous devriez</p>
         <ul>
-          <li>Savoir comment régler la langue par défaut de votre page, et le contenu de la page dans différentes langues</li>
-          <li>Comprendre comment les métadonnées de langue concernant la langue attendue du public sont différentes de la langue du texte, et les implications pour ce balisage</li>
+          <li>Savoir comment régler la langue par défaut de votre page, et le contenu de la page dans différentes langues</li><li>Comprendre comment les métadonnées de langue concernant la langue attendue du public sont différentes de la langue du texte, et les implications pour ce balisage</li>
           <li>Localiser des informations sur la manière de choisir les bonnes valeurs d’attribut de langue</li>
           <li>Savoir comment régler les préférences de langue dans votre navigateur</li>
           <li>Savoir comment personnaliser votre page en fonction de la langue.</li>
@@ -66,42 +65,53 @@ f.breadcrumb = 'characters';
 	</div>
 
 
-<section> 
+
       <div id="audience"> 
-            <p><span id="intendedAudience" class="leadin">Intended audience:</span> Les codeurs XHTML/HTML (utilisant les éditeurs ou les programmes de script), les développeurs de script (PHP, JSP, etc.), les codeurs CSS, et toute personne voulant de l’aide pour déclarer et utiliser des informations de langue en HTML. Nous partons du principe que vous connaissez les bases de HTML et CSS.</p>
+            <p><span id="intendedAudience" class="leadin">Public visé :</span> Les codeurs HTML, les développeurs de script, les codeurs CSS, et toute personne voulant de l’aide pour déclarer et utiliser des informations de langue en HTML. Nous partons du principe que vous connaissez les bases de HTML et CSS.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
         </div>
 
 <p>Ce tutoriel rassemble et organise les astuces d’articles qui, ensemble, vous aident à comprendre les aspects essentiels pour travailler avec les informations de langue lorsque vous créez du contenu HTML et CSS.</p>
-		</section>
-  
-		<div id="nutshell">
-		    <h2 id="quicksummary"><a href="#quicksummary">En bref</a></h2>
-		    <p>Ajoutez toujours un attribut <code class="kw" translate="no">lang</code> aux balises <code class="kw" translate="no">html</code> pour définir la langue par défaut de votre page. </p>
-  <div class="example">
-  <p><code translate="no">&lt;html lang=&quot;fr&quot;&gt;</code></p>
-  </div>
-		    <p>S’il s’agit d’un document polyglotte XHTML 1.x ou HTML5 servant de XML, vous devriez également utiliser l’attribut <code class="kw" translate="no">xml:lang</code> (avec la même valeur). Si votre page sert uniquement de XML, utilisez uniquement l’attribut <code class="kw" translate="no">xml:lang</code>.</p>
-	      <p>N’utilisez pas les éléments <code class="kw" translate="no">meta</code> avec <code class="kw" translate="no">http-equiv</code> réglés sur <code class="kw" translate="no">Content-Language</code>.</p>
-	      <p>Choisissez les balises dans le registre des sous-balises de langues de l’IANA, et suivez les règles de syntaxe dans BCP 47 lorsque vous utilisez plus d’une sous-balise de langue. Veuillez garder vos balises de langue aussi courtes que possible.</p>
-		    <p>Utiliser la propriété <code class="kw" translate="no">:lang</code> dans CSS pour appliquer des styles en fonction de la langue de votre contenu. </p>
-		</div>
-<section>
-  <h2 id="Slide0030"><a href="#Slide0030">Pourquoi déclarer la langue&#xA0;?</a></h2>
+
+
+
+<section id="nutshell">
+<h2 id="quicksummary">En bref</h2>
+<p>Ajoutez toujours un attribut <code class="kw" translate="no">lang</code> aux balises <code class="kw" translate="no">html</code> pour définir la langue par défaut de votre page. </p>
+<div class="example">
+<p><code translate="no">&lt;html lang="fr"&gt;</code></p>
+</div>
+<p>S’il s’agit d’un document polyglotte XHTML 1.x ou HTML5 servant de XML, vous devriez également utiliser l’attribut <code class="kw" translate="no">xml:lang</code> (avec la même valeur). Si votre page sert uniquement de XML, utilisez uniquement l’attribut <code class="kw" translate="no">xml:lang</code>.</p>
+<p>N’utilisez pas les éléments <code class="kw" translate="no">meta</code> avec <code class="kw" translate="no">http-equiv</code> réglés sur <code class="kw" translate="no">Content-Language</code>.</p>
+<p>Choisissez les balises dans le registre des sous-balises de langues de l’IANA, et suivez les règles de syntaxe dans BCP 47 lorsque vous utilisez plus d’une sous-balise de langue. Veuillez garder vos balises de langue aussi courtes que possible.</p>
+<p>Utiliser la propriété <code class="kw" translate="no">:lang</code> dans CSS pour appliquer des styles en fonction de la langue de votre contenu. </p>
+</section> 
+ 
+ 
+ 
+ 
+<section id="Slide0030">
+<h2>Pourquoi déclarer la langue ?</h2>
 		  <p>Cette partie du tutoriel éveille l’attention du lecteur pour lire le reste. Si vous êtes pressés et que vous voulez seulement savoir quoi faire, sans la théorie, commencez à lire à partir de la partie <a href="#Slide0140">Comment déclarer la langue d’une page ou d’un élément</a>.</p>
 		  <p>Les navigateurs et autres applications peuvent utiliser des informations à propos de la langue du contenu pour offrir aux utilisateurs les informations les plus appropriées, ou pour présenter des informations aux utilisateurs de la manière la plus appropriée. Plus il y a de contenu étiqueté convenablement, plus ces applications seront utiles et convaincantes. </p>
-<p><a href="/International/questions/qa-lang-why" class="maintitle print"><cite>Pourquoi utiliser l’attribut de langue&#xA0;?</cite></a> comprend des exemples indiquant comment les informations de langue peuvent être utiles.</p>
+<p><a href="/International/questions/qa-lang-why" class="maintitle print"><cite>Pourquoi utiliser l’attribut de langue ?</cite></a> comprend des exemples indiquant comment les informations de langue peuvent être utiles.</p>
 </section>
-<section>
-<h2 id="Slide0140"><a href="#Slide0140">Comment déclarer la langue d’une page ou d’un élément</a></h2>
-		  <p>Vous devez régler la langue du texte dans votre page à l’aide des attributs de langue. Malheureusement, certains formats comptent plus d’un attribut, et certaines autres choses pour clarifier. Cette partie présente les différentes options : celles que vous devez choisir et celles que vous devez éviter (et pourquoi). </p>
+
+
+
+
+<section id="Slide0140">
+<h2>Comment déclarer la langue d’une page ou d’un élément</h2>
+		  <p>Vous devez régler la langue du texte dans votre page à l’aide des attributs de langue. Malheureusement, certains formats comptent plus d’un attribut, et certaines autres choses pour clarifier. Cette partie présente les différentes options : celles que vous devez choisir et celles que vous devez éviter (et pourquoi). </p>
 		  <p><a href="/International/questions/qa-html-language-declarations" class="maintitle print"><cite>Déclarer la langue en HTML</cite></a> offre un résumé des moyens de déclarer la langue à l’aide des attributs.</p>
 <p><a href="/International/questions/qa-http-and-lang" class="maintitle print"><cite>En-têtes HTTP, métaéléments et information de langue</cite></a> décrit la manière dont les métadonnées de langue diffèrent de la langue du texte, et présente comment Content-Language est utilisé dans les en-têtes HTTP et les métaéléments.</p>
 </section>
 
 
-<section>
-<h2 id="Slide0200"><a href="#Slide0200">Travailler avec les balises de langue</a></h2>
+
+
+<section id="Slide0200">
+<h2>Travailler avec les balises de langue</h2>
 		  <p>Cette partie montre comment choisir et créer les balises de langue, c’est-à-dire les valeurs utilisées pour les attributs de langue.</p>
 		  <p>Pour être sûr que tous les agents-utilisateurs reconnaissent la langue que vous utilisez, vous devez suivre une approche standard lorsque vous donnez les valeurs de langue. Vous pouvez également voir comment se référer aux différences de dialectes de manière standard, par exemple, la différence entre l’anglais américain et l’anglais britannique, qui divergent de manière importante en matière d’orthographe et de prononciation.</p>
   <p><a href="/International/articles/language-tags/" class="maintitle print"><cite>Les balises de langue dans HTML et XML</cite></a> décrit la syntaxe des balises de langue à l’aide de la description BCP 47.</p>
@@ -109,28 +119,34 @@ f.breadcrumb = 'characters';
 </section>
 
 
-<section>
-  <h2 id="browser"><a href="#browser">Configurer les langues de préférences de votre navigateur</a></h2>
+
+
+<section id="browser">
+<h2>Configurer les langues de préférences de votre navigateur</h2>
 <p>Lorsqu’un navigateur extrait un document du Web, il envoie une requête HTTP au serveur qui contient l’information. Avec cette requête, le navigateur envoie des informations concernant ses réglages de langue de préférence. Ces préférences peuvent déterminer le contenu qui vous est renvoyé. Apprenez à régler ou modifier ces préférences.</p>
   <p> <a href="/International/questions/qa-lang-priorities" class="maintitle print"><cite>Régler les langues de préférence dans un navigateur</cite></a></p>
 </section>
 
-<section>
-  <h2 id="styling"><a href="#styling">Utiliser les informations de langue pour personnaliser votre document</a></h2>
+
+
+
+<section id="styling">
+<h2>Utiliser les informations de langue pour personnaliser votre document</h2>
   <p>Vous voulez souvent appliquer différents styles à votre texte dans différentes langues (par exemple, une police ou taille différente, ou peut-être plusieurs styles, etc.). Si vous avez utilisé des attributs pour déterminer la langue de votre contenu, vous pouvez utiliser des sélecteurs puissants en CSS pour appliquer automatiquement des styles différents à votre contenu lorsque la langue change. L’article suivant explore les différentes options qui vous permettent de le faire.</p>
   <p> <a href="/International/questions/qa-css-lang" class="maintitle print"><cite>Changer le style à l’aide des attributs de langue</cite></a></p>
 </section>
 
-<section> 
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+
+<section id="endlinks">
+<h2>Pour en savoir plus</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 	<ul id="full-links">
 	  <li>
-	    <p>Vous débutez&#xA0;?  <a href="/International/getting-started/language" class="showuri"><cite>Langue sur le Web</cite></a></p>
+	    <p>Vous débutez ? <a href="/International/getting-started/language"><cite>Langage sur le Web</cite></a></p>
       </li>
 	<li>
-      <p>Related links, <cite>Créer du contenu HTML et CSS</cite></p>
+      <p><cite>Création de contenus HTML et CSS</cite></p>
       <ul>
         <li><a href="/International/techniques/authoring-html#language">Langue</a></li>
       </ul>
@@ -138,7 +154,7 @@ f.breadcrumb = 'characters';
   </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>

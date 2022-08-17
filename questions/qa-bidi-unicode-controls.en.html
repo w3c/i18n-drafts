@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>How to use Unicode controls for bidi text</title>
 <meta name="description" content="If I'm unable to use markup to correctly order bidirectional text, what can I do?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,15 +32,17 @@ f.breadcrumb = 'direction'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-bidi-unicode-controls-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<script src="qa-bidi-unicode-controls-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<style type="text/css" media="all">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+<style media="all">
 .visualascii {
 	font-weight: bold;
 	font-size: 80%;
@@ -58,14 +60,12 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
   <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    content authors for HTML or XML-based languages (using editors or scripting), script developers (PHP, JSP, etc.),  and anyone who is wondering how to to achieve proper text flow for right-to-left scripts where appropriate markup is not available.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
   </div>
     
-  <h2 id="question"><a href="#question">Question</a></h2>
+<section id="question">
+<h2>Question</h2>
   <p class="question">If I'm unable to use markup to correctly order bidirectional text, what can I do?</p>
   <div class="insideinfonote">
     <p class="noprint info">Right-to-left text in code samples is represented by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase. </p>
@@ -73,15 +73,15 @@ f.additionalLinks = ''
   </div>
 <p>This article assumes that you are familiar with bidirectional text concepts and managing bidirectional text using HTML markup, but that you need to know how to do similar things with Unicode control characters, such as when writing plain text.  If you are not familiar with bidi in HTML, you may find it helpful to first read through the article <a href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a>.</p>
 </section>
-<section>
-  <h2 id="reasons"><a href="#reasons">Viable and non-viable use cases</a></h2>
+<section id="reasons">
+<h2>Viable and non-viable use cases</h2>
     <p>You will still need to use markup to establish the default direction for a document as a whole (eg. in the <code class="kw" translate="no">html</code> tag), and for block container elements. Because control codes don't cross paragraph (read as <span class="qterm">block element</span>) boundaries, and because control codes cannot manage inheritance and scoping through the markup hierarchy, they are only appropriate for inline use.</p>
     <p><a href="/International/questions/qa-bidi-controls"><cite>Unicode controls vs. markup for bidi support</cite></a> explains that it is generally better to use markup, if  available, than to use control codes. Unicode control characters may, however, be necessary  in situations where markup is unavailable. Examples include legacy markup such as HTML elements that only contain plain text,  any HTML attribute value, and plain text formats such as WebVTT and CSV.</p>
   </section>
 
 
-<section>
-  <h2 id="basedirection"><a href="#basedirection">Changing the base direction</a></h2>
+<section id="basedirection">
+<h2>Changing the base direction</h2>
   <p>If you want to change the base direction for a run of inline text you need to indicate a start and end point. For this you need to use one of the following  characters to indicate the start of the embedded direction change.</p>
     <table class="inband">
       <tbody>
@@ -175,7 +175,7 @@ f.additionalLinks = ''
     </table>
     <p>These characters are invisible, although in some editors it may be possible to show symbols that represent them. You could also use character escapes to represent them, such as <code>&amp;#x2067;</code>, but in bidirectional source text you may find that the characters in the escape don't stay together. (See <a href="https://www.w3.org/TR/2014/NOTE-i18n-html-tech-bidi-20140603/#bidisource"><cite>Problems with bidirectional source text in markup</cite></a> for more on this.)</p>
     <div class="sidenoteGroup">
-    <p>When demarcating the boundaries of the change in base direction, you really want to avoid what's inside the boundaries interacting with what's outside – ie. you want to isolate it. For this reason, in an ideal world you would want to follow the recommendation of the Unicode Standard to  use RLI and LRI,  and avoid using RLE and LRE. Unfortunately, at the time of writing browsers still don't support RLI/LRI, so you will need to resort to a workaround which we will describe below in order to avoid these spillover effects.</p>
+    <p>When demarcating the boundaries of the change in base direction, you really want to avoid what's inside the boundaries interacting with what's outside – ie. you want to <em>isolate</em> it. For this reason, in an ideal world you would want to follow the recommendation of the Unicode Standard to  use RLI and LRI,  and avoid using RLE and LRE. Browsers running on Blink and Gecko engines (eg. Chrome, Firefox, etc.) support the use of RLI/LRI, but unfortunately, at the time of writing, WebKit browsers (eg. Safari) still don't support them properly, so you will need to resort to a workaround which we will describe below in order to avoid these spillover effects.</p>
     <aside class="sideinfonote"><p class="info">This is one area where markup has an advantage over control codes, since it looks like isolation will be supported for markup before it is for the control codes.</p></aside>
     </div>
     <p>FSI is in the same boat as RLI/LRI as far as browser support is concerned. There is a set of tests for these control codes, with <a href="https://www.w3.org/International/tests/repo/results/rli-etc">results for major browsers</a>.</p>
@@ -196,8 +196,8 @@ f.additionalLinks = ''
     </figure>
 </section>
   
-<section>
-    <h2 id="wrapping"><a href="#wrapping">Tightly wrapping opposite-direction phrases</a></h2>
+<section id="wrapping">
+<h2>Tightly wrapping opposite-direction phrases</h2>
     <p>In some cases the bidi algorithm copes fine with bidirectional text, and in others it needs some help. In <a href="/International/articles/inline-bidi-markup/"><cite>Inline markup and bidirectional text in HTML</cite></a><cite> </cite>we make the case that the easiest approach to marking up bidirectional text is to put markup at the start and end of each directional change in the text. This doesn't do any harm, it avoids the likelihood of missing a situation where markup is needed, and it makes the life of the content author much simpler.</p>
     <p>A similar recommendation is valid when dealing with Unicode control characters.</p>
     <p>Another thing to bear in mind is that ranges need to be nested appropriately. If you have an embedded LTR range in a RTL context, and that LTR range has some RTL text inside it, it won't produce the right result if your ranges are side by side rather than nested. Note how the direction changes are embedded in the following example, rather than side by side.</p>
@@ -207,8 +207,8 @@ f.additionalLinks = ''
 </section>
   
   
-  <section>
-    <h2 id="exceptions"><a href="#exceptions">Dealing with spillover issues</a></h2>
+  <section id="exceptions">
+<h2>Dealing with spillover issues</h2>
     <p>A classic example of a spillover effect is the following, where the opposite-direction phrase is followed by a logically separate number. This is the code with RLE...PDF around the opposite-direction text:</p>
     <figure class="example">
       <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span> <a href="qa-bidi-unicode-controls-data/eg-number-wrong" onclick="showExample('qa-bidi-unicode-controls-data/eg-number-wrong'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example."></a></div>
@@ -223,7 +223,7 @@ f.additionalLinks = ''
       <p><img src="qa-bidi-unicode-controls-data/number-following-wrong.png" alt="Displayed result of previous code"></p>
     </figure>
     <p style="clear: both;">This happens because the bidi algorithm tells the browser to treat the "5″ as part of the Hebrew text, ignoring that the preceding text is in a different embedding level. This is not appropriate. We need to find a way to say that the name and the number are separate things, ie. to isolate the inserted name from the number.</p>
-    <p style="clear: both;">If the RLI/LRI control codes were implemented, they would solve this problem by isolating the embedded text from the number that follows it. You would simply use RLI...PDI instead of RLE...PDF. Since RLI/LRI, at the time of writing, are not supported by browsers we will need to find another solution.</p>
+    <p style="clear: both;">If the RLI/LRI control codes were implemented everywhere, they would solve this problem by isolating the embedded text from the number that follows it. You would simply use RLI...PDI instead of RLE...PDF. Since RLI/LRI, at the time of writing, are not supported by WebKit browsers we will need to find another solution.</p>
     <p>What we need here is one of the following two other invisible directional control characters provided by Unicode. </p>
     <table class="inband">
       <tbody>
@@ -264,13 +264,13 @@ f.additionalLinks = ''
   </section>
 
 
-<section>
-  <h2 id="exceptions"><a href="#exceptions">Related issues</a></h2>
+<section id="exceptions">
+<h2>Related issues</h2>
     <p>In this section we illustrate some additional spillover problems that can be solved using RLM and LRM.</p>
   <p>In our first example, we have a list of same-direction runs of text, which need to be ordered according to the overall context (in this case LTR).</p>
   
-  <section>
-    <h3 id="lists"><a href="#lists">Lists</a></h3>
+  <section id="lists">
+<h3><a href="#lists">Lists</a></h3>
     <p> Neutrals between same directional runs can  sometimes be misinterpreted by the bidi algorithm. In this use case we have several country names in Arabic listed in a LTR paragraph. This is an example of an opposite-direction phrase followed by another, but logically separate, opposite-direction phrase. Here is the source code without any bidi markup:</p>
     <p>We expect to see the following:</p>
     <figure>
@@ -291,8 +291,8 @@ f.additionalLinks = ''
   </section>
   
   
-  <section>
-    <h3 id="punctuation"><a href="#punctuation">Punctuation</a></h3>
+  <section id="punctuation">
+<h3>Punctuation</h3>
     <p> It is very common  for punctuation or some other neutral character to appear at the end of an opposite direction phrase and belong with that phrase.</p>
     <p>Unfortunately, such neutrals between different directional runs are typically misinterpreted unless there is additional bidi markup. In the following example, the exclamation mark  should appear at the end of the Arabic text, ie. to
       the left, like this:</p>
@@ -335,8 +335,8 @@ f.additionalLinks = ''
 </section-->
 
 
-<section>
-  <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Further reading</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
@@ -356,7 +356,7 @@ f.additionalLinks = ''
   </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>

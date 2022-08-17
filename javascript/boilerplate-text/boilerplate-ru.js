@@ -6,6 +6,14 @@
 var s = { }
 
 // DO NOT TRANSLATE
+s.suppStylesheets = ''
+
+s.rtlAttribute = ""
+s.ltrAttribute = ""
+s.rlm = ""
+
+
+// TRANSLATE THE FOLLOWING
 s.currLang = {
   'ar':'Арабский',
   'bg':'Болгарский',
@@ -15,6 +23,7 @@ s.currLang = {
   'en':'Английский',
   'es':'Испанский',
   'fr':'Французский',
+  'gl':'Галисийский',
   'he':'Иврит',
   'hi':'Хинди',
   'hu':'Венгерский',
@@ -36,14 +45,6 @@ s.currLang = {
   'zh-hant':'Традиционный китайский'
 }
 
-s.suppStylesheets = ''
-
-s.rtlAttribute = ""
-s.ltrAttribute = ""
-s.rlm = ""
-
-
-// TRANSLATE THE FOLLOWING
 s.i18nActivityHome = "Процесс перехода на главную страницу I18N"
 s.moreResourcesOfThisType = "Больше ресурсов данного типа."
 s.accessKeyN ='Ускоряющая клавиша n предназначена для пропусков при навигации по страницам. <a href="#contentstart">Пропуск для перехода на начало контента.</a>'
@@ -51,7 +52,6 @@ s.examplesInAnotherScript = "Настоящий документ содержи�
 s.worldMap = "Карта мира"
 s.searchI18nSite = "Поиск веб-сайта I18n" 
 s.translationDisclaimer ='Данный документ является переводом. В случае каких-либо несоответствий и ошибок <a href="'+f.filename+'.en">последняя версия документа на английском языке</a> должна рассматриваться в качестве официальной. <a href="#copyright">Первоначальное авторское право</a> принадлежит W3C, как то указано ниже.'
-s.translator = "Переводчик:"
 s.relatedLinks = "Связанные ссылки"
 s.articles = "Статьи"
 s.topicIndexText = "Алфавитный указатель тематических разделов"
@@ -106,13 +106,17 @@ s.homePageNews = "Новости главной страницы"
 s.followOurNews = "Следите за нашей новостной лентой."
 s.sentenceDelimiter = "."
 
-s.author = "Автор:" // followed by name of author(s)
-s.previousAuthors = "Предыдущий автор:" // followed by name of previous author(s), before substantive changes were made by the current author
-s.modifiedBy = "Изменения внес:" // person's name appears after colon
-s.translatedBy = "Переводчик:"
 s.validXHTML = "Допустимый XHTML 1.0!"
 s.validCSS = "Допустимый CSS!"
 s.codedInUtf8 = "Кодировка UTF-8!"
+
+// this block of strings should include any whitespace needed after the colon
+// or its equivalent, eg. "By: " in english, but "作者：" in chinese
+s.author = "Автор: " // followed by name of author(s)
+s.previousAuthors = "Предыдущий автор: " // followed by name of previous author(s), before substantive changes were made by the current author
+s.modifiedBy = "Изменения внес: " // person's name appears after colon
+s.translatedBy = "Переводчик: "
+s.acknowledgements = "Спасибо также следующим людям, чей вклад или отзывы были включены: " // used at bottom of page to list people who provided feedback. The list comes after this text.
 
 s.translatedFromEnglishVer = "Перевод с английского: "+dt.enVersion+". Последнее внесение изменений в перевод: "+dt.thisVersionPlain+" GMT"
 
@@ -133,7 +137,6 @@ s.tests="Тесты" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "Быстрый ответ" // heading
 s.longeranswer = "Подробный ответ" // heading
 s.additionalinfo = "Дополнительная информация" // heading that sometimes follows 'Details'
-s.acknowledgements = "Спасибо также следующим людям, чей вклад или отзывы были включены:" // used at bottom of page to list people who provided feedback. The list comes after this text.
 s.cookieMsg = "Если вы разрешите браузеру установить cookie, вы будете видеть страницы W3C Internationalization Activity на выбранном вами языке (там, где это доступно). Установить cookie?" // this text is to be copied to another location
 s.githubRedirect = "<strong>Внимание!</strong> &nbsp; Это только редакторский черновик статьи. Все ссылки и закладки должны вести на <a href='https://www.w3.org/International/"+f.directory+f.filename+"."+f.clang+"'>версию, размещенную на W3C сайте</a>." // used for github-based versions of published articles
 

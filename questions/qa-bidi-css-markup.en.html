@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <title>CSS vs. markup for bidi support</title>
 <meta name="description" content="Should I use CSS or markup to correctly format Unicode-based bidi text in HTML and XML-based markup languages?" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
@@ -32,15 +32,15 @@ f.breadcrumb = 'direction'
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-bidi-css-markup-data/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
+<script src="qa-bidi-css-markup-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-<style type="text/css" media="all">
+<style media="all">
 .visualascii {
 	font-weight: bold;
 }
@@ -55,14 +55,12 @@ f.additionalLinks = ''
 </header>
 
 
-<section>
   <div id="audience">
-    <p><span id="intendedAudience" class="leadin">Intended audience:</span> 
-    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, schema developers (DTDs, XML Schema, RelaxNG, etc.), and anyone who implements HTML using right-to-left scripts.</p>
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
   </div>
     
-  <h2 id="question"><a href="#question">Question</a></h2>
+<section id="question">
+<h2>Question</h2>
     <p class="question">Should I use CSS or markup to correctly format Unicode-based bidirectional (bidi) text in HTML and XML-based markup
       languages?</p>
 </section>
@@ -70,17 +68,17 @@ f.additionalLinks = ''
  
 
 <section id="nutshell">
-    <h2 id="quickanswer"><a href="#quickanswer">Quick answer</a></h2>
+    <h2 id="quickanswer">Quick answer</h2>
     <p>You should always use dedicated bidi markup to describe your content, where markup is available.</p>
     <p>For HTML, the bidi markup is sufficient and no CSS bidi styling is needed. You should never apply CSS bidi styling to ordinary elements or attributes. This includes content delivered as XML  using XHTML 1.x or polyglot markup.</p>
     <p>For other content delivered as XML, you should also use dedicated bidi markup if available, but you may need to use CSS styling to indicate the expected behavior of that markup.</p>
 </section>
 
 
-<section>
-  <h2 id="detail"><a href="#detail">Details</a></h2>
-  <section>
-    <h3 id="markup"><a href="#markup">Use dedicated markup</a></h3>
+<section id="detail">
+<h2>Details</h2>
+  <section id="markup">
+<h3>Use dedicated markup</h3>
     <p>Because directionality is an integral part of the document structure, <strong>markup</strong> should be used to set the directionality
       for a document or chunk of information, or to identify places in the text where the Unicode bidirectional algorithm alone is insufficient to achieve
       desired directionality.</p>
@@ -96,8 +94,8 @@ f.additionalLinks = ''
       support of mixed direction text. People designing or maintaining a DTD or Schema should be encouraged to add elements or attributes for that purpose.</p>
   </section>
     
-  <section>
-    <h3 id="html"><a href="#html">HTML or XHTML served as <code>text/html</code></a></h3>
+  <section id="html">
+<h3>HTML or XHTML served as <code>text/html</code></h3>
     <p>Use <strong>markup only</strong>. The <a href="https://www.w3.org/TR/html5/rendering.html#bidi-rendering">CSS Writing Modes</a> specification recommends the use of markup for bidi text in HTML.</p>
     <blockquote cite="https://www.w3.org/TR/css-writing-modes-3/#text-direction">
     "If a document language provides markup features to control bidi, authors and users should use those features instead and not specify CSS rules to override them." 
@@ -106,14 +104,14 @@ f.additionalLinks = ''
       behaviour of browsers with respect to the bidi markup. </p>
   </section>
     
-  <section>
-    <h3 id="xhtml"><a href="#xhtml">XHTML 1.x or polyglot markup served as <code>application/xhtml+xml</code></a></h3>
+  <section id="xhtml">
+<h3>XHTML 1.x or polyglot markup served as <code>application/xhtml+xml</code></h3>
     <p>XHTML 1.x and polyglot pages served as <code>application/xhtml+xml</code> are expected to use the same semantics as HTML. Therefore, it also makes sense
       to use markup only and no CSS for this.</p>
   </section>
     
-  <section>
-    <h3 id="xml"><a href="#xml">General XML markup and XHTML served as <code>application/xml</code> or <code>text/xml</code></a></h3>
+  <section id="xml">
+<h3>General XML markup and XHTML served as <code>application/xml</code> or <code>text/xml</code></h3>
     <p>Normally a user agent will not automatically recognize or know what to do with any bidi markup you use in XML documents. CSS properties should therefore be used to indicate the expected visual behaviour of text in your document.</p>
     <p>The CSS, however, should always be linked to dedicated bidi markup in the text.</p>
     <p>See section <a href="https://www.w3.org/TR/html5/rendering.html#bidi-rendering">10.3.5 Bidirectional text</a> in the HTML5 specification for the styling that is used for HTML markup. This markup provides a good model for defining markup in XML applications. Note, in particular, that the CSS applies the <code class="kw" translate="no">isolate</code> value of <code class="kw" translate="no">unicode-bidi</code> (and <code class="kw" translate="no">isolate-override</code> for <code class="kw" translate="no">bdo</code>). This is strongly recommended, rather than simple embedding, for all elements carrying a <code class="kw" translate="no">dir</code> (or equivalent) attribute. (See <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a> for the reasons.)</p>
@@ -125,16 +123,16 @@ f.additionalLinks = ''
 </section>
 
 
-<section>
-  <h2 id="additionalinfo"><a href="#additionalinfo">Additional information</a></h2>
+<section id="additionalinfo">
+<h2>Additional information</h2>
   <p>There are situations in HTML and possibly other XML-based markup languages where text appears in an attribute or an element that
     only supports character data. Neither markup nor CSS can be used to modify directionality of either attribute text or <em>part of the text</em> in an
     element that supports only character data. In these cases you will need to resort to the use of Unicode directional formatting codes. (See  <a class="print" href="https://www.org/International/questions/qa-bidi-unicode-controls">Using Unicode controls for bidi text</a> for more details.)</p>
 </section>
 
 
-<section>
-<h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
+<section id="endlinks">
+<h2>Further reading</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
@@ -149,7 +147,7 @@ f.additionalLinks = ''
 </ul>
 </section>
 
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>

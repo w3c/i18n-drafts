@@ -1,6 +1,6 @@
 var trans = { }
 
-trans.versions = ['ar', 'bg', 'de', 'el', 'en', 'es', 'fr', 'hi', 'hu', 'it', 'ja', 'ko', 'nl', 'pl', 'pt', 'pt-br', 'ro', 'ru', 'sv', 'tr', 'uk', 'zh-hans', 'zh-hant']
+trans.versions = ['ar', 'bg', 'de', 'el', 'en', 'es', 'fr', 'gl', 'hi', 'hu', 'it', 'ja', 'ko', 'nl', 'pl', 'pt', 'pt-br', 'ro', 'ru', 'sv', 'tr', 'uk', 'zh-hans', 'zh-hant']
 
 trans.outofdatetranslations = []
 
@@ -18,16 +18,10 @@ var titles = {
 
 "getstarted": [
 	{
-	"url": "/International/getting-started/index",
-	"ar": "مقدمة لموقع تدويل الشبكة العالمية",
-	"de": "Einstieg in die W3C-Internationalisierungs-Website",
+	"url": "/International/i18n-drafts/getting-started/index",
 	"en": "Getting Started with the W3C I18n site",
 	"es": "Introducción al sitio W3C I18n",
-	"fr": "Premiers pas avec le site W3C I18n",
-	"pt": "Introdução ao site W3C I18n",
-	"pt-br": "Introdução ao site I18n da W3C",
-	"ro": "Notiuni de baza despre site-ul W3C I18n",
-	"uk": "Приступаючи до роботи з сайтом W3C Інтернаціоналізації"
+	"zh-hans": "国际化入门资源"
 	},
 	{
 	"url": "/International/getting-started/characters",
@@ -36,6 +30,7 @@ var titles = {
 	"en": "Introducing Character Sets and Encodings",
 	"es": "Introducción a las codificaciones y a los sets de caracteres",
 	"fr": "Présentation des jeux et encodages de caractères",
+	"gl": "Introdución ás codificacións e ós conxuntos de caracteres",
 	"hi": "परिचय कैरेक्टर समूह और कूटबन्धन",
 	"hu": "Bevezető a Karakterkészletekbe és Karakterkódolásba",
 	"pt": "Introdução de conjuntos de caracteres e codificações",
@@ -54,6 +49,7 @@ var titles = {
 	"en": "Language on the Web",
 	"es": "Idiomas en la Web",
 	"fr": "Langage sur le Web",
+	"gl": "Idiomas na Web",
 	"hi": "वेब पर भाषा",
 	"hu": "A Nyelv a Weben",
 	"ja": "Web 上の言語",
@@ -91,6 +87,7 @@ var titles = {
 	"url": "/International/tutorials/tutorial-char-enc/index",
 	"de": "Umgang mit Zeichencodierungen in HTML und CSS (Tutorial)",
 	"en": "Handling character encodings in HTML and CSS (tutorial)",
+	"fr": "Gestion de l’encodage des caractères en HTML et CSS (tutoriel)",
 	"ro": "Manevrarea codării de caractere în HTML și CSS (tutorial)",
 	"sv": "Att hantera teckenkodningar i HTML och CSS (handledning)",
 	},
@@ -113,6 +110,11 @@ var titles = {
 	"es": "Elegir y aplicar una codificación de caracteres",
 	"pt-br": "Escolha e uso de codificação de caracteres",
 	"sv": "Att välja & att använda en teckenkodning",
+	},
+	{
+	"url": "/International/questions/qa-who-uses-unicode",
+	"en": "Who uses Unicode?",
+	"sv": "Vem använder Unicode?",
 	},
 	{
 	"url": "/International/questions/qa-html-encoding-declarations",
@@ -157,12 +159,11 @@ var titles = {
 	"bg": "Конвертиране на HTML страница към Unicode",
 	"en": "Changing an HTML page to Unicode",
 	"fr": "Changer l’encodage d’une page HTML en Unicode",
+	"it": "Cambiare una pagina HTML in Unicode",
 	},
 	{
 	"url": "/International/questions/qa-escapes",
-	"de": "Verwendung von Zeichen-Escapes in Markup und CSS",
 	"en": "Using character escapes in markup and CSS",
-	"sv": "Att använda kodade tecken i uppmärkning och CSS",
 	},
 	{
 	"url": "/International/questions/qa-doc-charset",
@@ -251,9 +252,8 @@ var titles = {
 	"uk": "Пропущені символи і гліфи",
 	},
 	{
-	"url": "/International/questions/qa-who-uses-unicode",
-	"en": "Who uses Unicode?",
-	"sv": "Vem använder Unicode?",
+	"url": "/International/questions/qa-indic-graphemes",
+	"en": "Typographic character units in complex scripts",
 	},
 	{
 	"url": "/International/articles/unicode-migration/index",
@@ -295,7 +295,9 @@ var titles = {
 	{
 	"url": "/International/questions/qa-text-processing-vs-metadata",
 	"en": "Types of language declaration",
+	"es": "Tipos de declaración de idioma",
 	"fr": "Types de déclaration de langues",
+	"it": "Tipi di dichiarazione linguistica",
 	},
 	{
 	"url": "/International/articles/language-tags/index",
@@ -341,10 +343,6 @@ var titles = {
 	"ru": "Установка языковых настроек в браузере",
 	},
 	{
-	"url": "/International/questions/qa-text-processing-vs-metadata",
-	"en": "Types of language declaration",
-	},
-	{
 	"url": "/International/questions/qa-when-xmllang",
 	"de": "xml:lang in XML-Dokument-Schemas",
 	"en": "xml:lang in XML document schemas",
@@ -357,12 +355,16 @@ var titles = {
 	"url": "/International/questions/qa-no-language",
 	"de": "Kennzeichnung von Text mit keiner Sprache",
 	"en": "Tagging text with no language",
+	"es": "Etiquetado de texto sin idioma",
+	"fr": "Marquer du texte sans langue",
+	"it": "Etichettatura del testo senza lingua",
 	"sv": "Märka upp text som 'inget språk'",
 	},
 	{
 	"url": "/International/questions/qa-link-lang",
 	"de": "Kennzeichnung der Sprache von Linkzielen",
 	"en": "Indicating the language of a link destination",
+	"es": "Indicar el idioma de destino de un enlace",
 	"pl": "Wskazywanie języka strony docelowej linku",
 	},
 	{
@@ -414,8 +416,8 @@ var titles = {
 	"de": "Verwendung des translate-Attributs in HTML",
 	"en": "Using HTML's translate attribute",
 	"es": "Utilizar el atributo translate de HTML",
-	"it": "Utilizzo dell'attributo HTML translate",
 	"fr": "Utiliser l’attribut translate HTML",
+	"it": "Utilizzo dell'attributo HTML translate",
 	},
 	{
 	"url": "/International/questions/qa-non-eng-tags",
@@ -430,6 +432,10 @@ var titles = {
 	"ru": "Неанглийские тэги",
 	"tr": "İngilizce olmayan kod etiketleri",
 	"uk": "Неанглійські теги",
+	},
+	{
+	"url": "/International/questions/qa-reference-links",
+	"en": "Internationalization tips for linking to headings & figures"
 	}
     ],
 
@@ -440,6 +446,8 @@ var titles = {
 	"url": "/International/tutorials/bidi-xhtml/index",
 	"de": "HTML-Seiten in arabischer, hebräischer und anderen von rechts nach links geschriebenen Schriften erstellen (tutorial)",
 	"en": "Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts (tutorial)",
+	"es": "Creación de páginas HTML en árabe, hebreo y otros scripts de derecha a izquierda (tutorial)",
+	"fr": "Création de pages HTML en arabe, hébreu et autres scripts de droite à gauche (tutoriel)",
 	},
 	{
 	"url": "/International/articles/inline-bidi-markup/uba-basics",
@@ -480,7 +488,7 @@ var titles = {
 	"en": "Visual vs. logical ordering of text",
 	"es": "Ordenando el texto de forma visual vs. lógica",
 	},
-	{
+	/*{
 	"url": "/International/tutorials/svg-tiny-bidi/Overview",
 	"de": "SVG Tiny-Seiten in arabischer, hebräischer und mit anderen von rechts nach links geschriebenen Schriften erstellen",
 	"en": "Creating SVG Tiny Pages in Arabic, Hebrew and other Right-to-left scripts",
@@ -491,7 +499,7 @@ var titles = {
 	"pt": "Criação de SVG Tiny Pages em árabe, hebraico, e em outros scripts da direita para a esquerda",
 	"ru": "Создание небольших SVG Страниц на Арабском языке, Иврите и других скриптах, которые выравниваются справа налево",
 	"uk": "Створення Невеличких SVG Сторінок в Арабській мові, Івриті та інших скриптах, які вирівнюються справа наліво",
-	},
+	},*/
 	{
 	"url": "/International/articles/vertical-text/index",
 	"en": "Styling vertical Chinese, Japanese, Korean and Mongolian text",
@@ -519,6 +527,7 @@ var titles = {
 	"de": "Textlänge bei Übersetzungen",
 	"en": "Text size in translation",
 	"es": "El tamaño del texto en la traducción",
+	"fr": "La taille des textes dans les traductions",
 	"hu": "Szövegméret a fordításban",
 	"ja": "訳文における文字サイズ",
 	"ko": "번역물의 텍스트 크기",
@@ -575,6 +584,7 @@ var titles = {
 	"url": "/International/questions/qa-personal-names",
 	"de": "Personennamen aus aller Welt",
 	"en": "Personal names around the world",
+	"es": "Los nombres propios en el mundo",
 	"fr": "Noms de personnes à travers le monde",
 	"uk": "Особисті імена в різних мовах світу",
 	},
@@ -582,6 +592,7 @@ var titles = {
 	"url": "/International/questions/qa-select-sorting",
 	"de": "Auswahloptionen sortieren",
 	"en": "Sorting select options",
+	"fr": "Tri des options de sélection",
 	"pl": "Sortowanie rozwijanej listy",
 	"ru": "Сортировка выпадающего списка",
 	"uk": "Сортування випадаючого списку",
@@ -680,6 +691,7 @@ var titles = {
 	{
 	"url": "/International/articles/definitions-time/index",
 	"en": "Time & date: Essential concepts",
+	"es": "Fecha y hora: Conceptos básicos",
 	},
 	{
 	"url": "/International/questions/qa-date-format",
@@ -695,6 +707,7 @@ var titles = {
 	"url": "/International/questions/qa-personal-names",
 	"de": "Personennamen aus aller Welt",
 	"en": "Personal names around the world",
+	"es": "Los nombres propios en el mundo",
 	"fr": "Noms de personnes à travers le monde",
 	"uk": "Особисті імена в різних мовах світу",
 	}
@@ -718,6 +731,7 @@ var titles = {
 	"ru": "Локализация по сравнению с интернационализацией",
 	"sv": "Lokalisering och internationalisering",
 	"uk": "Локалізація в порівнянні з Інтернаціоналізацією",
+	"zh-hans": "本地化与国际化有什么关系？",
 	},
 	{
 	"url": "/International/questions/qa-mono-multilingual",
@@ -772,7 +786,7 @@ function addTitles (section, list) {
 		if (rtlSet.has(f.clang)) a.dir = 'rtl'
 		if (titles[section][i][f.clang]) {
 			a.textContent = titles[section][i][f.clang]
-			a.href += '.' + f.clang
+			a.href += '.' + f.clang + '.html'
 			a.className = 'native'
 			}
 		else { 
