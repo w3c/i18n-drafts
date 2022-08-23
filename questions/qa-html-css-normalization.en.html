@@ -40,6 +40,8 @@ f.additionalLinks = ''
 <script src="../javascript/articletoc-2022.js"></script>
 <link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
 </head>
 
 <body>
@@ -74,40 +76,101 @@ f.additionalLinks = ''
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
     
-<section id="question">
-  <h2>Question</h2>
-    <p class="question">What are normalization forms, and why do I need to know about them when creating HTML and CSS content?</p>
+
+
+<p>Normalization is something you need to be aware of if you are authoring HTML pages with CSS style sheets in UTF-8 (or any other Unicode encoding), particularly if you are dealing with text in a  script that uses accents or other diacritics.</p>
+<p>This page addresses the question: 
+<span class="question">What are normalization forms, and why do I need to know about them when creating HTML and CSS content?</span></p>
+
+
+
+
+
+<section id="n11nwhat">
+<h2>What are normalization forms?</h2>
+
+<p>In Unicode it is possible to produce the same text with different sequences of characters. For example, take the Hungarian word <span class="qterm">világ</span>. The fourth letter could be stored in memory as a <dfn>precomposed</dfn> (single) character <span class="uname">U+00E1 LATIN SMALL LETTER A WITH ACUTE</span> or as a <dfn>decomposed</dfn> sequence of <span class="uname">U+0061 LATIN SMALL LETTER A</span> followed by <span class="uname">U+0301 COMBINING ACUTE ACCENT</span> (two characters). </p>
+
+<p><img src="qa-html-css-normalization-data/vilag.png" alt=" " /></p>
+
+<p>The Unicode Standard allows either of these alternatives, but requires that both  be treated as identical (ie. they are 'canonically equivalent'). To improve effectiveness, an application will usually <dfn>normalize</dfn> text before performing searches or comparisons. Normalization, in this particular case, means converting the text to use all precomposed or all decomposed characters. </p>
+
+<p>Four <dfn>normalization forms</dfn> are specified by the Unicode Standard: NFC, NFD, NFKC and NFKD. The <span class="qchar">C</span> stands for (pre-)composed, and the <span class="qchar">D</span> for decomposed. The <span class="qchar">K</span> stands for compatibility. In fact, not all sequences of Unicode character have precomposed equivalents, but there are rules to indicate the many that do. </p>
+</section>
+  
+
+
+
+
+<section id="n11nhow">
+<h2>What do I need to know about normalization?</h2>
+
+<section id="choosing">
+<h3>Choosing a normalization form</h3>
+
+<p>Natural language content aimed at human consumption does not need to all be in one normalized form – there may sometimes be good reasons to mix normalized forms. Applications that try to match one piece of text with another should, however, compare normalized versions of both.</p>
+
+<p style="">Unfortunately, normalization doesn't always take place before content is compared, and a particularly important case is when CSS selectors are compared with HTML class names or ids, as style is applied to a page. If the word <span class="qterm">világ</span> is used in precomposed form in the HTML (eg. <code>&lt;span class=&quot;világ&quot;&gt;</code>), but in decomposed form in the CSS (eg. <code>.vila&#x0301;g { font-style: italic; }</code>), then the selector won't match the class name.</p>
+
+<p style="">The following example shows this. The CSS selector is decomposed, whereas one class name in the HTML is decomposed and the other precomposed. As you should be able to see, only the decomposed class name is matched to the style. But notice also that is not possible to distinguish the two forms in the source text.</p>
+
+<figure id="fig_nonmatching" class="example" lang="hu">
+<pre>CSS: <code class="language-css">.vila&#x0301;g { font-style: italic; }</code></pre>
+<pre>HTML: <code class="language-html">&lt;span class=&quot;világ&quot;&gt; &lt;span class=&quot;vila&#x0301;g&quot;&gt;</code></pre>
+</figure>
+
+<style>.vila\0301 g { font-style: italic; }</style>
+<div id="out_bopomofo_position" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="hu" class="világ" style="font-size: 2rem;">világ</p>
+<p lang="hu" class="vila&#x0301;g" style="font-size: 2rem;">világ</p>
+</div>
+</div>
+
+<p style="">This means that when creating content you should ensure that selectors and class or id names are character-for-character the same. This is particularly likely to be a  issue if the markup and the CSS are being authored or maintained by different people.</p>
+
+<p style="">The best way to ensure that these match is to use one particular Unicode normalization form for all syntactic constructs, and as the default for all authored content. It doesn't really matter whether you use the NFC or NFD normalization form, it's more important that you are consistent. NFC is, however, a good recommendation because this is what many (but not all) keyboards tend to produce. (Most keyboards for European languages output text in NFC already, but this is less likely to be the case if dealing with many non-European languages.)</p>
+<p style="">We don't recommend using any of the K forms in this way.</p>
 </section>
 
 
-<section id="answer">
-<h2>Answer</h2>
-  <p>Normalization is something you need to be aware of if you are authoring HTML pages with CSS style sheets in UTF-8 (or any other Unicode encoding), particularly if you are dealing with text in a  script that uses accents or other diacritics. </p>
-  
-  <section id="n11nwhat">
-<h3>What are normalization forms?</h3>
-    <p>In Unicode it is possible to produce the same text with different sequences of characters. For example, take the Hungarian word <span class="qterm">világ</span>. The fourth letter could be stored in memory as a <dfn>precomposed</dfn> U+00E1   LATIN SMALL LETTER A WITH ACUTE (a single character) or as a <dfn>decomposed</dfn> sequence of U+0061   LATIN SMALL LETTER A followed by U+0301   COMBINING ACUTE ACCENT (two characters). </p>
-    <p><img src="qa-html-css-normalization-data/vilag.png" alt=" " /></p>
-    <p>The Unicode Standard allows either of these alternatives, but requires that both  be treated as identical. To improve efficiency, an application will usually <dfn>normalize</dfn> text before performing searches or comparisons. Normalization, in this case, means converting the text to use all precomposed or all decomposed characters.</p>
-    <p>There are four <dfn>normalization forms</dfn> specified by the Unicode Standard: NFC, NFD, NFKC and NFKD. The <span class="qchar">C</span> stands for (pre-)composed, and the <span class="qchar">D</span> for decomposed. The <span class="qchar">K</span> stands for compatibility. To improve interoperability, the W3C recommends the use of <strong>NFC</strong> normalized text on the Web.</p>
-  </section>
-  
-  <section id="n11nhow">
-<h3>What do I need to know about normalization?</h3>
-    <p style="">Unfortunately, normalization doesn't always take place before content is compared. A particularly important case is the use of selectors and class names or ids in HTML and CSS. If the word <span class="qterm">világ</span> is used in precomposed form in the HTML (eg. <code>&lt;span class=&quot;világ&quot;&gt;</code>), but in decomposed form in the CSS (eg. <code>.vila&#x0301;g { font-style: italic; }</code>), then the selector won't match the class name.</p>
-    <p style="">What this means is that when producing content you should ensure that selectors and class or id names are character-for-character the same. This is particularly likely to be a  issue if the markup and the CSS are being authored or maintained by different people.</p>
-    <p style="">The best way to ensure that these match is to use one particular Unicode normalization form for all authored content. As we said above, the W3C recommends NFC.</p>
-    <p style="">Most keyboards for European languages output text in NFC already, but this is less likely to be the case if dealing with many non-European languages.</p>
-    <p style="">In some cases your editor may allow you to save data in a choice of normalization forms. The picture below shows  an option for setting a particular normalization form as the default when opening new files in Dreamweaver (NFC is selected). You are shown a similar choice when saving a document.</p>
-    <p style=""><img src="qa-html-css-normalization-data/dwprefs-nfc.png" alt="Unicode normalization form preferences on a dialog panel, showing NFC selected." /></p>
-  </section>
-  
-  <section id="checking">
+
+
+<section id="converting">
+<h3>Converting the normalization form of a page</h3>
+
+<p style="">You should also be careful about automatically converting content into a particular normalization form, as it may obliterate some careful uses of differently normalized forms, such as in the carefully crafted examples of <span lang="hu" class="qterm">világ</span> above, or in filenames or URLs, or text included in the page from elsewhere, etc.</p>
+</section>
+
+
+
+
+
+
+
+<section id="editors">
+<h3>Normalization settings in your editor</h3>
+
+<p style="">In some cases your editor may allow you to save data in a choice of normalization forms. The picture below shows  an option for setting a particular normalization form as the default when opening new files in Dreamweaver (NFC is selected). You are shown a similar choice when saving a document.</p>
+
+<p style=""><img src="qa-html-css-normalization-data/dwprefs-nfc.png" alt="Unicode normalization form preferences on a dialog panel, showing NFC selected." /></p>
+
+<p style="">If you have set up your editing environment like this, you may find yourself in a situation where you want to deviate from the default normalisation form, for instance to create the examples above. However, as soon as you save the file, it will obliterate those carefully implemented variant forms. A way around this is to use character escapes. If you write the word <span lang="hu" class="qterm">világ</span> in your source code as <code translate="no">vila&amp;#x0301;g</code> it will not be normalized during the save.</p>
+</section>
+
+
+
+
+
+<section id="checking">
 <h3>How can I check pages for problems?</h3>
-    <p style="">You can find out whether an HTML page contains  class names and id values that are not normalized according to NFC by using the <a class="print" href="http://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a>.</p>
-    <p style="">If you do have problems, you should find an editor or conversion tool that allows you to specify the normalization form, and use that to re-save your page.</p>
-  </section>
+
+<p style="">You can find out whether an HTML page contains  class names and id values that are not normalized according to NFC by using the <a class="print" href="http://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a>.</p>
 </section>
+
+
+
 
 
 <section id="endlinks">
