@@ -209,7 +209,8 @@ var title = '['+f.directory+f.filename+'] %20BRIEF_TITLE_GOES_HERE'
 g.survey = 	'<p>'+s.tellUsWhatYouThink+'</p>'+
 			'<p><a class="interaction" target="_blank" href="https://github.com/w3c/i18n-drafts/issues/new?title='+title+'&body='+body+'%0A%0A">'+s.sendAComment+'</a></p>'+
 			'<p style="margin-top:1em">'+s.followOurNews+'</p>'+
-			'<p><a class="interaction" href="http://twitter.com/webi18n" title="Twitter: @webi18n"><img src="'+f.path+'icons/twitter-bird.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n</a></p>'+
+			'<p style="font-size:80%;"><a class="interaction" href="https://w3c.social/@webi18n" title="Mastodon: @webi18n@w3c.social"><img src="'+f.path+'icons/mastodon.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n@w3c.social</a></p>'+
+			'<p style="font-size:80%;"><a class="interaction" href="http://twitter.com/webi18n" title="Twitter: @webi18n"><img src="'+f.path+'icons/twitter-bird.png" style="vertical-align: middle;" alt=" " /> &#x200E;@webi18n</a></p>'+
 			'<p><a class="interaction" href="http://www.w3.org/blog/International/feed/rdf/" title="RSS"><img src="'+f.path+'icons/rssLink.png" alt=" " /> RSS</a></p>'
 			
 
