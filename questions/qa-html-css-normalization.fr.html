@@ -73,39 +73,109 @@ f.additionalLinks = ''
 	Codeurs XHTML/HTML (utilisant des éditeurs ou des scripts), développeurs de scripts (PHP, JSP, etc.), codeurs CSS, chefs de projets Web, et toute personne peu au fait de la normalisation Unicode et de son importance dans le succès de la création de contenus HTML et CSS.</p-->
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
     </div>
-<section id="question">
-<h2>Question</h2>
-    <p class="question">Que sont les formes de normalisation, et pourquoi dois-je les connaître lors de la création de contenu HTML et CSS?</p>
+
+
+
+
+
+<p>Il est important de tenir compte de la normalisation si vous créez des pages HTML avec des feuilles de style CSS en UTF-8 (ou tout autre encodage Unicode), tout particulièrement si vous avez affaire à du texte dans un script qui utilise des accents ou autres signes diacritiques.</p>
+
+<p>This page addresses the question:<br>
+<span class="question">Que sont les formes de normalisation, et pourquoi dois-je les connaître lors de la création de contenu HTML et CSS?</span></p>
+
+
+
+
+
+
+  
+<section id="n11nwhat">
+<h2>Que sont les formes de normalisation ?</h2>
+
+<p>En Unicode, il est possible de produire le même texte avec différentes séquences de caractères. Prenons par exemple le mot hongrois <span class="qterm">világ</span>. La quatrième lettre peut être stockée en mémoire sous forme <dfn>précomposée</dfn>: U+00E1 LETTRE MINUSCULE LATINE A ACCENT AIGU (un seul caractère) ou  par une séquence <dfn>décomposée</dfn>: U+0061 LETTRE MINUSCULE LATINE A, suivie de U+0301 DIACRITIQUE ACCENT AIGU (deux caractères).</p>
+
+<p><img src="qa-html-css-normalization-data/vilag.png" alt="" /></p>
+
+<p>La norme Unicode autorise chacune de ces alternatives, mais exige que les deux soient considérées identiques. Pour améliorer l&apos;efficacité, une application <dfn>normalise</dfn> généralement le texte avant d&apos;effectuer des recherches ou des comparaisons. La normalisation, dans ce cas, consiste à convertir le texte afin d&apos;utiliser uniquement des caractères précomposés ou bien uniquement des caractères décomposés.</p>
+
+<p>Quatre <dfn>formes de normalisation</dfn> sont spécifiées par le standard Unicode : NFC, NFD, NFKC et NFKD. Le <span class="qchar">C</span> signifie (pré)composé, et le <span class="qchar">D</span> décomposé. Le <span class="qchar">K</span> signifie compatibilité.</p>
+    
+<p><span class="leadin">NFD</span> uses Unicode rules to maximally decompose a code point into component parts. For example, the Vietnamese letter <span class="codepoint" translate="no"><bdi lang="vi">&#x1EC1;</bdi> [<span class="uname">U+1EC1 LATIN SMALL LETTER E WITH CIRCUMFLEX AND GRAVE</span>]</span> becomes the sequence <span class="codepoint" translate="no"><bdi lang="vi">&#x0065;&#x0302;&#x0300;</bdi> [<span class="uname">U+0065 LATIN SMALL LETTER E</span> + <span class="uname">U+0302 COMBINING CIRCUMFLEX ACCENT</span> + <span class="uname">U+0300 COMBINING GRAVE ACCENT</span>]</span>.</p>
+
+<p><span class="leadin">NFC</span> runs that process in reverse, and will also completely compose partially decomposed sequences. However, this composition process is only applied to a subset of the Unicode repertoire. For example, the sequence <span class="codepoint" translate="no"><bdi lang="en">&#x0067;&#x0300;</bdi> [<span class="uname">U+0067 LATIN SMALL LETTER G</span> + <span class="uname">U+0300 COMBINING GRAVE ACCENT</span>]</span> has no precomposed form, and is unaffected by normalization.</p>
+
+<p><span class="leadin">NFKC and NFKD</span> were  introduced  to handle characters that were included in Unicode in order to provide compatibility with other character sets. This applies to code points that represent such things as glyph variants, shaped forms, alternative compositions, and so on.  NFKD and NFKC normalization  replaces these code points with canonical characters or character sequences, and you cannot convert back to the original code points.  In principle, such compatibility variants should not be used.</p>
+</section>
+  
+
+
+
+
+<section id="n11nhow">
+<h2>Que dois-je savoir sur la normalisation?</h2>
+
+<section id="choosing">
+<h3>Choosing a normalization form</h3>
+
+<p>Natural language content aimed at human consumption does not need to all be in one normalized form – there may sometimes be good reasons to mix normalized forms. Applications that try to match one piece of text with another should, however, compare normalized versions of both.</p>
+
+    <p style="">Malheureusement, la normalisation n&apos;a pas toujours lieu avant que le contenu soit comparé. Un cas particulièrement important est l&apos;utilisation de noms de sélecteurs et de classes ou d&apos;id en HTML et CSS. Si le mot <span class="qterm">világ</span> est utilisé sous la forme précomposée en HTML (ex. <code>&lt;span class=&quot;vilag&quot;&gt;</code>), mais sous la forme décomposée en CSS (ex. <code>.vila&#x0301;g { font-style: italic; }</code>), alors le sélecteur ne correspondra pas au nom de la classe. </p>
+
+<p style="">The following example shows this. The CSS selector is decomposed, whereas one class name in the HTML is decomposed and the other precomposed. As you should be able to see, only the decomposed class name is matched to the style. But notice also that it is not possible to distinguish the two forms in the source text.</p>
+
+<figure id="fig_nonmatching" class="example" lang="hu">
+<pre>CSS: <code class="language-css">.vila&#x0301;g { font-style: italic; }</code></pre>
+<pre>HTML: <code class="language-html">&lt;span class=&quot;világ&quot;&gt;composed&lt;/span&gt; &lt;span class=&quot;vila&#x0301;g&quot;&gt;decomposed&lt;/span&gt;</code></pre>
+</figure>
+
+<style>.vila\0301 g { font-style: italic; }</style>
+<div id="out_bopomofo_position" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="display:flex; flex-direction:row; width:100%; justify-content:space-around;">
+<p lang="hu" class="világ" style="font-size: 2rem;">composed</p>
+<p lang="hu" class="vila&#x0301;g" style="font-size: 2rem;">decomposed</p>
+</div>
+</div>
+
+<p style="">Cela signifie que lorsque vous produisez du contenu, vous devez vous assurer que les noms des sélecteurs, des classes et des id sont les mêmes, caractère par caractère. Cela risque particulièrement de poser problème si le HTML et le CSS n&apos;ont pas été créés ou maintenus par les mêmes personnes. </p>
+    <p style="">Le meilleur moyen de vérifier que tout est cohérent est d&apos;utiliser une seule forme de normalisation Unicode pour tout le contenu créé. It doesn't really matter whether you use the NFC or NFD normalization form, it's more important that you are consistent. NFC is, however, a good recommendation because this is what many (but not all) keyboards tend to produce. (Most keyboards for European languages output text in NFC already, but this is less likely to be the case if dealing with many non-European languages.)</p>
+<p style="">We don't recommend using any of the K forms in this way.</p>
 </section>
 
 
-<section id="answer">
-<h2><a href="#answer">Réponse</a></h2>
-  <p>Il est important de tenir compte de la normalisation si vous créez des pages HTML avec des feuilles de style CSS en UTF-8 (ou tout autre encodage Unicode), tout particulièrement si vous avez affaire à du texte dans un script qui utilise des accents ou autres signes diacritiques.</p>
-  
-  <section id="n11nwhat">
-<h3>Que sont les formes de normalisation ?</h3>
-    <p>En Unicode, il est possible de produire le même texte avec différentes séquences de caractères. Prenons par exemple le mot hongrois <span class="qterm">világ</span>. La quatrième lettre peut être stockée en mémoire sous forme <dfn>précomposée</dfn>: U+00E1 Lettre minuscule latine A accent aigu (un seul caractère) ou  par une séquence <dfn>décomposée</dfn>: U+0061 Lettre minuscule latine A, suivie de U+0301 Diacritique accent aigu (deux caractères).</p>
-    <p><img src="qa-html-css-normalization-data/vilag.png" alt="" /></p>
-    <p>La norme Unicode autorise chacune de ces alternatives, mais exige que les deux soient considérées identiques. Pour améliorer l&apos;efficacité, une application <dfn>normalise</dfn> généralement le texte avant d&apos;effectuer des recherches ou des comparaisons. La normalisation, dans ce cas, consiste à convertir le texte afin d&apos;utiliser uniquement des caractères précomposés ou bien uniquement des caractères décomposés.</p>
-    <p>Quatre <dfn>formes de normalisation</dfn> sont spécifiées par le standard Unicode : NFC, NFD, NFKC et NFKD. Le <span class="qchar">C</span> signifie (pré)composé, et le <span class="qchar">D</span> décomposé. Le <span class="qchar">K</span> signifie compatibilité. Pour améliorer l&apos;interopérabilité, le W3C recommande d&apos;utiliser sur le Web du texte normalisé <strong>NFC</strong>.</p>
-  </section>
-  
-  <section id="n11nhow">
-<h3>Que dois-je savoir sur la normalisation?</h3>
-    <p style="">Malheureusement, la normalisation n&apos;a pas toujours lieu avant que le contenu soit comparé. Un cas particulièrement important est l&apos;utilisation de noms de sélecteurs et de classes ou d&apos;id en HTML et CSS. Si le mot <span class="qterm">világ</span> est utilisé sous la forme précomposée en HTML (ex. <code>&lt;span class=&quot;vilag&quot;&gt;</code>), mais sous la forme décomposée en CSS (ex. <code>.vila&#x0301;g { font-style: italic; }</code>), alors le sélecteur ne correspondra pas au nom de la classe. </p>
-    <p style="">Cela signifie que lorsque vous produisez du contenu, vous devez vous assurer que les noms des sélecteurs, des classes et des id sont les mêmes, caractère par caractère. Cela risque particulièrement de poser problème si le HTML et le CSS n&apos;ont pas été créés ou maintenus par les mêmes personnes. </p>
-    <p style="">Le meilleur moyen de vérifier que tout est cohérent est d&apos;utiliser une seule forme de normalisation Unicode pour tout le contenu créé. Comme indiqué précédemment, le W3C recommande le NFC.</p>
-    <p style="">La plupart des claviers pour les langues européennes affichent le texte directement en NFC, mais il y a moins de chances que ce soit le cas avec de nombreuses langues non-européennes.</p>
-    <p style="">Dans certains cas, votre éditeur peut vous permettre d&apos;enregistrer les données en choisissant parmi plusieurs formes de normalisation. L&apos;image ci-dessous montre une option permettant de définir une forme de normalisation utilisée par défaut lors de l&apos;ouverture de nouveaux fichiers dans Dreamweaver (NFC est sélectionné). Un choix similaire s&apos;affiche lors de l&apos;enregistrement d&apos;un document.</p>
+
+
+<section id="converting">
+<h3>Converting the normalization form of a page</h3>
+
+<p style="">You should also try to avoid automatically converting content from one normalization form to another, as it may obliterate some important code point distinctions, such as in the carefully crafted examples of <span lang="hu" class="qterm">világ</span> above, or in filenames or URLs, or text included in the page from elsewhere, etc.</p>
+<p style="">It may also introduce a security risk, especially in code syntax. For example, the following code points are canonically equivalent: <span class="codepoint" translate="no"><bdi lang="en">&#x003E;&#x0338;</bdi> [<span class="uname">U+003E GREATER-THAN SIGN</span> + <span class="uname">U+0338 COMBINING LONG SOLIDUS OVERLAY</span>]</span> and <span class="codepoint" translate="no"><bdi lang="en">&#x226F;</bdi> [<span class="uname">U+226F NOT GREATER-THAN</span>]</span>. Therefore source code in XML such as <code>&lt;character&gt;&#x0338;&lt;/character&gt;</code> can be corrupted by normalising to NFC.</p>
+<p style="">Sometimes people choose to use compatibility characters in their content, most likely without realising what they are. Examples might include <span class="codepoint" translate="no"><bdi lang="en">&#x00BC;</bdi> [<span class="uname">U+00BC VULGAR FRACTION ONE QUARTER</span>]</span>, <span class="codepoint" translate="no"><bdi lang="en">&#x00B2;</bdi> [<span class="uname">U+00B2 SUPERSCRIPT TWO</span>]</span> (eg. for m²), and <span class="codepoint" translate="no"><bdi lang="en">&#x2116;</bdi> [<span class="uname">U+2116 NUMERO SIGN</span>]</span>. Blind normalization of that content would change those characters to the ASCII code points 1⁄4, 2, and No, respectively. In some cases this may affect the look of the text; in others it may affect the readability.</p>
+</section>
+
+
+
+
+
+
+
+<section id="editors">
+<h3>Normalization settings in your editor</h3>
+<p style="">Dans certains cas, votre éditeur peut vous permettre d&apos;enregistrer les données en choisissant parmi plusieurs formes de normalisation. L&apos;image ci-dessous montre une option permettant de définir une forme de normalisation utilisée par défaut lors de l&apos;ouverture de nouveaux fichiers dans Dreamweaver (NFC est sélectionné). Un choix similaire s&apos;affiche lors de l&apos;enregistrement d&apos;un document.</p>
     <p style=""><img src="qa-html-css-normalization-data/dwprefs-nfc.png" alt="Préférences de la forme de normalisation Unicode sur une boîte de dialogue, montrant le NFC sélectionné." /></p>
-  </section>
-  
+
+<p style="">If you have set up your editing environment like this, you may find yourself in a situation where you want to deviate from the default normalisation form, for instance to create the examples above. However, as soon as you save the file, it will obliterate those carefully implemented variant forms. A way around this is to use character escapes. If you write the word <span lang="hu" class="qterm">világ</span> in your source code as <code translate="no">vila&amp;#x0301;g</code> it will not be normalized during the save.</p>
+</section>
+
+
+
+
+
+
   <section id="checking">
 <h3>Comment puis-je rechercher si les pages présentent des problèmes?</h3>
-    <p style="">En utilisant <a class="print" href="http://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a>, vous pouvez vérifier si une page HTML contient des noms de classes et des valeurs d&apos;ID qui ne sont pas normalisés en NFC.</p>
-    <p style="">Si des problèmes sont détectés, vous devriez trouver un éditeur ou un outil de conversion permettant de spécifier la forme de normalisation ; utilisez-le pour enregistrer à nouveau votre page.</p>
-  </section>
+    <p style="">En utilisant <a class="print" href="http://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a>, vous pouvez vérifier si une page HTML contient des noms de classes et des valeurs d&apos;ID qui ne sont pas normalisés en NFC. (Look for the row <samp>Markup / Non-NFC class or id names</samp>.)</p>
+</section>
 </section>
 
 
