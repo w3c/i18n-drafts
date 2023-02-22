@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <title>How to use Unicode controls for bidi text</title>
-<meta name="description" content="If I'm unable to use markup to correctly order bidirectional text, what can I do?" />
+<meta name="description" content="If I'm unable to use markup to correctly order bidirectional text, what can I do?">
 <script>
 var f = { }
 
@@ -15,12 +15,12 @@ f.previousauthors = '' // as above
 f.modifiers = '' // people making substantive changes, and their affiliation
 f.searchString = 'qa-bidi-unicode-controls' // blog search string - usually the filename without extensions
 f.firstPubDate = '2009-07-10' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2016-03-10', time:'18:39'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2023-02-22', time:'17:39'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-03-10', time:'18:39'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2023-02-22', time:'17:39'} // date and time of latest edits to this document/translation
 f.contributors = 'Mati Allouche' // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
@@ -64,20 +64,25 @@ f.additionalLinks = ''
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
   </div>
     
-<section id="question">
-<h2>Question</h2>
-  <p class="question">If I'm unable to use markup to correctly order bidirectional text, what can I do?</p>
-  <div class="insideinfonote">
-    <p class="noprint info">Right-to-left text in code samples is represented by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase. </p>
-    <p>If there is a  nearby <img src="../icons/codelink.gif" alt="View code."> image, click on it to see  how the example looks in your browser. From the page that opens you can  view the source code for the example.</p>
-  </div>
-<p>This article assumes that you are familiar with bidirectional text concepts and managing bidirectional text using HTML markup, but that you need to know how to do similar things with Unicode control characters, such as when writing plain text.  If you are not familiar with bidi in HTML, you may find it helpful to first read through the article <a href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a>.</p>
-</section>
+
+
+<p>This article looks at how content authors can apply direction metadata to bidirectional text when markup is not available.</p>
+
+<div class="insideinfonote">
+<p class="noprint info">Right-to-left text in code samples is represented by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase. </p>
+</div>
+
+<p class="info">The article assumes that you are familiar with bidirectional text concepts and managing bidirectional text using HTML markup, but that you need to know how to do similar things with Unicode control characters, such as when writing plain text.  If you are not familiar with bidi in HTML, you may find it helpful to first read through the article <a href="/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a>.</p>
+
+
+
+
+
 <section id="reasons">
 <h2>Viable and non-viable use cases</h2>
     <p>You will still need to use markup to establish the default direction for a document as a whole (eg. in the <code class="kw" translate="no">html</code> tag), and for block container elements. Because control codes don't cross paragraph (read as <span class="qterm">block element</span>) boundaries, and because control codes cannot manage inheritance and scoping through the markup hierarchy, they are only appropriate for inline use.</p>
-    <p><a href="/International/questions/qa-bidi-controls"><cite>Unicode controls vs. markup for bidi support</cite></a> explains that it is generally better to use markup, if  available, than to use control codes. Unicode control characters may, however, be necessary  in situations where markup is unavailable. Examples include legacy markup such as HTML elements that only contain plain text,  any HTML attribute value, and plain text formats such as WebVTT and CSV.</p>
-  </section>
+<p>For example, although a <code class="kw" translate="no">title</code> element in the header of an HTML page can contain no markup, it is still possible to set a default base direction on the <code class="kw" translate="no">title</code> element itself (or for it to inherit the direction set on the <code class="kw" translate="no">html</code> tag). This article is about how to apply directional changes <em>within</em> the <code class="kw" translate="no">title</code> attribute text (or inline in other plain text situations), where needed, or how to apply a direction to attribute text which is different from that of the surrounding element, and so on. It also applies to plain text formats such as WebVTT and CSV.</p>
+</section>
 
 
 <section id="basedirection">
@@ -93,18 +98,18 @@ f.additionalLinks = ''
           <th>Notes</th>
         </tr>
         <tr>
-          <td>LRI</td>
-          <td>LEFT-TO-RIGHT ISOLATE</td>
-          <td>U+2066</td>
-          <td>dir = &quot;ltr&quot;</td>
-          <td>sets base direction to LTR and isolates the embedded content from the surrounding text</td>
-        </tr>
-        <tr>
           <td>RLI</td>
           <td>RIGHT-TO-LEFT ISOLATE</td>
           <td>U+2067</td>
           <td>dir = &quot;rtl&quot;</td>
-          <td>ditto, but for RTL</td>
+          <td>sets base direction to RTL and isolates the embedded content from the surrounding text</td>
+        </tr>
+      <tr>
+          <td>LRI</td>
+          <td>LEFT-TO-RIGHT ISOLATE</td>
+          <td>U+2066</td>
+          <td>dir = &quot;ltr&quot;</td>
+          <td>ditto, but for LTR</td>
         </tr>
         <tr>
           <td>FSI</td>
@@ -154,6 +159,13 @@ f.additionalLinks = ''
           <th>Comment</th>
         </tr>
         <tr>
+          <td>PDI</td>
+          <td>POP DIRECTIONAL ISOLATE</td>
+          <td>U+2069</td>
+          <td>end tag</td>
+          <td>used for RLI, LRI or FSI</td>
+        </tr>
+      <tr>
           <td rowspan="2">PDF</td>
           <td rowspan="2">POP DIRECTIONAL FORMATTING</td>
           <td rowspan="2">U+202C</td>
@@ -164,22 +176,13 @@ f.additionalLinks = ''
           <td>&lt;/bdo&gt;</td>
           <td>used for RLO or LRO</td>
         </tr>
-        <tr>
-          <td>PDI</td>
-          <td>POP DIRECTIONAL ISOLATE</td>
-          <td>U+2069</td>
-          <td>end tag</td>
-          <td>used for RLI, LRI or FSI</td>
-        </tr>
       </tbody>
     </table>
     <p>These characters are invisible, although in some editors it may be possible to show symbols that represent them. You could also use character escapes to represent them, such as <code>&amp;#x2067;</code>, but in bidirectional source text you may find that the characters in the escape don't stay together. (See <a href="https://www.w3.org/TR/2014/NOTE-i18n-html-tech-bidi-20140603/#bidisource"><cite>Problems with bidirectional source text in markup</cite></a> for more on this.)</p>
-    <div class="sidenoteGroup">
-    <p>When demarcating the boundaries of the change in base direction, you really want to avoid what's inside the boundaries interacting with what's outside – ie. you want to <em>isolate</em> it. For this reason, in an ideal world you would want to follow the recommendation of the Unicode Standard to  use RLI and LRI,  and avoid using RLE and LRE. Browsers running on Blink and Gecko engines (eg. Chrome, Firefox, etc.) support the use of RLI/LRI, but unfortunately, at the time of writing, WebKit browsers (eg. Safari) still don't support them properly, so you will need to resort to a workaround which we will describe below in order to avoid these spillover effects.</p>
-    <aside class="sideinfonote"><p class="info">This is one area where markup has an advantage over control codes, since it looks like isolation will be supported for markup before it is for the control codes.</p></aside>
-    </div>
-    <p>FSI is in the same boat as RLI/LRI as far as browser support is concerned. There is a set of tests for these control codes, with <a href="https://www.w3.org/International/tests/repo/results/rli-etc">results for major browsers</a>.</p>
-    <p>The following example shows how these control characters could be used in
+
+<p>When demarcating the boundaries of the change in base direction, you really want to avoid what's inside the boundaries interacting with what's outside – ie. you want to <em>isolate</em> it. For this reason, in an ideal world you would want to follow the recommendation of the Unicode Standard to  use RLI and LRI,  and avoid using RLE and LRE.</p>
+
+<p>The following example shows how these control characters could be used in
       plain text. It shows a tooltip in HTML that includes the title of the document linked to, plus some text indicating the language of the destination document. Note how the text '(FAQ)' appears to the right of the Persian text. This is incorrect.</p>
     <figure class="example">
 <p><a href="qa-bidi-unicode-controls-data/eg-tooltip-wrong" onclick="showExample('qa-bidi-unicode-controls-data/eg-tooltip-wrong'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/persian-link-wrong.png" alt="A tooltip without control characters." title="'SNOITSEUQ DEKSA YLTNEUQERF (faq)' [in persian]" /></a></p>
@@ -188,44 +191,98 @@ f.additionalLinks = ''
     <figure class="example">
 <p><a href="qa-bidi-unicode-controls-data/eg-tooltip-ok" onclick="showExample('qa-bidi-unicode-controls-data/eg-tooltip-ok'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/persian-link-right.png" alt="A tooltip with control characters." title="'(faq) SNOITSEUQ DEKSA YLTNEUQERF' [in persian]" /></a></p>
     </figure>
-    <p>To achieve the correct effect we add the two invisible control characters,  <span class="uname" style="color: green;">U+202B RIGHT-TO-LEFT EMBEDDING</span> (RLE), and <span class="uname" style="color: red;">U+202C POP DIRECTIONAL FORMATTING</span> (PDF), represented in the code snippet below as numeric character entities: </p>
+    <p>To achieve the correct effect we add the two invisible control characters,  <span class="uname" style="color: green;">U+2067 RIGHT-TO-LEFT ISOLATE</span> (RLI), and <span class="uname" style="color: red;">U+2069 POP DIRECTIONAL ISOLATE</span> (PDI), represented in the code snippet below as numeric character entities: </p>
   <figure class="example">
       <blockquote><code>
-        <bdo dir="ltr">title=&quot;'&amp;<span style="color: green;" title="RLE">#x202B;</span>...&amp;<span style="color: red;" title="PDF">#x202C;</span>' [in Persian]&quot;</bdo>
+        <bdo dir="ltr">title=&quot;'&amp;<span style="color: green;" title="RLE">#x2067;</span>FREQUENTLY ASKED QUESTIONS&amp;<span style="color: red;" title="PDF">#x2069;</span>' [in persian]&quot;</bdo>
         </code></blockquote>
     </figure>
+
+<div id="out_tooltip" class="browser_output">
+<p class="browser_output_title">Output in your browser (mouse over for result):</p>
+<div class="browser_output_example" lang="ja">
+<p>See <a title="'&#x202B;سوالات متداول (FAQ)&#x202C;' [in Persian]" href="http://www.webstandards.org/learn/faq/faq-farsi-translation/"> another example</a>.</p>
+</div>
+</div>
 </section>
   
 <section id="wrapping">
 <h2>Tightly wrapping opposite-direction phrases</h2>
     <p>In some cases the bidi algorithm copes fine with bidirectional text, and in others it needs some help. In <a href="/International/articles/inline-bidi-markup/"><cite>Inline markup and bidirectional text in HTML</cite></a><cite> </cite>we make the case that the easiest approach to marking up bidirectional text is to put markup at the start and end of each directional change in the text. This doesn't do any harm, it avoids the likelihood of missing a situation where markup is needed, and it makes the life of the content author much simpler.</p>
     <p>A similar recommendation is valid when dealing with Unicode control characters.</p>
-    <p>Another thing to bear in mind is that ranges need to be nested appropriately. If you have an embedded LTR range in a RTL context, and that LTR range has some RTL text inside it, it won't produce the right result if your ranges are side by side rather than nested. Note how the direction changes are embedded in the following example, rather than side by side.</p>
-    <figure class="example">
-    <p><code>the title is <span style="color:red;">&amp;#x202B;</span>AN INTRODUCTION TO <span style="color:red;">&amp;#x202A;</span>c++<span style="color:red;">&amp;pdf;</span><span style="color:red;">&amp;pdf;</span> in arabic.</code></p>
-    </figure>
+    <p>However, it's important to bear in mind is that ranges need to be nested appropriately. If you have an embedded LTR range in a RTL context, and that LTR range has some RTL text inside it, it won't produce the right result if your ranges are side by side rather than nested. Note how the direction changes are embedded in the following example, rather than side by side.</p>
+
+<figure class="example">
+<p><code>the title is <span style="color:red;">&amp;#x2067;</span>AN INTRODUCTION TO <span style="color:red;">&amp;#x2066;</span>c++<span style="color:red;">&amp;#x2069;</span><span style="color:red;">&amp;#x2069;</span> in arabic.</code></p>
+</figure>
+
+<div id="out_nesting" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div class="browser_output_example" lang="ja">
+<p>The title is &#x2067;مدخل إلى &#x2066;C++&#x2069;&#x2069; in Arabic.</p>
+</div>
+</div>
 </section>
   
   
-  <section id="exceptions">
+
+
+
+
+
+<section id="spillovers">
 <h2>Dealing with spillover issues</h2>
     <p>A classic example of a spillover effect is the following, where the opposite-direction phrase is followed by a logically separate number. This is the code with RLE...PDF around the opposite-direction text:</p>
-    <figure class="example">
-      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span> <a href="qa-bidi-unicode-controls-data/eg-number-wrong" onclick="showExample('qa-bidi-unicode-controls-data/eg-number-wrong'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example."></a></div>
-      <p><code>we find the phrase '<span style="color:red;">&amp;#x202B;</span>INTERNATIONALIZATION ACTIVITY<span style="color:red;">&amp;#x202C;</span>' 5 times on the page.</code></p>
-    </figure>
-    <p>You would expect to see:</p>
-    <figure>
-      <p><img src="qa-bidi-unicode-controls-data/number-following-right.png" alt="Displayed result of previous code"></p>
+
+
+<figure class="example">
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> Bad code. Don't copy!</span> <a href="qa-bidi-unicode-controls-data/eg-number-wrong" onclick="showExample('qa-bidi-unicode-controls-data/eg-number-wrong'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example."></a></div>
+<p><code>we find the phrase '<span style="color:red;">&amp;#x202B;</span>INTERNATIONALIZATION ACTIVITY<span style="color:red;">&amp;#x202C;</span>' 5 times on the page.</code></p>
+</figure>
+
+<div id="out_number_placement_wrong" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div class="browser_output_example" lang="ja">
+<p>We found the phrase "&#x202B;نشاط التدويل&#x202C;" 5 times on the page.</p>
+</div>
+</div>
+
+
+<p>You would expect to see:</p>
+<figure>
+<p><img src="qa-bidi-unicode-controls-data/number-following-right.png" alt="Displayed result of previous code"></p>
     </figure>
     <p style="clear: both;">You would actually see:</p>
     <figure>
       <p><img src="qa-bidi-unicode-controls-data/number-following-wrong.png" alt="Displayed result of previous code"></p>
     </figure>
     <p style="clear: both;">This happens because the bidi algorithm tells the browser to treat the "5″ as part of the Hebrew text, ignoring that the preceding text is in a different embedding level. This is not appropriate. We need to find a way to say that the name and the number are separate things, ie. to isolate the inserted name from the number.</p>
-    <p style="clear: both;">If the RLI/LRI control codes were implemented everywhere, they would solve this problem by isolating the embedded text from the number that follows it. You would simply use RLI...PDI instead of RLE...PDF. Since RLI/LRI, at the time of writing, are not supported by WebKit browsers we will need to find another solution.</p>
-    <p>What we need here is one of the following two other invisible directional control characters provided by Unicode. </p>
-    <table class="inband">
+<p style="clear: both;">The RLI/LRI control codes  solve this problem by isolating the embedded text from the number that follows it. You would simply use RLI...PDI instead of RLE...PDF.</p>
+ 
+
+<figure class="example">
+<p><code>we find the phrase '<span style="color:red;">&amp;#x2067;</span>INTERNATIONALIZATION ACTIVITY<span style="color:red;">&amp;#x2069;</span>' 5 times on the page.</code></p>
+</figure>
+
+<div id="out_number_placement_right" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div class="browser_output_example" lang="ja">
+<p>We found the phrase "&#x2067;نشاط التدويل&#x2069;" 5 times on the page.</p>
+</div>
+</div>
+</section>
+
+
+
+
+
+<section id="rlmlrm">
+<h2>RLM and LRM</h2>
+
+<p>Unicode provides two other invisible directional control characters.</p>
+
+
+<table class="inband">
       <tbody>
         <tr>
           <th>Character</th>
@@ -249,53 +306,76 @@ f.additionalLinks = ''
           <td>strongly typed LTR character</td>
         </tr>
       </tbody>
-    </table>
+</table>
     <p>They are less problematic because they are used singly, ie. they are not used in pairs to delimit ranges
-      of text like the other control characters we have discussed. Because they are strongly-typed characters, they extend or break the ranges established by default by the bidi algorithm.</p>
+      of text like the other control characters we have discussed. However, they don't have the same power as the paired formatting codes. Because they are strongly-typed characters, they extend or break the ranges established by default by the bidi algorithm.</p>
     <p>In the example above, we need to tell the bidi algorithm that the 5 is part of the LTR text. To do that, we can insert an LRM character before it.</p>
     <div class="sidenoteGroup">
     <figure class="example">
       <div class="badcode"><a href="qa-bidi-unicode-controls-data/eg-number-ok" onclick="showExample('qa-bidi-unicode-controls-data/eg-number-ok'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example."></a></div>
-      <p><code>we find the phrase '<span style="color:red;">&amp;#x202B;</span>INTERNATIONALIZATION ACTIVITY<span style="color:red;">&amp;#x202C;&amp;lrm;</span>' 5 times on the page.</code></p>
+      <p><code>we find the phrase 'INTERNATIONALIZATION ACTIVITY'<span style="color:red;">&amp;lrm;</span> 5 times on the page.</code></p>
     </figure>
-    <aside class="sideinfonote"><p class="info">We use an HTML named entity escape here, since these are defined for RLM and LRM. They are not defined for the previously mentioned control characters (RLE, etc.).</p></aside>
-    </div>
-    <p>This will now produce the display we expect. In this particular case, the LRM on its own would have been sufficient to produce the correct display, but in other cases the RLE...PDF is needed to make the embedded opposite-direction text work properly. Here we have just included RLE...PDF around the opposite-direction text per the advice above to tightly wrap all opposite-direction text, since it does no harm but solves potential issues without us having to think about them.  </p>
-  </section>
+    <aside class="sideinfonote"><p class="info">We use an HTML named entity escape here, since these are defined for RLM and LRM. They are not defined for the previously mentioned control characters (RLI, RLE, etc.).</p></aside>
+</div>
+
+<div id="out_number_placement" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div class="browser_output_example" lang="ja">
+<p>We found the phrase "نشاط التدويل"&lrm; 5 times on the page.</p>
+</div>
+</div>
+
+
+<p>This will now produce the display we expect. Because the LRM code point is strongly LTR in direction, it breaks the link between the number and the preceding RTL text.</p>
+<p>However, one thing these single characters cannot do is establish a base direction for an embedded range of inline text so that punctuation and nested direction changes are handled properly. For those use cases you need to use the paired characters.</p>
+</section>
+
+
+
+
+
 
 
 <section id="exceptions">
 <h2>Related issues</h2>
-    <p>In this section we illustrate some additional spillover problems that can be solved using RLM and LRM.</p>
-  <p>In our first example, we have a list of same-direction runs of text, which need to be ordered according to the overall context (in this case LTR).</p>
-  
-  <section id="lists">
+    <p>In this section we illustrate some additional spillover problems that can be solved using directional formatting characters.</p>
+<section id="lists">
 <h3><a href="#lists">Lists</a></h3>
-    <p> Neutrals between same directional runs can  sometimes be misinterpreted by the bidi algorithm. In this use case we have several country names in Arabic listed in a LTR paragraph. This is an example of an opposite-direction phrase followed by another, but logically separate, opposite-direction phrase. Here is the source code without any bidi markup:</p>
+    <p>In our first example, we have a list of same-direction runs of text (in this case RTL), which need to be ordered according to the overall context (in this case LTR).</p>
+<p> Neutrals between same directional runs can  sometimes be misinterpreted by the bidi algorithm. In this use case we have several country names in Arabic listed in a LTR paragraph. This is an example of an opposite-direction phrase followed by another, but logically separate, opposite-direction phrase.</p>
     <p>We expect to see the following:</p>
     <figure>
       <p><img src="qa-bidi-unicode-controls-data/comma-right.gif" alt="Egypt appears to the left of Bahrain." /></p>
     </figure>
-    <p>In the actual result, the first two Arabic words are reversed and the intervening comma is moved to the right side of the space between the words.</p>
+    <p>If no formatting codes are used the actual result is that the first two Arabic words are reversed and the intervening comma is moved to the right side of the space between the words.</p>
     <figure>
       <p><img src="qa-bidi-unicode-controls-data/comma-wrong.gif" alt="Bahrain appears to the left of Egypt." /></p>
     </figure>
     <p>The reason for the failure is that, with a strongly typed right-to-left (RTL) character on either side, the bidirectional algorithm
       sees the neutral comma and space as part of the Arabic text. It is interpreting the first two Arabic words and the comma and space  as a single directional run in Arabic. In fact the comma  and space are part of the English text, and should mark the boundary between the two separate right-to-left directional runs in
       Arabic. </p>
-    <p>The solution for this use case is to break the first two items of the list apart by inserting the strong LTR-typed LRM character.</p>
+    <p>The solution for this use case is to break the first two items of the list apart by either surrounding each list item with paired RLI/PDI codes, or by inserting the strong LTR-typed LRM character.</p>
     <figure class="example">
       <div class="badcode"><a href='qa-bidi-unicode-controls-data/eg-lists-ok' onclick="showExample('qa-bidi-unicode-controls-data/eg-lists-ok'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>the names of these states in arabic are <span style="color:red;">&amp;#x202B;</span>EGYPT<span style="color:red;">&amp;#x202C;&amp;lrm;</span>, <span style="color:red;">&amp;#x202B;</span>BAHRAIN<span style="color:red;">&amp;#x202C;</span> and <span style="color:red;">&amp;#x202B;</span>KUWAIT<span style="color:red;">&amp;#x202C;</span> respectively.</code></p>
+      <p><code>the names of these states in arabic are <span style="color:red;">&amp;#x2067;</span>EGYPT<span style="color:red;">&amp;#x2069;</span>, <span style="color:red;">&amp;#x2067;</span>BAHRAIN<span style="color:red;">&amp;#x2069;</span> and <span style="color:red;">&amp;#x2067;</span>KUWAIT<span style="color:red;">&amp;#x2069;</span> respectively.</code></p>
+<p><code>the names of these states in arabic are EGYPT<span style="color:red;">&amp;lrm;</span>, BAHRAIN </span>and </span>KUWAIT respectively.</code></p>
     </figure>
-  </section>
+
+<div id="out_lists_ok" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div class="browser_output_example" lang="ja">
+<p>The names of these states in Arabic are &#x2067;‫مصر‬&#x2069;, &#x2067;‫البحرين‬&#x2069; and &#x2067;‫الكويت‬&#x2069; respectively.</p>
+<p>The names of these states in Arabic are ‫مصر‬&lrm;, ‫البحرين‬ and ‫الكويت‬ respectively.</p>
+</div>
+</div>
+</section>
   
   
   <section id="punctuation">
 <h3>Punctuation</h3>
     <p> It is very common  for punctuation or some other neutral character to appear at the end of an opposite direction phrase and belong with that phrase.</p>
-    <p>Unfortunately, such neutrals between different directional runs are typically misinterpreted unless there is additional bidi markup. In the following example, the exclamation mark  should appear at the end of the Arabic text, ie. to
-      the left, like this:</p>
+    <p>Unfortunately, such neutrals between different directional runs are typically misinterpreted unless the Bidi Algorithm is given additional help. In the following example, the exclamation mark  is part of the Arabic text and so should appear to
+      its left, like this:</p>
     <figure>
       <p><img src="qa-bidi-unicode-controls-data/exclamation-right.gif" alt="An exclamation mark appearing to the left of Arabic text." /></p>
     </figure>
@@ -309,15 +389,29 @@ f.additionalLinks = ''
       'in Arabic'.</p>
     <p>We can fix this easily in one of two ways. We can simply <span style="clear: both;">add an RLM/LRM character after the exclamation mark. You need to choose the character that has the same directionality as the preceding phrase, thereby extending the length of the directional run to include the punctuation.</span></p>
     <figure class="example">
-      <div><a href="qa-bidi-unicode-controls-data/eg-punctuation-rlm" onclick="showExample('qa-bidi-unicode-controls-data/eg-punctuation-rlm'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
       <p><code>the title is &quot;INTERNATIONALIZATION ACTIVITY!<span style="color:red;">&amp;rlm;</span>&quot; in arabic.</code></p>
     </figure>
+<div id="out_punctuation_wrong" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div class="browser_output_example" lang="ja">
+<p>The title is "نشاط التدويل!&rlm;" in arabic.</p>
+</div>
+</div>
 
-    <p style="clear: both;">Alternatively, you could wrap the opposite-direction phrase in paired controls, in this case RLE followed by PDF. Ideally, of course, you would use RLI+PDI, so that the phrase is also isolated. That would protect it from future edits that might add something problematic alongside. In the meantime, adding an additional LRM after the embedding controls will help bulletproof against later edits that might add, for example, a number directly afterwards.</p>
+    <p style="clear: both;">Alternatively, you could wrap the opposite-direction phrase in paired controls, in this case RLI followed by PDI.</p>
     <figure class="example">
-      <div><a href="qa-bidi-unicode-controls-data/eg-punctuation-ok" onclick="showExample('qa-bidi-unicode-controls-data/eg-punctuation-ok'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /></a></div>
-      <p><code>the title is &quot;<span style="color:red;">&amp;#x202B;</span>INTERNATIONALIZATION ACTIVITY!<span style="color:red;">&amp;#x202C;&amp;lrm;</span>&quot; in arabic.</code></p>
+      <p><code>the title is &quot;<span style="color:red;">&amp;#x2067;</span>INTERNATIONALIZATION ACTIVITY!<span style="color:red;">&amp;#x2069;</span>&quot; in arabic.</code></p>
     </figure>
+
+
+<div id="out_punctuation_ok" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div class="browser_output_example" lang="ja">
+<p>The title is "&#x2067;نشاط التدويل<span style="color:green">!</span>&#x2069;" in arabic.</p>
+</div>
+</div>
+
+
   </section>
 </section>
 
