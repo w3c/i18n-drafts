@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Utiliser des séquences d’échappement dans des documents balisés et en CSS</title>
+<meta name="description" content="Comment utiliser les séquences d’échappement dans des documents balisés et en CSS ? Quand les utiliser et quand s’en passer ?" />
+<script type="application/javascript">
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-escapes'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-escapes'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-08-05'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2010-08-12', time:'16:47'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-02-12', time:'20:00'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Gwendoline Clavé, <a href="https://www.clavoline-traduction.fr/" rel="nofollow">Clavoline Traduction</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact = "clave.gwen@proton.me"; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-escapes-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-fr.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Utiliser des séquences d’échappement dans des documents balisés et en CSS</h1>
+</header>
+
+
+<div id="audience">
+<!--p><span id="intendedAudience" class="leadin">Intended audience:</span>  HTML/XML/CSS coders (using editors or scripting), script developers (PHP, JSP, etc.), and anyone who needs guidance on how and when to use alternatives to actual characters in a document. </p-->
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+ 
+ 
+ 
+
+<p>Les séquences d’échappement permettent d’écrire des caractères dans des documents balisés en utilisant uniquement des points de code ASCII. Elles sont très pratiques quand vous ne pouvez pas saisir un caractère dont vous avez besoin ou quand vous souhaitez visualiser dans votre code un caractère invisible.</p>
+
+<p>Cet article répond aux questions suivantes : comment utiliser les séquences d’échappement dans des documents balisés et en CSS ? Quand les utiliser et quand s’en passer ?</p>
+
+
+
+<section id="nutshell">
+<h2 id="quickanswer">Réponse courte</h2>
+  <p>En HTML, vous avez plusieurs manières d’échapper le signe euro <span class="qchar">€</span> :</p>
+  <table>
+    <thead>
+  <tr><th>Format</th><th>Nom</th></tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><code>&amp;#x20AC;</code></td>
+    <td>référence de caractère numérique hexadécimale</td></tr>
+  <tr>
+    <td><code>&amp;#8364;</code></td>
+    <td>référence de caractère numérique décimale</td>
+  </tr>
+  <tr>
+    <td><code>&amp;euro;</code></td>
+    <td>référence de caractère nommée</td>
+  </tr>
+  </tbody>
+</table>
+  <p>En CSS, vous pouvez utiliser l’un des formats suivants :</p>
+  <table>
+  <thead>
+  <tr><th>Format</th>
+  <th>Notes</th></tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><code>\20AC</code></td>
+    <td>obligatoirement suivi d’une espace si le prochain caractère se situe dans l’intervalle a-f, A-F ou 0-9</td></tr>
+  <tr>
+    <td><code>\0020AC</code></td>
+    <td>obligatoirement constitué de six chiffres, éventuellement suivis d’une espace</td>
+  </tr>
+  </tbody>
+  </table>
+  <p>Lorsqu’une séquence d’échappement est suivie d’une espace, celle-ci est traitée comme si elle en faisait partie intégrante. Pour que votre séquence d’échappement soit réellement suivie d’une espace après interprétation, faites-la suivre de deux espaces. Si vous devez utiliser une séquence d’échappement dans un identificateur CSS, reportez-vous à la <a href="#css_identifiers">section correspondante</a> pour plus d’informations.</p>
+  <p>Choisir l’encodage de caractères UTF-8 pour votre page (comme nous le recommandons) vous évitera d’utiliser des séquences d’échappement. Celles-ci pourront toutefois vous être utiles pour représenter des caractères invisibles, ambigus, ou encore susceptibles d’interagir de manière indésirable avec le texte ou le code source qui les entoure.</p>
+  <p>Pour en savoir plus, poursuivez votre lecture.</p>
+</section>
+
+
+
+<section id="answer">
+<h2>Les séquences d’échappement dans les documents balisés</h2>
+
+    <p>Une <dfn>séquence d’échappement</dfn> permet de représenter n’importe quel caractère Unicode en HTML, XHTML ou XML en utilisant uniquement des caractères ASCII. </p>
+    <aside class="insideinfonote"><p class="info">Chaque spécification donne à ces séquences un nom différent. Par exemple, une référence de caractère nommée peut aussi s’appeler <dfn>référence d’entité de caractère</dfn>. Dans cet article, nous utilisons les noms employés en HTML5.</p></aside>
+    <p>Dans un document balisé, vous pouvez utiliser deux types de séquences d’échappement : les <dfn id="ncr">références de caractères numériques (NCR)</dfn> et les <dfn id="entity_ref">références de caractères nommées</dfn>. Par exemple, voici différentes manières de représenter le caractère <span class="uname">U+00A0 ESPACE INSÉCABLE</span>.</p>
+    <p>(Le caractère <span class="uname">ESPACE INSÉCABLE</span> ressemble à une espace, mais empêche un retour automatique à la ligne entre les caractères qui l’entourent. En français, il est couramment employé avant des signes de ponctuation comme le deux-points et le point d’exclamation. Ces deux signes doivent être précédés d’une espace, mais apparaitre sur la même ligne que le mot qui les précède.)</p>
+    <div class="sidenoteGroup"> 
+      <!--<p><span class="newterm">NCRs</span> (Numeric Character References) and <span class="newterm">character entities</span> are types of <span class="newterm">escape</span>, ie. ways of representing any Unicode character in XML or (X)HTML using only ASCII characters. For example, the following are different ways of representing the character <span class="uname">U+00A0 NO-BREAK SPACE</span>:</p>-->
+      <dl>
+        <dt><code>&amp;#xA0;</code></dt>
+        <dd>Une référence de caractère numérique hexadécimale. Toutes les références de caractères numériques commencent par <code>&amp;#</code> et finissent par <code>;</code>. Le <code>x</code> indique la présence d’un nombre hexadécimal qui représente la valeur de point de code d’un caractère Unicode. Le nombre hexadécimal n’est pas sensible à la casse.
+          <div class="example"><code lang="fr">&lt;p&gt;Vive la France&amp;#xA0;!&lt;/p&gt;</code></div>
+        </dd>
+        <dt><code>&amp;#160;</code></dt>
+        <dd>Une référence de caractère numérique décimale. Cette référence utilise un nombre décimal pour représenter le même point de code Unicode.
+          <div class="example"><code lang="fr">&lt;p&gt;Vive la France&amp;#160;!&lt;/p&gt;</code></div>
+        </dd>
+        <dt><code>&amp;nbsp;</code></dt>
+        <dd>
+          <p style="margin-top:0;">Une référence de caractère nommée (formée à partir de quatre lettres du terme anglais <em>Non-Breaking SPace</em>). Ce type de séquence d’échappement est très différent. Les références de caractères nommées sont définies dans la spécification du langage de balisage. Cela signifie par exemple qu’en HTML, seul un ensemble précis de références de caractères nommées (définies dans la spécification HTML) permet de représenter des caractères. Par ailleurs, cet ensemble n’inclut qu’une petite sous-partie de l’ensemble défini pour Unicode. </p>
+          <p>Remarque : le nom est sensible à la casse. En HTML, <code>&amp;Aacute;</code> représente la <em>majuscule</em> accentuée <span class="qchar">Á</span>, tandis que <code>&amp;aacute;</code> représente la <em>minuscule</em> <span class="qchar">á</span>.
+          </p>
+          <div class="example"><code lang="fr">&lt;p&gt;Vive la France&amp;nbsp;!&lt;/p&gt;</code></div>
+        </dd>
+      </dl>
+      <aside class="sideinfonote"><p class="warning">Bien que certains navigateurs vous permettent d’omettre le point-virgule à la fin d’une référence de caractère numérique, cette pratique est déconseillée, car elle peut entrainer des problèmes d’interopérabilité. Lorsqu’une séquence d’échappement fait partie d’un mot, l’utilisation du point-virgule permet par ailleurs de s’assurer que sa fin sera bien détectée.</p></aside>
+    </div>
+    
+<section id="cpnumbers">
+<h3>Les chiffres du point de code</h3>
+    <p>Autre point important, la valeur d’une référence de caractère numérique (comme <code>&amp;#x20AC;</code> ou <code>&amp;#8364;</code> pour le signe euro <span class="qchar">€</span>) est interprétée en tant que caractère Unicode, <strong>quel que soit l’encodage utilisé dans votre document</strong>. </p>
+    <p>Par exemple, dans le jeu de caractères Windows-1252, les chiffres du point de code 80 correspondent au signe euro. Les personnes qui travaillent sur des contenus utilisant cet encodage font donc souvent l’erreur de représenter le signe euro à l’aide de la référence <code>&amp;#x80;</code>. En HTML, cette séquence d’échappement devrait se traduire par un caractère de contrôle, puisqu’elle correspondrait au caractère situé à la position 80 du répertoire Unicode. (En réalité, dans ce cas particulier, les navigateurs ont tendance à corriger cette erreur sans la signaler. Voir les <a class="print" href="/International/tests/repo/results/escapes#reallocated">pages de test</a>.) </p>
+  </section>
+</section>
+  
+  
+  
+  
+<section id="cssescapes">
+<h2>Les séquences d’échappement en CSS</h2>
+    <p>CSS ne représente pas les séquences d’échappement de la même manière. Les séquences d’échappement commencent par une barre oblique inverse suivie d’un nombre hexadécimal qui représente la valeur du point de code Unicode <em>hexadécimale</em> du caractère.</p>
+    <p>Tant qu’une séquence n’est pas suivie d’un caractère situé dans l’intervalle A–F, a–f ou 0–9, vous n’avez rien de plus à faire. Par exemple, vous pouvez écrire le mot <span class="qterm" lang="fr">émotion</span> de la façon suivante.</p>
+    <div class="sidenoteGroup">
+    <div class="example"><code lang="fr">\E9motion</code></div>
+    <aside class="sideinfonote">
+    <p class="info">L’échappement du caractère <span class="qchar">é</span> n’est pas nécessaire ici. Il sert simplement d’exemple. La séquence de caractères « émotion » fonctionnerait également. (Cependant, pour découvrir les problèmes liés à l’utilisation de chiffres au début d’un identificateur, reportez-vous à la sous-section suivante.)</p>
+    </aside>
+    </div>
+    <p>En revanche, quand une séquence est suivie d’un caractère utilisable dans des nombres hexadécimaux, la fin de la séquence est difficile à identifier. Lorsque cela se produit, vous avez deux possibilités. La première consiste à faire suivre la séquence d’échappement d’une espace. Cette espace fait partie intégrante de la séquence d’échappement et disparait après interprétation du caractère. L’exemple suivant montre une manière de représenter le mot <span class="qterm" lang="fr">édition</span> de sorte que le caractère <span class="qchar">d</span> ne soit pas considéré comme partie intégrante de la séquence d’échappement.</p>
+    <div class="example"><code lang="fr">\E9 dition</code></div>
+    <p>La deuxième possibilité consiste à utiliser un nombre hexadécimal à six chiffres, avec ou sans espace. Voici une autre manière d’écrire <span class="qterm" lang="fr">édition</span>.</p>
+    <div class="example"><code lang="fr">\0000E9dition</code></div>
+    <p> Toute espace qui suit un nombre hexadécimal est intégrée à la séquence d’échappement. Par conséquent, si vous souhaitez que votre caractère soit réellement suivi d’une espace après interprétation, vous devrez le faire suivre de deux espaces (quelle que soit la longueur du nombre hexadécimal).</p>
+    
+    
+<section id="css_identifiers">
+<h3>Utiliser des séquences d’échappement dans des identificateurs CSS</h3>
+    <p>En CSS, les identificateurs (comme les noms de classe dans les sélecteurs CSS) présentent quelques particularités. Les seuls <a href="https://www.w3.org/TR/css-syntax-3/#ident-token-diagram">caractères ASCII</a> par lesquels ils peuvent commencer sont les caractères - _ et les caractères situés dans l’intervalle a-z ou A-Z. En revanche, ils peuvent sans problème commencer par un caractère non ASCII ou par une séquence d’échappement, quel qu’en soit le type.</p>
+    <p>En d’autres termes, vous ne pouvez pas faire commencer un identificateur par un chiffre ASCII situé dans l’intervalle 0-9 (ce qui ne vous empêche pas d’utiliser des chiffres après le premier caractère). Si le nom de la classe à laquelle vous souhaitez faire référence commence par un chiffre, vous devrez donc l’échapper.</p>
+    <p>Par exemple, pour sélectionner un élément HTML qui porte le nom de classe « 123 », vous devrez écrire :</p>
+    <div class="example"><code lang="fr">.\31 23 { ... }</code></div>
+    <p>Comme vous pouvez le voir, l’espace sépare la séquence d’échappement du reste du nom de la classe, si bien que la fin de la séquence est clairement identifiée. Si vous aviez écrit <code>\3123</code>, cette séquence aurait été interprétée comme ㄣ [<span class="uname">U+3123 LETTRE BOPOMOFO EN</span>]. (Vous pourriez aussi écrire <code>\00003123</code>, puisque la séquence d’échappement en CSS s’achève après le sixième caractère qui suit la barre oblique inverse.)</p>
+    <p>Il n’est pas nécessaire d’échapper la partie « 23 » de l’identificateur, puisque les chiffres sont autorisés après la première position.</p>
+    </section>
+    
+    
+    <section id="css_other">
+<h3>Séquences et barres obliques inverses</h3>
+    <p>Vous trouverez ci-dessous toutes les manières valables d’échapper une séquence de caractères, comme ceux de la séquence de hiéroglyphes égyptiens <img src="qa-escapes-data/egyptian.png" alt="𓌢𓅱𓀁"/>, qui signifie « voix ».</p>
+    <div class="example">
+      <p><code lang="fr">\13322\13171\13001</code></p>
+      <p><code lang="fr">\13322 \13171 \13001</code></p>
+      <p><code lang="fr">\013322\013171\013001</code></p>
+      <p><code lang="fr">\013322 \013171 \013001</code></p>
+    </div>
+    <p>Vous pouvez aussi utiliser la barre oblique inverse en CSS avant un caractère de syntaxe, pour éviter qu’il ne soit lu comme s’il faisait partie intégrante du code. Pour plus d’informations sur les séquences d’échappement en CSS, consultez le <a class="print" href="http://www.w3.org/TR/css-syntax-3/#escaping">module consacré à la syntaxe du CSS</a>.</p>
+</section>
+</section>
+  
+  
+  
+  
+<section id="not">
+<h2> Quand se passer de séquences d’échappement</h2>
+    <p>Il est presque toujours préférable de choisir un encodage qui vous permet de représenter des caractères sous leur forme normale au lieu d’utiliser des références de caractères numériques ou nommées.</p>
+    <p>L’utilisation de séquences d’échappement peut compliquer la lecture et la maintenance du code source tout en augmentant considérablement la taille d’un fichier.</p>
+    <p>Les développeurs et développeuses anglophones s’imaginent souvent que les autres langues n’utilisent les caractères non ASCII que de façon occasionnelle. C’est pourtant faux.</p>
+    <p>Prenons pour exemple le passage suivant, en tchèque.</p>
+    <blockquote>
+      <p lang="cs">Jako efektivnější se nám jeví pořádání tzv. Road Show prostřednictvím našich autorizovaných dealerů v Čechách a na Moravě, které proběhnou v průběhu září a října.</p>
+    </blockquote>
+    <p>Si vous deviez utiliser des références de caractères numériques pour tous les caractères non ASCII, ce passage serait illisible, difficile à maintenir et beaucoup plus long. Bien sûr, ce serait encore pire dans une langue qui n’utilise pas du tout l’alphabet latin.</p>
+    <blockquote>
+      <p lang="cs">Jako efektivn&amp;#x115;j&amp;#x161;&amp;#xED; se n&amp;#xE1;m jev&amp;#xED; po&amp;#x159;&amp;#xE1;d&amp;#xE1;n&amp;#xED; tzv. Road Show prost&amp;#x159;ednictv&amp;#xED;m na&amp;#x161;ich autorizovan&amp;#xFD;ch dealer&amp;#x16F; v &amp;#x10C;ech&amp;#xE1;ch a na Morav&amp;#x11B;, kter&amp;#xE9; prob&amp;#x11B;hnou v pr&amp;#x16F;b&amp;#x11B;hu z&amp;#xE1;&amp;#x159;&amp;#xED; a &amp;#x159;&amp;#xED;jna.</p>
+    </blockquote>
+    <p>Comme nous l’avons déjà vu, pour le texte ordinaire, les caractères sont préférables aux séquences d’échappement.</p>
+    <p id="useinxhtml"><strong class="leadin">Utilisation en XHTML.</strong> Imaginons que vous utilisiez des références de caractères nommées dans un document analysé en tant que XML et que ces entités soient définies dans des fichiers externes que les outils d’analyse du XML ne lisent pas. Dans de tels cas, les références d’entités ne seront pas remplacées par les caractères correspondants. Par conséquent, si vous devez utiliser des séquences d’échappement, mieux vaut employer des références de caractères numériques ou définir dans votre document les entités nécessaires. </p>
+    <p>Si vous utilisez des <a class="print" href="https://html.spec.whatwg.org/multipage/named-characters.html#named-character-references">références de caractères nommées définies en HTML</a> (comme <code translate="no">&amp;aacute;</code>) pour représenter des caractères en XHTML, vous devriez faire attention lorsque votre contenu est interprété à l’aide d’analyseurs syntaxiques XML et d’autres outils.</p>
+</section>
+
+
+
+
+<section id="use">
+<h2>Quand utiliser des séquences d’échappement</h2>
+    <p><strong class="leadin">Caractères de syntaxe.</strong> Les trois caractères ci-dessous devraient toujours apparaitre dans votre contenu sous la forme de séquences d’échappement, afin de ne pas interagir avec la syntaxe du code balisé. Ils font partie du vocabulaire de tous les documents basés sur HTML ou écrits en XML.</p>
+    <ul>
+      <li>
+        <p><code>&amp;lt;</code> (&lt;)</p>
+      </li>
+      <li>
+        <p><code>&amp;gt;</code> (&gt;)</p>
+      </li>
+      <li>
+        <p><code>&amp;amp;</code> (&amp;)</p>
+      </li>
+    </ul>
+    <p>Vous pouvez aussi représenter le guillemet droit (") à l’aide de la séquence <code>&amp;quot;</code> et l’apostrophe (') à l’aide de la séquence <code>&amp;apos;</code>. Par exemple, cette substitution est nécessaire dans le texte d’un attribut, lorsque vous devez utiliser le même type de guillemets que ceux qui entourent la valeur de l’attribut. <!--Note, however, that, although it is part of the XML
+					language, &amp;apos; is not defined in HTML 4.01 and some browsers do not support &amp;apos; in HTML. For this reason the <a href="http://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_16">XHTML
+					specification</a> recommends instead the use of &amp;#39; if text may be passed to an HTML browser.--></p>
+    <p id="invisible"><strong class="leadin">Caractères invisibles ou ambigus.</strong> Les séquences d’échappement ont un autre rôle particulièrement utile : elles peuvent représenter des caractères invisibles ou ambigus. </p>
+    <p>Prenons pour exemple le caractère Unicode <span class="uname">U+200F MARQUE DROITE-À-GAUCHE</span>. Vous pouvez utiliser ce caractère pour préciser la directionnalité dans un texte bidirectionnel (par exemple, lorsque vous utilisez l’écriture arabe ou hébraïque). Cependant, comme ce caractère n’a pas de représentation graphique, il est difficile à retrouver dans un texte. Si vous modifiez votre texte par la suite en oubliant que de telles marques s’y trouvent ou sans être capable de les retrouver, vos modifications risquent d’avoir des conséquences inattendues. À la place, vous pouvez utiliser la séquence <code>&amp;rlm;</code> (ou sa référence de caractère numérique équivalente, <code>&amp;#x200F;</code>) pour retrouver très facilement ces marques.</p>
+    <p>Prenons à présent un exemple de caractère ambigu : <span class="uname">U+00A0 ESPACE INSÉCABLE</span>. Ce type d’espace empêche un retour automatique à la ligne entre les caractères qui l’entourent, mais sa représentation graphique ne permet pas de le distinguer des autres types d’espaces. En utilisant <code>&amp;nbsp;</code> (ou <code>&amp;#xA0;</code>), vous verrez clairement où vous avez utilisé des espaces insécables dans votre texte.</p>
+    <p><strong class="leadin">Problèmes de saisie.</strong> Si votre outil d’édition ne vous permet pas de saisir facilement les caractères nécessaires, les séquences d’échappement peuvent aussi vous être utiles. Remarque : cette solution n’est pas idéale sur le long terme ou si vous devez saisir de nombreuses séquences d’échappement, car elle prend plus de temps et complexifie la maintenance. Choisissez de préférence un outil d’édition qui vous permet de saisir ces caractères sous leur forme normale. Autrement, si vous n’utilisez qu’un caractère de temps en temps, vous pouvez utiliser une table des caractères ou un <a class="print" href="http://r12a.github.io/pickers/">sélecteur de caractères</a>.</p>
+    <p><strong class="leadin">Lacunes d’encodage.</strong> Les séquences d’échappement permettent également de représenter les caractères non supportés par l’encodage que vous avez choisi pour votre document. Par exemple, pour représenter des caractères chinois dans un document encodé en Windows-1252. Cependant, vous devriez d’abord envisager de passer à l’encodage UTF-8, compatible avec tous les caractères dont vous avez besoin.</p>
+  </section>
+  
+  
+  
+  
+<section id="styleattr">
+<h2>Utiliser des séquences d’échappement dans des attributs style</h2>
+    <p>En général, mieux vaut placer les informations relatives au style dans une feuille de style externe ou à l’intérieur d’un élément <span class="kw">style</span> dans l’élément <span class="kw">head</span> de votre fichier HTML. Vous pouvez toutefois ajouter un <em>attribut</em> <span class="kw">style</span> à un élément précis de façon occasionnelle ou temporaire. Vous pourriez donc (encore plus rarement) avoir besoin de représenter un ou plusieurs caractères dans l’attribut <span class="kw">style</span> à l’aide de séquences d’échappement.</p>
+    <p>Dans un attribut HTML <span class="kw">style</span>, vous pouvez représenter des caractères à l’aide de références de caractères numériques ou nommées ou de séquences d’échappement CSS. En revanche, vous ne pouvez employer aucune référence de caractère (qu’elle soit numérique ou nommée) dans l’<em>élément</em> HTML <span class="kw">style</span> ou dans une feuille de style externe.</p>
+    <p>Souvent, on finit par déplacer les styles déclarés dans des attributs vers l’élément style de la page ou vers une feuille de style externe. Certains scripts ou applications permettent d’ailleurs d’automatiser ce déplacement. Par conséquent, mieux vaut employer uniquement des séquences d’échappement CSS.</p>
+    <p>Par exemple, mieux vaut utiliser :</p>
+    <div class="example">
+      <pre>&lt;span style="font-family: L\FC beck"&gt;...&lt;/span&gt;</pre>
+    </div>
+    <p>que :</p>
+    <div class="example">
+      <pre>&lt;span style="font-family: L&amp;#xFC;beck"&gt;...&lt;/span&gt;</pre>
+    </div>
+  </section>
+
+
+
+
+<section id="bytheway">
+<h2>À propos</h2>
+  <p><strong class="leadin">Pour passer en UTF-8, vous devrez sauvegarder votre fichier une nouvelle fois.</strong> L’encodage UTF-8 vous permettra d’insérer la plupart des caractères sous leur forme normale au lieu d’employer des séquences d’échappement. Cependant, modifier la déclaration d’encodage en haut de votre page ou sur votre serveur ne suffit pas à modifier l’encodage de votre document. Vous devez sauvegarder votre document une nouvelle fois en utilisant l’encodage choisi. Consultez notre article <a class="print" href="/International/questions/qa-choosing-encodings"><cite>Choisir et appliquer un encodage de caractères</cite></a> pour comprendre la marche à suivre dans votre application.</p>
+  <p><strong class="leadin">Valeur hexadécimale ou décimale. </strong>En général, lorsque la norme Unicode mentionne ou liste des caractères, elle emploie une valeur hexadécimale. Par exemple, le point de code <span class="uname">U+00E1</span> correspond à la lettre <span class="qchar">á</span>. Compte tenu de la prévalence de cette convention, il est souvent utile (mais pas obligatoire) d’utiliser des valeurs numériques hexadécimales plutôt que des valeurs décimales dans les séquences d’échappement. Vous pouvez alors omettre les zéros au début des séquences d’échappement. Par exemple, <span class="qchar">á</span> peut être représentée par <code>&amp;#xE1;</code>.</p>
+  <p id="suppchars"><strong class="leadin">Caractères complémentaires. </strong>Les caractères complémentaires sont des caractères Unicode qui occupent des positions au-delà du <a href="/International/articles/definitions-characters/#unicode" class="dfn print">Plan multilingue de base (BMP)</a>. En UTF-16, un caractère complémentaire est encodé à l’aide de deux <dfn>points de code de substitution</dfn> de 16 bits du BMP. Pour cette raison, ou du fait de leur expérience avec des versions antérieures de JavaScript, certaines personnes pensent que deux séquences d’échappement sont nécessaires pour représenter un caractère complémentaire. C’est faux : vous devez utiliser la valeur du point de code unique du caractère concerné. Par exemple, vous devez utiliser <code>&amp;#x233B4;</code> et non <code>&amp;#xD84C;&amp;#xDFB4;</code>.</p>
+  <p id="ampersands"><strong class="leadin">Esperluettes seules.</strong> Bien que les agents utilisateurs HTML fassent souvent preuve de tolérance à cet égard, vous ne devriez jamais utiliser une esperluette (<span class="qchar">&amp;</span>) seule dans un document HTML. Vous devriez surtout faire attention aux URI qui comportent des paramètres. Par exemple, vous devriez écrire dans votre document <code>http://example.org/my-script.php?class=guest<span class="highlight">&amp;amp;</span>name=user</code> et non <code>http://example.org/my-script.php?class=guest<span class="highlight">&amp;</span>name=user</code>.</p>
+</section>
+
+
+
+
+<section id="endlinks">
+<h2>Pour aller plus loin</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Vous débutez ? <a href="/International/getting-started/characters"><cite>Présentation des jeux et encodages de caractères</cite></a></p>
+    </li>
+    <li>
+      <p>Tutoriel, <a href="/International/tutorials/tutorial-char-enc/"><cite>Gestion de l’encodage des caractères en HTML et CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Liens connexes, <cite>Créer du contenu HTML et CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Caractères HTML</a></li>
+        <li><a href="/International/techniques/authoring-html#escapes">Utiliser des caractères d’échappement pour représenter des caractères</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Liens connexes, <cite>Créer du contenu XML</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-xml#charset">Caractères XML</a></li>
+        <li><a href="/International/techniques/authoring-xml#escapes">Utiliser des caractères d’échappement pour représenter des caractères</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Liens connexes, <cite>Développer des spécifications</cite></p>
+      <ul>
+        <li><a href="https://www.w3.org/TR/international-specs/#char_escapes">Concevoir des caractères d’échappement</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
