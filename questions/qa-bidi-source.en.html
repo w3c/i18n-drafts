@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Problems with bidirectional source text in markup</title>
+<meta name="description" content="What are some of the problems encountered when trying to write markup for bidirectional scripts?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-bidi-source' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-source' // blog search string - usually the filename without extensions
+f.firstPubDate = '2023-03-03' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2023-03-03', time:'12:39'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-03-03', time:'12:39'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-bidi-unicode-controls-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Working with source code markup and code examples for RTL scripts</h1>
+</header>
+
+
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+
+
+<p>Editing markup  for pages in Arabic, Hebrew, and many other languages poses challenges unless a specialised editor is available. For similar reasons, it is also difficult to include examples of bidirectional code in explainers.  This page looks at some of the problems content developers are likely to be faced with, and offers some advice, where possible.</p>
+<p>This information is also likely to be informative for developers of markup editing tools.</p>
+
+<p class="warning">The article assumes that you are familiar with bidirectional text concepts and the role of the Unicode Bidirectional Algorithm. If you are not, you should  read through the article <a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics">Unicode Bidirectional Algorithm basics</a> before continuing.</p>
+
+<p class="warning">If you are not familiar with how to use HTML  markup for bidirectional text, you may also find it useful to first read <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="reasons">
+<h2>Editing markup</h2>
+
+<p>There is currently a lack of good editing environments for creating HTML pages using right-to-left scripts. Because of the fact that the syntax characters in HTML markup and escapes contain punctuation and often strongly typed LTR letters, you are always working with bidirectional source text. If the editing application is not aware (as is usually the case) that the markup is not ordinary text, then it can move characters around and produce some odd effects that make coding difficult. The strongly typed letters and punctuation in the markup will appear in places you wouldn't expect, and sometimes interfere with the order of the content itself.</p>
+
+<p>The following shows some simple markup in a left-to-right context. The source contains a <code class="kw" translate="no">p</code> tag followed by a <code class="kw" translate="no">class</code> attribute, followed by a <code class="kw" translate="no">title</code> attribute with some Arabic text (<span dir="rtl" lang="ar">العربي</span>) as its value. The content of the element (<span dir="rtl" lang="ar">نشاط التدويل!</span>) starts with Arabic text and ends with an exclamation mark. The exclamation mark is shown separately to illustrate where it ends up. The resulting order in a left-to-right environment (where Arabic text is indicated by text in square brackets) is shown below.</p>
+
+
+<figure id="fig_simple_ltr" class="example">
+<p class="browser_output_title">What you'd expect to see:</p>
+<pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;![element_content]&lt;/p&gt;</code></pre>
+<p class="browser_output_title">What you'd actually see in a simple text editor:</p>
+<pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[element_content]&lt;&quot;[title_value]!&lt;/p&gt;.</code></pre>
+</figure>
+
+<div id="out_tooltip" class="browser_output">
+<p class="browser_output_title">Same example with Arabic text:</p>
+<div class="browser_output_example">
+<p>&lt;p class="myclass" title="العربي"&gt;نشاط التدويل!&lt;/p&gt;</p>
+</div>
+</div>
+
+<p>The order of the title text and the paragraph content have been reversed, as has the direction of the angle bracket. Furthermore, sentence-final punctuation, such as the period here, appears in the wrong place relative to the paragraph content. Where the paragraph content contains multiple runs of bidirectional text the readability of that content can be badly affected.</p>
+<p>If you are creating a large amount of right-to-left text, it makes sense to set the base direction of the editing window in your editor to right-to-left. This helps ensure that the paragraph content and its punctuation is correctly ordered. Unfortunately, this tends to make the overall source code much worse, as can be seen in the following example.</p>
+
+
+<p>As the next example shows, things can get much worse if the overall context for the source code is right-to-left. In this case, the resulting order for the same source text can be seen here.</p>
+
+
+<figure id="fig_simple_rtl" class="example">
+<p class="browser_output_title">What you'd expect to see:</p>
+<pre style="text-align: right;"><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;![element_content]&lt;/p&gt;</code></pre>
+<p class="browser_output_title">What you'd actually see in a simple text editor:</p>
+<pre style="text-align: right;"><code class="language-html">&lt;p/&gt;![element_content]&lt;&quot;[title_value]&quot;=p class=&quot;myclass&quot; title&gt;</code></pre>
+</figure>
+
+
+<div id="out_simple_rtl" class="browser_output">
+<p class="browser_output_title">Same example with Arabic text:</p>
+<div class="browser_output_example">
+<p dir="rtl">&lt;p class="myclass" title="العربي"&gt;نشاط التدويل!&lt;/p&gt;</p>
+</div>
+</div>
+
+
+<p>The source in the examples above will display correctly in a user agent. This is just a problem for writing and maintaining the source text.</p>
+<p>It helps a little, if you can do it, to ensure that an attribute with a value that uses left-to-right script text appears last (in the example below, the <code class="kw" translate="no">class</code> attribute). This would make the syntax in a left-to-right context look as expected, although the problems with the paragraph text remain. In a right-to-left context it would prevent the interaction of markup with content, but things are still a little jumbled, and things are still not where you would expect.</p>
+
+
+
+
+<figure id="fig_moved_attribute" class="example">
+<p class="browser_output_title">What you'd expect to see:</p>
+<pre style="text-align: right;"><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;![element_content]&lt;/p&gt;</code></pre>
+<p class="browser_output_title">What you'd actually see in a simple text editor (LTR context top, RTL bottom):</p>
+<pre><code class="language-html">&lt;p title=&quot;[title_value]&quot; class=&quot;myclass&quot;&gt;[element_content]!&lt;/p&gt;.</code></pre>
+<pre style="text-align: right;"><code class="language-html">&lt;p/&gt;![element_content]&lt;&quot;class=&quot;myclass&quot; [title_value]&quot;=p title&gt;.</code></pre>
+</figure>
+
+
+<div id="out_moved_attribute" class="browser_output">
+<p class="browser_output_title">Same example with Arabic text:</p>
+<div class="browser_output_example">
+<p>&lt;p class="myclass" title="العربي"&gt;نشاط التدويل!&lt;/p&gt;</p>
+<p dir="rtl">&lt;p class="myclass" title="العربي"&gt;نشاط التدويل!&lt;/p&gt;</p>
+</div>
+</div>
+
+
+<p>It is not unknown for authors to edit in LTR mode after applying a directional override to the whole of the source code. For this, an editor that knows nothing about the Unicode Bidirectional Algorithm is handy, because it avoids the reordering of the text. This makes it easier to mix markup and content in an understandable way. However, the author has to read all the paragraph content backwards. In a cursive script such as Arabic this doesn't work particularly well if the overall direction is LTR, because the normal joining forms are altered as well as the direction.</p> 
+
+<figure id="fig_joining_forms">
+<div style="font-size: 2rem; line-height: 1;">
+<p style="text-align: center;"><bdo dir="rtl">يحق لكل فرد أن يغادر</bdo></p>
+<p style="text-align: center;"><bdo dir="ltr">يحق لكل فرد أن يغادر</bdo></p>
+</div>
+<figcaption>The same Arabic text in a LTR context (top) and RTL context (bottom).</figcaption>
+</figure>
+
+
+<p>It can also help to set the overall direction of the editor to LTR and start the content on a new line, however this doesn't always help with inline markup, and again sentence-final markup appears in the wrong place in the paragraph text. Also, you should try to avoid including white space before the closing markup, as this can <a href="https://www.w3.org/International/questions/qa-bidi-space">lead to other problems</a>.</p>
+
+
+<figure id="fig_newline" class="example">
+<p class="browser_output_title">What you'd expect to see:</p>
+<pre style="text-align: left;"><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;
+.[element_content]&lt;/p&gt;</code></pre>
+<p class="browser_output_title">What you'd actually see in a simple text editor:</p>
+<pre style="text-align: left;"><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;
+[element_content].&lt;/p&gt;</code></pre>
+</figure>
+
+
+<div id="out_newline" class="browser_output">
+<p class="browser_output_title">Same example with Arabic text:</p>
+<div class="browser_output_example">
+<p>&lt;p class="myclass" title="العربي"&gt;<br>نشاط التدويل!&lt;/p&gt;</p>
+</div>
+</div>
+
+
+<p>The ideal solution would be a source editor that recognizes markup as a special construct, and protects it to produce a sensible order for the characters in the source text. If your markup includes a <code class="kw" translate="no">dir</code> attribute to change the directional context of the content, your editor should recognize this and produce a corresponding change in the order of the source code. Some editors may have an editing mode that converts tags to graphic entities, which can work well.</p>
+</section>
+
+
+<section id="basedirection">
+<h2>Editing source code containing formatting characters</h2>
+<p>If you use a Unicode control character such as the <span class="uname">RIGHT TO LEFT MARK</span> (RLM) or<span class="uname"> ZERO-WIDTH NON JOINER</span> (ZWNJ), you will not usually be able to see it in the source text, since it is invisible. It is very helpful if your editor creates visible markers for these characters.</p>
+<p>You may think that a useful alternative is to use the pre-defined HTML character entities, <code>&amp;rlm;</code> and <code>&amp;zwnj;</code>, or their numeric equivalents, <code>&amp;#x200F;</code> and<code> &amp;#x200C;</code>. </p>
+<p>Unfortunately, such an approach typically has the same problems as those described in the previous section. The following example shows what you'd see if you add <code>&amp;x200F;</code> to bidirectional text in 3 different positions, in an editor that sets the context to RTL.</p>
+
+
+<figure id="fig_formatting" class="example">
+<p class="browser_output_title">What you'd expect to see:</p>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text] [english_text][arabic_text]&amp;#x200F;[arabic_text]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text] [english_text]&amp;#x200F;[arabic_text]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text] &amp;#x200F;[english_text][arabic_text]</code></pre>
+<p class="browser_output_title">What you'd actually see in a simple text editor:</p>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text] [english_text][arabic_text];x200F#&amp;[arabic_text]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text] x200F;[english_text]#&amp;[arabic_text]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text] ;[english_text]&amp;#x200F [arabic_text]</code></pre>
+</figure>
+
+
+<p>Again, an ideal solution would be for an editor to recognise these escape sequences and keep all the characters involved together, and in the LTR order.</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="wrapping">
+<h2>Working with examples of code</h2>
+
+<p>Given the above, it will come as no surprise that creating examples for tutorials or articles can be tricky when they represent code snippets that contain RTL text. It is probably not helpful to show the text of the snippet as it would actually look in most editors; rather it would be necessary to apply extra, hidden markup to approximate something that keeps the syntax together and shows the logical order of the text. This would include markup that changes the base direction of the text where that is indicated by a <a class="kw" translate="no">dir</a> attribute value, or other method.</p>
+
+<p>Often, authors get around the issue by not showing the RTL text. For example, in all the preceding examples we removed the actual Arabic text from the main explanatory example, and just showed it in the live code examples.</p>
+
+<p>Other common ways to do this in English contexts involve representing the Arabic/Hebrew/etc. parts of the example code  by UPPERCASE TRANSLATIONS, and by using left-to-right, all-lowercase characters for the markup and any LTR text. Often, but not always, the letters in the uppercase text are written from right to left, since this allows for more realistic positioning of punctuation.</p>
+<p>The following provides some examples.</p>
+
+<figure id="fig_uppercase" class="example">
+<p class="browser_output_title">Uppercase translation.</p>
+<pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;HEBREW&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/p&gt;</code></pre>
+<p class="browser_output_title">Uppercase translation with reversed direction:</p>
+<pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;WERBEH&quot;&gt;!YTIVITCA NOITAZILANOITANRETNI&lt;/p&gt;</code></pre>
+</figure>
+
+<div id="out_uppercase" class="browser_output">
+<p class="browser_output_title">Example of the output using Hebrew text:</p>
+<div class="browser_output_example">
+<p class="myclass" title="עִברִית">פעילות הבינאום!</p>
+</div>
+</div>
+
+
+<p>It is always useful to provide a link to a page or to provide a panel containing the  output of the code that contains the native text.</p>
+</section>
+
+
+
+
+
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p>Tutorial, <cite><a href="/International/tutorials/bidi-xhtml/">Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts</a></cite></p>
+</li>
+<li>
+<p><a href="/International/articles/inline-bidi-markup/"><cite>Inline markup and bidirectional text in HTML</cite></a></p>
+</li>
+<li>
+<p>Related links, <cite>Authoring HTML &amp; CSS</cite></p>
+<ul>
+<li><a href="/International/techniques/authoring-html?collapse&amp;open=direction">Text direction</a></li>
+<li><a href="/International/techniques/authoring-html#inline">Mixing text direction inline</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
