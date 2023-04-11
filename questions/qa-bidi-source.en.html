@@ -122,25 +122,25 @@ f.additionalLinks = ''
 
 
 <p>The source in the examples above will display correctly in a user agent. This is just a problem for writing and maintaining the source text.</p>
-<p>It helps a little, if you can do it, to ensure that an attribute with a value that uses left-to-right script text appears last (in the example below, the <code class="kw" translate="no">class</code> attribute). This would make the syntax in a left-to-right context look as expected, although the problems with the paragraph text remain. In a right-to-left context it would prevent the interaction of markup with content, but things are still a little jumbled, and things are still not where you would expect.</p>
+<p>It helps a little, if you can do it, to ensure that an attribute with a value that uses left-to-right script text appears last in the list of attributes (in the example below, the <code class="kw" translate="no">class</code> attribute). This would make the syntax in a left-to-right context look as expected, although the problems with the paragraph text remain. In a right-to-left context it would prevent the interaction of markup with content, but things are still a little jumbled, and things are still not where you would expect.</p>
 
 
 
 
 <figure id="fig_moved_attribute" class="example">
 <p class="browser_output_title">What you'd expect to see:</p>
-<pre style="text-align: right;"><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;![element_content]&lt;/p&gt;</code></pre>
+<pre style="text-align: right;"><code class="language-html">&lt;p title=&quot;[title_value]&quot; class=&quot;myclass&quot;&gt;![element_content]&lt;/p&gt;</code></pre>
 <p class="browser_output_title">What you'd actually see in a simple text editor (LTR context top, RTL bottom):</p>
 <pre><code class="language-html">&lt;p title=&quot;[title_value]&quot; class=&quot;myclass&quot;&gt;[element_content]!&lt;/p&gt;.</code></pre>
-<pre style="text-align: right;"><code class="language-html">&lt;p/&gt;![element_content]&lt;&quot;class=&quot;myclass&quot; [title_value]&quot;=p title&gt;.</code></pre>
+<pre style="text-align: right;"><code class="language-html">&lt;p/&gt;![element_content]&lt;&quot;class=&quot;myclass &quot;[title_value]&quot;=p title&gt;.</code></pre>
 </figure>
 
 
 <div id="out_moved_attribute" class="browser_output">
 <p class="browser_output_title">Same example with Arabic text:</p>
 <div class="browser_output_example">
-<p>&lt;p class="myclass" title="العربي"&gt;نشاط التدويل!&lt;/p&gt;</p>
-<p dir="rtl">&lt;p class="myclass" title="العربي"&gt;نشاط التدويل!&lt;/p&gt;</p>
+<p>&lt;p title="العربي" class="myclass"&gt;نشاط التدويل!&lt;/p&gt;</p>
+<p dir="rtl">&lt;p title="العربي" class="myclass"&gt;نشاط التدويل!&lt;/p&gt;</p>
 </div>
 </div>
 
@@ -185,22 +185,22 @@ f.additionalLinks = ''
 <h2>Editing source code containing formatting characters</h2>
 <p>If you use a Unicode control character such as the <span class="uname">RIGHT TO LEFT MARK</span> (RLM) or<span class="uname"> ZERO-WIDTH NON JOINER</span> (ZWNJ), you will not usually be able to see it in the source text, since it is invisible. It is very helpful if your editor creates visible markers for these characters.</p>
 <p>You may think that a useful alternative is to use the pre-defined HTML character entities, <code>&amp;rlm;</code> and <code>&amp;zwnj;</code>, or their numeric equivalents, <code>&amp;#x200F;</code> and<code> &amp;#x200C;</code>. </p>
-<p>Unfortunately, such an approach typically has the same problems as those described in the previous section. The following example shows what you'd see if you add <code>&amp;x200F;</code> to bidirectional text in 3 different positions, in an editor that sets the context to RTL.</p>
+<p>Unfortunately, such an approach typically has the same problems as those described in the previous section. The following example shows what you'd see if you add <code>&amp;x200F;</code> to bidirectional text in 3 different positions, in an editor that sets the context to RTL. In this simple example, the text  doesn't get moved around, but the components of the escape do.</p>
 
 
 <figure id="fig_formatting" class="example">
 <p class="browser_output_title">What you'd expect to see:</p>
-<pre style="text-align: right;"><code class="language-html"> [arabic_text] [english_text][arabic_text]&amp;#x200F;[arabic_text]</code></pre>
-<pre style="text-align: right;"><code class="language-html"> [arabic_text] [english_text]&amp;#x200F;[arabic_text]</code></pre>
-<pre style="text-align: right;"><code class="language-html"> [arabic_text] &amp;#x200F;[english_text][arabic_text]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text⁴] [english_text³][arabic_text²]&amp;#x200F;[arabic_text¹]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text³] [english_text²]&amp;#x200F;[arabic_text¹]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text³] &amp;#x200F;[english_text²][arabic_text¹]</code></pre>
 <p class="browser_output_title">What you'd actually see in a simple text editor:</p>
-<pre style="text-align: right;"><code class="language-html"> [arabic_text] [english_text][arabic_text];x200F#&amp;[arabic_text]</code></pre>
-<pre style="text-align: right;"><code class="language-html"> [arabic_text] x200F;[english_text]#&amp;[arabic_text]</code></pre>
-<pre style="text-align: right;"><code class="language-html"> [arabic_text] ;[english_text]&amp;#x200F [arabic_text]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text⁴] [english_text³][arabic_text²];x200F#&amp;[arabic_text¹]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text³] x200F;[english_text²]#&amp;[arabic_text¹]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text³] ;[english_text²]&amp;#x200F [arabic_text¹]</code></pre>
 </figure>
 
 
-<p>Again, an ideal solution would be for an editor to recognise these escape sequences and keep all the characters involved together, and in the LTR order.</p>
+<p>Again, an ideal solution would be for an editor to recognise these escape sequences and keep all the relevant characters together, and in the LTR order.</p>
 </section>
 
 
