@@ -72,9 +72,9 @@ f.additionalLinks = ''
 <p class="noprint info">Right-to-left text in code samples is represented by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase. </p>
 </div>
 
-<p class="warning"><strong>The article assumes that you are familiar with bidirectional text concepts and managing bidirectional text using HTML markup, but that you need to know how to do similar things with Unicode control characters, such as when writing plain text.</strong> If you are not familiar with how bidirectional text works in Unicode, you should  read through the article <a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics">Unicode Bidirectional Algorithm basics</a> before continuing.</p>
+<p class="warning"><strong>The article assumes that you are familiar with bidirectional text concepts and managing bidirectional text using HTML markup, but that you need to know how to do similar things with Unicode control characters, such as when writing plain text.</strong> If you are not familiar with how bidirectional text works in Unicode, you should  read through the article <a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a> before continuing.</p>
 
-<p class="warning">If you are not familiar with how to manage bidirectional text in HTML markup, you may also find it useful to first read <a href="https://www.w3.org/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a>.</p>
+<p class="warning">If you are not familiar with how to manage bidirectional text in HTML markup, you may also find it useful to first read <a href="https://www.w3.org/International/articles/inline-bidi-markup/"><cite>Inline markup and bidirectional text in HTML</cite></a>.</p>
 
 
 
@@ -82,7 +82,7 @@ f.additionalLinks = ''
 
 <section id="reasons">
 <h2>What this article does and doesn't cover</h2>
-    <p>You will still need to use markup to establish the default direction for a document as a whole (eg. in the <code class="kw" translate="no">html</code> tag), and for block container elements. Because control codes don't cross paragraph (read as <span class="qterm">block element</span>) boundaries, and because control codes cannot manage inheritance and scoping through the markup hierarchy, they are only appropriate for inline use.</p>
+    <p>You will still need to use markup to establish the default direction for a document as a whole (eg. in the <code class="kw" translate="no">html</code> tag), and to change direction for block container elements. Because control codes don't cross paragraph (read as <span class="qterm">block element</span>) boundaries, and because control codes cannot manage inheritance and scoping through the markup hierarchy, they are only appropriate for inline use.</p>
 <p>For example, although a <code class="kw" translate="no">title</code> element in the header of an HTML page can contain no markup, it is still possible to set a default base direction on the <code class="kw" translate="no">title</code> element itself (or for it to inherit the direction set on the <code class="kw" translate="no">html</code> tag). This article is about how to apply directional changes <em>within</em> the <code class="kw" translate="no">title</code> attribute text (or inline in other plain text situations), where needed, or how to apply a direction to attribute text which is different from that of the surrounding element, and so on. It also applies to plain text formats such as WebVTT and CSV.</p>
 </section>
 
@@ -180,23 +180,23 @@ f.additionalLinks = ''
         </tr>
       </tbody>
     </table>
-    <p>These characters are invisible, although in some editors it may be possible to show symbols that represent them. You could also use character escapes to represent them, such as <code>&amp;#x2067;</code>, but in bidirectional source text you may find that the characters in the escape don't stay together. (See <a href="https://www.w3.org/TR/2014/NOTE-i18n-html-tech-bidi-20140603/#bidisource"><cite>Problems with bidirectional source text in markup</cite></a> for more on this.)</p>
+    <p>These characters are invisible, although in some editors it may be possible to show symbols that represent them. You could also use character escapes to represent them, such as <code>&amp;#x2067;</code>, but in bidirectional source text you may find that the characters in the escape don't stay together. (See <a href="https://www.w3.org/International/questions/qa-bidi-source.en.html"><cite>Working with source code markup and code examples for RTL scripts</cite></a> for more on this.)</p>
 
 <p>When you apply directional formatting characters to indicate the boundaries of a directional run, you really want to avoid what's inside the boundaries interacting with what's outside – ie. you want to <em>isolate</em> it. For this reason, in an ideal world you would want to follow the <a href="https://www.unicode.org/reports/tr9/tr9-46.html#Directional_Formatting_Characters">recommendation</a> of the Unicode Standard to  use RLI and LRI,  and avoid using RLE and LRE.</p>
 <p>The following example shows how these control characters could be used in
       plain text. It shows a tooltip in HTML that includes the title of the document linked to (which includes the abbreviation 'FAQ'), plus some text indicating the language of the destination document. Note how the text '(FAQ)' appears to the right of the Persian text. This is incorrect, since it is part of the (right-to-left) document title.</p>
     <figure class="example">
-<p><a href="qa-bidi-unicode-controls-data/eg-tooltip-wrong" onclick="showExample('qa-bidi-unicode-controls-data/eg-tooltip-wrong'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/persian-link-wrong.png" alt="A tooltip without control characters." title="'SNOITSEUQ DEKSA YLTNEUQERF (faq)' [in persian]" /></a></p>
+<p><img src="qa-bidi-unicode-controls-data/persian-link-wrong.png" alt="A tooltip without control characters." title="'SNOITSEUQ DEKSA YLTNEUQERF (faq)' [in persian]" /></p>
     </figure>
     <p> The correct title has the text '(FAQ)' to the left of the Persian text, as shown here.</p>
 
 
 <figure class="example">
-<p><a href="qa-bidi-unicode-controls-data/eg-tooltip-ok" onclick="showExample('qa-bidi-unicode-controls-data/eg-tooltip-ok'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="View code." title="View code for this example." /><img src="qa-bidi-unicode-controls-data/persian-link-right.png" alt="A tooltip with control characters." title="'(faq) SNOITSEUQ DEKSA YLTNEUQERF' [in persian]" /></a></p>
+<p><img src="qa-bidi-unicode-controls-data/persian-link-right.png" alt="A tooltip with control characters." title="'(faq) SNOITSEUQ DEKSA YLTNEUQERF' [in persian]" /></p>
 </figure>
 
 
-<p>To achieve the correct effect we add the two invisible control characters,  <span class="uname" style="color: green;">U+2067 RIGHT-TO-LEFT ISOLATE</span> (RLI), and <span class="uname" style="color: red;">U+2069 POP DIRECTIONAL ISOLATE</span> (PDI), represented in the code snippet below as numeric character entities:</p>
+<p>To achieve the correct effect we add the two invisible control characters,  <span class="uname" style="color: green;">U+2067 RIGHT-TO-LEFT ISOLATE</span> (RLI), and <span class="uname" style="color: red;">U+2069 POP DIRECTIONAL ISOLATE</span> (PDI), represented in the code snippet below as numeric character entities. Characters are shown in 'logical' order, rather than in the order they will be rendered.</p>
 
 <figure class="example">
 <blockquote><code>
