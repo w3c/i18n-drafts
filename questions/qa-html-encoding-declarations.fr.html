@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Déclarer un encodage de caractères en HTML</title>
+<meta name="description" content="Comment devrais-je déclarer l’encodage de mon fichier HTML5 ?">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'qa-html-encoding-declarations'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-html-encoding-declarations'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-09-09'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-02-26', time:'11:49'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-03-26', time:'17:55'} // date and time of latest edits to this document/translation
+f.contributors = 'Henri Sivonen, Gunnar Bittersmann'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Gwendoline Clavé, <a href="https://www.clavoline-traduction.fr/" rel="nofollow">Clavoline Traduction</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-html-encoding-declarations-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-fr.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Déclarer un encodage de caractères en HTML</h1>
+</header>
+
+
+  <div id="audience">
+    <!--p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML authors (using editors or scripting), script developers (PHP, JSP, etc.),  Web project managers, and anyone who  needs an introduction to how to declare the character encoding of their HTML  file.</p-->
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+<section id="question">
+    <h2>Question</h2>
+    <p class="question">Comment devrais-je déclarer l’encodage de mon fichier HTML ?</p>
+
+  <p>Vous devriez toujours préciser l’encodage utilisé dans une page HTML ou XML pour éviter une interprétation erronée des caractères de votre contenu. La question de la lisibilité ne se pose pas seulement pour votre public : les machines ont, elles aussi, de plus en plus besoin de comprendre vos données. Une déclaration d’encodage de caractères est également nécessaire au traitement des caractères non ASCII saisis par les utilisateurs dans des formulaires, présents dans les URL générées par des scripts, et ainsi de suite. Cet article décrit la marche à suivre pour un fichier HTML.</p>
+  <p class="info">Si vous avez besoin de mieux comprendre en quoi consistent les caractères et les encodages de caractères, consultez l’article <a class="print" href="/International/questions/qa-what-is-encoding"><cite>Encodages de caractères pour débutants</cite></a>. Pour obtenir des informations sur la déclaration des encodages dans les feuilles de style CSS, consultez l’article <a class="print" href="/International/questions/qa-css-charset"><cite>Déclarations d’encodage de caractères en CSS</cite></a>.</p>
+</section>
+
+
+<section id="nutshell">
+  <h2 id="quickanswer">Réponse courte</h2>
+  <p>Déclarez systématiquement l’encodage de votre document à l’aide d’un élément <code class="kw" translate="no">meta</code> doté soit de l’attribut <code class="kw" translate="no">charset</code> seul, soit des attributs <code class="kw" translate="no">http-equiv</code> et <code class="kw" translate="no">content</code> (une solution appelée directive pragma). La déclaration devrait se trouver au début du fichier et tenir entièrement dans les 1024 premiers octets. Il est donc préférable de la placer juste après la balise ouvrante <code class="kw" translate="no">head</code>.</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="fr"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+...</code></pre>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="fr"&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" 
+      content="text/html; charset=utf-8"&gt;
+...</code></pre>
+
+<p style="clear:both;">Peu importe quelle solution vous choisissez. Vous pourriez préférer la première solution, plus courte. Peu importe également que vous saisissiez <code>UTF-8</code> ou <code>utf-8</code>.</p>
+  <p>Vous devriez toujours utiliser l’encodage de caractères UTF-8. (Pour rappel, vous devez non seulement <em>déclarer</em> cet encodage, mais aussi <em>enregistrer</em> votre contenu en UTF-8.) Si vous ne pouvez vraiment pas utiliser cet encodage, vous aurez un certain nombre de <a href="#nonutf8">choses à prendre en compte</a>.</p>
+  <p>Si vous avez accès aux paramètres du serveur, vous devriez également vous demander si <a href="#httphead">l’utilisation de l’en-tête HTTP</a> aurait du sens. <strong>Notez cependant</strong> que l’en-tête HTTP prévaut sur les déclarations réalisées à l’intérieur du document via l’élément <code class="kw" translate="no">meta</code> ; par conséquent, lorsque vous créez du contenu, vous devriez toujours vous demander si l’encodage de caractères est déjà déclaré dans l’en-tête HTTP. S’il l’est déjà, l’élément <code class="kw" translate="no">meta</code> devra déclarer le même encodage.</p>
+  <p>Pour détecter tout encodage envoyé par l’en-tête HTTP, vous pouvez utiliser le <a class="print" href="https://validator.w3.org/i18n-checker/">Vérificateur d’internationalisation</a>.</p>
+</section>
+
+
+<section id="detail">
+<h2>Réponse détaillée</h2>
+  <section id="bom">
+<h3>Qu’en est-il de l’indicateur d’ordre des octets ?</h3>
+    <p>Si vous avez spécifié un <a href="/International/questions/qa-byte-order-mark#bomwhat" class="termref print">indicateur d’ordre des octets (BOM)</a> en UTF-8 au début de votre fichier, les navigateurs modernes l’utiliseront pour déterminer si votre page est encodée en UTF-8. Cet indicateur prévaudra sur toute autre déclaration, y compris sur l’en-tête HTTP.</p>
+    <p>Si vous spécifiez cet indicateur, vous n’avez pas besoin de déclarer l’encodage dans l’élément <code class="kw" translate="no">meta</code> ; toutefois, nous vous recommandons de conserver cette déclaration, car elle permet aux personnes qui consultent votre code source de vérifier l’encodage de la page.</p>
+    <p>Découvrez plus d’informations sur l’<a class="print" href="/International/questions/qa-byte-order-mark">indicateur d’ordre des octets</a>.</p>
+  </section>
+  
+  <section id="httphead">
+<h3>Devrais-je déclarer l’encodage dans l’en-tête HTTP ?</h3>
+    <p>Si cela a du sens et si vous en avez la possibilité, vous pouvez déclarer l’encodage de caractères dans l’<a href="/International/articles/definitions-characters/Overview#httpheader" class="termref print">en-tête HTTP</a> pour tout type de contenu. Pensez <strong>toujours à utiliser également</strong> une déclaration à l’intérieur du document.</p>
+    <p>Si vous créez du contenu, vous devriez toujours vous assurer que les déclarations HTTP sont cohérentes avec les déclarations réalisées à l’intérieur du document.</p>
+    <section id="httpprocon">
+<h4>Avantages et inconvénients de l’utilisation de l’en-tête HTTP</h4>
+      <div class="sidenoteGroup">
+        <p>L’utilisation de l’en-tête HTTP présente un avantage : lorsque les informations d’encodage de caractères sont envoyées via l’en-tête HTTP, les agents utilisateurs peuvent les trouver plus vite.</p>
+        <aside class="sideinfonote">
+          <p class="info">En cas de conflit, les informations de l’en-tête HTTP prévalent sur les déclarations réalisées à l’intérieur du document, à l’exception de l’indicateur d’ordre des octets. Les serveurs intermédiaires qui transcodent les données (c’est-à-dire qui les convertissent vers un encodage différent) pourraient en profiter pour modifier l’encodage d’un document avant de l’envoyer sur les petits appareils qui ne reconnaissent qu’une poignée d’encodages. On ne sait pas vraiment si ce transcodage est très utilisé de nos jours. S’il l’est, et s’il convertit du contenu vers des encodages autres qu’UTF-8, il présente un risque élevé de perte de données et constitue donc une mauvaise pratique.</p>
+        </aside>
+      </div>
+      <p>Elle présente toutefois un certain nombre d’inconvénients potentiels :</p>
+      <ul>
+        <li>
+          <p>Les personnes qui créent du contenu peuvent avoir du mal à modifier les informations d’encodage des fichiers statiques sur le serveur, surtout lorsqu’elles ont affaire à un FAI. Elles devront connaitre les paramètres du serveur et y avoir accès.</p>
+        </li>
+        <li>
+          <p>Les paramètres du serveur peuvent soudainement diverger des déclarations réalisées à l’intérieur du document pour une raison ou pour une autre. Par exemple, si vous utilisez les paramètres par défaut du serveur, ceux-ci peuvent être modifiés. Cette situation est dangereuse, car la prévalence des informations HTTP sur la déclaration réalisée à l’intérieur du document peut rendre le document illisible.</p>
+        </li>
+        <li>
+          <p>Des problèmes peuvent se poser pour les documents statiques et dynamiques lorsque ceux-ci ne sont pas lus à partir d’un serveur ; par exemple, s’ils sont enregistrés sur un support comme un CD ou un disque dur. Dans ces cas-là, aucune information d’encodage spécifiée dans un en-tête HTTP n’est disponible.</p>
+          <p>De la même façon, si l’encodage de caractères n’est déclaré que dans l’en-tête HTTP, ces informations ne sont plus disponibles lorsque vous éditez vos fichiers, lorsqu’ils sont traités par XSLT ou par des scripts, lorsque vous les faites traduire, etc.</p>
+        </li>
+      </ul>
+    </section>
+    
+    <section id="shouldi">
+<h4>Devrais-je utiliser cette méthode ?</h4>
+      <p>Si vous envoyez des fichiers via HTTP à partir d’un serveur, l’envoi d’informations sur l’encodage de caractères d’un document dans l’en-tête HTTP ne pose jamais problème, tant que ces informations sont exactes.</p>
+      <p>Toutefois, compte tenu des inconvénients listés ci-dessus, nous vous recommandons de toujours déclarer les informations d’encodage à l’intérieur du document en plus de le faire dans l’en-tête HTTP. Une déclaration réalisée à l’intérieur du document est également utile aux personnes qui souhaitent vérifier l’encodage d’un document à des fins de développement, de tests ou de gestion de projet de traduction.</p>
+      <p>(Certaines personnes estiment qu’il est rarement approprié de déclarer l’encodage dans l’en-tête HTTP si vous comptez le répéter dans le contenu du document. Dans ce cas, elles proposent de n’indiquer aucune information sur l’encodage du document dans l’en-tête HTTP. Cela signifie généralement qu’une action est nécessaire pour <em>désactiver</em> les paramètres par défaut du serveur.)</p>
+    </section>
+  </section>
+  
+  <section id="xml">
+<h3>Travailler avec des formats polyglottes et XML</h3>
+    <p><b class="leadin">XHTML5 :</b> un document XHTML5 utilise la syntaxe XML et est interprété en tant que XML. Les analyseurs syntaxiques XML ne reconnaissent pas les déclarations d’encodage réalisées dans l’élément <code class="kw" translate="no">meta</code>. Ils ne reconnaissent que la déclaration XML. En voici un exemple :</p>
+    <figure class="example">
+      <blockquote> <code>&lt;?xml version="1.0" encoding="utf-8"?&gt;<br> &lt;!DOCTYPE html .... </code></blockquote>
+    </figure>
+    <p>La déclaration XML est nécessaire lorsque la page n’est pas interprétée en tant que contenu UTF-8 (ou UTF-16). Lorsque la page est interprétée correctement, la déclaration est tout de même utile pour les personnes qui souhaiteraient vérifier l’encodage d’un document en consultant son code source. Cette information leur sera notamment utile à des fins de développement, de tests ou de gestion de projet de traduction.</p>
+    <p><b class="leadin">Balisage polyglotte :</b> une page qui utilise un balisage polyglotte utilise en fait un sous-ensemble de HTML avec la syntaxe XML qui peut être interprété par un analyseur syntaxique HTML ou XML. Ce cas de figure est décrit dans l’article <a class="print" href="https://www.w3.org/TR/html-polyglot/"><cite>Balisage polyglotte : un profil robuste du vocabulaire HTML5</cite></a>.</p>
+    <p>Un document polyglotte doit être encodé en UTF-8. Par conséquent, vous n’avez pas besoin de déclaration XML et ne devriez pas en utiliser. Toutefois, si un fichier doit être interprété comme du HTML, vous devrez en déclarer l’encodage à l’aide d’un élément <code class="kw" translate="no">meta</code>, de l’indicateur d’ordre des octets ou de l’en-tête HTTP. </p>
+    <p>Toute déclaration réalisée dans un élément <code class="kw" translate="no">meta</code> ne sera reconnue que par un analyseur syntaxique HTML. Par conséquent, si vous choisissez la méthode reposant sur l’attribut <code class="kw" translate="no">content</code>, la valeur de celui-ci devra commencer par <code>text/html;</code>.</p>
+    <figure class="example">
+      <blockquote> <code class="language-html">&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"/&gt; </code></blockquote>
+    </figure>
+    <p>Si vous utilisez l’élément <code class="kw" translate="no">meta</code> avec un attribut <code class="kw" translate="no">charset</code>, vous n’aurez pas à vous poser cette question.</p>
+  </section>
+</section>
+
+
+<section id="obscure">
+<h2>Informations complémentaires</h2>
+  <p>Cette section comporte des informations dont vous ne devriez pas avoir besoin, mais que nous avons incluses à des fins d’exhaustivité.</p>
+  
+  <section id="nonutf8">
+<h3>Travailler avec des encodages autres qu’UTF-8</h3>
+    <div class="sidenoteGroup">
+      <p>En plus de simplifier la création des pages, l’utilisation d’UTF-8 évite des résultats inattendus lors de l’envoi des formulaires et de la génération des URL, qui utilisent par défaut l’encodage de caractères du document. Si vous ne pouvez vraiment pas éviter l’utilisation d’un encodage de caractères autre qu’UTF-8, vous devrez choisir parmi un ensemble limité de noms d’encodages pour garantir la meilleure interopérabilité et la plus longue durée possible de lisibilité de votre contenu.</p>
+      <aside class="sideinfonote">
+        <p class="info">Ces noms sont appelés <em><dfn>charsets</dfn></em>. Ce terme peut être trompeur, car il évoque aux personnes anglophones les jeux de caractères (en anglais, <em>character sets</em>). Toutefois, les <em>charsets</em> se rapportent bien à des encodages. Par exemple, le jeu de caractères ou « répertoire » Unicode peut être encodé dans trois encodages différents.</p>
+      </aside>
+    </div>
+    <p>Encore récemment, vous deviez consulter le <a class="print" href="https://www.iana.org/assignments/character-sets">registre de l’IANA</a> pour trouver les noms d’encodages. Ce registre mentionne un même encodage sous plusieurs noms ; le nom à utiliser figure dans la colonne « Preferred ».</p>
+    <p>De nos jours, vous devriez vous référer à la spécification <a class="print" href="https://encoding.spec.whatwg.org/"><cite>Encodage</cite></a>, car elle fournit une liste de noms qui ont été testés dans des navigateurs réels. Vous pouvez trouver cette liste dans le tableau de la section intitulée <a class="print" href="https://encoding.spec.whatwg.org/#names-and-labels">Names and labels</a>. Mieux vaut utiliser les noms indiqués dans la colonne de gauche de ce tableau.</p>
+    <p><strong>Remarque :</strong> la présence d’un nom dans l’une de ces sources ne signifie pas forcément que cet encodage peut être utilisé. En effet, plusieurs de ces encodages sont problématiques. Si vous ne pouvez vraiment pas utiliser UTF-8, vous devriez lire avec attention les conseils de l’article <a class="print" href="/International/questions/qa-choosing-encodings"><cite>Choisir et appliquer un encodage de caractères</cite></a>.</p>
+    <p>N’inventez pas vos propres noms d’encodages précédés de <code>x-</code>. C’est une mauvaise idée, car cette pratique limite l’interopérabilité. </p>
+  </section>
+  
+  <section id="legacyhtml">
+<h3>Travailler avec d’anciens formats HTML</h3>
+    <p>HTML&nbsp;4.01 ne prévoit pas l’utilisation de l’attribut <code class="kw" translate="no">charset</code> avec l’élément <code class="kw" translate="no">meta</code>, mais les principaux navigateurs récents le détectent et l’utilisent tout de même, y compris lorsque la page déclare le format HTML4 au lieu de HTML5. Cette section n’est pertinente que si vous avez une bonne raison de vous conformer à un ancien format de HTML (autre que l’affichage dans un navigateur). Elle décrit les différences avec la section <a href="#detail">Réponse détaillée</a> ci-dessus.</p>
+    <p>Pour les pages interprétées en tant que XML, consultez la section <a href="#xml">Travailler avec des formats polyglottes et XML</a>.</p>
+    <p><b class="leadin">HTML4 :</b> comme nous venons de le voir, pour une conformité complète avec HTML&nbsp;4.01, vous devez utiliser la directive pragma plutôt que l’attribut <code class="kw" translate="no">charset</code>.</p>
+    <p><b class="leadin">XHTML 1.x interprété en tant que text/html :</b> pour une conformité complète avec HTML&nbsp;4.01, l’utilisation de la directive pragma plutôt que l’attribut <code class="kw" translate="no">charset</code> est également nécessaire. Vous n’avez pas besoin de déclaration XML, puisque ce fichier est interprété en tant que HTML.</p>
+    <p><b class="leadin">XHTML 1.x interprété en tant que XML :</b> utilisez l’attribut <code class="kw" translate="no">encoding</code> de la déclaration XML à la première ligne de la page. Assurez-vous que rien ne se trouve avant cette déclaration, pas même des espaces. Seul un <a class="termref print" href="/International/questions/qa-byte-order-mark">indicateur d’ordre des octets</a> peut la précéder.</p>
+  </section>
+  
+  <section id="charset">
+<h3>Ajouter l’attribut <code class="kw" translate="no">charset</code> à un lien</h3>
+    <p>En HTML5, l’ajout de l’attribut <code class="kw" translate="no">charset</code> à un élément <code class="kw" translate="no">a</code> ou <code class="kw" translate="no">link</code> est désormais déconseillé. Vous devriez donc éviter cette pratique.</p>
+    <p>L’attribut <code class="kw" translate="no">charset</code> trouve son origine dans la spécification HTML&nbsp;4.01. On pouvait l’utiliser avec les éléments <code class="kw" translate="no">a</code>, <code class="kw" translate="no">link</code> et <code class="kw" translate="no">script</code> pour indiquer l’encodage du document vers lequel pointait le lien. Il fallait l’ajouter à un élément lien intégré, comme sur l’exemple suivant :</p>
+    <figure class="example">
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt="X">Mauvais code. Ne pas copier  !</span> </div>
+      <div><code class="language-html">Consultez notre &lt;a href="/monsite/mondoc.html" charset="iso-8859-15"&gt;liste de publications&lt;/a&gt;.</code></div>
+    </figure>
+    <p>Cet attribut devait permettre au navigateur d’appliquer le bon encodage au document qu’il récupérait si aucun encodage n’était spécifié par une autre méthode. </p>
+    <p>Toutefois, l’utilisation de cet attribut a toujours posé des problèmes. D’abord, sa compatibilité avec les principaux navigateurs laisse à désirer. Ceux-ci doivent en effet mettre en place des règles particulières pour éviter que cet attribut ne constitue un vecteur d’attaque par injection de code indirecte à distance (XSS). Ensuite, il est difficile de s’assurer que les informations restent correctes à tout moment. La personne qui a créé le document vers lequel pointe votre lien peut très bien modifier l’encodage du document sans vous en aviser. Si elle n’a toujours pas spécifié l’encodage de son document, vous allez donc demander au navigateur d’appliquer un encodage erroné. Enfin, cet attribut ne serait pas nécessaire si tout le monde suivant les lignes directrices présentées dans cet article et balisait correctement ses documents. Cette approche est largement préférable.</p>
+    <p>Cette manière d’indiquer l’encodage d’un document passe après toutes les autres. En d’autres termes, si l’encodage est déclaré d’une autre manière, quelle qu’elle soit, cet attribut sera ignoré. Cela signifie que vous ne pourriez pas non plus utiliser cet attribut pour corriger des déclarations erronées.</p>
+  </section>
+
+  <section id="utf16">
+<h3>Travailler avec UTF-16</h3>
+    <p>D’après les résultats d’une analyse effectuée par Google sur un échantillon constitué de plusieurs milliards de pages, moins de 0,01 % des pages web seraient encodées en UTF-16. D’après le même échantillon, plus de 60 % des pages web seraient encodées en UTF-8, et même plus de 80 % en incluant son sous-ensemble, ASCII. Nous vous recommandons vivement de ne pas choisir l’encodage UTF-16 pour vos pages.</p>
+    <p>Toutefois, si vous n’avez pas le choix pour quelque raison que ce soit, voici quelques règles à suivre pour déclarer cet encodage. Ces règles ne sont pas les mêmes que pour les autres encodages.</p>
+    <p>La spécification HTML5 interdit l’utilisation de l’élément <code class="kw" translate="no">meta</code> pour déclarer l’encodage UTF-16, car les valeurs doivent être <a class="termref print" href="https://www.w3.org/TR/html5/infrastructure.html#ascii-compatible-character-encoding">compatibles avec ASCII</a>. Au lieu d’utiliser cet élément, vous devriez toujours placer un <a href="/International/questions/qa-byte-order-mark" class="termref print">indicateur d’ordre des octets</a> au tout début de chaque fichier encodé en UTF-16. Il s’agit donc d’une déclaration réalisée à l’intérieur du document.</p>
+    <p>Par ailleurs, si votre page est encodée en UTF-16, ne déclarez pas que votre fichier utilise l’encodage « UTF-16BE » ou « UTF-16LE », mais seulement « UTF-16 ». L’indicateur d’ordre des octets présent au début de votre fichier spécifiera si le <a class="termref" href="https://hapax.qc.ca/glossaire.htm#mecanisme_de_serialisation_de_caracteres">mécanisme de sérialisation</a> est <span class="qterm">petit-boutiste</span> ou <span class="qterm">gros-boutiste</span>. En effet, le contenu explicitement encodé en UTF-16BE (par exemple) ne devrait pas contenir d’indicateur d’ordre des octets ; en revanche, HTML5 exige la présence de cet indicateur au début des pages encodées en UTF-16. </p>
+  </section>
+</section>
+
+
+<!--div class="section2">
+  <h3><a id="xmldeclaration" name="xmldeclaration" href="#xmldeclaration">The XML declaration</a></h3>
+  <p>The XML declaration is defined by the XML standard.  It appears at the top of an XML file and supports an <span
+					class="kw">encoding declaration</span>. For example:</p>
+  <div class="example"> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code> </div>
+  <p>An XML declaration is required for a document parsed as XML if the encoding of the document is other than UTF-8 or UTF-16 and if the encoding is
+    not provided by a <q>higher level protocol</q>, ie. the HTTP header.</p>
+  <p>This is significant, because if you decide to omit the XML declaration you must choose either UTF-8 or UTF-16 as the encoding for the page if it is to be used without HTTP!</p>
+  <p>You should use an XML declaration to specify the encoding of any XHTML 1.x  document served as XML.</p>
+  <p>It can be useful to use an XML declaration for web pages served as XML, even if the encoding is UTF-8 or UTF-16, because an in-document declaration of this kind also helps developers, testers, or translation production managers ascertain the encoding of the file with a
+    visual check of the source code.</p>
+  <div class="sidenoteGroup">
+    <p><span class="leadin">Using the XML declaration for XHTML served as HTML.</span> XHTML served as HTML is parsed as HTML, even though it is based on XML syntax, and therefore an XML declaration should not be recognized by the browser. It is for this reason that you should use a <a href="#metacontenttype">pragma directive</a> to specify the encoding when serving XHTML in this way*.</p>
+    <div class="sidenote">
+      <p>* Conversely, the pragma directive, though valid, is not recognized as an encoding declaration by XML parsers.</p>
+    </div>
+  </div>
+  <p>On the other hand, the file may also be used at some point as input to other processes that do use XML parsers. This includes such things as XML editors, XSLT transformations, AJAX, etc. In addition, sometimes people use server-side logic to determine whether to serve the file as HTML or XML. For these reasons, if you aren't using UTF-8 or UTF-16 you should add an XML declaration at the beginning of the markup, even if it is served to the browser as
+    HTML. This would make the top of a  file look like this:</p>
+  <div class="example"> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;<br>
+    &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+    &quot;https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;<br>
+    &lt;html xmlns=&quot;http&lrm;://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot; lang=&quot;en&quot;&gt;<br>
+    &lt;head&gt;<br>
+    &lt;meta http-equiv=&quot;Content-type&quot; content=&quot;text/html;charset=ISO-8859-1&quot;&nbsp;/&gt;<br>
+    ...</code> </div>
+  <p>If you <em>are</em> using UTF-8 or UTF-16, however, there is no need for the XML declaration, especially as the <code class="kw">meta</code> element provides for visual inspection of the encoding by people processing the file.</p>
+  <p><span class="leadin">Catering for older browsers.</span> If anything appears before the DOCTYPE declaration in Internet Explorer 6, the page is rendered in <a href="/International/articles/serving-xhtml/#quirks">quirks mode</a>. If you are using UTF-8 or UTF-16 you can omit the XML declaration, and you will have no problem.</p>
+  <p>If, however, you are not using these encodings and Internet Explorer 6 users still count for a significant proportion of your readers, and if your document contains  constructs that are affected by the difference between <a href="/International/articles/serving-xhtml/#quirks">standards mode</a> vs. quirks mode, then this may be an issue. If you want
+    to ensure that your pages are rendered in the same way on all standards-compliant browsers, you will have to add workarounds to your CSS to overcome the differences.</p>
+  <p>There may also be some other rendering issues associated with an XML declaration, though these are probably only an issue for much older browsers. The XHTML specification <a href="https://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_1">warns</a> that <q>processing instructions
+    are rendered on some user agents. Also, some user agents interpret the XML declaration to mean that the document is unrecognized XML rather than
+    HTML, and therefore may not render the document as expected.</q> You should do <a href="/International/tests/tests-html-css/list-encoding-html-css">testing</a> on appropriate user agents to decide <a href="https://www.webstandards.org/learn/articles/prolog_problems/">whether this will be an issue for you</a>.</p>
+  <p>Of course, as mentioned above, if you use UTF-8 or UTF-16 you can omit the XML declaration and the file will still work as XML or HTML. This is probably the simplest solution.</p>
+</div-->
+
+
+<section id="endlinks">
+<h2>Pour aller plus loin</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Vous débutez ? <a href="/International/getting-started/characters"><cite>Introduction aux jeux et encodages de caractères</cite></a></p>
+    </li>
+    <li>
+      <p>Tutoriel, <a href="/International/tutorials/tutorial-char-enc/"><cite>Gestion de l’encodage des caractères en HTML et CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Liens connexes, <cite>Créer du contenu HTML et CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Caractères HTML</a></li>
+        <li><a href="/International/techniques/authoring-html#indoc">Déclarer un encodage de caractères en HTML</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Choisir et appliquer un encodage de caractères</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>Liens utiles, <cite>Installer un serveur</cite></p>
+      <ul>
+        <li><a href="/International/techniques/server-setup#charset">Caractères</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

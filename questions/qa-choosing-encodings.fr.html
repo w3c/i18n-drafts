@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Choisir et appliquer un encodage de caractères</title>
+<meta name="description" content="Quel encodage de caractères devrais-je utiliser ? Comment l’appliquer à mon contenu ?">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-choosing-encodings'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-choosing-encodings'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-03-31', time:'19:50'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-03-26', time:'16:24'} // date and time of latest edits to this document/translation
+f.contributors = 'Henri Sivonen, Gunnar Bittersmann, Zack Weinberg'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Gwendoline Clavé, <a href="https://www.clavoline-traduction.fr/" rel="nofollow">Clavoline Traduction</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-choosing-encodings-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-fr.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<style>
+.badencoding {
+	font-weight: bold;
+	color: #a52a2a;
+}
+</style>
+</head>
+
+
+<body>
+<header> 
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Choisir et appliquer un encodage de caractères<br>
+  </h1>
+</header>
+
+
+  <div id="audience">
+    <!--p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, Web project managers, and anyone who is new to character encodings and needs an introduction to how to choose and apply character encodings.</p-->
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+<section id="question">
+  <h2>Questions</h2>
+  <p class="question">Quel encodage de caractères devrais-je utiliser ? Comment l’appliquer à mon contenu ?</p>
+
+    <p>Un contenu se compose d’une séquence de caractères. Ces caractères représentent des lettres de l’alphabet, des signes de ponctuation, etc. Mais ce contenu est stocké dans l’ordinateur sous la forme d’une séquence d’octets, c’est-à-dire de valeurs numériques. Parfois, il faut plus d’un octet pour représenter un caractère. Comme les codes utilisés en espionage, la manière dont la séquence d’octets est convertie en caractères dépend de la clé qui a été utilisée pour encoder le texte. Dans notre contexte, la <i class="quote-term">clé</i> est appelée <b class="newterm">encodage de caractères</b>. </p>
+    <p>Cet article vous propose des conseils simples pour choisir l’encodage de caractères adéquat et l’appliquer à votre contenu, c’est-à-dire produire un document dans cet encodage.</p>
+    <p>Si vous avez besoin de mieux comprendre en quoi consistent les caractères et les encodages de caractères, consultez l’article <a class="print" href="/International/questions/qa-what-is-encoding"><cite>Les encodages de caractères pour les débutants</cite></a>.</p>
+</section>
+
+
+<section id="nutshell">
+  <h2 id="quickanswer">Réponse courte</h2>
+  
+    <p> Choisissez l’encodage UTF-8 pour tous vos contenus et envisagez de convertir en UTF-8 tous vos contenus créés dans d’autres encodages.</p>
+    <p>Si vous ne pouvez vraiment pas utiliser un encodage Unicode, <a href="#nonutf8">vérifiez que la plupart des navigateurs sont compatibles</a> avec l’encodage que vous avez choisi, et que cet encodage ne figure pas sur la <a href="#avoid">liste des encodages à éviter</a> d’après les spécifications récentes.</p>
+  <p>Déterminez si vous devrez prendre en compte la <a href="#http">configuration HTTP côté serveur</a> dans votre décision.</p>
+    <p>En plus de déclarer l’encodage du document à l’intérieur de celui-ci ou sur le serveur, vous devrez <a href="#applyingencoding">enregistrer votre texte dans cet encodage</a> pour l’appliquer à votre contenu.</p>
+    <p>Les développeurs et développeuses doivent aussi s’assurer que les différentes composantes du système peuvent échanger entre elles.</p>
+</section>
+
+
+<section id="more">
+<h2>Réponse détaillée</h2>
+  <section id="applyingencoding">
+<h3>Appliquer un encodage à votre contenu</h3>
+    <p>Lorsque vous créez du contenu, vous devriez déclarer l’encodage de caractères de vos pages à l’aide de l’une des méthodes décrites dans notre article <a class="print" href="/International/questions/qa-html-encoding-declarations"><cite>Déclarer un encodage de caractères en HTML</cite></a>.</p>
+    <p>Toutefois, il est important de comprendre que le simple fait de déclarer un encodage à l’intérieur d’un document ou sur un serveur ne modifiera pas les octets ; vous devrez <strong>enregistrer votre texte dans cet encodage</strong> pour l’appliquer à votre contenu. (La déclaration aide simplement le navigateur à interpréter les séquences d’octets dans lesquelles le texte est stocké.)</p>
+<div class="sidenoteGroup">
+<p>Si nécessaire, définissez UTF-8 comme encodage par défaut des nouveaux documents dans votre éditeur de texte. L’image ci-dessous montre comment procéder dans les préférences d’un éditeur comme Dreamweaver.</p>
+      <aside class="sideinfonote">
+        <p class="info">Pour plus d’informations sur les « Formes de normalisation Unicode », consultez notre article sur la <a class="print" href="/International/questions/qa-html-css-normalization"><cite>Normalisation en HTML et CSS</cite></a>. Pour en savoir plus sur la « Signature Unicode (BOM) », consultez <a class="print" href="/International/questions/qa-byte-order-mark"><cite>L’indicateur d’ordre des octets (BOM) en HTML</cite></a>.</p>
+      </aside>
+    </div>
+    <figure><img src="qa-choosing-encodings-data/dwprefs-encoding.png" alt="Les préférences de Dreamweaver relatives aux nouveaux documents vous permettent de préciser un encodage par défaut."></figure>
+    <p>Vous pourriez aussi avoir besoin de vérifier que votre serveur envoie les documents avec les bonnes déclarations HTTP, car celles-ci prévalent sur les informations figurant à l’intérieur du document (<a href="#http">voir ci-dessous</a>). </p>
+    <p>Les développeurs et développeuses doivent aussi s’assurer que les différentes composantes du système peuvent échanger entre elles. Les pages Web doivent pouvoir échanger sans heurt avec les scripts backend, les bases de données, et ainsi de suite. Bien sûr, eux aussi fonctionnent mieux avec UTF-8. Vous trouverez une liste détaillée des choses à prendre en compte dans notre guide <a class="print" href="/International/articles/unicode-migration/"><cite>Migrer vers Unicode</cite></a>.</p>
+  </section>
+
+  <section id="useunicode">
+<h3>Pourquoi utiliser UTF-8 ?</h3>
+    <p>Une page HTML ne peut avoir qu’un seul encodage. Vous ne pouvez pas choisir différents encodages pour différentes parties d’un document.</p>
+    <div class="sidenoteGroup">
+      <p>Un encodage basé sur Unicode, comme UTF-8, répond aux besoins de nombreuses langues. Il est également compatible avec les pages et les formulaires qui combinent plusieurs langues. De plus, son utilisation élimine le besoin de logique côté serveur pour déterminer individuellement l’encodage de caractères de chaque page envoyée ou de chaque soumission de formulaire entrante. Ainsi, elle réduit considérablement la complexité d’un site ou d’une application multilingue.</p>
+      <p>Un encodage Unicode permet aussi d’utiliser sur une même page un nombre de langues beaucoup plus important que tout autre encodage.</p>
+      <aside class="sideinfonote">
+        <p class="info">La compatibilité avec un encodage donné (même un encodage Unicode) ne garantit pas qu’un agent utilisateur affichera correctement le texte. De nombreux systèmes d’écriture, comme les écritures arabes et indiennes, nécessitent des règles supplémentaires pour transformer la séquence de caractères en mémoire en la séquence adéquate de glyphes à afficher.</p>
+      </aside>
+    </div>
+    <p>Aujourd’hui, les obstacles à l’utilisation d’Unicode sont très rares. En janvier 2012, Google a d’ailleurs annoncé que plus de 60 % du Web (d’après un échantillon de plusieurs milliards de pages) utilisait désormais UTF-8. Si on y ajoute le nombre de pages web utilisant uniquement ASCII (qui est un sous-ensemble d’UTF-8), ce pourcentage passe à environ 80 %.</p>
+    <p>Il existe trois <a class="termref print" href="/International/articles/definitions-characters/#charsets">encodages de caractères</a> Unicode différents : UTF-8, UTF-16 et UTF-32. Parmi les trois, seul UTF-8 doit être utilisé pour les contenus Web. Comme l’<a class="print" href="https://www.w3.org/TR/html50/document-metadata.html#charset">indique</a> la spécification HTML5, « nous recommandons l’utilisation d’UTF-8 aux créateurs et créatrices de contenus. Les systèmes de vérification de la conformité peuvent leur déconseiller d’utiliser d’autres encondages. Les outils de création devraient utiliser par défaut l’encodage UTF-8 pour les nouveaux documents. »</p>
+    <p>Remarque : en UTF-8, tous les caractères ASCII utilisent exactement les mêmes octets qu’un encodage ASCII, ce qui facilite souvent l’interopérabilité et la compatibilité descendante. </p>
+  </section>
+  
+  <section id="http">
+<h3>Prise en compte de l’en-tête HTTP</h3>
+    <p>Toute déclaration d’encodage de caractères effectuée dans l’<a href="/International/articles/definitions-characters/Overview#httpheader" class="termref print">en-tête HTTP</a> prévaut sur les déclarations présentes sur les pages individuelles. Si l’en-tête HTTP déclare un encodage différent de celui que vous souhaitez utiliser pour votre contenu, cela posera problème, sauf si vous pouvez modifier les paramètres du serveur.</p>
+    <p>Il est possible que vous n’ayez aucun contrôle sur les déclarations qui accompagnent l’en-tête HTTP et que vous deviez demander de l’aide aux personnes qui gèrent le serveur. Toutefois, si vous avez un accès limité aux fichiers de configuration du serveur ou générez des pages à l’aide de langages de script, vous aurez peut-être des moyens de résoudre les problèmes sur le serveur. Par exemple, consultez l’article <a class="print" href="/International/O-HTTP-charset"><cite>Configurer le paramètre d’encodage HTTP</cite></a> pour plus d’informations sur la manière de modifier les informations d’encodage, que ce soit en local pour un ensemble de fichiers sur un serveur, ou pour du contenu généré à l’aide d’un langage de script.</p>
+    <p>Généralement, avant de procéder, vous devez vérifier que l’en-tête HTTP déclare bien l’encodage de caractères. Pour découvrir quel encodage de caractères (le cas échéant) est spécifié dans l’en-tête HTTP, vous pourriez utiliser le <a class="print" href="https://validator.w3.org/i18n-checker/">Vérificateur d’internationalisation du W3C</a>. Sinon, l’article <a class="print" href="/International/questions/qa-headers-charset"><cite>Vérifier les en-têtes HTTP</cite></a> renvoie vers d’autres outils qui permettent de vérifier les informations d’encodage transmises par le serveur.</p>
+  </section>
+</section>
+
+<section id="obscure">
+<h2>Informations complémentaires</h2>
+<p>Cette section comporte des informations dont vous ne devriez pas avoir besoin, mais que nous avons incluses à des fins d’exhaustivité.</p>
+
+  <section id="nonutf8">
+<h3>Et si je ne peux pas utiliser UTF-8 ?</h3>
+    <p>Si vous ne pouvez vraiment pas éviter l’utilisation d’un encodage de caractères autre qu’UTF-8, vous devrez choisir parmi un ensemble limité de noms d’encodages pour garantir la meilleure interopérabilité et la plus longue durée possible de lisibilité de votre contenu, et pour limiter les vulnérabilités de sécurité.</p>
+    <p>Encore récemment, vous deviez consulter le <a class="print" href="https://www.iana.org/assignments/character-sets">registre de l’IANA</a> pour trouver les noms d’encodages. Ce registre inclut souvent plusieurs noms pour un même encodage. Dans ce cas, vous devriez utiliser le nom figurant dans la colonne « Preferred ».</p>
+    <p>La nouvelle spécification <a class="print" href="https://encoding.spec.whatwg.org/"><cite>Encodage</cite></a> fournit désormais une liste de noms qui ont été testés dans des navigateurs en conditions réelles. Vous pouvez trouver cette liste dans le tableau de la section intitulée <a class="print" href="https://encoding.spec.whatwg.org/#names-and-labels">Names and labels</a>. Mieux vaut utiliser les noms indiqués dans la colonne de gauche de ce tableau.</p>
+    <p><strong>Remarque :</strong> la présence d’un nom dans l’une de ces sources ne signifie pas forcément que cet encodage peut être utilisé. Consultez la section suivante pour découvrir les encodages à éviter.</p>
+  </section>
+  
+  <section id="avoid">
+<h3>Encodages à éviter</h3>
+    <p> La spécification HTML5 <a class="print" href="https://encoding.spec.whatwg.org/#names-and-labels">indique</a> un certain nombre d’encodages à éviter.</p>
+    <p> Les documents ne doivent utiliser ni les encodages <b class="badencoding" translate="no">JIS_C6226-1983</b>, <b class="badencoding" translate="no">JIS_X0212-1990</b>, <b class="badencoding" translate="no">HZ-GB-2312</b> et <b class="badencoding" translate="no">JOHAB</b> (jeu de caractères Windows-1361) ni les encodages basés sur <b class="badencoding" translate="no">ISO-2022</b> ou <b class="badencoding" translate="no">EBCDIC</b>. En effet, ces encodages permettent à des points de code ASCII de représenter des caractères non ASCII, ce qui présente une menace pour la sécurité.</p>
+    <p>Les documents ne doivent pas non plus utiliser les encodages <b class="badencoding" translate="no">CESU-8</b>, <b class="badencoding" translate="no">UTF-7</b>, <b class="badencoding" translate="no">BOCU-1</b> et <b class="badencoding" translate="no">SCSU</b>, car ils n’ont jamais été conçus pour les contenus Web. La spécification HTML5 interdit aux navigateurs de les reconnaitre.</p>
+    <p>De plus, la spécification décourage fortement l’utilisation de l’encodage <b class="badencoding" translate="no">UTF-16</b>, et particulièrement celle d’<b class="badencoding" translate="no">UTF-32</b>. </p>
+    <p>Vous devriez aussi éviter les encodages de caractères <a class="print" href="https://encoding.spec.whatwg.org/#names-and-labels">listés dans la spécification <cite>Encoding</cite></a>. Ceux-ci incluent les encodages <b class="badencoding" translate="no">Big5</b> et <b class="badencoding" translate="no">EUC-JP</b>, qui présentent des problèmes d’interopérabilité. L’encodage hébreu <b class="badencoding" translate="no">ISO-8859-8</b>, pour le texte <a class="termref print" href="/International/questions/qa-visual-vs-logical#term_visualordering">ordonné de manière visuelle</a>, est aussi à éviter. Mieux vaut utiliser un encodage compatible avec le texte <a href="/International/questions/qa-visual-vs-logical#term_logicalordering" class="termref print">ordonné de manière logique</a> (soit UTF-8 ou, à défaut, ISO-8859-8-i).</p>
+    <p>L’encodage <b class="badencoding" translate="no">replacement</b>, mentionné dans la spécification <cite>Encoding</cite>, n’est pas un encodage à proprement parler. Il s’agit d’une solution de repli qui associe chaque octet au point de code Unicode <span class="uname">U+FFFD CARACTÈRE DE REMPLACEMENT</span>. Bien entendu, il est inutile de transmettre des données dans cet « encodage ». </p>
+    <p>L’encodage <b class="badencoding" translate="no">x-user-defined</b> est un encodage à un seul octet dont la moitié inférieure est ASCII et dont la moitié supérieure est associé à la zone à usage privé. Comme la zone à usage privé de façon générale, mieux vaut éviter l’utilisation de cet encodage sur l’Internet public, car il porte atteinte à l’interopérabilité et à l’utilisation à long terme.</p>
+  </section>
+</section>
+
+
+<section id="endlinks">
+<h2>Pour aller plus loin</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>Vous débutez ? <a href="/International/getting-started/characters"><cite>Introduction aux jeux et encodages de caractères</cite></a></p>
+    </li>
+    <li>
+      <p>Tutoriel, <a href="/International/tutorials/tutorial-char-enc/"><cite>Gestion de l’encodage des caractères en HTML et CSS</cite></a></p>
+    </li>
+    <li>
+      <p>Liens connexes, <cite>Créer du contenu HTML et CSS</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">Caractères HTML</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">Choisir un encodage de caractères</a></li>
+        <li><a href="/International/techniques/authoring-html#changing">Changer l’encodage d’un document</a></li>
+        <li><a href="/International/techniques/authoring-html#checkenc">Vérifier l’encodage d’un document</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
