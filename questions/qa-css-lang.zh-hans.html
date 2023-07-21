@@ -157,11 +157,11 @@ em:lang(ja)  { font-style:&#xA0;normal; text&#x2011;emphasis:&#xA0;dot; text&#x2
     <p><code class="kw" translate="no">lang</code>属性用于标记HTML文档中文本的语言。XML文档应使用<code class="kw" translate="no">xml:lang</code>属性。</p>
     
     <p>对于互联网媒体类型是text/html的XHTML，建议同时使用这两个属性，因为HTML解析器会使用<code class="kw" translate="no">lang</code>属性，而XML解析器会使用<code class="kw" translate="no">xml:lang</code>属性。</p>
-    <p>The article will first discuss the various options for styling by language in HTML, using the lang attribute. There then follows a section  about <a href="#xmllang">how to style XML documents</a> based on <code class="kw" translate="no">xml:lang</code>.</p>
+    <p>本文将首先介绍使用<code class="kw" translate="no">lang</code>属性在HTML中按语言修改样式的多种方案，然后介绍<a href="#xmllang">如何基于<code class="kw" translate="no">xml:lang</code>修改XML文档的样式</a>。</p>
   </section>
   <section id="colon-lang">
-<h3>The <code>:lang(...)</code> pseudo-class selector</h3>
-    <p>The HTML fragment:</p>
+<h3><code>:lang(...)</code> 伪类</h3>
+    <p>下面的HTML片段：</p>
     <figure class="example">
       <pre style="white-space:pre-wrap;"><code class="language-html">
 &lt;p&gt;It is polite to welcome people in their own language:&lt;/p&gt;
@@ -175,7 +175,7 @@ em:lang(ja)  { font-style:&#xA0;normal; text&#x2011;emphasis:&#xA0;dot; text&#x2
 &lt;/ul&gt;
 </code></pre>
     </figure>
-    <p>could have the following styling:</p>
+    <p>可有下面的样式：</p>
     <figure class="example">
       <pre style="white-space:pre-wrap;"><code class="language-css">body 		{font-family: "Times New Roman",serif;}
 :lang(ar) 	{font-family: "Scheherazade",serif; 
@@ -185,17 +185,20 @@ em:lang(ja)  { font-style:&#xA0;normal; text&#x2011;emphasis:&#xA0;dot; text&#x2
 :lang(din) 	{font-family: "Doulos SIL",serif;}
 </code></pre>
     </figure>
-    <p>The Greek and Russian use the styling set for the <code class="kw" translate="no">body</code> element.</p>
-    <p>This is the ideal way to style language fragments, because it is the only selector that can apply styling to the content of an
-      element when the language of that content is declared earlier in a page.</p>
-    <p>A rule for <code>:lang(zh)</code> would match elements with a language value of <code class="kw" translate="no">zh</code>. It would also match more specific
-      language specifications such as <code class="kw" translate="no">zh-Hant</code>, <code class="kw" translate="no">zh-Hans</code> and <code class="kw" translate="no">zh-TW</code>.</p>
-    <p>The selector <code>:lang(zh-Hant)</code> will only match elements that have a language value of <code class="kw" translate="no">zh-Hant</code> or have inherited
-      that language value. If the CSS rule specified <code>:lang(zh-TW)</code>, the rule would not match our sample paragraph.</p>
+    
+    <p>希腊语和俄语使用<code class="kw" translate="no">body</code>元素的样式。</p>
+  
+    <p>这是设置语言片段样式的理想方法，因为当内容的语言在页面中的较早部分声明时，它是唯一可以把样式应用于元素的选择器。</p>
+    
+    <p><code>:lang(zh)</code> 将匹配语言值为<code class="kw" translate="no">zh</code>的元素，也可以匹配更为具体的语言标签，如<code class="kw" translate="no">zh-Hant</code>、<code class="kw" translate="no">zh-Hans</code>和<code class="kw" translate="no">zh-TW</code>。</p>
+    
+    <p>选择器<code>:lang(zh-Hant)</code>只能匹配语言值为<code class="kw" translate="no">zh-Hant</code>或继承了该语言值的元素。如果用的是<code>:lang(zh-TW)</code>，则无法匹配我们的示例文本。</p>
   </section>
   <section id="lang-bar">
-<h3>A <code>[lang|="..."]</code> selector that matches the beginning of a value of an attribute</h3>
-    <p>For  markup example we saw in the previous section, the style sheet could be written as:</p>
+    
+<h3>与属性值开头匹配的<code>[lang|="..."]</code>选择器</h3>
+
+    <p>对于我们在上一节中看到的HTML示例，CSS可写为：</p>
     <figure class="example">
       <pre style="white-space:pre-wrap;"><code class="language-css">body 		   {font-family: "Times New Roman",serif;}
 *[lang|="ar"] 	   {font-family: "Scheherazade",serif; 
@@ -205,13 +208,13 @@ em:lang(ja)  { font-style:&#xA0;normal; text&#x2011;emphasis:&#xA0;dot; text&#x2
 *[lang|="din"]     {font-family: "Doulos SIL",serif;}
 </code></pre>
     </figure>
-    <p>Unlike <code class="kw" translate="no">:lang</code>, this selector  will only work for elements which carry a <code class="kw" translate="no">lang</code> attribute (see <a href="#inheritance">Inheritance of language values</a>).</p>
-    <p>There is a significant difference between this selector and <code>[lang="..."]</code>. Whereas <code>[lang=&quot;...&quot;]</code> will
-      only match elements when the selector value and the attribute value are  identical, this selector value will match a language attribute
-      value that has additional hyphen-separated values. Therefore the  selector <code>[lang|=&quot;sl&quot;]</code> would match <code class="kw" translate="no">sl-IT</code>, <code class="kw" translate="no">sl-nedis</code> or <code class="kw" translate="no">sl-IT-nedis</code>, and the selector <code>[lang|=&quot;zh-Hans&quot;]</code> would also match <code class="kw" translate="no">zh-Hans-CN</code>.</p>
+    
+    <p>与<code class="kw" translate="no">:lang</code>不同，该选择器仅适用于带有<code class="kw" translate="no">lang</code>属性的元素（参阅<a href="#inheritance">语言值的继承</a>）。</p>
+    
+    <p>这个选择器和<code>[lang="..."]</code>有显著的区别。<code>[lang=&quot;...&quot;]</code>只在选择器值和属性值相同时才匹配，而这个选择器还可以匹配有横杠分隔的更具体的语言属性，所以<code>[lang|=&quot;sl&quot;]</code>可以匹配<code class="kw" translate="no">sl-IT</code>、<code class="kw" translate="no">sl-nedis</code>和<code class="kw" translate="no">sl-IT-nedis</code>，而<code>[lang|=&quot;zh-Hans&quot;]</code>也可以匹配<code class="kw" translate="no">zh-Hans-CN</code>。</p>
   </section>
   <section id="generic">
-<h3>Generic class or id selectors</h3>
+<h3>通用的类或ID选择器</h3>
     <p>This method avoids the need to match the language declarations at all, and relies on <code class="kw" translate="no">class</code> or <code class="kw" translate="no">id</code> attribute markup. Using an ordinary CSS class or id selector works with most browsers that support CSS. The disadvantage is that adding the attributes takes up time and bandwidth.</p>
     <p>For the markup example above, this would require us to change the HTML code by adding class attributes as follows:</p>
     <figure class="example">
