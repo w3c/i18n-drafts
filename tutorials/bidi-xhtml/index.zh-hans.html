@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hans">
 <head>
 <meta charset="utf-8" />
-<title>Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts (tutorial)</title>
-<meta name="description" content="W3C i18n tutorial: How to create pages for languages written in right-to-left scripts." />
+<title>使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面（教程）</title>
+<meta name="description" content="W3C i18n 教程：如何为用从右至左书写的文字制作网页" />
 <script>
 var f = { }
 
@@ -20,23 +20,24 @@ f.status = 'published';  // should be one of draft, review, published, or notrev
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-01-23', time:'12:22'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2023-07-27', time:'12:22'} // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
 // TRANSLATORS should fill in these assignments:
-f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translators = '薛富侨'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
 f.translatorContact=""; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
 
 f.breadcrumb = 'direction';
 </script>
 <script src="index-data/translations.js"> </script>
 <script src="../../javascript/doc-structure/article-dt.js"> </script>
-<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
 <!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
 <script src="../../javascript/doc-structure/article-2022.js"> </script>
 <script src="../../javascript/articletoc-2022.js"></script>
 <link rel="stylesheet" href="../../style/article-2022.css" />
+<link rel="stylesheet" href="index-data/local.css" type="text/css" />
 <link rel="copyright" href="#copyright"/>
 </head>
 
@@ -44,24 +45,24 @@ f.breadcrumb = 'direction';
 <header>
 <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
 
-<h1>Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts (tutorial)</h1>
+<h1>使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面（教程）</h1>
 </header>
 
 <div id="sidebarExtras">
   <section>
-    <h2 id="whyread" class="notoc">Why should you read this?</h2>
-    <p>Getting bidirectional text to display correctly can sometimes appear baffling and frustrating, but it need not be so. If you have struggled with this or have yet to start, this tutorial should help you adopt the best approach to marking up your content, and explain enough of how the bidirectional algorithm works that you will understand much better the root causes of most of your problems. We will also address some common misconceptions about ways to deal with markup for bidirectional content.</p>
+    <h2 id="whyread" class="notoc">你为什么应该读这篇文章？</h2>
+    <p>让双向文本正确渲染有时会让人感觉很难，但事实并非如此。如果你感到困惑或者还没有开始，本教程可以帮助你采用最佳方法来标记内容，并充分解释双向算法的工作原理，以便你更好地理解大多数问题的根本原因。我们还会讨论有关处理双向文本标记语言的方法的一些常见误解。</p>
   </section>
   <section id="objectives">
-    <h2 class="notoc">Objectives</h2>
-    <p>By following this tutorial you should be able to:</p>
+    <h2 class="notoc">目标</h2>
+    <p>读完本教程你可以学习到：</p>
     <ul>
-      <li>create effective HTML pages containing text written in the Arabic, Hebrew or other right-to-left scripts</li>
-      <li>understand the basics of how the Unicode bidirectional algorithm works, so that you can understand why bidirectional text behaves the way it does, and how to work around problems</li>
-      <li>apply the significant new additions in HTML5 to your bidi markup.</li>
-      <li>take decisions about the appropriateness of alternatives to markup</li>
+      <li>创建包含用阿拉伯字母、希伯来字母或其他从右至左书写的文字的HTML页面</li>
+      <li>学习Unicode双向文本算法的基础知识，以便理解为什么双向文本会这样工作，以及如何解决问题</li>
+      <li>将HTML5中的重要新增内容应用到包含双向文本的页面</li>
+      <li>考虑不使用标记语言的替代方案</li>
     </ul>
-    <p>Right-to-left scripts are used by numerous languages, including Arabic, Hebrew, Pashto, Persian, Sindhi, Syriac, Thaana, Urdu, Yiddish, etc</p>
+    <p>很多语言都使用从右至左书写的文字，包括阿拉伯语、希伯来语、普什图语、波斯语、信德语、叙利亚语、迪维希语、乌尔都语、意第绪语、维吾尔语、哈萨克语和柯尔克孜语等。</p>
   </section>
 </div>
 
@@ -69,12 +70,11 @@ f.breadcrumb = 'direction';
   <div id="audience">
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
         </div>
-  <p>This  tutorial gathers together and organizes pointers to articles that, taken together, help you understand the essential aspects of how to work with languages in right-to-left scripts and bidirectional text when authoring HTML and CSS.</p>
-
+  <p>本教程汇总了一些文章，帮助你了解在编写HTML和CSS时如何使用从右至左书写的文字和双向文本。</p>
 
 <div id="nutshell">
-  <h2 id="quicksummary">In a nutshell</h2>
-  <p>Add a <code class="kw" translate="no">dir</code> attribute to the <code class="kw" translate="no">html</code> tag to set the default base direction of your page if it is right-to-left. Use the <code class="kw" translate="no">dir</code> attribute on block elements within the page only where you need to change the base direction.</p>
+  <h2 id="quicksummary">简言之</h2>
+  <p>如果页面是由右至左书写的，向<code class="kw" translate="no">html</code>标签添加<code class="kw" translate="no">dir</code>属性以设置页面的默认基方向（base direction）。只有在你需要更改基方向时，才需要在页面内的块级元素上使用<code class="kw" translate="no">dir</code>属性。</p>
   <p>For inline text, <a  class="termref" href="/International/articles/inline-bidi-markup/#tightwrap">tightly wrap</a> all <a class="termref" href="/International/articles/inline-bidi-markup/#oppositedirection">opposite-direction phrases</a> in markup that sets their base direction.</p>
   <p>Use <code>dir=auto</code> to automatically set the base direction of form fields, <code class="kw" translate="no">pre</code> elements or text inserted into the page. Use the <code class="kw" translate="no">dirname</code> attribute if you need to pass information about the base direction of form input to the server.</p>
   <p>Avoid using CSS or Unicode control codes for managing direction where you can use markup.</p>

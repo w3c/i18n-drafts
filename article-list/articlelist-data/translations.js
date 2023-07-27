@@ -448,6 +448,7 @@ var titles = {
 	"en": "Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts (tutorial)",
 	"es": "Creación de páginas HTML en árabe, hebreo y otros scripts de derecha a izquierda (tutorial)",
 	"fr": "Création de pages HTML en arabe, hébreu et autres scripts de droite à gauche (tutoriel)",
+	"zh-hans": "使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面（教程）",
 	},
 	{
 	"url": "/International/articles/inline-bidi-markup/uba-basics",
