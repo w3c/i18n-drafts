@@ -1,0 +1,319 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>L’indicateur d’ordre des octets (BOM) en HTML</title>
+<meta name="description" content="Qu’est-ce que l’indicateur d’ordre des octets ? Que dois-je savoir à son sujet lorsque je crée du contenu HTML ?">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-byte-order-mark' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-byte-order-mark' // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-08-10' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2013-01-31', time:'17:18'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-05-30', time:'21:45'} // date and time of latest edits to this document/translation
+f.contributors = 'Albert Lunde, Asmus Freytag, Björn Höhrmann, Henri Sivonen, John Cowan, Leif Halvard Silli, Norbert Lindenberg' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Gwendoline Clavé, <a href="https://www.clavoline-traduction.fr/" rel="nofollow">Clavoline Traduction</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-byte-order-mark-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-fr.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>L’indicateur d’ordre des octets (BOM) en HTML</h1>
+</header>
+
+
+<aside id="sidebarExtras">
+<section>
+<h2 class="notoc">Vérification rapide</h2>
+<form action="https://validator.w3.org/i18n-checker/check" method="get" class="quickcheck">
+<p>Saisissez l’URI d’une page dans le champ ci-dessous pour vérifier si elle contient un ou plusieurs indicateurs d’ordre des octets.</p>
+<p>
+<input type="text" value="URI of page to check" name="uri" onfocus="this.value=''">
+</p>
+<p>
+<button type="submit">Vérifier</button>
+</p>
+<p><span class="guide">Cherchez la ligne « Byte order mark (BOM) » dans la section « Character encoding » du tableau « Information ». Si la page contient des indicateurs d’ordre des octets qui ne se trouvent pas au tout début du fichier, un message d’avertissement s’affichera plus bas.</span></p>
+</form>
+</section>
+</aside>
+
+
+
+
+
+
+
+<div id="audience">
+<!--p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), CSS coders, Web project managers, and anyone who  needs to better understand what the BOM is, and how it affects HTML.</p-->
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+
+
+
+
+
+<section id="question">
+<h2>Questions</h2>
+
+<p class="question">Qu’est-ce que l’indicateur d’ordre des octets ? Que dois-je savoir à son sujet lorsque je crée du contenu HTML ?</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="answer">
+<h2>Réponses</h2>
+
+
+<section id="bomwhat">
+<h3> Qu’est-ce qu’un indicateur d’ordre des octets ?</h3>
+
+<div class="sidenoteGroup">
+<p>Au début d’une page qui utilise un <a class="termref" href="/International/articles/definitions-characters/#charsets">encodage de caractères</a> <a class="termref" href="/International/articles/definitions-characters/#unicode">Unicode</a>, vous pouvez trouver quelques octets qui représentent le point de code Unicode U+FEFF INDICATEUR D’ORDRE DES OCTETS. Son abréviation est « <dfn>BOM</dfn> » d’après le terme anglais « <em>byte-order mark</em> ».</p>
+<div class="insideinfonote">
+<p class="info">Le nom INDICATEUR D’ORDRE DES OCTETS est un alias ; à l’origine, ce caractère s’appelait ESPACE INSÉCABLE SANS CHASSE (abrégé en ZWNBSP d’après le terme anglais « <em>zero width no-break space</em> »). Depuis l’introduction du caractère U+2060 GLUON DE MOTS, le caractère U+FEFF n’est plus utilisé dans son sens d’espace insécable sans chasse. Puisqu’il dispose d’un alias formel, le nom ESPACE INSÉCABLE SANS CHASSE n’est plus utile. Nous utiliserons donc son alias dans cet article.</p>
+</div>
+</div>
+
+<p>Lorsqu’on l’utilise correctement, l’indicateur d’ordre des octets est invisible.</p>
+
+<p>Avant l’introduction d’UTF-8 au début de l’année 1993, on transférait généralement le texte Unicode à l’aide d’un encodage appelé UCS-2 (l’ancêtre d’UTF-16). Dans cet encodage, les caractères étaient représentés par des mots (ou « unités de stockage ») de 16 bits. On pouvait stocker ces mots dans un flux d’octets de deux manières : en commençant par l’octet le plus significatif (ordre <span class="qterm">petit-boutiste</span>) ou par le moins significatif (ordre <span class="qterm">gros-boutiste</span>). Pour préciser dans quel ordre ils étaient stockés, on plaçait le caractère U+FEFF (l’indicateur d’ordre des octets) au début du flux. Il s’agissait d’un nombre magique qui ne faisait pas partie du texte représenté par le flux.</p>
+
+<p>L’image ci-dessous illustre l’ordre des octets dans une séquence de caractères représentés chacun par deux octets. Chaque nombre hexadécimal à deux chiffres représente un octet dans le flux de texte. Comme vous pouvez le voir, avec un mécanisme gros-boutiste, l’ordre des deux octets qui représentent un seul caractère est inversé par rapport au mécanisme petit-boutiste. Le BOM renseigne sur l’ordre utilisé pour permettre aux applications de décoder immédiatement le contenu.</p>
+
+<p><img src="qa-byte-order-mark-data/bom.png" alt="Octets représentant l’indicateur d’ordre des octets."/></p>
+
+<p>Dans l’encodage UTF-8, la présence de l’indicateur d’ordre des octets n’est pas essentielle. En effet, contrairement aux encodages UTF-16, un caractère UTF-8 n’a aucune séquence d’octets alternative. On peut tout de même trouver un BOM dans du texte encodé en UTF-8, soit parce qu’il résulte d’une conversion depuis un autre encodage, soit parce qu’un éditeur de texte l’a ajouté pour signaler que le contenu était encodé en UTF-8. Dans cette situation, on le désigne souvent par le terme <dfn>signature UTF-8</dfn>.</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="bomhow">
+<h3> Que dois-je savoir sur l’indicateur d’ordre des octets ?</h3>
+
+<p>La plupart du temps, vous n’aurez pas à vous soucier du BOM UTF-8. Certains éditeurs de texte (comme le Bloc-Notes de Windows) ajoutent systématiquement un indicateur d’ordre des octets lorsque vous enregistrez un fichier avec l’encodage UTF-8. D’autres vous laissent le choix.</p>
+
+<p>En HTML5, les navigateurs sont tenus de reconnaitre le BOM UTF-8 et de l’utiliser pour détecter l’encodage d’une page. Les versions récentes des principaux navigateurs gèrent l’indicateur d’ordre des octets de la manière attendue lorsqu’il est présent dans des pages encodées en UTF-8.</p>
+
+<p>En plus d’être extrêmement court et stable, le BOM UTF-8 fonctionne en XML et en HTML. Il fonctionne même lorsque votre page n’est pas lue sur le réseau, contrairement aux déclarations HTTP. Par conséquent, il offre un moyen fiable de détecter l’encodage. Gardez toutefois à l’esprit qu’il vaut toujours mieux déclarer l’encodage de votre page <a href='/International/questions/qa-html-encoding-declarations#nutshell'>à l’aide de l’élément <code class="kw" translate="no">meta</code></a> en plus d’utiliser l’indicateur d’ordre des octets. Ainsi, l’encodage est visible des personnes qui consultent le code source. </p>
+
+<p>Par ailleurs, le BOM peut poser problème dans de nombreuses situations, notamment parce qu’il est invisible. Pour en savoir plus à ce sujet, consultez la section <a href="#problems">Problèmes potentiels liés à l’indicateur d’ordre des octets UTF-8</a>. </p>
+
+<p>Si vous utilisez un encodage UTF-16 sur votre page (ce que nous vous déconseillons vivement), voici quelques <a href="#additionalinfo">aspects supplémentaires à prendre en compte</a>.</p>
+</section>
+
+
+
+
+
+
+
+<section id="detect">
+<h3>Détecter l’indicateur d’ordre des octets</h3>
+
+<p>Pour découvrir si une page contient un BOM (au début du contenu ou plus bas), vous pouvez utiliser le <a href="https://validator.w3.org/i18n-checker/">Vérificateur d’internationalisation du W3C</a>. Si un indicateur d’ordre des octets se trouve au début de la page, sa présence sera indiquée dans le tableau « <em>Information</em> ». Si un BOM se trouve plus bas sur la page (par exemple, parce que du contenu est ajouté à la page depuis une source externe), sa présence sera indiquée dans la section « <em>Detailed Report</em> ».</p>
+
+<div class="sidenoteGroup">
+<p>Vous pouvez aussi chercher une signature UTF-8 en examinant votre contenu dans un éditeur de texte. Cependant, si votre éditeur gère correctement l’indicateur d’ordre des octets, celui-ci sera probablement invisible. Dans un éditeur binaire capable d’afficher les valeurs hexadécimales des octets de votre fichier, la signature UTF-8 s’affiche sous la forme « EF BB BF ».</p>
+<div class="sideinfonote">
+<p class="info">Si votre éditeur ou navigateur applique le mauvais encodage de caractères à un fichier encodé en UTF-8 qui commence par un indicateur d’ordre des octets, vous verrez probablement une séquence d’octets au début de votre fichier. Il s’agit des octets qui composent cet indicateur, affichés sous la forme des caractères qu’ils représentent dans cet encodage. Avec l’encodage de caractères Latin-1 (ISO 8859-1), la signature s’affiche sous la forme des caractères <code>ï»¿</code>.</p>
+</div>
+</div>
+
+<p>Autrement, votre éditeur peut indiquer l’encodage de votre fichier dans une barre d’état ou dans un menu, en précisant si la signature UTF-8 s’y trouve ou non. Par exemple, si vous utilisez « Enregistrer sous » dans Dreamweaver avec un fichier qui commence par un BOM, vous constaterez que la case « Inclure une signature Unicode (BOM) » est cochée. Vous pouvez également déterminer dans vos préférences (comme sur l’image ci-dessous) si les nouveaux documents doivent inclure un indicateur d’ordre des octets par défaut.</p>
+
+<p><img src="qa-byte-order-mark-data/dwprefs-bom.png" alt="Préférences relatives à l’indicateur d’ordre des octets dans une boîte de dialogue."/></p>
+</section>
+
+
+
+
+
+
+
+<section id="problems">
+<h3>Problèmes potentiels liés à l’indicateur d’ordre des octets UTF-8</h3>
+
+<p>Vous découvrirez ci-dessous quelques situations dans lesquelles le BOM peut poser problème. </p>
+
+<p>En général, ces problèmes disparaissent avec l’adoption de nouvelles versions de navigateurs et d’outils d’édition. Il est utile de les connaitre si vos utilisateurs et utilisatrices continuent à employer des technologies plus anciennes. Cependant, ce n’est pas qu’une question de compatibilité avec d’anciennes versions. </p>
+
+
+
+
+
+
+<section id="phpincludes">
+<h4>Inclusion de fichier avec PHP</h4>
+
+<p>Au moment de l’écriture de cet article, si vous utilisez la structure PHP <code class="kw" translate="no">include</code> pour inclure dans une page un fichier externe qui commence par un indicateur d’ordre des octets, vous pouvez vous retrouver avec des lignes vierges.</p>
+<p>En effet, puisque le BOM n’est pas retiré avant l’inclusion du fichier dans la page, il se comporte comme un caractère qui occupe une ligne de texte. <a target="examples" href="examples/phpbomtest.php">Voici un exemple</a> dans lequel deux lignes de texte sont incluses à partir de fichiers externes, dont l’un commence par un indicateur d’ordre des octets et l’autre non. Avant la première ligne, on peut voir une ligne vierge.</p>
+
+<p>Avant d’inclure un fichier, vous devriez vous assurer qu’il ne commence pas par un BOM.</p>
+
+<p>Vous pourriez également rencontrer des problèmes avec l’indicateur d’ordre des octets sur une page PHP ordinaire. Lorsque vous envoyez des en-têtes HTTP personnalisés, vous devez appeler le code de définition des en-têtes avant le début de l’affichage. Si un fichier commence par un BOM, la page débute l’affichage avant que les instructions de l’en-tête ne soient interprétées. Cela peut entrainer l’apparition de messages d’erreurs et d’autres problèmes sur la page affichée.</p>
+</section>
+
+
+
+
+
+
+<section id="scripting">
+<h4>Traitement par le code programme</h4>
+
+<p>Veillez à tenir compte de l’indicateur d’ordre des octets dans les scripts ou le code programme qui traitent automatiquement des fichiers dans lesquels il est présent. Par exemple, si vous souhaitez utiliser le filtrage par motif au début d’un fichier qui commence par un BOM, vous devrez compléter votre code de manière à en détecter la présence éventuelle et à l’ignorer le cas échéant. </p>
+
+<p>L’encodage UTF-8 sans indicateur d’ordre des octets a une propriété intéressante. Que l’on utilise l’encodage UTF-8 sans BOM ou l’encodage US-ASCII, un document composé uniquement de caractères de la gamme US-ASCII est encodé de la même manière (à l’octet près !). Il peut donc être traité et compris dans les deux cas. Lorsqu’on y ajoute un indicateur d’ordre des octets, il perd cette propriété, car on y insère alors des octets non ASCII. Par conséquent, si certains de vos processus ou scripts sont conçus pour traiter un contenu composé uniquement de caractères US-ASCII, vous devrez vous passer de BOM.</p>
+</section>
+
+
+
+
+
+
+<section id="transcoding">
+<h4>Priorité des en-têtes HTTP</h4>
+
+<p>HTML5 a introduit des changements importants. Lors de la détection de l’encodage d’une page HTML, l’indicateur d’ordre des octets prévaut désormais sur toute déclaration d’encodage effectuée dans l’en-tête HTTP. Cela peut être très utile lorsque le serveur déclare que des pages utilisent un encodage différent d’UTF-8 et la personne qui a créé la page n’a pas le contrôle sur le paramètre d’encodage des caractères au niveau du serveur (ou n’a pas conscience de son effet). Si le BOM prévaut sur les en-têtes HTTP, l’encodage UTF-8 de la page devrait être correctement identifié. </p>
+
+<div class="sidenoteGroup">
+<p>Au moment de la rédaction de cet article, les navigateurs ne tiennent pas tous compte de ce changement de priorité. Vous ne devriez donc pas considérer que l’ensemble de votre public bénéficie de cette fonctionnalité pour le moment.</p>
+<div class="sideinfonote">
+<p class="info">Dans les versions précédentes d’Internet Explorer, l’indicateur d’ordre des octets prévalait sur les en-têtes HTTP, mais dans IE10 et IE11, c’est l’inverse.</p>
+</div>
+</div>
+<!--p>According to the HTML specification, the HTTP header overrides any in-document encoding. However, some browsers ignore the HTTP header encoding declaration if the file starts with a BOM, and they assume that the file is encoded as UTF-8.</p-->
+
+<p>Dans les <a href="https://www.w3.org/International/tests/repository/html5/the-input-byte-stream/results-basics#precedence">navigateurs pour lesquels l’en-tête HTTP prévaut toujours sur l’indicateur d’ordre des octets</a>, lorsque le serveur déclare que des pages utilisent un encodage de caractères différent d’Unicode, vous aurez probablement deux surprises. D’une part, des caractères inattendus peuvent s’afficher au début de la page (comme <code>ï»¿</code> dans une page pour laquelle l’en-tête HTTP déclare l’encodage ISO 8859-1). D’autre part, les caractères non ASCII risquent de ne pas s’afficher correctement sur la page.</p>
+</section>
+
+
+
+
+
+
+
+<section id="bom">
+<h4>Autres problèmes</h4>
+
+<p>Si vous utilisez des applications ou des scripts dans le backend de votre site, vous devriez vérifier qu’ils peuvent également reconnaitre et gérer le BOM.</p>
+
+<p>Nous vous déconseillons vivement de modifier l’encodage d’un fichier UTF-8 au profit d’un encodage autre qu’Unicode. Si vous devez tout de même le faire pour une raison exceptionnelle, veillez à retirer l’indicateur d’ordre des octets. Si vous le laissez, les navigateurs continueront à traiter votre contenu comme s’il était encodé en UTF-8 ou vous verrez s’afficher d’étranges caractères au début de votre page.</p>
+</section>
+</section>
+
+
+
+
+
+
+
+<section id="remove">
+<h3>Retirer l’indicateur d’ordre des octets</h3>
+
+<p>Si vous devez retirer l’indicateur d’ordre des octets, vérifiez que votre éditeur de texte vous permet d’ajouter ou de laisser une signature UTF-8 <a href="/International/questions/qa-setting-encoding-in-applications">lors de l’enregistrement du fichier</a>. Il devrait vous permettre de retirer facilement cette signature en ouvrant le fichier puis en l’enregistrant de nouveau. Par exemple, dans des éditeurs comme Notepad++ sous Windows et TextWrangler sous Mac, il est possible de sélectionner l’encodage dans une liste en utilisant la fonctionnalité « Enregistrer sous ». Cette liste permet d’enregistrer un fichier en UTF-8 avec ou sans BOM. Il vous suffit de choisir l’option sans BOM et d’enregistrer.</p>
+
+<p>Si vous utilisez un script, vous avez l’avantage de pouvoir retirer la signature rapidement, y compris dans plusieurs fichiers. Vous pourriez même intégrer l’exécution automatique de ce script à votre processus.</p>
+
+<p>Note : vous devriez évaluer l’impact du retrait de la signature sur votre processus. Il est possible qu’une partie de votre processus de développement de contenu s’appuie sur l’utilisation de la signature pour indiquer qu’un fichier est encodé en UTF-8. Gardez également à l’esprit qu’une page qui contient de nombreux caractères latins peut sembler correcte, mais contenir quelques caractères extérieurs à la gamme ASCII (U+0000 à U+007F) mal encodés.</p>
+</section>
+</section>
+
+
+
+
+
+
+
+
+<section id="additionalinfo">
+<h2>Informations complémentaires</h2>
+
+<p>Voici quelques remarques complémentaires pour les personnes qui encodent leurs pages HTML en UTF-16. Remarque : pour les pages HTML, il est recommandé d’utiliser UTF-8 et d’éviter UTF-16. Pour la plupart des gens, cette section sera donc théorique.</p>
+
+<div class="sidenoteGroup">
+<p>D’après les normes RFC 2718 et Unicode, si vous déclarez l’encodage de caractères UTF-16LE ou UTF-16BE dans l’en-tête HTTP de votre page, vous devriez vous passer d’indicateur d’ordre des octets au début de votre page. L’utilisation d’un BOM n’est appropriée que lorsque le charset IANA « UTF-16 » est précisé dans l’en-tête HTTP de la page.</p>
+<div class="sideinfonote">
+<p class="warning">Remarque : cela concerne uniquement l’<em>étiquetage</em> du contenu. Bien entendu, que vous indiquiez l’encodage UTF-16 en ajoutant un indicateur d’ordre des octets ou que vous indiquiez l’encodage UTF-16LE ou UTF-16BE, la séquence d’octets reste la même.</p>
+</div>
+</div>
+
+<p>La spécification HTML5 interdit actuellement l’utilisation de toute autre déclaration d’encodage textuelle à l’intérieur du document pour les pages qui utilisent l’encodage UTF-16. En pratique, cela signifie que l’indicateur d’ordre des octets constitue lui-même la déclaration que vous devez ajouter.</p>
+
+<p>De la même manière, vous devrez utiliser le BOM si vous déclarez l’encodage UTF-32, mais l’éviter si vous déclarez l’encodage UTF-32BE ou UTF-32LE. Toutefois, si nous n’avons pas mentionné l’encodage UTF-32 jusqu’à présent, c’est parce que son utilisation est vivement déconseillée pour le contenu HTML, et parce que certains navigateurs ne sont plus compatibles avec cet encodage.</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="endlinks">
+<h2>Pour aller plus loin</h2>
+
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p>Vous débutez ? <a href="/International/getting-started/characters"><cite>Introduction aux jeux et encodages de caractères</cite></a></p>
+</li>
+<li>
+<p>Tutoriel, <a href="/International/tutorials/tutorial-char-enc/"><cite>Gestion de l’encodage des caractères en HTML et CSS</cite></a></p>
+</li>
+<li>
+<p>Liens connexes, <cite>Créer du contenu HTML et CSS</cite></p>
+<ul>
+<li><a href="/International/techniques/authoring-html#charset">Caractères</a></li>
+<li><a href="/International/techniques/authoring-html#indoc">Déclarer un encodage de caractères en HTML</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
