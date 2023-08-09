@@ -48,6 +48,17 @@ td.bigtext {
     font-family: "Khmer", "noto_devanagari", "noto_symbols", "noto_regular", "NoToFu", "Palatino", "Times", "Times New Roman", "Verdana", sans-serif;
 }
 </style>
+
+<script>
+	   function updateFromSelect() {
+		   var select = document.getElementById('deletionExamples');
+		   var val = select.options[select.selectedIndex].text;
+		   var input = document.getElementById('example');
+		   input.value = val;
+		   var explainer = document.getElementById('exampleExplainer');
+		   explainer.innerHtml = "moo";
+       }
+</script>
 </head>
 
 <body>
@@ -189,11 +200,11 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p>Backspace, meanwhile, can safely remove combining characters hanging from a given base character without causing other characters in the character sequence to change meaning. One reason sometimes attributed for this behavior is that it allows characters that have been "built-up" using multiple keypresses or other input mechanisms to be corrected without retyping the whole sequence.</p>
   
-  <p>Tamil presents the same concept in a visually more striking way. The syllable 'ko' consists of a two character sequence (U+0B95 U+0BCB), which looks as if it is made of three units. What's more the base character is the one in the middle. These characters still behave the same as those in Hindi (or other languages): cursoring, selection, and forward deletion move over the pair as a single unit. Backspacing deletes the combining mark first:</p>
+  <p>Tamil presents the same concept in a visually more striking way. The syllable <samp>&#xb95;&#xbcb;</samp> (pronounced like 'ko') looks as if it is made of three units. However, it consists of a two character sequence (U+0B95 U+0BCB). What's more the base character is the one visually in the middle. These characters still behave the same as those in Hindi (or other languages): cursoring, selection, and forward deletion move over the pair as a single unit. Backspacing deletes the combining mark first.</p>
   
-  <p>INSERT TAMIL HERE</p>
+  <p>Indic scripts, such as the Devanagari and Tamil examples above, are not the only scripts affected by this. The same can be found for combining marks in many languages. For example, the first cluster in this Thai word: <q>คืออะไร</q>.</p>
   
-  <p>Indic scripts, such as the Devanagari and Tamil examples above, are not the only scripts affected by this. The same can be found for combining marks in many languages. For example, the first cluster in this Thai word: <q>คืออะไร</q>. [get better example; demonstrate middle cursor deletion effects in Thai]</p>
+  <!-- TODO [get better example; demonstrate middle cursor deletion effects in Thai] -->
   
   <p>Some character sequences can be written in either a "composed" or a "decomposed" forms that affect how selection and deletion performs. For example, Korean characters can be written in either a precomposed form or using a sequence of combining marks (called <em>jamo</em>). Here's one example: </p>
   
@@ -234,6 +245,36 @@ relationship between what the user thinks of as a character and the key or key s
   <p>Another counter case appears in some Indic script langauges where some conjuncts are formed with multiple base characters. An example from the Devanagari script is the syllable <em>kshi</em> (&#x0915;&#x094d;&#x0937;&#x093f;) which is formed using the sequence U+0915 U+094D U+0937 U+093F. The characters U+0915 and U+0937 are both base characters and technically this forms two grapheme clusters. However, in many fonts (and to many users) this character sequence forms a single "shape" perceived to be a single unit of text. In spite of this perception, though, the user can both cursor into the conjunct and forward delete only a part of the sequence.</p>
   
 </section>
+
+<section>
+	<div style="width:80%; background: #dfdfdf; border: 1px solid black">
+<h4>Try it yourself!</h4>
+
+<p>Each of the examples given above can be used to explore cursoring and deletion on your browser.</p>
+<form action="qa-backwards-deletion.en.html" method="get" id="form" name="form">
+
+<p>
+<select id="deletionExamples" name="deletionExamples" onchange="updateFromSelect()" onload="updateFromSelect()">
+	<option id="value" name="hindi" lang="hi">&#x92f;&#x942;&#x928;&#x93f;&#x915;&#x94b;&#x921;</option>
+	<option id="value" name="tamil" lang="ta">&#xb95;&#xbcb;</option>
+	<option id="value" name="thai" lang="th">&#xe04;&#xe37;&#xe2d;&#xe30;&#xe44&#xe23;</option>
+	<option id="value" name="korean" lang="ko">&#xac01; &#x1100;&#x1161;&#x11a8;</option>
+	<option id="value" name="latin" lang="en">&#x1fa; &#x41;&#x30a;&#x301;</option>
+	<option id="value" name="emoji" lang="en">&#x1f468;&#x200d;&#x1f469;&#x200d;&#x1f467;&#x200d;&#x1f467;</option>
+	<option id="value" name="conjunct" lang="hi">&#x915;&#x94d;&#x937;&#x93f;</option>
+</select>
+</p>
+
+<p id="exampleExplainer"></p>
+
+<p><input type="text" id="example" name="example" style="font-size:24pt">Explanation of example</p>
+
+<input type=submit>
+
+
+</form>
+</section>
+
 </section>
 <section>
   <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
@@ -261,23 +302,7 @@ relationship between what the user thinks of as a character and the key or key s
   </ul>
 </section>
 
-<section>
-	<div style="width:80%; background: #dfdfdf; border: 1px solid black">
-<h4>Examples</h4>
-<form action="qa-backwards-deletion.en.html" method="get">
-<p>Hindi: <input class=large type="text" name="input-hi" style="width:50%" value="यूनिकोड क्या है?" lang=hi></p>
-<p>Kannada: <input class=large type="text" name="input-kn" style="width:50%" value="ಯುನಿಕೋಡ್ ಎಂದರೇನು?" lang=kn></p>
-<p>Thai: <input class=large type="text" name="input-th" style="width:50%" value="Unicode คืออะไร" lang=th></p>
-<p>Combining: <input class=large type="text" name="input-aeiou" style="width:50%" value="a&#x301;e&#x302;i&#x303;o&#x304;u&#x305;" lang=en></p>
-<p>Korean: <input class=large type=text name=input-ko style="width:50%" value="&#x1100;&#x1161;&#x11a8; &#xac01;" lang=ko></p>
-<p>Tailored Hindi ex1: <input class=large type=text name=tailored-hi style="width:50%" value ="&#x0915;&#x094d;&#x0937;&#x093f;"></p>
 
-
-<input type=submit>
-
-
-</form>
-</section>
 
 <footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
 <script type="text/javascript">completePage()</script>
