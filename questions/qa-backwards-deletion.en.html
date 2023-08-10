@@ -47,21 +47,46 @@ td.bigtext {
     text-align: center;
     font-family: "Khmer", "noto_devanagari", "noto_symbols", "noto_regular", "NoToFu", "Palatino", "Times", "Times New Roman", "Verdana", sans-serif;
 }
+
+button.reset {
+	font-size: 9pt;
+	font-family: monospace;
+}
+
+input.try {
+	font-size: 24pt;
+}
+
+div.try {
+	border:1px solid black;
+	background-color:#ccc;
+}
 </style>
 
 <script>
-	   function updateFromSelect() {
-		   var select = document.getElementById('deletionExamples');
-		   var val = select.options[select.selectedIndex].text;
-		   var input = document.getElementById('example');
-		   input.value = val;
-		   var explainer = document.getElementById('exampleExplainer');
-		   explainer.innerHtml = "moo";
-       }
-       
-       function reset(what, value) {
-		   var item = document.getElementById(what);
-		   item.value = value;
+	
+	const tryData = new Map([
+	   ["Hindi", "\u092f\u0942\u0928\u093f\u0915\u094b\u0921"],
+	   ["Tamil", "\u0b95\u0bcb"],
+	   ["Thai", "\u{E2B}\u{E49}\u{E2D}\u{E07}\u{E19}\u{E49}\u{E33}"],
+	   ["Korean", "\uac01"],
+	   ["KoreanJamo", "\u1100\u1161\u11a8"],
+	   ["LatinPrecomp", "\u01fa"],
+	   ["LatinDecomp", "A\u030a\u0301"],
+	   ["Emoji", "\u{1F468}\u{200D}\u{1F469}\u{200D}\u{1F467}\u{200D}\u{1F467}"],
+	   ["Conjunct", "\u0915\u094d\u0937\u093f"]
+	]);
+	
+    function reset() {
+		   for (let [key,value] of tryData) {
+			   var item = document.getElementById("try" + key);
+			   if (item !== null) {
+				   item.value = value;
+			   } else {
+				   console.log(key + " not found");
+			   }
+    }
+		   
 	   }
 </script>
 </head>
@@ -201,10 +226,10 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p><img src="./qa-backwards-deletion-data/backwards-deletion.png" alt="Hindi backwards deletion"></p>
   
-  <div style="border:1px solid black; background-color:#aaa;">
+  <div class="try">
 	  <h4>Try It</h4>
-	  <p><input id="tryHindi" type="text" name="tryHindi" lang="hi" style="font-size:24pt;" value="&#x92f;&#x942;&#x928;&#x93f;&#x915;&#x94b;&#x921;"></input>
-	  <button type="button" onclick="reset('tryHindi', '&#x92f;&#x942;&#x928;&#x93f;&#x915;&#x94b;&#x921;')" style="font-family:monospaced;font-size:9pt;">Reset</button></p>
+	  <p><input id="tryHindi" type="text" name="tryHindi" lang="hi" class="try" value="&#x92f;&#x942;&#x928;&#x93f;&#x915;&#x94b;&#x921;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
   </div>
   
   <p>One reason suggested for the difference between delete and backspace behavior is that removing the base character (which is always the first character in a Unicode character sequence, and thus the first code point encountered in forward deletion) usually consumes any combining marks associated with it. That way combining marks associated with the base character aren't left over to combine with the preceeding sequence of characters, or, if there were no preceeding characters, be "orphaned" and form an invalid sequence.</p>
@@ -213,18 +238,18 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p>Tamil presents the same concept in a visually more striking way. The syllable <samp>&#xb95;&#xbcb;</samp> (pronounced like 'ko') looks as if it is made of three units. However, it consists of a two character sequence (U+0B95 U+0BCB). What's more the base character is the one visually in the middle. These characters still behave the same as those in Hindi (or other languages): cursoring, selection, and forward deletion move over the pair as a single unit. Backspacing deletes the combining mark first.</p>
   
-    <div style="border:1px solid black; background-color:#aaa;">
+    <div class="try">
 	  <h4>Try It</h4>
-	  <p><input id="tryTamil" type="text" name="tryTamil" lang="ta" style="font-size:24pt;" value="&#xb95;&#xbcb;"></input>
-	  <button type="button" onclick="reset('tryTamil', '&#xb95;&#xbcb;')" style="font-family:monospaced;font-size:9pt;">Reset</button></p>
+	  <p><input id="tryTamil" type="text" name="tryTamil" lang="ta" class="try" value="&#xb95;&#xbcb;"></input>
+	  <button type="button" onclick="reset('tryTamil', '&#xb95;&#xbcb;')" class="reset">Reset</button></p>
   </div>
   
   <p>Indic scripts, such as the Devanagari and Tamil examples above, are not the only scripts affected by this. The same can be found for combining marks in many languages. For example, the first cluster in this Thai word <q lang="th">ห้องน้ำ</q> has similar behavior. The end of this word shows additional complexity: the <span class="codepoint" translate="no"><bdi lang="th">&#xe33;</bdi><code class="uname">U+0E33 THAI CHARACTER SARA AM</code></span> appears as a separate typographical unit for effects such as inter-character spacing, but correctly behaves as a single grapheme for the purposes of selection, cursoring, and forward deletion.</p>
   
   <div style="border:1px solid black; background-color:#aaa;">
 	  <h4>Try It</h4>
-	  <p><input id="tryThai" type="text" name="tryThai" lang="th" style="font-size:24pt;" value="ห้องน้ำ"></input>
-	  <button type="button" onclick="reset('tryThai', 'ห้องน้ำ')" style="font-family:monospaced;font-size:9pt;">Reset</button></p>
+	  <p><input id="tryThai" type="text" name="tryThai" lang="th" class="try" value="ห้องน้ำ"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
   </div>
   
   <p>Some character sequences can be written in either a "composed" or a "decomposed" form that affect how backwards deletion performs. For example, Korean characters can be written in either a precomposed form or using a sequence of combining marks (called <em>jamo</em>). Here's one example: </p>
@@ -250,12 +275,12 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p>When written in the precomposed form, each Korean character remains atomic for all operations. When composed from jamo, most systems allow backspacing into the character (while treating the character as atomic for selection and forward deletion).</p>
   
-  <div style="border:1px solid black; background-color:#aaa;">
+  <div class="try">
 	  <h4>Try It</h4>
-	  <label for="tryKoreanA" style="width:30%">U+AC01</label> <input id="tryKoreanA" type="text" name="tryKoreanA" lang="ko" style="font-size:24pt;" value="&#xac01;"></input>
-	  <button type="button" onclick="reset('tryKoreanA', '&#xac01;')" style="font-family:monospaced;font-size:9pt;">Reset</button></p>
-	  <label for="tryKoreanB" style="width:30%">U+1100 U+1161 U+11A8</label> <input id="tryKoreanB" type="text" name="tryKoreanB" lang="ko" style="font-size:24pt;" value="&#x1100;&#x1161;&#x11a8;"></input>
-	  <button type="button" onclick="reset('tryKoreanB', '&#x1100;&#x1161;&#x11a8;')" style="font-family:monospaced;font-size:9pt;">Reset</button></p>
+	  <label for="tryKorean" style="width:30%">U+AC01</label> <input id="tryKorean" type="text" name="tryKorean" lang="ko" class="try" value="&#xac01;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+	  <label for="tryKoreanJamo" style="width:30%">U+1100 U+1161 U+11A8</label> <input id="tryKoreanJamo" type="text" name="tryKoreanJamo" lang="ko" class="try" value="&#x1100;&#x1161;&#x11a8;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
   </div>  
   
   <p>Korean is just an example of this. Ones that are less common in real life but are sometimes used as examples also help illustrate this mysterious "character duality". While most Latin script text with accents is encoded as precomposed characters, it is possible to encode most characters as a base character with one or more combining marks. When this decomposed sequence is used, the behavior is similar to the Korean: cursor, text selection, and forward deletion include the base character and all of its associated accents, while backspacing deletes the combining marks one-at-a-time before the base character is reached.</p>
@@ -264,15 +289,15 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p><img src="./qa-backwards-deletion-data/latin-backspace-progression.png" alt="Latin script backspace progression"></p>
   
-    <div style="border:1px solid black; background-color:#aaa;">
+    <div class="try">
 	  <h4>Try It</h4>
-	  <p><label for="tryLatinPre" style="display:inline-block">Precomposed Latin U+01FA</label>
-	  <input id="tryLatinPre" type="text" name="tryLatinPre" lang="en" style="font-size:24pt;" value="&#x1fa;"></input>
-	  <button type="button" onclick="reset('tryLatinPre', '&#x1fa;')" style="font-family:monospaced;font-size:9pt;">Reset</button></p>
+	  <p><label for="tryLatinPrecomp" style="display:inline-block">Precomposed Latin U+01FA</label>
+	  <input id="tryLatinPrecomp" type="text" name="tryLatinPrecomp" lang="en" style="font-size:24pt;" value="&#x1fa;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
 	  
 	  <p><label for="tryLatinDecomp" style="display:inline-block">Decomposed U+0040 U+030A U+0301</label>
 	  <input id="tryLatinDecomp" type="text" name="tryLatinDecomp" lang="en" style="font-size:24pt;" value="A&#x30a;&#x301;"></input>
-	  <button type="button" onclick="reset('tryLatinDecomp', 'A&#x30a;&#x301;')" style="font-family:monospaced;font-size:9pt;">Reset</button></p>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
   </div>  
   
   <section>
@@ -284,14 +309,14 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p>Another counter case appears in some Indic script langauges where some conjuncts are formed with multiple base characters. An example from the Devanagari script is the syllable <em>kshi</em> (&#x0915;&#x094d;&#x0937;&#x093f;) which is formed using the sequence U+0915 U+094D U+0937 U+093F. The characters U+0915 and U+0937 are both base characters and technically this forms two grapheme clusters. However, in many fonts (and to many users) this character sequence forms a single "shape" perceived to be a single unit of text. In spite of this perception, though, on some browsers the user can both cursor into the conjunct and forward delete only a part of the sequence.</p>
   
-  <div style="border:1px solid black; background-color:#aaa;">
+  <div class="try">
 	  <h4>Try It</h4>
-	  <p><label for="tryExceptionA" style="display:inline-block">Family Emoji</label>
-	  <input id="tryExceptionA" type="text" name="tryExceptionA" lang="en" style="font-size:24pt;" value="👨‍👩‍👧‍👧"></input>
-	  <button type="button" onclick="reset('tryExceptionA', '👨‍👩‍👧‍👧')" style="font-family:monospaced;font-size:9pt;">Reset</button></p>
-	  <p><label for="tryExceptionB" style="display:inline-block">Hindi <em>kshi</em></label> 
-	  <input id="tryExceptionB" type="text" name="tryExceptionB" lang="hi" style="font-size:24pt;" value="&#x0915;&#x094d;&#x0937;&#x093f;"></input>
-	  <button type="button" onclick="reset('tryExceptionB', '&#x0915;&#x094d;&#x0937;&#x093f;')" style="font-family:monospaced;font-size:9pt;">Reset</button></p>
+	  <p><label for="tryEmoji" style="display:inline-block">Family Emoji</label>
+	  <input id="tryEmoji" type="text" name="tryEmoji" lang="en" style="font-size:24pt;" value="👨‍👩‍👧‍👧"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+	  <p><label for="tryConjunct" style="display:inline-block">Hindi <em>kshi</em></label> 
+	  <input id="tryConjunct" type="text" name="tryConjunct" lang="hi" style="font-size:24pt;" value="&#x0915;&#x094d;&#x0937;&#x093f;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
   </div>  
   
 </section>
