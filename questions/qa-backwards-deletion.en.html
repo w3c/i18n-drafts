@@ -146,7 +146,7 @@ relationship between what the user thinks of as a character and the key or key s
   <h3 id="cursor_movement">Cursoring</h3>
   <p><img src="./qa-backwards-deletion-data/cursor-movement.png"></p>
   
-  <p><dfn>Cursor movement</dfn> or "cursoring" is the process of moving through text using cursor keys on a physical keyboard. This is different from using a mouse or other pointing instrument (such as your finger in a touch interface).</p>
+  <p><dfn>Cursor movement</dfn> or "cursoring" is the process of moving through text using cursor keys on a physical keyboard. This is different from using a mouse or other pointing instrument (such as your finger in a touch interface), although a pointing device can often place the cursor (such as by "clicking" the cursor on the text or touching the text in an input field).</p>
 
   </section>
   <section>
@@ -154,7 +154,7 @@ relationship between what the user thinks of as a character and the key or key s
   <h3 id="text_selection">Text Selection</h3>
   <p><img src="./qa-backwards-deletion-data/text-selection.png"></p>  
   
-  <p><dfn>Text selection</dfn> is the progressive process of selecting at the character level. Text selection on modern systems is done contiguously in memory, using the logical order of characters. When working with bidirectional text, this can produce multiple regions of highlighted text on the screen, although the characters are always adjacent in memory. (Some user interfaces also provide word-by-word or sentence-by-sentence selection, which we won't concern ourselves with here.)</p>
+  <p><dfn>Text selection</dfn> is the progressive process of selecting text in a document. Text selection on modern systems is done contiguously in memory, using the logical order of characters. When working with bidirectional text, this can produce multiple regions of highlighted text on the screen, although the characters are always adjacent in memory. (Some user interfaces also provide word-by-word or sentence-by-sentence selection, which we won't concern ourselves with here.)</p>
   </section>
   <section>
   <h3 id="backwards_deletion">Backspacing ("backwards deletion")</h3>
@@ -174,15 +174,17 @@ relationship between what the user thinks of as a character and the key or key s
 <section>
   <h2 id="details"><a href="#details">Details</a></h2>
   
-  <p>Generally speaking, most text navigation and editing follows the user-perceived character boundaries. For most implementations this corresponds to Unicode's definition of "default extended grapheme cluster" boundaries [<a href="https://unicode.org/reports/tr29/">UAX29</a>]. The main exception to this is backspacing, which usually follows logical character boundaries in the underlying encoded text. For the simplest scripts and languages, these often amount to the same thing.</p>
+  <p>Generally speaking, most text navigation and editing follows the user-perceived character boundaries. For most implementations this corresponds to Unicode's definition of "default extended grapheme cluster" boundaries [<a href="https://unicode.org/reports/tr29/">UAX29</a>]. The main exception to this is backspacing, which usually follows Unicode code point boundaries in the underlying encoded text (although there are exceptions to this). For the simplest scripts and languages, these often amount to the same thing.</p>
   
   <h3 id="cursoring_desc">Cursor movement</h3>
   
-  <p>Cursor movement, in the context of this document, refers to the use of the arrow keys on a physical keyboard (or their virtual equivalent). One thing to note is that the arrow keys (left, right, up, and down) <em>always</em> refer to the same <em>visual</em> direction, regardless of the direction or writing mode of the text.</p>
-
-  <p>Cursoring starts by positioning the cursor in the text, such as by clicking with the mouse. When cursoring in horizontal text, the left arrow button on a keyboard always moves the cursor one visual character to the left, while the right arrow does the same in the opposite direction. The up and down arrows move the cursor up or down a row of text respectively.</p>
+  <p>Cursor movement, in the context of this document, refers to the use of the arrow keys on a physical keyboard (or their virtual equivalent).</p>
   
-  <p>In vertical text, the left arrow moves left one row and the right arrow right one row, while up and down arrows move one visual character up or down in the row of text.</p>
+  <p>One thing to note is that the arrow keys (left, right, up, and down) <em>always</em> refer to the same <em>visual</em> direction, regardless of the direction or writing mode of the text. On many systems, this behavior is <em>different</em> from what occurs when performing text selection using a pointing device.</p>
+
+  <p>Cursoring starts by positioning the cursor in the text, such as by clicking with the mouse. When cursoring in horizontal text, the left arrow button on a keyboard always moves the cursor one user-perceived character (grapheme) to the left, while the right arrow does the same in the opposite direction. The up and down arrows move the cursor up or down a row of text respectively.</p>
+  
+  <p>In vertical text, the left arrow moves left one row and the right arrow right one row, while up and down arrows move one user-perceived character (grapheme) up or down in the row of text.</p>
   
   <h3 id="text_selection_desc">Selecting text via the keyboard</h3>
   
@@ -190,7 +192,7 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p>Selection using a pointing device, such as a mouse, is subtly different in most implementations than using the cursor keys to extend a selection. When using a pointing device, the selection is entirely logical, between the start and end point of the selection. At least on most physical keyboards, the user can access text selection, usually by holding down the "shift" key while cursoring in the text. As noted before, the cursor keys always move visually and in the indicated direction of the key. For certain bidirectional texts this can mean that the entire text cannot be selected via the cursor keys alone!</p>
   
-  <h3 id="combining_marks">Combining marks</h3>
+  <h3 id="combining_characters">Combining characters</h3>
   
   <p>Selecting, cursoring, and deleting text in Unicode is also complicated by the use of combining characters. When the visual units of text map 1:1 to characters in the memory of the computer, then cursor movement, selection, and deletion traverse the text a character at a time. However, some languages and scripts use multiple characters to compose a single user-perceived character (which we call a grapheme cluster or grapheme for short). When this is the case, the relationship between cursor movement and delete or backspace functions becomes more complex.</p>
   
