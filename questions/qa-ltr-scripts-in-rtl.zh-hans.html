@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>从右向左显示从左向右书写的文字</title>
+<meta name="description" content="本文提出了使用 HTML 和 CSS 为通常从左到右书写的语言生成从右到左的文本的方法。">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-ltr-scripts-in-rtl' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-ltr-scripts-in-rtl' // blog search string - usually the filename without extensions
+f.firstPubDate = '2022-07-08' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2022-07-08', time:'12:09'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-08-20', time:'12:09'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-ltr-scripts-in-rtl-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"></script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language!-->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="stylesheet" href="qa-ltr-scripts-in-rtl-data/local.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>从右向左显示从左向右书写的文字</h1>
+</header>
+
+
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+<p>除了常见的由右至左书写的书写系统（阿拉伯字母、希伯来字母、西非书面字母、叙利亚字母、它拿字母等等）之外，还有许多其他由左至右（left-to-right, LTR）书写的书写系统曾经由右至左 (right-to-left, RTL) 书写，包括中文、日文、圣书体、提非纳文字、古斯堪地纳维亚语以及许多其他古代文字。</p>
+
+<div class="figWrap">
+<figure id="japanese_stamp">
+<img src="qa-ltr-scripts-in-rtl-data/japanese_stamp.jpg" alt="日本邮票的图片" style="width: 300px;">
+<figcaption>日本第一张纪念邮票，纪念1894年天皇结婚25周年，上方的横幅由右至左书写。</figcaption>
+</figure>
+</div>
+<p>由于在Unicode标准中，这些文字是强LTR方向的，我们不能简单地使用Unicode双向文本算法来正确显示它们。此外，其中一些文字在由右至左书写时会对字形进行镜像。</p>
+<p>This article suggests ways to produce runs of right-to-left text for these languages using HTML &amp; CSS.</p>
+
+
+
+
+
+<section id="use_cases">
+<h2>Use cases</h2>
+
+<p>Use cases are very few. You may very rarely come across modern Taiwanese or Tuareg text that writes right-to-left, but mostly the use cases come down to reproducing archaic usage of  scripts.</p>
+
+
+<p>Archaic scripts, such as Ancient Egyptian hieroglyphs, are generally written in modern expository text from left-to-right. However, the original incriptions or written sources often ran right-to-left. In the case of Egyptian, the direction of hieroglyphs on monuments was determined by the overall aesthetic scheme. Alongside a picture of a person, you would read horizontal sequences of hieroglyphs towards the face of that person. Not only that, but the character glyphs would be mirrored, so that you would read towards the face or beginning of any character glyphs too.</p>
+<p>Thus the sequence that modern egyptologists might write as </p>
+<p style="text-align: center;"><img src="qa-ltr-scripts-in-rtl-data/egyptian-ltr.png" alt="𓅓𓂞𓎡𓏏𓏦𓀭"></p>
+<p>would be  ordered from right-to-left in the original and the glyphs would be mirrored.</p>
+
+<div class="figWrap">
+<figure id="hieroglyphs">
+<img src="qa-ltr-scripts-in-rtl-data/egyptian.jpeg" alt="Excerpt from ." style="width: 60%;">
+<figcaption>Detail of a limestone carving in Egypt (BM EA 585).</figcaption>
+</figure>
+</div>
+<p>Although you would rarely need to, we'll look here at how you could make the text look like the original if you wanted to.</p>
+
+
+
+<p>In the case of Chinese and Japanese, most of the modern text fragments you will come across are short, and are often designed to represent archaic writing, such as in the evocation of Old Japan for tourists.</p>
+
+<p>For Japanese, an interesting <a href="https://www.sljfaq.org/afaq/right-to-left.html">article from the sci.lang.japan site</a> explains that, until the Meiji period, text was normally vertical except where there were spatial constraints. The adoption in the late 1800s of horizontal writing as a serious alternative to vertical led to initial experimentation with inline character direction.</p>
+<blockquote>
+<p>At the very beginning of the change to yokogaki [horizontal writing], in the Meiji period (1868-1912), there was a short-lived form called migi yokogaki (<span lang="ja">右横書き</span>), "right yokogaki", in contrast to hidari yokogaki (<span lang="ja">左横書き</span>), "left yokogaki", the current form. This resembled the right-to-left horizontal writing style of languages such as Arabic or Hebrew with line breaks on the left hand side of the page. ... This form was never widely used, and has not survived.</p></blockquote>
+<p>The following picture is from a Taiwanese newspaper dating from around the year 2000.  This is very rare now. Notice that the horizontal title text in the middle-right runs right-to-left – ie. in the same direction as the vertical lines flow below the title – but that it also includes the text &quot;8.6%&quot;, which is written left-to-right. Notice also that the text in the caption under the picture, which occupies multiple lines (<em>not</em> aligned to a grid), is also read right-to-left.</p>
+
+<div class="figWrap">
+<figure id="taiwanese_newspaper">
+<img src="qa-ltr-scripts-in-rtl-data/taiwanese_newspaper.jpg" alt="Picture of Taiwanese newspaper copy." style="width: 100%;">
+<figcaption>Part of a Taiwanese newspaper, with RTL horizontal text used for titles and figure captions.</figcaption>
+</figure>
+</div>
+
+
+
+<section id="use_case_types">
+<h3>Two different types of use case</h3>
+
+<p>The use cases above are of two different types, and the two solutions we propose below cater for that difference.</p>
+<p><strong>The first type of use case, and probably the most likely one, is to represent short examples of expository text.</strong> In this case, if the characters are not shown in the reverse order the example would lose its meaning. For instance, if you get the wrong order for the text like this: <q>The text <span lang="ber">ⴰⵙⵉⴹⵢⴰⵙ⵰</span> was originally written like this:
+<bdo lang="ber" dir="ltr">ⴰⵙⵉⴹⵢⴰⵙ⵰</bdo>
+</q>, the reader would be left scratching their head. So in this case we want to ensure that the reader  <em>always sees the text reversed</em>, and we do that by <strong>relying on markup</strong>.</p>
+<p><strong>The second use case is exemplified by the Taiwanese newspaper above.</strong> In that particular context, where the body of each article is arranged vertically, we want the title and caption text to run RTL. In another context we may want to display the same articles but change the layout so that all horizontal text (such as headings and captions) runs left-to-right, as they do in a more typical newspaper in Taiwan or Japan. So in this case, the direction of the text is only a <em>stylistic</em> choice, and therefore we need to <strong>use CSS</strong>.</p>
+</section>
+</section>
+
+
+
+
+
+
+<section id="processing">
+<h2>Summary</h2>
+<p>Here we summarise the bare bones of the solution. Read the rest of the article for more detail.</p>
+
+
+<section id="markup_summary">
+<h3>For the markup approach</h3>
+<p>Wrap your text in an (inline) <code class="kw" translate="no">bdo</code> element and set the <code class="kw" translate="no">dir</code> attribute to <code class="kw" translate="no">rtl</code>.</p>
+
+<figure class="example">
+<p><code class="language-html">&lt;p&gt;The inscription was &lt;bdo lang=&quot;ber&quot; dir=&quot;rtl&quot;&gt;ⴰⵙⵉⴹⵢⴰⵙ⵰&lt;/bdo&gt;&lt;/p&gt;</code></p>
+</figure>
+
+<div class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<p>The inscription was <bdo lang="ber" dir="rtl">ⴰⵙⵉⴹⵢⴰⵙ⵰</bdo></p>
+</div>
+
+
+
+<p>If your text includes any characters that need to run left-to-right, nest those in another <code class="kw" translate="no">bdo</code> element with <code class="kw" translate="no">dir</code> set to <code class="kw" translate="no">ltr</code>. (This is very much how one writes markup for Arabic, Hebrew, etc. except that the tag they use isn't normally the <code class="kw" translate="no">bdo</code> tag.)</p>
+
+<figure class="example">
+<p><code class="language-html">&lt;p&gt;Bidi Chinese example: &lt;bdo lang=&quot;zh-hant&quot; dir=&quot;rtl&quot;&gt;&lt;bdo dir=&quot;ltr&quot;&gt;8.6%&lt;/bdo&gt;<span lang="zh-hant">受訪者沒頭路</span>&lt;/bdo&gt;&lt;/p&gt;</code></p>
+</figure>
+<div class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<p>Bidi Chinese example: <bdo lang="zh-hant" dir="rtl"><bdo dir="ltr">8.6%</bdo>受訪者沒頭路</bdo></p>
+</div>
+
+<p>If you need to mirror  the character glyphs it's best to find a font that automatically mirrors glyphs according to the text direction. Otherwise, you can use a CSS transform, <em>instead of</em> overriding the direction.</p>
+
+<figure class="example">
+<p><code class="language-css">bdo { transform: rotateY(180deg); display: inline-block; }</code></p>
+<p><code class="language-html">&lt;p&gt;The text &lt;span lang=&quot;ber&quot;&gt;<span lang="ber">ⴰⵙⵉⴹⵢⴰⵙ⵰</span>&lt;/span&gt; was originally written like this: &lt;bdo lang=&quot;ber&quot; dir=&quot;ltr&quot;&gt;<span lang="ber">ⴰⵙⵉⴹⵢⴰⵙ⵰</span>&lt;/bdo&gt;&lt;/p&gt;</code></p>
+</figure>
+<div id="out_bdo_mirrored" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<p>The text <span lang="ber">ⴰⵙⵉⴹⵢⴰⵙ⵰</span> was originally written like this: <bdo lang="ber" dir="ltr">ⴰⵙⵉⴹⵢⴰⵙ⵰</bdo></p>
+</div>
+</section>
+
+
+
+
+<section id="styling_summary">
+<h3>For the styled approach</h3>
+<p>Wrap your text in an   element with the <code class="kw" translate="no">class</code> attribute set to something like <code class="kw" translate="no">rlo</code>, and associate it with CSS directional properties. For a block element, set  <code class="kw" translate="no">text-align</code> to bring it to the right side of its container.</p>
+
+<figure class="example">
+<p><code class="language-css">.rlo { unicode-bidi:&nbsp;bidi-override; direction:&nbsp;rtl; text-align:&nbsp;right; }</code></p>
+<p><code class="language-html">&lt;h2 lang=&quot;zh-hant&quot; class=&quot;rlo&quot;&gt;<span lang="zh-hant">本土化 反成國際化危機</span>&lt;/h2&gt;</code></p>
+</figure>
+
+<div id="out_styled_rlo" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<h2 lang="zh-hant" class="rlo notoc">本土化 反成國際化危機</h2>
+</div>
+
+<p>If your text includes any characters that need to run left-to-right, nest those in a <code class="kw" translate="no">bdi</code> element with <code class="kw" translate="no">class</code> set to something like <code class="kw" translate="no">lro</code>.</p>
+
+<figure class="example">
+<p><code class="language-css">.rlo { unicode-bidi:&nbsp;bidi-override; direction:&nbsp;rtl; text-align:&nbsp;right; }</code><br>
+<code class="language-css">.lro { unicode-bidi:&nbsp;bidi-override; direction:&nbsp;ltr; }</code></p>
+<p><code class="language-html">&lt;h2 lang=&quot;zh-hant&quot; class=&quot;rlo&quot;&gt;&lt;bdi class=&quot;lro&quot;&gt;8.6%&lt;/bdi&gt;<span lang="zh-hant">受訪者沒頭路</span>&lt;/h2&gt;</code></p>
+</figure>
+
+
+<div id="out_styled_rlo_bidi" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<h2 lang="zh-hant" class="rlo notoc"><bdi class="lro">8.6%</bdi>受訪者沒頭路</h2>
+</div>
+</section>
+
+
+
+
+<p>You may need a special font for Japanese punctuation.</p>
+<p>The rest of the article provides additional details.</p>
+</section>
+
+
+
+
+
+<section id="details">
+<h2>Details for the markup approach</h2>
+
+<p>Note that we aren't using CSS properties to apply the direction. This is consistent with normal practice when dealing with bidi(rectional) text in HTML. The markup in HTML is designed to provide you with what is needed, and can produce the needed effect without the CSS style sheet. Using markup means that the directional behaviour you specified will be displayed whether or not the text is associated with CSS styling (which is what we typically want for expository text).</p>
+<p>It is worth observing that, in all the examples below, the text is still perfectly searchable, can be read by a voice browser, etc. etc. because we haven't disturbed the natural order of the characters in memory. A visual encoding approach, where characters are typed in reverse order, would break that.</p>
+
+
+
+
+
+<section id="bdo">
+<h3>Using <code class="kw" translate="no">bdo</code> to make text run RTL</h3>
+
+<figure class="example">
+<p><code class="language-html">&lt;p&gt;The right-to-left headline reads: &lt;bdo lang=&quot;zh-hant&quot; dir=&quot;rtl&quot;&gt;準社會新鮮人&lt;/bdo&gt;&lt;/p&gt;</code></p>
+</figure>
+
+<div id="out_detailed_bdo" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<p>The right-to-left headline reads: <bdo lang="zh-hant" dir="rtl">準社會新鮮人</bdo></p>
+</div>
+
+<p>The <code class="kw" translate="no">bdo</code> element (short for bidirectional override) suspends the automatic algorithms of the Unicode bidirectional algorithm and orders characters exactly as they are in memory. The <code class="kw" translate="no">dir</code> attribute is required, and indicates the direction in which the characters should be sequenced on display. We set its value to <code class="kw" translate="no">rtl</code>.</p>
+
+<div class="figWrap">
+<figure id="zh_freshman">
+<img src="qa-ltr-scripts-in-rtl-data/fig_zh_freshman.png" alt="Mirrored tifinagh text.">
+<figcaption>The expected result of the code just above, showing  characters ordered right-to-left.</figcaption>
+</figure>
+</div>
+
+
+<p>By the way, you may also find it useful to apply the CSS rule <code translate="no">white-space:nowrap </code>to the <code class="kw" translate="no">bdo</code> element. This avoids some confusing reordering of the text inside the <code class="kw" translate="no">bdo</code> element when a line break intervenes.</p>
+</section>
+
+
+
+
+
+<section id="bidirection">
+<h3>Managing bidirectional text</h3>
+
+<figure class="example">
+<p><code class="language-html">&lt;p lang=&quot;zh-hant&quot;&gt;&lt;bdo dir=&quot;rtl&quot;&gt;&lt;bdo dir=&quot;ltr&quot;&gt;8.6%&lt;/bdo&gt;<span lang="zh-hant">受訪者沒頭路</span>&lt;/bdo&gt;&lt;/p&gt;</code></p>
+</figure>
+
+<div id="out_detailed_bidi" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<p lang="zh-hant"><bdo dir="rtl"><bdo dir="ltr">8.6%</bdo>受訪者沒頭路</bdo></p></div>
+
+<p>This is the title from the Taiwanese page above. It contains a percentage that needs to run left-to-right within the RTL flow. To make this happen we wrap the left-to-right content in another <code class="kw" translate="no">bdo</code> element and set the <code class="kw" translate="no">dir</code> attribute to <code class="kw" translate="no">ltr</code>.</p>
+<p>This is actually fairly similar to the way markup is used for languages such as Arabic and Hebrew.  We recommend wrapping all opposite-direction text in markup with a <code class="kw" translate="no">dir</code> attribute for those languages. The markup also isolates the embedded text, protecting it from <a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics.en#isolation">spillover effects</a> related to the surrounding context.</p>
+</section>
+
+
+
+
+  <section id="mirroring">
+  <h3>Mirroring characters</h3>
+<p>Most archaic scripts, if they could be written in either LTR or RTL order, would match the glyph shapes to the direction of the text.</p>
+<p>In an ideal situation, you would have access to a font which reverses the glyphs automatically when the base direction is set to RTL. This is the case, for example, when the Junicode font is applied to Runic text.</p>
+<figure class="example">
+<p><code class="language-html">&lt;p&gt;The Runic inscription was &lt;bdo lang=&quot;non&quot; dir=&quot;rtl&quot;&gt;ᚺᚨᚱᛃᚨ&lt;/bdo&gt;&lt;/p&gt;</code></p>
+</figure>
+
+<p>If we apply a RTL override to the Old Norse runes in the code just above, the result will be as shown in the figure that follows, if you apply the Junicode font.</p>
+<div class="figWrap">
+<figure id="runic-mirrored">
+<img src="qa-ltr-scripts-in-rtl-data/harja.png" alt="Mirrored Runic text (harja).">
+<figcaption>The Junicode font automatically reverses the glyphs when a RTL base direction is applied to the word <span lang="non">ᚺᚨᚱᛃᚨ</span>.</figcaption>
+</figure>
+</div>
+
+<p>In other cases, you may need to use the following CSS hack.</p>
+
+<figure class="example">
+<p><code class="language-css">bdo { transform: rotateY(180deg); display: inline-block; }</code></p>
+<p><code class="language-html">&lt;p&gt;The text &lt;span lang=&quot;ber&quot;&gt;<span lang="ber">ⴰⵙⵉⴹⵢⴰⵙ⵰</span>&lt;/span&gt; was originally written like this: &lt;bdo lang=&quot;ber&quot; dir=&quot;ltr&quot;&gt;<span lang="ber">ⴰⵙⵉⴹⵢⴰⵙ⵰</span>&lt;/bdo&gt;&lt;/p&gt;</code></p>
+</figure>
+
+<div id="out_mirrored" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<p>The text <span lang="ber">ⴰⵙⵉⴹⵢⴰⵙ⵰</span> was originally written like this: <bdo lang="ber" dir="ltr">ⴰⵙⵉⴹⵢⴰⵙ⵰</bdo></p>
+</div>
+
+<p>The CSS mirrors the characters in this Berber text at the same time as ordering from right-to-left.</p>
+
+<div class="figWrap">
+<figure id="tifinagh-mirrored">
+<img src="qa-ltr-scripts-in-rtl-data/tifinagh-mirrored.png" alt="Mirrored tifinagh text.">
+<figcaption>The expected result of the code just above, showing mirrored characters.</figcaption>
+</figure>
+</div>
+
+<p>Notice here  that our <code class="kw" translate="no">bdo</code> element has the <code class="kw" translate="no">dir</code> attribute set to <code class="kw" translate="no">ltr</code>, not <code class="kw" translate="no">rtl</code>. In fact, we don't strictly need a <code class="kw" translate="no">bdo</code> element at all. A <code class="kw" translate="no">span</code> would also do, so long as we add a class or id so that the styling can recognise it.</p>
+<p>This approach may become a little tricky if there were embedded digits or such that flow in a LTR direction, but in the texts where we need to mirror the characters that is extremely unlikely. However, it still has the advantage that the text remains searchable and readable, despite the change in display order.</p>
+</section>
+
+
+
+
+<section id="punctuation">
+<h3>Problems with punctuation</h3>
+<p>You may have a problem if punctuation marks need to be mirrored in right-to-left arrangements. </p>
+<p>Let's take the example of the comma. Old samples of Japanese indicate that the shape of the comma itself doesn't change from that of the modern comma. However, the position of the comma in the character square does change – moving from bottom-left to bottom-right. </p>
+
+<div class="figWrap">
+<figure id="fig_commas_in_ad">
+<img src="qa-ltr-scripts-in-rtl-data/commas_in_ad.png" alt="Commas in Japanese advert" data-notes="Source: https://twitter.com/aya_nyw19/status/782203672109289472 (advertizements in magazine 'Weekly Asahi' at 1939 Showa-era)">
+<figcaption>Commas (circled in red) in a 1939 Japanese advertisement which uses RTL text.</figcaption>
+</figure>
+</div>
+
+<p>This is particularly tricky, given that we can't achieve the change by applying the CSS transform (because we don't want to change the shape). It may be that we would need a special font to handle this.</p>
+
+<div class="figWrap">
+<figure id="fig_commas">
+<img src="qa-ltr-scripts-in-rtl-data/commas.png" alt="Commas">
+<figcaption>Position of a comma in the character space for LTR text (left), and RTL text (right).</figcaption>
+</figure>
+</div>
+
+<p>There's a strong likelihood, however, that  text which is written right-to-left in the way we describe will be short items, where punctuation doesn't appear.</p>
+<p>For Chinese, such as the Taiwanese newspaper above, this problem can be avoided if you use a font that puts the comma in the center of the character space (which is common for Traditional Chinese fonts). Most archaic fonts, if they used word separators, also used ones that were symmetrical, and so are unaffected by this.</p>
+</section>
+</section>
+
+
+
+
+<section id="styling_details">
+<h2>Details for the styled approach</h2>
+
+<p>The styled approach is used where the text runs in the opposite direction purely due to a cosmetic  choice, and it doesn't matter if the text is actually presented in the original direction instead. This tends to be connected with layout preferences, and is probably much rarer than the markup approach in modern text.</p>
+
+
+<section id="styling_bdo">
+<h3>Making the text run RTL</h3>
+
+<p>Wrap your text in an   element with the <code class="kw" translate="no">class</code> attribute set to something like <code class="kw" translate="no">rlo</code>, and associate it with CSS directional properties. It's best to use a dedicated class name, rather than to just add extra properites to the style declarations of various different elements. It makes it easier to change the direction again later, if you want to.</p>
+<p>Since this is generally related to layout, you are more likely to be applying the direction change to block elements, rather than inline elements. In which case, you need to ensure that the text starts on the right side of the window or container. To do so, use the CSS <code class="kw" translate="no">text-align</code> property.</p>
+<figure class="example">
+<p><code class="language-css">.rlo { unicode-bidi:&nbsp;bidi-override; direction:&nbsp;rtl; text-align:&nbsp;right; }</code></p>
+<p><code class="language-html">&lt;h2 lang=&quot;zh-hant&quot; class=&quot;rlo&quot;&gt;<span lang="zh-hant">本土化 反成國際化危機</span>&lt;/h2&gt;</code></p>
+</figure>
+
+<div id="out_styling_bdo" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<h2 lang="zh-hant" class="rlo notoc">本土化 反成國際化危機</h2>
+</div>
+</section>
+
+
+
+
+<section id="styling_bidirection">
+<h3>Managing bidirectional text</h3>
+
+<p>If your text includes any characters that need to run left-to-right, nest those in a <code class="kw" translate="no">bdi</code> element with <code class="kw" translate="no">class</code> set to something like <code class="kw" translate="no">lro</code>. That class name is then associated with CSS rules to make the text run left-to-right.</p>
+<p>We use <code class="kw" translate="no">bdi</code> to ensure that there are no spillover effects.</p>
+
+<figure class="example">
+<p><code class="language-css">.rlo { unicode-bidi:&nbsp;bidi-override; direction:&nbsp;rtl; text-align:&nbsp;right; }</code><br>
+<code class="language-css">.lro { unicode-bidi:&nbsp;bidi-override; direction:&nbsp;ltr; }</code></p>
+<p><code class="language-html">&lt;h2 lang=&quot;zh-hant&quot; class=&quot;rlo&quot;&gt;&lt;bdi class=&quot;lro&quot;&gt;8.6%&lt;/bdi&gt;<span lang="zh-hant">受訪者沒頭路</span>&lt;/h2&gt;</code></p>
+</figure>
+
+<div id="out_styling_bidi" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<h2 lang="zh-hant" class="rlo notoc"><bdi class="lro">8.6%</bdi>受訪者沒頭路</h2>
+</div>
+</section>
+
+
+
+
+<section id="styling_mirroring">
+<h3>Mirroring characters</h3>
+
+<p>If the font automatically reverses the images of the letters, that should take care of any necessary mirroring. However, the CSS transformation hack probably won't help, because it is only intended for use with short inline phrases. That said, it is perhaps less likely anyway that reversed letters are needed for scenarios that use the styled approach.</p>
+</section>
+</section>
+trim trailing
+
+
+<section id="endlinks">
+<h2 class="notoc"><a href="#endlinks">Further reading</a></h2>
+
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>Getting started? <a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a></p>
+    </li>
+<li>
+  <p><cite>Authoring HTML &amp; CSS</cite></p>
+  <ul>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction#direction">Text direction</a></li>
+  <li><a href="https://www.w3.org/International/techniques/authoring-html.en?open=direction&open=bdo#bdo">Overriding the Unicode bidirectional algorithm</a></li>
+  </ul>
+</li>
+</ul>
+</section>
+
+
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
