@@ -618,7 +618,7 @@ var titles = {
 	"pt-br": "Usando <select> para lincar à um conteúdo específico",
 	"ru": "Использование <select> для Ссылания на Локализованный Контент",
 	"uk": "Використання <select> для Посилання на Локалізований Контент",
-	"zh-hans": "使用<选择>链接到本地化内容",
+	"zh-hans": "使用<select>链接到本地化内容",
 	"zh-hant": "使用<select>鏈結到本地化內容",
 	},
 	{
