@@ -125,6 +125,9 @@ margin-top: 60px;
 
 
 
+<p class="info" style="clear: none">If you want step-by-step guidance for choosing a language tag, you should read <a class="print" href="../../questions/qa-choosing-language-tags"><cite>Choosing a language tag</cite></a>. What follows here provides more of a high-level overview of the syntax and concepts involved in language tags, as described by BCP 47.</p>
+
+
 
 
 
@@ -145,12 +148,9 @@ margin-top: 60px;
 <p class="info">RFCs are what the IETF calls its specifications. Each RFC has a unique number. Unfortunately, it is not possible to tell, when reading RFC 1766 or RFC 3066 that these specifications have been obsoleted and replaced by other specifications.</p>
 </div>
 
-<p>Language tag syntax is defined by the <abbr title="Internet Engineering Task Force">IETF</abbr>'s <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>. BCP stands for 'Best Current Practice', and is a persistent name for a series of <abbr title="Request For Comment">RFC</abbr>s whose numbers change as they are updated. The latest RFC describing language tag syntax is <a class="print" href="http://www.rfc-editor.org/rfc/rfc5646.txt"><cite>RFC 5646, Tags for the Identification of Languages</cite></a>, and it obsoletes the older RFCs <a class="print" href="http://www.rfc-editor.org/rfc/rfc4646.txt"> 4646</a>, <a class="print" href="http://www.ietf.org/rfc/rfc3066.txt">3066</a> and <a class="print" href="https://www.ietf.org/rfc/rfc1766.txt">1766</a>. </p>
+<p>Language tag syntax is defined by the <abbr title="Internet Engineering Task Force">IETF</abbr>'s <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>. BCP stands for 'Best Current Practice', and is a persistent name for a series of <abbr title="Request For Comment">RFC</abbr>s whose numbers change as they are updated. The latest RFC describing language tag syntax is <a class="print" href="http://www.rfc-editor.org/rfc/rfc5646.txt"><cite>RFC 5646, Tags for the Identification of Languages</cite></a>, and it obsoletes the older RFCs <a class="print" href="http://www.rfc-editor.org/rfc/rfc4646.txt"> 4646</a>, <a class="print" href="http://www.ietf.org/rfc/rfc3066.txt">3066</a> and <a class="print" href="https://www.ietf.org/rfc/rfc1766.txt">1766</a> (see <a class="secref">bytheway</a> for more information).</p>
 
 <p>You used to find subtags by consulting the lists of codes in various ISO standards, but now you can find all subtags in the <cite><a class="print" href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry"><abbr title="Internet Assigned Numbers Authority">IANA</abbr> Language Subtag Registry</a></cite>. We will describe the new registry below.</p>
-
-<div class="note" style="clear: none"><strong>Note!</strong> If you want step-by-step guidance for choosing a language tag, you should read <a class="print" href="../../questions/qa-choosing-language-tags"><cite>Choosing a language tag</cite></a>. What follows here provides more of a high-level overview of the syntax and concepts involved in language tags, as described by BCP 47.</div>
-
 <p> Most language tags consist of a two- or three-letter language subtag. Often this is followed by a two-letter or three-digit region subtag. RFC 5646 also allows for a number of additional subtags, where needed. These will be explained briefly in the next section, and include extended language, script, variant, extension and private-use subtags.</p>
 
 <p><strong>The golden rule when creating language tags is to keep the tag as short as possible.</strong> Avoid region, script or other subtags except where they add useful distinguishing information. For instance, use <code class="kw" translate="no">ja</code> for Japanese and not <code class="kw" translate="no">ja-JP</code>, unless there is a particular reason that you need to say that this is Japanese <em>as spoken in Japan, rather than elsewhere</em>.</p>
@@ -193,6 +193,10 @@ margin-top: 60px;
 </tbody>
 </table>
 
+<p>The entries in the registry follow certain conventions with regard to upper and lower letter-casing. For example, language tags are lower case,
+alphabetic region subtags are upper case, and script subtags begin with an initial capital. This is only a convention! When you use these subtags you
+are free to do as you like, unless you are constrained by the rules of the system you are working with. For HTML and XML language markup, the case should not matter.</p>
+
 <p>HTML and XML also provide a means to <em>prevent</em> inheritance of language using the empty string, ie. <code translate="no">xml:lang=&quot;&quot;. </code>Essentially, this says: I do not want to associate any language with this information.</p>
 
 <p>The remainder of this article provides additional detail on how to construct language tags.</p>
@@ -204,46 +208,8 @@ margin-top: 60px;
 
 
 
-<section id="rfc">
-<h2>Constructing language tags</h2>
-
-<p>Some of the key differences between RFC 5646 and earlier specifications such as RFC 3066 are:</p>
-<ol>
-<li>there is just one place to look for valid subtags, the new <a class="print" href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">IANA
-registry</a></li>
-<li>subtags have fixed positions and lengths, which makes for easier matching of language tags</li>
-<li>there is more flexibility around the potential components of a language tag.</li>
-</ol>
-
-<p><a class="print" href="http://www.ietf.org/rfc/rfc3066.txt">RFC 3066</a> essentially allowed you to compose language tags that were either a language code on its own, a language code plus a country code, or one of a small number of specially registered values in the <a class="print" href="http://www.iana.org/assignments/language-tags">IANA language tag registry</a>.</p>
-
-
-<div class="sidenoteGroup">
-<p> <a class="print" href="http://www.rfc-editor.org/rfc/rfc5646.txt">RFC 5646</a> caters for more types of subtag, and allows you to combine them in various ways. While this may appear to make life much more complicated, generally speaking choosing language tags will continue to be a simple matter – however, where you need additional power it will be available to you. In fact, for most people, RFC 5646 should actually make life  simpler in a number of ways –  for one thing, there is only one place you need to look now for valid subtags.</p>
-<div class="sideinfonote">
-<p class="info">Although it provides some additional options for identifying common language variations, RFC 5646 includes all of the tags that were previously valid. If you have been using RFC 1766, RFC 3066, or RFC 4646 you do not need to make any changes to your tags.</p>
-</div>
-</div>
-
-<p>The list below shows the various types of subtag that are available. We will work our way through these and how they are used in the
-sections that follow.</p>
-<p style="font-weight: bold; font-size: 200%; margin-right: 0;"><span class="languageExample">language</span>-<span
-class="extlangExample">extlang</span>-<span
-class="scriptExample">script</span>-<span class="regionExample">region</span>-<span class="variantExample">variant</span>-extension-<span
-class="puExample">privateuse</span></p>
-
-<p>The entries in the registry follow certain conventions with regard to upper and lower letter-casing. For example, language tags are lower case,
-alphabetic region subtags are upper case, and script subtags begin with an initial capital. This is only a convention! When you use these subtags you
-are free to do as you like, unless you are constrained by the rules of the system you are working with. For HTML and XML language markup, the case should not matter.</p>
-
-
-
-
-
-
-
 <section id="registry">
-<h3>Using the subtag registry</h3>
+<h2>Finding subtags in the IANA registry</h2>
 
 <p>As mentioned above, you used to find subtags by consulting the lists of codes in various ISO standards, but now you can find all
 subtags in one place. The <a class="print" href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">IANA registry</a> looks a little complicated at first, compared to the ISO code lists, but it is easy enough to use once you understand its structure.</p>
@@ -281,11 +247,28 @@ registry</a>.</p>
 
 
 
+
+<section id="rfc">
+<h2>Constructing language tags</h2>
+
+
+<p>The list below shows the various types of subtag that are available. We will work our way through these and how they are used in the
+sections that follow.</p>
+<p style="font-weight: bold; font-size: 200%; margin-right: 0;" translate="no"><span class="languageExample">language</span>-<span
+class="extlangExample">extlang</span>-<span
+class="scriptExample">script</span>-<span class="regionExample">region</span>-<span class="variantExample">variant</span>-extension-<span
+class="puExample">privateuse</span></p>
+
+
+
+
+
+
 <section id="language">
 <h3>The primary language subtag</h3>
 
 <div class="insidenote">
-<p class="languageExample tagExampleHead">Language subtags</p>
+<p class="languageExample tagExampleHead"><span translate="no">Language</span> subtags</p>
 <pre class="tagExample" translate="no"><span class="languageExample currentExample" title="Language subtag">en</span></pre>
 <pre class="tagExample" translate="no"><span class="languageExample currentExample" title="Language subtag">ast</span></pre>
 <p class="readmore">Read more in the BCP 47 spec: </p>
@@ -342,7 +325,7 @@ Suppress-Script: Latn
 <h3>The extended language subtag</h3>
 
 <div class="insidenote">
-<p class="extlangExample tagExampleHead">Extlang subtags</p>
+<p class="extlangExample tagExampleHead"><span translate="no">Extlang</span> subtags</p>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">zh</span>-<span class="extlangExample currentExample" title="Extlang subtag">yue</span></pre>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">ar</span>-<span class="extlangExample currentExample" title="Extlang subtag">afb</span></pre>
 <p class="readmore">Read more in the BCP 47 spec: </p>
@@ -360,7 +343,7 @@ Suppress-Script: Latn
 <li><code class="kw" translate="no">ar-afb</code> (Gulf Arabic)</li>
 </ul>
 
-<p>Language+extlang combinations are provided to accommodate legacy language tag forms, however, there is a single language subtag available for every language+extlang combination. That language subtag should be used rather than the language+extlang combination, where possible. For example, use <code class="kw" translate="no">yue</code> rather than <code class="kw" translate="no">zh-yue</code> for Cantonese, and <code class="kw" translate="no">afb</code> rather than <code class="kw" translate="no">ar-afb</code> for Gulf Arabic, if you can.</p>
+<p class="warning">Language+extlang combinations are provided to accommodate legacy language tag forms, however, there is a single language subtag available for every language+extlang combination. That language subtag should be used rather than the language+extlang combination, where possible. For example, use <code class="kw" translate="no">yue</code> rather than <code class="kw" translate="no">zh-yue</code> for Cantonese, and <code class="kw" translate="no">afb</code> rather than <code class="kw" translate="no">ar-afb</code> for Gulf Arabic, if you can.</p>
 
 <p>Extlang subtags are always three letters long. Each <code class="kw" translate="no">extlang</code> entry in the registry contains a <code class="kw" translate="no">Prefix</code> field that specifies the language that must precede the extlang subtag. Entries also include a <code class="kw" translate="no">Preferred-Value</code> field that indicates the equivalent language tag.</p>
 
@@ -398,7 +381,7 @@ Macrolanguage: ar
 <h3>The script subtag</h3>
 
 <div class="insidenote">
-<p class="scriptExample tagExampleHead">Script subtags</p>
+<p class="scriptExample tagExampleHead"><span translate="no">Script</span> subtags</p>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">zh</span>-<span class="scriptExample  currentExample" title="Script subtag">Hans</span></pre>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">az</span>-<span class="scriptExample currentExample" title="Script subtag">Latn</span></pre>
 <p class="readmore">Read more in the BCP 47 spec: </p>
@@ -439,7 +422,7 @@ Added: 2005-10-16
 </figure>
 
 
-<p>Although for common uses of language tags it is not likely that you will need to specify the script, there are one or two situations that have been crying out for it for some time. One such example is Chinese. There are many Chinese dialects, often mutually unintelligible, but these dialects are all written using either Simplified or Traditional Chinese script. People typically want to label Chinese text as either Simplified or Traditional, but until recently there was no way to do so. People had to bend something like <code class="kw" translate="no">zh-CN</code> (meaning Chinese as spoken in China) to mean Simplified Chinese, even in Singapore, and <code class="kw" translate="no">zh-TW</code> (meaning Chinese as spoken in Taiwan) for Traditional Chinese. (Other people, however, use <code class="kw" translate="no">zh-HK</code> for Traditional Chinese.) The availability of <code class="kw" translate="no">zh-Hans</code> and <code class="kw" translate="no">zh-Hant</code> for Chinese written in Simplified and Traditional scripts should improve consistency and accuracy, and is already becoming widely used, although of course you may need to continue to use the old language tags in some cases for consistency.</p>
+<p>Although for common uses of language tags it is not likely that you will need to specify the script, there are one or two situations that have been crying out for it for some time. One such example is Chinese. There are many Chinese dialects, often mutually unintelligible, but these dialects are all written using either Simplified or Traditional Chinese script. People typically want to label Chinese text as either Simplified or Traditional, but until recently there was no way to do so. People had to bend something like <code class="kw" translate="no">zh-CN</code> (meaning Chinese as spoken in China) to mean Simplified Chinese, even in Singapore, and <code class="kw" translate="no">zh-TW</code> (meaning Chinese as spoken in Taiwan) for Traditional Chinese. (Other people, however, use <code class="kw" translate="no">zh-HK</code> for Traditional Chinese.) The availability of <code class="kw" translate="no">zh-Hans</code> and <code class="kw" translate="no">zh-Hant</code> for Chinese written in Simplified and Traditional scripts should improve consistency and accuracy, and is already becoming widely used.</p>
 </section>
 
 
@@ -453,7 +436,7 @@ Added: 2005-10-16
 <h3>The region subtag</h3>
 
 <div class="insidenote">
-<p class="regionExample tagExampleHead">Region subtags</p>
+<p class="regionExample tagExampleHead"><span translate="no">Region</span> subtags</p>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">en</span>-<span class="regionExample currentExample" title="Region subtag">GB</span></pre>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">es</span>-<span class="regionExample currentExample" title="Region subtag">005</span></pre>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">zh</span>-<span class="scriptExample" title="Script subtag">Hant</span>-<span class="regionExample currentExample" title="Region subtag">HK</span></pre>
@@ -508,7 +491,7 @@ Added: 2005-10-16
 <h3>Variant subtags</h3>
 
 <div class="insidenote">
-<p class="variantExample tagExampleHead">Variant subtags</p>
+<p class="variantExample tagExampleHead"><span translate="no">Variant</span> subtags</p>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">sl</span>-<span class="variantExample currentExample" title="Variant subtag">nedis</span></pre>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">sl</span>-<span class="regionExample" title="Region subtag">IT</span>-<span class="variantExample currentExample" title="Variant subtag">nedis</span></pre>
 <pre class="tagExample" translate="no"><span class="languageExample" title="Language subtag">de</span>-<span class="regionExample" title="Region subtag">CH</span>-<span class="variantExample currentExample" title="Variant subtag">1901</span></pre>
@@ -519,7 +502,7 @@ Added: 2005-10-16
 <p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-4.1">4.1 Choice of Language Tag</a></p>
 </div>
 
-<p>Variant subtags are values used to indicate dialects or script variations not already covered by combinations of language, script and region subtag.  The variant subtags must appear after any language, script or region subtags, but script and region subtags do not need to precede them.</p>
+<p>Variant subtags are values used to indicate dialects or script variations not already covered by combinations of language, script and region subtag.  The variant subtags must appear after any language, script or region subtags, but are not necessarily preceded by a script or region subtag.</p>
 
 <p>It is unlikely that you will need to use variant subtags unless you are working in a specialized area.</p>
 
@@ -575,7 +558,7 @@ registry using the registration procedure outlined in RFC 5646.</p>
 <p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-4.1">4.1 Choice of Language Tag</a></p>
 </div>
 
-<p>If you feel you really need to use these subtags, you should read the <a class="print" href="https://www.rfc-editor.org/info/bcp47">specification</a>, rather than this article.</p>
+<p class="info">If you feel you really need to use these subtags, you should read the <a class="print" href="https://www.rfc-editor.org/info/bcp47">specification</a>, rather than this article.</p>
 
 <p>Extension and private use subtags are introduced by a single letter tag, or 'singleton'. An organization can propose a singleton for an extension. Its intended use must be described by an RFC (IETF specification). The singleton will be added to the registry if it successfully passes a review. The singleton <code class="kw" translate="no">x</code> is reserved for private use. Multiple subtags are allowed after the singleton; however, as for all subtags, they must each be 8 or less characters in length.</p>
 
@@ -691,6 +674,24 @@ Matching will be described in another article.</p>
 <h2>By the way</h2>
 
 <p>Language tags for HTML were first formally defined in RFC 2070, F. Yergeau, et al. <cite><a class="print" href="http://www.ietf.org/rfc/rfc2070.txt">Internationalization of the Hypertext Markup Language</a></cite>. RFC 2070 was incorporated into <a class="print" href="/TR/html4">HTML 4</a>, and has been reclassified as historic.</p>
+
+<p>Some of the key differences between RFC 5646 and earlier specifications such as RFC 3066 are:</p>
+<ol>
+<li>there is just one place to look for valid subtags, the new <a class="print" href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry">IANA
+registry</a></li>
+<li>subtags have fixed positions and lengths, which makes for easier matching of language tags</li>
+<li>there is more flexibility around the potential components of a language tag.</li>
+</ol>
+
+<p><a class="print" href="http://www.ietf.org/rfc/rfc3066.txt">RFC 3066</a> essentially allowed you to compose language tags that were either a language code on its own, a language code plus a country code, or one of a small number of specially registered values in the <a class="print" href="http://www.iana.org/assignments/language-tags">IANA language tag registry</a>.</p>
+
+
+<div class="sidenoteGroup">
+<p> <a class="print" href="http://www.rfc-editor.org/rfc/rfc5646.txt">RFC 5646</a> caters for more types of subtag, and allows you to combine them in various ways. While this may appear to make life much more complicated, generally speaking choosing language tags will continue to be a simple matter – however, where you need additional power it will be available to you. In fact, for most people, RFC 5646 should actually make life  simpler in a number of ways –  for one thing, there is only one place you need to look now for valid subtags.</p>
+<div class="sideinfonote">
+<p class="info">Although it provides some additional options for identifying common language variations, RFC 5646 includes all of the tags that were previously valid. If you have been using RFC 1766, RFC 3066, or RFC 4646 you do not need to make any changes to your tags.</p>
+</div>
+</div>
 
 <p>Note there have been <a class="print" href="http://www.loc.gov/standards/iso639-2/codechanges.html"><strong>changes</strong></a> to ISO language codes. In 1989 <code class="kw" translate="no">iw</code>, <code class="kw" translate="no">in</code>, and <code class="kw" translate="no">ji</code> were withdrawn and replaced by <code class="kw" translate="no">he</code>, <code class="kw" translate="no">id</code>, and <code class="kw" translate="no">yi</code>. More recently, the ISO country code <code class="kw" translate="no">cs</code>, that used to represent Czechoslovakia, was changed to represent Serbia and Montenegro. Such changes can lead to confusion when comparing codes that were assigned to text over a long period. The new IANA subtag registry allows for tags to be deprecated and superseded by new tags, but will never remove or change the meaning of a subtag. It is expected that ISO will also follow a similar policy for the future.</p>
 
