@@ -519,10 +519,6 @@ var titles = {
 
 "styling": [
 	{
-	"url": "/International/articles/css3-text/index",
-	"en": "CSS3 and International Text",
-	},
-	{
 	"url": "/International/articles/article-text-size",
 	"ar": "حجم النص في الترجمة",
 	"de": "Textlänge bei Übersetzungen",
@@ -558,7 +554,15 @@ var titles = {
 	{
 	"url": "/International/articles/vertical-text/index",
 	"en": "Styling vertical Chinese, Japanese, Korean and Mongolian text",
-	}
+	},
+	{
+	"url": "/International/articles/typography/fontstyles",
+	"en": "Font styles & font fallback",
+	},
+	{
+	"url": "/International/articles/css3-text/index",
+	"en": "CSS3 and International Text",
+	},
     ],
 
 
