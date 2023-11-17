@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8" />
+<title>使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面（教程）</title>
+<meta name="description" content="W3C i18n 教程：如何为用从右至左书写的文字制作网页" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'tutorials/bidi-xhtml'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-bidi-xhtml'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-03-22'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-06-03', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-09-04', time:'12:22'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translatorContact=""; // please add email. This is not displayed, it allows the translation coordinator to contact you if needed in future.
+
+f.breadcrumb = 'direction';
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" />
+<link rel="stylesheet" href="index-data/local.css" type="text/css" />
+<link rel="copyright" href="#copyright"/>
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面（教程）</h1>
+</header>
+
+<div id="sidebarExtras">
+  <section>
+    <h2 id="whyread" class="notoc">你为什么应该读这篇文章？</h2>
+    <p>让双向文本正确渲染有时会让人感觉很难，但事实并非如此。如果你感到困惑或者还没有开始，本教程可以帮助你采用最佳方法来标记内容，并充分解释双向算法的工作原理，以便你更好地理解大多数问题的根本原因。我们还会讨论有关处理双向文本标记语言的方法的一些常见误解。</p>
+  </section>
+  <section id="objectives">
+    <h2 class="notoc">目标</h2>
+    <p>读完本教程你可以学习到：</p>
+    <ul>
+      <li>创建包含用阿拉伯字母、希伯来字母或其他从右至左书写的文字的HTML页面</li>
+      <li>学习Unicode双向文本算法的基础知识，以便理解为什么双向文本会这样工作，以及如何解决问题</li>
+      <li>将HTML5中的重要新增内容应用到包含双向文本的页面</li>
+      <li>考虑不使用标记语言的替代方案</li>
+    </ul>
+    <p>很多语言都使用从右至左书写的文字，包括阿拉伯语、希伯来语、普什图语、波斯语、信德语、叙利亚语、迪维希语、乌尔都语、意第绪语、维吾尔语、哈萨克语和柯尔克孜语等。</p>
+  </section>
+</div>
+
+
+  <div id="audience">
+    <p><span id="intendedAudience" class="leadin">目标读者：</span>想要编写包含由右至左书写的文字（如阿拉伯字母和希伯来字母）的HTML和CSS开发者，或者必须处理嵌入的由右至左书写的文字的读者。</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+        </div>
+  <p>本教程汇总了一些文章，帮助你了解在编写HTML和CSS时如何使用从右至左书写的文字和双向文本。</p>
+
+<div id="nutshell">
+  <h2 id="quicksummary">简言之</h2>
+  <p>如果页面是由右至左书写的，向<code class="kw" translate="no">html</code>标签添加<code class="kw" translate="no">dir</code>属性以设置页面的默认基方向（base direction）。只有在你需要更改基方向时，才需要在页面内的块级元素上使用<code class="kw" translate="no">dir</code>属性。</p>
+  <p>对于行内文本，将所有<a class="termref" href="/International/articles/inline-bidi-markup/#oppositedirection">相反方向的短语</a><a  class="termref" href="/International/articles/inline-bidi-markup/#tightwrap">紧紧包裹</a>在设置其基方向的标记中。</p>
+  <p>使用<code class="kw" translate="no">dir=auto</code>自动设置表单控件、<code class="kw" translate="no">pre</code>元素或插入页面的文本的基方向。如果需要将表单输入的基方向信息传递到服务器，请使用 <code class="kw" translate="no">dirname</code>属性。</p>
+  <p>在可以使用标记语言的情况下，不要使用CSS或Unicode控制字符来管理书写方向。</p>
+  <p>使用双向文本的逻辑顺序，而不是视觉顺序，并让Unicode双向文本算法来管理书写方向。</p>
+</div>
+
+<section id="definitions">
+<h2>定义</h2>
+  <dl>
+    <dt><dfn id="term_bidirectional">双向文本</dfn></dt>
+    <dd>行内混合LTR和RTL文本的文本。由右至左书写的文字（例如阿拉伯字母和希伯来字母）通常包含短的由右至左书写的文本（最常见的是拉丁字母），并且一些主要是由右至左书写的文字中数字的方向时由左至右书写的。处理RTL文字时，双向文本是许多困难的来源。</dd>
+    <dt><dfn id="term_bidi">Bidi</dfn></dt>
+    <dd>“双向文本”（bidirectional）的缩写形式。</dd>
+    <dt><dfn id="term_rtl">RTL</dfn></dt>
+    <dd>“由右至左”（right-to-left）的缩写形式。</dd>
+    <dt><dfn id="term_ltr">LTR</dfn></dt>
+    <dd>“由左至右”（left-to-right）的缩写形式。</dd>
+    <dt><dfn id="term_base_direction">基方向</dfn></dt>
+    <dd>为了使文本在显示HTML页面时看起来没有问题，我们需要建立文本的书写方向上下文。我们将这个上下文称为“基方向”（base direction）。</dd>
+    <dd>为文本建立正确的基方向至关重要，因为基方向可以使双向文本算法在显示时产生正确的文本顺序。正确指定基方向还可为文本建立正确的默认对齐方式。</dd>
+    <dd>在HTML中，基方向由使用<span class="kw" translate="no">dir</span>属性的最近的父元素显式设置。在没有<span class="kw" translate="no">dir</span>属性的情况下，基方向继承自文档的默认方向，即由左至右书写。</dd>
+    <dt><dfn id="term_uba">Unicode 双向文本算法</dfn></dt>
+    <dd>Unicode双向文本算法（Unicode Bidirectional Algorithm, UBA），简称为“bidi算法”，是Unicode标准的一部分。该算法描述了确定双向Unicode文本的书写方向时使用的算法，并受到浏览器和其他应用的广泛支持。有关详细信息，请参阅<a href="https://www.unicode.org/reports/tr9/">Unicode标准附件#9</a>。</dd>
+  </dl>
+</section>
+
+
+<section id="markup">
+<h2>HTML中的书写方向</h2>
+  <p>在本节中，我们将介绍关于书写方向的标记语言基础知识。</p>
+  <p><a href="/International/articles/inline-bidi-markup/uba-basics" class="maintitle print"><cite>Unicode双向文本算法基础</cite></a>简要介绍了bidi算法的工作原理，重点介绍了双向文本的相关概念和术语。</p>
+  <p><a href="/International/questions/qa-html-dir" class="maintitle print"><cite>HTML中的结构代码和由右至左书写的文本</cite></a>着眼于<code class="kw" translate="no">dir</code>属性在文档级别的基本用法以及HTML中的结构标记，例如段落、表格和表单等等。文章也介绍了HTML5的新发展，包括处理表单元素、<code class="kw" translate="no">pre</code>元素和插入文本的书写方向。</p>
+  <p><a href="/International/articles/inline-bidi-markup/" class="maintitle print"><cite>HTML中的行内标记和双向文本</cite></a>首先描述了Unicode双向文本算法需要标记语言帮助的情况。Unicode双向算法是所有浏览器中书写方向控制的基础，但它有其局限性，需要通过标记语言来辅助工作。本文着眼于这些问题并提出了简单的解决方案。这比上一篇文章稍微复杂一些，因为这里必须要处理双向文本。</p>
+  <p><a href="/International/questions/qa-visual-vs-logical" class="maintitle print"><cite>文本的视觉顺序与逻辑顺序</cite></a>比较了存储双向文本的视觉方法与逻辑方法，并说明了为什么使用逻辑模型。如今，用户通常不太可能需要处理视觉顺序的内容。</p>
+</section>
+
+
+<section id="browser">
+<h2>CSS和Unicode控制字符</h2>
+  <p>一般来说，你应该使用标记语言而不是CSS或Unicode控制字符来管理HTML中的文本方向，不过在某些时候CSS或Unicode控制字符是唯一的手段。这些文章详细探讨了造成这种情况的原因。</p>
+  <p><a href="/International/questions/qa-bidi-css-markup" class="maintitle print"><cite>CSS和标记语言对双向文本的支持</cite></a></p>
+  <p><a href="/International/questions/qa-bidi-controls" class="maintitle print"><cite>Unicode控制字符和标记语言对双向文本的支持</cite></a>讨论了为什么标记语言比Unicode控制字符更好。</p>
+  <p><a href="/International/questions/qa-bidi-unicode-controls" class="maintitle print"><cite>对双向文本使用Unicode控制字符</cite></a>说明了如果只能使用Unicode控制字符，如何使用它们。</p>
+</section>
+
+
+<section id="endlinks">
+<h2>进一步阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+	<ul id="full-links">
+	<li>
+      <p>相关链接：<cite>制作网页</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#direction">书写方向</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
