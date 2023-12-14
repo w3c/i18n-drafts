@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Les étiquettes de langues en HTML et XML</title>
+<meta name="description" content="Comment construire les étiquettes de langues à utiliser avec les attributs lang en HTML et xml:lang en XML.">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/language-tags'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-language-tags'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2006-09-20'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-03-03', time:'13:55'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-10-24', time:'16:20'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'Gwendoline Clavé, <a href="https://www.clavoline-traduction.fr/" rel="nofollow">Clavoline Traduction</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language';
+
+f.additionalLinks = ''
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-fr.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+<style media="all">
+#examples {
+width: 60%;
+}
+#examples td {
+text-align: left;
+}
+#examples th {
+text-align: left;
+}
+abbr {
+text-transform: uppercase;
+}
+.currentExample {
+border: 1px dotted teal;
+}
+.languageExample {
+color: #ff00ff;
+}
+.extlangExample {
+color: #F90;
+}
+.scriptExample {
+color: #ff0099;
+}
+.regionExample {
+color: #0099ff;
+}
+.variantExample {
+color: #00ff00;
+}
+.puExample {
+color: #800000;
+}
+.tagExampleHead {
+font-size: 200%;
+padding-bottom: 0.5em;
+padding-top: 0.5em;
+line-height: 1.2em;
+}
+.tagExample {
+font-size: 400%;
+line-height: 1em;
+margin: .25em;
+margin-right: .25em;
+margin-left: 0;
+}
+.insidenote .readmore {
+margin-top: 60px;
+}
+
+.insideinfonote ul {
+margin-left: 2.2em;
+margin-right: .5em;
+}
+</style>
+</head>
+
+<body>
+<header> 
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Les étiquettes de langues en HTML et XML</h1>
+</header>
+
+
+<aside id="sidebarExtras">
+<section id="links">
+<h2 class="notoc">Liens connexes</h2>
+
+<p><a class="print" href="http://www.iana.org/assignments/language-subtag-registry">Registre <abbr title="Internet Assigned Numbers Authority">IANA</abbr> des sous-étiquettes de langues</a></p>
+
+<p><a class="print" href="https://r12a.github.io/app-subtags/">Outil de recherche de sous-étiquette</a></p>
+
+<p><a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">Recommandation BCP 47 de l’<abbr title='@'>IETF</abbr></a></p>
+</section>
+</aside>
+
+
+
+
+
+<div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+
+
+
+<p class="info" style="clear: none"><strong>Remarque :</strong> cet article donne un aperçu général de la syntaxe et des concepts associés aux étiquettes de langues, tels que décrits dans la BCP 47. Si vous cherchez la marche à suivre pour choisir une étiquette de langue, vous devriez lire notre article <a class="print" href="../../questions/qa-choosing-language-tags"><cite>Choisir une étiquette d’identification de langue</cite></a>.</p>
+
+<section id="overview">
+<h2>Aperçu</h2>
+    
+<div class="insideinfonote">
+    <p class="info"><strong>Terminologie</strong></p>    
+    
+    <p>On parle d’<span class="newterm">étiquette d’identification de langue</span> ou d’<span class="newterm">étiquette de langue</span> pour faire référence à la valeur d’un attribut de langue comme <code class="kw" translate="no">fr-CA</code>.</p>
+    
+    <p>Pour faire référence à des éléments comme <code class="kw" translate="no">fr</code> et <code class="kw" translate="no">CA</code>, on parle :</p>
+    <ul>
+        <li>de <span class="newterm">sous-étiquettes</span> pour désigner les composants d’une étiquette, ou</li>    
+        <li>de <span class="newterm">codes</span> pour désigner les éléments d’une liste ISO de langues ou de pays.</li>
+    </ul>
+</div>    
+
+<p>Dans un document HTML ou XML, une étiquette d’identification de langue (comme <code class="kw" translate="no">fr-CA</code>) permet de préciser la langue du texte ou d’autres éléments. Elle s’utilise avec l’attribut <code class="kw" translate="no">lang</code> en <a class="print" href="http://www.w3.org/TR/html4/struct/dirlang.html#h-8.1">HTML</a> et l’attribut <code class="kw" translate="no">xml:lang</code> en <a class="print" href="http://www.w3.org/TR/REC-xml#sec-lang-tag">XML</a>.</p>
+
+<p> La plupart des étiquettes de langues se composent d’une sous-étiquette de langue de deux ou trois lettres. Celle-ci est souvent suivie d’une sous-étiquette de région de deux lettres ou de trois chiffres.</p>
+
+<p>En cas de besoin, vous pouvez y ajouter des sous-étiquettes de langue étendue, d’écriture, de variante, d’extension ou à usage privé. Vous trouverez plus d’explications à ce sujet dans la section <a href="#rfc">Construction des étiquettes de langues</a> ci-dessous.</p>
+
+<p>Voici quelques exemples d’étiquettes d’identification de langues :</p>
+
+<table id="examples">
+<tbody>
+<tr>
+<th scope="col">Étiquette</th>
+<th scope="col">Langue</th>
+<th scope="col">Types de sous-étiquettes</th>
+</tr>
+<tr>
+<td><code class="kw" translate="no">en</code></td>
+<td>Anglais</td>
+<td>langue</td>
+</tr>
+<tr>
+<td><code class="kw" translate="no">mas</code></td>
+<td>Maa (aussi appelé massaï)</td>
+<td>langue</td>
+</tr>
+<tr>
+<td><code class="kw" translate="no">fr-CA</code></td>
+<td>Français utilisé au Canada</td>
+<td>langue+région</td>
+</tr>
+<tr>
+<td><code class="kw" translate="no">es-419</code></td>
+<td>Espagnol utilisé en Amérique latine</td>
+<td>langue+région</td>
+</tr>
+<tr>
+<td><code class="kw" translate="no">zh-Hans</code></td>
+<td>Chinois écrit à l’aide de l’écriture simplifiée</td>
+<td>langue+écriture</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+<section id="case_conventions">
+<h3>Quelles sont les conventions en matière de casse ?</h3>
+
+<p>Les entrées du registre suivent certaines conventions en matière de casse. Par exemple :</p>
+
+<ul>
+    <li>les étiquettes de langues sont en minuscules,</li>
+    <li>les sous-étiquettes alphabétiques de région sont en majuscules et</li>
+    <li>les sous-étiquettes d’écriture commencent par une majuscule.</li> 
+</ul>
+
+<p>Il s’agit seulement d’une convention ! Vous êtes libre d’utiliser ces sous-étiquettes comme bon vous semble, sauf si le système avec lequel vous travaillez vous impose des contraintes. Pour le balisage linguistique en HTML et en XML, la casse ne devrait avoir aucune importance.</p>
+</section>
+
+
+
+<section id="inheritance">
+<h3>Comment fonctionne l’héritage de l’information de langue ?</h3>
+
+<p>En HTML comme en XML, l’information de langue déclarée sur un élément parent est transmise à ses enfants.</p>
+    
+<p>Vous pouvez toutefois <em>empêcher</em> l’héritage de l’information de langue à un élément enfant en déclarant sur ce dernier :</p>
+
+<ul>
+    <li>une information de langue différente ou</li>
+    <li>une chaîne vide (par exemple, <code translate="no">xml:lang=""</code> en XML).</li>
+</ul>
+
+<p>Une chaîne vide indique que vous ne voulez associer aucune information de langue à l’élément concerné.</p>
+</section>
+
+
+
+
+<section id="syntax">
+<h3>Où est définie la syntaxe des étiquettes de langues ?</h3>
+
+<div class="insideinfonote">
+    <p class="info"><strong>Terminologie</strong></p>
+    <p>Les <span class="newterm">BCP</span> (de leur sigle anglais) sont des « bonnes pratiques actuelles ».</p>
+    <p>Les <span class="newterm">RFC</span> (de leur sigle anglais) sont des « demandes de commentaires ». Il s’agit du nom que l’IETF donne à ses spécifications.</p>
+    <p>Chaque RFC est identifiée par un numéro unique. Malheureusement, en lisant la RFC 1766 ou la RFC 3066, il est impossible de deviner que ces spécifications sont désormais obsolètes ou qu’elles ont été remplacées.</p>
+</div>    
+
+<p>La syntaxe des étiquettes de langues est définie dans la recommandation <a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a> de l’<abbr title="Internet Engineering Task Force">IETF</abbr>. « BCP 47 » est le nom permanent d’une série de <abbr title="Request For Comment (demande de commentaires)">RFC</abbr> dont le numéro change à chaque mise à jour.</p>
+
+<p>La dernière RFC de cette série est la <a class="print" href="http://www.rfc-editor.org/rfc/rfc5646.txt"><cite>RFC 5646, Étiquettes d’identification de langues</cite></a>. Ses prédécesseurs désormais obsolètes sont les RFC <a class="print" href="http://www.rfc-editor.org/rfc/rfc4646.txt">4646</a> (<a href="http://abcdrfc.free.fr/rfc-vf/rfc4646.htm">traduction non officielle</a>), <a class="print" href="http://www.ietf.org/rfc/rfc3066.txt">3066</a> et <a class="print" href="https://www.ietf.org/rfc/rfc1766.txt">1766</a>.</p>
+</section>
+
+
+
+
+<section id="how_many">
+<h3>Combien de sous-étiquettes faut-il utiliser ?</h3>
+
+<p><strong>Lors de la création d’étiquettes de langues, la règle d’or consiste à utiliser la forme la plus courte possible.</strong></p>
+
+<p>Évitez d’ajouter des sous-étiquettes supplémentaires (notamment de région ou d’écriture) lorsqu’elles n’apportent aucune information utile. Par exemple, pour le japonais, utilisez <code class="kw" translate="no">ja</code> et non <code class="kw" translate="no">ja-JP</code>, sauf si vous avez une bonne raison de préciser qu’il s’agit du japonais <em>parlé au Japon, plutôt qu’ailleurs</em>.</p>
+
+<p>Vous trouverez dans la suite de cet article des informations supplémentaires sur la manière de construire vos étiquettes de langues.</p>
+</section>
+</section>
+
+
+
+
+
+
+
+
+<section id="registry">
+    <h2>Trouver des sous-étiquettes dans le registre IANA</h2>
+    
+    <p>Pour trouver les sous-étiquettes à utiliser, il fallait autrefois se référer aux les listes de codes présents dans diverses normes ISO. Désormais, toutes les sous-étiquettes sont rassemblées au même endroit, dans le <cite><a class="print" href="http://www.iana.org/assignments/language-subtag-registry">Registre <abbr title="Internet Assigned Numbers Authority">IANA</abbr> des sous-étiquettes de langues</a></cite>. Un peu compliqué de prime abord (surtout par rapport aux listes de codes ISO), ce registre est assez simple d’utilisation une fois que l’on a compris sa structure.</p>
+    
+    <p>Ce registre est un long fichier texte. Pour trouver une sous-étiquette de langue, il vous suffit de chercher sur la page le nom de la langue qui vous intéresse, en anglais. Par exemple, en cherchant « French » pour le français, on trouve l’entrée suivante :</p>
+    
+    
+    <figure class="example">
+    <pre translate="no">%%
+    Type: language
+    Subtag: fr
+    Description: French
+    Added: 2005-10-16
+    Suppress-Script: Latn
+    %%
+    </pre>
+    </figure>
+    
+    
+    <p>Remarque : il s’agit d’une entrée de type <code class="kw" translate="no">language</code> (langue). L’information qui vous intéresse ici est la propriété <code class="kw" translate="no">Subtag</code> (sous-étiquette), qui a pour valeur <code class="kw" translate="no">fr</code>.</p>
+    
+    <p>Vous pouvez trouver d’autres étiquettes de la même manière. Par exemple, si vous souhaitez vérifier que l’étiquette <code class="kw" translate="no">fr-CA</code> (français utilisé au Canada) est valable, vous devrez ensuite chercher <code class="kw" translate="no">Canada</code> et vérifier que l’entrée trouvée est de type <code class="kw" translate="no">region</code>.</p>
+    
+    <p>Il y a toutefois d’autres choses à garder à l’esprit lors du choix des sous-étiquettes. Par exemple, vous devriez éviter les sous-étiquettes que le registre qualifie de <em>redundant</em> (redondantes) ou <em>deprecated</em> (déconseillées). Par ailleurs, vous devrez parfois utiliser des sous-étiquettes de variante en plus de certaines sous-étiquettes conseillées. Pour en savoir plus sur le choix des sous-étiquettes, consultez notre article <a class="print" href="/International/questions/qa-choosing-language-tags"><cite>Choisir une étiquette d’identification de langue</cite></a>.</p>
+    
+    <p>Il existe également un outil non officiel, mais convivial pour <a class="print" href="https://r12a.github.io/app-subtags/">effectuer une recherche dans le registre</a>.</p>
+    
+    <p>Dans les sections suivantes, vous trouverez des informations plus précises sur chaque sous-étiquette.</p>
+    </section>
+    
+    
+    
+    
+    
+    
+    <section id="rfc">
+<h2>Construction des étiquettes de langues</h2>
+
+<p>Les sections suivantes présentent les différents types de sous-étiquettes à votre disposition et expliquent comment les utiliser. En voici la liste :</p>
+
+<p style="font-weight: bold; font-size: 200%; margin-right: 0;"><span class="languageExample">language</span>-<span class="extlangExample">extlang</span>-<span class="scriptExample">script</span>-<span class="regionExample">region</span>-<span class="variantExample">variant</span>-extension-<span class="puExample">privateuse</span></p>
+
+
+
+
+
+
+<section id="language">
+<h3>La sous-étiquette de langue principale (<span lang="en">Language</span>)</h3>
+
+<div class="insidenote">
+<p class="languageExample tagExampleHead">Sous-étiquettes <span lang="en">Language</span></p>
+<pre class="tagExample" translate="no"><span class="languageExample currentExample" title="Sous-étiquette de langue">en</span></pre>
+<pre class="tagExample" translate="no"><span class="languageExample currentExample" title="Sous-étiquette de langue">ast</span></pre>
+<p class="readmore">Pour plus d’informations, consultez les sections suivantes de la spécification BCP 47 (en anglais) : </p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.1">2.2.1 Sous-étiquette de langue principale</a></p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-4.1">4.1 Choix de l’étiquette de langue</a></p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-4.1.1">4.1.1 Étiquetage des langues englobées</a></p>
+</div>
+
+<p>Toutes les étiquettes de langues doivent commencer par une sous-étiquette de langue principale.</p>
+
+<p>Voici quelques exemples d’étiquettes de langues simples qui n’indiquent que la langue :</p>
+
+<ul>
+<li><code class="kw" translate="no">en</code> (anglais)</li>
+<li><code class="kw" translate="no">ast</code> (asturien, langue pour laquelle les listes ISO ne prévoient aucun code de deux lettres)</li>
+</ul>
+
+<p>Voici également l’entrée du registre pour l’espagnol, <code class="kw" translate="no">es</code>, en tant que sous-étiquette de langue principale :</p>
+
+
+<figure class="example">
+<pre translate="no">%%
+Type: language
+Subtag: es
+Description: Spanish
+Description: Castilian
+Added: 2005-10-16
+Suppress-Script: Latn
+%%
+</pre>
+</figure>
+
+<p>Les valeurs acceptées sont issues de la liste des codes de langues ISO 639 et tiennent compte de ses évolutions. </p>
+
+<p>La RFC 3066 ne prévoyait aucune liste de sous-étiquettes valables et renvoyait les internautes vers la liste ISO 639. Cela pouvait prêter à confusion lorsque les listes de code ISO proposaient à la fois des codes de deux lettres et des codes de trois lettres (et même, parfois, plusieurs codes de trois lettres).</p>
+
+<p>Désormais, toutes les sous-étiquettes valables sont centralisées dans le <a class="print" href="http://www.iana.org/assignments/language-subtag-registry">registre IANA</a>, qui adopte une seule valeur issue des listes ISO pour chaque langue. Lorsqu’il existe un code ISO de deux lettres, c’est celui-ci que l’on trouve dans le registre. Dans le cas contraire, le registre indique un code de trois lettres. Cela devrait simplifier les choses. </p>
+
+<p>Lors de la publication de la RFC 5646, plus de 7 000 nouveaux codes de trois lettres de la liste ISO 639-3 ont été ajoutés au registre des sous-étiquettes.</p>
+
+
+<p>Bien que la casse n’ait aucune importance, les codes sont généralement écrits en minuscules. Il s’agit d’une simple convention.</p>
+</section>
+
+
+
+
+
+
+<section id="extlang">
+<h3>La sous-étiquette de langue étendue (<span lang="en">Extlang</span>)</h3>
+
+<div class="insidenote">
+<p class="extlangExample tagExampleHead">Sous-étiquettes <span lang="en">Extlang</span></p>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">zh</span>-<span class="extlangExample currentExample" title="Sous-étiquette extlang">yue</span></pre>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">ar</span>-<span class="extlangExample currentExample" title="Sous-étiquette extlang">afb</span></pre>
+<p class="readmore">Pour plus d’informations, consultez les sections suivantes de la spécification BCP 47 (en anglais) : </p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.2">2.2.2 Les sous-étiquettes de langue étendue</a></p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-4.1.2">4.1.2 Utilisation des sous-étiquettes de langue étendue</a></p>
+</div>
+
+<p>Pour faire référence aux sous-étiquettes de langue étendue, on parle de sous-étiquettes <span class="newterm">extlang</span>.</p>
+
+<p>Une étiquette de langue ne peut contenir qu’une seule sous-étiquette extlang. Celle-ci doit toujours être précédée d’une sous-étiquette de langue principale et doit précéder toutes les autres sous-étiquettes éventuelles.</p>
+
+<p>Voici quelques exemples d’étiquettes de langues qui incluent des sous-étiquettes extlang :</p>
+<ul>
+<li><code class="kw" translate="no">zh-yue</code> (chinois cantonais)</li>
+<li><code class="kw" translate="no">ar-afb</code> (arabe du Golfe)</li>
+</ul>
+
+<p class="warning"><strong>Remarque :</strong> les combinaisons langue+extlang sont proposées à des fins de compatibilité avec les anciens formats d’étiquette de langue. Toutefois, il existe une sous-étiquette de langue pour chaque combinaison langue+extlang. Vous devriez utiliser cette sous-étiquette de langue à la place de la combinaison langue+extlang, lorsque cela est possible.<br>Par exemple, si vous avez le choix, mieux vaut utiliser <code class="kw" translate="no">yue</code> plutôt que <code class="kw" translate="no">zh-yue</code> pour le cantonais et <code class="kw" translate="no">afb</code> plutôt que <code class="kw" translate="no">ar-afb</code> pour l’arabe du Golfe.</p>
+
+<p>Les sous-étiquettes de langue étendue comportent toujours trois lettres. Chaque entrée <code class="kw" translate="no">extlang</code> du registre contient un champ <code class="kw" translate="no">Prefix</code> (préfixe) qui indique quelle langue doit précéder la sous-étiquette de langue étendue. Les entrées incluent aussi un champ <code class="kw" translate="no">Preferred-Value</code> (valeur préférée) qui indique l’étiquette de langue équivalente.</p>
+
+<p>À titre d’exemple, voici l’entrée du registre pour l’arabe du Golfe, <code class="kw" translate="no">afb</code>, en tant que code de langue étendue :</p>
+
+
+<figure class="example">
+<pre translate="no">%%
+Type: extlang
+Subtag: afb
+Description: Gulf Arabic
+Added: 2009-07-29
+Preferred-Value: afb
+Prefix: ar
+Macrolanguage: ar
+%%
+</pre>
+</figure>
+
+
+<p><strong class="leadin">Les macrolangues.</strong> Une sous-étiquette de langue principale qui s’accompagne d’une sous-étiquette extlang est appelée macrolangue (en anglais, <em>macrolanguage</em>). Une macrolangue englobe un certain nombre de langues pour lesquelles il existe des sous-étiquettes de langue principale plus précises.</p>
+
+<p>Une macrolangue peut être utilisée seule. Mais s’il n’existe aucune convention quant à la manière de l’interpréter dans son contexte d’utilisation, cette information risque de manquer de précision. </p>
+
+<p>Par exemple, le code <code class="kw" translate="no">zh</code> désigne le chinois, mais englobe de nombreux dialectes chinois, souvent incompréhensibles entre eux. Il s’agit donc d’une macrolangue. Parmi les langues englobées, la langue prédominante est le mandarin. Par conséquent :</p>
+
+<ul>
+    <li>Quand on l’utilise seul, <code class="kw" translate="no">zh</code> fait généralement référence à la langue prédominante parmi les langues englobées (le mandarin), bien que la BCP 47 ne le précise pas explicitement.</li>
+    <li>Lorsqu’une clarté absolue est requise, vous pouvez utiliser le code du mandarin (<code class="kw" translate="no">cmn</code>) à la place, à condition de préserver l’interopérabilité.</li>
+    <li>Si vous utilisez <code class="kw" translate="no">zh</code> pour représenter une <em>autre</em> langue chinoise que le mandarin, comme le hakka, vous feriez mieux de le remplacer par le code explicite (dans cet exemple, <code class="kw" translate="no">hak</code>).</li>
+</ul>
+
+<p>À l’inverse, <code class="kw" translate="no">zh-Hans</code> utilise <code class="kw" translate="no">zh</code> dans son sens générique. C’est un bon moyen d’indiquer que l’on écrit en chinois simplifié, puisque le chinois s’écrit souvent de la même manière, quel que soit le dialecte.</p>
+</section>
+
+
+
+
+
+
+
+<section id="script">
+<h3>La sous-étiquette d’écriture (<span lang="en">Script</span>)</h3>
+
+<div class="insidenote">
+<p class="scriptExample tagExampleHead">Sous-étiquettes <span lang="en">Script</span></p>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">zh</span>-<span class="scriptExample  currentExample" title="Sous-étiquette d’écriture">Hans</span></pre>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">az</span>-<span class="scriptExample currentExample" title="Sous-étiquette d’écriture">Latn</span></pre>
+<p class="readmore">Pour plus d’informations, consultez les sections suivantes de la spécification BCP 47 (en anglais) : </p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.3">2.2.3 Sous-étiquette d’écriture</a></p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-4.1">4.1 Choix de l’étiquette de langue</a></p>
+</div>
+
+<p>Une étiquette de langue ne peut comporter qu’une seule sous-étiquette d’écriture. Celle-ci doit se trouver juste après la sous-étiquette de langue ou toute sous-étiquette extlang éventuelle. Elle comporte toujours quatre lettres.</p>
+
+<p>Voici quelques exemples d’étiquettes de langues qui incluent des sous-étiquettes d’écriture :</p>
+<ul>
+<li><code class="kw" translate="no">zh-Hans</code> (chinois simplifié)</li>
+<li><code class="kw" translate="no">az-Latn</code> (azerbaïdjanais écrit à l’aide de l’écriture latine, car on peut aussi écrire cette langue à l’aide de l’écriture arabe ou cyrillique)</li>
+</ul>
+
+<p>Voici également l’entrée du registre pour l’écriture cyrillique, <code class="kw" translate="no">Cyrl</code>, que l’on utilise pour représenter des langues comme le russe :</p>
+
+
+<figure class="example">
+<pre translate="no">%%
+Type: script
+Subtag: Cyrl
+Description: Cyrillic
+Added: 2005-10-16
+%%
+</pre>
+</figure>
+
+<p>La sous-étiquette d’écriture a fait sa première apparition dans la RFC 4646. Les valeurs possibles sont issues de la liste des codes d’écriture ISO 15924 et tiennent compte de ses évolutions.</p>
+
+<p>Si vous souhaitez indiquer spécifiquement qu’un contenu n’est pas écrit, il existe une sous-étiquette pour cela. Par exemple, vous pourriez utiliser <code class="kw" translate="no">en-Zxxx</code> pour indiquer clairement qu’un enregistrement audio en anglais n’est pas un contenu écrit.</p>
+
+<p><strong>Vous ne devriez utiliser de sous-étiquettes d’écriture que lorsqu’elles sont nécessaires à la distinction dont vous avez besoin.</strong> Comme l’écrit Addison Phillips, co-auteur de la RFC 4646, « Pour presque tous les contenus qui n’ont pas de sous-étiquette d’écriture à l’heure actuelle, la bonne pratique reste de ne pas leur en ajouter une ».</p>
+
+<p>En réalité, de nombreuses entrées du registre des sous-étiquettes de langues déconseillent vivement l’utilisation de sous-étiquettes d’écriture. Elles incluent pour cela un champ <code class="kw" translate="no">Suppress-script</code> (écriture à supprimer). Ce champ est présent dans l’entrée du registre pour l’espagnol que nous avons vue plus haut. Il indique que l’espagnol s’écrit habituellement à l’aide de l’écriture latine et que l’on ne devrait pas, en principe, utiliser la sous-étiquette <code class="kw" translate="no">Latn</code> avec <code class="kw" translate="no">es</code>.</p>
+
+
+<p>Dans les cas d’utilisation courants des étiquettes de langues, vous devrez rarement préciser l’écriture. Pourtant, il y a bien une ou deux langues pour lesquelles cette fonctionnalité était très attendue. L’une d’elles est le chinois.</p>
+
+<p>Il existe de nombreux dialectes chinois, souvent mutuellement inintelligibles, mais tous s’écrivent à l’aide de l’écriture chinoise traditionnelle ou simplifiée. Les personnes qui créent du contenu veulent généralement préciser si un texte utilise l’écriture simplifiée ou l’écriture traditionnelle.</p>
+
+<p>Encore récemment, il n’existait aucun moyen de le faire. Elles étaient donc contraintes de détourner les étiquettes de langues comme <code class="kw" translate="no">zh-CN</code> (qui correspond au chinois parlé en Chine) pour indiquer qu’un texte était écrit en chinois simplifié, même à Singapour, et <code class="kw" translate="no">zh-TW</code> (soit le chinois parlé à Taïwan) pour faire référence au chinois traditionnel. (D’autres personnes utilisent cependant <code class="kw" translate="no">zh-HK</code> pour le chinois traditionnel.)</p>
+
+<p>Désormais, elles peuvent utiliser les étiquettes de langues <code class="kw" translate="no">zh-Hans</code> et <code class="kw" translate="no">zh-Hant</code> qui correspondent au chinois écrit respectivement avec l’écriture simplifiée et avec l’écriture traditionnelle. Ces nouvelles étiquettes déjà très répandues devraient améliorer la cohérence et la précision.</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="region">
+<h3>La sous-étiquette de région géographique (<span lang="en">Region</span>)</h3>
+
+<div class="insidenote">
+<p class="regionExample tagExampleHead">Sous-étiquettes <span lang="en">Region</span></p>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">en</span>-<span class="regionExample currentExample" title="Sous-étiquette de région">GB</span></pre>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">es</span>-<span class="regionExample currentExample" title="Sous-étiquette de région">005</span></pre>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">zh</span>-<span class="scriptExample" title="Sous-étiquette d’écriture">Hant</span>-<span class="regionExample currentExample" title="Sous-étiquette de région">HK</span></pre>
+<p class="readmore">Pour plus d’informations, consultez les sections suivantes de la spécification BCP 47 (en anglais) : </p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.4">2.2.4 Sous-étiquette de région géographique</a></p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-4.1">4.1 Choix de l’étiquette de langue</a></p>
+</div>
+
+<p>Une étiquette de langue ne peut comporter qu’une seule sous-étiquette de région. Celle-ci doit se trouver après la sous-étiquette de langue et après toute sous-étiquette de langue étendue ou d’écriture éventuelle. Il s’agit d’un code alphabétique de deux lettres ou d’un code numérique de trois chiffres.</p>
+
+<p>Vous pouvez indiquer un code de langue immédiatement suivi d’un code de région, comme vous en avez l’habitude avec les étiquettes telles que <code class="kw" translate="no">en-US</code>.</p>
+
+<p>Voici des exemples d’étiquettes de langues qui incluent des sous-étiquettes de région :</p>
+
+<ul>
+<li><code class="kw" translate="no">en-GB</code> (anglais britannique)</li>
+<li><code class="kw" translate="no">es-005</code> (espagnol d’Amérique du Sud)</li>
+<li><code class="kw" translate="no">zh-Hant-HK</code> (chinois traditionnel utilisé à Hong Kong)</li>
+</ul>
+
+<p>Voici également deux entrées du registre qui montrent les codes associés à l’Autriche, <code class="kw" translate="no">AT</code>, et à l’Afrique du Nord, <code class="kw" translate="no">015</code> :</p>
+
+<figure class="example">
+<pre translate="no">%%
+Type: region
+Subtag: AT
+Description: Austria
+Added: 2005-10-16
+%%
+Type: region
+Subtag: 015
+Description: Northern Africa
+Added: 2005-10-16
+%%
+</pre>
+</figure>
+
+<p>Dans la RFC 3066, les valeurs des sous-étiquettes de région étaient issues des codes de pays de la norme ISO 3166. Ces codes de deux lettres se retrouvent dans le nouveau registre, mais celui-ci inclut également les codes de région ONU M.49 de trois chiffres.</p>
+
+<p>Ces codes présentent l’avantage de pouvoir représenter plus que des pays. Par exemple, des groupes de localisation souhaitaient depuis longtemps préciser que la langue de leurs traductions soigneusement confectionnées était l’espagnol d’Amérique latine, plutôt que l’espagnol d’un pays précis. Depuis la RFC 5646, c’est désormais possible ; il suffit d’utiliser l’étiquette de langue <code class="kw" translate="no">es-419</code>.</p>
+
+<p>Une fois de plus, vous ne devriez utiliser de sous-étiquettes de région que lorsqu’elles sont nécessaires à la distinction dont vous avez besoin. Si vous n’avez pas besoin de souligner que vous faites référence à l’italien <em>parlé en Italie</em>, vous devriez utiliser <code class="kw" translate="no">it</code> et non <code class="kw" translate="no">it-IT</code> pour l’italien. C’est également valable pour toute autre combinaison possible.</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="variants">
+<h3>La sous-étiquette de variante (<span lang="en">Variant</span>)</h3>
+
+<div class="insidenote">
+<p class="variantExample tagExampleHead">Sous-étiquettes <span lang="en">Variant</span></p>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">sl</span>-<span class="variantExample currentExample" title="Sous-étiquette de variante">nedis</span></pre>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">sl</span>-<span class="regionExample" title="Sous-étiquette de région">IT</span>-<span class="variantExample currentExample" title="Sous-étiquette de variante">nedis</span></pre>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">de</span>-<span class="regionExample" title="Sous-étiquette de région">CH</span>-<span class="variantExample currentExample" title="Sous-étiquette de variante">1901</span></pre>
+<p class="readmore">Pour plus d’informations, consultez les sections suivantes de la spécification BCP 47 (en anglais) : </p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.5">2.2.5 Sous-étiquettes de variante</a></p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-4.1">4.1 Choix de l’étiquette de langue</a></p>
+</div>
+
+<p>On utilise une sous-étiquette de variante pour préciser une variante dialectale ou orthographique, lorsque celle-ci n’est pas couverte par une combinaison de sous-étiquettes de langue, d’écriture et de région. Il est peu probable que vous ayez besoin d’en utiliser, à moins de travailler dans un domaine spécialisé.</p>
+
+<p>La sous-étiquette de variante doit se trouver après toute sous-étiquette de langue, d’écriture ou de région. Toutefois, les sous-étiquettes d’écriture et de région sont facultatives.</p>
+
+<p>Voici quelques exemples qui devraient vous aider à comprendre l’intérêt de ces sous-étiquettes :</p>
+
+<ul>
+<li><code class="kw" translate="no">sl-nedis</code> (le dialecte slovène de la vallée du Natisone)</li>
+<li><code class="kw" translate="no">sl-rozaj</code> (le dialecte slovène de la vallée de Resia)</li>
+<li><code class="kw" translate="no">sl-IT-nedis</code> (la variante précise du dialecte slovène de la vallée du Natisone qui est parlée en Italie)</li>
+<li><code class="kw" translate="no">de-CH-1901</code> (la variante de l’orthographe allemande qui date des réformes de 1901, telle qu’adoptée en Suisse)</li>
+</ul>
+
+<p>Voici également l’entrée du registre qui montre le code du dialecte slovène de la vallée du Natisone, <code class="kw" translate="no">nedis</code> :</p>
+<figure class="example">
+<pre translate="no">%%
+Type: variant
+Subtag: nedis
+Description: Natisone dialect
+Description: Nadiza dialect
+Added: 2005-10-16
+Prefix: sl
+%%
+</pre>
+</figure>
+
+<p>Dans le registre, chaque sous-étiquette de variante est liée à une langue précise par le champ <code class="kw" translate="no">Prefix</code>. Dans l’exemple de <code class="kw" translate="no">nedis</code> ci-dessus, ce champ indique que cette sous-étiquette ne devrait être utilisée qu’avec le slovène. Le champ <code class="kw" translate="no">Prefix</code> indique parfois des sous-étiquettes supplémentaires qui doivent apparaître entre cette sous-étiquette et la sous-étiquette de langue principale.</p>
+
+<p>Il est possible que vous deviez exprimer une nuance particulière (relative à un dialecte ou à une écriture) qui n’est pas encore disponible. Dans ce cas, vous devriez proposer l’ajout d’une ou de plusieurs sous-étiquettes de variante au registre. La procédure d’enregistrement est décrite dans la RFC 5646.</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="extension">
+<h3>Les sous-étiquettes d’extension et à usage privé</h3>
+
+<p class="info"><strong>Remarque :</strong> si vous pensez vraiment avoir besoin d’utiliser ces sous-étiquettes, vous devriez lire la <a class="print" href="http://www.w3.org/International/core/langtags/rfc3066bis.html">spécification</a>, plutôt que cet article.</p>
+
+<div class="insidenote" style="width: 44%; margin-left: 2em;">
+<p class="extensionExample tagExampleHead">Sous-étiquettes d’extension</p>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">de</span>-<span class="regionExample" title="Sous-étiquette de région">DE</span>-<span class="extensionExample currentExample" title="Sous-étiquette d’extension">u-co-phonebk</span></pre>
+<p class="puExample tagExampleHead">Sous-étiquettes à usage privé</p>
+<pre class="tagExample" translate="no"><span class="languageExample" title="Sous-étiquette de langue">en</span>-<span class="regionExample" title="Sous-étiquette de région">US</span>-<span class="puExample currentExample" title="Sous-étiquette à usage privé">x-twain</span></pre>
+<p class="readmore">Pour plus d’informations, consultez les sections suivantes de la spécification BCP 47 (en anglais) : </p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.7">2.2.7 Sous-étiquettes à usage privé</a></p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.6">2.2.6 Sous-étiquettes d’extension</a></p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-4.1">4.1 Choix de l’étiquette de langue</a></p>
+</div>
+
+<p>Les sous-étiquettes d’extension et les sous-étiquettes à usage privé sont introduites par une étiquette d’une seule lettre, aussi appelée « singleton ». Plusieurs sous-étiquettes peuvent être placées après le singleton ; toutefois, comme toutes les sous-étiquettes, aucune d’elles ne doit comporter plus de huit caractères.</p>
+
+<p><strong class="leadin">Les sous-étiquettes d’extension.</strong> Les sous-étiquettes d’extension permettent d’ajouter des extensions à l’étiquette de langue. Toute organisation peut proposer un singleton pour une extension. L’utilisation prévue doit être décrite par une RFC (spécification de l’IETF). La proposition sera examinée ; si le singleton est retenu, il sera ajouté au registre.</p>
+
+<p>Par exemple, le Consortium Unicode a enregistré la sous-étiquette d’extension <code class="kw" translate="no">u</code> pour ajouter des informations sur le comportement de la langue ou de la région. De nombreux identifiants régionaux nécessitent des options supplémentaires « sur mesure » avec des valeurs spécifiques au sein d’une langue, d’une culture, d’une région ou d’une variante. Cette extension permet d’utiliser ces options dans les étiquettes de langues pour un libre échange des données.</p>
+
+<p>Ainsi, dans l’étiquette suivante, l’extension <code class="kw" translate="no">u-co-phonebk</code> indique qu’une application devrait suivre la convention de tri de l’annuaire téléphonique, que les données triées dans un document sont triées selon cette convention, et ainsi de suite.</p>
+
+<ul>
+<li><code class="kw" translate="no">de-DE-u-co-phonebk</code></li>
+</ul>
+
+<p>L’extension <code class="kw" translate="no">u-</code> est définie dans la <a class="print" href="http://www.rfc-editor.org/rfc/rfc6067.txt">RFC 6067</a>, qui renvoie vers le Common Locale Data Repository (répertoire de données de paramètres régionaux classiques) du Consortium Unicode pour plus d’informations sur les sous-étiquettes qui la suivent. Elle n’est pas définie par la BCP 47.</p>
+
+<p><strong class="leadin">Les sous-étiquettes à usage privé.</strong> Le singleton <code class="kw" translate="no">x</code> est réservé à l’usage privé. Les sous-étiquettes à usage privé sont absentes du registre des sous-étiquettes : elles sont choisies et conservées par accord privé entre les parties.</p>
+
+<p>Ces sous-étiquettes n’ont vraiment de sens que dans le cadre d’un accord privé. Elles ne peuvent pas être utilisées n’importe où. Vous devriez donc les utiliser avec une grande prudence et uniquement en dernier recours. </p>
+
+<p>Voici un exemple de sous-étiquette à usage privé qui identifie un type précis d’anglais américain, mais seulement au sein d’une communauté fermée :</p>
+
+<ul>
+<li><code class="kw" translate="no">en-US-x-twain</code></li>
+</ul>
+
+<p>En dehors de cet accord privé, elle n’aura aucun sens (ou, si elle en a un, il pourra être différent).</p>
+</section>
+
+
+
+
+
+
+
+<section id="grandfathered">
+<h3>Les étiquettes exonérées et redondantes</h3>
+
+<div class="insidenote">
+
+<p>Pour plus d’informations, consultez la section suivante de la spécification BCP 47 (en anglais) : </p>
+
+<p><a class="print" href="https://www.rfc-editor.org/rfc/rfc5646.html#section-2.2.8">2.2.8 Enregistrements exonérés et redondants</a></p>
+</div>
+
+<p>Les étiquettes exonérées et les étiquettes redondantes sont des étiquettes composées de plusieurs éléments et enregistrées avant la RFC 4646 :</p>
+
+<ul>
+    <li>Les étiquettes exonérées sont des cas particuliers, prévus par souci de compatibilité descendante. Il s’agit d’étiquettes dont la syntaxe n’est pas conforme aux spécifications actuelles ou dont au moins une sous-étiquette est absente du registre actuel.</li>
+    <li>Les étiquettes redondantes sont des étiquettes de langues que l’on peut désormais former en combinant des sous-étiquettes du registre actuel. Si les enregistrements originaux figurent toujours dans le registre, c’est principalement en tant que « curiosités historiques ».</li>
+</ul>
+
+<p>De nombreuses étiquettes exonérées ont été remplacées par des sous-étiquettes ou des combinaisons de sous-étiquettes présentes dans le registre. Ces étiquettes exonérées sont désormais déconseillées. Leur entrée dans le registre contient généralement un champ <code class="kw" translate="no">Preferred-Value</code> (valeur à privilégier) qui indique l’alternative recommandée pour représenter cette langue.</p>
+
+<p>À titre d’exemple, voici une étiquette exonérée qui recommande d’utiliser la sous-étiquette de langue <code class="kw" translate="no">jbo</code> à la place de <code class="kw" translate="no">art-lojban</code>.</p>
+
+
+<figure class="example">
+<pre translate="no">%%
+Type: grandfathered 
+Tag: art-lojban 
+Description: Lojban 
+Added: 2001-11-11 
+Deprecated: 2003-09-02 
+Preferred-Value: jbo 
+%%</pre>
+</figure>
+</section>
+</section>
+
+
+
+
+
+
+
+
+<section id="matching">
+<h2 style="margin-bottom: 0;">Correspondance des étiquettes de langues</h2>
+
+<p>La recherche de correspondance entre différentes étiquettes de langues est importante à un certain nombre d’applications.</p>
+
+<p>D’après la BCP 47, on peut considérer que <code class="kw" translate="no">en</code> correspond à <code class="kw" translate="no">en-GB</code>. Par exemple, le code CSS suivant colore en rouge le texte en anglais dans les navigateurs compatibles avec la pseudo-classe <code class="kw" translate="no">:lang</code>.</p>
+
+<blockquote>
+<pre translate="no"><code class="language-css">:lang(en) { color: red; }</code></pre>
+</blockquote>
+
+<p>Dans le code ci-dessous, le texte décrit par <code translate="no">lang="en-GB"</code> s’affichera donc en rouge.</p>
+
+<blockquote>
+<pre lang="fr" translate="no"><code class="language-html">&lt;p&gt;En janvier, toutes les boutiques de Londres affichent des panneaux 
+&lt;span lang="en-GB"&gt;SALE&lt;/span&gt;, mais en fait ces magasins sont bien propres !&lt;/p&gt;</code></pre>
+</blockquote>
+
+<p>Cependant, avec la déclaration CSS suivante :</p>
+
+<blockquote>
+<pre translate="no"><code class="language-css">:lang(en-GB) { color: red; }</code></pre>
+</blockquote>
+
+<p>le mot « <em>SALE</em> » ne devrait <em>pas</em> s’afficher en rouge dans le code ci-dessous :</p>
+
+<blockquote>
+<pre lang="fr" translate="no"><code class="language-html">&lt;p&gt;En janvier, toutes les boutiques de Londres affichent des panneaux 
+&lt;span lang="en"&gt;SALE&lt;/span&gt;, mais en fait ces magasins sont bien propres !&lt;/p&gt;</code></pre>
+</blockquote>
+
+<p>L’apparition d’étiquettes supplémentaires dans la RFC 5646 complique légèrement la recherche de correspondance. Celle-ci s’accompagne de la <a class="print" href="http://www.rfc-editor.org/rfc/rfc4647.txt"><cite>RFC 4647, Correspondance des étiquettes de langues</cite></a> (<a href="http://abcdrfc.free.fr/rfc-vf/rfc4647.htm">traduction non officielle</a>), qui décrit plusieurs approches possibles de cette opération.</p>
+
+<p>Nous décrirons la correspondance dans un autre article.</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="bytheway">
+<h2>À propos</h2>
+
+<p>Les étiquettes de langues pour HTML ont fait l’objet d’une première définition formelle dans la RFC 2070, <cite><a class="print" href="http://www.ietf.org/rfc/rfc2070.txt">Internationalisation du langage de balisage hypertexte</a></cite>, de F. Yergeau <em>et al.</em> (<a href="http://abcdrfc.free.fr/rfc-vf/pdf/rfc2070.pdf">traduction non officielle</a>). La RFC 2070 a été intégrée au <a class="print" href="/TR/html4">HTML 4</a> et n’a plus désormais qu’une valeur historique.</p>
+
+
+
+
+<section id="changes">
+<h3>Changements introduits par la RFC 5646</h3>
+
+<p>Voici les principales caractéristiques qui distinguent la RFC 5646 de spécifications plus anciennes comme la RFC 3066 :</p>
+<ol>
+<li>Les sous-étiquettes valables sont centralisées dans le nouveau <a class="print" href="http://www.iana.org/assignments/language-subtag-registry">registre IANA</a>, ce qui évite d’avoir à consulter plusieurs documents pour les trouver.</li>
+<li>Les sous-étiquettes ont des positions et des longueurs fixes, ce qui facilite la recherche de correspondance des étiquettes de langues.</li>
+<li>La RFC 5646 offre une plus grande flexibilité quant aux composants potentiels d’une étiquette de langue.</li>
+</ol>
+
+<div class="sidenoteGroup">
+<p>Avec la <a class="print" href="http://www.ietf.org/rfc/rfc3066.txt">RFC 3066</a>, on pouvait composer des étiquettes de langues à partir d’un code de langue seul, d’un code de langue suivi d’un code de pays, ou d’un petit nombre de valeurs spéciales enregistrées dans le <a class="print" href="http://www.iana.org/assignments/language-tags">registre IANA des étiquettes de langues</a>. Désormais, la <a class="print" href="http://www.rfc-editor.org/rfc/rfc5646.txt">RFC 5646</a> prévoit des types de sous-étiquettes supplémentaires qu’elle vous permet de combiner de diverses manières.</p>
+<div class="sideinfonote">
+<p class="info">Bien qu’elle propose des options supplémentaires pour identifier les variations courantes des langues, la RFC 5646 inclut toutes les étiquettes qui étaient déjà valables jusque-là. Si vous utilisez la RFC 1766, la RFC 3066 ou la RFC 4646, vous n’aurez pas besoin de modifier vos étiquettes.</p>
+</div>
+</div>
+
+<p>Si vous pensez que ce changement complique grandement les choses, rassurez-vous ! De façon générale, le choix des étiquettes de langues reste simple, et des sous-étiquettes supplémentaires sont à votre disposition lorsque vous devez faire des déclarations plus précises. En réalité, la RFC 5646 devrait simplifier la vie de la plupart des personnes qui s’y réfèrent. La centralisation des sous-étiquettes valables n’est qu’un exemple parmi d’autres.</p>
+</section>
+
+
+
+
+
+<section id="modification">
+<h3>Modification des codes de langues</h3>
+
+<p>Les codes de langues ISO ont été <a class="print" href="http://www.loc.gov/standards/iso639-2/codechanges.html"><strong>modifiés</strong></a> :</p>
+
+<ul>
+    <li>En 1989, les codes <code class="kw" translate="no">iw</code>, <code class="kw" translate="no">in</code> et <code class="kw" translate="no">ji</code> ont été retirés et remplacés par <code class="kw" translate="no">he</code>, <code class="kw" translate="no">id</code> et <code class="kw" translate="no">yi</code>.</li>
+    <li>Plus récemment, le code de pays ISO <code class="kw" translate="no">cs</code>, qui représentait la Tchécoslovaquie, a été modifié afin de représenter la Serbie et le Monténégro.</li>
+</ul>
+
+<p>Ces modifications peuvent prêter à confusion lorsque l’on compare les codes qui étaient associés à un texte sur une longue période.</p>
+
+<p>Le nouveau registre IANA des sous-étiquettes peut déconseiller des étiquettes et les remplacer par de nouvelles étiquettes, mais ne retirera ni ne modifiera jamais la signification d’une sous-étiquette. L’ISO appliquera probablement une politique similaire à l’avenir.</p>
+</section>
+
+
+
+
+<section id="specs">
+<h3>Spécifications utilisant des étiquettes de langues</h3>
+
+<p>De nombreuses autres spécifications du W3C ou relatives au Web utilisent des étiquettes de langues :</p>
+
+<ul>
+<li> <a class="print" href="http://www.w3.org/TR/xhtml1/">XHTML 1.0</a> utilise des étiquettes de langues dans l’attribut HTML <code class="kw" translate="no">lang</code> et l’attribut XML <code class="kw" translate="no">xml:lang</code>, ainsi que dans l’attribut <code class="kw" translate="no">hreflang</code>.</li>
+<li>HTTP utilise des étiquettes de langues dans les en-têtes <code class="kw" translate="no">Accept-Language</code> et <code class="kw" translate="no">Content-Language</code>.</li>
+<li>SMIL et SVG peuvent utiliser des étiquettes de langues dans la déclaration <code class="kw" translate="no">switch</code>.</li>
+<li>CSS et XSL utilisent des étiquettes de langues pour un contrôle précis du style.</li>
+</ul>
+
+<p>Remarque : on peut déclarer des informations de langue sur des objets comme des images ou des fichiers audio inclus.</p>
+</section>
+</section>
+
+
+
+
+
+
+
+<section id="endlinks">
+<h2>Pour aller plus loin</h2>
+
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+
+<p>Vous débutez ? <a href="/International/getting-started/language"><cite>Les langues sur le Web</cite></a></p>
+</li>
+<li>
+
+<p><a href="/International/questions/qa-choosing-language-tags"><cite>Choisir une étiquette d’identification de langue</cite></a></p>
+</li>
+<li>
+
+<p>Liens connexes, <cite>Créer du contenu HTML et CSS</cite></p>
+<ul>
+<li><a href="/International/techniques/authoring-html#language">Langue</a></li>
+</ul>
+</li>
+<li>
+
+<p>Liens connexes, <cite>Créer du contenu XML</cite></p>
+<ul>
+<li><a href="/International/techniques/authoring-xml#language">Langue</a></li>
+</ul>
+</li>
+<li>
+
+<p>Liens connexes, <cite>Créer du contenu SVG</cite></p>
+<ul>
+<li><a href="/International/techniques/authoring-svg#language">Langue</a></li>
+</ul>
+</li>
+<li>
+
+<p>Liens connexes, <cite>Développer des schémas</cite></p>
+<ul>
+<li><a href="/International/techniques/developing-schemas#language">Langue</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
