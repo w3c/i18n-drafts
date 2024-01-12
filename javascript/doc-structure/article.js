@@ -73,7 +73,7 @@ function stickyConneg (filename, cLang, targetLang) {
 g.siteSearch = '<form method="get" action="https://www.w3.org/International/site-search.php" enctype="application/x-www-form-urlencoded" style="margin: 0;"><div id="searchSite"><input name="q" type="text" value="'+s.searchI18nSite+'" onfocus="this.value=\'\'" id="searchField" accesskey="E" maxlength="255"/></div></form>'
 
 g.breadcrumbs = "<a href='https://www.w3.org/International/'>"+s.home+"</a> &gt; <a href='https://www.w3.org/International/resources'>"+s.resources+"</a> &gt; "
-if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='https://www.w3.org/International/tests/'>"+s.tests+"</a>" 
+if (f.breadcrumb == 'tests') g.breadcrumbs += "<a href='https://www.w3.org/International/i18n-tests/'>"+s.tests+"</a>" 
 else g.breadcrumbs += "<a href='https://www.w3.org/International/articlelist#"+f.breadcrumb+"'>"+s.articles+"</a>"
 
 if (f.status !== 'published' && f.status !== 'notreviewed') g.about = "<h2 id='abouthead' class='notoc'>"+s.aboutThisArticle+"</h2>\n"
