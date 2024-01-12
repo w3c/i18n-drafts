@@ -4,12 +4,12 @@
 <meta charset="utf-8" />
 <title>Cursor Movement and Deletion of Unicode Text</title>
 <meta name="description" content="Cursor Movement and Deletion of Unicode Text" />
-<script type="text/javascript">
+<script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
 f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
-f.filename = 'qa-who-uses-unicode'; // the file name WITHOUT extensions
+f.filename = 'qa-backwards-deletion'; // the file name WITHOUT extensions
 f.authors = 'Addison Phillips, Invited Expert'; // author(s) and affiliations
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'qa-backwards-deletion'; // blog search string - usually the filename without extensions
@@ -30,24 +30,69 @@ f.breadcrumb = 'characters';
 
 f.additionalLinks = ''
 </script>
-<script type="text/javascript" src="qa-backwards-deletion/translations.js"> </script>
-<script type="text/javascript" src="../javascript/doc-structure/article-dt.js"> </script>
-<script type="text/javascript" src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
-<script type="text/javascript" src="../javascript/doc-structure/article.js"> </script>
-<script type="text/javascript" src="../javascript/articletoc-html5.js"></script>
-<link rel="stylesheet" href="../style/article-2016.css" type="text/css" />
-<!-- remove the following local css declaration if there is nothing to add -->
-<link rel="stylesheet" href="filename-data/local.css" type="text/css" />
+<script src="qa-backwards-deletion/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
-<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-
-<style type="text/css">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+<style>
 td.bigtext {
     font-size: 36pt;
     text-align: center;
     font-family: "Khmer", "noto_devanagari", "noto_symbols", "noto_regular", "NoToFu", "Palatino", "Times", "Times New Roman", "Verdana", sans-serif;
 }
+
+button.reset {
+	font-size: 9pt;
+	font-family: monospace;
+}
+
+input.try {
+	font-size: 24pt;
+}
+
+textarea.try {
+	font-size: 24pt;
+}
+
+div.try {
+	border:1px solid black;
+	background-color:#ccc;
+}
+
 </style>
+
+<script>
+	
+	const tryData = new Map([
+	   ["Hindi", "\u092f\u0942\u0928\u093f\u0915\u094b\u0921"],
+	   ["Tamil", "\u0b95\u0bcb"],
+	   ["Thai", "\u{E2B}\u{E49}\u{E2D}\u{E07}\u{E19}\u{E49}\u{E33}"],
+	   ["Korean", "\uac01"],
+	   ["KoreanJamo", "\u1100\u1161\u11a8"],
+	   ["LatinPrecomp", "\u01fa"],
+	   ["LatinDecomp", "A\u030a\u0301"],
+	   ["Emoji", "\u{1F468}\u{200D}\u{1F469}\u{200D}\u{1F467}\u{200D}\u{1F467}"],
+	   ["Conjunct", "\u0915\u094d\u0937\u093f"],
+	   ["Vertical", "在创造Unicode之前，有数百种指定这些数字的编码系统。"]
+	]);
+	
+    function reset() {
+		   for (let [key,value] of tryData) {
+			   var item = document.getElementById("try" + key);
+			   if (item !== null) {
+				   item.value = value;
+			   } else {
+				   console.log(key + " not found");
+			   }
+    }
+		   
+	   }
+</script>
 </head>
 
 <body>
@@ -61,12 +106,18 @@ td.bigtext {
 <section>
 	
 <p class="note" style="clear:none; font-size: 150%; margin-top: 2em; line-height:1.5;"><strong>NOTE!</strong> &nbsp; This article is in development and is using a temporary URL. It is not safe to refer to it or use the information it contains.</p>
+
+<!--
+
+The Internationalization Working Group decided not to invest more effort into this article.
+
+-->
 	
 <h2 id="intro"><a href="#intro">Introduction</a></h2>
     
      <p>This article describes how keyboards interact with Unicode text, particularly cursor movement using arrow keys, text selection, and text deletion. It is intended to help specification authors and implementers understand how to document and build APIs related to these topics on the Web.</p>
      
-     <p>The Unicode Standard provides some implementation guidance, but this description is subject to interpretation. For example, Version 12.0, Section 5.11 say, in part:</p>
+     <p>The Unicode Standard provides some implementation guidance, but this description is subject to interpretation. For example, Version 15.0, Section 5.11 (Editing and Selection) says, in part:</p>
   
 <blockquote>
 In  some  cases,  editing  a  user-perceived  “character”  or  visual  cluster  element  by  element
@@ -78,7 +129,7 @@ relationship between what the user thinks of as a character and the key or key s
 </section>
   
   <section>
-  <h2 id="terminology">Terminology</h2>
+  <h2 id="terminology"><a href="#terminology">Terminology</a></h2>
   
   <p>There are four different (yet related) ways in which text selection and navigation interact with keyboards. In some cases, these different modes also apply to other selection mechanisms (such as using a pointing device such as a mouse or using a touch-based interface). This article describes these different modes, using examples from various languages and scripts that illustrate the corner cases.</p>
   
@@ -86,7 +137,7 @@ relationship between what the user thinks of as a character and the key or key s
   <h3 id="cursor_movement">Cursoring</h3>
   <p><img src="./qa-backwards-deletion-data/cursor-movement.png"></p>
   
-  <p><dfn>Cursor movement</dfn> or "cursoring" is the process of moving through text using cursor keys on a physical keyboard. This is different from using a mouse or other pointing instrument (such as your finger in a touch interface).</p>
+  <p><dfn>Cursor movement</dfn> or "cursoring" is the process of moving through text using cursor keys on a physical keyboard. This is different from using a mouse or other pointing instrument (such as your finger in a touch interface), although a pointing device can often place the cursor (such as by "clicking" the cursor on the text or touching the text in an input field).</p>
 
   </section>
   <section>
@@ -94,35 +145,37 @@ relationship between what the user thinks of as a character and the key or key s
   <h3 id="text_selection">Text Selection</h3>
   <p><img src="./qa-backwards-deletion-data/text-selection.png"></p>  
   
-  <p><dfn>Text selection</dfn> is the progressive process of selecting at the character level. Text selection on modern systems is done contiguously in memory, using the logical order of characters. When working with bidirectional text, this can produce multiple regions of highlighted text on the screen, although the characters are always adjacent in memory. (Some user interfaces also provide word-by-word or sentence-by-sentence selection, which we won't concern ourselves with here.)</p>
+  <p><dfn>Text selection</dfn> is the progressive process of selecting text in a document. Text selection on modern systems is done contiguously in memory, using the logical order of characters. When working with bidirectional text, this can produce multiple regions of highlighted text on the screen, although the characters are always adjacent in memory. (Some user interfaces also provide word-by-word or sentence-by-sentence selection, which we won't concern ourselves with here.)</p>
   </section>
   <section>
   <h3 id="backwards_deletion">Backspacing ("backwards deletion")</h3>
   <p><img src="./qa-backwards-deletion-data/backward-deletion.png"></p>
    
-  <p><dfn>Backwards deletion</dfn> deletes the text that is logically <em>before</em> the cursor (to the left of the cursor in left-to-right text such as French or Chinese; to the right of the cursor in right-to-left runs of text, such as found in Arabic or Hebrew). Backwards deletion is most often associated with the "backspace" key on a keyboard. (In this article we'll refer to this as "backspace" or "backspacing".)</p> 
+  <p><dfn>Backwards deletion</dfn> deletes the text that is logically <em>before</em> the cursor. In horizontal text, these are the characters to the left of the cursor in left-to-right text such as in the Latin or Cyrillic script or to the right of the cursor in right-to-left runs of text, such as found in the Arabic or Hebrew scripts. Backwards deletion is most often associated with the "backspace" key on a keyboard. In this article we'll refer to <em>backwards deletion</em> as "backspace" or "backspacing".</p> 
   </section>
    
   <section>
   <h3 id="forwards_deletion">Deleting ("forwards deletion")</h3>
   <p><img src="./qa-backwards-deletion-data/forward-deletion.png"></p>
  
-  <p><dfn>Forwards deletion</dfn> deletes text that is logically <em>after</em> the cursor (that is, in the opposite direction to the backspace key). Forwards deletion is often associated with the "delete" key present on some keyboards. (In this article we'll refer to this as "delete" or "deleting".)</p> 
+  <p><dfn>Forwards deletion</dfn> deletes text that is logically <em>after</em> the cursor (that is, in the opposite direction to the backspace key). Forwards deletion is often associated with the "delete" key present on some keyboards. (In this article we'll refer to this as "delete" or "deleting".)</p>
   </section>
 </section>
 
 <section>
   <h2 id="details"><a href="#details">Details</a></h2>
   
-  <p>Generally speaking, most text navigation and editing follows the user-perceived character boundaries. For most implementations this corresponds to Unicode's definition of "default extended grapheme cluster" boundaries [<a href="https://unicode.org/reports/tr29/">UAX29</a>]. The main exception to this is backspacing, which usually follows logical character boundaries in the underlying encoded text. For the simplest scripts and languages, these often amount to the same thing.</p>
+  <p>Generally speaking, most text navigation and editing follows the user-perceived character boundaries. For most implementations this corresponds to Unicode's definition of "default extended grapheme cluster" boundaries [<a href="https://unicode.org/reports/tr29/">UAX29</a>]. The main exception to this is backspacing, which usually follows Unicode code point boundaries in the underlying encoded text (although there are exceptions to this). For the simplest scripts and languages, these often amount to the same thing.</p>
   
   <h3 id="cursoring_desc">Cursor movement</h3>
   
-  <p>Cursor movement, in the context of this document, refers to the use of the arrow keys on a physical keyboard (or their virtual equivalent). One thing to note is that the arrow keys (left, right, up, and down) <em>always</em> refer to the same <em>visual</em> direction, regardless of the direction or writing mode of the text.</p>
-
-  <p>Cursoring starts by positioning the cursor in the text, such as by clicking with the mouse. When cursoring in horizontal text, the left arrow button on a keyboard always moves the cursor one visual character to the left, while the right arrow does the same in the opposite direction. The up and down arrows move the cursor up or down a row of text respectively.</p>
+  <p>Cursor movement, in the context of this document, refers to the use of the arrow keys on a physical keyboard (or their virtual equivalent).</p>
   
-  <p>In vertical text, the left arrow moves left one row and the right arrow right one row, while up and down arrows move one visual character up or down in the row of text.</p>
+  <p>One thing to note is that the arrow keys (left, right, up, and down) <em>always</em> refer to the same <em>visual</em> direction, regardless of the direction or writing mode of the text. On many systems, this behavior is <em>different</em> from what occurs when performing text selection using a pointing device.</p>
+
+  <p>Cursoring starts by positioning the cursor in the text, such as by clicking with the mouse. When cursoring in horizontal text, the left arrow button on a keyboard always moves the cursor one user-perceived character (grapheme) to the left, while the right arrow does the same in the opposite direction. The up and down arrows move the cursor up or down a row of text respectively.</p>
+  
+  <p>In vertical text, the left arrow moves left one row and the right arrow right one row, while up and down arrows move one user-perceived character (grapheme) up or down in the row of text.</p>
   
   <h3 id="text_selection_desc">Selecting text via the keyboard</h3>
   
@@ -130,7 +183,7 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p>Selection using a pointing device, such as a mouse, is subtly different in most implementations than using the cursor keys to extend a selection. When using a pointing device, the selection is entirely logical, between the start and end point of the selection. At least on most physical keyboards, the user can access text selection, usually by holding down the "shift" key while cursoring in the text. As noted before, the cursor keys always move visually and in the indicated direction of the key. For certain bidirectional texts this can mean that the entire text cannot be selected via the cursor keys alone!</p>
   
-  <h3 id="combining_marks">Combining marks</h3>
+  <h3 id="combining_characters">Combining characters</h3>
   
   <p>Selecting, cursoring, and deleting text in Unicode is also complicated by the use of combining characters. When the visual units of text map 1:1 to characters in the memory of the computer, then cursor movement, selection, and deletion traverse the text a character at a time. However, some languages and scripts use multiple characters to compose a single user-perceived character (which we call a grapheme cluster or grapheme for short). When this is the case, the relationship between cursor movement and delete or backspace functions becomes more complex.</p>
   
@@ -185,17 +238,34 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p><img src="./qa-backwards-deletion-data/backwards-deletion.png" alt="Hindi backwards deletion"></p>
   
+  <div class="try">
+	  <h4>Try it in your browser</h4>
+	  <p>Try selecting, cursoring, deleting, and backspacing with this word in Hindi (in the Devanagari script). The word means "Unicode" and contains <em>four</em> graphemes and <em>seven</em> Unicode code points.</p>
+	  <p><input id="tryHindi" type="text" name="tryHindi" lang="hi" class="try" value="&#x92f;&#x942;&#x928;&#x93f;&#x915;&#x94b;&#x921;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+  </div>
+  
   <p>One reason suggested for the difference between delete and backspace behavior is that removing the base character (which is always the first character in a Unicode character sequence, and thus the first code point encountered in forward deletion) usually consumes any combining marks associated with it. That way combining marks associated with the base character aren't left over to combine with the preceeding sequence of characters, or, if there were no preceeding characters, be "orphaned" and form an invalid sequence.</p>
   
   <p>Backspace, meanwhile, can safely remove combining characters hanging from a given base character without causing other characters in the character sequence to change meaning. One reason sometimes attributed for this behavior is that it allows characters that have been "built-up" using multiple keypresses or other input mechanisms to be corrected without retyping the whole sequence.</p>
   
-  <p>Tamil presents the same concept in a visually more striking way. The syllable 'ko' consists of a two character sequence (U+0B95 U+0BCB), which looks as if it is made of three units. What's more the base character is the one in the middle. These characters still behave the same as those in Hindi (or other languages): cursoring, selection, and forward deletion move over the pair as a single unit. Backspacing deletes the combining mark first:</p>
+  <p>Tamil presents the same concept in a visually more striking way. The syllable <span lang="ta">&#xb95;&#xbcb;</span> (pronounced like 'ko') looks as if it is made of three units. However, it consists of a two character sequence (U+0B95 U+0BCB), with the base character <span class="codepoint" translate="no"><bdi lang="ta">&#xB95;</bdi><code class="uname">U+0B95 TAMIL LETTER KA</code></span> appearing visually in the middle. These characters still behave the same as those in the Hindi example: cursoring, selection, and forward deletion move over the pair as a single unit. Backspacing deletes the combining mark first.</p>
   
-  <p>INSERT TAMIL HERE</p>
+    <div class="try">
+	  <h4>Try it in your browser</h4>
+	  <p><input id="tryTamil" type="text" name="tryTamil" lang="ta" class="try" value="&#xb95;&#xbcb;"></input>
+	  <button type="button" onclick="reset('tryTamil', '&#xb95;&#xbcb;')" class="reset">Reset</button></p>
+  </div>
   
-  <p>Indic scripts, such as the Devanagari and Tamil examples above, are not the only scripts affected by this. The same can be found for combining marks in many languages. For example, the first cluster in this Thai word: <q>คืออะไร</q>. [get better example; demonstrate middle cursor deletion effects in Thai]</p>
+  <p>South-Asian scripts, such as the Devanagari and Tamil examples above, are not the only ones affected by this; similar behavior can be found in any script that employs combining marks. For example, the first cluster in this Thai word <q lang="th">ห้องน้ำ</q> has similar behavior. The end of this word shows additional complexity: the <span class="codepoint" translate="no"><bdi lang="th">&#xe33;</bdi><code class="uname">U+0E33 THAI CHARACTER SARA AM</code></span> appears as a separate typographical unit for effects such as inter-character spacing, but behaves as a single grapheme for the purposes of selection, cursoring, and forward deletion.</p>
   
-  <p>Some character sequences can be written in either a "composed" or a "decomposed" forms that affect how selection and deletion performs. For example, Korean characters can be written in either a precomposed form or using a sequence of combining marks (called <em>jamo</em>). Here's one example: </p>
+  <div class="try">
+	  <h4>Try it in your browser</h4>
+	  <p><input id="tryThai" type="text" name="tryThai" lang="th" class="try" value="ห้องน้ำ"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+  </div>
+  
+  <p>Some character sequences can be written in either a "composed" or a "decomposed" form that affect how backwards deletion performs. For example, Korean characters can be written in either a precomposed form or using a sequence of combining marks (called <em>jamo</em>). Here's one example: </p>
   
   <table><tbody>
   <tr>
@@ -218,22 +288,69 @@ relationship between what the user thinks of as a character and the key or key s
   
   <p>When written in the precomposed form, each Korean character remains atomic for all operations. When composed from jamo, most systems allow backspacing into the character (while treating the character as atomic for selection and forward deletion).</p>
   
+  <div class="try">
+	  <h4>Try it in your browser</h4>
+	  <p>This input field contains the precomposed character U+AC01:</p>
+	  <p><input id="tryKorean" type="text" name="tryKorean" lang="ko" class="try" value="&#xac01;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+	  <p>This input field contains the equivalent <em>Jamo</em> sequence U+1100 U+1161 U+11A8</p>
+	  <p><input id="tryKoreanJamo" type="text" name="tryKoreanJamo" lang="ko" class="try" value="&#x1100;&#x1161;&#x11a8;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+  </div>  
+  
   <p>Korean is just an example of this. Ones that are less common in real life but are sometimes used as examples also help illustrate this mysterious "character duality". While most Latin script text with accents is encoded as precomposed characters, it is possible to encode most characters as a base character with one or more combining marks. When this decomposed sequence is used, the behavior is similar to the Korean: cursor, text selection, and forward deletion include the base character and all of its associated accents, while backspacing deletes the combining marks one-at-a-time before the base character is reached.</p>
   
   <p>For example, the character U+01FA Latin Capital Letter A with Ring Above and Acute can also be composed as the sequence U+0041 U+030A U+0301. Both behave like a single letter for selection and deletion, but backspacing reveals the decomposed structure of the latter:</p>
   
   <p><img src="./qa-backwards-deletion-data/latin-backspace-progression.png" alt="Latin script backspace progression"></p>
   
+    <div class="try">
+	  <h4>Try it in your browser</h4>
+	  <p>This field contains the pre-composed Latin character U+01FA</p>
+	  <p><input id="tryLatinPrecomp" type="text" name="tryLatinPrecomp" lang="en" style="font-size:24pt;" value="&#x1fa;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+	  
+	  <p>This field contains the decomposed (yet canonically equivalent) Latin character sequence U+0040 U+030A U+0301</p>
+	  <p><input id="tryLatinDecomp" type="text" name="tryLatinDecomp" lang="en" style="font-size:24pt;" value="A&#x30a;&#x301;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+  </div>  
+  
   <section>
-  <h3>Exceptions</h3>
+  <h3 id="exceptions"><a href="#exceptions">Exceptions</a></h3>
   
   <p>There are also exceptions to these general rules.</p>
   
-  <p>For example, depending on your platform, emoji sequences sometimes behave as if they were atomic characters. For example, a "family" emoji such as 👨‍👩‍👧‍👧, when it is composed as an emoji sequence (here it is U+1F468 U+200D U+1F469 U+200D U+1F467 U+200D U+1F467), might be treated for selection as well as both forwards and backwards deletion as a single unit of text, while on other platforms the individual characters might be accessible to both the cursor and deletion.</p>
+  <p>For example, depending on your platform, emoji sequences sometimes behave as if they were atomic characters. For example, a "family" emoji such as 👨‍👩‍👧‍👧, when it is composed as an emoji sequence (here it is U+1F468 U+200D U+1F469 U+200D U+1F467 U+200D U+1F467), might be treated as a single unit of text for selection as well as both forwards and backwards deletion, while on other platforms the individual characters might be accessible to both the cursor and deletion.</p>
   
-  <p>Another counter case appears in some Indic script langauges where some conjuncts are formed with multiple base characters. An example from the Devanagari script is the syllable <em>kshi</em> (&#x0915;&#x094d;&#x0937;&#x093f;) which is formed using the sequence U+0915 U+094D U+0937 U+093F. The characters U+0915 and U+0937 are both base characters and technically this forms two grapheme clusters. However, in many fonts (and to many users) this character sequence forms a single "shape" perceived to be a single unit of text. In spite of this perception, though, the user can both cursor into the conjunct and forward delete only a part of the sequence.</p>
+  <p>Another counter case appears in some Indic script languages where some conjuncts are formed with multiple base characters. An example from the Devanagari script is the syllable <em>kshi</em> (&#x0915;&#x094d;&#x0937;&#x093f;) which is formed using the sequence U+0915 U+094D U+0937 U+093F. The characters U+0915 and U+0937 are both base characters and technically this forms two grapheme clusters. However, in many fonts (and to many users) this character sequence forms a single "shape" perceived to be a single unit of text. In spite of this perception, though, on some browsers the user can both cursor into the conjunct and forward delete only a part of the sequence.</p>
+  
+  <div class="try">
+	  <h4>Try it in your browser</h4>
+	  <p>This field contains one possible composed 'family' emoji, using the character sequence U+1F468 U+200D U+1F469 U+200D U+1F467 U+200D U+1F467</p>
+	  <p><input id="tryEmoji" type="text" name="tryEmoji" lang="en" style="font-size:24pt;" value="👨‍👩‍👧‍👧"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+	  
+	  <p>This field contains the Devanagari conjunct <em>kshi</em></p> 
+	  <p><input id="tryConjunct" type="text" name="tryConjunct" lang="hi" style="font-size:24pt;" value="&#x0915;&#x094d;&#x0937;&#x093f;"></input>
+	  <button type="button" onclick="reset()" class="reset">Reset</button></p>
+  </div>  
   
 </section>
+
+<section>
+	<h3 id="vertical">Vertical text</h3>
+	
+      <p>Vertical text works in a similar way to horizontal text with regard to text selection, cursoring, deletion, and backspacing. As you might suspect, cursor keys on a keyboard in general move the cursor in the direction of the arrow on the key. This usually means that, in vertical text, "up" is generally preceding the current cursor position logically, while "down" is generally following, while "left" and "right" navigate between lines of text.</p>
+  
+      <!-- Chinese text is from the zh-Hans "What is Unicode?" page -->
+	  <h4>Try it in your browser</h4>
+	        
+      <p class="note"><strong>Note: </strong>Not all browsers support vertical text modes yet, so this text might not be presented vertically in your browser.</p>
+      
+	  <p><textarea cols=16 rows=5 style="writing-mode: vertical-rl; text-orientation: upright;" id="tryVertical" name="tryVertical" lang="zh-Hans" class="try" value="在创造Unicode之前，有数百种指定这些数字的编码系统。">在创造Unicode之前，有数百种指定这些数字的编码系统。</textarea>
+	  <button type="button" onclick="reset('tryVertical', '在创造Unicode之前，有数百种指定这些数字的编码系统。')" class="reset">Reset</button></p>
+</section>
+
 </section>
 <section>
   <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
@@ -261,25 +378,9 @@ relationship between what the user thinks of as a character and the key or key s
   </ul>
 </section>
 
-<section>
-	<div style="width:80%; background: #dfdfdf; border: 1px solid black">
-<h4>Examples</h4>
-<form action="qa-backwards-deletion.en.html" method="get">
-<p>Hindi: <input class=large type="text" name="input-hi" style="width:50%" value="यूनिकोड क्या है?" lang=hi></p>
-<p>Kannada: <input class=large type="text" name="input-kn" style="width:50%" value="ಯುನಿಕೋಡ್ ಎಂದರೇನು?" lang=kn></p>
-<p>Thai: <input class=large type="text" name="input-th" style="width:50%" value="Unicode คืออะไร" lang=th></p>
-<p>Combining: <input class=large type="text" name="input-aeiou" style="width:50%" value="a&#x301;e&#x302;i&#x303;o&#x304;u&#x305;" lang=en></p>
-<p>Korean: <input class=large type=text name=input-ko style="width:50%" value="&#x1100;&#x1161;&#x11a8; &#xac01;" lang=ko></p>
-<p>Tailored Hindi ex1: <input class=large type=text name=tailored-hi style="width:50%" value ="&#x0915;&#x094d;&#x0937;&#x093f;"></p>
 
 
-<input type=submit>
-
-
-</form>
-</section>
-
-<footer id="thefooter"></footer><script type="text/javascript">document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script type="text/javascript">completePage()</script>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
 </body>
 </html>
