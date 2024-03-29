@@ -125,3 +125,12 @@ The above short description leaves out checking if each language tag is in the
 list of supported locales
 and leaves out mapping of values, either of which might affect the outcome.
 
+## When the user logs in...
+
+When a user authenticates, there are two things that need to be done: 
+- check the user's profile; if the current negotiated language is different
+  from the that in the user's profile:
+  - optionally query the user if they want to change their language
+  - update the session with the value in their profile
+   (this helps ensure, for example, that offline communications, such as emails, 
+   are in the user's preferred language)
