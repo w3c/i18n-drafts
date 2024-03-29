@@ -75,4 +75,53 @@ To ensure a consistent experience, sites need these concepts:
   list of locales on the site, there needs to be some language chosen.
   This default is the "ultimate fallback" for the site.
 
+Sites also sometimes need to manage more detailed preferences.
+
+> For example, suppose a site supports two variations of Spanish: 
+> `en-ES` (Spanish for Spain) and `es-419` (Spanish for Latin America).
+> 
+> Users might provide signals that match an unsupported variety of Spanish.
+> Suppose a user requests a generic form of Spanish using the tag `es`.
+> The site might need to indicate which flavor of Spanish (`es-ES` or `es-419`)
+> is the default Spanish.
+> 
+> Suppose a different user requests `es-CR` (Spanish for Costa Rica).
+> Then the site might need to maintain a mapping for different sorts of Spanish.
+> Such a configuration might be a map of values or it might use an algorithm.
+> For example, the site might use the UN M.49 regional containment data
+> provided as [part of CLDR](https://www.unicode.org/cldr/charts/44/supplemental/territory_containment_un_m_49.html)
+> to discover that `CR` (Costa Rica) is part of `013` (Central America)
+> which is part of `419` (Latin America), making `es-419` the best match
+> for a request for `es-CR`.
+
+Another example might be geographic defaults. 
+For example, a site might make `es-419` the default for users whose
+geoIP location indicates Latin America but use the site default for users
+outside that region.
+
+## Locale Negotiation
+
+Hierarchical negotiation is one mechanism for performing language negotiation.
+One way to implement this is to work from the last specific signal to the
+most specific one and then return the result.
+
+> For example:
+>
+> 1. Let the return value be the site default.
+> 2. If the user's geographic region has a default let return value be that language.
+> 3. If the user has an Accept-Language header
+>    i. For each language in the A-L header
+>       a. if the language matches an available language, let return value be that language
+> 4. If the user has a cookie with a language preference, let return value be that language
+> 5. If the URL contains a language, let return value be that language
+> 6. If the user is recognized, let return value be the language in the user's profile
+>
+> Return the return value.
+
+Notice how the above algorithm might be tailored to weight one item higher
+(or lower) in the hierarchy.
+
+The above short description leaves out checking if each language tag is in the 
+list of supported locales
+and leaves out mapping of values, either of which might affect the outcome.
 
