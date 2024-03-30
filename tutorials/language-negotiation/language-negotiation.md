@@ -36,6 +36,13 @@ have three types of user profile:
   of personalization done for them, but should not be given access to
   account secrets (such as the password, payment information, and the like).
 
+There is a special case of recognized users for sites that don't maintain
+a server-side profile or account: user state, including language preference,
+can be stored in the cookies or browser local storage. 
+The effect is the same as having a recognized authenticated user, except
+that, of course, that the site can't generate offline interactions
+using the preferences.
+
 ## Language/Locale Negotiation
 
 The point of language negotiation is that, for a given request, a single,
@@ -69,30 +76,43 @@ To ensure a consistent experience, sites need these concepts:
 - **Available Locales** The list of locales that the site will support.
   Only locales appearing in this list can be selected by the language
   negotiation process.
-  - Note that sites may have some locales that are "staged" as pre-production
-    or which are only available to specific sets of users.
+  
+> [!NOTE]
+> Note that sites may have some locales that are available only to a 
+> specific set of users.
+> For example, a site might "stage" a new locale or language and need
+> testers to have access to the language prior to making the language
+> available to other users.
+> Or a site might make a language available only to users from certain
+> geographies.
+> (As of 2024, an example of this is the [US Amazon website](https://www.amazon.com), 
+> which makes
+> more languages available to users with a non-USA shipping address
+> than to domestic users.)
+
 - **Default Locale**. If none of the user's signals match the available
   list of locales on the site, there needs to be some language chosen.
   This default is the "ultimate fallback" for the site.
 
 Sites also sometimes need to manage more detailed preferences.
 
-> For example, suppose a site supports two variations of Spanish: 
-> `en-ES` (Spanish for Spain) and `es-419` (Spanish for Latin America).
-> 
-> Users might provide signals that match an unsupported variety of Spanish.
-> Suppose a user requests a generic form of Spanish using the tag `es`.
-> The site might need to indicate which flavor of Spanish (`es-ES` or `es-419`)
-> is the default Spanish.
-> 
-> Suppose a different user requests `es-CR` (Spanish for Costa Rica).
-> Then the site might need to maintain a mapping for different sorts of Spanish.
-> Such a configuration might be a map of values or it might use an algorithm.
-> For example, the site might use the UN M.49 regional containment data
-> provided as [part of CLDR](https://www.unicode.org/cldr/charts/44/supplemental/territory_containment_un_m_49.html)
-> to discover that `CR` (Costa Rica) is part of `013` (Central America)
-> which is part of `419` (Latin America), making `es-419` the best match
-> for a request for `es-CR`.
+For example, suppose a site supports two variations of Spanish: 
+`en-ES` (Spanish for Spain) and `es-419` (Spanish for Latin America).
+ 
+Users might provide signals that match an unsupported variety of Spanish.
+Suppose a user requests a generic form of Spanish using the tag `es`.
+The site might need to indicate which flavor of Spanish (`es-ES` or `es-419`)
+is the default Spanish.
+ 
+Suppose a different user requests `es-CR` (Spanish for Costa Rica).
+Then the site might need to maintain a mapping for different sorts of Spanish.
+Such a configuration might be a map of values or it might use an algorithm.
+For example, the site might use the UN M.49 regional containment data
+provided as 
+[part of CLDR](https://www.unicode.org/cldr/charts/44/supplemental/territory_containment_un_m_49.html)
+to discover that `CR` (Costa Rica) is part of `013` (Central America)
+which is part of `419` (Latin America), making `es-419` the best match
+for a request for `es-CR`.
 
 Another example might be geographic defaults. 
 For example, a site might make `es-419` the default for users whose
@@ -155,3 +175,59 @@ shown is in the same language as (for example) a display ad or email being
 linked from.
 This can help users of non-default languages who are unrecognized users
 get the right experience.
+
+### Why locale and not just language negotiation?
+
+The user's locale influences display and processing with more detail than
+just a language. 
+The ability to format numbers, dates, and messages or the ability to sort
+lists depends on the user's locale.
+
+This also explains why many sites provide a mapping from a more general
+form of a language to a specific locale (such as the `es-CR` vs. `es-419`
+example given earlier).
+It must always be possible to create a _consistent_ user experience.
+
+### What's not included in the locale?
+
+There are a number of values that might be inferred from a locale identifier
+but which should be separately maintained.
+These include the user's preferred currency (or the currency of a given transaction),
+the user's time zone,
+and the user's country.
+
+While locales often contain a country code,
+this code does not mean that the user is located in that country
+or has a residence in that country.
+
+A country sometimes implies a currency, but care must be taken not to
+apply a currency to a numeric value blindly.
+
+Most countries have a single time zone, but the user may not be in that
+country.
+
+There can also be local, user, or operating system preferences
+that are _related_ to locale.
+An example of this is the ability to choose between 12- and 24-hour 
+time display.
+The locale always provides the default for this value.
+But user overrides of the value sometimes need to be propagated separately.
+
+### What if the user doesn't like the results?
+
+When a site is ofference in multiple languages or offers multiple locales
+for a given language (or both), 
+the result of language negotiation might not be what the user would have
+chosen.
+When this happens, the user should be provided a convenient control in 
+a predictable, visible location to choose the locale for herself.
+
+The result of choosing a locale should be sticky.
+Any offline hints (such as cookies) as well as any server-side
+user profile should be updated.
+In addition, if the site uses URL elements, the page should redirect with
+the language preference added/substituted in the URL.
+
+Sites that "don't remember" a user's choice can be frustrating to use,
+as the user might need to navigate a foreign language experience to reach one
+that they understand.
