@@ -215,7 +215,7 @@ But user overrides of the value sometimes need to be propagated separately.
 
 ### What if the user doesn't like the results?
 
-When a site is ofference in multiple languages or offers multiple locales
+When a site offers multiple languages or offers multiple locales
 for a given language (or both), 
 the result of language negotiation might not be what the user would have
 chosen.
