@@ -102,7 +102,7 @@ outside that region.
 ## Locale Negotiation
 
 Hierarchical negotiation is one mechanism for performing language negotiation.
-One way to implement this is to work from the last specific signal to the
+One way to implement this is to work from the least specific signal to the
 most specific one and then return the result.
 
 > For example:
@@ -125,12 +125,33 @@ The above short description leaves out checking if each language tag is in the
 list of supported locales
 and leaves out mapping of values, either of which might affect the outcome.
 
-## When the user logs in...
+### What happens when the user logs in?
 
-When a user authenticates, there are two things that need to be done: 
-- check the user's profile; if the current negotiated language is different
-  from the that in the user's profile:
+When a user authenticates (logs in), the user's preferences need to be checked.
+If the user's profile contains a language preference different from the one 
+currently negotiated with the user-agent, it may need to be updated:
   - optionally query the user if they want to change their language
+    (did the currently negotiated language meet their need?)
   - update the session with the value in their profile
-   (this helps ensure, for example, that offline communications, such as emails, 
-   are in the user's preferred language)
+    (either the value currently negotiated or what they had previously)
+    
+Updating the user's profile helps ensure, for example, that offline communications, 
+such as push notifications, emails, or SMS messages, are in the user's preferred language)
+
+### Why provide locale overrides via the URL?
+
+There are a number of reasons why the URL might need to encode the language/locale
+to use.
+
+One important use is to allow testing of the site in a given language.
+This is useful in reproducing issues that only appear in specific locales
+without having to change the customer support account's preference.
+It is also useful when the locale is not yet available to end users
+but it being prepared for production.
+
+Another is that URLs can be shared or used for marketing materials.
+By encoding the language into the URL, you can guarantee that the site
+shown is in the same language as (for example) a display ad or email being
+linked from.
+This can help users of non-default languages who are unrecognized users
+get the right experience.
