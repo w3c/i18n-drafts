@@ -26,29 +26,29 @@ have three types of user profile:
 - **Unrecognized User** - the user does not have a profile or the site
   does not maintain one on the user's behalf. There are no cookies or other
   cross-session indicators of the user's preference.
-- **Recognized and Authenticated User** - the user has a profile on this site
-  and has authenticated themselves (by logging in or through some other 
-  mechanism)
 - **Recognized but Not Authenticated User** - the user has a profile on
   this site and there is some cross-session or other indication to
   associate the request with a specific user profile. However, the user
   has not authenticated themselves. Users in this state can have a measure
   of personalization done for them, but should not be given access to
   account secrets (such as the password, payment information, and the like).
+- **Recognized and Authenticated User** - the user has a profile on this site
+  and has authenticated themselves (by logging in or through some other 
+  mechanism)
 
-There is a special case of recognized users for sites that don't maintain
+An important special case is that of recognized users for sites that don't maintain
 a server-side profile or account: user state, including language preference,
 can be stored in the cookies or browser local storage. 
-The effect is the same as having a recognized authenticated user, except
-that, of course, that the site can't generate offline interactions
-using the preferences.
+The effect might be similar to having a "recognized authenticated user", 
+except that, of course, that the site can't generate offline interactions
+and might "forget" the user's preferences between sessions or browsers.
 
 ## Language/Locale Negotiation
 
-An important reason to do language negotiation is to provide the user
+The reason sites perform language negotiation is to provide the user
 with an experience that they understand.
-The experience needs to be consistent.
-Since many sites are assembled from multiple services or processes,
+Such an experience should be consistent throughout.
+Since many sites are assembled by multiple services or processes,
 all parts of the site experience need to get the same, consistent "answer"
 for a given request.
 The locale identifier also needs to allow systems to produce a fully localized
