@@ -17,7 +17,7 @@ information between sessions, has no offline experience, and does not maintain
 a user profile.
 Such a site might even negotiate the locale with every request.
 
-The most complex use case is a site or service that maintains a user profile
+Towards the other end of the spectrum is a site or service that maintains a user profile
 (account), has an offline experience (such as sending emails to the user),
 and attempts to maintain the user's locale preference between sessions.
 
@@ -32,7 +32,7 @@ have three types of user profile:
 - **Recognized but Not Authenticated User** - the user has a profile on
   this site and there is some cross-session or other indication to
   associate the request with a specific user profile. However, the user
-  has not authenticated themselves. User's in this state can have a measure
+  has not authenticated themselves. Users in this state can have a measure
   of personalization done for them, but should not be given access to
   account secrets (such as the password, payment information, and the like).
 
@@ -45,9 +45,17 @@ using the preferences.
 
 ## Language/Locale Negotiation
 
-The point of language negotiation is that, for a given request, a single,
-authoritative language/locale identifier be produced.
-This identifier is then used to select resources (static pages, resource files,
+An important reason to do language negotiation is to provide the user
+with an experience that they understand.
+The experience needs to be consistent.
+Since many sites are assembled from multiple services or processes,
+all parts of the site experience need to get the same, consistent "answer"
+for a given request.
+The locale identifier also needs to allow systems to produce a fully localized
+experience, such as by formatting numbers or sorting lists.
+These variations require "fully qualified" locales to produce the best results,
+that is, locales that include the region, not just the language and script code.
+The user's locale identifier is then used to select resources (static pages, resource files,
 etc.) and to set the locale for internationalization (I18N) APIs such as
 `Intl.DateFormat` or `Intl.Collator` in JavaScript.
 
@@ -66,6 +74,7 @@ These signals can include:
    - a path element (`example.com/en/index.html` vs. `example.com/fr/index.html`)
    - a part of the filename (`index.en.html` vs. `index.fr.html`)
    - a query parameter (`example.com?lang=en` vs. `example.com?lang=fr`)
+- application specific information
 
 ## Site Configuration
 
