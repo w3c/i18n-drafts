@@ -139,8 +139,9 @@ most specific one and then return the result.
 > 1. Let the return value be the site default.
 > 2. If the user's geographic region has a default let return value be that language.
 > 3. If the user has an Accept-Language header
->    i. For each language in the A-L header
->       a. if the language matches an available language, let return value be that language
+>    i. For each language-range in the A-L header
+>       a. if the language-range exactly matches an available language, let return value be that language
+>       b. if the language-range has a mapping to an available language, let return value be that language
 > 4. If the user has a cookie with a language preference, let return value be that language
 > 5. If the URL contains a language, let return value be that language
 > 6. If the user is recognized, let return value be the language in the user's profile
@@ -154,7 +155,7 @@ The above short description leaves out checking if each language tag is in the
 list of supported locales
 and leaves out mapping of values, either of which might affect the outcome.
 
-### What happens when the user logs in?
+### What happens to the negotiated locale when the user logs in?
 
 When a user authenticates (logs in), the user's preferences need to be checked.
 If the user's profile contains a language preference different from the one 
@@ -166,6 +167,32 @@ currently negotiated with the user-agent, it may need to be updated:
     
 Updating the user's profile helps ensure, for example, that offline communications, 
 such as push notifications, emails, or SMS messages, are in the user's preferred language)
+
+### The example algorithm says "if the language matches an available language". How does language tag matching work?
+
+In general, two language tags match if they contain the same sequence of subtags.
+Language tags are always case insensitive, so `en` and `EN` should be considered to match.
+
+When negotiating language using a Language Priority List
+(the HTTP `Accept-Language` header is a Language Priority List),
+the BCP47 Basic Filtering scheme can be used to select the best match
+from the list of available languages.
+
+Basic Filtering specifies that the user's requested langauge is an exact prefix
+of an available language.
+For example, `en` is a prefix of both `en-GB` and `en-US` but not `enx` (the Enxet language).
+Similarly, `de-DE` is a prefix of `de-DE-1996` but not of `de-Deva` or `de-Latn-DE`.
+
+When loading resources, the BCP47 Lookup algorithm is more common.
+Lookup works by removing subtags from the requested language tag until the
+exact language tag is found (or a default is substituted).
+
+Note that Basic Filtering works best when the _least_ specific tag is requested,
+while Lookup works best with the _most_ specific tag is requested.
+
+
+[BCP47](https://www.rfc-editor.org/bcp/bcp47.html) (and specifically RFC4647)
+
 
 ### Why provide locale overrides via the URL?
 
