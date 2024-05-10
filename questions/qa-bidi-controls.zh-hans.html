@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>双向文本：Unicode控制字符还是标记语言？</title>
+<meta name="description" content="要正确显示HTML或者XML里的双向文本，应该使用Unicode控制字符还是标记语言？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-bidi-controls' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-06-13' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2016-03-10', time:'18:39'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-12-14', time:'18:39'} // date and time of latest edits to this document/translation
+f.contributors = 'Mati Allouche' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-bidi-controls-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+
+<style media="all">
+.visualascii {
+	font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>双向文本：Unicode控制字符还是标记语言？</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+  
+<section id="question">
+<h2>问题</h2>
+    <p class="question">要正确显示HTML或者XML里的双向文本，应该使用Unicode控制字符还是标记语言？</p>
+    <p>为了正确显示字符和对象，Unicode双向文本算法需要一些明确的帮助（参见<cite><a href="/International/questions/qa-html-dir">HTML中由右至左书写的文本的结构标记</a></cite>以及<cite><a href="/International/articles/inline-bidi-markup/">HTML中的行内标记和双向文本</a></cite>）。我们可以使用标记语言来明确地控制这一行为，在某些情况下也可以使用Unicode中的特殊格式控制字符。本文将探讨，如果可以选择的话，在HTML和XML中应该使用标记语言还是控制字符。</p>
+    <p>有关Unicode控制字符如何工作，包括标记语言和控制字符之间的对应表，请参阅<cite><a href="/International/questions/qa-bidi-unicode-controls#basedirection">如何在双向文本中使用Unicode控制字符</a></cite>。</p>
+</section>
+
+
+
+<section id="nutshell">
+   <h2 id="quickanswer">快速回答</h2>
+    <p>在处理结构或段落级标记时，Unicode控制字符对双向文本无效。</p>
+    <p>对于行内的内容，我们建议尽可能使用HTML和XML标记，而不是Unicode控制字符。</p>
+    <p>即使在HTML和XML页面中，也有一些地方无法使用标记，因此只能使用控制字符（不过，语言设计者应尽可能消除这种情况）。</p>
+</section>
+
+
+<section id="details">
+<h2>说明</h2>
+
+<section id="structural">
+<h3>不适合结构性标记</h3>
+  <p>我们需要用标记语言来为整个文档（比如在<code class="kw" translate="no">html</code>标签中）和块级元素确定默认书写方向。由于控制字符不能跨越段落（可理解为<span class="qterm">块元素</span>）边界，而且控制字符不能通过标记的层次结构管理继承和适用范围，它们只适合行内使用。</p>
+  <p>理论上，在只包含内联文本的块标记（如HTML中的<code class="kw" translate="no">p</code>标签）的开始和结尾使用控制字符是可行的，但这样做比使用标记语言要费事得多，这不仅是因为你需要在每个这类元素中添加控制字符（而不是继承），还因为你必须采取额外的步骤来添加右对齐。</p>
+  <p>控制字符不能用于反转表格列的书写方向或者设置表单字段的默认输入方向。</p>
+</section>
+<section id="reasons">
+<h3>行内使用时应考虑的事项</h3>
+  <p>只有在Unicode双向文本算法需要帮助时，我们才需要明确的行内控制。Unicode控制字符可以完成这项任务，但我们建议使用标记语言而不是成对的控制字符。</p>
+  <div class="sidenoteGroup">
+  <p>主要问题在于控制字符是不可见的，除非使用转义形式。这种不可见性使得创建重叠或未终止的范围变得很容易。</p>
+  <aside class="sideinfonote"><p class="warning">使用转义也有问题，因为组成转义的字符可能会被编辑器混淆。更多信息可参阅<a href="https://www.w3.org/International/questions/qa-bidi-source.en.html"><cite>源代码和代码示例中由右至左书写的文字</cite></a>。</p></aside>
+  </div>
+  <p>如果使用标记检查器检查文档，而且使用的是标记语言，你更有可能发现重叠范围等问题。此外，虽然HTML5规范费了一番功夫来确保段落级的标记能正确处理未结束的范围，但其他标记语言可能并不支持。</p>
+  <p>如果你在未将控制字符转换为标记语言的情况下将外部内容放在页面里，这个问题就会变得更加严重。此外，你还应该记住，当你使用CSS将行内元素更改为块级元素时，你可能还需要重新排列用于管理书写方向的控制字符。</p>
+  <p>隐形字符也增加了调试代码的难度，除非你有一个能显示隐形字符的编辑器，即便如此，你通常也需要仔细观察才能确定使用了哪些字符。</p>
+  <p>除了这些潜在的困难之外，对于内容开发者来说，使用标记语言往往更加容易。通常情况下，在需要应用方向的内联文本范围周围已经有了标记，例如<code class="kw" translate="no">cite</code>元素或用于提供语言信息或样式的<code class="kw" translate="no">span</code>。而且，在整个文档中始终如一地使用标记更简单，而不是在文档的某些高层次部分使用标记语言，然后在低层次部分改用控制字符。</p>
+  <p>Unicode联盟和W3C建议对改变基方向的嵌入式文本范围进行隔离。也就是说，应该使用RLI、LRI和PDI控制字符，而不是RLE、LRE和PDF。</p>
+</section>
+<section id="problems">
+<h3>纯文本中需要Unicode控制字符</h3>
+
+    <p>除了基于纯文本而非标记语言的格式外，HTML和XML文件中还有一些地方无法使用标记，因此只能使用Unicode格式化字符。</p>
+    <p>我们无法对属性值应用书写方向标记，所以属性中的文本需要使用Unicode字符来控制书写方向。（尽管如此，<a class="print" href="http://www.w3.org/TR/xml-i18n-bp/#DevAttributes">W3C建议</a>标记语言的设计者避免在属性值中使用自然语言文本。不过，有些传统标记语言（如HTML中的<code class="kw" translate="no">alt</code>属性）可能无法避免对自然语言的使用。）</p>
+    <p>在其他情况下，控制字符可能是唯一的选择，比如只允许字符内容的元素或者不支持书写方向属性的元素。HTML中的<code class="kw" translate="no">title</code>元素就是一个例子。（同样，在创建新的XML格式时也应避免这种情况。它们不仅限制了对书写方向的控制，还限制了对语言和其他元信息的应用。）</p>
+    <p>有关在这些情况下如何使用Unicode控制字符，请参阅<cite><a href="/International/questions/qa-bidi-unicode-controls">如何在双向文本中使用Unicode控制字符</a></cite>。</p>
+  </section>
+  
+<section id="exceptions">
+<h3>RLM和LRM字符</h3>
+    <p>Unicode提供的另外两个不可见且不成对的书写方向控制字符通常没有相应的标记语言结构。这些字符的问题较少，因为它们是单独使用的，而不像我们讨论过的其他控制字符那样成对使用来限定文本范围。</p>
+  <ul>
+      <li>U+200E:   LEFT-TO-RIGHT MARK  (&amp;lrm;)</li>
+      <li>U+200F:   RIGHT-TO-LEFT MARK (&amp;rlm;)</li>
+    </ul>
+    <p>如果使用隔离标记紧紧包裹着反方向短语，需要使用这两个字符的地方就很少了。更多信息请参阅<a href="/International/articles/inline-bidi-markup/"><cite>HTML中的行内标记和双向文本</cite></a>。</p>
+</section>
+</section>
+
+
+
+
+<section id="endlinks">
+<h2>扩展阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+<ul id="full-links">
+  <li>
+    <p>教程：<cite><a href="/International/tutorials/bidi-xhtml/">使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面</a></cite></p>
+  </li>
+  <li>
+    <p><a href="/International/articles/inline-bidi-markup/"><cite>HTML中的行内标记和双向文本</cite></a></p>
+  </li>
+  <li>
+    <p>相关链接：<cite>编写网页</cite></p>
+    <ul>
+      <li><a href="/International/techniques/authoring-html?collapse&amp;open=direction">书写方向</a></li>
+      <li><a href="/International/techniques/authoring-html#inline">混合行内文本方向</a></li>
+    </ul>
+  </li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
