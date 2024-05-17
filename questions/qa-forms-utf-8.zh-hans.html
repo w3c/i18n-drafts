@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <title>多语言表单的编码</title>
-<meta name="description" content="处理使用多语言多脚本的表单编码问题的最佳解决方法。" />
+<meta name="description" content="处理使用多语言、多文字的表单编码问题的最佳解决方法。" />
 <script>
 var f = { }
 
@@ -20,7 +20,7 @@ f.status = 'published';  // should be one of draft, review, published, notreview
 f.path = '../' //what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2020-09-24', time:'09:14'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2023-09-21', time:'09:14'} // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -55,20 +55,20 @@ f.additionalLinks = ''
 
 <section id="question">
 <h2>问题</h2>
-    <p class="question">编码过程中难免出现多语言及多脚本的情况，哪种方式能最好的解决此类问题？</p>
+    <p class="question">表单中如果有多种语言和文字，如何处理可能的编码问题？</p>
 </section>
 
 
 <section id="answer">
 <h2>答案</h2>
-  <p>处理可扩展标识语言（XHTML）及超文本链接标示语言（HTML）格式中的编码问题的最好方式，是将您所有的页面都以 UTF-8 编码储存。UTF-8编码可显示最广泛的语言属性。浏览器会返回与表单网页中包含的编码格式相同的格式数据，因此使用者可以以其熟悉的任何语言和脚本填写表单数据。</p>
-  <p>确保成功执行过程的必要步骤。首先，需要告知浏览器表单页面使用UTF-8编码。有多种不同的方法可 <a class="print" href="/International/questions/qa-html-encoding-declarations">告知浏览器您当前页面的编码</a>。不管在哪种情况下，告知浏览器表单页面的编码都极为重要，特别是在表单页面只含有 US-ASCII编码字符的情况下，因为使用者可以输入非 US-ASCII 编码的字符。</p>
+  <p>处理HTML表单中的编码问题的最好方式，是以UTF-8编码提供所有页面。UTF-8编码可显示最广泛的语言属性。浏览器会返回与表单网页中包含的编码格式相同的格式数据，因此使用者可以以其熟悉的任何语言和脚本填写表单数据。</p>
+  <p>以下是确保成功执行过程的必要步骤。首先，需要告知浏览器表单页面使用UTF-8编码。有多种不同的方法可以<a class="print" href="/International/questions/qa-html-encoding-declarations">告知浏览器您当前页面的编码</a>。不管在哪种情况下，告知浏览器表单页面的编码都极为重要，特别是在表单页面只含有US-ASCII编码字符的情况下，因为使用者可以输入非US-ASCII编码的字符。</p>
   <p>其次，脚本在接收格式数据时，将会核对返回数据是否确实使用了UTF-8编码，以应付有可能出现的错误，例如使用者于填写表单时改变了编码。UTF-8编码拥有其他编码所没有的非常具体的字节模式，这使检验成为可能。如果接收到非UTF-8编码的数据，浏览器将返回错误信息给使用者。</p>
-  <p>例如，当使用Perl时，可用以下的表达式测试页面是否使用了UTF-8编码：</p>
-  <div class="example">
+  <p>例如，在使用Perl时，可用以下的正则表达式来测试页面是否使用了UTF-8编码：</p>
+  <figure class="example">
     <pre>$field =~
   /\A(
-     [\x00-\x7F]            # ASCII
+     [\x00-\x7F]      				      # ASCII
    | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
    |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
    | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
@@ -77,13 +77,11 @@ f.additionalLinks = ''
    | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
    |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
   )*\z/x;
-
 </pre>
-  </div>
-  <p>以上表达式可转换成其他编程语言。这样就能处理各类问题，例如过长的错误编码以及非法的代理使用。<code>$field</code> 属于UTF-8编码时就会顺利返回，否则失败。</p>
-<p>The above regular expression can be tailored by adding application-related restrictions. As an example, many control characters can be excluded by replacing <code>[\x00-\x7F]</code> with <code>[\x09\x0A\x0D\x20-\x7E]</code>.&nbsp;</p>
+  </figure>
+  <p>以上表达式可转换成其他编程语言。这样就能处理各类问题，例如过长的错误编码以及非法的代理（surrogate）使用。<code>$field</code> 属于UTF-8编码时就会顺利返回，否则失败。</p>
+<p>我们可以通过添加应用程序相关的限制来定制这个正则表达式。例如，我们可以把<code>[\x00-\x7F]</code>替换成<code>[\x09\x0A\x0D\x20-\x7E]</code>来排除很多控制字符。</p>
 </section>
-
 
 <section id="endlinks">
 <h2>深入阅读</h2>
@@ -91,11 +89,11 @@ f.additionalLinks = ''
 
   <ul id="full-links">
     <li>
-      <p><cite>Authoring HTML &amp; CSS</cite></p>
+      <p>相关链接：制作网页</p>
       <ul>
-        <li><a href="/International/techniques/authoring-html#charset">Characters</a></li>
-        <li><a href="/International/techniques/authoring-html#choosing">Choosing and applying a character encoding</a></li>
-        <li><a href="/International/techniques/authoring-html#indoc">Declaring the character encoding for HTML</a></li>
+        <li><a href="/International/techniques/authoring-html#charset">字符</a></li>
+        <li><a href="/International/techniques/authoring-html#choosing">选择和应用字符编码</a></li>
+        <li><a href="/International/techniques/authoring-html#indoc">声明HTML的字符编码</a></li>
       </ul>
     </li>
   </ul>
