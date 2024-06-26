@@ -14,13 +14,13 @@ f.authors = 'Addison Phillips, Invited Expert'; // author(s) and affiliations
 f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'qa-direction-native'; // blog search string - usually the filename without extensions
-f.firstPubDate = '2024-04-18'; // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2024-04-18', time:'12:34'}  // date and time of latest substantive changes to this document
+f.firstPubDate = '2024-06-26'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2024-06-26', time:'07:07'}  // date and time of latest substantive changes to this document
 f.status = 'draft';  // should be one of draft, review, published, or notreviewed
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2024-04-18', time:'16:56'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2024-06-26', time:'07:07'} // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -62,12 +62,16 @@ If you are unfamiliar with bidirectional and right-to-left text, there is a basi
 <section id="APIs">
 <h2><a href="#apis">APIs</a></h2>
 
-<p>This section links to various APIs and articles about working with bidirectional text in native APIs and display framworks. This list is necessarily incomplete: the Internationalization Working Group welcomes contributions and corrections!</p>
+<p>This section links to various APIs and articles about working with bidirectional text in native APIs and display frameworks. This list is necessarily incomplete: the Internationalization Working Group welcomes contributions and corrections!</p>
 
 <ul>
     <li>Cocoa (Mac): <a href="https://developer.apple.com/documentation/uikit/nswritingdirection?language=objc">nswritingdirection</a></li>
 
-    <li>Java: <a href="https://docs.oracle.com/javase/8/docs/api/java/awt/ComponentOrientation.html">java.awt.ComponentOrientation</a> class</li>
+    <li>Java: <ul>
+		<li><a href="https://docs.oracle.com/javase/8/docs/api/java/awt/ComponentOrientation.html">java.awt.ComponentOrientation</a> (controls display of widgets)</li>
+		<li><a href="https://docs.oracle.com/javase/8/docs/api/java/text/Bidi.html">java.text.Bidi</a> (analyze text direction)</li>
+	</ul>
+	</li>
 
     <li>Windows: <a href="https://learn.microsoft.com/en-us/windows/apps/design/globalizing/design-for-bidi-text">Win32 Tutorial</a></li>
 
@@ -84,6 +88,35 @@ If you are unfamiliar with bidirectional and right-to-left text, there is a basi
     <li>Qt: <a href="https://doc.qt.io/qt-6/qtquick-positioning-righttoleft.html">Positioning RTL</a></li>
 </ul>
 
+</section>
+
+<section id="example">
+<h2><a href="#example">Example</a></h2>
+
+<p>For example, the Java programming language provides the ability to set the "component orientation" on user interface classes. When combined with base direction metadata, the programmer can make bidirectional strings display properly in native controls. For example:</p>
+
+<pre class="java">
+    JTextField field = new JTextField();
+    field.setComponentOrientation(rtl ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT);
+    field.setText(text);
+</pre>
+
+<p>The result of setting the <code translate="no">ComponentOrientation</code> might look like:</p>
+
+<img src="./qa-direction-native-data/java-example.png" alt="Java Example">
+
+<p>For cases where the text direction is unknown (or set to <code translate="no">auto</code>), the JDK provides a way to analyze text to obtain the component orientation:</p>
+
+<pre>
+    private ComponentOrientation getOrientationForUnknownText(String text) {
+        final int defaultDirection = (ComponentOrientation.getOrientation(Locale.getDefault())
+                isLeftToRight()) ? Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT
+                        : Bidi.DIRECTION_DEFAULT_RIGHT_TO_LEFT;
+        final Bidi b = new Bidi(text, defaultDirection);
+        return b.baseIsLeftToRight() ? ComponentOrientation.LEFT_TO_RIGHT
+               : ComponentOrientation.RIGHT_TO_LEFT;
+    }
+</pre>
 </section>
 <section> 
 <h2 id="endlinks"><a href="#endlinks">Further reading</a></h2>
