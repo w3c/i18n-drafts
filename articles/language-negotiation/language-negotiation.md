@@ -33,6 +33,29 @@ The negotiated locale is used to select resources (static pages, resource files,
 etc.) and to set the locale for internationalization (I18N) APIs such as
 `Intl.DateFormat` or `Intl.Collator` in JavaScript.
 
+> **_Example_**
+> Consider a web site operated by a non-profit `example.org`.
+> They want to offer different language experiences to meet user needs.
+> This organization decides that their site experience will serve users
+> in North America, so initially, they offer three languages:
+> `en` (English), `es` (Spanish), and `fr` (French).
+> 
+> Using `en`, `es`, or `fr` as the locale in software, however, does not
+> produce complete results.
+> For example, regional variations in formatting will affect how the software
+> presents values such as dates, times, numbers, and so forth:
+> 
+> | Locale | Locale Description | Formatted Value  |
+> |===|===|===|
+> | en-US  | US English         | Jun 27, 2024, 1:17:36 PM |
+> | en-CA  | Canadian English   | Jun 27, 2024, 1:17:36 p.m. |
+> | en-GB  | UK English         | 27 Jun 2024, 13:17:36 |
+> | fr-CA  | Canadian French    | 27 juin 2024, 13 h 17 min |
+> | fr-FR  | French (France)    | 27 juin 2024, 13:17:36 |
+> | es-419 | Latin American Spanish | 1,234.56 |
+> | es-ES  | Iberian Spanish    | 1234,56 |
+
+
 ## Inputs
 
 Language negotiation generally uses a hierarchy of "signals".
