@@ -45,15 +45,15 @@ etc.) and to set the locale for internationalization (I18N) APIs such as
 > For example, regional variations in formatting will affect how the software
 > presents values such as dates, times, numbers, and so forth:
 > 
-> | Locale | Locale Description | Formatted Value  |
-> |===|===|===|
-> | en-US  | US English         | Jun 27, 2024, 1:17:36 PM |
+> | Locale | Locale Description | Formatted Value            |
+> |--------|--------------------|----------------------------|
+> | en-US  | US English         | Jun 27, 2024, 1:17:36 PM   |
 > | en-CA  | Canadian English   | Jun 27, 2024, 1:17:36 p.m. |
-> | en-GB  | UK English         | 27 Jun 2024, 13:17:36 |
-> | fr-CA  | Canadian French    | 27 juin 2024, 13 h 17 min |
-> | fr-FR  | French (France)    | 27 juin 2024, 13:17:36 |
-> | es-419 | Latin American Spanish | 1,234.56 |
-> | es-ES  | Iberian Spanish    | 1234,56 |
+> | en-GB  | UK English         | 27 Jun 2024, 13:17:36      |
+> | fr-CA  | Canadian French    | 27 juin 2024, 13 h 17 min  |
+> | fr-FR  | French (France)    | 27 juin 2024, 13:17:36     |
+> | es-419 | Latin American Spanish | 1,234.56               |
+> | es-ES  | Iberian Spanish    | 1234,56                    |
 
 
 ## Inputs
