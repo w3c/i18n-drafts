@@ -22,7 +22,7 @@ in a given piece of software (such as a website).
 
 On the one hand, this entails selecting the best set of translated (localized) set of resources
 for the user's needs.
-For example, a site consistent of static files might just choose between different
+For example, a site consisting of static files might just choose between different
 language versions of each page, while another site might load text into a blank template
 from resource bundles (such those employed by GNU gettext or Java's `java.util.ResourceBundle`).
 
@@ -68,20 +68,20 @@ have three types of user profile:
 - **Unrecognized User** - the user does not have a profile or the site
   does not maintain one on the user's behalf. There are no cookies or other
   cross-session indicators of the user's preference.
-- **Recognized but Not Authenticated User** - the user has a profile on
+- **Recognized User** - the user has a profile on
   this site and there is some cross-session or other indication to
   associate the request with a specific user profile. However, the user
   has not authenticated themselves. Users in this state can have a measure
   of personalization done for them, but should not be given access to
   account secrets (such as the password, payment information, and the like).
-- **Recognized and Authenticated User** - the user has a profile on this site
+- **Authenticated User** - the user has a profile on this site
   and has authenticated themselves (by logging in or through some other 
   mechanism)
 
 An important special case is that of recognized users for sites that don't maintain
 a server-side profile or account: user state, including language preference,
 can be stored in the cookies or browser local storage. 
-The effect might be similar to having a "recognized authenticated user", 
+The effect might be similar to having an "authenticated user", 
 except that, of course, that the site can't generate offline interactions
 and might "forget" the user's preferences between sessions or browsers.
 
