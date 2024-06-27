@@ -1,14 +1,56 @@
 # Language and Locale Negotiation on the Web
 
 One challenge faced by websites and services on the Web is how to present
-users with the most appropriate language and [=locale=] to use when presenting
+users with the most appropriate language and [locale](https://www.w3.org/TR/i18n-glossary#locale) to use when presenting
 information to users.
 
-This tutorial outlines some of the considerations and best practices when
+This article outlines some of the considerations and best practices when
 deciding how to choose, set, and store a user's locale preference.
 It is not a complete recipe: different users will have different
 preferences and there are choices that developers need to make when
 implementing locale negotiation.
+
+## What is locale negotiation?
+
+Sites perform language negotiation in order to provide the user
+with an experience that they understand.
+
+In the most general terms, locale negotiation is the process that internationalized
+software uses to match a user's [international preferences](https://www.w3.org/TR/i18n-glossary/#dfn-international-preferences)
+to the internationalized functionality and localized resources available
+in a given piece of software (such as a website).
+
+On the one hand, this entails selecting the best set of translated (localized) set of resources
+for the user's needs.
+For example, a site consistent of static files might just choose between different
+language versions of each page, while another site might load text into a blank template
+from resource bundles (such those employed by GNU gettext or Java's `java.util.ResourceBundle`).
+
+On the other hand, locale negotiation is also needed to allow systems to call internationalized APIs, 
+used for operations such as by formatting dates and numbers or for sorting lists.
+
+The negotiated locale is used to select resources (static pages, resource files,
+etc.) and to set the locale for internationalization (I18N) APIs such as
+`Intl.DateFormat` or `Intl.Collator` in JavaScript.
+
+## Inputs
+
+Language negotiation generally uses a hierarchy of "signals".
+Depending on the type of user and the user's authentication state there
+can be different hierarchies used by the language negotiation process.
+
+These signals can include:
+- the HTTP `Accept-Language` header
+- the user's geographic location (often determined from their IP address)
+- the site's configuration
+- values stored in a cookie
+- values stored in the user's profile on the site
+- values in the URL; these might be:
+   - a subdomain (`en.example.com` vs. `fr.example.com`)
+   - a path element (`example.com/en/index.html` vs. `example.com/fr/index.html`)
+   - a part of the filename (`index.en.html` vs. `index.fr.html`)
+   - a query parameter (`example.com?lang=en` vs. `example.com?lang=fr`)
+- application specific information
 
 ## Types of User
 
@@ -42,39 +84,6 @@ can be stored in the cookies or browser local storage.
 The effect might be similar to having a "recognized authenticated user", 
 except that, of course, that the site can't generate offline interactions
 and might "forget" the user's preferences between sessions or browsers.
-
-## Language/Locale Negotiation
-
-The reason sites perform language negotiation is to provide the user
-with an experience that they understand.
-Such an experience should be consistent throughout.
-Since many sites are assembled by multiple services or processes,
-all parts of the site experience need to get the same, consistent "answer"
-for a given request.
-The locale identifier also needs to allow systems to produce a fully localized
-experience, such as by formatting numbers or sorting lists.
-These variations require "fully qualified" locales to produce the best results,
-that is, locales that include the region, not just the language and script code.
-The user's locale identifier is then used to select resources (static pages, resource files,
-etc.) and to set the locale for internationalization (I18N) APIs such as
-`Intl.DateFormat` or `Intl.Collator` in JavaScript.
-
-Language negotiation generally uses a hierarchy of "signals".
-Depending on the type of user and the user's authentication state there
-can be different hierarchies used by the language negotiation process.
-
-These signals can include:
-- the HTTP `Accept-Language` header
-- the user's geographic location (often determined from their IP address)
-- the site's configuration
-- values stored in a cookie
-- values stored in the user's profile on the site
-- values in the URL; these might be:
-   - a subdomain (`en.example.com` vs. `fr.example.com`)
-   - a path element (`example.com/en/index.html` vs. `example.com/fr/index.html`)
-   - a part of the filename (`index.en.html` vs. `index.fr.html`)
-   - a query parameter (`example.com?lang=en` vs. `example.com?lang=fr`)
-- application specific information
 
 ## Site Configuration
 
