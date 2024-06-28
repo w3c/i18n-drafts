@@ -64,34 +64,51 @@ etc.) and to set the locale for internationalization (I18N) APIs such as
 > | es-US  | Spanish (United States) | 28 jun 2024, 1:24:45 p.m. | 1,234.56 |$1,234.56 |
 
 
-## Inputs
+## Determining the User's International Preferences
 
-Language negotiation generally uses a hierarchy of "signals".
-Depending on the type of user and the user's authentication state there
-can be different hierarchies used by the language negotiation process.
+The first problem in locale negotiation is: 
+how do we know what the user's preferences are?
 
-These signals can include:
+If an application knows exactly who a user is, 
+it can often use stored data to know exactly what the preferences are.
+Otherwise, locale negotiation depends on whatever information is available
+in the session or request.
+
+Determining the user's international preferences, thus, often 
+depends on a hierarchy of "signals".
+Some signals are directly related to the user's international preferences
+(such as storing the specific locale to use!)
+while others are open to interpretation 
+(such as the user's geographic location).
+These can include:
+- values stored in the user's profile on the site
+- values stored in a cookie
+- vaules stored in the browser, sesssion, or application
 - the HTTP `Accept-Language` header
 - the user's geographic location (often determined from their IP address)
 - the site's configuration
-- values stored in a cookie
-- values stored in the user's profile on the site
 - values in the URL; these might be:
    - a subdomain (`en.example.com` vs. `fr.example.com`)
    - a path element (`example.com/en/index.html` vs. `example.com/fr/index.html`)
    - a part of the filename (`index.en.html` vs. `index.fr.html`)
    - a query parameter (`example.com?lang=en` vs. `example.com?lang=fr`)
-- application specific information
+- or application specific information
 
 ## Types of User
+
+Locale negotiation is more reliable if the user's has provided a strong signal
+(such as choosing their locale from a menu).
+Once the locale has been determined, it is usually a good idea to store the result
+for future use (including for offline interactions, such as push notifications).
 
 The simplest use case is a site or service that does not persist the user's
 information between sessions, has no offline experience, and does not maintain
 a user profile.
-Such a site might even negotiate the locale with every request.
+Such a site might need to negotiate the locale with every request.
 
-Towards the other end of the spectrum is a site or service that maintains a user profile
-(account), has an offline experience (such as sending emails to the user),
+Towards the other end of the spectrum is a site or service that 
+maintains a user profile (account), 
+has an offline experience (such as sending emails to the user),
 and attempts to maintain the user's locale preference between sessions.
 
 In general, these use cases (and ones in-between these two extremes)
@@ -168,9 +185,15 @@ For example, a site might make `es-419` the default for users whose
 geoIP location indicates Latin America but use the site default for users
 outside that region.
 
-## Locale Negotiation
+Notice that there is a tension between providing a long list of supported locales
+(to give users the ability to tailor API-based formatting presentation)
+and providing a short list of available languages.
+In our example above, where the site is available in English, French, and Spanish,
+there might only be three localizations, but twenty or more locales.
 
-Hierarchical negotiation is one mechanism for performing language negotiation.
+## Constructing the Algorithm
+
+Hierarchical negotiation is the most common mechanism for performing language negotiation.
 One way to implement this is to work from the least specific signal to the
 most specific one and then return the result.
 
@@ -198,7 +221,8 @@ and leaves out mapping of values, either of which might affect the outcome.
 
 When a user authenticates (logs in), the user's preferences need to be checked.
 If the user's profile contains a language preference different from the one 
-currently negotiated with the user-agent, it may need to be updated:
+currently negotiated with the user-agent, the stored preference may need to be updated
+or the user's preference changed:
   - optionally query the user if they want to change their language
     (did the currently negotiated language meet their need?)
   - update the session with the value in their profile
@@ -225,25 +249,13 @@ linked from.
 This can help users of non-default languages who are unrecognized users
 get the right experience.
 
-### Why locale and not just language negotiation?
-
-The user's locale influences display and processing with more detail than
-just a language. 
-The ability to format numbers, dates, and messages or the ability to sort
-lists depends on the user's locale.
-
-This also explains why many sites provide a mapping from a more general
-form of a language to a specific locale (such as the `es-CR` vs. `es-419`
-example given earlier).
-It must always be possible to create a _consistent_ user experience.
-
 ### What's not included in the locale?
 
 There are a number of values that might be inferred from a locale identifier
 but which should be separately maintained.
 These include the user's preferred currency (or the currency of a given transaction),
 the user's time zone,
-and the user's country.
+and the user's country/jurisdiction (where they actually live, for example).
 
 While locales often contain a country code,
 this code does not mean that the user is located in that country
