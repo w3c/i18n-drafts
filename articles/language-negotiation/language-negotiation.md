@@ -41,19 +41,27 @@ etc.) and to set the locale for internationalization (I18N) APIs such as
 > `en` (English), `es` (Spanish), and `fr` (French).
 > 
 > Using `en`, `es`, or `fr` as the locale in software, however, does not
-> produce complete results.
-> For example, regional variations in formatting will affect how the software
-> presents values such as dates, times, numbers, and so forth:
+> produce complete results
+> or these locales may produce unexpected results compared to more-specific
+> locales that include, for example, region subtags.
+> Such regional variations in formatting affect how the software
+> presents values such as dates, times, numbers, and so forth,
+> which, in turn, affects how users experience the localization:
 > 
-> | Locale | Locale Description | Formatted Value            |
-> |--------|--------------------|----------------------------|
-> | en-US  | US English         | Jun 27, 2024, 1:17:36 PM   |
-> | en-CA  | Canadian English   | Jun 27, 2024, 1:17:36 p.m. |
-> | en-GB  | UK English         | 27 Jun 2024, 13:17:36      |
-> | fr-CA  | Canadian French    | 27 juin 2024, 13 h 17 min  |
-> | fr-FR  | French (France)    | 27 juin 2024, 13:17:36     |
-> | es-419 | Latin American Spanish | 1,234.56               |
-> | es-ES  | Iberian Spanish    | 1234,56                    |
+> | Locale | Locale Description | Formatted Date  | Number | Currency |
+> |--------|--------------------|-----------------|--------|----------|
+> | en     | English | Jun 28, 2024, 1:24:45 PM | 1,234.56 |$1,234.56 |
+> | en-US  | English (United States) | Jun 28, 2024, 1:24:45 PM | 1,234.56 |$1,234.56 |
+> | en-CA  | English (Canada) | Jun 28, 2024, 1:24:45 p.m. | 1,234.56 |US$1,234.56 |
+> | en-GB  | English (United Kingdom) | 28 Jun 2024, 13:24:45 | 1,234.56 |US$1,234.56 |
+> | fr     | French | 28 juin 2024, 13:24:45 | 1 234,56 |1 234,56 $US |
+> | fr-CA  | French (Canada) | 28 juin 2024, 13 h 24 min 45 s | 1 234,56 |1 234,56 $ US |
+> | fr-FR  | French (France) | 28 juin 2024, 13:24:45 | 1 234,56 |1 234,56 $US |
+> | es-419 | Spanish (Latin America) | 28 jun 2024, 1:24:45 p.m. | 1,234.56 |USD 1,234.56 |
+> | es     | Spanish | 28 jun 2024, 13:24:45 | 1234,56 |1.234,56 US$ |
+> | es-MX  | Spanish (Mexico) | 28 jun 2024, 1:24:45 p.m. | 1,234.56 |USD 1,234.56 |
+> | es-ES  | Spanish (Spain) | 28 jun 2024, 13:24:45 | 1234,56 |1.234,56 US$ |
+> | es-US  | Spanish (United States) | 28 jun 2024, 1:24:45 p.m. | 1,234.56 |$1,234.56 |
 
 
 ## Inputs
