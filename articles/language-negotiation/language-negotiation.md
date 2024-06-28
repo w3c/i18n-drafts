@@ -81,18 +81,39 @@ Some signals are directly related to the user's international preferences
 while others are open to interpretation 
 (such as the user's geographic location).
 These can include:
-- values stored in the user's profile on the site
-- values stored in a cookie
-- vaules stored in the browser, sesssion, or application
-- the HTTP `Accept-Language` header
-- the user's geographic location (often determined from their IP address)
+- values directly indicated by the user, such as:
+   - locale preferences stored in the user's profile on the site
+   - locale preferences stored in a cookie
+   - locale preferences stored in the browser, sesssion, or application
+- values from the user's runtime environment, such as:
+   - the HTTP `Accept-Language` header (which often matches the user's
+     operating system runtime locale)
+   - the browser's localization or locale, such as `navigator.language`
+     or `navigator.languages`
+- values that imply the user's locale preferences, such as:
+   - the user's geographic location (often determined from their IP address,
+     often refered to as "geoIP")
 - the site's configuration
-- values in the URL; these might be:
+- values in the URL; such as:
    - a subdomain (`en.example.com` vs. `fr.example.com`)
    - a path element (`example.com/en/index.html` vs. `example.com/fr/index.html`)
    - a part of the filename (`index.en.html` vs. `index.fr.html`)
    - a query parameter (`example.com?lang=en` vs. `example.com?lang=fr`)
 - or application specific information
+
+> [!NOTE]
+> Be careful about making assumptions based on regional or locale information.
+> 
+> For example, knowing that someone's IP address might be located in a specific
+> country (via geoIP detection) does not mean that the person speaks the most
+> common languages of that country, or that they prefer local formatting
+> conventions of that country.
+> It's possible, too, that the location is being spoofed, such as via
+> a VPN.
+>
+> Similarly, a locale should not be used to imply unrelated values,
+> such as the currency of a transaction or the time zone of the user.
+
 
 ## Types of User
 
