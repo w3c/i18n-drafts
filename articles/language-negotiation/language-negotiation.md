@@ -163,10 +163,12 @@ To ensure a consistent experience, sites need these concepts:
 - **Available Locales** The list of locales that the site will support.
   Only locales appearing in this list can be selected by the language
   negotiation process.
-  
+  - **Default Locale**. If none of the user's signals match the available
+  list of locales on the site, there needs to be some language chosen.
+  This default is the "ultimate fallback" for the site.
+
 > [!NOTE]
-> Note that sites may have some locales that are available only to a 
-> specific set of users.
+> Sites sometimes have different configurations for different sets of users.
 > For example, a site might "stage" a new locale or language and need
 > testers to have access to the language prior to making the language
 > available to other users.
@@ -176,10 +178,6 @@ To ensure a consistent experience, sites need these concepts:
 > which makes
 > more languages available to users with a non-USA shipping address
 > than to domestic users.)
-
-- **Default Locale**. If none of the user's signals match the available
-  list of locales on the site, there needs to be some language chosen.
-  This default is the "ultimate fallback" for the site.
 
 Sites also sometimes need to manage more detailed preferences.
 
