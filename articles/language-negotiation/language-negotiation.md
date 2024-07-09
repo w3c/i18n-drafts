@@ -6,28 +6,38 @@ information to users.
 
 This article outlines some of the considerations and best practices when
 deciding how to choose, set, and store a user's locale preference.
-It is not a complete recipe: different users will have different
-preferences and there are choices that developers need to make when
+It is not a complete recipe: not only will different users will have different
+preferences but there are choices that developers need to make when
 implementing locale negotiation.
 
-## What is locale negotiation?
+## What are language and locale negotiation? How are they the same/different?
 
-Sites perform language negotiation in order to provide the user
-with an experience that they understand.
+**_Language negotiation_** is the process of using various inputs to select between different language
+pieces of content for a given request, session, or user experience. 
+Web sites perform language negotiation in order to provide the user with an experience that they understand.
 
-In the most general terms, locale negotiation is the process that internationalized
-software uses to match a user's [international preferences](https://www.w3.org/TR/i18n-glossary/#dfn-international-preferences)
-to the internationalized functionality and localized resources available
-in a given piece of software (such as a website).
-
-On the one hand, this entails selecting the best set of translated (localized) set of resources
+Language negotiation allows software to select the best set of translated (localized) set of resources
 for the user's needs.
 For example, a site consisting of static files might just choose between different
 language versions of each page, while another site might load text into a blank template
 from resource bundles (such those employed by GNU gettext or Java's `java.util.ResourceBundle`).
 
-On the other hand, locale negotiation is also needed to allow systems to call internationalized APIs, 
-used for operations such as by formatting dates and numbers or for sorting lists.
+Language negotiation also provides the locale, 
+which is needed by software when calling internationalized APIs
+used for operations such as by formatting dates and numbers, sorting lists,
+and many other operations.
+
+A [locale](https://www.w3.org/TR/i18n-glossary/#dfn-locale) is:
+> An identifier (such as a language tag) for a set of international preferences. 
+> Usually this identifier indicates the preferred language of the user and 
+> possibly includes other information, such as a geographic region (such as a country). 
+> A locale is passed in APIs or set in the operating environment to obtain culturally-affected behavior within a system or process.
+
+As a result, language negotiation should really be called **_locale negotiation_**,
+because it includes the process that internationalized software uses to match a 
+user's [international preferences](https://www.w3.org/TR/i18n-glossary/#dfn-international-preferences)
+to the internationalized functionality and localized resources available
+in a given piece of software (such as a website).
 
 The negotiated locale is used to select resources (static pages, resource files,
 etc.) and to set the locale for internationalization (I18N) APIs such as
@@ -70,9 +80,14 @@ The first problem in locale negotiation is:
 how do we know what the user's preferences are?
 
 If an application knows exactly who a user is, 
-it can often use stored data to know exactly what the preferences are.
+it can often use stored data to know exactly what the user prefers.
 Otherwise, locale negotiation depends on whatever information is available
-in the session or request.
+in the session or request to guess at the user's intent.
+
+Guessing at the user's intention might vary depending on many different things.
+For example, user's might expect a different default currency on a website
+intended for use in Germany than on one intended for use in Switzerland,
+even if both are localized into German.
 
 Determining the user's international preferences, thus, often 
 depends on a hierarchy of "signals".
@@ -161,17 +176,17 @@ all of the potential variations of a given language/locale.
 To ensure a consistent experience, sites need these concepts:
 
 - **Available Locales** The list of locales that the site will support.
-  Only locales appearing in this list can be selected by the language
+  Only locales appearing in this list can be selected by the locale
   negotiation process.
 - **Default Locale**. If none of the user's signals match the available
-  list of locales on the site, there needs to be some language chosen.
+  list of locales on the site, there needs to be some locale chosen.
   This default is the "ultimate fallback" for the site.
 
 Sites sometimes have different configurations for different sets of users.
-For example, a site might "stage" a new locale or language and need
-testers to have access to the language prior to making the language
-available to other users.
-Or a site might make a language available only to users from certain geographies.
+For example, a site might be preparing to release a new localization (language) and need
+testers to have access to the locale prior to making the locale
+available to regular users.
+Or a site might make a locale available only to users from certain geographies.
 (As of 2024, an example of this is the [US Amazon website](https://www.amazon.com), 
 which makes more languages available to users with a non-USA shipping address
 than to domestic users.)
@@ -203,26 +218,29 @@ outside that region.
 
 Notice that there is a tension between providing a long list of supported locales
 (to give users the ability to tailor API-based formatting presentation)
-and providing a short list of available languages.
+and providing a short list of available locales (to aid in selection).
 In our example above, where the site is available in English, French, and Spanish,
-there might only be three localizations, but twenty or more locales.
+there might only be three localizations, but twenty or more locales that the site _could_
+make available.
+Deciding which combinations of language and locale to expose to users and how to represent these
+depends on many factors.
 
 ## Constructing the Algorithm
 
-Hierarchical negotiation is the most common mechanism for performing language negotiation.
+Hierarchical negotiation is the most common mechanism for performing locale negotiation.
 One way to implement this is to work from the least specific signal to the
 most specific one and then return the result.
 
 > For example:
 >
 > 1. Let the return value be the site default.
-> 2. If the user's geographic region has a default let return value be that language.
+> 2. If the user's geographic region has a default let return value be that locale.
 > 3. If the user has an Accept-Language header
->    i. For each language in the A-L header
->       a. if the language matches an available language, let return value be that language
-> 4. If the user has a cookie with a language preference, let return value be that language
-> 5. If the URL contains a language, let return value be that language
-> 6. If the user is recognized, let return value be the language in the user's profile
+>    i. For each language range in the A-L header
+>       a. if the language range matches an available locale's language tag, let return value be that locale
+> 4. If the user has a cookie with a locale preference, let return value be that locale
+> 5. If the URL contains a (recognized, permitted) locale identifier, let return value be that locale
+> 6. If the user is recognized, let return value be the locale in the user's profile
 >
 > Return the return value.
 
@@ -236,33 +254,33 @@ and leaves out mapping of values, either of which might affect the outcome.
 ### What happens when the user logs in?
 
 When a user authenticates (logs in), the user's preferences need to be checked.
-If the user's profile contains a language preference different from the one 
+If the user's profile contains a locale preference different from the one 
 currently negotiated with the user-agent, the stored preference may need to be updated
 or the user's preference changed:
-  - optionally query the user if they want to change their language
-    (did the currently negotiated language meet their need?)
+  - optionally query the user if they want to change their locale
+    (did the currently negotiated locale meet their need?)
   - update the session with the value in their profile
     (either the value currently negotiated or what they had previously)
     
 Updating the user's profile helps ensure, for example, that offline communications, 
-such as push notifications, emails, or SMS messages, are in the user's preferred language)
+such as push notifications, emails, or SMS messages, are in the user's preferred locale)
 
 ### Why provide locale overrides via the URL?
 
-There are a number of reasons why the URL might need to encode the language/locale
-to use.
+There are a number of reasons why the URL might need to encode the locale to use.
 
-One important use is to allow testing of the site in a given language.
+One important use is to allow testing of the site in a given locale.
 This is useful in reproducing issues that only appear in specific locales
 without having to change the customer support account's preference.
 It is also useful when the locale is not yet available to end users
 but it being prepared for production.
 
 Another is that URLs can be shared or used for marketing materials.
-By encoding the language into the URL, you can guarantee that the site
-shown is in the same language as (for example) a display ad or email being
-linked from.
-This can help users of non-default languages who are unrecognized users
+By encoding the locale into the URL, you can guarantee that the site
+shown is in the same language as some external resource.
+For example, if the user was brought to the site by clicking on a display ad in a specific language
+or clicked on a link in an email they received from the site.
+This can help users of a non-default locale who might also be unrecognized users to
 get the right experience.
 
 ### What's not included in the locale?
@@ -294,8 +312,7 @@ But user overrides of the value sometimes need to be propagated separately.
 
 When a site offers multiple languages or offers multiple locales
 for a given language (or both), 
-the result of language negotiation might not be what the user would have
-chosen.
+the result of locale negotiation might not be what the user would have chosen.
 When this happens, the user should be provided a convenient control in 
 a predictable, visible location to choose the locale for herself.
 
@@ -303,7 +320,7 @@ The result of choosing a locale should be sticky.
 Any offline hints (such as cookies) as well as any server-side
 user profile should be updated.
 In addition, if the site uses URL elements, the page should redirect with
-the language preference added/substituted in the URL.
+the locale preference added/substituted in the URL.
 
 Sites that "don't remember" a user's choice can be frustrating to use,
 as the user might need to navigate a foreign language experience to reach one
