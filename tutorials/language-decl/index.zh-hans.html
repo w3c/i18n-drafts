@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>HTML中的语言信息（教程）</title>
+<meta name="description" content="W3C i18n 教程：如何在HTML文件中声明语言">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'tutorials/language-decl'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-language-decl'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-05-22'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-06-03', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-10-12', time:'18:22'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in this assignment:
+f.translators = '薛富侨'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+
+f.breadcrumb = 'characters';
+</script>
+<script src="language-decl-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css">
+<link rel="stylesheet" href="language-decl-data/local.css">
+<link rel="copyright" href="#copyright">
+</head>
+
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>HTML中的语言信息（教程）</h1>
+</header>
+
+<div id="sidebarExtras">
+	<section>
+    	<h2 id="whyread" class="notoc">你为什么应该读这篇文章？</h2>
+        <p>页面的语言信息对于无障碍、样式、搜索和其他因素都有重要的影响。另外，在用户代理和服务器之间传输的语言信息可用于帮助改进用户导航和站点的本地化能力。本教程将帮助你通过声明语言信息来利用这些现在和不久的将来的机会。</p>
+      	</section>
+	<section id="objectives">
+     	<h2 class="notoc">目标</h2>
+        <p>读完本教程后，你可以：</p>
+        <ul>
+          <li>了解如何设置页面的默认语言以及为页面上的不同内容设置不同的语言</li>
+          <li>了解有关受众预期语言的语言元数据与文本本身的语言有何不同，以及这对HTML标记的影响</li>
+          <li>知道如何选择正确的语言属性值</li>
+          <li>了解如何设置浏览器的语言首选项</li>
+          <li>知道如何对不同的语言应用不同的样式</li>
+        </ul>
+      </section>
+	</div>
+
+
+
+      <div id="audience">
+            <p><span id="intendedAudience" class="leadin">目标读者：</span>HTML、CSS和JavaScript开发者以及需要知道如何在HTML中声明和使用语言信息的任何人。本文假设你对HTML和CSS有基本的了解。</p>
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+        </div>
+
+<p>本教程汇总了一些文章，帮助你了解编写HTML和CSS时如何使用语言信息。</p>
+
+
+
+<section id="nutshell">
+<h2 id="quicksummary">简言之</h2>
+
+<p>始终向<code class="kw" translate="no">lang</code>标签添加<code class="kw" translate="no">lang</code>属性以设置页面的默认语言。</p>
+<div class="example">
+<p><code translate="no">&lt;html lang=&quot;en&quot;&gt;</code></p>
+</div>
+<p>如果这是XHTML 1.x或作为XML的HTML5 <a href="https://www.w3.org/TR/html-polyglot/#dfn-polyglot-markup">polyglot文档</a>，还应该使用<code class="kw" translate="no">xml:lang</code>属性（属性值相同）。如果你的页面只以XML形式提供，则只需使用<code class="kw" translate="no">xml:lang</code>属性。</p>
+<p>请不要使用将<code class="kw" translate="no">http-equiv</code>设置为<code class="kw" translate="no">Content-Language</code>的<code class="kw" translate="no">meta</code>元素。</p>
+<p>从IANA语言子标签注册中心中选择标签，并在使用多个语言子标签时遵循BCP 47的语法规则。让语言标签尽可能短。</p>
+<p>使用CSS中的<code class="kw" translate="no">:lang</code>伪类来应用取决于内容语言的样式。</p>
+</section>
+
+
+
+
+<section id="Slide0030">
+<h2>为什么要声明语言？</h2>
+		  <p>本教程的这部分说明了阅读其余部分的原因。如果你很急，只想知道该怎么做，不需要相关理论知识，请从<a href="#Slide0140">如何声明页面或元素的语言</a>部分开始阅读。</p>
+		  <p>浏览器和其他应用使用有关内容语言的信息向用户传递最合适的信息，或者用最合适的方式向用户呈现该信息。被正确标记的内容越多，这类应用就会越有用和普遍。</p>
+<p><a href="/International/questions/qa-lang-why" class="maintitle print"><cite>为什么使用语言属性</cite></a>一文包括语言信息如何发挥作用的示例。</p>
+</section>
+
+
+
+
+<section id="Slide0140">
+<h2>如何声明页面或元素的语言</h2>
+		  <p>你应该使用语言属性设置页面中文本的语言。不过，一些格式涉及多个属性，还有一些其他事情需要澄清。本章讨论了各种方法，包括应该使用的方法和应该避免的方法（以及原因）。</p>
+		  <p><a href="/International/questions/qa-html-language-declarations" class="maintitle print"><cite>在HTML中声明语言</cite></a>总结了如何使用属性声明语言。</p>
+<p><a href="/International/questions/qa-http-and-lang" class="maintitle print"><cite>HTTP标头、meta元素和语言信息</cite></a>描述了语言元数据和文本的实际语言的不同，也讨论了HTTP标头和meta元素中的Content-Language。</p>
+</section>
+
+
+
+
+<section id="Slide0200">
+<h2>使用语言标签</h2>
+		  <p>本章介绍了如何选择语言标签，也就是用于语言属性的值。</p>
+		  <p>为了确保所有用户代理都能识别你的语言，在编写语言值时需要遵循标准的方法。你可能还需要考虑如何用标准的方式引用不同的方言，例如，美国英语和英国英语在拼写和发音方面存在着显著差异。</p>
+  <p><a href="/International/articles/language-tags/" class="maintitle print"><cite>HTML和XML中的语言标签</cite></a>描述了BCP 47规范中的语言标签语法。</p>
+  <p><a href="/International/questions/qa-choosing-language-tags" class="maintitle print"><cite>选择语言标签</cite></a>教你如何从数千个子标签中选择代表你需要的语言的正确子标签。</p>
+</section>
+
+
+
+
+<section id="browser">
+<h2>设置浏览器的语言首选项</h2>
+<p>当你的浏览器从Web获取网页时，它会向存储信息的服务器发送HTTP请求。通过HTTP请求，浏览器会发送相关语言偏好信息，而这些信息可以用来确定向你返回哪些内容。通过以下文章可以了解如何设置或更改这些首选项。</p>
+  <p> <a href="/International/questions/qa-lang-priorities" class="maintitle print"><cite>在浏览器中设置语言首选项</cite></a></p>
+</section>
+
+
+
+
+<section id="styling">
+<h2>使用语言信息修改网页样式</h2>
+  <p>很多时候，我们希望对不同语言的文本应用不同的样式（如字体、行高、不同的强调样式等）。如果你用了语言属性来标识内容的语言，就可以使用一些功能强大的选择器。当语言发生变化时，CSS自动将不同的样式应用于内容。<a href="/International/questions/qa-css-lang" class="maintitle print"><cite>使用语言属性设置样式</cite></a>探讨了执行此操作的各种方式。</p>
+</section>
+
+<section id="endlinks">
+<h2>进一步阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+	<ul id="full-links">
+	  <li>
+	    <p>刚刚入门？<a href="/International/getting-started/language"><cite>网站上的语言</cite></a></p>
+      </li>
+	<li>
+      <p><cite>制作网页</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#language">语言</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
