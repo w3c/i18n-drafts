@@ -85,7 +85,7 @@ Otherwise, locale negotiation depends on whatever information is available
 in the session or request to guess at the user's intent.
 
 Guessing at the user's intention might vary depending on many different things.
-For example, user's might expect a different default currency on a website
+For example, users might expect a different default currency on a website
 intended for use in Germany than on one intended for use in Switzerland,
 even if both are localized into German.
 
@@ -132,7 +132,7 @@ These can include:
 
 ## Types of User
 
-Locale negotiation is more reliable if the user's has provided a strong signal
+Locale negotiation is more reliable if the user has provided a strong signal
 (such as choosing their locale from a menu).
 Once the locale has been determined, it is usually a good idea to store the result
 for future use (including for offline interactions, such as push notifications).
@@ -150,7 +150,7 @@ and attempts to maintain the user's locale preference between sessions.
 In general, these use cases (and ones in-between these two extremes)
 have three types of user profile:
 - **Unrecognized User** - the user does not have a profile or the site
-  does not maintain one on the user's behalf. There are no cookies or other
+  does not maintain one on the users behalf. There are no cookies or other
   cross-session indicators of the user's preference.
 - **Recognized User** - the user has a profile on
   this site and there is some cross-session or other indication to
