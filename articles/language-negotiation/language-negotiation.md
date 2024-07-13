@@ -16,8 +16,10 @@ implementing locale negotiation.
 pieces of content for a given request, session, or user experience. 
 Web sites perform language negotiation in order to provide the user with an experience that they understand.
 
-Language negotiation allows software to select the best set of translated (localized) set of resources
+Language negotiation allows software to select the best set of set of resources
 for the user's needs.
+Sometimes there is different content available in various languages, but most often 
+these resources are translated ("localized") from content in a specific source language.
 For example, a site consisting of static files might just choose between different
 language versions of each page, while another site might load text into a blank template
 from resource bundles (such those employed by GNU gettext or Java's `java.util.ResourceBundle`).
@@ -47,7 +49,8 @@ etc.) and to set the locale for internationalization (I18N) APIs such as
 > Consider a web site operated by a non-profit `example.org`.
 > They want to offer different language experiences to meet user needs.
 > This organization decides that their site experience will serve users
-> in North America, so initially, they offer three languages:
+> in North America.
+> While other languages are spoken in this region, initially they decide to offer three languages:
 > `en` (English), `es` (Spanish), and `fr` (French).
 > 
 > Using `en`, `es`, or `fr` as the locale in software, however, does not
