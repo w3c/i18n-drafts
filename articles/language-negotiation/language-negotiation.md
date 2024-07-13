@@ -20,6 +20,8 @@ Language negotiation allows software to select the best set of set of resources
 for the user's needs.
 Sometimes there is different content available in various languages, but most often 
 these resources are translated ("localized") from content in a specific source language.
+
+Localization of content can take different forms.
 For example, a site consisting of static files might just choose between different
 language versions of each page, while another site might load text into a blank template
 from resource bundles (such those employed by GNU gettext or Java's `java.util.ResourceBundle`).
