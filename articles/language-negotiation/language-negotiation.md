@@ -1,41 +1,49 @@
 # Language and Locale Negotiation on the Web
 
-One challenge faced by websites and services on the Web is how to present
-users with the most appropriate language and [locale](https://www.w3.org/TR/i18n-glossary#locale) to use when presenting
+One challenge faced by websites and services on the Web is how to decide on
+the most appropriate language and [locale](https://www.w3.org/TR/i18n-glossary#locale) to use when presenting
 information to users.
 
 This article outlines some of the considerations and best practices when
 deciding how to choose, set, and store a user's locale preference.
-It is not a complete recipe: not only will different users will have different
+It is not a complete recipe: not only will different users have different
 preferences but there are choices that developers need to make when
 implementing locale negotiation.
 
 ## What are language and locale negotiation? How are they the same/different?
 
 **_Language negotiation_** is the process of using various inputs to select between different language
-pieces of content for a given request, session, or user experience. 
+experiences for a given request, session, or user experience. 
 Web sites perform language negotiation in order to provide the user with an experience that they understand.
 
-Language negotiation allows software to select the best set of set of resources
-for the user's needs.
-Sometimes there is different content available in various languages, but most often 
-these resources are translated ("localized") from content in a specific source language.
+Language negotiation allows software to select the best experience for the user's needs.
+Sometimes different languages will have different content or experiences, 
+but most often a site or software will have a consistent experience
+that is translated ("localized") from a specific source language to support users
+with different linguistic or cultural needs.
 
 Localization of content can take different forms.
 For example, a site consisting of static files might just choose between different
 language versions of each page, while another site might load text into a blank template
 from resource bundles (such those employed by GNU gettext or Java's `java.util.ResourceBundle`).
 
-Language negotiation also provides the locale, 
-which is needed by software when calling internationalized APIs
-used for operations such as by formatting dates and numbers, sorting lists,
-and many other operations.
+One aspect of language negotiation is that the result is usually a 
+[language tag](https://www.w3.org/TR/i18n-glossary/#dfn-language-tag)
+that identifies the user's locale.
+The language tags used on the Web (and by most software) are defined by
+[BCP47](https://rfc-editor.org/bcp/bcp47).
 
 A [locale](https://www.w3.org/TR/i18n-glossary/#dfn-locale) is:
 > An identifier (such as a language tag) for a set of international preferences. 
 > Usually this identifier indicates the preferred language of the user and 
 > possibly includes other information, such as a geographic region (such as a country). 
 > A locale is passed in APIs or set in the operating environment to obtain culturally-affected behavior within a system or process.
+
+Developers pass the locale (or set it in the operating environment) when calling 
+internationalized APIs used for operations such as loading the localized resources mentioned above.
+But they are also use APIs that make the content or data in a system appear or
+work in a localized way, such as by formatting dates and numbers, sorting lists,
+and many other operations that vary by language or culture.
 
 As a result, language negotiation should really be called **_locale negotiation_**,
 because it includes the process that internationalized software uses to match a 
@@ -111,8 +119,8 @@ These can include:
    - the browser's localization or locale, such as `navigator.language`
      or `navigator.languages`
 - values that imply the user's locale preferences, such as:
-   - the user's geographic location (often determined from their IP address,
-     often refered to as "geoIP")
+   - the user's geographic location (perhaps determined from signals
+     such as the user's IP address or other networking information)
 - the site's configuration
 - values in the URL; such as:
    - a subdomain (`en.example.com` vs. `fr.example.com`)
@@ -142,7 +150,7 @@ Locale negotiation is more reliable if the user has provided a strong signal
 Once the locale has been determined, it is usually a good idea to store the result
 for future use (including for offline interactions, such as push notifications).
 
-The simplest use case is a site or service that does not persist the user's
+The simplest use case is a site or service that does not preserve the user's
 information between sessions, has no offline experience, and does not maintain
 a user profile.
 Such a site might need to negotiate the locale with every request.
