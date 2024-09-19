@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <title>Date formats</title>
-<meta name="description" content="How do I prepare my web pages to display varying international date formats?" />
+<meta name="description" content="How do I manage date formats on a web page?" />
 <script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
 f.directory = 'questions'+'/'; // the name of the directory this file is in
 f.filename = 'qa-date-format' // the file name WITHOUT extensions
-f.authors = 'Lloyd Honomichl, Lionbridge' // author(s) and affiliations
-f.previousauthors = '' // as above
+f.authors = 'Fuqiao Xue, W3C' // author(s) and affiliations
+f.previousauthors = 'Lloyd Honomichl, Lionbridge' // as above
 f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
 f.searchString = 'qa-date-format' // blog search string - usually the filename without extensions
 f.firstPubDate = '2003-06-09' // date of the first publication of the document (after review)
@@ -40,6 +40,9 @@ f.additionalLinks = ''
 <script src="../javascript/articletoc-2022.js"></script>
 <link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
+
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
 </head>
 
 <body>
@@ -56,21 +59,104 @@ f.additionalLinks = ''
 
 
 <section id="question">
-<h2>Question</h2>
-<p class="question">How do I prepare my web pages to display varying international date formats?</p>
 <p>Visitors to a web site from varying locales may be confused by date formats. The format MM/DD/YY is unique to the United States (but sometimes used in Canada, too, which can obviously create some confusion there). Most of Europe uses DD/MM/YY. Japan uses YY/MM/DD. The separators may be slashes, dashes or periods. Some locales print leading zeroes, others suppress them. If a native Japanese speaker is reading a US English web page from a web site in Germany that contains the date 03/04/02 how do they interpret it?</p>
+<p>Your first impulse may be to assume this problem will be taken care of during localization of the web pages - i.e. let the translator fix it. Resist this impulse. Do you really want to keep separate copies of documents for the U.S. and the U.K. that differ only in date format? In any case you still have to deal with multilingual users like the one in our example above.</p>
 </section>
 
 <section id="answer">
-<h2>Answer</h2>
-  <p>Your first impulse may be to assume this problem will be taken care of during localization of the web pages - i.e. let the translator fix
-    it. Resist this impulse. Do you really want to keep separate copies of documents for the U.S. and the U.K. that differ only in date format? In any
-    case you still have to deal with multilingual users like the one in our example above.</p>
-  <p>You have three options to consider, all with advantages and drawbacks:</p>
+  <p>
+      There are two main aspects related to date processing on the Web: <a href="#input">how the user enters a date</a> and <a href="#display">how the author displays a date</a>. This article will show how to enter a date and how to represent a date in various formats.
+  </p>
+
+	<section>
+    <h2 id="input">User input</h2>
+
+    <p>
+      Occasionally, websites require the user to fill in the date of an event. Content authors can use either a textbox or a special date picker interface to do that. HTML5 introduced <code class="kw" translate="no">input</code> elements of type <code>date</code>, <code>time</code>, <code>datetime-local</code>, <code>month</code>, and <code>week</code>, which let the user easily enter a date or a time. If you want to choose a range of dates, or deeply customize the UI of the date picker, you can also choose to implement a customized date picker yourself.
+    </p>
+
+    <p>
+      If you're using your customized date picker and not planning using the <code class="kw" translate="no">input</code> element, you need to store it in a standard format like ISO 8601 to be able to share it with others.
+    </p>
+
+    <p>
+      Here are examples of native HTML date and time picker interfaces:
+    </p>
+
+    <div style="margin-inline-start: 25px;">
+      <p>
+    <label for="date">&lt;input type="<strong>date</strong>"&gt;</label>
+      <input type="date" id="date" name="date"
+       value="2022-08-21"
+       min="2022-08-06" max="2022-09-02">
+    </p>
+      <p>
+       <label for="time">&lt;input type="<strong>time</strong>"&gt;</label>
+      <input type="time" id="time" name="time"
+       min="09:00" max="18:00"  value="08:53" required>
+      </p>
+      <p>
+       <label for="datetime-local">&lt;input type="<strong>datetime-local</strong>"&gt;</label>
+      <input type="datetime-local" id="datetime-local"
+       name="datetime-local" value="2022-08-21T08:53"
+       min="2022-08-06T00:00" max="2022-09-02T00:00">
+      </p>
+      <p>
+       <label for="month">&lt;input type="<strong>month</strong>"&gt;</label>
+      <input type="month" id="month"
+       name="month" value="2022-08"
+       min="2022-01">
+      </p>
+      <p>
+       <label for="week">&lt;input type="<strong>week</strong>"&gt;</label>
+      <input type="week" id="week"
+       name="week" min="2022-W01"
+       min="2022-W40" value="2022-W33">
+      </p>
+    </div>
+    <p>
+      Each browser has its own way of rendering these elements, and browsers that do not support them will fall back to a single-line text field.
+    </p>
+
+    <p>
+      The date entered in the input is represented using a string. <a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#dates-and-times">HTML</a> uses a variation of the <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> standard for its date and time strings. The date and time strings do not include the time zone data. Content authors can get the time zone data using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset">getTimezoneOffset()</a> in JavaScript and store it on the server-side separately if needed.
+    </p>
+
+    <p>
+      You can set a default value for the input by using the <code>value</code> attribute or restrict the date or time using the <code>min</code>, <code>max</code>, and <code>step</code> attributes.
+    </p>
+
+    <p>
+      You can get and set the date value in JavaScript with the <code>value</code> property. For example:
+    </p>
+
+    <figure>
+      <pre><code class="language-javascript">const date = document.querySelector('input[type="date"]')
+const time = document.querySelector('input[type="time"]')
+const dateTimeLocal = document.querySelector('input[type="datetime-local"]')
+const month = document.querySelector('input[type="month"]')
+const week = document.querySelector('input[type="week"]')
+
+console.log(date.value) // prints "2022-08-21"
+console.log(time.value) // prints "08:53"
+console.log(dateTimeLocal.value) // prints "2022-08-21T08:53"
+console.log(month.value) // prints "2022-08"
+console.log(week.value) // prints "2022-W33"
+</code></pre>
+    </figure>
+
+  </section>
+
+<section>
+  <h2 id="display"><a href="#display">Store and display a date</a></h2>
+
+  <p>You have four options to consider, all with advantages and drawbacks:</p>
+
   <ol>
     <li>Use a locale neutral format</li>
     <li>Make the month and year obvious</li>
     <li>Use the Accept-Language HTTP header</li>
+    <li>Use JavaScript</li>
   </ol>
 
 	<section id="opt1">
@@ -123,29 +209,33 @@ f.additionalLinks = ''
       <li>Displaying a generated date in a Japanese date format such as <span lang="ja">２００３年４月２日</span> in an English page
         would probably look out of place.</li>
     </ul>
-    <p>How this is done will vary depending on your development environment. Here are some pointers for some common environments.</p>
-    <div class="example">
-      <h4>Java/JSP</h4>
-      <p>Call the <code>getLocale</code> method of the <code>ServletRequest</code> or <code>HttpServletRequest</code> object. Use the
-        returned <code>Locale</code> object to call <code>DateFormat</code>. Note that the SHORT format uses only numbers. If you want unambiguous formats
-        use FULL. In some locales even LONG is all numeric. <!--(<a href="http://www.honomichl.com/java.html">Sample code</a>)--></p>
-      <p>See also <a class="print" href="http://icu-project.org/">ICU4J</a> since it contains   more up-to-date data (and more functionality) than the JDK routines.</p>
-    </div>
-    <div class="example">
-      <h4>ASP</h4>
-      <p>Use <code>Request.ServerVariables('HTTP_ACCEPT_LANGUAGE')</code> to get the user's preferences. Parse the first locale from the list
-        of accepted locales. You'll have to do your own mapping from the alphabetic locale code to a numeric Locale Identifier. Set <code>Session.LCID</code> to the resulting value. Call <code>FormatDateTime</code> to format the date.</p>
-      <p>Use vbLongDate to avoid ambiguity.</p>
-    </div>
-    <div class="example">
-      <h4>Perl</h4>
-      <p>Use <code>$ENV{'HTTP_ACCEPT_LANGUAGE'}</code> to get the preferred language. Use <code>POSIX:strftime</code> to format date values.
-        You'll have to do your own mapping of the accepted languages value to a date format string.</p>
+    <p>How this is done will vary depending on your development environment.</p>
+  </section>
+
+  <section>
+    <h3 id="opt4"><a href="#opt4">Option Four: Use JavaScript</a></h3>
+    <p>
+      The JavaScript <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date"><code>Date</code></a> object represent a single moment in time in a platform-independent format. When creating a <code>Date</code> object, the input should conform to the <a href="https://tc39.es/ecma262/#sec-date-time-string-format">ISO 8601 format</a> (<code>YYYY-MM-DDTHH:mm:ss.sssZ</code>). The parsing behaviour with other formats is implementation-defined and may be different in different browsers.
+    </p>
+    <p>
+      There are several methods in <code>Date</code> to return a string representation of a particular current date and time in various formats and perform time zone conversions. For example, the <code>toLocaleString</code> method returns a string with a language sensitive representation of this date:
+    </p>
+    <figure>
+      <pre><code class="language-javascript">const event = new Date('2022-08-21T08:53:00')
+
+console.log(event.toLocaleString('zh-Hans-SG'))
+// expected output: 2022年8月21日 上午8:53:00
+</code></pre>
+    </figure>
+    <p>
+      You can also refer to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date">Date</a> page on MDN for more information.
+    </p>
+    <div class="note">
+      Note: TC39 is working on <a href="https://tc39.es/proposal-temporal/docs/index.html" target="_blank">Temporal</a>, a new date/time API. However, major browsers do not support it yet.
     </div>
   </section>
-  
 	<section id="summary">
-<h3>Summary</h3>
+<h2>Summary</h2>
     <p>No ideal solution exists for this problem. Weigh the options and choose according to your preferences and your situation.</p>
     <p>If there is likely to be any ambiguity on the part of the user, it is usually best to use explicit month names and 4-digit years for
       Gregorian dates, or at least indicate on the page how to read the dates.</p>
@@ -166,21 +256,7 @@ f.additionalLinks = ''
 
   <ul id="full-links">
     <li>
-      <p><a href="http://java.sun.com/j2ee/sdk_1.3/techdocs/api/javax/servlet/ServletRequest.html">ServletRequest API description, including
-        getLocale method</a></p>
-    </li>
-    <li>
-      <p><a href="http://java.sun.com/j2se/1.4.2/docs/api/java/text/DateFormat.html">Use of the Java DateFormat class</a></p>
-    </li>
-    <li>
-      <p><a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/script56/html/vsfctformatdatetime.asp">About VBScript
-        FormatDateTime function</a></p>
-    </li>
-    <li>
-      <p><a href="http://www.microsoft.com/globaldev/getWR/steps/wrg_date.mspx#web">Date formatting in the .NET Framework</a></p>
-    </li>
-    <li>
-      <p><a href="http://www.honomichl.com/java.html">Java/JSP sample code</a></p>
+      <p><a href="https://html.spec.whatwg.org/multipage/input.html#the-input-element">The <code class="kw" translate="no">input</code> element in the HTML Standard</a></p>
     </li>
   </ul>
 </section>
