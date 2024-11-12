@@ -15,32 +15,32 @@ s.rlm = ""
 
 // TRANSLATE THE FOLLOWING
 s.currLang = {
-  'ar':'阿拉伯文',
-  'bg':'保加利亚文',
-  'da':'丹麦文',
-  'de':'德文',
-  'el':'希腊文',
-  'en':'英文',
-  'es':'西班牙文',
-  'fr':'法文',
+  'ar':'阿拉伯语',
+  'bg':'保加利亚语',
+  'da':'丹麦语',
+  'de':'德语',
+  'el':'希腊语',
+  'en':'英语',
+  'es':'西班牙语',
+  'fr':'法语',
   'gl':'加利西亚语',
-  'he':'希伯来文',
-  'hi':'印地文',
-  'hu':'匈牙利文',
-  'it':'意大利文',
-  'ja':'日文',
-  'ko':'韩文',
-  'nl':'荷兰文',
-  'pl':'波兰文',
-  'pt':'葡萄牙文',
-  'pt-br':'葡萄牙文',
-  'ro':'罗马尼亚文',
-  'ru':'俄文',
-  'sv':'瑞典文',
-  'th':'泰文',
-  'tr':'土耳其文',
-  'uk':'乌克兰文',
-  'vi':'越南文',
+  'he':'希伯来语',
+  'hi':'印地语',
+  'hu':'匈牙利语',
+  'it':'意大利语',
+  'ja':'日语',
+  'ko':'韩语',
+  'nl':'荷兰语',
+  'pl':'波兰语',
+  'pt':'葡萄牙语',
+  'pt-br':'巴西葡萄牙语',
+  'ro':'罗马尼亚语',
+  'ru':'俄语',
+  'sv':'瑞典语',
+  'th':'泰语',
+  'tr':'土耳其语',
+  'uk':'乌克兰语',
+  'vi':'越南语',
   'zh-hans':'简体中文',
   'zh-hant':'繁体中文',
 }
@@ -51,16 +51,16 @@ s.accessKeyN = '快捷键及跳转页面导航。<a href="#contentstart">跳转�
 s.examplesInAnotherScript = "本文档包括其他语言/字符示例。"
 s.worldMap = "世界地图"
 s.searchI18nSite = "国际化站点搜索" 
-s.translationDisclaimer = '本文档译自其他语种。如有任何偏差或错误的话，请以<a href="'+f.filename+'.en">最新英文原文</a>为准。如下所示，<a href="#copyright">原文版权</a>属于 W3C。'
+s.translationDisclaimer = '本文档译自其他语种。如有任何偏差或错误，请以<a href="'+f.filename+'.en">最新英文原文</a>为准。如下所示，<a href="#copyright">原文版权</a>属于 W3C。'
 s.relatedLinks = "相关链接"
 s.articles = "文章" // used in breadcrumbs, top right of page 
 s.topicIndexText = ""
 s.techIndexText = "技术索引"
 s.gotoW3cHome = "访问 W3C 主页"
-s.gotoI18nHome = "访问国际化活动主页"
+s.gotoI18nHome = "访问国际化标准计划主页"
 s.internationalizationTitle = "国际化"
 s.worldwide = "缔造真正全球通行的万维网"
-s.i18nActivityHomePage = "国际化活动主页。"
+s.i18nActivityHomePage = "国际化标准计划主页。"
 s.home = "主页"
 s.contactI18nActivity = "从 W3C 国际化获得帮助。"
 s.contact = "联系我们"
@@ -132,7 +132,7 @@ s.status_draft="此篇文章为未经公开审阅的拟定草稿。如有信息�
 s.status_review="此篇文章目前正供公开审阅，请发送您的宝贵意见到 <a href='mailto:www-international@w3.org?subject=%5Breview%20feedback%5D%20$filename'>www-international@w3.org</a><span class='noprint'> (<a href='https://lists.w3.org/Archives/Public/www-international/'>订阅</a>)</span>."
 s.status_published="此篇文章已由 W3C 国际化工作组（W3C Internationalization Working Group）审阅，并经过公开审阅以尽可能的确保文章的正确性。如有信息需要及时补充或订正，请您使用页面下的网络链接及时反馈给我们。"
 s.status_notreviewed="此篇文章尚未经过公开审阅。如有信息需要及时补充或订正，请您使用页面下的网络链接及时反馈给我们。"
-s.status_obsolete="这篇文章现已过时，不会继续维护，且信息可能不准确。有关更多最新信息，请参阅<a href='http://www.w3.org/International/'>国际化活动主页</a>。"
+s.status_obsolete="这篇文章现已过时，不会继续维护，且信息可能不准确。有关更多最新信息，请参阅<a href='http://www.w3.org/International/'>国际化标准计划主页</a>。"
 s.tests="测试" // used at the end of breadcrumbs for test related pages
 s.quickanswer = "简约回复" // heading
 s.longeranswer = "详情" // heading that follows 'Quick answer'
