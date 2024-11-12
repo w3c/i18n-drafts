@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>将网页的编码更改为Unicode</title>
+<meta name="description" content="如何将HTML页面的编码更改为Unicode/UTF-8？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-changing-encoding' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-changing-encoding' // blog search string - usually the filename without extensions
+f.firstPubDate = '2005-08-26' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2016-05-21', time:'11:32'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2023-02-27', time:'17:57'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-changing-encoding-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>将网页的编码更改为Unicode</h1>
+</header>
+
+
+<div>
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+</div>
+
+<p>你可能听说过使用Unicode（UTF-8）而不是Latin1（Windows 1252或ISO 8859-1）或Shift_JIS等传统<a href="https://www.w3.org/International/questions/qa-what-is-encoding">字符编码</a>很<a href="/International/questions/qa-choosing-encodings#useunicode">有用</a>，并且你听说<a href="/International/questions/qa-who-uses-unicode">其他人也在这样做</a>，但你不确定该如何做。</p>
+<p>本页面将帮助你将网页的字符编码更改为UTF-8。</p>
+
+
+
+<section id="answer">
+<h2>答案</h2>
+  <p>下面我们总结了将一个简单的页面转换为Unicode字符编码所需的信息。如果你需要获取有关任何步骤的详细信息，请点击网站上其他文章的链接。</p>
+<p class="info" style="margin-top: 2em;">有关将复杂站点、软件和数据转换为Unicode的更多详细建议，请参阅文章<a href="https://www.w3.org/International/articles/unicode-migration/">迁移到Unicode</a>。</p>
+
+    <section id="savedata">
+<h3>第一步：将文件保存为UTF-8</h3>
+    <p>仅仅将页面内的声明更改为UTF-8编码是不够的，你必须确保文件实际上是以UTF-8格式<strong>保存</strong>的。</p>
+    <p>如果你的文件是手动编辑的，那么你应该使用编辑器将文件保存为UTF-8编码，而不是你原来用的编码。如果你从脚本和数据库构建文件，你应该根据需要转换数据并在你的脚本环境中设置正确的参数。</p>
+    <p>请注意，你可能需要确保数据<a href="/International/questions/qa-utf8-bom">不包含UTF-8签名</a>，也称为字节顺序标记 (BOM)。</p>
+  </section>
+  <section id="declare">
+<h3>第二步：在页面中声明编码</h3>
+
+    <p>你应该<a href="/International/questions/qa-html-encoding-declarations">更改页面中的字符编码声明</a>（如果你还没有声明，则需要添加一个）。</p>
+    <p>最简单的形式看起来如下所示，这应该出现在HTML代码中<code class="kw" translate="no">head</code>元素的开头。</p>
+    <figure class="example">
+    <pre><code class="language-html" translate="no">&lt;meta charset=&quot;utf-8&quot;&gt;</code></pre>
+    </figure>
+  </section>
+
+  <section id="server">
+<h3>第三步：确保你的服务器做着正确的事</h3>
+
+    <p>尽管你的数据是UTF-8格式，你也在页面中声明了它，但你的服务器可能仍然<a href="/International/articles/definitions-characters/#httpheader">附带</a>一个表明它是其他编码的HTTP标头（header）。</p>
+    <p>把页面的URL粘贴到这里来进行测试，它将带你到W3C的<a href="https://validator.w3.org/i18n-checker/">Internationalization Checker</a>。在表中找到标题为<samp>HTTP Content-Type</samp>的行，在<samp>Character Encoding</samp>下，检查它是<samp>UTF-8</samp>还是<samp>No encoding information found</samp>。</p>
+    <form action="https://validator.w3.org/i18n-checker/check" method="get">
+    <p><input type="text" name="uri" style="width:70%;min-width: 10em;"> <button type="submit">Go</button></p>
+    </form>
+    <p>如果HTTP Content-Type显示的编码不是UTF-8，你需要<a href="/International/O-HTTP-charset">采取措施纠正它</a>，因为HTTP标头中的声明将覆盖页面内的信息。</p>
+    <p>虽然通常需要服务器管理员权限才能更改HTTP标头中发送的编码，但即使你通过ISP提供文件，你也可以自己这样做，相关内容请咨询你的服务器管理员。请参阅<a href="/International/questions/qa-htaccess-charset">对Apache服务器执行此操作的一种方法</a>的说明。</p>
+
+  </section>
+</section>
+
+
+<section id="endlinks">
+<h2>进一步阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>刚刚入门？<a href="/International/getting-started/characters"><cite>介绍字符集与编码</cite></a></p>
+    </li>
+    <li>
+      <p>教程：<a href="/International/tutorials/tutorial-char-enc/"><cite>处理HTML和CSS中的字符编码</cite></a></p>
+    </li>
+    <li>
+      <p><a href="/International/articles/unicode-migration/"><cite>迁移到Unicode</cite></a>：一篇关于将软件和数据更改为Unicode的更深入的文章</p>
+    </li>
+    <li>
+      <p><cite>制作网页</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#charset">字符</a></li>
+        <li><a href="/International/techniques/authoring-html#changing">更改到UTF-8</a> </li>
+      </ul>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
