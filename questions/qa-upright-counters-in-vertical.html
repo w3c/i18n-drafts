@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Upright counters in vertical text</title>
+<meta name="description" content="How to make list markers stand upright in vertical text">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-upright-counters-in-vertical' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-upright-counters-in-vertical' // blog search string - usually the filename without extensions
+f.firstPubDate = '2024-11-15' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2024-11-15', time:'12:52'}  // date and time of latest substantive changes to this document
+f.status = 'review'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2024-11-15', time:'12:52'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'styling'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-upright-counters-in-vertical-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+<style>
+@counter-style dotted-decimal { 
+system: fixed; 
+symbols: '\2488' '\2489' '\248A' '\248B' '\248C' '\248D' '\248E' '\248F' '\2490' '\2491' '\2492' '\2493' '\2494' '\2495' '\2496' '\2497' '\2498' '\2499' '\249A' '\249B';
+/* symbols: '⒈' '⒉' '⒊' '⒋' '⒌' '⒍' '⒎' '⒏' '⒐' '⒑' '⒒' '⒓' '⒔' '⒕' '⒖' '⒗' '⒘' '⒙' '⒚' '⒛'; */
+suffix: '';
+}
+li::marker {
+    font-family: 'hiragino sans', meiryo;
+    }
+
+#out_counter_styles ol { writing-mode:vertical-rl; margin-inline: 0; }
+#out_counter_styles li { list-style-type: dotted-decimal; margin-block: 0; }
+
+#out_styled_marker ol { writing-mode:vertical-rl; margin-inline: 0; }
+#out_styled_marker li::marker {
+  text-combine-upright: all;
+  }
+
+#out_marker_styles ol { writing-mode:vertical-rl; margin-inline: 0; }
+#out_marker_styles li::marker {
+  text-combine-upright: all;
+  color: red;
+  font-size: 1.2em;
+  }
+#out_marker_styles li {
+  padding-inline-start: .4em;
+  }
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>How to make list markers stand upright in vertical text</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+    
+<section id="question">
+<!--<h2>Question</h2>
+    <p class="question">How do I make oblique text lean to the left for right-to-left writing systems?</p>-->
+
+  <p>In Chinese, Japanese, Korean, and Mongolian vertically-set text it is normal for list counters to sit upright above the start of the list.</p>
+  
+  <figure id="fig_vertical_lists">
+  <img src="qa-upright-counters-in-vertical-data/vertical_lists.png" alt="Picture of vertical lists with numeric counters.">
+</figure>
+  
+<p>Until recently this was problematic, because browsers would only show the numbers lying on their side. This article describes how to make them stand upright as shown in the picture above, and the currently remaining issues to make this look perfect.</p>
+</section>
+
+
+<!--<section id="nutshell">
+    <h2 id="quickanswer">Quick answer</h2>
+  <p>You should always bear in mind that the content of a <code class="kw" translate="no">b</code> element may not always be bold, and that of an <code class="kw" translate="no">i</code> element may not always be italic. The actual style is dependent on the CSS style definitions. You should also bear in mind that bold and italic may not be the preferred style for content in certain languages.</p>
+<p>FIGURE: N'Ko</p>
+  <p>You should not use <code class="kw" translate="no">b</code> and <code class="kw" translate="no">i</code> tags if there is a more descriptive and relevant tag available. If you do use them, it is usually better to add class attributes that describe the intended meaning of the markup, so that you can distinguish one use from another. </p>
+  <p>The rest of this article will explain this in more detail.</p>
+</section>-->
+
+
+<section id="detail">
+<h2>Details</h2>
+
+<p>We'll look at two alternative approaches, one of which works across all major browser engines, and another which doesn't currently work with WebKit browsers.</p>
+
+
+<section id="whatfor">
+<h3>Use counter-styles</h3>
+
+<p>Customised counter-styles are now supported by all major browser engines. This therefore provides an interoperable solution.</p>
+
+<p>First, you need to create an <code class="kw" translate="no">@counter-style</code> declaration in your CSS. We suggest two alternatives below, but as these are customisable you can also make up your own.</p>
+
+<p><span class="leadin">Option 1.</span> Numbers followed by dots.</p>
+
+
+<figure class="example" lang="ja">
+<pre><code class="language-css">@counter-style dotted-decimal { 
+system: fixed; 
+symbols: '\2488' '\2489' '\248A' '\248B' '\248C' '\248D' '\248E' '\248F' '\2490' '\2491' '\2492' '\2493' '\2494' '\2495' '\2496' '\2497' '\2498' '\2499' '\249A' '\249B';
+/* symbols: '⒈' '⒉' '⒊' '⒋' '⒌' '⒍' '⒎' '⒏' '⒐' '⒑' '⒒' '⒓' '⒔' '⒕' '⒖' '⒗' '⒘' '⒙' '⒚' '⒛'; */
+suffix: '';
+}</code></pre>
+</figure>
+
+
+<p><span class="leadin">Option 2.</span> Circled numbers.</p>
+
+
+<figure class="example" lang="ja">
+<pre><code class="language-css">@counter-style circled-decimal { 
+system: fixed 0;
+symbols: '\24EA' '\2460' '\2461' '\2462' '\2463' '\2464' '\2465' '\2466' '\2467' '\2468' '\2469' '\246A' '\246B' '\246C' '\246D' '\246E' '\246F' '\2470' '\2471' '\2472' '\2473' '\3251' '\3252' '\3253' '\3254' '\3255' '\3256' '\3257' '\3258' '\3259' '\325a' '\325b' '\325c' '\325d' '\325e' '\325f' '\32b1' '\32b2' '\32b3' '\32b4' '\32b5' '\32b6' '\32b7' '\32b8' '\32b9' '\32ba' '\32bb' '\32bc' '\32bd' '\32be' '\32bf';
+/* symbols: '⓪' '①' '②' '③' '④' '⑤' '⑥' '⑦' '⑧' '⑨' '⑩' '⑪' '⑫' '⑬' '⑭' '⑮' '⑯' '⑰' '⑱' '⑲' '⑳' '㉑' '㉒' '㉓' '㉔' '㉕' '㉖' '㉗' '㉘' '㉙' '㉚' '㉛' '㉜' '㉝' '㉞' '㉟' '㊱' '㊲' '㊳' '㊴' '㊵' '㊶' '㊷' '㊸' '㊹' '㊺' '㊻' '㊼' '㊽' '㊾' '㊿'; */
+suffix: '';
+}</code></pre>
+</figure>
+
+
+<p>These counter style definitions are taken from <a href="https://www.w3.org/TR/predefined-counter-styles/#digit-styles">Ready-made Counter Styles</a>, where you can find several alternative styles that may be of interest. The suffix is still specified, to avoid the  default full stop appearing, but is reduced to a null string to avoid harmful effects on the horizontal positioning.</p>
+
+<p>Note that these particular counter styles are of the 'fixed' type. This means that they only support lists containing up to 20 or 50 items, respectively.  This is probably not problematic for most lists in vertical text.</p>
+
+<p>Once you have added these definitions to your CSS, then tie them to your list using CSS code such as the following. You can, of course, add a class name to your element selector, if you want to apply the style to just certain lists.</p>
+
+
+<figure class="example" lang="ja">
+<pre><code class="language-css">li { list-style-type: dotted-decimal; }</code></pre>
+</figure>
+
+
+<div id="out_counter_styles" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="writing-mode:vertical-rl; list-style-type:dotted-decimal; padding-block:1rem; width:100%; height:18rem;">
+<ol><li>仕込む前に生芋を１／４ぐらいの大きさにカット。</li><li>すり潰した生芋</li><li>ながらのパケット式の定量練り、通称バタ練り機</li></ol>
+</div>
+</div>
+
+<p>The horizontal position of the counter is very slightly off-center, but it still provides a workable solution. (Bug reports have been raised against the browsers to fix this.)</p>
+</section>
+
+
+
+
+
+
+<section id="issues">
+<h3>Styling the counter using ::marker</h3>
+
+<p>An alternative approach would be to use ordinary markup, with the default counters, but style the counter so that it is upright.  This would enable you to have lists longer than those described above, but the positioning of the counters relative to the list item text is currently not so accurate.</p>
+
+<p>For this approach we use the following CSS.</p>
+
+
+<figure class="example" lang="ja">
+<pre><code class="language-css">li::marker {
+  text-combine-upright: all;
+  }</code></pre>
+</figure>
+
+<p>Here's the result in your browser. As mentioned before, it mostly works in Blink and Gecko browsers, though the horizontal position is not quite centered in those browsers. But it  doesn't work at all in WebKit browsers, so it's not a fully interoperable solution (at least not yet).</p>
+
+
+<div id="out_styled_marker" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="writing-mode:vertical-rl; padding-block:1rem; width:100%; height:18rem;">
+<ol><li>仕込む前に生芋を１／４ぐらいの大きさにカット。</li><li>すり潰した生芋</li><li>ながらのパケット式の定量練り、通称バタ練り機</li></ol>
+</div>
+</div>
+
+<p>In terms of horizontal centering this approach is slightly less accurate than the one using counter-styles, pending ajustments by the browsers to align the horizontal text with the vertical center baseline. The biggest issue is that it is not supported by WebKit browsers.</p>
+</section>
+
+
+
+
+
+
+  <section id="recommendations">
+<h3>Using more CSS to tweak the presentation</h3>
+
+<p>Both types of list described above can benefit from additional styling. For example, using the following CSS we can make the markers in the example just above slightly bigger, and coloured, and we can create a slightly larger gap between the counter and the list text.</p>
+
+<p>In order to get the best results, you should probably also set the font for the counters, so as to ensure that they are a predictable size and shape.</p>
+
+<figure class="example" lang="ja">
+<pre><code class="language-css">li::marker {
+  text-combine-upright: all;
+  color: red;
+  font-size: 1.2em;
+  font-family: 'Hiragino Sans', Meiryo;
+  }
+li {
+  padding-inline-start: .4em;
+  }
+</code></pre>
+</figure>
+
+
+<div id="out_marker_styles" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="writing-mode:vertical-rl; padding-block:1rem; width:100%; height:18rem;">
+<ol><li>仕込む前に生芋を１／４ぐらいの大きさにカット。</li><li>すり潰した生芋</li><li>ながらのパケット式の定量練り、通称バタ練り機</li></ol>
+</div>
+</div>
+
+
+<p>The CSS <code class="kw" translate="no">::marker</code> pseudo-element allows you to apply the following adjustments:</p>
+    
+<ol>
+<li>all font properties</li>
+<li>the <code class="kw" translate="no">white-space</code> property</li>
+<li><code class="kw" translate="no">color</code></li>
+<li><code class="kw" translate="no">text-combine-upright</code>, <code class="kw" translate="no">unicode-bidi</code>, and <code class="kw" translate="no">direction</code></li>
+<li>the <code class="kw" translate="no">content</code> property</li>
+<li>all animation and transition properties</li>
+</ol>
+</section>
+</section>
+
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p><cite>Authoring web pages</cite></p>
+      <ul>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#liststyle">Styling counters for lists, etc.</a></li>
+      </ul>
+    </li>
+    <li>
+      <p><cite>Language Enablement</cite></p>
+      <ul>
+        <li><a href="https://www.w3.org/TR/typography/#writing_mode">Writing mode</a></li>
+      </ul>
+    </li>
+    <li>
+      <p><cite>Gap Analysis tracker</cite></p>
+      <ul>
+        <li><a href="https://www.w3.org/TR/jpan-gap/#issue170_writing_mode">Unable to make list counters stand upright in vertical text</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
