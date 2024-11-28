@@ -36,7 +36,8 @@ In China, addresses are written starting with the postal code, followed by the l
 
 (Postal code → City → District → Street → House number).
 
-- Russia often follow a "largest-to-smallest" order, starting with the country. For example:
+Russia often follow a "largest-to-smallest" order, starting with the country. For example:
+
 ```
 Russia, Moscow, Tverskaya Street, 16
 ```
