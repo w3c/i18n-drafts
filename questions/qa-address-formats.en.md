@@ -40,7 +40,7 @@ Elsewhere in Japan, street names are often not used at all. Instead, buildings a
 
 While most countries recommend that users format addresses in order from the most detailed part (such as street and house number) to the most general part (like city and province), there are some cases that slightly deviate from the general rule.
 
-In China, addresses are written starting with the postal code, followed by the largest administrative area (e.g., province), and down to the smallest unit (e.g., room number). For example:
+In China and Japan, addresses are written starting with the postal code, followed by the largest administrative area (e.g., province), and down to the smallest unit (e.g., room number). For example, here is an example of a Chinese address:
 
 ```
 100083 北京市 海淀区 学院路 37号
