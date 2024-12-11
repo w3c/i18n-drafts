@@ -6,7 +6,7 @@
 
 Address formats vary widely across the globe, with differences in structure, content, and the level of granularity. For authors and developers designing forms, databases, or systems that handle addresses, understanding these variations is crucial to avoid frustrating users from other countries. This article will introduce some of the key differences in address formats around the world and provide guidance on how to design systems that can handle them effectively.
 
-This is not an exhaustive guide but aims to sensitize you to the complexities of international address formats and the challenges they pose for web design. As with [personal names](https://www.w3.org/International/questions/qa-personal-names.en.html), there is rarely a "perfect" solution, but awareness of these differences is the first step toward building more inclusive systems.
+This is not an exhaustive guide but aims to sensitize you to the complexities of international address formats and the challenges they pose for web design. As with [personal names](https://www.w3.org/International/questions/qa-personal-names), there is rarely a "perfect" solution, but awareness of these differences is the first step toward building more inclusive systems.
 
 ## Global variations in address formats
 
@@ -16,17 +16,29 @@ In most countries, an address consists of a combination of elements such as a st
 
 #### **Street numbers and house numbering**
 
-In Colombia, instead of numbering houses sequentially along a street, addresses are based on the distance from the nearest intersecting street.
+In Colombia, instead of numbering houses sequentially along a street, addresses are based on the distance from the nearest intersecting street. For example, `Calle 122 # 18 – 15` means 122nd street, 15 metres from the intersection with 18th street.
 
-Kyoto uses a similar system based around street intersections, with cardinal directions indicating the location relative to the intersection.
+Kyoto uses a similar system based around street intersections, with cardinal directions indicating the location relative to the intersection. For instance, the address of Kyoto Tower is:
 
-Elsewhere in Japan, street names are often not used at all. Instead, buildings are referenced by block numbers, and their numbering may not follow geographic order (e.g., they can be the order in which buildings were constructed).
+```
+京都市下京区 Kyōto-shi, Shimogyō-ku
+烏丸七条下ル Karasuma-Shichijō-sagaru
+東塩小路町 721-1 Higashi-Shiokōji 721-1
+```
+
+This second line means "south of the intersection of Karasuma and Shichijō streets".
+
+Elsewhere in Japan, street names are often not used at all. Instead, buildings are referenced by block numbers, and their numbering may not follow geographic order (e.g., they can be the order in which buildings were constructed). For example, in the following address:
+
+```
+305-0051, Ibaraki, Tsukuba, Ninomiya 1-chōme, 6-13
+```
+
+305-0051 is the postal code, Ibaraki is the Prefecture, Tsukuba is the city, Ninomiya 1-chōme is the district, 6 is the block number, and 13 is the building number.
 
 #### **Order of address components**
 
 While most countries recommend that users format addresses in order from the most detailed part (such as street and house number) to the most general part (like city and province), there are some cases that slightly deviate from the general rule.
-
-In Germany, if there are suburbs, their names should be placed above the street name and house number.
 
 In China, addresses are written starting with the postal code, followed by the largest administrative area (e.g., province), and down to the smallest unit (e.g., room number). For example:
 
@@ -50,7 +62,7 @@ For example, the UK includes elements like "dependent locality" and "double depe
 
 #### **Countries without postal codes**
 
-Not all countries use postal codes. For example, Angola and some other nations rely on descriptive addressing, which can make validation more challenging. Always design systems with flexibility to accommodate such exceptions.
+Not all countries use postal codes. For example, Angola and some other nations do not use postal codes, which can make validation more challenging. Always design systems with flexibility to accommodate such exceptions.
 
 ## Postal code systems around the world
 
@@ -103,5 +115,5 @@ For further reading on related topics, see:
 - [International Address Format: Structure and Normalization](https://www.geopostcodes.com/blog/international-address-data/)
 - [Address](https://en.wikipedia.org/wiki/Address) on Wikipedia
 - [Proposal for extending the autocomplete attribute](https://github.com/battre/autocomplete-attribute-explainer/)
-- [Personal names around the world](https://www.w3.org/International/questions/qa-personal-names.en.html)
+- [Personal names around the world](https://www.w3.org/International/questions/qa-personal-names)
 - [Universal Postal Union](https://www.upu.int/en/home)
