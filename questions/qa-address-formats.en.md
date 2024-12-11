@@ -56,10 +56,6 @@ Russia, Moscow, Tverskaya Street, 16
 
 However, Russia also uses the "smallest-to-largest" order commonly seen internationally, so developers should account for both formats.
 
-#### **Locality-specific elements**
-
-For example, the UK includes elements like "dependent locality" and "double dependent locality" for more granular location information. Royal Mail requires the "post town" to be included whenever possible.
-
 #### **Countries without postal codes**
 
 Not all countries use postal codes. For example, Angola and some other nations do not use postal codes, which can make validation more challenging. Always design systems with flexibility to accommodate such exceptions.
