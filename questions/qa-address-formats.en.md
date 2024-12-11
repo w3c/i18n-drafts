@@ -78,7 +78,7 @@ Postal codes also vary widely in format and granularity:
 
 ### Granularity
 
-In many countries, postal codes cover relatively large areas, such as Saudi Arabia (which can cover an entire town). In some countries, postal codes cover very small areas, such as a small neighborhood or even a single address.
+In some countries, postal codes represent relatively large areas, such as an entire town. In others, they can be highly specific, covering small neighborhoods or even a single address.
 
 ## Implications for field design
 
