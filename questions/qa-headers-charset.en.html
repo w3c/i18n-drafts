@@ -15,12 +15,12 @@ f.previousauthors = '' // as above
 f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
 f.searchString = 'qa-headers-charset' // blog search string - usually the filename without extensions
 f.firstPubDate = '2003-06-16' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2010-08-28', time:'07:29'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2023-10-17', time:'07:29'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
-f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+f.path = '../' // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-03-01', time:'10:16'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2023-10-17', time:'10:16'} // date and time of latest edits to this document/translation
 f.contributors = '' // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
@@ -45,7 +45,7 @@ f.additionalLinks = ''
 <body>
 <header>
   <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
-  
+
   <h1>Checking HTTP Headers</h1>
 </header>
 
@@ -54,10 +54,8 @@ f.additionalLinks = ''
   <section>
     <h2 class="notoc">Related links</h2>
     <p><a class="print" href="https://validator.w3.org/i18n-checker/">i18n Checker</a></p>
-    <p><a class="print" href="http://webtools.mozilla.org/web-sniffer/">Mozilla Web-sniffer</a></p>
-    <p><a class="print" href="http://www.delorie.com/web/headers.html">Delorie HTTP Header Viewer</a></p>
-    <p><a class="print" href="http://www.rexswain.com/httpview.html">Rex Swain&#x27;s HTTP Viewer</a></p>
-    <p><a class="print" href="http://validator.w3.org/#validate_by_uri+with_options">W3C Markup Validator [extended interface]</a></p>
+    <p><a class="print" href="https://www.rexswain.com/httpview.html">Rex Swain's HTTP Viewer</a></p>
+    <p><a class="print" href="https://tools.keycdn.com/curl">HTTP Header Checker by KeyCDN</a></p>
   </section>
 </section>
 
@@ -66,7 +64,7 @@ f.additionalLinks = ''
     <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
  </div>
 </div>
- 
+
 <p>This article describes several ways to check the character encoding information sent in the HTTP header of a web document.</p>
 <p>It is important to clearly indicate the <a class="print" href="/International/articles/definitions-characters/#charsets">character encoding</a> (charset) of a document served on the Web. Otherwise, a receiver may not correctly interpret the document. A Web browser, for example, may show random characters instead of readable text. One way of indicating the character encoding of a Web document is to put this information into the <code>charset</code> parameter of the <code>Content-Type</code> header.</p>
 <p>In particular, it is important to note that the encoding declared in the HTTP header overrides all in-document encoding declarations in HTML and CSS files.</p>
@@ -80,18 +78,18 @@ f.additionalLinks = ''
     <p>The <a class="print" href="https://validator.w3.org/i18n-checker/">Internationalization Checker tool</a>, developed by the W3C, checks web pages for various internationalisation issues. It also has an information section that summarises key internationalization-related information about a page, such as character encoding and language declarations, etc. That section tells you whether an encoding declaration is used in the HTTP header, and if so, what is the encoding.</p>
     <p>The i18n checker tool is particularly useful, since it also shows you  other encoding declarations used in the document, and raises a flag if there are differences.</p>
   </section>
-  
-  
-  
-  
-  
+
+
+
+
+
   <section id="webbased">
 <h2>Use a Web-based service</h2>
     <p>There are several services that show you all the HTTP headers and the (HTML) source of the document returned from the server
       after you enter the address of the document you are interested in:</p>
     <ul>
-      <li><a class="print" href="http://www.delorie.com/web/headers.html">Delorie HTTP Header Viewer</a></li>
-      <li><a class="print" href="http://www.rexswain.com/httpview.html">Rex Swain's HTTP Viewer</a></li>
+      <li><a class="print" href="https://www.rexswain.com/httpview.html">Rex Swain's HTTP Viewer</a></li>
+      <li><a class="print" href="https://tools.keycdn.com/curl">HTTP Header Checker by KeyCDN</a></li>
     </ul>
     <p>Note: W3C has no relationship to any of these services.</p>
     <p>In the HTTP headers, look for the <code class="kw" translate="no">Content-Type</code> header, and in particular for the <code class="kw" translate="no">charset</code> parameter, e.g.</p>
@@ -99,18 +97,37 @@ f.additionalLinks = ''
     <p>Note: The <code class="kw" translate="no">charset</code> parameter may not be present. This is okay if your document itself indicates its character
       encoding.</p>
   </section>
-  
-  <section id="validator">
-<h2>Use the W3C Markup Validation Service</h2>
-    <p>To check the markup, the <a class="print" href="http://validator.w3.org/">Markup Validation Service</a> has to make sure it correctly decodes the
-      document it checks. It will show an error message if it cannot find information about the encoding, or if it finds conflicting information, or if it
-      cannot decode the document according to the information it found.</p>
-    <p>To know the encoding that the validator found, you can use the <a class="print" href="http://validator.w3.org/#validate_by_uri+with_options">extended interface</a>.
-      In this interface, you can also select the <span class="ui-text">show source</span> option, and then <em>visually</em> check that the source is
-      correctly interpreted. This is useful to check that you actually use the right encoding. It is not always possible to <em>mechanically</em> check
-      whether for example, a document claiming to be <code>iso-8859-1</code> is actually encoded using <code>iso-8859-2</code> or some other encoding.</p>
+
+  <section id="devtools">
+    <h2>Use the developer tools in a browser</h2>
+    <p>Modern desktop browsers usually contain a set of web developer tools, and they can be used to view HTTP headers of a web document and its related resources. Here's how to do it in major browsers.</p>
+
+    <section id="devtools-1">
+      <h3>Chrome, Edge, Firefox, and Opera</h3>
+      <ol>
+          <li>Open DevTools by pressing <kbd>Control+Shift+I</kbd> or <kbd>Command+Option+I</kbd> (Mac).</li>
+          <li>Click the <strong>Network</strong> tab. Right now the Network panel is empty.</li>
+          <li>Reload the page to log some network activity. Each row represents a resource. The top resource is usually the main HTML document.</li>
+          <li>Click a resource and open the <strong>Headers</strong> tab to view the HTTP headers.</li>
+          <li>In the HTTP headers, look for the <code class="kw" translate="no">Content-Type</code> header, and in particular for the <code class="kw" translate="no">charset</code> parameter.</li>
+        </ol>
+
+    </section>
+
+    <section id="devtools-safari">
+      <h3>Safari</h3>
+      <ol>
+          <li>First ensure that the <strong>Develop</strong> menu is enabled: choose Safari > Settings, click Advanced, then select “Show Develop menu in menu bar”.</li>
+          <li>Show page resoueces by clicking <strong>Develop</strong> > <strong>Show Page Resources</strong>.</li>
+          <li>Press <kbd>Command+Option+0</kbd> to show the details sidebar.</li>
+          <li>Reload the page to log some network activity.</li>
+          <li>Click a resource from the left sidebar and the HTTP headers will appear in the right sidebar.</li>
+          <li>In the HTTP headers, look for the <code class="kw" translate="no">Content-Type</code> header, and in particular for the <code class="kw" translate="no">charset</code> parameter.</li>
+        </ol>
+    </section>
   </section>
-  
+
+
   <section id="telnet">
 <h2>Use <code>telnet</code> or another command-line tool</h2>
     <p>This requires a bit more expertise, but may be easier to automate. Another command line tool may be <code>wget</code> (with a <code>-S</code> or <code>-s</code> option).</p>
@@ -136,7 +153,7 @@ f.additionalLinks = ''
       <p>Tutorial, <a href="/International/tutorials/tutorial-char-enc/"><cite>Handling character encodings in HTML and CSS</cite></a> </p>
     </li>
     <li>
-<p><cite>Authoring HTML &amp; CSS</cite></p>
+<p><cite>Authoring web pages</cite></p>
 <ul>
 <li><a href="/International/techniques/authoring-html.en?open=charset#charset">Characters</a></li>
 </ul>
