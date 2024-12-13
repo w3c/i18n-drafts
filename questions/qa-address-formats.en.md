@@ -34,7 +34,7 @@ Elsewhere in Japan, street names are often not used at all. Instead, buildings a
 305-0051, Ibaraki, Tsukuba, Ninomiya 1-chōme, 6-13
 ```
 
-305-0051 is the postal code, Ibaraki is the Prefecture, Tsukuba is the city, Ninomiya 1-chōme is the district, 6 is the block number, and 13 is the building number.
+305-0051 is the postal code, Ibaraki is the prefecture, Tsukuba is the city, Ninomiya 1-chōme is the district, 6 is the block number, and 13 is the building number.
 
 #### **Order of address components**
 
