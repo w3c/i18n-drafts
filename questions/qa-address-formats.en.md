@@ -16,6 +16,20 @@ In most countries, an address consists of a combination of elements such as a st
 
 #### **Street numbers and house numbering**
 
+**Order of street name and house number**
+
+In many countries like the United States, United Kingdom, and France, the house number precedes the street name (e.g., "123 Main Street"). However, in Germany and Switzerland, the street name comes first, followed by the house number:
+
+```
+Sternengasse 3
+35108 Allendorf
+Deutschland
+```
+
+This difference has important implications for form design, as users from these countries may expect to enter their address in this order.
+
+**Complex addressing systems**
+
 In Colombia, instead of numbering houses sequentially along a street, addresses are based on the distance from the nearest intersecting street. For example, `Calle 122 # 18 – 15` means 122nd street, 15 metres from the intersection with 18th street.
 
 Kyoto uses a similar system based around street intersections, with cardinal directions indicating the location relative to the intersection. For instance, the address of Kyoto Tower is:
@@ -94,7 +108,7 @@ In some countries, postal codes represent relatively large areas, such as an ent
 - Postal Code
 ```
 
-**Do not assume addresses will follow a specific order.** Be prepared to handle both "largest-to-smallest" and "smallest-to-largest" formats for address components.
+**Do not assume addresses will follow a specific order.** Be prepared to handle both "largest-to-smallest" and "smallest-to-largest" formats for address components. Remember that in countries like Germany and Switzerland, the street name comes before the house number, unlike in the US and UK.
 
 **Allow non-ASCII characters.** Many addresses include characters from non-Latin scripts (e.g., Chinese, Japanese, Cyrillic). Use a Unicode encoding (such as UTF-8) in your pages, backend databases, and all software code in between.
 
@@ -103,6 +117,8 @@ In some countries, postal codes represent relatively large areas, such as an ent
 ### Supporting multilingual and localized addresses
 
 If your website serves users from multiple countries, consider localizing the address form for each locale, such as displaying field labels in the user's language, adjusting the order of fields to match the address format of the user's country, and using address auto-completion tools that are aware of regional differences.
+
+When possible, use the user's country and pre-configure the form to match that country's address format. For example, if a user selects Germany as their country, you might reorder fields to put street name before house number, or add appropriate fields for their addressing system.
 
 ## Further reading
 
