@@ -15,6 +15,8 @@ g.nativeText = {
 'el':'Ελληνικά',
 'en':'English',
 'es':'Español',
+'fa': 'فارسی',
+'fa-IR': 'فارسی (ایران)',
 'fr':'Français',
 'gl':'Galego',
 'he':'עברית',
@@ -52,6 +54,8 @@ cn.ar = "إذا سمحت للمتصفح بتعيين ملف تعريف الار�
 cn.en = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?"
 cn.es = "Si permite que el navegador establezca una cookie, continuará viendo las páginas de Actividad de Internacionalización de W3C (si existieran) en el idioma de su elección. ¿Quiere establecer la cookie?"
 cn.de = "Wenn Sie die Seite ein Cookie lassen, werden Sie weiterhin W3C Internationalization Activity Seiten in der Sprache, die Sie ausgewählt haben, in denen zu sehen. Möchten Sie das Cookie gesetzt?"
+cn.fa =  "اگر اجازه دهید مرورگر یک کوکی تنظیم کند، همچنان برگه‌های فعالیت بین‌المللی‌سازی W3C (در صورت موجود بودن) را به زبانی که انتخاب کرده‌اید مشاهده خواهید کرد. آیا می‌خواهید کوکی تنظیم شود؟",
+cn['fa-IR'] = "اگر اجازه دهید مرورگر یک کوکی تنظیم کند، همچنان برگه‌های فعالیت بین‌المللی‌سازی W3C (در صورت موجود بودن) را به زبانی که انتخاب کرده‌اید مشاهده خواهید کرد. آیا می‌خواهید کوکی تنظیم شود؟",
 cn.fr = "Si vous acceptez que votre navigateur crée un cookie, vous continuerez de voir les pages d’activité d’internationalisation de W3C (lorsque cela est possible) dans la langue de votre choix. Souhaitez-vous créer le cookie\u00A0?"
 cn.it = "Se consenti al browser di impostare un cookie, continuerai a visualizzare le pagine W3C Internationalization Activity (ove disponibili) nella lingua selezionata. Vuoi impostare il cookie?"
 cn['pt-br'] = "Se você deixar o navegador definir um cookie, você vai continuar a ver páginas W3C Internacionalização Atividade (quando disponível) no idioma que você escolheu. Você quer definir o cookie?"
