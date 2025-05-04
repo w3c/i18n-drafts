@@ -12,6 +12,8 @@ g.nativeText = {
 'el':'Ελληνικά',
 'en':'English',
 'es':'Español',
+'fa': 'فارسی',
+'fa-IR': 'فارسی (ایران)',
 'fr':'Français',
 'he':'עברית',
 'hi':'हिन्दी',
