@@ -26,6 +26,8 @@ s.currLang = {
 'el':'Greek',
 'en':'English',
 'es':'Spanish',
+'fa': 'Persian',
+'fa-IR': 'Persian (Iran)',
 'fr':'French',
 'gl':'Galician',
 'he':'Hebrew',
