@@ -87,7 +87,7 @@ However, Russia also uses the "smallest-to-largest" order commonly seen internat
 
 ## Postal code systems around the world
 
-Postal codes also vary widely in format and granularity:
+Postal codes vary widely in format and granularity:
 
 ### Length and format
 
