@@ -14,7 +14,7 @@ In most countries, an address consists of a combination of elements such as a st
 
 ### Key differences in address formats
 
-#### **Street numbers and house numbering**
+#### Street numbers and house numbering
 
 **Order of street name and house number**
 
@@ -50,7 +50,20 @@ Elsewhere in Japan, street names are often not used at all. Instead, buildings a
 
 305-0051 is the postal code, Ibaraki is the prefecture, Tsukuba is the city, Ninomiya 1-chōme is the district, 6 is the block number, and 13 is the building number.
 
-#### **Order of address components**
+#### Multi-line address components
+
+In some countries like the United Kingdom, an address might include apartment/flat numbers, building names, and street information across multiple lines:
+
+```
+Flat 4, Danson House
+63 Somerton Road
+Market Drayton
+UK
+```
+
+It's important to note that the street name and house number (63 Somerton Road) are not on the first line of this address. The first line contains the flat number and building name (Flat 4, Danson House). Additional information may also precede these details, such as "℅" (care of) followed by a person's or organization's name when mail is being delivered to someone at another person's address.
+
+#### Order of address components
 
 While most countries recommend that users format addresses in order from the most detailed part (such as street and house number) to the most general part (like city and province), there are some cases that slightly deviate from the general rule.
 
@@ -70,7 +83,7 @@ Russia, Moscow, Tverskaya Street, 16
 
 However, Russia also uses the "smallest-to-largest" order commonly seen internationally, so developers should account for both formats.
 
-#### **Countries without postal codes**
+#### Countries without postal codes
 
 Not all countries use postal codes. For example, Angola and some other nations do not use postal codes, which can make validation more challenging. Always design systems with flexibility to accommodate such exceptions.
 
@@ -96,7 +109,7 @@ In some countries, postal codes represent relatively large areas, such as an ent
 
 **Avoid rigid field labels and formats.** Using labels like "Street Address" or "Zip Code" can be confusing for users whose countries do not use these concepts. Instead, use more generic terms like "Address Line 1" and "Postal Code."
 
-**Provide flexibility in input fields.** Allow multiple lines for addresses. Some addresses, especially in rural areas, can be long and descriptive. Avoid strict validation rules that assume specific formats (e.g., expecting numeric postal codes).
+**Provide flexibility in input fields.** Allow multiple lines for addresses. Some addresses, especially in rural areas, can be long and descriptive. Many addresses require multiple lines for apartment numbers, building names, "care of" designations, and other elements before the street information appears. Provide at least 3-4 address line fields to accommodate these variations. Avoid strict validation rules that assume specific formats (e.g., expecting numeric postal codes or that the street name must appear on the first line).
 
 **Separate fields for granularity only if needed.** If you need specific parts of an address (e.g., city, postal code) for sorting or validation, use clear labels and instructions. For example:
 
