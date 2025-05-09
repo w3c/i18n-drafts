@@ -91,11 +91,17 @@ Postal codes vary widely in format and granularity:
 
 ### Length and format
 
-- **Europe:** Most countries use 4- or 5-digit codes. The UK and Netherlands use alphanumeric codes (e.g., `SW1A 1AA` in the UK).
-- **North America:** The United States uses a 5-digit code, optionally followed by a 4-digit extension (e.g., `20500-0003`).
-- **South America:** South America generally uses 4- or 5-digit codes. Argentina and Brazil use alphanumeric 8-digit codes, while Colombia and Ecuador use 6-digit systems.
-- **Asia:** China and Japan use 5- or 6-digit codes, with the first few digits specifying the province or prefecture. and the rest to specify the city or district. South Korea and Vietnam use a 5-digit postal code system.
-- **Africa:** Nigeria and Ghana use 6-digit systems, while South Africa and Kenya use 4-digit codes.
+- **Europe:** Most countries use 4- or 5-digit codes. The UK uses alphanumeric codes with a specific grouping pattern (e.g., `SW1A 1AA` - always with a space between the outward and inward parts, never with hyphens). The Netherlands uses a similar alphanumeric pattern with a space (e.g., `1234 AB`).
+
+- **North America:** The United States uses a 5-digit code, optionally followed by a hyphen and a 4-digit extension (e.g., `20500-0003`). Canada uses a 6-character alphanumeric format with a space in the middle (e.g., `K1A 0B1`).
+
+- **South America:** Format patterns vary significantly. Brazil uses an 8-digit system with a hyphen (e.g., `70150-900`). Argentina's 8-character alphanumeric code is written as a single string without separators (e.g., `C1070AAB`). Colombia and Ecuador use 6-digit systems written as continuous numbers.
+
+- **Asia:** China uses a 6-digit continuous numeric code without separators. Japan uses a 7-digit system with a hyphen after the first 3 digits (e.g., `100-0001`). South Korea's 5-digit system is written without separators, while India uses a 6-digit PIN code system with no separators.
+
+- **Africa:** Nigeria and Ghana use 6-digit systems without separators, while South Africa uses a 4-digit code with no separators.
+
+- **Oceania:** Australia and New Zealand use a 4-digit continuous numeric code.
 
 ### Granularity
 
@@ -134,6 +140,22 @@ Not all countries use postal codes. For example, Angola and some other nations d
 If your website serves users from multiple countries, consider localizing the address form for each locale, such as displaying field labels in the user's language, adjusting the order of fields to match the address format of the user's country, and using address auto-completion tools that are aware of regional differences.
 
 When possible, use the user's country and pre-configure the form to match that country's address format. For example, if a user selects Germany as their country, you might reorder fields to put street name before house number, or add appropriate fields for their addressing system.
+
+### Postal codes considerations
+
+When designing systems to handle postal codes, pay careful attention to the following points:
+
+**Grouping and separators.** Some postal codes require specific separators (spaces, hyphens) at specific positions.
+
+**Input formatting.** Consider whether to:
+- Automatically format user input to add the correct separators
+- Allow users to enter with or without separators and normalize on the server
+- Provide visual cues about the expected format (e.g., placeholder text like "SW1A 1AA" for UK)
+
+**Validation flexibility.** Allow for variations in how users might enter postal codes, including:
+- With or without spaces/hyphens
+- In uppercase or lowercase for alphanumeric systems
+- With extra spaces at beginning or end
 
 ## Further reading
 
