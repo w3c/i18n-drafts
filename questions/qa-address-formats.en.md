@@ -78,8 +78,10 @@ In China and Japan, addresses are written starting with the postal code, followe
 Russia often follow a "largest-to-smallest" order, starting with the country. For example:
 
 ```
-Russia, Moscow, Tverskaya Street, 16
+Россия, Москва, Тверская улица, 16
 ```
+
+(Country → City → Street → House number).
 
 However, Russia also uses the "smallest-to-largest" order commonly seen internationally, so developers should account for both formats.
 
