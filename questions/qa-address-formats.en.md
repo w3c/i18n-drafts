@@ -85,10 +85,6 @@ Russia often follow a "largest-to-smallest" order, starting with the country. Fo
 
 However, Russia also uses the "smallest-to-largest" order commonly seen internationally, so developers should account for both formats.
 
-#### Countries without postal codes
-
-Not all countries use postal codes. For example, Angola and some other nations do not use postal codes, which can make validation more challenging. Always design systems with flexibility to accommodate such exceptions.
-
 ## Postal code systems around the world
 
 Postal codes also vary widely in format and granularity:
@@ -104,6 +100,10 @@ Postal codes also vary widely in format and granularity:
 ### Granularity
 
 In some countries, postal codes represent relatively large areas, such as an entire town. In others, they can be highly specific, covering small neighborhoods or even a single address.
+
+### Countries without postal codes
+
+Not all countries use postal codes. For example, Angola and some other nations do not use postal codes, which can make validation more challenging. Always design systems with flexibility to accommodate such exceptions.
 
 ## Implications for field design
 
