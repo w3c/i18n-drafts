@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pes" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>مبانی الگوریتم دوسویه‌ی یونیکد</title>
+<meta name="description" content="الگوریتم دوسویه (bidi) یونیکد اساساً چه کاری انجام می‌دهد؟">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/inline-bidi-markup'+'/'; // the name of the directory this file is in
+f.filename = 'uba-basics'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'tutorial-uba-basics'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2013-04-24'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2016-08-09', time:'05:54'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-05-15', time:'02:11'} // date and time of latest edits to this document/translation
+f.contributors = 'Asmus Freytag'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://goudarzjafari.com" title="Goudarz Jafari">Goudarz Jafari</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction';
+</script>
+<script src="uba-basics-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-pes.js"> </script>
+<!--TRANSLATORS must change -en above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav>
+  <script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>مبانی الگوریتم دوسویه‌ی یونیکد</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+  
+  
+  <section id="question">
+    <h2>سوال</h2>
+    <p class="question">الگوریتم دوسویه (bidi) یونیکد اساساً چه کاری انجام می‌دهد؟</p>
+
+  <div class="insideinfonote">
+    <p class="info">در برخی فناوری‌های قدیمی، مانند سیستم‌های mainframe و iSeries، ممکن است هنوز با متنی که به ترتیب بصری ذخیره شده است روبه‌رو شوید. برای اطلاعات بیشتر، <cite><a class="print" href="/International/questions/qa-visual-vs-logical">به ترتیب بصری در مقابل ترتیب منطقی متن</a></cite> مراجعه کنید.</p>
+  </div>
+  <p>از ابتدا درک این نکته اهمیت داشته است که در تمامی مرورگرهای اصلی وب، ترتیب نویسه‌ها در حافظه (منطقی) با ترتیب نمایش داده شده آن‌ها (بصری) یکسان نیست. </p>
+  <p>مجموعه قوانینی که مرورگر برای ایجاد ترتیب صحیح در زمان نمایش اعمال می‌کند، توسط <dfn id="uba">الگوریتم دوسویه‌ی یونیکد</dfn>، یا به اختصار «الگوریتم bidi»، توضیح داده شده است.</p>
+  <p>این برگه مفاهیم پایه‌ای الگوریتم دوسویه را معرفی می‌کند. هدف آن این نیست که نحوه مدیریت متن دوسویه را در برنامه‌ها، قالب‌ها و غیره آموزش دهد (برای این موارد به پیوندهای انتهای برگه مراجعه کنید)، بلکه می‌خواهد به شما کمک کند تا درک کافی از عملکرد الگوریتم دوسویه و نقاطی که به کمک نیاز دارد، به دست آورید. با این حال، گاهی از مثال‌هایی در HTML استفاده می‌کنیم تا کسانی که با این زبان آشنا هستند بتوانند این مفاهیم را با کاربردهای عملی مرتبط کنند.</p>
+</section>
+
+
+
+
+
+<section id="uba_basics">
+    <h2>مبانی الگوریتم دوسویه</h2>
+
+  <!--section>
+    <h3 id="context"><a href="#context">Base direction (direction of the context)</a></h3>
+    <p>The order in which text is displayed  depends on the <dfn id="term_basedirection2">base direction</dfn> assigned to the phrase, paragraph or block that contains it. The base direction is a fundamentally important concept. It establishes a directional context that the bidi algorithm refers to at various points to decide how to handle the text.</p>
+    <p>In HTML the base direction is either set explicitly by the nearest parent element that uses the <code class="kw" translate="no">dir</code> attribute, or, in the absence of any such attribute,  is inherited from the default direction of the document, which is left-to-right. </p>
+  </section-->
+  
+  <section id="typing">
+    <h3>نویسه‌ها و تایپ جهت‌دار  </h3>
+    <p>می‌دانیم که یک رشته از نویسه‌های لاتین به ترتیب، یکی پس از دیگری از چپ به راست نمایش داده می‌شود (همان‌طور که در متنی که اکنون می‌خوانید مشاهده می‌کنید). از سوی دیگر، الگوریتم دوسویه یک رشته از نویسه‌های فارسی یا عربی یا عبری را به ترتیب، یکی پس از دیگری از راست به چپ نمایش می‌دهد.</p>
+    <figure>
+      <p><img src="uba-basics-data/directional-typing.gif" alt="Examples of directionally typed words."></p>
+      <figcaption>دنباله‌های نویسه‌های قوی با جهت یکسان، مطابق انتظار شما اجرا می‌شوند.
+      <a class="inlinedemolink" href="uba-basics-data/strong_direction" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+    </figure>
+    <p>مرورگر شما چگونه تشخیص می‌دهد که یک رشته از نویسه‌ها باید از چپ به راست یا از راست به چپ نمایش داده شود؟ چون هر نویسه در یونیکد دارای یک ویژگی جهت‌دار مرتبط است. بیشتر حروف به‌صورت LTR (چپ به راست) <dfn>تعریف شده‌اند</dfn>. حروف مربوط به زبان‌هایی با نگارش راست به چپ به صورت RTL (راست به چپ) تعریف شده‌اند.   </p>
+    <p>یک رشته از نویسه‌های RTL که به‌طور قوی تعریف شده‌اند، از راست به چپ نمایش داده می‌شود. این موضوع مستقل از جهت پایه‌ی متن اطراف آن است.</p>
+  </section>
+  
+  <section id="directionalruns">
+    <h3>بخش‌های جهت‌دار</h3>
+    <p>هنگامی که متن‌هایی با جهت‌گیری متفاوت در یک خط ترکیب می‌شوند، الگوریتم دوسویه از هر دنباله‌ی پیوسته از نویسه‌هایی که جهت‌گیری یکسانی دارند، یک <dfn>بخش جهت‌دار</dfn> جداگانه ایجاد می‌کند.  </p>
+    <p>بنابراین، در مثال زیر، سه بخش جهت‌دار وجود دارد:</p>
+    <figure>
+      <p><img src="uba-basics-data/directional-runs.gif" alt="Left-to-right ordered directional runs: bahrain مصر kuwait."></p>
+      <figcaption>بخش‌های جهت‌دار.
+      <a class="inlinedemolink" href="uba-basics-data/directional_runs_ltr" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+    </figure>
+    <p>توجه داشته باشید که برای وقوع این فرآیند نیازی به نشانه‌گذاری یا ظاهر دادن ندارید.</p>
+    </section>
+    
+  <section id="context">
+    <h3>جهت پایه، یک مفهوم اساسی</h3>
+    <p>ترتیب نمایش متن بستگی به <dfn id="term_basedirection2">جهت پایه‌ای</dfn> دارد که برای عبارت، پاراگراف یا بلوک محتوی آن تعیین شده است. جهت پایه یک مفهوم اساسی است. این جهت زمینه‌ای را ایجاد می‌کند که الگوریتم دوسویه در مراحل مختلف به آن رجوع می‌کند تا نحوه‌ی پردازش متن را مشخص کند.</p>
+    <p>در HTML، جهت پایه یا به طور صریح توسط نزدیک‌ترین عنصر والد که از ویژگی <code class="kw" translate="no">dir</code> استفاده می‌کند تعیین می‌شود، یا در صورت نبود چنین ویژگی‌ای، از جهت پیش‌فرض سند که چپ به راست است، به ارث می‌رسد. </p>
+  
+    <p><strong>نکته‌ی مهم اینجاست: ترتیب نمایش بخش‌های جهت‌دار در سراسر برگه وابسته به جهت پایه‌ی غالب بستگی دارد</strong>.</p>
+    <p>در مثال بالا که دارای زمینه‌ی کلی (یعنی جهت پایه) <code class="kw" translate="no">ltr</code> است، شما ابتدا «bahrain»، سپس «<span title="Means: 'egypt'" lang="ar">مصر</span>» و بعد «kuwait» را خواهید خواند. </p>
+    <figure>
+      <p><img src="uba-basics-data/ltr-directional-runs.gif" alt="Left-to-right ordered directional runs: bahrain مصر kuwait."></p>
+      <figcaption>در یک زمینه‌ی LTR، بخش‌های جهت‌دار مشابه به همان ترتیب مورد انتظار اجرا می‌شوند.
+      <a class="inlinedemolink" href="uba-basics-data/directional_runs_ltr" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+    </figure>
+    <p>اگر با تعیین جهت <code class="kw" translate="no">rtl</code> برای عنصر <code class="kw" translate="no">html</code> یا یک عنصر والد مانند <code class="kw" translate="no">div</code>، <code class="kw" translate="no">p</code> یا <code class="kw" translate="no">span</code>، زمینه‌ی جهت‌گیری مثال بالا را تغییر دهید، ترتیب نمایش بخش‌های جهت‌دار نیز تغییر خواهد کرد.</p>
+    <figure>
+      <p><img src="uba-basics-data/rtl-directional-runs.gif" alt="Right-to-left ordered directional runs: bahrain مصر kuwait."></p>
+      <figcaption>همان اجرای جهت‌دار در یک زمینه‌ی RTL.
+      <a class="inlinedemolink" href="uba-basics-data/directional_runs_rtl" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+    </figure>
+    <p>در هر دو حالت، نویسه‌ها دقیقا به همان ترتیب در حافظه ذخیره می‌شوند، اما ترتیب بصری نمایش بخش‌های جهت‌دار معکوس خواهد شد.</p>
+  </section>
+  
+  <section id="neutralcharacters">
+    <h3>نویسه‌های خنثی  </h3>
+    <div class="sidenoteGroup">
+      <p>فاصله‌ها و علائم نگارشی در یونیکد به صورت قوی به عنوان LTR یا RTL تعریف نشده‌اند، زیرا ممکن است در هر دو نوع خط مورد استفاده قرار گیرند. بنابراین، آن‌ها به‌عنوان نویسه‌های <dfn>خنثی</dfn> یا <dfn>ضعیف</dfn> دسته‌بندی می‌شوند.</p>
+      <div class="sideinfonote">
+        <p class="info">نویسه‌ها معمولا زمانی که با شماره‌ها مرتبط هستند، به‌عنوان «ضعیف» دسته‌بندی می‌شوند. تعداد کمی از علائم نگارشی در ابتدا به‌عنوان نویسه‌های ضعیف دسته‌بندی می‌شوند، اما در یک زمینه‌ی غیرشمارشی، مانند نویسه‌های خنثی پردازش می‌شوند.  بنابراین، در این مقاله، تمام علائم نگارشی را به‌عنوان نویسه‌های خنثی در نظر خواهیم گرفت.</p>
+      </div>
+    </div>
+    <p>اینجاست که موضوع جالب‌تر می‌شود. وقتی الگوریتم دوسویه با نویسه‌های مواجه می‌شود که ویژگی‌های جهت‌دار خنثی دارند (مانند فاصله‌ها و علائم نگارشی)، برای تعیین نحوه‌ی پردازش آن‌ها به نویسه‌های اطراف نگاه می‌کند.</p>
+    <p><strong>یک نویسه خنثی که بین دو نویسه با تایپ جهت‌دار یکسان قرار دارد، همان جهت‌گیری را به خود می‌گیرد</strong>. بنابراین، یک نویسه خنثی که بین دو نویسه RTL قرار گرفته است، خود به عنوان یک نویسه RTL در نظر گرفته می‌شود و تاثیر آن در <strong>گسترش بخش جهت‌دار</strong> دیده می‌شود. این همان دلیلی است که سه کلمه‌ی عربی در مثال زیر به عنوان یک بخش جهت‌دار واحد از راست به چپ خوانده می‌شوند – <em>از جمله دوم فاصله‌ی بین آن‌ها</em> که به عنوان نویسه‌های خنثی، جهت‌گیری نویسه‌های اطراف خود را می‌پذیرند. (فلش‌ها ترتیب خواندن را نشان می‌دهند.)</p>
+    <figure>
+      <p><img src="uba-basics-data/neutrals-basic.gif" alt="Arabic words in an English sentence: The title is مفتاح معايير الويب in Arabic."></p>
+      <figcaption>فضاها، نویسه‌های خنثی، گسترش بخش جهت‌دار.
+      <a class="inlinedemolink" href="uba-basics-data/directional_runs_spaces" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+    </figure>
+    <p>حتی اگر چندین نویسه خنثی بین دو نویسه با تایپ جهت‌دار قوی قرار بگیرند، همگی به همان روش پردازش خواهند شد.</p>
+    <p>توجه داشته باشید که برای این فرآیند همچنان نیازی به نشانه‌گذاری یا ظاهر دادن ندارید. همچنین، هنوز تنها سه بخش جهت‌دار در اینجا وجود دارد.</p>
+    <p><strong>اما وقتی یک فاصله یا علامت نگارشی بین دو نویسه قوی با جهت‌گیری <em>متفاوت</em></strong> قرار بگیرد، یعنی در مرز بین بخش‌های جهت‌دار چه اتفاقی می‌افتد؟ در چنین حالتی، <strong>نویسه خنثی (یا نویسه‌های خنثی) همان <em>جهت‌گیری پایه‌ی</em> غالب را به خود می‌گیرند</strong>.</p>
+    <p>بنابراین، به عنوان مثال، اگر بعد از آخرین نویسه عربی در مثال بالا یک ویرگول اضافه کنیم، این ویرگول به‌عنوان LTR (همسو با جهت پایه‌ی متن) در نظر گرفته خواهد شد و در نتیجه در سمت راست متن عربی نمایش داده می‌شود، یعنی به عنوان بخشی از بخش جهت‌دار سمت راست.</p>
+    <figure>
+      <p><img src="uba-basics-data/title-comma.png" alt="Arabic words in an English sentence: The title is مفتاح معايير الويب, in Arabic."></p>
+      <figcaption>یک کاما بین بخش‌های جهت‌دار مخالف، جهت‌گیری کلی متن را به خود می‌گیرد.
+      <a class="inlinedemolink" href="uba-basics-data/directional_runs_comma" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+    </figure>
+    <p>تا اینجا همه چیز خوب پیش می‌رود، اما این رفتار همیشه به نفع ما نیست، همان طور که در ادامه خواهیم دید. </p>
+  </section>
+  
+  <section id="embeddedbd">
+    <h3>تعبیه‌کردن تغییرات در جهت پایه</h3>
+    <p>اگر در مثال قبلی، عنوان به زبان عربی با یک علامت تعجب به پایان می‌رسید، انتظار داشتیم که این علامت در لبه‌ی چپ متن عربی ظاهر شود.</p>
+    <figure>
+      <p><img src="uba-basics-data/title-exclamation.png" alt="Arabic words in an English sentence: The title is مفتاح معايير الويب! in Arabic."></p>
+      <figcaption>علامت نگارشی که در انتهای متن RTL تعبیه‌شده قرار دارند، باید در سمت چپ ظاهر شوند.
+      <a class="inlinedemolink" href="uba-basics-data/directional_runs_exclamation" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+    </figure>
+    <p>متاسفانه، به صورت پیش‌فرض چنین نخواهد بود. علامت تعجب همانند ویرگول پردازش شده و در همان موقعیت، یعنی در سمت راست عنوان عربی، ظاهر خواهد شد.</p>
+    <p> برای اصلاح این وضعیت، باید جهت پایه‌ی متن عربی <em>همراه با علامت تعجب</em> را به RTL (راست به چپ) تنظیم کنیم. در این صورت، علامت تعجب نیز یک جهت‌گیری RTL خواهد داشت و به عنوان ادامه‌ی متن عربی در نظر گرفته خواهد شد.</p>
+    <p> زبان نشانه‌گذاری یا برنامه‌ای که با آن کار می‌کنید باید مکانیزم‌هایی برای انجام این تنظیمات در اختیار شما قرار دهد (به عنوان مثال، استفاده از ویژگی <code class="kw" translate="no">dir</code> در یک عنصر <code class="kw" translate="no">q</code> در HTML). در بخش <a href="#beyond">فراتر از الگوریتم دوسویه</a> این موضوع را بیشتر بررسی می‌کنیم.</p>
+    <p>تغییر جهت پایه نه تنها برای مدیریت علائم نگارشی در مرز بخش‌های جهت‌دار ضروری است، بلکه برای حفظ ترتیب صحیح بخش‌های جهت‌دار در متن‌های دوسویه‌ی تو‌در‌تو نیز اهمیت دارد. برای نمونه، مثال زیر را در نظر بگیرید: خط اول نمایش مورد انتظار را نشان می‌دهد، در حالی که خط دوم حالت پیش‌فرض بدون تنظیمات اضافی را نمایش می‌دهد.</p>
+    <figure>
+      <p><img src="uba-basics-data/more-complex.png" alt="Arabic words in an English sentence: The title is مفتاح معايير الويب! in Arabic."></p>
+      <figcaption>چندین مشکل در جریان متن دوسویه‌ی تعبیه‌شده.
+      <a class="inlinedemolink" href="uba-basics-data/directional_runs_bidi" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+    </figure>
+    <p>نگران معنی متن در این مرحله نباشید؛ مسئله این است که در خط پایین، بدون تغییر جهت پایه برای نقل‌قول، بخش‌های جهت‌دار داخل آن به ترتیب از چپ به راست مرتب شده‌اند. بار دیگر، راه‌حل این مشکل، تعریف مجدد جهت پایه برای نقل‌قول است.</p>
+  </section>
+  
+  <section id="numbers">
+    <h3>شماره‌ها</h3>
+    <p>یک نکته‌ی سریع درباره‌ی شماره‌ها: شماره در زبان‌های RTL به صورت چپ به راست در جریان راست به چپ اجرا می‌شوند، اما الگوریتم دوسویه آن‌ها را کمی متفاوت از کلمات پردازش می‌کند. شماره‌ها دارای <dfn>جهت‌گیری ضعیف</dfn> هستند. دو مثال در تصویر این تفاوت را نشان می‌دهند.</p>
+    <figure>
+      <p><img src="uba-basics-data/digits.gif" alt="one two ثلاثة 1234 خمسة  AND  one two ثلاثة ١٢٣٤ خمسة"></p>
+       <figcaption>شماره‌ها به‌ صورت چپ به راست اجرا می‌شوند، اما جریان جهت‌دار متن را قطع نمی‌کنند.
+      <a class="inlinedemolink" href="uba-basics-data/directional_runs_digits" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+   </figure>
+    <p>اولین مثال از رقم‌های اروپایی «1234» استفاده می‌کند و مثال دوم همان شماره را با رقم‌های عربی-هندی ١٢٣٤ نمایش می‌دهد. در هر دو مورد، رقم‌های موجود از چپ به راست خوانده می‌شوند.</p>
+    <p>از آنجا که شماره دارای جهت‌گیری ضعیف است، بخشی از متن عربی قبل از خود در نظر گرفته می‌شود، بنابراین دو واژه‌ی عربی که شماره را احاطه کرده‌اند به عنوان بخشی از همان بخش جهت‌دار پردازش می‌شوند - حتی با وجود اینکه دنباله‌ی رقم‌ها روی برگه به‌صورت LTR نمایش داده می‌شود.</p>
+    <p>توجه داشته باشید که در کنار یک شماره، برخی نویسه‌های دیگر که معمولا خنثی در نظر گرفته می‌شوند، مانند نمادهای ارزی، به عنوان بخشی از شماره پردازش خواهند شد، نه یک نویسه خنثی. همچنین تفاوت‌های جزئی دیگری در نحوه‌ی پردازش شماره‌ها وجود دارد که نیازی به بحث دقیق درباره‌ی آن‌ها در اینجا نداریم.</p>
+  </section>
+  
+  <section id="mirroring">
+    <h3>نویسه‌های آینه‌ای</h3>
+    <p>همچنین خواهید دید که برخی نویسه‌ها بسته به جهت متنی که در آن قرار دارند، دارای شکل‌های آینه‌ای می‌شوند.</p>
+    <p>در مثال زیر، همان نویسه پرانتز زاویه‌ای در همه‌ی موارد استفاده شده است، اما مشاهده می‌کنید که در متن چپ به راست، به سمت راست اشاره دارد، و در متن راست به چپ، به سمت چپ.</p>
+    <figure>
+      <p><img src="uba-basics-data/mirrored_chars_he.png" alt="one two ثلاثة 1234 خمسة  AND  one two ثلاثة ١٢٣٤ خمسة"></p>
+       <figcaption>شکل‌های مختلفی برای یک نویسه پرانتز زاویه‌ای یکسان ارائه می‌شوند، بسته به جهت متن.
+      <a class="inlinedemolink" href="uba-basics-data/mirrored_chars" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+   </figure>
+    <p>تعدادی از این نویسه‌ها وجود دارند، از جمله بسیاری که به‌صورت جفت ظاهر می‌شوند، مانند پرانتزها و براکت‌ها، اما برخی نیز به صورت منفرد ظاهر می‌شوند. برای ایجاد این رفتار نیازی به تنظیمات خاصی نیست.</p>
+  </section>
+</section>
+
+
+
+
+<section id="beyond">
+<h2>فراتر از الگوریتم دوسویه</h2>
+  <!--p>The bidi algorithm will handle text perfectly well in many situations, and typically no special markup or other device is needed other than to set the overall direction for the document.  </p>
+  <p>However, the more a document mixes text of both directions, the higher the chances that some of it will not be displayed as intended. When this happens, extra markup, metadata or special approaches have to be applied to the document to untangle the bidirectional text. We have seen examples of this above.</p>
+  <p>&nbsp;</p-->
+  
+<section id="base_dir_scope">
+  <h3>لزوم تعیین جهت پایه</h3>
+  <p>از مثال‌های بالا مشخص می‌شود که برای تعیین جهت پایه‌ی صحیح برای انواع مختلف متن، لازم است از نشانه‌گذاری، فراداده یا روش‌های ویژه استفاده شود.</p>
+  <p>این موضوع نه تنها برای متن‌های تو‌در‌تو، همان طور که در مثال‌های بالا نشان داده شد، مهم است، بلکه برای <em>هر</em> قطعه‌ی متنی که نیاز به نمایش صحیح دارد نیز ضروری است. بیشتر برنامه‌ها متن را به صورت پیش‌فرض چپ به راست در نظر می‌گیرند و برای تعیین جهت پایه‌ی راست به چپ نیاز به اقدام مشخصی وجود دارد.</p>
+    <p>در ادامه چند نمونه از رشته‌های متن ساده را مشاهده می‌کنید که بدون تعیین جهت پایه‌ی راست به چپ به درستی نمایش داده نمی‌شوند.</p>
+    <figure>
+      <p><img src="uba-basics-data/w3c-i18n-he.png" alt="פעילות הבינאום, W3C"></p>
+       <figcaption>همان دنباله‌ی نویسه‌ها، با جهت پایه‌ی LTR یا RTL نمایش داده می‌شود.
+      <a class="inlinedemolink" href="uba-basics-data/base_direction_bidi" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+    </figure>
+    <p>هر رشته‌ای که متنی با بیش از یک جهت را ترکیب کند، نیاز دارد که اطلاعاتی درباره‌ی جهت پایه‌ی مناسب تنظیم شده باشد. در این مثال، <q>W3C</q> باید در سمت چپ متن ظاهر شود. اگر جهت پایه‌ی پیش‌فرض چپ به راست باشد، «W3C» در سمت راست متن عبری قرار می‌گیرد که ممکن است معنای متن را به طور قابل توجهی تغییر دهد یا حداقل باعث سردرگمی شود.</p>
+  <figure>
+      <p><img src="uba-basics-data/punctuation-he.png" alt="פעילות הבינאום, W3C"></p>
+      <figcaption>دنباله دیگری از نویسه‌ها، با جهت پایه‌ی LTR یا RTL نمایش داده می‌شود.  <a class="inlinedemolink" href="uba-basics-data/base_direction_punctuation" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+  </figure>
+  <p>هر متن راست به چپ که دارای علامت نگارشی در ابتدا یا انتها باشد نیز نیاز دارد که جهت پایه‌ی آن مشخص شود. در مثال بالا، علامت تعجب باید در سمت چپ متن راست به چپ ظاهر شود.</p>
+  <p>علاوه بر نمایش صحیح اجزای رشته‌ی متنی، معمولا ضروری است که متن راست به چپ به صورت راست‌چین نمایش داده شود و گاهی نیز جهت اطلاعات اطراف آن منعکس گردد. نشانه‌های لازم برای این تنظیمات نیز از طریق تعیین جهت پایه فراهم می‌شوند.</p>
+  </section>
+  
+  <section id="isolation">
+  <h3>لزوم جداسازی محدوده‌های نزدیک</h3>
+  <p>در برخی موارد، لازم است محدوده‌های نزدیک متن از یکدیگر جدا شوند تا ترتیب نمایش مورد نظر مناسب نمایش داده شود. برای مثال، رتبه‌بندی دوم رستوران در مثال زیر را در نظر بگیرید.</p>
+    <figure style="width: 230px; float: right; text-align: center; display: block; margin-right: 10px; margin-left: 10%; margin-bottom:0;">
+      <div class="figcaption">آنچه باید به نظر برسد.</div>
+      <p><img src="index-data/restaurant-right.png" title="AZZIP ELPRUP - 5 reviews" alt="AZZIP ELPRUP - 5 reviews"></p>
+  </figure>
+    <figure style="width: 230px; float: right; text-align: center; display: block; margin-left: 10px; margin-right: 10px; margin-bottom:0;">
+      <div class="figcaption">آنچه در واقع به نظر می‌رسد.</div>
+      <p><img src="index-data/restaurant-wrong.png" title="5 - AZZIP ELPRUP reviews" alt="5 - AZZIP ELPRUP reviews"></p>
+  </figure>
+  <figure style="clear:both; margin-top: 0;padding-top: 0;">
+      <figcaption>شماره‌هایی که پس از متن RTL در یک زمینه‌ی LTR قرار می‌گیرند، باید از متن قبلی جدا شوند. <a class="inlinedemolink" href="uba-basics-data/isolation" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+  </figure>
+  <p style="clear: both;">مشکل نام دوم رستوران به این دلیل ایجاد می‌شود که مرورگر <samp style="white-space:pre;"> – 5</samp> را بخشی از متن عبری در نظر می‌گیرد. این همان چیزی است که الگوریتم دوسویه‌ی یونیکد به آن دستور می‌دهد و معمولا این رفتار صحیح است. اما در اینجا نه. باید راهی پیدا کنیم تا مشخص کنیم که نام و شماره دو عنصر جداگانه هستند، یعنی نام درج‌شده را از شماره جدا کنیم.</p>
+  <p style="clear: both;">در مثال زیر، دلیل این مشکل این است که با قرار گرفتن یک نویسه RTL قوی در دو طرف، الگوریتم دوسویه کامای خنثی را بخشی از متن عربی در نظر می‌گیرد. در واقع، دو کلمه‌ی عربی اول و کاما به عنوان یک بخش جهت‌دار منفرد پردازش می‌شوند. اما در حقیقت کاما بخشی از متن انگلیسی است و باید به عنوان مرز میان دو بخش مستقل راست به چپ در عربی عمل کند. </p>
+  
+    <figure>
+      <p><img src="uba-basics-data/comma_wrong.gif" alt="The names of these states in Arabic are مصر, البحرين and الكويت respectively."></p>
+      <p><img src="uba-basics-data/comma_right.gif" alt="The names of these states in Arabic are مصر, البحرين and الكويت respectively."></p>
+      <figcaption>موارد با جهت یکسان در یک فهرست، زمانی که جهت پایه متفاوت است، باید از یکدیگر جدا شوند. <a class="inlinedemolink" href="uba-basics-data/list_isolation" target="text">مشاهده نسخه‌ی نمایشی زنده.</a></figcaption>
+  </figure>
+<p>برای جداسازی دو کلمه‌ی عربی از یکدیگر، نیاز به مداخله‌ی دستی وجود دارد. الگوریتم دوسویه نمی‌تواند این مسئله را به تنهایی حل کند.</p>
+</section>
+
+
+<section id="endlinks"> 
+<h2>مطالعه‌ی بیشتر</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <p>مقاله‌ی<a href="index"> نشانه‌گذاری درون‌خطی و متن دوسویه در HTML</a> اطلاعاتی درباره‌ی مدیریت جهت‌دار کردن درون‌خطی در HTML ارائه می‌دهد و شامل نمونه‌های کاربردی است. مستند همراه آن، <a href="/International/questions/qa-html-dir">نشانه‌گذاری ساختاری و متن راست به چپ در HTML</a> نحوه‌ی تنظیم جهت برای پاراگراف‌ها، بلوک‌ها، فرم‌ها و برگه‌های کامل را توضیح می‌دهد.</p>
+  <ul id="full-links">
+    <li>
+      <p><a href="https://www.unicode.org/reports/tr9/"><cite>ضمیمه‌ی شماره ۹ استاندارد یونیکد، الگوریتم دوسویه‌ی یونیکد</cite></a></p>
+    </li>
+    <li>
+      <p>آموزش، <a href="/International/tutorials/bidi-xhtml/"><cite>ایجاد برگه‌های HTML به زبان‌های فارسی، عربی، عبری و سایر اسکریپت‌های راست به چپ</cite></a></p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-html-dir"><cite>جهت متن و نشانه‌گذاری ساختاری در HTML</cite></a></p>
+    </li>
+    <li>
+      <p><a href="/International/articles/inline-bidi-markup/"><cite>نشانه‌گذاری درون‌خطی و متن دوسویه در HTML</cite></a></p>
+    </li>
+    <li>
+      <p><a href="http://rishida.net/scripts/tutorial/" title="A tutorial on writing systems characteristics"><cite>آموزش اسکریپت‌های غیرلاتین</cite></a></p>
+    </li>
+    <li>
+      <p>پیوندهای مرتبط، <cite>نگارش برگه‌های وب</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#direction">جهت متن</a></li>
+        <li><a href="/International/techniques/authoring-html#inline">ترکیب جهت‌های مختلف درون‌خطی  </a></li>
+      </ul>
+    </li>
+    <li>
+      <p>پیوندهای مرتبط، <cite>نگارش SVG  </cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-svg#direction">جهت متن</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
