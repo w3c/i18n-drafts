@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8" />
+<title>Apache MultiViews语言协商设置</title>
+<meta name="description" content="如何在Apache Web服务器上使用MultiViews方法自动提供HTTP请求所请求语言的资源？" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-apache-lang-neg' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida and Martin Dürst, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-apache-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-01-14' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2009-03-05', time:'10:26'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-05-23', time:'13:08'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-apache-lang-neg-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Apache MultiViews语言协商设置</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+<section id="question">
+<h2>问题</h2>
+    <p class="question">如何在Apache Web服务器上使用MultiViews方法自动提供HTTP请求所请求语言的资源？</p>
+
+
+
+<p>当用户代理从服务器请求文档时，有关用户语言偏好的信息通常通过HTTP Accept-Language标头传递给服务器。如果服务器存储了多语言版本的页面，则可以使用这个HTTP信息来检索用户首选语言的页面（如果存在的话）。如果服务器上只有一个版本的页面，则返回该版本。</p>
+  <p>根据HTTP请求中的Accept-Language信息选择要返回给用户的页面机制称为<dfn>语言协商</dfn>。</p>
+  <p>在许多情况下，用户代理的默认设置是没问题的。例如，如果你用的是日语版本的浏览器，浏览器通常会假设你喜欢看日语的页面，并将此信息发送到服务器。在主流浏览器中，你可以修改这些语言偏好。有关更多信息，请参阅<a class="print" href="/International/questions/qa-lang-priorities"><cite>在浏览器中设置语言偏好</cite></a>。</p>
+  <p>Apache中有两种不同的资源协商方法。第一种涉及使用<dfn>类型映射（type map）文件</dfn>（即 .var 文件），该文件明确命名包含语言变体的文件；第二种涉及使用<dfn>MultiViews</dfn>搜索，服务器在其中进行隐式文件名模式匹配并从结果中选择。如果服务器管理员允许，MultiViews选项也可以在目录基础上设置。</p>
+  <p>本文阐述了如何用MultiViews在Apache服务器上设置网页，以实现语言协商。</p>
+</section>
+
+
+<section id="answer">
+<h2>答案</h2>
+  <p>首先，语言协商不一定是向读者提供多语言内容的最佳方法。在某些情况下，本地化网站最好通过将页面的翻译版保存在特定语言的目录中，或通过混合两种方法来维护。哪种方法适合，以及何时适合，将是其他文章的主题。</p>
+  <p>设置语言协商涉及</p>
+  <ol>
+    <li>为文件的不同语言版本制定命名规范，</li>
+    <li>规划回退策略以处理不支持的请求语言，以及</li>
+    <li>设置适当的后端指令使一切正常工作。</li>
+  </ol>
+  <p>Apache服务器有多种设置语言协商的方法，使用什么方法取决于高级别的设置和服务器管理员启用或禁用的权限。你可能需要联系服务器管理员以检查应该使用哪种方法以及你拥有哪些权限。</p>
+  <p>考虑到服务器设置有非常多的方法，很难提供一个如何设置语言协商的简单明确描述。以下是一个典型方法的描述。我们将假设<code class="kw" translate="no">MultiViews</code>已启用（默认），并且用户可以更改<code class="kw" translate="no">.htaccess</code>文件（目录结构中的文本文件）中的特定指令。<code class="kw" translate="no">AllowOverride</code>必须由服务器管理员正确设置，.htaccess文件方法才能工作。你需要与服务器管理员联系，以检查这种方法是否适合你。</p>
+  <p>我们将使用以下示例：一个名为example.html的网页以3种语言提供，英语、法语和德语，默认是英语。尽管这个例子使用的是 .html 文件，语言协商可以应用于各种各样的文件。</p>
+
+  <section id="naming">
+<h3>文件命名</h3>
+    <p>每个语言版本都由一个特殊的扩展名表示，这个扩展名可以出现在 .html 之前或之后。实际上，关于此扩展名的放置有一些注意事项。</p>
+    <p>如果将语言扩展名放在最后，则可以在请求文件时包含或排除 .html 扩展名。但是，如果文件不在Apache服务器上（例如，从另一个服务器、CD或硬盘上读取），这种策略可能会使文件更难读取或编辑。这是因为大多数编辑器和浏览器只是查看最后一个扩展名来确定这是什么类型的文件以及如何处理它。对于我们的示例，英语、法语和德语文件将分别命名为：</p>
+    <ul>
+      <li>example.html.en</li>
+      <li>example.html.fr</li>
+      <li>example.html.de</li>
+    </ul>
+    <p>如果将 .html 扩展名放在最后，则如果文件不在Apache服务器上，更容易读取或编辑文件，但要访问Apache服务器上的资源，必须在浏览器地址栏或链接中输入<strong>不带扩展名</strong>（例如<code>&lt;a href="example"&gt;...&lt;/a&gt;</code>）的名称。对于我们的例子，文件名将是：</p>
+    <ul>
+      <li>example.en.html</li>
+      <li>example.fr.html</li>
+      <li>example.de.html</li>
+    </ul>
+    <p>用的语言标签可以是任何字符串，只要你在服务器上定义了它们的含义（见下文）。服务器可能已经从httpd.conf文件中的全局设置中识别出许多双字母语言标签。我们建议使用<a class="print" href="http://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>定义的方式使用ISO语言和国家代码，因为这提供了更好的一致性和易于识别的语言标签。</p>
+    <p>你应该小心一些扩展名。比如，使用波兰语的ISO代码 .pl 会与通常用于指示Perl文件的扩展名混淆。因此，你可能希望使用pl-PL表示波兰语。</p>
+    <p>用户还可以通过输入完整的文件名来打开特定文件，如example.fr.html将打开法语版本，不管用户的语言设置如何。</p>
+  </section>
+
+  <section id="directives">
+<h3>服务器指令</h3>
+    <p>你通常使用<span class="kw"><a class="print" href="https://httpd.apache.org/docs/2.4/mod/mod_mime.html#addlanguage">AddLanguage</a></span>指令来指定哪个扩展名映射到传入HTTP中指定的内容语言。</p>
+    <p>例如，以下指令将HTTP内容语言请求映射到扩展名 .fr：</p>
+    <blockquote>
+      <p><code> AddLanguage fr .fr</code></p>
+    </blockquote>
+    <p>你可以在多个地方指定该内容。它可能已经由服务器httpd.conf文件全局指定，或者服务器管理员可能已经添加。上传内容的用户也可能在目录层次结构中的文件中指定它。这类文件通常称为<code class="kw" translate="no">.htaccess</code>。</p>
+  </section>
+
+  <section id="defaults">
+<h3>默认文件</h3>
+    <div class="sidenoteGroup">
+      <p>指定默认文件很重要，因为如果用户的首选语言列表中没有英语、法语或德语（如西班牙语用户），或者用户代理不支持内容协商，将收到HTTP 406结果（NOT ACCEPTABLE）而不是文件。</p>
+      <aside class="sideinfonote"><p class="info">另请注意，一些主流浏览器可能会将美国用户的默认设置设定为<code>en-US</code>。这会和服务器上的<code>en</code>不匹配，因此你应该确保提供方法让他们访问英语页面。</p></aside>
+    </div>
+    <p>指定默认文件的最佳方法取决于你的语言扩展名是在 .html 扩展名之前还是之后，以及你使用的Apache版本。在下面的示例中，我们将假设默认是英语（考虑到英语的广泛性，这可能是默认的最佳选择）。</p>
+  </section>
+
+  <section id="specdef2">
+<h3>在Apache 2.0.30及更高版本中指定默认文件</h3>
+    <p>在Apache服务器的2.0.30及更高版本上，你可以用<span class="kw"><a class="print" href="https://httpd.apache.org/docs/2.4/mod/mod_negotiation.html#ForceLanguagePriority">ForceLanguagePriority</a></span>和<span class="kw"><a class="print" href="https://httpd.apache.org/docs/2.4/mod/mod_negotiation.html#languagepriority">LanguagePriority</a></span>指令来优雅地指定默认文件。</p>
+    <p>根据上面的例子，我们可以用以下两行将默认设置为英语：</p>
+    <blockquote>
+      <p><code> LanguagePriority en fr de</code><br />
+        <code>ForceLanguagePriority Fallback</code></p>
+    </blockquote>
+    <p>现在，如果西班牙语用户在我们的示例上下文中请求西班牙语网页，他们将打开英语网页，即<code class="kw" translate="no">LanguagePriority</code>列表中的第一项。</p>
+  </section>
+
+  <section id="specdef1">
+<h3>在 Apache 1.3.4 到 2.0.29 中指定默认文件</h3>
+    <p>如果你的服务器版本早于2.0.30，你不得不做更多的工作来指定默认文件，因为没有<code class="kw" translate="no">ForceLanguagePriority</code>指令。此外，该方法将取决于语言扩展名是在 .html 扩展名之前还是之后。</p>
+    <p>首先，让我们看一下语言扩展名在 .html 扩展名之前的情况（也就是必须在浏览器地址栏或链接中使用不带 .html 扩展名的链接）。要将默认设置为英语，你可以在目录中创建英语文件的副本，名称为：</p>
+    <blockquote>
+      <p>example.html</p>
+    </blockquote>
+    <p>如果你的语言扩展名在 .html 之后（也就是可以在请求文件时包含或不包含 .html 扩展名），你需要将英语文件的副本命名为：</p>
+    <blockquote>
+      <p>example.html.html</p>
+    </blockquote>
+    <p>默认文件名以 .html.html 结尾，因为如果默认文件名为 example.html 并且用户请求文件为 example.html，则永远不会进行内容协商（因为可以找到完全匹配）。</p>
+  </section>
+</section>
+
+
+<section id="bytheway">
+<h2>顺便说一下</h2>
+  <p>如果目录中只有一个给定名称的文件，并且没有语言扩展名，则无论客户端的语言偏好如何，都将提供该文件。</p>
+  <p>这个技术可以应用于HTML之外的其他类型的文件。我们在这里只用了HTML的例子，因为这是一个常见需求。</p>
+</section>
+
+
+<section id="endlinks">
+<h2>进一步阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/questions/qa-when-lang-neg"><cite>何时使用语言协商</cite></a></p>
+    </li>
+    <li>
+      <p><a href="/International/questions/qa-lang-priorities"><cite>在浏览器中设置语言偏好</cite></a></p>
+    </li>
+    <li>
+      <p><a href="http://httpd.apache.org/docs/content-negotiation.html">Apache内容协商文档，版本 1</a></p>
+    </li>
+    <li>
+      <p><a href="https://httpd.apache.org/docs/2.4/content-negotiation.html">Apache内容协商文档，版本 2.4</a></p>
+    </li>
+    <li>
+      <p>相关链接，<cite>设置服务器</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#language">语言</a></li>
+      <li><a href="/International/techniques/server-setup#multiviews">在 Apache上设置MultiViews语言协商</a></li>
+      <li><a href="/International/techniques/server-setup#langvalues">选择语言值</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
