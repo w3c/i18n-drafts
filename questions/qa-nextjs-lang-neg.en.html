@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Next.js language negotiation set up</title>
+<meta name="description" content="How do I use the Next.js to automatically serve resources in the language requested by an HTTP request?" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-nextjs-lang-neg' // the file name WITHOUT extensions
+f.authors = 'Fuqiao Xue, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-nextjs-lang-neg' // blog search string - usually the filename without extensions
+f.firstPubDate = '2025-05-30' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2025-05-30', time:'10:26'}  // date and time of latest substantive changes to this document
+f.status = 'draft'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-05-30', time:'13:08'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-nextjs-lang-neg-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Next.js language negotiation set up</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+<section id="question">
+<h2>Question</h2>
+    <p class="question">How do I use the Next.js to automatically serve resources in the language requested by an HTTP request?</p>
+
+
+
+    <p>When a user agent requests a document from a server, information about the user&#39;s language preferences is typically passed to the server via the HTTP <code translate="no">Accept-Language</code> header. If the server stores versions of a page in more than one language, this HTTP information can be used to retrieve the page in the user&#39;s preferred language, if it is available. If there is only one version of a page on the server, that version will be retrieved.</p>
+    <p>The mechanism of choosing the relevant page to return to the user, based on the <code translate="no">Accept-Language</code> information in the HTTP request, is referred to as <strong>language negotiation</strong>.</p>
+    <p>In many cases, the initial user agent setting is okay. For example, if you have a Japanese version of a browser, the browser typically assumes that you prefer pages in Japanese, and sends this information to the server. Mainstream browsers allow you to modify these language preferences. For more information see <a href="https://www.w3.org/International/questions/qa-lang-priorities">Setting language preferences in a browser</a>.</p>
+    <p>In this article, we’ll walk through how to implement language negotiation in a <strong>Next.js</strong> application using the Accept-Language header, enabling your site to automatically serve localized content that matches a user’s language preferences.</p>
+    </section>
+
+    <section id="answer">
+    <h2>Answer</h2>
+    <p>Next.js includes <strong>automatic locale detection</strong> based on the Accept-Language header. When enabled, users are automatically redirected to their preferred language path.</p>
+    <section id="how-to-enable-it">
+    <h3>How to enable it</h3>
+    <p>In your <code>next.config.ts</code> file, configure the <code>i18n</code> field:</p>
+    <figure>
+    <pre><code class="language-typescript">import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  i18n: {
+    locales: ['en', 'fr', 'de'],
+    defaultLocale: 'en',
+    localeDetection: true, // Enable automatic locale detection
+  },
+};
+
+export default nextConfig;</code></pre>
+</figure>
+    <p>With this configuration, a user with <code translate="no">Accept-Language: fr</code> will be redirected to <code translate="no">/fr</code>.</p>
+    <p>When the user is redirected to <code translate="no">/fr</code>, Next.js looks for pages and content under the <code translate="no">fr</code> locale. How you should organize that content will be the topic of a future article.</p>
+  </section>
+
+    <section id="testing-your-implementation">
+    <h3>Testing your implementation</h3>
+
+    <section id="manual-test-via-curl">
+    <h4>Manual test via curl</h4>
+
+    <p>You can test your implementation by manually sending an HTTP request with the <code translate="no">Accept-Language</code> header:</p>
+
+    <figure>
+    <pre><code>curl -H "Accept-Language: fr" http://localhost:3000/</code></pre>
+  </figure>
+
+    <p>You should receive a redirect to <code translate="no">/fr</code>.</p>
+    </section>
+
+    <section id="test-in-a-browser"></section>
+    <h4>Test in a browser</h4>
+    <p><a href="https://www.w3.org/International/questions/qa-lang-priorities">Set language preferences in browsers</a> and verify automatic redirection.</p>
+    </section>
+  </section>
+
+  <section id="endlinks">
+    <h2>Further reading</h2>
+    <ul>
+    <li><a href="https://www.w3.org/International/questions/qa-when-lang-neg">When to use language negotiation</a></li>
+    <li><a href="https://www.w3.org/International/questions/qa-lang-priorities">Setting language preferences in a browser</a></li>
+    <li><a href="https://nextjs.org/docs/app/guides/internationalization">Next.js documentation on Internationalization</a></li>
+    <li>Related links, Setting up a server<ul>
+    <li><a href="https://www.w3.org/International/techniques/server-setup#language">Language</a></li>
+    <li><a href="https://www.w3.org/International/techniques/server-setup#langvalues">Choosing language values</a></li>
+    </ul>
+    </li>
+    </ul>
+    
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
