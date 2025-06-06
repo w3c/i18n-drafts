@@ -273,7 +273,7 @@ function addSkipLink() {
 	var skipLink = document.createElement('a');
 	skipLink.href = '#title';
 	skipLink.className = 'skip-link';
-	skipLink.textContent = 'Skip to main content';
+	skipLink.textContent = s.skipNavigation;
 	
 	// Insert as the first element in the body
 	document.body.insertBefore(skipLink, document.body.firstChild);
