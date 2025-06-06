@@ -266,6 +266,19 @@ g.bottomOfPage = '<footer><address>'+credits+'</address>'+
 
 
 
+// SKIP LINK
+
+function addSkipLink() {
+	// Create the skip link element
+	var skipLink = document.createElement('a');
+	skipLink.href = '#title';
+	skipLink.className = 'skip-link';
+	skipLink.textContent = 'Skip to main content';
+	
+	// Insert as the first element in the body
+	document.body.insertBefore(skipLink, document.body.firstChild);
+}
+
 // COMPLETE PAGE
 
 function completePage () {
@@ -274,6 +287,7 @@ function completePage () {
 	document.getElementById('relatedlinks').innerHTML = sidebarExtras
 	//fillinTranslations()
 	if (document.getElementById("toclocation")) createtoc(true);
+	addSkipLink()
 	getURLs()
 	}
 
