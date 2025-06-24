@@ -40,7 +40,7 @@ While [European digits](https://www.w3.org/TR/i18n-glossary/#dfn-european-digits
 - **ISO 4217 codes:** Three-letter standardized codes (e.g., `EUR`, `GBP`, `JPY`)
 - **Full names:** Complete currency names (e.g., `US Dollar`, `Japanese Yen`)
 
-**Placement:** The symbol can appear before the number (e.g., `$100.00`) or after (e.g., `1,000 ₫`).
+**Placement and spacing:** The symbol can appear before the number (e.g., `$100.00`) or after (e.g., `1,000 ₫`). From these two examples, we can also see that some currencies use no space between the symbol and number, while others include a space.
 
 **Ambiguity:** The same symbol might represent multiple currencies (e.g., `$` for US Dollar, Canadian Dollar, Australian Dollar, etc.). So the locale is crucial.
 
