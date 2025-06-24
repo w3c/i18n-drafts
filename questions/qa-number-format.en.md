@@ -12,7 +12,7 @@ Hardcoding formats is a brittle and unsustainable approach. Fortunately, the web
 
 ### The core problem: why is formatting so complex?
 
-Before diving into solutions, let's unpack the nuances that make international number and currency formatting a non-trivial task:
+Before diving into solutions, let's unpack the nuances that make international number, currency, and unit formatting a non-trivial task:
 
 #### Decimal separators
 
