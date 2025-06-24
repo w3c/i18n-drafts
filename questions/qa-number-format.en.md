@@ -32,7 +32,13 @@ While [European digits](https://www.w3.org/TR/i18n-glossary/#dfn-european-digits
 
 #### Currency symbol display
 
-**Symbol vs. Code vs. Name:** Currencies can be displayed using a specific symbol (e.g., `€`, `£`, `¥`), their ISO 4217 code (e.g., `EUR`, `GBP`, `JPY`), or their full name (e.g., `US Dollar`, `Japanese Yen`).
+**Symbol vs. Code vs. Name:** Currencies can be displayed in several ways:
+
+- **Compact symbols:** Like "€", "£", "¥", "$"
+- **Medium/disambiguated symbols:** Multi-character symbols that clarify the specific currency (e.g., `CA$`, `US$`, `MX$`)
+- **Contextual symbol variations:** Different symbols used in different contexts (e.g., `¥` vs. `円` for Japanese yen)
+- **ISO 4217 codes:** Three-letter standardized codes (e.g., `EUR`, `GBP`, `JPY`)
+- **Full names:** Complete currency names (e.g., `US Dollar`, `Japanese Yen`)
 
 **Placement:** The symbol can appear before the number (e.g., `$100.00`) or after (e.g., `1,000 ₫`).
 
