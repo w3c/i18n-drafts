@@ -161,14 +161,32 @@ console.log(`French Kilobytes: ${kbFrFormatter.format(storage)}`); // Output: Fr
 
 You can find a list of standard unit identifiers (e.g., `meter`, `kilogram`, `liter`, `kilobyte`, `percent`, `hour`) in the [ECMAScript Internationalization API Specification](https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier).
 
-## By the way
+### Choosing the right locale
 
-Typically, you'll want to format based on the user's browser language. You can get this from `navigator.language` or `navigator.languages`:
+Typically, you'll want to format number, currency, and unit according to the language of the web page. This can be determined from the `lang` attribute:
 
 ```javascript
-const userLocale = navigator.language || 'en-US'; // Fallback to 'en-US'
-const formatter = new Intl.NumberFormat(userLocale, { style: 'currency', currency: 'EUR' });
-console.log(`Price for user's locale: ${formatter.format(199.99)}`);
+// Get the page's language from the HTML lang attribute
+const pageLocale = document.documentElement.lang || 'en-US'; // Fallback to 'en-US'
+const formatter = new Intl.NumberFormat(pageLocale, { style: 'currency', currency: 'USD' });
+console.log(`${formatter.format(627.92)}`);
+```
+
+Occasionally, you may want to override the page locale with a specific locale, such as when creating internationalization tutorials or displaying content in multiple languages:
+
+```javascript
+// Force a specific locale regardless of page language
+const tutorialFormatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+console.log(`German example: ${tutorialFormatter.format(199.99)}`); // Output: 199,99 €
+```
+
+In some cases, you might want to use the user's preferred language:
+
+```javascript
+// Use the user's preferred language
+const browserLocale = navigator.language || 'en-US';
+const formatter = new Intl.NumberFormat(browserLocale, { style: 'currency', currency: 'USD' });
+console.log(`${formatter.format(627.92)}`);
 ```
 
 ## Further reading
