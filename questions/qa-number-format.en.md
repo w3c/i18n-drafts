@@ -4,7 +4,7 @@
 
 **How do I prepare my web pages to display varying international number, currency, and unit formats?**
 
-Number, currency, and unit formatting varies dramatically across cultures and regions. A seemingly innocuous error can sometimes lead to financial misinterpretations.
+The formats used by numbers, including specialized formatting such as currencies and units, varies dramatically across cultures, regions, and languages. A seemingly innocuous error can lead misunderstanding or mistakes.
 
 ## Answer
 
