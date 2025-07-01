@@ -142,6 +142,16 @@ f.additionalLinks = ''
     <p>One point worth special note is that values of numeric character references (such as <code>&amp;#x20AC;</code> or <code>&amp;#8364;</code> for the euro sign <span class="qchar">€</span>) are interpreted as Unicode characters – <strong>no matter what encoding you use for your document</strong>. </p>
     <p>For example, the code point number of the euro sign in Windows code page 1252 is 80. It is a common error for people working on content in that encoding to represent the euro sign using <code>&amp;#x80;</code>. This HTML should actually produce a control character, since the escape would be expanded as the character at position 80 in the Unicode repertoire. (In fact, browsers tend to silently correct that particular error. See the <a class="print" href="/International/tests/repo/results/escapes#reallocated">test pages</a>.) </p>
   </section>
+
+  <section id="security">
+    <h3>Security considerations</h3>
+        <p>Proper character escaping is crucial for preventing Cross-Site Scripting (XSS) attacks, especially when displaying user-generated content. Always escape user input before inserting it into HTML:</p>
+        <div class="example">
+          <p><strong>Dangerous:</strong> <code>&lt;p&gt;Hello &lt;script&gt;alert('XSS')&lt;/script&gt;&lt;/p&gt;</code></p>
+          <p><strong>Safe:</strong> <code>&lt;p&gt;Hello &amp;lt;script&amp;gt;alert('XSS')&amp;lt;/script&amp;gt;&lt;/p&gt;</code></p>
+        </div>
+        <p>This applies to all contexts where user data is inserted into HTML, including element content, attribute values, and URLs.</p>
+    </section>
 </section>
   
   
