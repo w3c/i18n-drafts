@@ -20,8 +20,8 @@ f.status = 'published'  // should be one of draft, review, published, notreviewe
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2023-05-30', time:'21:45'} // date and time of latest edits to this document/translation
-f.contributors = 'Albert Lunde, Asmus Freytag, Björn Höhrmann, Henri Sivonen, John Cowan, Leif Halvard Silli, Norbert Lindenberg' // people providing useful contributions or feedback during review or at other times
+f.thisVersion = { date:'2025-07-16', time:'21:45'} // date and time of latest edits to this document/translation
+f.contributors = 'Albert Lunde, Asmus Freytag, Björn Höhrmann, Fuqiao Xue, Henri Sivonen, John Cowan, Leif Halvard Silli, Norbert Lindenberg' // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
 
@@ -104,13 +104,13 @@ XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc
 <h3> Qu’est-ce qu’un indicateur d’ordre des octets ?</h3>
 
 <div class="sidenoteGroup">
-<p>Au début d’une page qui utilise un <a class="termref" href="/International/articles/definitions-characters/#charsets">encodage de caractères</a> <a class="termref" href="/International/articles/definitions-characters/#unicode">Unicode</a>, vous pouvez trouver quelques octets qui représentent le point de code Unicode U+FEFF INDICATEUR D’ORDRE DES OCTETS. Son abréviation est « <dfn>BOM</dfn> » d’après le terme anglais « <em>byte-order mark</em> ».</p>
+<p>A <dfn>Byte Order Mark</dfn>, sometimes abbreviated "BOM", is a special Unicode character intended to appear at the very beginning of a text file. Its original purpose was to indicate the <q><a href="https://en.wikipedia.org/wiki/Endianness">endianness</a></q> of text that used the UTF-16 or UTF-32 character encodings of Unicode. The Byte Order Mark is U+FEFF ZERO WIDTH NON-BREAKING SPACE: the character name refers to a separate, deprecated, use of the character.</p>
+<p>Some systems use the BOM code point at the start of a file to indicate that text files are using the UTF-8 character encoding, even though UTF-8 does not need a marker to indicate endianness.</p>
+<p>While often invisible and intended to aid in correctly interpreting text, the presence of the BOM can sometimes cause unexpected display issues or problems with software if not handled correctly.</p>
 <div class="insideinfonote">
 <p class="info">Le nom INDICATEUR D’ORDRE DES OCTETS est un alias ; à l’origine, ce caractère s’appelait ESPACE INSÉCABLE SANS CHASSE (abrégé en ZWNBSP d’après le terme anglais « <em>zero width no-break space</em> »). Depuis l’introduction du caractère U+2060 GLUON DE MOTS, le caractère U+FEFF n’est plus utilisé dans son sens d’espace insécable sans chasse. Puisqu’il dispose d’un alias formel, le nom ESPACE INSÉCABLE SANS CHASSE n’est plus utile. Nous utiliserons donc son alias dans cet article.</p>
 </div>
 </div>
-
-<p>Lorsqu’on l’utilise correctement, l’indicateur d’ordre des octets est invisible.</p>
 
 <p>Avant l’introduction d’UTF-8 au début de l’année 1993, on transférait généralement le texte Unicode à l’aide d’un encodage appelé UCS-2 (l’ancêtre d’UTF-16). Dans cet encodage, les caractères étaient représentés par des mots (ou « unités de stockage ») de 16 bits. On pouvait stocker ces mots dans un flux d’octets de deux manières : en commençant par l’octet le plus significatif (ordre <span class="qterm">petit-boutiste</span>) ou par le moins significatif (ordre <span class="qterm">gros-boutiste</span>). Pour préciser dans quel ordre ils étaient stockés, on plaçait le caractère U+FEFF (l’indicateur d’ordre des octets) au début du flux. Il s’agissait d’un nombre magique qui ne faisait pas partie du texte représenté par le flux.</p>
 
@@ -142,6 +142,33 @@ XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc
 <p>Si vous utilisez un encodage UTF-16 sur votre page (ce que nous vous déconseillons vivement), voici quelques <a href="#additionalinfo">aspects supplémentaires à prendre en compte</a>.</p>
 </section>
 
+
+<section id="whenToUseBOM">
+<h3>When to Use (and Not Use) the BOM</h3>
+<p>The necessity and recommendation for using a BOM varies significantly depending on the Unicode encoding scheme being used.</p>
+
+<h4>UTF-8</h4>
+<p>For UTF-8, the BOM is the byte sequence <code>EF BB BF</code>. Unlike UTF-16 and UTF-32, UTF-8 does not have byte order (endianness) issues, so a BOM is not needed for this purpose. Its only function in UTF-8 is to act as a "signature" to indicate that the file is UTF-8 encoded. The Unicode Standard permits the BOM in UTF-8 but does not recommend its use.</p>
+<p><strong>Recommendation:</strong> Generally, it's best to avoid using a BOM with UTF-8 files unless you have a specific reason or compatibility requirement. Always prefer UTF-8 without a BOM if possible.</p>
+
+<h4>UTF-16 (UTF-16BE & UTF-16LE)</h4>
+<p>For UTF-16, the BOM is crucial for indicating endianness if the specific endianness is not already defined by the character set label (e.g., if labeled just as "UTF-16").</p>
+<ul>
+<li><code>FE FF</code>: Indicates Big Endian (UTF-16BE).</li>
+<li><code>FF FE</code>: Indicates Little Endian (UTF-16LE).</li>
+<li>If a UTF-16 stream is read with the wrong endianness, the BOM character <code>U+FEFF</code> will appear as <code>U+FFFE</code>, which is a noncharacter.</li>
+<li>If the character set is explicitly stated as "UTF-16BE" or "UTF-16LE", a BOM should <em>not</em> be used as the byte order is already known.</li>
+<li><strong>Recommendation:</strong> Use a BOM if your UTF-16 data might be interpreted by systems with different native endianness and the specific endianness (BE or LE) is not declared by a higher-level protocol. If the specific UTF-16 encoding (LE or BE) is known and declared, omit the BOM. (However, for HTML, UTF-8 is strongly preferred over UTF-16).</li>
+</ul>
+
+<h4>UTF-32 (UTF-32BE & UTF-32LE)</h4>
+<p>Similar to UTF-16, the BOM in UTF-32 indicates endianness but UTF-32 is rarely used for transmission or web content.</p>
+<ul>
+<li><code>00 00 FE FF</code>: Indicates Big Endian (UTF-32BE).</li>
+<li><code>FF FE 00 00</code>: Indicates Little Endian (UTF-32LE).</li>
+<li><strong>Recommendation:</strong> Similar to UTF-16, use a BOM if endianness is not otherwise specified. (Again, UTF-8 is preferred for HTML).</li>
+</ul>
+</section>
 
 
 
@@ -270,18 +297,18 @@ XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc
 <section id="additionalinfo">
 <h2>Informations complémentaires</h2>
 
-<p>Voici quelques remarques complémentaires pour les personnes qui encodent leurs pages HTML en UTF-16. Remarque : pour les pages HTML, il est recommandé d’utiliser UTF-8 et d’éviter UTF-16. Pour la plupart des gens, cette section sera donc théorique.</p>
+<p>This section provides further details primarily for those encoding HTML pages using UTF-16 or UTF-32. As a strong general recommendation, <strong>UTF-8 should be used for all HTML content</strong> over UTF-16 or UTF-32.</p>
 
 <div class="sidenoteGroup">
-<p>D’après les normes RFC 2718 et Unicode, si vous déclarez l’encodage de caractères UTF-16LE ou UTF-16BE dans l’en-tête HTTP de votre page, vous devriez vous passer d’indicateur d’ordre des octets au début de votre page. L’utilisation d’un BOM n’est appropriée que lorsque le charset IANA « UTF-16 » est précisé dans l’en-tête HTTP de la page.</p>
+<p>For <strong>UTF-16</strong>, as detailed in the <a href="#whenToUseBOM">"When to Use (and Not Use) the BOM"</a> section, a BOM is appropriate if the page is simply labeled with the IANA charset "UTF-16" to indicate endianness. However, if the character encoding is declared via HTTP as specifically "UTF-16LE" or "UTF-16BE", a BOM should not be used. This guidance aligns with RFC 2718 and the Unicode Standard.</p>
 <div class="sideinfonote">
 <p class="warning">Remarque : cela concerne uniquement l’<em>étiquetage</em> du contenu. Bien entendu, que vous indiquiez l’encodage UTF-16 en ajoutant un indicateur d’ordre des octets ou que vous indiquiez l’encodage UTF-16LE ou UTF-16BE, la séquence d’octets reste la même.</p>
 </div>
 </div>
 
-<p>La spécification HTML5 interdit actuellement l’utilisation de toute autre déclaration d’encodage textuelle à l’intérieur du document pour les pages qui utilisent l’encodage UTF-16. En pratique, cela signifie que l’indicateur d’ordre des octets constitue lui-même la déclaration que vous devez ajouter.</p>
+<p>The HTML5 specification currently disallows the use of any other, text-based in-document encoding declarations (like a <code class="kw" translate="no">meta</code> tag) for pages using UTF-16. In effect, if you are using the generic "UTF-16" label, the BOM itself serves as the necessary in-stream declaration of byte order.</p>
 
-<p>De la même manière, vous devrez utiliser le BOM si vous déclarez l’encodage UTF-32, mais l’éviter si vous déclarez l’encodage UTF-32BE ou UTF-32LE. Toutefois, si nous n’avons pas mentionné l’encodage UTF-32 jusqu’à présent, c’est parce que son utilisation est vivement déconseillée pour le contenu HTML, et parce que certains navigateurs ne sont plus compatibles avec cet encodage.</p>
+<p>Similarly, for <strong>UTF-32</strong>, a BOM can be used if the content is labeled generically as "UTF-32". It should not be used if the label is specifically "UTF-32BE" or "UTF-32LE". However, the use of UTF-32 for HTML content is strongly discouraged, and some implementations have removed support for it.</p>
 </section>
 
 
