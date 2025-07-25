@@ -121,22 +121,6 @@ In some countries, postal codes represent relatively large areas, such as an ent
 
 Not all countries use postal codes. For example, Angola and some other nations do not use postal codes, which can make validation more challenging. Always design systems with flexibility to accommodate such exceptions.
 
-### Implications for international shipping systems
-
-When designing systems that handle international shipping, consider the following:
-
-**Flexible address fields:** Provide generous space for descriptive addressing information. A single "Address Line 1" field may not be sufficient for addresses that require detailed landmark descriptions or relative positioning information.
-
-**Additional delivery instructions:** Include dedicated fields for delivery instructions or notes that can accommodate informal addressing information. This might include fields like "Delivery Notes," "Landmark Information," or "Local Directions."
-
-**Local delivery partnerships:** For areas with informal addressing systems, consider partnerships with local delivery services or community representatives who have the local knowledge necessary for successful "last mile" delivery.
-
-**Alternative delivery options:** Provide options for delivery to central pickup points, local businesses, or community centers in areas where direct residential delivery may be challenging.
-
-**Contact information priority:** In areas with informal addressing, reliable phone numbers or other contact methods become even more critical for coordinating delivery and obtaining real-time directions from recipients.
-
-Understanding these challenges helps create more inclusive shipping systems that can serve customers worldwide, regardless of whether they have formal street addresses or rely on informal addressing systems.
-
 ## Implications for field design
 
 ### General tips for handling international addresses
@@ -156,6 +140,8 @@ Understanding these challenges helps create more inclusive shipping systems that
 ```
 
 **Do not assume addresses will follow a specific order.** Be prepared to handle both "largest-to-smallest" and "smallest-to-largest" formats for address components. Remember that in countries like Germany and Switzerland, the street name comes before the house number, unlike in the US and UK.
+
+**Provide additional delivery instructions.** Include dedicated fields for delivery instructions or notes that can accommodate informal addressing information. This might include fields like "Delivery Notes".
 
 **Allow non-ASCII characters.** Many addresses include characters from non-Latin scripts (e.g., Chinese, Japanese, Cyrillic). Use a Unicode encoding (such as UTF-8) in your pages, backend databases, and all software code in between.
 
