@@ -68,14 +68,14 @@ f.additionalLinks = ''
   <p>In most countries, an address consists of a combination of elements such as a street name, a house number, a postal code, and a locality name. However, the order, structure, and even the elements themselves can vary significantly between countries—and sometimes even within the same country. Below are some examples of how address formats differ around the world.</p>
 <h3 id="street-numbers-and-house-numbering">Street numbers and house numbering</h3>
 <p>In many countries like the United States, United Kingdom, and France, the house number precedes the street name (e.g., "123 Main Street"). However, in Germany and Switzerland, the street name comes first, followed by the house number:</p>
-<pre>Sternengasse 3
+<pre lang="de">Sternengasse 3
 35108 Allendorf
 Deutschland
 </pre><p>This difference has important implications for form design, as users from these countries may expect to enter their address in this order.</p>
 
 <p>In Colombia, instead of numbering houses sequentially along a street, addresses are based on the distance from the nearest intersecting street. For example, "Calle 122 # 18 – 15" means 122nd street, 15 metres from the intersection with 18th street.</p>
 <p>Kyoto uses a similar system based around street intersections, with cardinal directions indicating the location relative to the intersection. For instance, the address of Kyoto Tower is:</p>
-<pre>京都市下京区 Kyōto-shi, Shimogyō-ku
+<pre lang="ja">京都市下京区 Kyōto-shi, Shimogyō-ku
 烏丸七条下ル Karasuma-Shichijō-sagaru
 東塩小路町 721-1 Higashi-Shiokōji 721-1
 </pre>
@@ -91,17 +91,17 @@ Deutschland
 Market Drayton
 UK
 </pre>
-<p>It's important to note that the street name and house number (63 Somerton Road) are not on the first line of this address. The first line contains the flat number and building name (Flat 4, Danson House). Additional information may also precede these details, such as "℅" (care of) followed by a person's or organization's name when mail is being delivered to someone at another person's address.</p>
+<p>It's important to note that the street name and house number (<code>63 Somerton Road</code>) are not on the first line of this address. The first line contains the flat number and building name (<code>Flat 4, Danson House</code>). Additional information may also precede these details, such as "℅" (care of) followed by a person's or organization's name when mail is being delivered to someone at another person's address.</p>
 <h3 id="order-of-address-components">Order of address components</h3>
 <p>While most countries recommend that users format addresses in order from the most detailed part (such as street and house number) to the most general part (like city and province), there are some cases that slightly deviate from the general rule.</p>
 <p>In China and Japan, addresses are written starting with the postal code, followed by the largest administrative area (e.g., province), and down to the smallest unit (e.g., room number). For example, here is an example of a Chinese address:</p>
-<pre>100083 北京市 海淀区 学院路 37号
+<pre lang="zh-Hans">100083 北京市 海淀区 学院路 37号
 </pre>
-<p>(Postal code → City → District → Street → House number).</p>
-<p>Russia often follow a "largest-to-smallest" order, starting with the country. For example:</p>
-<pre>Россия, Москва, Тверская улица, 16
+<p><em>(Postal code → City → District → Street → House number)</em></p>
+<p>Russia often follows a "largest-to-smallest" order, starting with the country. For example:</p>
+<pre lang="ru">Россия, Москва, Тверская улица, 16
 </pre>
-<p>(Country → City → Street → House number).</p>
+<p><em>(Country → City → Street → House number)</em></p>
 <p>However, Russia also uses the "smallest-to-largest" order commonly seen internationally, so developers should account for both formats.</p>
 <h3 id="international-shipping-and-last-mile">International shipping and "last mile" delivery challenges</h3>
 <p>When designing systems for international shipping, it's important to understand that formal address structures may not always be sufficient for successful delivery, particularly in the "last mile" of the delivery process: the final step of getting a package from a local distribution center to its ultimate destination.</p>
@@ -134,12 +134,12 @@ UK
 <p><mark class="requirement">Avoid rigid field labels and formats.</mark> Using labels like "Street Address" or "Zip Code" can be confusing for users whose countries do not use these concepts. Instead, use more generic terms like "Address Line 1" and "Postal Code."</p>
 <p><mark class="requirement">Provide flexibility in input fields.</mark> Allow multiple lines for addresses. Some addresses, especially in rural areas, can be long and descriptive. Many addresses require multiple lines for apartment numbers, building names, "care of" designations, and other elements before the street information appears. Provide at least 3-4 address line fields to accommodate these variations. Avoid strict validation rules that assume specific formats (e.g., expecting numeric postal codes or that the street name must appear on the first line).</p>
 <p><mark class="requirement">Separate fields for granularity only if needed.</mark> If you need specific parts of an address (e.g., city, postal code) for sorting or validation, use clear labels and instructions. For example:</p>
-<pre><code>Address Line 1 (Street address or P.O. Box)
+<pre>Address Line 1 (Street address or P.O. Box)
 Address Line 2 (Apartment, suite, unit, building, floor, etc.)
 City/Town
 State/Province/Region
 Postal Code
-</code></pre>
+</pre>
 <p><mark class="requirement">Do not assume addresses will follow a specific order.</mark> Be prepared to handle both "largest-to-smallest" and "smallest-to-largest" formats for address components. Remember that in countries like Germany and Switzerland, the street name comes before the house number, unlike in the US and UK.</p>
 <p><mark class="requirement">Provide additional delivery instructions.</mark> Include dedicated fields for delivery instructions or notes that can accommodate informal addressing information. This might include fields like "Delivery Notes".</p>
 <p><mark class="requirement">Allow non-Latin characters.</mark> Many addresses include characters from non-Latin scripts. Use addresses in Latin script for international shipping labels and customs forms, but include native script addresses as supplementary information when needed. Provide native script addresses to local delivery services for the final delivery stage.</p>
@@ -154,7 +154,7 @@ Postal Code
 <ul>
 <li>Automatically format user input to add the correct separators</li>
 <li>Allow users to enter with or without separators and normalize on the server</li>
-<li>Provide visual cues about the expected format (e.g., placeholder text like "SW1A 1AA" for UK)</li>
+<li>Provide visual cues about the expected format (e.g., placeholder text like <code>SW1A 1AA</code> for UK)</li>
 </ul>
 <p><strong>Validation flexibility.</strong> Allow for variations in how users might enter postal codes, including:</p>
 <ul>
