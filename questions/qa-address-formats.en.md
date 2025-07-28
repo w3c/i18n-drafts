@@ -143,7 +143,7 @@ Not all countries use postal codes. For example, Angola and some other nations d
 
 **Provide additional delivery instructions.** Include dedicated fields for delivery instructions or notes that can accommodate informal addressing information. This might include fields like "Delivery Notes".
 
-**Allow non-ASCII characters.** Many addresses include characters from non-Latin scripts. Use ASCII addresses for international shipping labels and customs forms, but include native script addresses as supplementary information when possible. Provide native script addresses to local delivery services for the final delivery stage.
+**Allow non-Latin characters.** Many addresses include characters from non-Latin scripts. Use addresses in Latin script for international shipping labels and customs forms, but include native script addresses as supplementary information when needed. Provide native script addresses to local delivery services for the final delivery stage.
 
 **Accommodate countries without postal codes.** Ensure that postal codes are optional, if your target users include people from countries that do not use them.
 
