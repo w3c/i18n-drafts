@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>HTML中的结构标记和从右向左的文本</title>
+<meta name="description" content="如何使用 dir 属性在 HTML 的结构元素上设置文本方向？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-html-dir'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-html-dir'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2011-08-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2021-06-25', time:'12:31'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-07-29', time:'12:31'} // date and time of latest edits to this document/translation
+f.contributors = 'Mati Allouche, Aharon Lanin, Norbert Lindenberg, Tomer Mahlin, Vincent Hilla'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-html-dir-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script><!-- TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+
+<style>
+#displaybox, #displaybox2 { margin: 20px; padding: 10px; font-size: 130%; color:#009; background-color: #eee; color: #09F; width: 90%; text-align: start; font-family: sans-serif; }
+.name { color: black; } 
+.subt { font-size: 40%; text-align: right; margin:0; } 
+img { vertical-align: middle; } 
+input { width: 70%; font-size: 100%; padding: 0 .5em; }
+</style>
+</head>
+
+<body>
+<header> 
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>HTML中的结构标记和从右向左的文本</h1>
+</header>
+
+<div>
+<div id="audience">
+<!--p><span id="intendedAudience" class="leadin">Intended audience:</span>
+XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc.), Web project managers, and anyone who needs to better understand how to markup up right-to-left text on a Web page.</p-->
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+
+<p>本文探讨了在HTML中处理<strong>结构</strong>标记文本方向的方法，也就是在网页级别以及段落、表格和表单等元素上的处理方法。</p>
+
+<p class="warning">对于使用<strong>行内</strong>标记处理<a href="https://www.w3.org/TR/i18n-glossary/#dfn-bidirectional-text" class="termref print">双向文本</a>，请参阅另一篇文章<cite><a class="print" href="/International/articles/inline-bidi-markup/">HTML中的行内标记和双向文本</a></cite>，里面还描述了一些与方向相关的其他元素和属性。</p>
+
+<p><code class="kw" translate="no">dir</code>属性用于设置文本显示的基方向，对于支持使用从右到左文字的语言至关重要，如阿德拉姆字母、阿拉伯字母、希伯来字母、西非书面字母、叙利亚字母和它拿字母。许多语言都用这些文字书写，包括阿拉伯语、迪维希语、希伯来语、曼丁卡语、普什图语、波斯语、富拉语、信德语、叙利亚语、乌尔都语、意第绪语等。</p>
+</div>
+
+
+
+
+
+
+<section id="nutshell">
+<h2 id="quickanswer">快速答案</h2>
+
+<p>如果整个文档的书写方向是从右到左，在<code class="kw" translate="no">html</code>标签中添加<code>dir=&quot;rtl&quot;</code>。</p>
+
+<p>在<code class="kw" translate="no">html</code>元素里，只有在极少数情况下，当基方向需要改变以使文本正确显示时，才在结构元素上使用<code class="kw" translate="no">dir</code>属性。</p>
+
+<p>永远不要使用CSS来应用基方向。在与外边距、内边距、对齐等相关的属性或值上使用逻辑属性（'end'和'start'），以便在本地化过程中轻松管理方向变化。不要用值为'right'和'left'的HTML属性。</p>
+
+<p>在表单和插入的文本上将<code class="kw" translate="no">dir</code>属性设置为<code class="kw" translate="no">auto</code>，以便网页运行时自动检测内容的方向。考虑在表单上使用<code class="kw" translate="no">dirname</code>属性，除了常规表单数据外，还向服务器发送方向的信息。</p>
+
+<p>处理双向<strong>行内</strong>文本在文章<cite><a class="print" href="/International/articles/inline-bidi-markup/">HTML中的行内标记和双向文本</a></cite>中进行了讨论。</p>
+</section>
+
+
+
+
+
+
+
+<section id="documentlevel">
+<h2>在文档级别设置方向</h2>
+
+
+
+<section id="basedirection">
+<h3>基方向</h3>
+
+<div class="insideinfonote">
+<p class="info noprint">本文档中的示例可能以图像形式显示，以防浏览器无法产生预期的效果。</p>
+
+<p>包含阿拉伯字母和希伯来字母的代码示例<a class="print" href="https://www.w3.org/TR/i18n-html-tech-bidi/#bidisource">可能以不同方式显示</a>，通常都不令人满意。在本文中，代码示例中的从右向左的文本可能用<strong>大写字母</strong>表示，从左到右文本用小写表示。</p>
+</div>
+
+<p class="info">首先，理解<a href="https://www.w3.org/TR/i18n-glossary/#dfn-base-direction" target="_blank" class="termref print">基方向</a>的概念很重要（请参阅<a href="../articles/inline-bidi-markup/uba-basics">Unicode双向文本算法基础</a>，了解它如何与<a href="https://www.w3.org/TR/i18n-glossary/#dfn-unicode-bidi-algorithm" target="_blank" class="termref print">Unicode双向文本算法</a>配合工作的简单概述）。</p>
+
+<p>为文本建立适当的基方向非常重要，为了让Unicode双向文本算法就可以在显示时适当地重新排列文本。正确设置基方向还会设置文本的默认段落对齐方式。</p>
+
+<p>在HTML中，基方向由使用<span class="kw">dir</span>属性的最近父元素显式设置（可能是<code class="kw" translate="no">html</code>元素）。在没有<span class="kw">dir</span>的情况下，默认为从左到右（LTR）。</p>
+</section>
+
+
+
+
+
+
+
+<section id="rtlsetup">
+<h3>设置从右向左的页面</h3>
+
+<p>当整个文档方向为从右到左（RTL）时，在<span class="kw">html</span>标签中添加<code>dir="rtl"</code>。这为整个文档设置了默认的基方向。文档中的所有块元素都将继承此设置，除非被覆盖。</p>
+
+
+<figure class="example">
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;<br>
+&lt;html <span style="color:red;">dir=&quot;rtl&quot;</span> lang=&quot;ar&quot;&gt;<br>
+&lt;head&gt;<br>
+&lt;meta charset=&quot;utf-8&quot;&gt;<br>
+... </code></pre>
+</figure>
+
+
+<p>对于基方向为从左到右的文档，不需要<span class="kw">dir</span>属性，因为这是默认值，但使用值为<code class="kw" translate="no">ltr</code>的属性也无害。</p>
+
+<p>这将在渲染的页面中产生如下效果：</p>
+
+
+<ol style="list-style-type: lower-alpha;">
+<li>段落和其他块元素将右对齐。</li>
+<li>双向文本将正确地从右到左流动。</li>
+<li>标点符号将相对于文本出现在正确的位置。</li>
+<li>表格列将从右到左进行，其内容将右对齐。</li>
+<li>表单字段中的输入默认情况下将自动从右侧开始。</li>
+<li>如果你正确编写样式表，CSS将自动镜像布局。</li>
+<li>设置溢出的方向。</li>
+</ol>
+
+
+<div class="figWrap">
+<figure>
+<a href="qa-html-dir-data/html-dir-results_ltr.png" target="_blank"><img style="width: 48%;" src="qa-html-dir-data/html-dir-results_ltr.png" alt=""></a> &nbsp; <a href="qa-html-dir-data/html-dir-results_rtl.png" target="_blank"><img style="width: 48%;" src="qa-html-dir-data/html-dir-results_rtl.png" alt=""></a>
+<figcaption>在<code class="kw" translate="no">html</code>标签中添加<code class="kw" translate="no">dir</code>属性之前（左）和之后（右）内容的外观。（点击图像放大）</figcaption>
+</figure>
+</div>
+
+
+
+
+
+
+<section id="lang_tags">
+<h4>语言标签</h4>
+
+<p>在<span class="kw">html</span>标签中声明文档方向性的同时，不要忘了用<span class="kw">lang</span>属性声明文档的<strong>语言</strong>（参阅<a class="print" href="/International/questions/qa-html-language-declarations">在HTML中声明语言</a>）。不过，不要错误地认为语言声明表示方向性，反之亦然。即使语言声明有文字子标签，也不会影响用户代理中文本的方向性。必须始终使用<span class="kw">dir</span>属性声明方向性。</p>
+</section>
+
+
+
+
+
+
+<section id="scrollbars">
+<h4>滚动条</h4>
+
+<p>页面的LTR/RTL方向不应影响滚动条的位置，因为这些是浏览器界面的一部分，由用户决定，而不是由页面的语言决定。</p>
+</section>
+</section>
+
+
+
+
+
+
+
+
+<section id="title_element">
+<h3><code class="kw" translate="no">title</code>元素</h3>
+
+<p>HTML中<code class="kw" translate="no">title</code>元素中的文本通常显示在标签页标题、书签等地方。在显示时，浏览器应该自动应用<code class="kw" translate="no">title</code>元素在文档中的基方向。比如，如果<code class="kw" translate="no">html</code>标签声明文档方向为RTL，则<code class="kw" translate="no">title</code>元素文本应以RTL基方向显示。</p>
+
+<p>在撰写本文时，浏览器倾向于从右到左显示RTL标题文本，反之亦然。但是，它们这样做不是通过检查标记应用于文本的方向，而是通过找到标题中第一个强方向性字符并假设这是正确的基方向。</p>
+
+<p>大多数时候这会产生期望的结果。但是，如果RTL文档中的标题文本以拉丁字母的缩写词开头，在显示文本时顺序将是错误的（<a class="print" href="https://www.w3.org/International/i18n-tests/results/native-user-interfaces#windowheader" target="_blank">请参阅一些测试</a>）。</p>
+
+<p>这种情况的解决方法是在标题文本不以RTL字符开头时，在标题文本的开头添加<code>&amp;rlm;</code>。这在开头添加了<span class="codepoint" translate="no"><code class="uname">U+200F RIGHT-TO-LEFT MARK</code></span>，这是一个不可见的、强方向性的RTL字符。</p>
+<p>如果你有以强RTL字符开头的LTR文本，请在开头使用<code>&amp;lrm;</code>。</p>
+</section>
+</section>
+
+
+
+
+
+
+
+
+<section id="blockelements">
+<h2>在块元素上设置方向</h2>
+
+
+
+<section id="no_css">
+<h3>不要使用CSS设置方向！</h3>
+
+<p><strong>不要</strong>用CSS在HTML页面中设置基方向。</p>
+
+<p>这是因为你希望在没有CSS的情况下也能获得方向信息。方向信息可能影响内容的语义，因此应该是标记的一部分。（请参阅<a class="print" href="/International/questions/qa-bidi-css-markup">更详细的解释</a>）。</p>
+
+<p>CSS和HTML规范都呼应了这一点。</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="basicmarkup">
+<h3>仅在特殊情况下使用标记</h3>
+
+<p>只有当你需要<strong>更改</strong>一个块中内容的基方向时，才应该在块元素上用<span class="kw">dir</span>属性。</p>
+
+<p>在<span class="kw">html</span>标签的级别建立基方向后，你可能不需要为页面上的任何块元素使用这个属性，因为在页面开始时设置的方向会渗透到所有块元素。</p>
+
+<p>（但是，你可能需要将其用于双向文本的<strong>行内</strong>片段。这在<cite><a class="print" href="/International/articles/inline-bidi-markup/">HTML中的行内标记和双向文本</a></cite>中有更详细的描述。）</p>
+
+<p>以下是如何在从右到左的文档中标记具有从左到右基方向的块元素的示例。</p>
+
+
+<figure class="example">
+<pre><code class="language-html">&lt;blockquote dir=&quot;ltr&quot; lang=&quot;en&quot; cite=&quot;Romeo and Juliet (II, ii, 1-2)&quot;&gt;But,
+soft! What light through yonder window breaks?
+It is the east, and Juliet is the sun.&lt;/blockquote&gt;</code></pre>
+</figure>
+</section>
+
+
+
+
+
+
+
+
+<section id="alignment">
+<h3>在CSS中使用逻辑属性</h3>
+
+<p>在英文页面中右对齐的文本通常需要在RTL页面中左对齐。可以自动实现这一点，而无需更改样式表中的所有CSS。解决方案是在设置样式时使用逻辑属性：也就是用start和end，而不是left或right。</p>
+
+<p>默认使用逻辑属性，使得将来本地化内容或包含不同方向的文本变得更加容易。一段时间后，考虑开始和结束而不是左和右会变得自然，并且在处理CSS grid或flexbox布局等遵循相同模式的布局方法时对你很有用。</p>
+
+<p>如果你希望定位的项目保持在固定位置，独立于文本的语言，左和右值偶尔还会有用。学会区分何时使用左/右而不是默认的开始/结束有助于你更加了解你的设计意图。</p>
+
+<p>在主要浏览器引擎上享有互操作支持的逻辑值或属性名称包括：</p>
+
+
+<div class="sidenoteGroup">
+<div class="figWrap">
+<pre><code class="language-css">
+text-align: start | end
+justify-content: flex-start | flex-end ...
+align-content: flex-start | flex-end ...
+grid-column-start: &lt;value&gt;
+grid-column-end: &lt;value&gt;
+inline-size: &lt;width&gt;
+margin-inline-start/end: &lt;value&gt;
+padding-inline-start/end: &lt;value&gt;
+border-inline-start/end-width: &lt;value&gt;
+border-inline-start/end-style: &lt;value&gt;
+border-inline-start/end-color: &lt;value&gt;
+etc.</code>
+</pre>
+</div>
+
+<div class="sideinfonote">
+<p>对于这些属性中的许多，也可以用<code class="kw" translate="no">block</code>替换<code class="kw" translate="no">inline</code>。这有助于在处理中文、日文、蒙古文等时在横排和直排模式之间切换。</p>
+</div>
+</div>
+
+
+<p>当你在样式中用这些属性并将内容方向设置为RTL时，内容的对齐将开始视为右，结束视为左。如果你更改文本的方向，你不必担心也要调整样式。</p>
+
+<p>在撰写本文时，一些主要浏览器引擎仍在等待采用其他属性。这些包括<code class="kw" translate="no">float</code>、<code class="kw" translate="no">caption-side</code>、<code class="kw" translate="no">clear</code>和<code class="kw" translate="no">border-radius</code>。此外，边距和内边距的快捷属性尚未实现。请参阅<a href="https://www.w3.org/International/i18n-tests/results/css-logical">主要浏览器的测试结果</a>。</p>
+
+<p>其他建议包括：</p>
+
+<ul>
+<li>只有在你真正需要覆盖通过使用<code class="kw" translate="no">dir</code>设置基方向产生的对齐时，才使用<code class="kw" translate="no">text-align</code>。</li>
+
+<li>避免使用值为<code class="kw" translate="no">left</code>和<code class="kw" translate="no">right</code>的HTML属性。相反，向你的CSS样式表添加选择器。这允许你使用逻辑属性，但也使在本地化过程中更改内容变得更容易。</li>
+</ul>
+</section>
+
+
+
+
+
+
+
+<section id="tables">
+<h3>使用表格</h3>
+
+<p><span class="kw">dir</span>属性也会影响表格中列的流向。下图显示了从右到左文档中的表格（即<code class="kw" translate="no">html</code>标签包含<code>dir="rtl"</code>）。表格单元格的内容右对齐，每个单元格中内容的流向是从右到左，列也从右到左运行。</p>
+
+
+<figure id="fig_rtl_rtl_table">
+<p style="text-align:right;"><img class="shadow" src="qa-html-dir-data/table-rtl.png" alt="表格图片."></p>
+<!--div class="demolink"><a href="qa-html-dir-data/examples/table_rtl.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+<div id="out_rtl_rtl_table" class="browser_output">
+<p class="browser_output_title">你的浏览器中</p>
+<div class="browser_output_example" dir="rtl">
+<table>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>عربية and עברית</td>
+<td>عربية and עברית</td>
+<td>عربية and עברית</td>
+</tr>
+</table>
+</div>
+</div>
+
+
+<p>在下面的表格中，代码<code>dir="ltr"</code>已添加到<span class="kw">table</span>元素中，如下所示：</p>
+
+
+<div class="figWrap">
+<pre><code class="language-html">&lt;table dir="ltr"&gt; … &lt;/table&gt;</code></pre>
+</div>
+
+
+<p>注意列的顺序如何改变，单元格的内容现在如何左对齐（看数字），以及每个单元格内单词的流向现在如何从左到右（尽管单词本身仍然按字符逐个以相同方向阅读）。</p>
+
+
+<figure id="fig_rtl_ltr_table">
+<p style="text-align:right;"><img class="shadow" src="qa-html-dir-data/table-ltr.png" alt="表格图片."></p>
+<!--div class="demolink"><a href="qa-html-dir-data/examples/table_ltr.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+<div id="out_rtl_ltr_table" class="browser_output">
+<p class="browser_output_title">你的浏览器中</p>
+<div class="browser_output_example" dir="rtl">
+<table dir="ltr">
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>عربية and עברית</td>
+<td>عربية and עברית</td>
+<td>عربية and עברית</td>
+</tr>
+</table>
+</div>
+</div>
+
+
+<p>但是，没有改变的是表格本身在其包含块内的对齐方式。它仍然在右侧。</p>
+
+<p>如果出于某种原因，你想使用标记（而不是样式）使表格出现在左侧并重新排列列（也许因为你将表格视为从左到右方向块的一部分），你需要将其包装在类似<span class="kw">div</span>元素中，并将<code>dir="ltr"</code>添加到该元素以实现该效果。（不要使用CSS的<code class="kw" translate="no">text-align</code>，因为这会影响表格单元格！）请参阅下面表格的第三个渲染，现在是左对齐的。</p>
+
+
+<figure id="fig_ltr_rtl_table">
+<p><img class="shadow" src="qa-html-dir-data/table-ltr.png" alt="表格图片."></p>
+
+<!--div class="demolink"><a href="qa-html-dir-data/examples/table_align_left.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+<div id="out_ltr_rtl_table" class="browser_output">
+<p class="browser_output_title">你的浏览器中</p>
+<div class="browser_output_example" dir="rtl">
+<div dir="ltr">
+<table>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+</tr>
+<tr>
+<td>عربية and עברית</td>
+<td>عربية and עברית</td>
+<td>عربية and עברית</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+
+
+<p>注意：我们不必在表格本身上重复<span class="kw">dir</span>属性，但列从左到右运行。</p>
+</section>
+</section>
+
+
+
+
+
+
+<section id="dirauto">
+<h2>dir=auto</h2>
+
+<p>如果<span class="kw">dir</span>属性的值设置为<span class="kw">auto</span>，浏览器将查看元素中第一个强类型字符，并从中确定元素的基方向应该是什么。如果是希伯来字母（或阿拉伯字母等）字符，元素将获得<span class="kw">rtl</span>方向。如果是拉丁字母，方向将是<span class="kw">ltr</span>。</p>
+
+<p>在某些边缘情况下，这可能不会给出期望的结果，但绝大多数情况下会产生预期的结果。</p>
+
+<p>应用于块元素时，当你事先不知道插入页面的文本方向时，<code class="kw" translate="no">auto</code>很有用。它对于表单也特别有用。</p>
+
+
+
+
+
+
+<section id="insertedtext">
+<h3>以正确的基方向将文本插入页面</h3>
+
+<p>应用程序经常在运行时通过从数据库或其他位置提取信息将文本插入页面，无论是通过PHP等服务器端脚本、使用AJAX还是其他方法。这样的文本可能是多语言/多文种的，文本的方向可能事先不知道。（多文种文本在主要从右到左的页面中比在其他页面中更常见。）</p>
+
+<p class="hide">这样的插入文本通常是在行内的，<code class="kw" translate="no">dir</code>属性的<code class="kw" translate="no">auto</code>值和另一个叫<code class="kw" translate="no">bdi</code>的元素在处理这种情况时会发挥作用。它们在内联标记中的使用在文章<cite><a class="print" href="/International/articles/inline-bidi-markup/">HTML中的行内标记和双向文本</a></cite>中有更详细的描述。</p>
+
+<p>有时标记<strong>块</strong>级内容也很有用。例如，在既有乌尔都语又有英语帖子的论坛中，或者单个帖子中的文本是希伯来语和英语段落的混合。只需将<code>dir=&quot;auto&quot;</code>添加到围绕每个帖子的元素，元素中第一个强类型字符将确定该元素内容的方向。</p>
+
+<p>HTML5规范给出了与聊天会话相关的示例。给定以下标记：</p>
+
+
+<figure class="example">
+<pre style="white-space: pre-wrap;"><code class="language-html">&lt;p dir=&quot;auto&quot; class=&quot;u1&quot;&gt;&lt;bdi&gt;S&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;How do you write &quot;What's your name?&quot; in Arabic?&lt;/span&gt;&lt;/p&gt;<br>
+&lt;p dir=&quot;auto&quot; class=&quot;u2&quot;&gt;&lt;bdi&gt;T&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt; ما اسمك؟&lt;/span&gt;&lt;/p&gt;<br>
+&lt;p dir=&quot;auto&quot; class=&quot;u1&quot;&gt;&lt;bdi&gt;S&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;Thanks.&lt;/span&gt;&lt;/p&gt;<br>
+&lt;p dir=&quot;auto&quot; class=&quot;u2&quot;&gt;&lt;bdi&gt;T&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;That's written &quot;شكرًا&quot;.&lt;/span&gt;&lt;/p&gt;<br>
+&lt;p dir=&quot;auto&quot; class=&quot;u2&quot;&gt;&lt;bdi&gt;T&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;Do you know how to write &quot;Please&quot;?&lt;/span&gt;&lt;/p&gt;<br>
+&lt;p dir=&quot;auto&quot; class=&quot;u1&quot;&gt;&lt;bdi&gt;S&lt;/bdi&gt;: &lt;span class=&quot;msg&quot;&gt;&quot;من فضلك&quot;, right?&lt;/span&gt;&lt;/p&gt;</code></pre>
+</figure>
+
+
+<p>浏览器将显示以下内容：</p>
+
+
+<figure id="fig_auto_dialogue">
+<p><img class="shadow" src="qa-html-dir-data/im.png" alt="输出图片"></p>
+<!--div class="demolink"><a href="qa-html-dir-data/examples/auto" target="_blank">Test in your browser.</a></div-->
+</figure>
+<div id="out_auto_dialogue" class="browser_output" style="width: 30rem">
+<p class="browser_output_title">你的浏览器中</p>
+<div class="browser_output_example">
+<p dir="auto" class="u1"><bdi>S</bdi>: <span class="msg">How do you write "What's your name?" in Arabic?</span></p>
+<p dir="auto" class="u2"><bdi>T</bdi>: <span class="msg"> ما اسمك؟</span></p>
+<p dir="auto" class="u1"><bdi>S</bdi>: <span class="msg">Thanks.</span></p>
+<p dir="auto" class="u2"><bdi>T</bdi>: <span class="msg">That's written "شكرًا".</span></p>
+<p dir="auto" class="u2"><bdi>T</bdi>: <span class="msg">Do you know how to write "Please"?</span></p>
+<p dir="auto" class="u1"><bdi>S</bdi>: <span class="msg">"من فضلك", right?</span></p>
+</div>
+</div>
+
+<p>注意在搜索第一个强类型字符时，浏览器如何跳过<code class="kw" translate="no">bdi</code>元素中的文本。它还跳过<code class="kw" translate="no">script</code>、<code class="kw" translate="no">style</code>和<code class="kw" translate="no">textarea</code>元素中的文本，以及任何具有<code class="kw" translate="no">dir</code>属性的元素。</p>
+
+<p>还要注意，这种方法并非万无一失：此示例中的最后一段被误解为从右到左的文本，因为它以阿拉伯字母开头。这导致该行右对齐，文本"right?"位于阿拉伯文本的左侧，问号在最左边。</p>
+</section>
+</section>
+
+
+
+
+
+
+
+
+<section id="unknowndirection">
+<h2>使用表单</h2>
+
+<p>许多具有从右到左语言界面或从右到左语言数据源的Web应用需要显示或接受LTR和RTL数据作为输入。应用通常不知道，也无法控制数据的方向。</p>
+
+
+
+
+
+<section id="autoinput">
+<h3>在<code class="kw" translate="no">input</code>元素中正确显示文本</h3>
+
+<p>销售多种语言书籍的在线书店需要处理原始书名，不管UI的语言是什么。因此，希伯来语或阿拉伯语书名可能出现在英语界面中，反之亦然（这个问题在RTL页面中实际上更加普遍）。标题的方向可能作为单独的属性可用，但更可能不是。</p>
+
+<p>在以下示例中，我们在英语用户界面中搜索希伯来语标题<cite lang="he" dir="rtl" style="white-space:nowrap;">הצהחת קידוד תװי CSS</cite>。</p>
+
+<p>如果不采取措施防止，你会注意到 (a) 单词“CSS”出现在错误的位置（它应该在左边）， (b) 文本保持左对齐而不是右对齐。也许更糟糕的是，在某些情况下，由于光标和标点符号在数据输入期间跳跃以及选择文本的困难，输入相反方向数据的用户体验可能相当尴尬。</p>
+
+
+<figure id="fig_books_wrong">
+<p><img class="shadow" src="qa-html-dir-data/googlebooks-incorrect.png" alt="每个元素都有dir属性的代码图片."></p>
+<!--div class="demolink"><a href="qa-html-dir-data/examples/books_ltr.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+<div id="out_books_wrong" class="browser_output">
+<p class="browser_output_title">你的浏览器中</p>
+<div class="browser_output_example">
+<div id="displaybox">
+<p>books 
+<input name="example" value="הצהחת קידוד תװי CSS" >
+<img src="qa-html-dir-data/examples/search-button-blue.png" alt="搜索"></p>
+<p class="subt">高级图书搜索</p>
+</div>
+</div>
+</div>
+
+
+<p>解决方案是只需在<code class="kw" translate="no">input</code>标签中添加<code>dir=&quot;auto&quot;</code>。</p>
+
+
+<figure id="fig_books_right">
+<p><img class="shadow" src="qa-html-dir-data/googlebooks-correct.png" alt="每个元素都有dir属性的代码图片"></p>
+<!--div class="demolink"><a href="qa-html-dir-data/examples/books_rtl.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+<div id="out_books_right" class="browser_output">
+<p class="browser_output_title">你的浏览器中</p>
+<div class="browser_output_example">
+<div id="displaybox2">
+<p>books 
+<input dir="auto" name="example" value="הצהחת קידוד תװי CSS" >
+<img src="qa-html-dir-data/examples/search-button-blue.png" alt="搜索"></p>
+<p class="subt">高级图书搜索</p>
+</div>
+</div>
+</div>
+
+
+<p>由于第一个强字符是从右到左的，<code class="kw" translate="no">auto</code>值导致输入字段也是从右到左的。</p>
+
+<p>如果用户搜索的下一本书有英文标题，文本将自动左对齐，基方向将设置为LTR。</p>
+</section>
+
+
+
+
+
+
+
+<section id="autotextarea">
+<h3>在<code class="kw" translate="no">textarea</code>（和<code class="kw" translate="no">pre</code>）段落中交替方向性</h3>
+
+<p><code class="kw" translate="no">textarea</code>和<code class="kw" translate="no">pre</code>元素都可以包含多个文本段落，并且无法对这些段落应用标记。</p>
+
+<p>如果<code class="kw" translate="no">textarea</code>元素继承或设置<code class="kw" translate="no">rtl</code>方向，所有段落都将右对齐，但应该具有LTR基方向的段落不会有它。比如，在下图中，与单词'two'相关的感叹号应该出现在右边，而不是左边。</p>
+
+
+<div class="figWrap">
+<figure style="text-align: end;" id="fig_textarea_flush">
+<img class="shadow" src="qa-html-dir-data/textarea_rtl.png" alt="">
+<!--div class="demolink"><a href="qa-html-dir-data/examples/textarea_rtl" target="_blank">Test in your browser.</a></div-->
+</figure>
+</div>
+<div id="out_textarea_flush" class="browser_output">
+<p class="browser_output_title">你的浏览器中</p>
+<div class="browser_output_example" dir="rtl">
+<textarea style="font-size:1.4rem; height:6rem;">אחד!&#x000A;two!&#x000A;שְׁלוֹשָׁה!</textarea></div>
+</div>
+
+
+<p>如果你在元素上将<code class="kw" translate="no">dir</code>设置为<code class="kw" translate="no">auto</code>，则根据该段落中第一个强字符的方向，独立地为每个段落分配基方向。RTL和LTR段落也以不同方式对齐。</p>
+
+
+<div class="figWrap">
+<figure style="text-align: end;" id="fig_textarea_staggered">
+<img class="shadow" src="qa-html-dir-data/textarea_auto.png" alt="">
+<!--div class="demolink"><a href="qa-html-dir-data/examples/textarea_auto" target="_blank">Test in your browser.</a></div-->
+</figure>
+</div>
+<div id="out_textarea_staggered" class="browser_output">
+<p class="browser_output_title">你的浏览器中</p>
+<div class="browser_output_example" dir="rtl">
+<textarea dir="auto" style="font-size:1.4rem; height:6rem;">אחד!&#x000A;two!&#x000A;שְׁלוֹשָׁה!</textarea></div>
+</div>
+
+
+<p>当一行不包含强方向性字符时，如'123-456'，使用LTR基方向来排列字符，但是该行的<strong>对齐</strong>目前因浏览器而异。Webkit浏览器保持文本右对齐，而Blink和Gecko浏览器将其左对齐。将来所有浏览器可能都会基于前一段落的对齐来对齐这样的行。</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="reportingdirection">
+<h3>使用<code class="kw" translate="no">dirname</code>向服务器报告方向</h3>
+
+<div class="sidenoteGroup">
+<p>当你通过使用<code>dir=&quot;auto&quot;</code>、使用JavaScript，甚至使用<a href="#userexplicit">浏览器特定的按键</a>或菜单让浏览器动态地对表单字段中的文本使用正确方向时，<code class="kw" translate="no">dirname</code>属性允许你将该信息传递给服务器，以便在另一个上下文中显示文本时可以重新使用。</p>
+<aside class="implnote">
+<p class="impl"><img src="../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari">  <img src="../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"><img src="../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
+</aside>
+</div>
+
+
+<p>以下是使用它的示例：</p>
+
+
+<figure class="example" id="fig_dirname">
+<pre><code class="language-html">&lt;form action=&quot;addcomment.cgi&quot; method=&quot;get&quot;&gt; <br>
+&lt;p&gt;&lt;label&gt;Comment: &lt;input type=&quot;text&quot; name=&quot;comment&quot; dirname=&quot;commentdir&quot; required&gt;&lt;/label&gt;&lt;/p&gt; <br>
+&lt;p&gt;&lt;button name=&quot;mode&quot; type=submit value=&quot;add&quot;&gt;Post Comment&lt;/button&gt;&lt;/p&gt; <br>
+&lt;/form&gt;</code></pre>
+<!--div class="demolink"><a href="qa-html-dir-data/examples/dirname" target="_blank">Test in your browser.</a></div-->
+</figure>
+<div id="out_dirname" class="browser_output">
+<p class="browser_output_title">你的浏览器中</p>
+<div class="browser_output_example" dir="rtl">
+<div id="displaybox3" style="hyphens: none;">
+<form action="qa-html-dir-data/examples/dirname_test.html" method="get">
+<p><label>تعليق: <input type="text" dir="auto" name="comment" dirname="comment-direction" required value="مرحبا !" ></label></p>
+<p><button name="mode" type="submit" value="add">发表评论</button></p>
+</form>
+
+<p dir="auto" style="font-size: 63%;">表单字段的方向最初设置为'auto'。点击按钮查看dirname是否将表单字段的计算方向分配给'comment-direction'参数（发送到服务器）。你也可以尝试手动更改方向。</p>
+</div>
+</div>
+</div>
+
+
+<p><code class="kw" translate="no">dirname</code>的值可以是你想要的任何值（但不能为空）。设置后，表单使用你提供的名称将元素的方向传递给服务器。因此，如果用户在上面的示例中将表单输入字段的方向切换为RTL并输入<span class="foreign" lang="ar" style="font-style:normal">مرحبا, </span>，那么当提交表单时，提交正文将如下所示：</p>
+<div class="sidenoteGroup">
+
+
+<figure class="example">
+<pre><code class="language-html"><code>comment=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7&amp;commentdir=rtl&amp;mode=add</code></code></pre>
+</figure>
+
+<aside class="sideinfonote">
+<p class="info">百分号转义代码表示用户输入的阿拉伯语词。</p>
+</aside>
+</div>
+
+
+<p>然后可以使用方向信息在另一个页面上显示文本时应用正确的方向。</p>
+
+<p>当然，当<code class="kw" translate="no">dir</code>设置为<code class="kw" translate="no">rtl</code>或<code class="kw" translate="no">ltr</code>时，此属性也可以用于提交输入字段的方向。这对于存储各种语言数据的数据库可能很有用。</p>
+</section>
+
+
+
+
+
+
+<section id="userexplicit">
+<h3>手动设置表单方向</h3>
+
+<p>浏览器可能允许用户使用按键设置表单输入字段的基方向。设置正确的基方向可以显著改善用户体验，特别是如果他们输入的文本包含标点符号和数字。不幸的是，每个浏览器都有不同的方法来做到这一点。本节列出了一些主要桌面浏览器的操作方法。</p>
+
+<p>在某些情况下，你需要设置系统才能使其工作。例如，对于IE浏览器，你可能需要安装希伯来语包<strong>并</strong>启用希伯来语键盘才能使其工作。</p>
+
+<p><b class="leadin">Chrome：</b>右键单击<code class="kw" translate="no">input</code>或<code class="kw" translate="no">textarea</code>元素以显示<samp>书写方向</samp>子菜单。选择<samp>从右到左</samp>或<samp>从左到右</samp>。这设置元素的<code class="kw" translate="no">dir</code>属性的值，然后脚本可以使用该值。</p>
+
+<p><b class="leadin">Safari：</b>右键单击<code class="kw" translate="no">input</code>或<code class="kw" translate="no">textarea</code>元素以显示<samp>段落方向</samp>子菜单。选择<samp>从右到左</samp>或<samp>从左到右</samp>。这设置元素的<code class="kw" translate="no">dir</code>属性的值，然后脚本可以使用该值。</p>
+
+<p><b class="leadin">Firefox：</b>使用<kbd>CTRL/CMD+SHIFT+X</kbd>键盘快捷键设置方向，它在LTR和RTL之间循环。这设置元素的<code class="kw" translate="no">dir</code>属性的值，然后脚本可以使用该值。</p>
+
+<details><summary style="margin-inline-start: 7.5%; margin-inline-end: 32%; font-size: 80%; font-style: italic; cursor: pointer;">历史信息</summary>
+<p><b class="leadin">Internet Explorer：</b>使用<kbd>CTRL+LEFT SHIFT</kbd>设置LTR，使用<kbd>CTRL+RIGHT SHIFT</kbd>设置RTL。（这些组合键也被大多数Microsoft产品采用，例如Windows对话框、记事本和Word。）它们设置元素的<code class="kw" translate="no">dir</code>属性的值，然后脚本可以使用该值。</p>
+</details>
+
+<p>试试看：</p>
+
+<p style="text-align: center;"><textarea style="border: 1px solid #ccc; border-radius: 5px; width: 25em; font-size: 1em;">פעילות הבינאום, W3C!</textarea></p>
+</section>
+</section>
+
+
+
+
+
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><cite><a href="/International/articles/inline-bidi-markup/">HTML中的行内标记和双向文本</a></cite></p>
+</li>
+
+<li>
+<p>教程，<a href="/International/tutorials/bidi-xhtml/"><cite>使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面</cite></a></p>
+</li>
+
+<li>
+<p>相关链接，<cite>编写网页</cite></p>
+<ul>
+<li><a href="/International/techniques/authoring-html#direction">文本方向</a></li>
+<li><a href="/International/techniques/authoring-html#using">设置从右到左的页面</a></li>
+<li><a href="/International/techniques/authoring-html#blocks">更改块元素的方向</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+
+
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
