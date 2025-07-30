@@ -309,3 +309,31 @@ function getURLs () {
 	if (document.querySelector('#endlinks')) document.querySelector('#endlinks').parentNode.appendChild(container)
 	
 	}
+
+// Simple copy button for code blocks
+document.addEventListener('DOMContentLoaded', function() {
+    const codeBlocks = document.querySelectorAll('pre code');
+
+    codeBlocks.forEach(function(code) {
+        const pre = code.parentElement;
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = s.copy;
+
+        copyBtn.addEventListener('click', async function() {
+            const text = code.textContent;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                copyBtn.textContent = s.copied;
+                setTimeout(function() {
+                    copyBtn.textContent = s.copy;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+        });
+
+        pre.appendChild(copyBtn);
+    });
+});
