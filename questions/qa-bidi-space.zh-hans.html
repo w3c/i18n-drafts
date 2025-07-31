@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-hans">
 <head>
 <meta charset="utf-8" />
-<title>Bidi space loss</title>
-<meta name="description" content="Why does my browser collapse spaces between Latin and Arabic/Hebrew text, and how can I fix it" />
+<title>双向文本空格丢失</title>
+<meta name="description" content="为什么我的浏览器会折叠拉丁字母和阿拉伯字母/希伯来字母之间的空格，如何修复这个问题？" />
 <script>
 var f = { }
 
@@ -26,7 +26,7 @@ f.contributors = '' // people providing useful contributions or feedback during 
 f.sources = '' // describes sources of information
 
 // TRANSLATORS should fill in these assignments:
-f.translators = 'xxxNAME, ORG' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
 
 f.breadcrumb = 'characters'
 
@@ -34,7 +34,7 @@ f.additionalLinks = ''
 </script>
 <script src="qa-bidi-space-data/translations.js"> </script>
 <script src="../javascript/doc-structure/article-dt.js"> </script>
-<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
 <!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
 <script src="../javascript/doc-structure/article-2022.js"> </script>
 <script src="../javascript/articletoc-2022.js"></script>
@@ -62,7 +62,7 @@ function highlightCode () {
 <header>
   <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
   
-  <h1>Bidi space loss</h1>
+  <h1>双向文本空格丢失</h1>
 </header>
 
 
@@ -71,86 +71,81 @@ function highlightCode () {
   </div>
 
 <section id="question">
-<h2>Question</h2>
-    <p class="question">Why does my browser collapse spaces between Latin and Arabic/Hebrew text, and how can I fix it?</p>
+<h2>问题</h2>
+    <p class="question">为什么我的浏览器会折叠拉丁字母和阿拉伯字母/希伯来字母之间的空格，如何修复这个问题？</p>
 </section>
 
 
 <section id="answer">
-<h2>Answer</h2>
-  
+<h2>答案</h2>
+
   <section id="cause">
-<h3>A likely cause</h3>
+<h3>可能的原因</h3>
   <div class="insideinfonote">
-    <p class="info">Right-to-left text in code samples is represented here by UPPERCASE TRANSLATIONS, and left-to-right text by lowercase. </p>
+    <p class="info">代码示例中从右向左的文本在这里用大写字母表示，从左向右的文本用小写字母表示。</p>
   </div>
-  <p>Spaces between Latin and Arabic/Hebrew text may appear to collapse if text is followed by white space inside an inline element that
-    includes a <code class="kw" translate="no">dir</code> attribute.</p>
-    <p>In the following code pattern the colored rectangle indicates the problem space. (The uppercase letters represent RTL text, and the lowercase content is LTR.)</p>
+  <p>如果文本后面跟着一个行内元素，带有<code class="kw" translate="no">dir</code>属性，并且含有空白字符，拉丁字母和阿拉伯字母/希伯来字母之间的空格可能会被折叠。</p>
+    <p>在以下的代码模式中，彩色矩形表示有问题的空格。（大写字母表示RTL文本，小写内容表示LTR。）</p>
     <figure class="example">
       <p><code>&lt;p dir="rtl"&gt;RTL_TEXT &lt;span dir="ltr"&gt;ltr_text<span style="background-color: orange;">&nbsp;</span>&lt;/span&gt;RTL_TEXT&lt;/p&gt; </code></p>
 </figure>
-    <p>Code such as the above would produce the following result, if we substitute Arabic and English for the content.</p>
+    <p>如果我们用阿拉伯字母和英文替换内容，上述代码会产生以下结果。</p>
     <figure class="example" dir="rtl">
-    <img src="qa-bidi-space-data/missing-space-1.png" alt="Picture of the result, showing no space to left of Latin text." />
-    <div class="demolink" dir="ltr"><a href="qa-bidi-space-data/eg-space-problem" target="text">See live demo.</a></div>
+    <img src="qa-bidi-space-data/missing-space-1.png" alt="结果图片，显示拉丁字母本左侧没有空格。" />
+    <div class="demolink" dir="ltr"><a href="qa-bidi-space-data/eg-space-problem" target="text">查看实时演示</a></div>
   </figure>
-  <p>Note that this effect also occurs when right-to-left text is embedded in a left-to-right passage.</p>
+  <p>请注意，当从右到左的文本嵌入到从左到右的段落中时，也会出现这种效果。</p>
 	</section>
     
   <section id="whattodo">
-<h3>How to fix it</h3>
-    <p>If the previous section describes the look of your code, the solution is to remove all space before the end tag of the inline element, or
-      remove the <code class="kw" translate="no">dir</code> attribute (if appropriate).</p>
-      <p> Here is the new pattern:</p>
+<h3>如何修复</h3>
+    <p>如果前面的部分描述了你代码的样子，解决方案是删除行内元素结束标签前的所有空格，或者删除<code class="kw" translate="no">dir</code>属性（如果合适的话）。</p>
+      <p>新的代码模式：</p>
     <figure class="example">
         <p><code>&lt;p dir="rtl"&gt;RTL_TEXT &lt;span dir="ltr"&gt;ltr_text&lt;/span&gt;<span style="background-color: orange;">&nbsp;</span>RTL_TEXT&lt;/p&gt; </code></p>
     </figure>
-    <p>For example, moving the space after <span class="qterm">W3C</span> outside the <code class="kw" translate="no">span</code> in the real example above would produce a result that looks as expected.</p>
+    <p>例如，在上面的例子里，把<span class="qterm">W3C</span>后面的空格移到<code class="kw" translate="no">span</code>的外面，会产生预期的结果。</p>
       <figure class="example" dir="rtl">
-      <img src="qa-bidi-space-data/missing-space-2.png" alt="Picture of the result, showing space on both sides of Latin text." />
-    <div class="demolink" dir="ltr"><a href="qa-bidi-space-data/eg-space-ok" target="text">See live demo.</a></div>
-      <!--<p dir="rtl"> العالمية (W3C) تخلق قواعد</p>--> 
+      <img src="qa-bidi-space-data/missing-space-2.png" alt="结果图片，显示拉丁字母本两侧都有空格。" />
+    <div class="demolink" dir="ltr"><a href="qa-bidi-space-data/eg-space-ok" target="text">查看实时演示</a></div>
+      <!--<p dir="rtl"> العالمية (W3C) تخلق قواعد</p>-->
     </figure>
-    <p>In this instance  the <code class="kw" translate="no">span</code> element around the text <span class="qterm">W3C</span> is not actually needed to produce the correct ordering. Leaving out the attribute or the whole <code class="kw" translate="no">span</code> element will also solve the
-      problem (although we generally recommend marking up all opposite-direction text).</p>
+    <p>在这种情况下，我们并不需要<span class="qterm">W3C</span>周围的<code class="kw" translate="no">span</code>元素来产生正确的显示顺序。省略属性或整个<code class="kw" translate="no">span</code>元素也可以解决问题（尽管我们通常建议标记所有相反方向的文本）。</p>
   </section>
 </section>
 
 
 <section id="additionalinfo">
-<h2>Additional information</h2>
+<h2>其他信息</h2>
 
 <section id="why">
-<h3>Why does this happen?</h3>
-  <p>Only read this section if you want the technical details about why this happens.</p>
-  <p>The expected behavior when the text is displayed is not described in detail in the HTML specifications, but <em>is</em> described
-    in  CSS specifications. Although the examples on this page do not use CSS, the same principles apply. The following is taken from the <a href="https://www.w3.org/TR/css-text-3/#white-space-phase-1">CSS Text Module Level 3 Candidate Recommendation</a>:</p>
+<h3>为什么会发生这种情况？</h3>
+  <p>如果你想了解为什么会发生这种情况的技术细节时，可以阅读本节。</p>
+  <p>文本显示时的预期行为在HTML规范中没有详细描述，但在CSS规范中<strong>有</strong>描述。虽然本页面的示例没有用CSS，但同样的原则适用。以下内容摘自<a href="https://www.w3.org/TR/css-text-3/#white-space-phase-1">CSS文本模块第3版候选推荐标准</a>：</p>
    <blockquote>
-   <p>Any collapsible space immediately following another collapsible space—​even one outside the boundary of the inline containing that space, provided both spaces are within the same inline formatting context—​is collapsed to have zero advance width. (It is invisible, but retains its soft wrap opportunity, if any.)</p>
+   <p>任何紧跟在另一个可折叠空格之后的可折叠空格（即使该空格位于包含该空格的行内边界之外，只要这两个空格位于同一个行内格式化上下文中）都会被折叠，使其前进宽度为零。（它是不可见的，但保留了其软换行的机会，如果有的话。）</p>
    </blockquote>
-   <p> Given a scenario as follows, where the colors represent spaces (U+0020):</p>
+   <p>给定如下场景，其中颜色表示空格（U+0020）：</p>
   <blockquote>
     <p>&lt;ltr&gt;a<span style="background-color: red;">&nbsp;</span>&lt;rtl&gt;<span style="background-color: orange;">&nbsp;</span>B<span style="background-color: blue;">&nbsp;</span>&lt;/rtl&gt;<span style="background-color:green;">&nbsp;</span>c&lt;/ltr&gt;</p>
   </blockquote>
-  <p>the spec says that the space after A is kept, the space before B is removed, the space after B is kept, the space before C is removed, which leaves us with:</p>
+  <p>规范说A后面的空格被保留，B前面的空格被删除，B后面的空格被保留，C前面的空格被删除，这给我们留下：</p>
    <blockquote>
     <p>&lt;ltr&gt;a<span style="background-color: red;">&nbsp;</span>&lt;rtl&gt;B<span style="background-color: blue;">&nbsp;</span>&lt;/rtl&gt;c&lt;/ltr&gt;</p>
   </blockquote>
- <p>This is then rendered according to the Unicode bidirectional algorithm, and the end result is:</p>
+ <p>然后根据Unicode双向算法进行渲染，最终结果是：</p>
   <blockquote>
     <p>a<span style="background-color: red;">&nbsp;</span><span style="background-color: blue;">&nbsp;</span>Bc</p>
   </blockquote>
-  <p>Note that there are actually two spaces between A and B. The embedding levels can be expressed as follows:</p>
+  <p>请注意，A和B之间实际上有两个空格。嵌入级别可以表示如下：</p>
   <blockquote>
     <p>0<span style="background-color: red; color:white;">0</span><span style="background-color: blue; color: white;">1</span>10</p>
   </blockquote>
 </section>
 
   <section id="test">
-<h3>What happens in my browser?</h3>
-  <p>The following boxes show code samples followed by an implementation of that code on this page, so that you can test the behavior of your
-    current browser. The surrounding context is right-to-left for all examples. The vertical orange bar indicates the location of space characters.</p>
+<h3>在我的浏览器中会发生什么？</h3>
+  <p>下面的框显示了代码示例，和代码在此页面上的实现。你可以测试你的浏览器的行为。所有例子的上下文都是从右到左的。垂直的橙色条表示空格字符的位置。</p>
   <figure>
   	<div class="example" style="margin-left:0; margin-right: 0;">
   	  <p>ARABIC<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;latin<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;ARABIC</p>
@@ -186,14 +181,14 @@ function highlightCode () {
 
 
 <section id="endlinks">
-<h2>Further reading</h2>
+<h2>延伸阅读</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 <ul id="full-links">
   <li>
-    <p>Related links, <cite>Authoring web pages</cite></p>
+    <p>相关链接：<cite>编写网页</cite></p>
     <ul>
-      <li><a href="https://www.w3.org/International/techniques/authoring-html?collapse&amp;open=direction">Text direction</a></li>
-      <li><a href="https://www.w3.org/International/techniques/authoring-html#inline">Mixing text direction inline</a></li>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?collapse&amp;open=direction">文本方向</a></li>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html#inline">行内混合文本方向</a></li>
     </ul>
   </li>
 </ul>
