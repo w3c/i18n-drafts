@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8" />
+<title>标记语言中双向源代码的问题</title>
+<meta name="description" content="在为双向文本编写标记时会遇到哪些问题？" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-bidi-source' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-source' // blog search string - usually the filename without extensions
+f.firstPubDate = '2023-03-03' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2023-03-03', time:'12:39'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-07-31', time:'12:39'} // date and time of latest edits to this document/translation
+f.contributors = 'Najib Tounsi' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-bidi-unicode-controls-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>处理RTL文字的源代码和代码示例</h1>
+</header>
+
+
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+
+
+<p>为阿拉伯语、希伯来语和许多其他语言的页面编辑代码会带来挑战，除非使用专门的编辑器。出于类似的原因，在说明文档中包含双向文本代码示例也很困难。本页面探讨了内容开发者可能面临的一些问题，并在可能的情况下提供一些建议。</p>
+<p>这些内容对编辑工具的开发者也可能有用。</p>
+
+<p class="warning">本文假你不熟悉双向文本的概念和Unicode双向文本算法的作用。如你不不熟悉，应该在继续之前先阅读文章<a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics.zh-hans.html">Unicode双向文本算法基础</a>。</p>
+
+<p class="warning">如你不熟悉如何在HTML中使用双向文本，你可以读一下<a href="https://www.w3.org/International/articles/inline-bidi-markup/index.zh-hans.html">HTML中的行内标记和双向文本</a>。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="reasons">
+<h2>编辑标记语言的代码</h2>
+
+<p>目前缺乏创建使用从右到左文字的HTML页面的良好编辑环境。由于HTML标记和转义中的语法字符包含标点符号和通常是强LTR类型的字母，你总是在处理包含双向文本的源代码。如果编辑器不知道标记不是普通的文本，它可能会移动字符并产生一些奇怪的效果，使编码变得困难。标记中的强类型字母和标点符号会出现你不意想不到的地方，有时会干扰内容本身的顺序。</p>
+
+<p>以下显示了在从左到右上下文中的一些简单标记。源代码包含一个<code class="kw" translate="no">p</code>标签，后跟一个<code class="kw" translate="no">class</code>属性，再跟一个<code class="kw" translate="no">title</code>属性，其值为阿拉伯语文本（<span dir="rtl" lang="ar">العربي</span>）。元素的内容（<span dir="rtl" lang="ar">نشاط التدويل!</span>）以阿拉伯语文本开始，以感叹号结束。感叹号单独显示，以说明它最终出现的位置。在从左向右环境中的结果顺序（其中阿拉伯语文本用方括号中的文本表示）如下所示。</p>
+
+
+<figure id="fig_simple_ltr" class="example">
+<p class="browser_output_title">你希望看到的：</p>
+<pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;![element_content]&lt;/p&gt;</code></pre>
+<p class="browser_output_title">你在简单的文本编辑器中实际看到的：</p>
+<pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[element_content]&lt;&quot;[title_value]!&lt;/p&gt;</code></pre>
+</figure>
+
+<div id="out_tooltip" class="browser_output">
+<p class="browser_output_title">使用阿拉伯语文本的相同例子：</p>
+<div class="browser_output_example">
+<p>&lt;p class="myclass" title="العربي"&gt;نشاط التدويل!&lt;/p&gt;</p>
+</div>
+</div>
+
+<p>我们可以看到，title文本和段落的内容的顺序颠倒了，尖括号的方向也是。此外，句末标点符号（如这里的感叹号）出现在错误的位置。当段落内容包含多处双向文本时，该内容的可读性可能会受到严重影响。</p>
+<p>如你要创建很多从右向左的文本，把编辑器的基方向设置为从右向左是有意义的。这有助于确保段落内容和标点符号都正确显示。然而，这往往会使整体源代码变得更糟，如下面的示例所示。</p>
+
+
+<p>如下一个例子所示，如果源代码的整体上下文是从右向左的，情况可能会变得更糟（尽管这不太常见，因为标记语言通常是英语，所以编辑源代码的上下文不太可能是从右向左的）。在这种情况下，相同源代码的结果是：</p>
+
+
+<figure id="fig_simple_rtl" class="example">
+<p class="browser_output_title">你希望看到的：</p>
+<pre style="text-align: right;"><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;![element_content]&lt;/p&gt;</code></pre>
+<p class="browser_output_title">你在简单的文本编辑器中实际看到的：</p>
+<pre style="text-align: right;"><code class="language-html">&lt;p/&gt;![element_content]&lt;&quot;[title_value]&quot;=p class=&quot;myclass&quot; title&gt;</code></pre>
+</figure>
+
+
+<div id="out_simple_rtl" class="browser_output">
+<p class="browser_output_title">使用阿拉伯语文本的相同例子：</p>
+<div class="browser_output_example">
+<p dir="rtl">&lt;p class="myclass" title="العربي"&gt;نشاط التدويل!&lt;/p&gt;</p>
+</div>
+</div>
+
+
+<p>例子里的源代码在用户代理中会正确显示，只有编写和维护源代码会有问题。</p>
+<p>如果可以的话，确保使用从左向右文字的属性出现在属性列表的最后（在下面的例子中，是<code class="kw" translate="no">class</code>属性）会有一点帮助。这会使从左向右上下文中的语法看起来符合预期，尽管段落文本的问题还是存在。在从右到左的上下文中，它会防止标记与内容的交互，但事情仍然有点混乱。</p>
+
+
+<figure id="fig_moved_attribute" class="example">
+<p class="browser_output_title">你希望看到的：</p>
+<pre style="text-align: right;"><code class="language-html">&lt;p title=&quot;[title_value]&quot; class=&quot;myclass&quot;&gt;![element_content]&lt;/p&gt;</code></pre>
+<p class="browser_output_title">你在简单的文本编辑器中实际看到的（LTR上下文在上，RTL在下）：</p>
+<pre><code class="language-html">&lt;p title=&quot;[title_value]&quot; class=&quot;myclass&quot;&gt;[element_content]!&lt;/p&gt;.</code></pre>
+<pre style="text-align: right;"><code class="language-html">&lt;p/&gt;![element_content]&lt;&quot;class=&quot;myclass &quot;[title_value]&quot;=p title&gt;.</code></pre>
+</figure>
+
+
+<div id="out_moved_attribute" class="browser_output">
+<p class="browser_output_title">使用阿拉伯语文本的相同例子：</p>
+<div class="browser_output_example">
+<p>&lt;p title="العربي" class="myclass"&gt;نشاط التدويل!&lt;/p&gt;</p>
+<p dir="rtl">&lt;p title="العربي" class="myclass"&gt;نشاط التدويل!&lt;/p&gt;</p>
+</div>
+</div>
+
+
+<p>对于编辑者来说，在对整个源代码应用方向覆盖后在LTR模式下编辑并不是一个很好的想法。为此，我们需要一个对Unicode双向文本算法一无所知的编辑器，因为这样避免了文本的重排。这让理解标记语言和内容的混合变得更加容易，不过编辑者必须倒着阅读所有RTL内容。在阿拉伯字母等连写文字中，这尤其成问题，因为正常的连字形状以及方向都会改变。</p>
+
+<figure id="fig_joining_forms">
+<div style="font-size: 2rem; line-height: 1;">
+<p style="text-align: center;"><bdo dir="rtl">يحق لكل فرد أن يغادر</bdo></p>
+<p style="text-align: center;"><bdo dir="ltr">يحق لكل فرد أن يغادر</bdo></p>
+</div>
+<figcaption>相同的阿拉伯语文本在RTL上下文（上）和LTR上下文（下）</figcaption>
+</figure>
+
+<p>将编辑器的整体方向设置为LTR，并在新的一行开始内容也有帮助，但这并不总是对行内的标记有帮助，句末标记还会出现在错误的位置。此外，你应该尽量避免在结束标签之前包含空白字符，因为这可能<a href="https://www.w3.org/International/questions/qa-bidi-space">导致其他问题</a>。</p>
+
+
+<figure id="fig_newline" class="example">
+<p class="browser_output_title">你希望看到的：</p>
+<pre style="text-align: left;"><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;
+.[element_content]&lt;/p&gt;</code></pre>
+<p class="browser_output_title">你在简单的文本编辑器中实际看到的：</p>
+<pre style="text-align: left;"><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;[title_value]&quot;&gt;
+[element_content].&lt;/p&gt;</code></pre>
+</figure>
+
+
+<div id="out_newline" class="browser_output">
+<p class="browser_output_title">使用阿拉伯语文本的相同例子：</p>
+<div class="browser_output_example">
+<p>&lt;p class="myclass" title="العربي"&gt;<br>نشاط التدويل!&lt;/p&gt;</p>
+</div>
+</div>
+
+
+<p>理想的解决方案是用一个它将标记识别为特殊的构造，为源代码中的字符产生合理的显示顺序的代码编辑器。如你的标记包含<code class="kw" translate="no">dir</code>属性来更改内容的方向上下文，你的编辑器应该识别这一点并在源代码的顺序中产生相应的更改。一些编辑器可能有将标签转换为图形的编辑模式，这可以解决这个问题。</p>
+</section>
+
+
+<section id="basedirection">
+<h2>编辑包含格式化字符的源代码</h2>
+<p>如你用Unicode控制字符，比如<code class="uname">RIGHT TO LEFT MARK</code>（RLM）或<code class="uname">ZERO-WIDTH NON JOINER</code>（ZWNJ），你通常无法在源代码中看到这些字符，因为它们是不可见的。如果你的编辑器为这些字符创建可见标记，这将非常有帮助。</p>
+<p>你可能认为一个不错的替代方案是使用预定义的HTML字符实体引用<code>&amp;rlm;</code>和<code>&amp;zwnj;</code>，或它们的等价字符值引用<code>&amp;#x200F;</code>和<code> &amp;#x200C;</code>。</p>
+<p>不幸的是，这种方法通常具有与前一节中描述的相同问题。下面的例子显示了在编辑器中将<code>&amp;x200F;</code>添加到双向文本的3个不同位置时会看到什么。这个编辑器将上下文设置为RTL。在这个简单的例子中，文本不会被移动，但转义的部分会。</p>
+
+
+<figure id="fig_formatting" class="example">
+<p class="browser_output_title">你希望看到的：</p>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text⁴] [english_text³][arabic_text²]&amp;#x200F;[arabic_text¹]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text³] [english_text²]&amp;#x200F;[arabic_text¹]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text³] &amp;#x200F;[english_text²][arabic_text¹]</code></pre>
+<p class="browser_output_title">你在简单的文本编辑器中实际看到的：</p>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text⁴] [english_text³][arabic_text²];x200F#&amp;[arabic_text¹]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text³] x200F;[english_text²]#&amp;[arabic_text¹]</code></pre>
+<pre style="text-align: right;"><code class="language-html"> [arabic_text³] ;[english_text²]&amp;#x200F [arabic_text¹]</code></pre>
+</figure>
+
+
+<p>同样，理想的解决方案是编辑器识别这些转义序列并将所有相关的字符保持在一起，按LTR顺序排列。</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="wrapping">
+<h2>处理代码示例</h2>
+
+<p>鉴于上述情况，当代码片段包含RTL文本时，为教程或文章创建示例可能很棘手，这并不令人意外。显示代码片段在大多数编辑器中的实际外观可能没有帮助；相反，我们需要用额外的隐藏标记来让语法保持在一起并显示文本逻辑顺序的内容。这包括用<code class="kw" translate="no">dir</code>属性值修改文本的基方向，或者其他方法。</p>
+
+<p>通常，作者通过不显示RTL文本来解决这个问题。例如，在前面的所有示例中，我们从主要的示例中删除了实际的阿拉伯语文本，只在实时代码示例中显示它。</p>
+
+<p>在英语上下文中执行此操作的其他常见方法包括通过大写翻译表示代码的阿拉伯语/希伯来语/等部分，并对标记和所有的LTR文本使用从左到右的全小写字符。通常（但不是所有情况下），大写文本中的字母从右到左书写，因为这让标点符号的定位更加真实。从右到左书写的大写文本试图指示渲染结果，从左到右的文本指示内存中字符的顺序。</p>
+<p>以下提供了一些例子。</p>
+
+<figure id="fig_uppercase" class="example">
+<p class="browser_output_title">大写翻译：</p>
+<pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;HEBREW&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/p&gt;</code></pre>
+<p class="browser_output_title">反向的大写翻译：</p>
+<pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;WERBEH&quot;&gt;!YTIVITCA NOITAZILANOITANRETNI&lt;/p&gt;</code></pre>
+</figure>
+
+<div id="out_uppercase" class="browser_output">
+<p class="browser_output_title">使用希伯来文本的输出示例：</p>
+<div class="browser_output_example">
+<p class="myclass" title="עִברִית">פעילות הבינאום!</p>
+</div>
+</div>
+
+
+<p>提供指向页面的链接，或提供包含原文种的代码输出的面板总是有用的。</p>
+</section>
+
+
+
+
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p>教程，<cite><a href="/International/tutorials/bidi-xhtml/">使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面</a></cite></p>
+</li>
+<li>
+<p><a href="/International/articles/inline-bidi-markup/"><cite>HTML中的行内标记和双向文本</cite></a></p>
+</li>
+<li>
+<p>相关链接：<cite>编写网页</cite></p>
+<ul>
+<li><a href="/International/techniques/authoring-html?collapse&amp;open=direction">文本方向</a></li>
+<li><a href="/International/techniques/authoring-html#inline">行内混合文本方向</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
