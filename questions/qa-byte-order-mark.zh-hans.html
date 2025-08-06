@@ -144,10 +144,13 @@ XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc
 <h3>何时使用/不使用BOM</h3>
 <p>使用BOM的必要性和建议根据所使用的Unicode编码方案而有很大差异。</p>
 
+<section id="when-utf-8">
 <h4>UTF-8</h4>
 <p>对于UTF-8，BOM的字节序列是<code>EF BB BF</code>。与UTF-16和UTF-32不同，UTF-8没有字节序的问题，因此不需要BOM来实现此目的。它在UTF-8中的唯一功能是充当"签名"来指示文件的编码是UTF-8。Unicode标准允许在UTF-8中使用BOM，但不建议使用。</p>
 <p><strong>建议：</strong>最好避免在UTF-8文件中使用BOM，除非你有特定原因或兼容性要求。如果可能，始终首选不带BOM的UTF-8。</p>
+</section>
 
+<section id="when-utf16">
 <h4>UTF-16（UTF-16BE / UTF-16LE）</h4>
 <p>对于UTF-16，如果字符集标签没有定义特定的字节序（比如，如果仅标记为"UTF-16"），BOM对于指示字节序至关重要。</p>
 <ul>
@@ -157,7 +160,9 @@ XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc
 <li>如果字符集明确声明为"UTF-16BE"或"UTF-16LE"，则<strong>不应</strong>使用BOM，因为字节顺序已知。</li>
 <li><strong>建议：</strong>如果你的UTF-16数据可能被具有不同字节序的系统解释，并且特定字节序（BE或LE）未由更高级别的协议声明，则使用BOM。如果已知并声明了特定的UTF-16编码（LE或BE），则省略BOM。（不过，对于HTML，强烈建议使用UTF-8而不是UTF-16）。</li>
 </ul>
+</section>
 
+<section id="when-utf32">
 <h4>UTF-32（UTF-32BE / UTF-32LE）</h4>
 <p>与UTF-16类似，UTF-32中的BOM指示字节序，但UTF-32很少用于传输或Web内容。</p>
 <ul>
@@ -165,6 +170,7 @@ XHTML/HTML coders (using editors or scripting), script developers (PHP, JSP, etc
 <li><code>FF FE 00 00</code>：指示小端序（UTF-32LE）。</li>
 <li><strong>建议：</strong>与UTF-16类似，如果未另外指定字节序，则使用BOM。（如上所述，HTML首选UTF-8）。</li>
 </ul>
+</section>
 </section>
 
 
