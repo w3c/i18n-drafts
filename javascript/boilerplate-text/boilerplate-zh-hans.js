@@ -151,6 +151,9 @@ s.quickanswer = "简约回复" // heading
 s.longeranswer = "详情" // heading that follows 'Quick answer'
 s.additionalinfo = "更多信息" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "复制"
+s.copied = "已复制！"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "订阅 RSS 提要"  

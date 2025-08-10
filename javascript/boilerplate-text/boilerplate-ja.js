@@ -151,6 +151,9 @@ s.quickanswer = "端的な回答" // heading
 s.longeranswer = "詳細な回答" // heading that follows 'Quick answer'
 s.additionalinfo = "補足情報" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "RSSフィードを購読する"  

@@ -151,6 +151,9 @@ s.quickanswer = "Krótka odpowiedź" // heading
 s.longeranswer = "Szczegóły" // heading that follows 'Quick answer'
 s.additionalinfo = "Dodatkowe informacje" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Prenumeruj kanał RSS."  
