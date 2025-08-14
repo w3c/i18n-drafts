@@ -33,6 +33,25 @@ console.log(deFormatter.format(eventDate));
 // Output: 26.10.2025
 ```
 
+#### Current Date vs a Specific Date
+
+To display the current date, use `new Date()`:
+
+```javascript
+const fmt = new Intl.DateTimeFormat('en-GB', { dateStyle: 'long' });
+
+// Current date (today)
+fmt.format(new Date()); // e.g., 26 October 2025
+```
+
+To display a specific date, use `new Date()` with parameters. Months are 0-based:
+
+```javascript
+// A specific calendar date: 27 June 2025 (local time)
+const june27Local = new Date(2025, 5, 27);
+fmt.format(june27Local); // 27 June 2025
+```
+
 #### Fine-Grained Control with Options
 
 You can achieve much more detailed and readable formats using the `options` object. The modern approach uses `dateStyle` and `timeStyle`.
