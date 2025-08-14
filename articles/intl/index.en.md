@@ -158,16 +158,21 @@ If you've ever tried to sort an array of strings in a language with accents, you
 `Intl.Collator` provides a locale-sensitive string comparison function.
 
 ```javascript
-const names = ['Émilie', 'Zoe', 'Elodie', 'Stéphane'];
+const names = ['Émilie', 'Zoe', 'Elodie', 'Stéphane', 'Åsa', 'Örjan'];
 
-// Default sort (incorrect for French)
+// Default sort
 console.log([...names].sort());
-// Output: [ 'Elodie', 'Stéphane', 'Zoe', 'Émilie' ]
+// Output: ['Elodie', 'Stéphane', 'Zoe', 'Åsa', 'Émilie', 'Örjan']
 
 // Using Intl.Collator for French
-const collator = new Intl.Collator('fr');
-console.log(names.sort(collator.compare));
-// Output: [ 'Elodie', 'Émilie', 'Stéphane', 'Zoe' ]
+const frCollator = new Intl.Collator('fr');
+console.log(names.sort(frCollator.compare));
+// Output: ['Åsa', 'Elodie', 'Émilie', 'Örjan', 'Stéphane', 'Zoe']
+
+// Using Intl.Collator for Swedish
+const svCollator = new Intl.Collator('sv');
+console.log(names.sort(svCollator.compare));
+// Output: ['Elodie', 'Émilie', 'Stéphane', 'Zoe', 'Åsa', 'Örjan']
 ```
 
 You can even use options for case-insensitive sorting or to correctly sort strings containing numbers (like "Chapter 2" vs. "Chapter 10").
