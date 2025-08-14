@@ -97,6 +97,14 @@ console.log(new Intl.NumberFormat('en-US').format(largeNumber));
 // Germany
 console.log(new Intl.NumberFormat('de-DE').format(largeNumber));
 // Output: 1.234.567,89
+
+// India
+console.log(new Intl.NumberFormat('en-IN').format(largeNumber));
+// Output: 12,34,567.89
+
+// Thailand using native Thai digits
+console.log(new Intl.NumberFormat('th-TH-u-nu-thai').format(largeNumber));
+// Output: ๑,๒๓๔,๕๖๗.๘๙
 ```
 
 #### Currency Formatting
