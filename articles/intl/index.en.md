@@ -33,6 +33,8 @@ console.log(deFormatter.format(eventDate));
 // Output: 26.10.2025
 ```
 
+Note that numeric dates are often problematic for readers, and it's much better to avoid the ambiguity by expanding the month. See how to do that in [Fine-Grained Control with Options](#).
+
 #### Current Date vs a Specific Date
 
 To display the current date, use `new Date()`:
