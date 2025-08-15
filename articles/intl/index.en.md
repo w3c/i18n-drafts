@@ -15,7 +15,7 @@ Before diving into specific formatters, it's important to understand the two fun
 
 ### 1. Formatting Dates and Times with `Intl.DateTimeFormat`
 
-One of the most common i18n tasks is displaying dates and times. A date like "10/12/2025" can mean October 12th in the US but December 10th in much of Europe. `Intl.DateTimeFormat` solves this ambiguity effortlessly.
+One of the most common i18n tasks is displaying dates and times. A date like "10/12/2025" can mean October 12th in the US but December 10th in much of Europe. [`Intl.DateTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) solves this ambiguity effortlessly.
 
 The basic usage is simple. You create a formatter instance and then call its `.format()` method.
 
@@ -56,7 +56,7 @@ fmt.format(june27Local); // 27 June 2025
 
 #### Fine-Grained Control with Options
 
-You can achieve much more detailed and readable formats using the `options` object. The modern approach uses `dateStyle` and `timeStyle`.
+You can achieve much more detailed and readable formats using the [`options` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options). The modern approach uses [`dateStyle` and `timeStyle`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#datestyle).
 
 ```javascript
 const options = {
@@ -85,7 +85,7 @@ console.log(japanFormatter.format(eventDate));
 
 ### 2. Handling Numbers, Currencies, and Units with `Intl.NumberFormat`
 
-Numbers are formatted differently across the world. For example, the decimal separator can be a period or a comma. `Intl.NumberFormat` handles this seamlessly.
+Numbers are formatted differently across the world. For example, the decimal separator can be a period or a comma. [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat) handles this seamlessly.
 
 ```javascript
 const largeNumber = 1234567.89;
@@ -155,7 +155,7 @@ console.log(new Intl.NumberFormat('en-US', {
 
 If you've ever tried to sort an array of strings in a language with accents, you know that JavaScript's default `Array.prototype.sort()` can fail. It sorts based on [code points](https://www.w3.org/TR/i18n-glossary/#dfn-code-point), which often leads to incorrect alphabetical order.
 
-`Intl.Collator` provides a locale-sensitive string comparison function.
+[`Intl.Collator`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator) provides a locale-sensitive string comparison function.
 
 ```javascript
 const names = ['Émilie', 'Zoe', 'Elodie', 'Stéphane', 'Åsa', 'Örjan'];
@@ -175,7 +175,7 @@ console.log(names.sort(svCollator.compare));
 // Output: ['Elodie', 'Émilie', 'Stéphane', 'Zoe', 'Åsa', 'Örjan']
 ```
 
-You can even use options for case-insensitive sorting or to correctly sort strings containing numbers (like "Chapter 2" vs. "Chapter 10").
+You can even use [options](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator#options) for case-insensitive sorting or to correctly sort strings containing numbers (like "Chapter 2" vs. "Chapter 10").
 
 ```javascript
 const files = ['item 10', 'item 2'];
@@ -190,7 +190,7 @@ This makes the code robust and user-friendly. It adapts to the user automaticall
 
 ### 4. Relative Time (`Intl.RelativeTimeFormat`)
 
-This API is perfect for creating human-readable strings like "2 days ago" or "in 3 months".
+[`Intl.RelativeTimeFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat) is perfect for creating human-readable strings like "2 days ago" or "in 3 months".
 
 ```javascript
 const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
@@ -203,14 +203,14 @@ const rtf_es = new Intl.RelativeTimeFormat('es');
 console.log(rtf_es.format(-1, 'day')); // "hace 1 día"
 ```
 
-The `numeric` option in `Intl.RelativeTimeFormat` can have two values:
+The [`numeric` option](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#numeric) in `Intl.RelativeTimeFormat` can have two values:
 
 1.  `always` (default): Always use a number.
 2.  `auto`: Use a word (like "yesterday" or "tomorrow") if the locale has a special term for that relative time. Otherwise, fall back to using a number.
 
 ### By the way
 
-This article only scratches the surface. The `Intl` API also includes `Intl.PluralRules` (for plural-sensitive formatting), `Intl.ListFormat` (for "A, B, and C"), `Intl.DisplayNames` (for translating region or language names), and more.
+This article only scratches the surface. The `Intl` API also includes [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) (for plural-sensitive formatting), [`Intl.ListFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat) (for "A, B, and C"), [`Intl.DisplayNames`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames) (for translating region or language names), and more.
 
 By embracing the ECMAScript Internationalization API, you move localization logic from bulky libraries into the browser's native engine. You write less code and provide a more correct and performant experience for users worldwide.
 
