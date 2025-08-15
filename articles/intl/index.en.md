@@ -64,9 +64,9 @@ const options = {
   timeStyle: 'long',
 };
 
-const formatter = new Intl.DateTimeFormat('fr-FR', options);
+const formatter = new Intl.DateTimeFormat('es-ES', options);
 console.log(formatter.format(eventDate));
-// Output: jeudi 26 octobre 2025 à 10:30:00 UTC
+// Output: viernes, 15 de agosto de 2025, 10:30:00 UTC
 ```
 
 You can also specify time zones, a critical feature for global applications.
