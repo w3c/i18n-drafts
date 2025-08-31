@@ -2,7 +2,7 @@
 
 ## Question
 
-**How do I prepare my web pages to display varying international number, currency, and unit formats?**
+**How do I use JavaScript to dynamically format numbers, currencies, and units for different locales?**
 
 The formats used by numbers, including specialized formatting such as currencies and units, varies dramatically across cultures, regions, and languages. A seemingly innocuous error can lead to misunderstanding or mistakes.
 
