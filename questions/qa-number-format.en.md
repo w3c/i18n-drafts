@@ -46,7 +46,7 @@ While [European digits](https://www.w3.org/TR/i18n-glossary/#dfn-european-digits
 
 ### The `Intl` object
 
-The `Intl` object in JavaScript automatically handles locale-specific decimal and grouping separators, currency symbols, and other numerical conventions.
+The `Intl.NumberFormat` object in JavaScript automatically handles locale-specific decimal and grouping separators, currency symbols, and other numerical conventions.
 
 #### Formatting general numbers with `Intl.NumberFormat`
 
