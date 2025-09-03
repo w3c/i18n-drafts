@@ -163,7 +163,7 @@ You can find a list of standard unit identifiers (e.g., `meter`, `kilogram`, `li
 
 ### Choosing the right locale
 
-Typically, you'll want to format number, currency, and unit according to the language of the web page. This can be determined from the `lang` attribute:
+Typically, you'll want to format number, currency, and unit according to the language of the web page. This can be determined from the `lang` attribute on the HTML element ([which should be set appropriately](https://www.w3.org/International/questions/qa-html-language-declarations)):
 
 ```javascript
 // Get the page's language from the HTML lang attribute
