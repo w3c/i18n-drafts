@@ -44,7 +44,7 @@ While [European digits](https://www.w3.org/TR/i18n-glossary/#dfn-european-digits
 
 **Ambiguity:** The same symbol might represent multiple currencies (e.g., `$` for US Dollar, Canadian Dollar, Mexican Peso, etc.).
 
-### The `Intl` object
+### The `Intl.NumberFormat` object
 
 The `Intl.NumberFormat` object in JavaScript automatically handles locale-specific decimal and grouping separators, currency symbols, and other numerical conventions.
 
