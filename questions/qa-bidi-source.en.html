@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <title>Problems with bidirectional source text in markup</title>
-<meta name="description" content="What are some of the problems encountered when trying to write markup for bidirectional scripts?" />
+<meta name="description" content="What are some of the problems encountered when trying to write markup for bidirectional scripts?">
 <script>
 var f = { }
 
@@ -32,14 +32,14 @@ f.breadcrumb = 'direction'
 
 f.additionalLinks = ''
 </script>
-<script src="qa-bidi-unicode-controls-data/translations.js"> </script>
+<script src="qa-bidi-source-data/translations.js"> </script>
 <script src="../javascript/doc-structure/article-dt.js"> </script>
 <script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
 <!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
 <script src="../javascript/doc-structure/article-2022.js"> </script>
 <script src="../javascript/articletoc-2022.js"></script>
-<link rel="stylesheet" href="../style/article-2022.css" />
-<link rel="copyright" href="#copyright"/>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
 <script src="../javascript/prism.js"></script>
 <link rel="stylesheet" href="../style/prism.css">
 </head>
@@ -147,14 +147,15 @@ f.additionalLinks = ''
 
 <p>It is not a particularly good idea for authors to edit in LTR mode after applying a directional override to the whole of the source code. For this, an editor that knows nothing about the Unicode Bidirectional Algorithm would be necessary, because it avoids the reordering of the text. This makes it easier to understand the mixture of markup and content, but the author has to read all the RTL content backwards. In a cursive script such as Arabic this is particularly problematic, because the normal joining shapes are altered as well as the direction.</p> 
 
+<div class="figWrap">
 <figure id="fig_joining_forms">
-<div style="font-size: 2rem; line-height: 1;">
+<div lang="ar" style="font-size: 2rem; line-height: 1;">
 <p style="text-align: center;"><bdo dir="rtl">يحق لكل فرد أن يغادر</bdo></p>
 <p style="text-align: center;"><bdo dir="ltr">يحق لكل فرد أن يغادر</bdo></p>
 </div>
 <figcaption>The same Arabic text in a RTL context (top) and LTR context (bottom).</figcaption>
 </figure>
-
+</div>
 
 <p>It can also help to set the overall direction of the editor to LTR and start the content on a new line, however this doesn't always help with inline markup, and again sentence-final markup appears in the wrong place in the paragraph text. Also, you should try to avoid including white space before the closing markup, as this can <a href="https://www.w3.org/International/questions/qa-bidi-space">lead to other problems</a>.</p>
 
@@ -183,7 +184,7 @@ f.additionalLinks = ''
 
 <section id="basedirection">
 <h2>Editing source code containing formatting characters</h2>
-<p>If you use a Unicode control character such as the <span class="uname">RIGHT TO LEFT MARK</span> (RLM) or<span class="uname"> ZERO-WIDTH NON JOINER</span> (ZWNJ), you will not usually be able to see it in the source text, since it is invisible. It is very helpful if your editor creates visible markers for these characters.</p>
+<p>If you use a Unicode control character such as the <code class="uname">RIGHT TO LEFT MARK</code> (RLM) or <code class="uname">ZERO-WIDTH NON JOINER</code> (ZWNJ), you will not usually be able to see it in the source text, since it is invisible. It is very helpful if your editor creates visible markers for these characters.</p>
 <p>You may think that a useful alternative is to use the pre-defined HTML character entities, <code>&amp;rlm;</code> and <code>&amp;zwnj;</code>, or their numeric equivalents, <code>&amp;#x200F;</code> and<code> &amp;#x200C;</code>. </p>
 <p>Unfortunately, such an approach typically has the same problems as those described in the previous section. The following example shows what you'd see if you add <code>&amp;x200F;</code> to bidirectional text in 3 different positions, in an editor that sets the context to RTL. In this simple example, the text  doesn't get moved around, but the components of the escape do.</p>
 
@@ -213,7 +214,7 @@ f.additionalLinks = ''
 <section id="wrapping">
 <h2>Working with examples of code</h2>
 
-<p>Given the above, it will come as no surprise that creating examples for tutorials or articles can be tricky when they represent code snippets that contain RTL text. It is probably not helpful to show the text of the snippet as it would actually look in most editors; rather it would be necessary to apply extra, hidden markup to approximate something that keeps the syntax together and shows the logical order of the text. This would include markup that changes the base direction of the text where that is indicated by a <a class="kw" translate="no">dir</a> attribute value, or other method.</p>
+<p>Given the above, it will come as no surprise that creating examples for tutorials or articles can be tricky when they represent code snippets that contain RTL text. It is probably not helpful to show the text of the snippet as it would actually look in most editors; rather it would be necessary to apply extra, hidden markup to approximate something that keeps the syntax together and shows the logical order of the text. This would include markup that changes the base direction of the text where that is indicated by a <code class="kw" translate="no">dir</code> attribute value, or other method.</p>
 
 <p>Often, authors get around the issue by not showing the RTL text. For example, in all the preceding examples we removed the actual Arabic text from the main explanatory example, and just showed it in the live code examples.</p>
 
@@ -221,7 +222,7 @@ f.additionalLinks = ''
 <p>The following provides some examples.</p>
 
 <figure id="fig_uppercase" class="example">
-<p class="browser_output_title">Uppercase translation.</p>
+<p class="browser_output_title">Uppercase translation:</p>
 <pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;HEBREW&quot;&gt;INTERNATIONALIZATION ACTIVITY!&lt;/p&gt;</code></pre>
 <p class="browser_output_title">Uppercase translation with reversed direction:</p>
 <pre><code class="language-html">&lt;p class=&quot;myclass&quot; title=&quot;WERBEH&quot;&gt;!YTIVITCA NOITAZILANOITANRETNI&lt;/p&gt;</code></pre>

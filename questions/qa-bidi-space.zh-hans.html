@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>双向文本空格丢失</title>
+<meta name="description" content="为什么我的浏览器会折叠拉丁字母和阿拉伯字母/希伯来字母之间的空格，如何修复这个问题？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-bidi-space' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-space' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-07-04' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2016-02-07', time:'22:47'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-07-31', time:'18:23'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-bidi-space-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+<style>
+.el { color: #D61B1B; font-size: 100%; font-weight: 300; margin: 0 2px; }
+</style>
+<script>
+function highlightCode () {
+	var examples = document.querySelectorAll('figure.example, div.example')
+	for (var i=0;i<examples.length;i++) {
+		var re = /&lt;([^&]+)&gt;/
+		var content = examples[i].innerHTML
+		out = content.replace(/&lt;([^&]+)&gt;/g,'<span class="el">&lt;$1&gt;</span>')
+		examples[i].innerHTML = out
+		}
+	}
+</script>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>双向文本空格丢失</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+
+<section id="question">
+<h2>问题</h2>
+    <p class="question">为什么我的浏览器会折叠拉丁字母和阿拉伯字母/希伯来字母之间的空格，如何修复这个问题？</p>
+</section>
+
+
+<section id="answer">
+<h2>答案</h2>
+
+  <section id="cause">
+<h3>可能的原因</h3>
+  <div class="insideinfonote">
+    <p class="info">代码示例中从右向左的文本在这里用大写字母表示，从左向右的文本用小写字母表示。</p>
+  </div>
+  <p>如果文本后面跟着一个行内元素，带有<code class="kw" translate="no">dir</code>属性，并且含有空白字符，拉丁字母和阿拉伯字母/希伯来字母之间的空格可能会被折叠。</p>
+    <p>在以下的代码模式中，彩色矩形表示有问题的空格。（大写字母表示RTL文本，小写内容表示LTR。）</p>
+    <figure class="example">
+      <p><code>&lt;p dir="rtl"&gt;RTL_TEXT &lt;span dir="ltr"&gt;ltr_text<span style="background-color: orange;">&nbsp;</span>&lt;/span&gt;RTL_TEXT&lt;/p&gt; </code></p>
+</figure>
+    <p>如果我们用阿拉伯字母和英文替换内容，上述代码会产生以下结果。</p>
+    <figure class="example" dir="rtl">
+    <img src="qa-bidi-space-data/missing-space-1.png" alt="结果图片，显示拉丁字母本左侧没有空格。">
+    <div class="demolink" dir="ltr"><a href="qa-bidi-space-data/eg-space-problem" target="text">查看实时演示</a></div>
+  </figure>
+  <p>请注意，当从右到左的文本嵌入到从左到右的段落中时，也会出现这种效果。</p>
+	</section>
+    
+  <section id="whattodo">
+<h3>如何修复</h3>
+    <p>如果前面的部分描述了你代码的样子，解决方案是删除行内元素结束标签前的所有空格，或者删除<code class="kw" translate="no">dir</code>属性（如果合适的话）。</p>
+      <p>新的代码模式：</p>
+    <figure class="example">
+        <p><code>&lt;p dir="rtl"&gt;RTL_TEXT &lt;span dir="ltr"&gt;ltr_text&lt;/span&gt;<span style="background-color: orange;">&nbsp;</span>RTL_TEXT&lt;/p&gt; </code></p>
+    </figure>
+    <p>例如，在上面的例子里，把<span class="qterm">W3C</span>后面的空格移到<code class="kw" translate="no">span</code>的外面，会产生预期的结果。</p>
+      <figure class="example" dir="rtl">
+      <img src="qa-bidi-space-data/missing-space-2.png" alt="结果图片，显示拉丁字母本两侧都有空格。">
+    <div class="demolink" dir="ltr"><a href="qa-bidi-space-data/eg-space-ok" target="text">查看实时演示</a></div>
+      <!--<p dir="rtl"> العالمية (W3C) تخلق قواعد</p>-->
+    </figure>
+    <p>在这种情况下，我们并不需要<span class="qterm">W3C</span>周围的<code class="kw" translate="no">span</code>元素来产生正确的显示顺序。省略属性或整个<code class="kw" translate="no">span</code>元素也可以解决问题（尽管我们通常建议标记所有相反方向的文本）。</p>
+  </section>
+</section>
+
+
+<section id="additionalinfo">
+<h2>其他信息</h2>
+
+<section id="why">
+<h3>为什么会发生这种情况？</h3>
+  <p>如果你想了解为什么会发生这种情况的技术细节时，可以阅读本节。</p>
+  <p>文本显示时的预期行为在HTML规范中没有详细描述，但在CSS规范中<strong>有</strong>描述。虽然本页面的示例没有用CSS，但同样的原则适用。以下内容摘自<a href="https://www.w3.org/TR/css-text-3/#white-space-phase-1">CSS文本模块第3版候选推荐标准</a>：</p>
+   <blockquote>
+   <p>任何紧跟在另一个可折叠空格之后的可折叠空格（即使该空格位于包含该空格的行内边界之外，只要这两个空格位于同一个行内格式化上下文中）都会被折叠，使其前进宽度为零。（它是不可见的，但保留了其软换行的机会，如果有的话。）</p>
+   </blockquote>
+   <p>给定如下场景，其中颜色表示空格（U+0020）：</p>
+  <blockquote>
+    <p>&lt;ltr&gt;a<span style="background-color: red;">&nbsp;</span>&lt;rtl&gt;<span style="background-color: orange;">&nbsp;</span>B<span style="background-color: blue;">&nbsp;</span>&lt;/rtl&gt;<span style="background-color:green;">&nbsp;</span>c&lt;/ltr&gt;</p>
+  </blockquote>
+  <p>规范说A后面的空格被保留，B前面的空格被删除，B后面的空格被保留，C前面的空格被删除，这给我们留下：</p>
+   <blockquote>
+    <p>&lt;ltr&gt;a<span style="background-color: red;">&nbsp;</span>&lt;rtl&gt;B<span style="background-color: blue;">&nbsp;</span>&lt;/rtl&gt;c&lt;/ltr&gt;</p>
+  </blockquote>
+ <p>然后根据Unicode双向算法进行渲染，最终结果是：</p>
+  <blockquote>
+    <p>a<span style="background-color: red;">&nbsp;</span><span style="background-color: blue;">&nbsp;</span>Bc</p>
+  </blockquote>
+  <p>请注意，A和B之间实际上有两个空格。嵌入级别可以表示如下：</p>
+  <blockquote>
+    <p>0<span style="background-color: red; color:white;">0</span><span style="background-color: blue; color: white;">1</span>10</p>
+  </blockquote>
+</section>
+
+  <section id="test">
+<h3>在我的浏览器中会发生什么？</h3>
+  <p>下面的框显示了代码示例，和代码在此页面上的实现。你可以测试你的浏览器的行为。所有例子的上下文都是从右到左的。垂直的橙色条表示空格字符的位置。</p>
+  <figure>
+  	<div class="example" style="margin-left:0; margin-right: 0;">
+  	  <p>ARABIC<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;latin<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;ARABIC</p>
+      <p dir="rtl">صفحة الترجمة لموقع <span dir="ltr">W3C </span>على الرابط</p>
+      </div>
+  </figure>
+  <figure>
+    <div class="example" style="margin-left:0; margin-right: 0;">
+      <p>ARABIC<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;latin<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;<span style="background-color:orange;">&nbsp;</span>ARABIC</p>
+      <p dir="rtl">صفحة الترجمة لموقع <span dir="ltr">W3C </span> على الرابط</p>
+    </div>
+  </figure>
+  <figure>
+    <div class="example" style="margin-left:0; margin-right: 0;">
+      <p>ARABIC<span style="background-color:orange;">&nbsp;</span>&lt;span dir=&quot;ltr&quot;&gt;latin&lt;/span&gt;<span style="background-color:orange;">&nbsp;</span>ARABIC</p>
+      <p dir="rtl">صفحة الترجمة لموقع <span dir="ltr">W3C</span> على الرابط</p>
+      </div>
+</figure>
+  <figure>
+    <div class="example" style="margin-left:0; margin-right: 0;">
+      <p>ARABIC<span style="background-color:orange;">&nbsp;</span>&lt;span&gt;latin<span style="background-color:orange;">&nbsp;</span>&lt;/span&gt;ARABIC</p>
+      <p dir="rtl">صفحة الترجمة لموقع <span>W3C </span>على الرابط</p>
+    </div>
+  </figure>
+  <figure>
+    <div class="example" style="margin-left:0; margin-right: 0;">
+      <p>ARABIC&lt;span dir=&quot;ltr&quot;&gt;<span style="background-color:orange;">&nbsp;</span>latin&lt;/span&gt;<span style="background-color:orange;">&nbsp;</span>ARABIC</p>
+      <p dir="rtl">صفحة الترجمة لموقع<span> W3C</span> على الرابط</p>
+    </div>
+  </figure>
+  </section>
+</section>
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+<ul id="full-links">
+  <li>
+    <p>相关链接：<cite>编写网页</cite></p>
+    <ul>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?collapse&amp;open=direction">文本方向</a></li>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html#inline">行内混合文本方向</a></li>
+    </ul>
+  </li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage(); highlightCode();</script>
+</body>
+</html>

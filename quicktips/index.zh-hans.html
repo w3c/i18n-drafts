@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>Web国际化快速提示</title>
+<meta name="description" content="一些值得牢记的国际Web设计关键概念。">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'quicktips'+'/' // the path to this file, not including /International or the file name
+f.filename = 'index' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'article-quicktips' // blog search string - usually the filename without extensions
+f.firstPubDate = '2006-02-24' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2015-04-01', time:'13:22'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-06-13', time:'18:31'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'gettingstarted'
+
+f.additionalLinks = ''
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="stylesheet" href="index-data/local.css">
+<link rel="copyright" href="#copyright">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Web国际化快速提示</h1>
+</header>
+
+
+<section id="sidebarExtras">
+<p><a href="#encoding">编码</a>：对内容、数据库等使用UTF-8（Unicode）字符编码，始终声明编码。</p>
+<p><a href="#escapes">转义</a>：尽可能使用字符本身而非转义（如<code translate="no">&amp;#xE1;</code> <code translate="no">&amp;#225;</code>或<code translate="no">&amp;aacute;</code>）。</p>
+<p><a href="#language">语言</a>：声明文档的语言并指示内部语言变化。</p>
+<p><a href="#presentation">表现与内容</a>：用样式表处理样式信息，用标记语言表示语义信息。</p>
+<p><a href="#images">图像、动画和示例</a>：检查可翻译性和不当的文化偏见。</p>
+<p><a href="#forms">表单</a>：在表单和服务器上都使用UTF-8。支持本地格式的姓名、地址、时间、日期等。</p>
+<p><a href="#authoring">文本编写</a>：使用简洁的文本，从多个字符串组合句子时要小心。</p>
+<p><a href="#navigating">导航</a>：在每个页面上包含清晰可见的本地化页面或网站导航，用目标语言表示。</p>
+<p><a href="#rtl">从右到左的文本</a>：对于HTML，在<code class="kw" translate="no">html</code>标签中添加<code translate="no">dir="rtl"</code>。仅在需要改变基方向时重复使用。</p>
+<p><a>检查你的工作</a>： <span class="tip">验证！使用<a class="print" href="/International/">https://www.w3.org/International/</a>上的技术、教程和文章</span></p>
+</section>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+    <p>以下「快速提示」总结了国际化网页设计的关键概念。这些提示并非完整的指南，它们只是W3C<a class="print" href="/International/">国际化标准计划</a>站点中描述的一些概念。</p>
+    <p>本页面以非常简洁的陈述形式列出了这些提示，这些陈述也出现在<a class="print" href="quicktips.pdf">名片大小的参考卡</a>上，随后是提供更多细节和解释的文本。然后我们链接到W3C国际化站点上的信息（如果有的话），你可以在那里进一步阅读。</p>
+    <p>本页面将不时更新。</p>
+
+
+
+<section id="quicktips">
+  <h2>快速提示</h2>
+  <dl>
+    <dt class="tipdl" id="encoding"> <a href="#encoding">编码</a>：<span class="tip">对内容、数据库等使用UTF-8（Unicode）字符编码。始终声明编码。</span></dt>
+    <dd>
+      <p>你选择的字符编码决定了字节如何映射到文本中的字符。</p>
+      <p>通常字符编码将你限制在特定的文字或语言集合中。Unicode允许你简单地处理世界上使用的几乎所有文字和语言。Unicode简化了多语言内容的处理，无论是在单个页面内还是跨网站处理。Unicode在表单、脚本和数据库中特别有用，在这些地方你通常需要支持多种语言。Unicode还使向你的内容添加新语言变得非常简单。</p>
+      <p>除非你适当地声明正在使用的字符编码，否则你的用户可能无法阅读你的内容。这是因为解释你文本的应用可能会对字节如何映射到字符做出错误的假设。</p>
+      <dl>
+        <dt>背景信息</dt>
+        <dd><a class="print" href="/International/questions/qa-what-is-encoding">初学者的字符编码</a>解释了关于字符编码的一些基本概念，以及为什么你应该关心字符编码。<a class="print" href="/International/getting-started/characters">字符集和编码介绍</a>对该主题的各个方面提供了温和的介绍。</dd>
+        <dt>那么，我该如何做呢？</dt>
+        <dd><a class="print" href="/International/techniques/authoring-html#charset">HTML & CSS作者</a> &#x2022; <a class="print" href="/International/techniques/developing-specs#characters">规范开发者</a> &#x2022; <a class="print" href="/International/techniques/server-setup#charset">服务器设置</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="escapes"> <a href="#escapes">转义。</a> <span class="tip">尽可能使用字符而非转义（如&amp;#xE1; &amp;#225;或&amp;aacute;）。</span></dt>
+    <dd>
+      <p>转义如数字字符引用（Numeric Character References，NCRs）和实体是在标记语言中仅使用ASCII字符来表示任何Unicode字符的方法。例如，你可以在HTML中将字符á表示为<code>&amp;#xE1;</code>或<code>&amp;#225;</code>或<code>&amp;aacute;</code>。</p>
+      <p>这些转义对于表示有歧义的或不可见的字符很有用，并且可以防止语法字符（如和号和尖括号）出现问题。它们偶尔也可能对表示你的字符编码不支持或键盘上没有的字符有用。在其他情况下，你应该始终使用字符而不是转义。</p>
+      <dl>
+        <dt>背景信息</dt>
+        <dd><a class="print" href="/International/questions/qa-escapes">在标记和CSS中使用字符转义</a>提供了关于在标记语言中使用转义的其他信息。特别要注意，实体（如&amp;aacute;）应该谨慎使用。</dd>
+        <dt>那么，我该如何做呢？</dt>
+        <dd><a class="print" href="/International/techniques/authoring-html#escapes">HTML & CSS作者</a> &#x2022; <a class="print" href="/International/techniques/developing-specs#char_escapes">规范开发者</a> &#x2022; <a class="print" href="/International/techniques/authoring-svg#escapes">SVG作者</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="language"> <a href="#language">语言。</a> <span class="tip">声明文档的语言并指示内部语言变化。</span></dt>
+    <dd>
+      <p>关于内容（人类）语言的信息对于无障碍性、样式设置、搜索、编辑和其他原因已经很重要。随着越来越多的内容被标记且被正确标记，能够检测语言信息的应用将变得越来越有用和普及。</p>
+      <p>在声明语言时，你可能需要以不同于整个文档元数据的方式表达特定内容范围的信息。理解这种区别很重要。</p>
+      <dl>
+        <dt>背景信息</dt>
+        <dd><a class="print" href="/International/getting-started/language">Web上的语言</a>对该主题的各个方面提供了温和的介绍。</dd>
+        <dt>那么，我该如何做呢？</dt>
+        <dd><a class="print" href="/International/techniques/authoring-html#language">HTML & CSS作者</a> &#x2022; <a class="print" href="/International/techniques/authoring-svg#language">SVG作者</a> &#x2022; <a class="print" href="/International/techniques/authoring-xml#language">XML作者</a> &#x2022; <a class="print" href="/International/techniques/server-setup#language">服务器设置</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="presentation"> <a href="#presentation">表现与内容。</a> <span class="tip">使用样式表处理表现信息。将标记限制为语义。</span></dt>
+    <dd>
+      <p>将内容的样式或表现方式与实际文本本身分开是Web设计的一个重要原则。这使得为同一文本使用替代样式变得简单，例如为了在传统浏览器和小型手持设备上显示相同的内容。</p>
+      <p>这个原则对于本地化特别有用，因为不同的文种有不同的排版需求。例如，由于日文字符的复杂性，在日文HTML页面中可能更倾向于用其他方式而不是加粗或斜体来显示强调。如果使用CSS描述样式，应用此类更改会更容易，如果文本被正确且明确地标记为「强调」而不仅仅是「粗体」，标记会更清洁且更易管理。</p>
+      <p>在本地化期间使用CSS文件而不必更改标记可以节省大量时间和精力，因为任何需要的更改都可以在一个位置为所有页面进行，翻译者可以专注于内容而不是表现。</p>
+      <dl>
+        <dt>背景信息</dt>
+        <dd>阅读2007年@media会议演讲的幻灯片"<a class="print" href="http://www.w3.org/2007/Talks/0706-atmedia/slides/Slide0350.html">为国际用户设计：实用提示</a>"。</dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="images"><a href="#images">图像、动画和示例。</a> <span class="tip">检查可翻译性和不当的文化偏见。</span></dt>
+    <dd>
+      <p>如果你希望你的内容真正与人们沟通，你需要说他们的语言，不仅通过文本，还通过本地化的图像、颜色、物体和关注点。人们很容易忽视象征意义、行为、概念、肢体语言、幽默等的文化特定性质。你应该从国内用户那里获得关于你的图像、视频和示例的适宜性和相关性的反馈。</p>
+      <p>当内容被翻译时，你还应该注意在图形中包含文本。复杂背景上或受限空间中的文本可能会给翻译者造成相当大的麻烦。你应该为本地化团队提供文本位于单独图层的格式，并且记住，英语和中文等语言的文本在翻译后几乎肯定会扩展。</p>
+      <dl>
+        <dt>背景信息</dt>
+        <dd>阅读2007年@media会议演讲的幻灯片"<a class="print" href="http://www.w3.org/2007/Talks/0706-atmedia/slides/Slide0440.html">为国际用户设计：实用提示</a>"。</dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="forms"> <a href="#forms">表单。</a> <span class="tip">在表单和服务器上都使用UTF-8。支持本地格式的姓名、地址、时间、日期等。</span></dt>
+    <dd>
+      <p>包含表单的HTML页面使用的编码应该支持向这个表单输入数据所需的所有字符。如果用户可能需要用多种语言输入信息，这一点尤为重要。</p>
+      <p>从多语言页面表单接收数据的数据库和脚本也必须能够同时支持所有这些语言的字符。</p>
+      <p>实现这一点的最简单方法是对包含表单的页面和所有后端处理和存储都使用Unicode字符编码UTF-8。在这种情况下，用户可以用他们需要的任何语言和文字填写数据。</p>
+      <p>你还应该尝试避免假设用户的姓名和地址等信息会遵循与你相同的格式规则。问问自己对于地址等信息，你真正需要分解为单独字段的细节有多少。请记住，在某些文化中没有街道名称，在其他文化中门牌号跟在街道名称后面，有些人需要不止一行来表示地址中位于城镇或城市名称之前的部分，等等。实际上，在某些地方，地址是从一般到具体自上而下排列的，这意味着非常不同的布局策略。在验证表单时建立关于区号或电话号码长度的错误假设要非常小心。仔细处理日期，因为日、月、年的排序有多种不同的约定。</p>
+      <p>如果你从来自多个国家的人收集信息，为应对人们期望能够使用的不同格式制定策略很重要。这不仅对你创建的表单设计很重要，而且对你如何在数据库中存储此类信息也有影响。</p>
+      <dl>
+        <dt>那么，我该如何做呢？</dt>
+        <dd><a class="print" href="https://www.w3.org/International/techniques/authoring-html#formcontrols">HTML & CSS作者</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="authoring"> <a href="#authoring">文本编写。</a> <span class="tip">使用简洁的文本。从多个字符串组合句子时要小心。</span></dt>
+    <dd>
+      <p>简洁的文本更容易翻译。如果人们阅读的文本不是他们的第一语言，这样的文本也更容易阅读。</p>
+      <p>当从多个子字符串组合消息时，或当向字符串中插入变量文本时，你应该格外小心。例如，假设你的站点使用PHP脚本，你决定动态组合某些消息。你可能通过连接单独的子字符串来创建消息，如"Only"或"Don't"、" return results in "和"any format"或"HTML"。因为其他语言句子中文本的顺序可能非常不同，翻译这种内容可能会带来重大困难。</p>
+      <p>同样，避免在文本中固定变量的位置很重要，如"Page 1 of 10"。其他语言的语法可能需要颠倒数字才能有意义。如果你使用PHP，这意味着使用格式化字符串如"Page %1\$d of %2\$d."，而不是更简单的"Page %d of %d."。后者在某些语言中是无法翻译的。</p>
+      <dl>
+        <dt>那么，我该如何做呢？</dt>
+        <dd><a class="print" href="https://www.w3.org/International/techniques/authoring-html#strings">HTML & CSS作者</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="navigating"> <a href="#navigating">导航。</a> <span class="tip">在每个页面上包含清晰可见的本地化页面或网站导航，使用目标语言。</span></dt>
+    <dd>
+      <p>当你有不同语言或国家/地区版本的页面或网站时，你应该提供一种方式让用户看他们想看的版本。这应该出现在你网站上所有有多语言的页面上。</p>
+      <p>在提供其他语言页面的链接时，使用<em>目标语言的文字</em>来表示语言名称，不要假设用户能看懂英语。例如，在链接到法语页面时，"French"应该写作"français"。如果你正在引导用户到特定国家或地区的页面或网站，这也适用，例如"Germany"应该是"Deutschland"。</p>
+      <dl>
+        <dt>那么，我该如何做呢？</dt>
+        <dd><a class="print" href="https://www.w3.org/International/techniques/authoring-html#navigation">HTML & CSS作者</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl" id="rtl"> <a href="#rtl">从右到左的文本。</a> <span class="tip">对于HTML，在html标签中添加<code>dir="rtl"</code>。仅在需要改变基本方向时重复使用。</span></dt>
+    <dd>
+      <p>阿拉伯语、希伯来语、波斯语和乌尔都语等语言的文本从右到左阅读。在这种情况下，文本通常需要右对齐，页面与表格布局也需要镜像。你可以通过简单地在<code class="kw" translate="no">html</code>标签中包含<code>dir="rtl"</code>来将页面内容的默认对齐和顺序设置为从右到左。</p>
+      <p>在<code class="kw" translate="no">html</code>标签中设置的方向为文档的基方向，该方向级联到页面上的所有元素。除非你想显式更改方向流，否则不必在较低级别的元素上重复这个属性。</p>
+      <p>例如，拉丁字母中的嵌入文本在整体从右到左的流中仍然从左到右运行。数字也是如此。如果你正在处理从右到左的语言，你应该熟悉Unicode双向文本算法的基础。这个算法能够处理大部分双向文本，无需网站开发者干预。但是，在某些情况下，需要用标记语言或Unicode控制字符来确保正确的效果。</p>
+      <dl>
+        <dt>背景信息</dt>
+        <dd><a class="print" href="/International/articles/inline-bidi-markup/uba-basics">Unicode双向文本算法基础</a>提供了关于Unicode双向文本算法如何工作以及何时需要标记语言帮助的基础知识的简单介绍。</dd>
+        <dd><a class="print" href="/International/tutorials/bidi-xhtml/">使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面</a>提供了在HTML中处理从右到左文本基础知识的温和介绍。其他标记语言的原则类似。</dd>
+        <dd><a class="print" href="/International/articles/inline-bidi-markup/">HTML中的内联标记和双向文本</a>提供了另一个简单的介绍，这次是关于处理内联双向文本的基础知识。</dd>
+        <dt>那么，我该如何做呢？</dt>
+        <dd><a class="print" href="/International/techniques/authoring-html#direction">HTML & CSS作者</a> &#x2022; <a class="print" href="/International/techniques/authoring-svg#direction">SVG作者</a> &#x2022; <a class="print" href="/International/techniques/authoring-xml#direction">XML作者</a> &#x2022; <a class="print" href="/International/techniques/developing-schemas#direction">模式开发者</a></dd>
+      </dl>
+    </dd>
+    <dt class="tipdl">检查你的工作。<span class="tip"><a class="print" href="http://validator.w3.org/">验证！</a>使用<a class="print" href="/International/">https://www.w3.org/International/</a>上的技术、教程和文章</span></dt>
+    <dd>尝试<a class="print" href="https://validator.w3.org/i18n-checker/">W3C国际化检查器</a>。</dd>
+  </dl>
+</section>
+
+
+<section id="materials">
+  <h2>其他入门资料</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <p class="info">有一个<a class="print" href="https://www.w3.org/International/i18n-drafts/getting-started/index.zh-hans.html">入门</a>页面帮助你在网站上找到信息。入门页面指向为新手提供关键国际化主题的介绍文章，并指向网站上的基本信息来帮助你开始。</p>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

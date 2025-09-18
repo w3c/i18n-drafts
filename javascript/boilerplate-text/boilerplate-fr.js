@@ -151,6 +151,10 @@ s.quickanswer = "Réponse courte" // heading
 s.longeranswer = "Détails" // heading that follows 'Quick answer'
 s.additionalinfo = "Information complémentaire" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
+
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Abonnez-vous au flux RSS."  
@@ -185,15 +189,6 @@ s.topics = "Chercher"
 
 MISSING TRANSLATIONS
 
-check all top left links !
-
-s.tests
-s.ask
-s.askI18nActivity
-s.about
-s.aboutI18nActivity
-
-
-
+none
 
 */

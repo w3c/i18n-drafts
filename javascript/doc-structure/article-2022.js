@@ -238,9 +238,9 @@ if (f.modifiers && f.modifiers != '') modCredit = s.modifiedBy+f.modifiers+s.sen
 var translatorCredit = ''
 if (g.isTranslation) translatorCredit = s.translatedBy+f.translators+s.sentenceDelimiter
 
-var credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
+var credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+' '+translatorCredit+"</p>"
 // Remove the space for Chinese
-if (document.documentElement.lang === "zh-hans" || document.documentElement.lang === "zh-hant") credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
+// if (document.documentElement.lang === "zh-hans" || document.documentElement.lang === "zh-hant") credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
 
 if (f.contributors && f.contributors != '') credits += "<p class='acknowledgements'>"+s.acknowledgements+f.contributors+"</p>"
 if (f.sources && f.sources != '') credits += "<p class='acknowledgements'>"+f.sources+"</p>"
@@ -336,3 +336,31 @@ function getURLs () {
 	if (document.querySelector('#endlinks')) document.querySelector('#endlinks').parentNode.appendChild(container)
 	
 	}
+
+// Simple copy button for code blocks
+document.addEventListener('DOMContentLoaded', function() {
+    const codeBlocks = document.querySelectorAll('pre code');
+
+    codeBlocks.forEach(function(code) {
+        const pre = code.parentElement;
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = s.copy;
+
+        copyBtn.addEventListener('click', async function() {
+            const text = code.textContent;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                copyBtn.textContent = s.copied;
+                setTimeout(function() {
+                    copyBtn.textContent = s.copy;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+        });
+
+        pre.appendChild(copyBtn);
+    });
+});

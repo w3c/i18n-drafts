@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>在HTML中声明语言</title>
+<meta name="description" content="如何设置HTML页面的内容语言？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-html-language-declarations'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-html-language-declarations'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2011-09-15'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2021-06-23', time:'16:14'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-08-06', time:'16:14'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-html-language-declarations-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>在HTML中声明语言</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script></div>
+
+
+
+<section id="question">
+  <h2>问题</h2>
+    <p class="question">如何设置HTML页面的内容语言？</p>
+<p>本文描述了如何通过标记HTML页面来提供有关页面语言的信息。首先是一个总体概述，并在后续章节中提供更多详细信息。</p>
+</section>
+
+
+<section id="nutshell">
+<h2 id="quickanswer">快速回答</h2>
+
+<p>始终在<code class="kw" translate="no">html</code>标签上使用语言属性来声明页面中文本的默认语言。这会被所有其他元素继承，例如：</p>
+<figure class="example">
+<pre><code class="language-html">&lt;html lang="en"&gt;</code></pre>
+</figure>
+<p>注意，你应该使用<code class="kw" translate="no">html</code>元素而不是<code class="kw" translate="no">body</code>元素，因为<code class="kw" translate="no">body</code>元素覆盖不了<code class="kw" translate="no">head</code>元素内的文本。</p>
+<p>当页面包含其他语言的内容时，在围绕该内容的元素上添加语言属性。这让你以不同的方式添加样式或处理这个元素。比如：</p>
+
+<figure class="example">
+<pre><code class="language-html">&lt;p&gt;The title is &quot;&lt;span lang="fr"&gt;Le Bon Usage&lt;/span&gt;&quot;.</code></pre>
+</figure>
+
+<p>对于作为HTML提供的页面，使用<code class="kw" translate="no">lang</code>属性。（对于作为XML提供的页面，包括XHTML 1.x和HTML5多语言文档，请参见<a href="#attributes">选择正确的属性</a>。）</p>
+
+<p>使用来自<a class="print" href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry"><cite>IANA语言子标签注册表</cite></a>的语言标签。你可以用非官方的<a class="print" href="https://r12a.github.io/app-subtags/">语言子标签查找</a>工具来寻找子标签。（<a href="#langvalues">更多</a>）</p>
+<p>在代码的某些部分你可能会遇到问题。如果你在<code class="kw" translate="no">title</code>元素中有多语言文本，你无法标记不同部分的语言，因为<code class="kw" translate="no">title</code>属性里不能包含标签。属性值中的多语言文本也是这种情况。目前对此没有好的解决方案。</p>
+<p>使用嵌套元素来处理同一元素上不同语言的内容和属性值。（<a href="#contentvsattribute">更多</a>）</p>
+<p>你不能用<code class="kw" translate="no">http-equiv</code>属性设置为<code class="kw" translate="no">Content-Language</code>的<code class="kw" translate="no">meta</code>元素来指示页面的语言，但在某些情况下，你可能希望通过HTTP标头提供语言信息来指示页面的<strong>目标受众</strong>。无论你是否使用HTTP标头，你都应该用<code class="kw" translate="no">html</code>标签上的语言属性来声明页面中文本的语言。有关更多信息，请参见配套文章<a href="qa-http-and-lang">HTTP标头、<code class="kw" translate="no">meta</code>元素和语言信息</a>。</p>
+</section>
+
+
+<section id="details">
+<h2>详细信息</h2>
+
+<div class="sidenoteGroup">
+<p>本章提供了在HTML中声明语言的的详细信息。</p>
+<aside class="sideinfonote">
+<p class="info">在处理双向文本（如阿拉伯语、希伯来语等）时，不要忘记也使用<code class="kw" translate="no">dir</code>属性。</p>
+</aside>
+</div>
+
+
+  <section id="contentvsattribute">
+<h3>如果元素内容和属性值的语言不同怎么办？</h3>
+    <p>有时，属性中的文本语言和元素内容的语言不同。比如，在本文的右上角有指向页面翻译版本的链接。链接文本使用目标页面的语言，但<code class="kw" translate="no">title</code>属性使用的是当前页面的语言：</p>
+    <figure> <img src="qa-html-language-declarations-data/translation-title.zh-hans.png" alt="屏幕截图显示从文档文本“Español”弹出包含“西班牙语”的提示。" width="320"></figure>
+    <p>如果你的代码如下所示，语言属性会指示内容和<code class="kw" translate="no">title</code>属性文本都是西班牙语。这显然是不正确的。</p>
+    <figure class="example">
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> 错误代码。不要复制！</span></div>
+      <p><code class="language-html">&lt;a lang="es" title="Spanish"
+        href="qa-html-language-declarations.es"&gt;<span lang="es">Español</span>&lt;/a&gt;</code></p>
+    </figure>
+
+<p>你应该将包含不同语言文本的属性移动到另一个元素，如下所示，其中<code class="kw" translate="no">a</code>元素继承<code class="kw" translate="no">html</code>元素的默认<code class="kw" translate="no">en</code>设置。</p>
+
+<figure class="example">
+<p><code class="language-html">&lt;a title=&quot;Spanish&quot; href=&quot;qa-html-language-declarations.es&quot;&gt;&lt;span lang=&quot;es&quot;&gt;Español&lt;/span&gt;&lt;/a&gt;</code></p>
+</figure>
+</section>
+
+  <section id="usingspan">
+<h3>如果没有元素可以挂载你的属性该怎么办？</h3>
+    <p>如果你想指定某些内容的语言但周围没有标签，请在内容周围使用如<code class="kw" translate="no">span</code>、<code class="kw" translate="no">bdi</code>或<code class="kw" translate="no">div</code>之类的元素。比如：</p>
+    <figure class="example">
+      <p><code class="language-html">&lt;p&gt;You'd say that in  Chinese as &lt;span lang="zh-Hans"&gt;中国科学院文献情报中心&lt;/span&gt;.&lt;/p&gt;</code></p>
+    </figure>
+  </section>
+  
+  <section id="langvalues">
+<h3>选择语言值</h3>
+    <p>为了确保所有用户代理都能识别你的语言，你需要在提供语言属性值时遵循标准的方法。你还需要考虑如何以标准方式引用方言差异，比如美式英语和英式英语在拼写和发音方面存在显著的差异。</p>
+    <p>创建语言属性值的规则由名为<a class="print" href="https://www.rfc-editor.org/rfc/bcp/bcp47.txt">BCP 47</a>的IETF规范描述。除了如何使用简单的<span class="newterm">语言标签</span>（如英语的<code class="kw" translate="no">en</code>或法语的<code class="kw" translate="no">fr</code>）外，BCP 47还描述了如何组合语言标签，让你指定与语言相关的地区方言、文字和其他变体。</p>
+    <div class="sidenoteGroup">
+      <p>BCP 47包含ISO的语言和国家代码集，以及其他内容。要查找相关代码，你应该查阅<a class="print" href="https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry"><cite>IANA语言子标签注册表</cite></a>。</p>
+      <aside class="sideinfonote">
+        <p class="info">非官方的<a class="print" href="https://r12a.github.io/app-subtags/">语言子标签查找</a>工具为IANA注册表提供了用户友好的前端工具。</p>
+      </aside>
+    </div>
+    <p class="info">想了解BCP 47标签的语法，请阅读<a class="print" href="/International/articles/language-tags/"><cite>HTML和XML中的语言标签</cite></a>。如果你想从众多可能的标签和组合中选择正确的语言标签，请参见<a class="print" href="/International/questions/qa-choosing-language-tags"><cite>选择语言标签</cite></a>。</p>
+  </section>
+
+
+
+
+
+<section id="attributes">
+<h3>选择正确的属性</h3>
+<p>如果你的文档是HTML（即作为<code class="kw" translate="no">text/html</code>提供），请用<code class="kw" translate="no">lang</code>属性来设置文档或文本范围的语言。比如，以下将默认语言设置为法语：</p>
+<figure class="example">
+<p><code class="language-html">&lt;html lang="fr"&gt;</code></p>
+</figure>
+<p>当将XHTML 1.x或多语言页面作为<code class="kw" translate="no">text/html</code>提供时，你需要同时使用<code class="kw" translate="no">lang</code>属性<strong>和</strong><code class="kw">xml:lang</code>属性。<code class="kw" translate="no">xml:lang</code>属性是在XML中识别语言信息的标准方式。确保两个属性的值相同。</p>
+<figure class="example">
+<pre><code class="language-html">&lt;html lang="fr" xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml"&gt;</code></pre>
+</figure>
+<p>如果你将文件作为HTML处理，<code class="kw" translate="no">xml:lang</code>是没有用的，但在你将文档作为XML处理或提供时是有用的。<code class="kw" translate="no">lang</code>属性被XHTML的语法允许，也可能被浏览器识别。但是，当使用其他XML解析器时（例如XSLT中的<code class="kw" translate="no">lang()</code>函数），你不能依赖<code class="kw" translate="no">lang</code>属性被识别。</p>
+<p>如果你将页面作为XML提供（即使用诸如<code class="kw" translate="no">application/xhtml+xml</code>之类的MIME类型），你不需要<code class="kw" translate="no">lang</code>属性。<code class="kw">xml:lang</code>属性就足够了。</p>
+<figure class="example">
+<pre><code class="language-html">&lt;html xml:lang="fr" xmlns="http://www.w3.org/1999/xhtml"&gt;</code></pre>
+</figure>
+</section>
+
+</section>
+
+
+<section id="additionalinfo">
+<h2>附加信息</h2>
+
+<p>本节中的信息不太可能有用，但为了完整性而提供。</p>
+
+
+<section id="metadata">
+<h3>指定关于受众语言的元数据</h3>
+<p><span style="margin-top: 6em;">除了在<code class="kw" translate="no">html</code>标签上包含页面内语言属性（你应该始终这样做）外，你可能还遇到过HTTP标头中的语言声明（与页面一起提供）或作为<code class="kw" translate="no">meta</code>元素。</span></p>
+<p>重要的是，在确定文本的实际语言时，页面内语言声明始终覆盖HTTP信息，但HTTP信息可能提供有关资源<strong>预期用途</strong>的更通用的信息。<span style="margin-top: 6em;">不建议在HTML页面中用<code class="kw" translate="no">meta</code>元素来声明语言</span>。</p>
+<p class="info">有关HTTP和<code class="kw" translate="no">meta</code>元素中的<code class="kw" translate="no">Content-Language</code>的信息，请参见<a class="print" href="qa-http-and-lang"><cite>HTTP标头、<code class="kw" translate="no">meta</code>元素和语言信息</cite></a>。</p>
+</section>
+
+  <section id="irrelevant">
+<h3>各种不相关的事</h3>
+    <p>为了谨慎起见，也为了彻底性，也许值得提及一些与此讨论<strong>不相关</strong>的其他要点。</p>
+    <p>首先，我们无法用CSS声明文本的语言。</p>
+    <p>其次，应该开始任何HTML文件的<code class="kw" translate="no">DOCTYPE</code>可能包含一些人看起来像语言声明的内容。下面示例中的<code class="kw" translate="no">DOCTYPE</code>包含文本EN，代表"英语"。但是，这表示与此文档关联的<strong>模式</strong>的语言。它与文档本身的语言无关。</p>
+    <figure class="example">
+      <p><code class="language-html">&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"&gt;</code></p>
+    </figure>
+    <p>第三，有时人们假设可以从字符编码推断自然语言的信息。但字符编码不能明确识别自然语言：要使这种推断起作用，编码和语言之间<strong>必须</strong>有一对一的映射，但没有。例如，单个字符编码可以用于多种语言，例如Latin 1（ISO-8859-1）可以编码法语和英语，以及许多其他语言。此外，字符编码可以在单一语言上变化，例如阿拉伯语可以使用诸如"Windows-1256"或"ISO-8859-6"或"UTF-8"之类的编码。</p>
+    <p>但是，所有这些编码示例现在都没有意义，因为所有内容都应该用UTF-8编写，它在单个字符编码中涵盖了除了一些非常罕见的语言之外的所有语言。</p>
+    <aside class="insideinfonote">
+      <p class="info">在某些文种中，如阿拉伯字母和希伯来字母，文本主要从右到左阅读，尽管数字和其他文种的文本从左到右阅读。我们需要诸如<code class="kw" translate="no">dir</code>属性之类的标记来设置整体的从右到左上下文，在某些情况下需要标记来正确呈现双向文本，但这不能使用语言标记来完成。</p>
+    </aside>
+    <p>文本方向也是如此。与编码和语言一样，语言和文字之间并不总是有一对一的映射，因此方向性也是如此。例如，阿塞拜疆语可以使用从右到左（阿拉伯语）和从左到右（拉丁语或西里尔语）文字编写，语言代码<code class="kw" translate="no">az</code>可以与任一相关。此外，与行内文本一起使用的文本方向标记对文本应用一系列不同的值，而语言是一个简单的开关，不能胜任所需的任务。</p>
+  </section>
+</section>
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li>
+      <p>入门：<a href="/International/getting-started/language"><cite>Web上的语言</cite></a></p>
+    </li>
+    <li>
+      <p>教程：<a href="/International/tutorials/language-decl/"><cite>在HTML中使用语言</cite></a></p>
+    </li>
+    <li>
+      <p>相关链接：<cite>编写网页</cite></p>
+      <ul>
+        <li><a href="/International/techniques/authoring-html#language">语言</a></li>
+        <li><a href="/International/techniques/authoring-html#textprocessing">使用属性声明语言</a></li>
+        <li><a href="/International/techniques/authoring-html#langvalues">选择语言值</a></li>
+        <li><a href="/International/techniques/authoring-html#indoclang">识别文档内语言变化</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

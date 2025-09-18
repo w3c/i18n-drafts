@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>CSS与标记语言对双向文本的支持</title>
+<meta name="description" content="在HTML和基于XML的标记语言中，我应该用CSS还是标记语言来正确显示基于Unicode的双向文本？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-bidi-css-markup' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-css-markup' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-07-13' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2016-03-10', time:'18:39'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-07-10', time:'18:39'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-bidi-css-markup-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<style media="all">
+.visualascii {
+	font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>CSS与标记语言对双向文本的支持</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+    
+<section id="question">
+<h2>问题</h2>
+    <p class="question">在HTML和基于XML的标记语言中，我应该用CSS还是标记语言来正确显示基于Unicode的双向（bidi）文本？</p>
+</section>
+  
+ 
+
+<section id="nutshell">
+    <h2 id="quickanswer">简答</h2>
+    <p>在有标记可用的情况下，你应该始终使用专用的双向文本标记来描述你的内容。</p>
+    <p>对于HTML，双向文本标记就足够了，不需要CSS的bidi样式。绝对不要将CSS的bidi样式用于普通的HTML元素或属性。这包括以XML形式提供的内容（比如XHTML 1.x或polyglot标记）。</p>
+    <p>对于其他以XML形式提供的内容，如果有专用的双向文本标记，你也应该使用它，但你可能需要用CSS样式来指定标记的预期行为。</p>
+</section>
+
+
+<section id="detail">
+<h2>详细信息</h2>
+  <section id="markup">
+<h3>使用专用标记</h3>
+    <p>因为文本方向是文档结构的一个组成部分，所以应该使用<strong>标记</strong>来为文档或信息块设置文本方向，或者标记文本中仅靠Unicode双向文本算法无法实现预期的文本方向的位置。</p>
+    <p>为了产生预期的从右到左或双向效果，一些人简单地把CSS应用于围绕相关文本的所有通用段落或内联元素。但是，由CSS应用的样式并不是永久的。它可能被关闭、被覆盖、无法识别，或者在不同的上下文中被更改/替换。标记语言的代码也可能出现在用不了CSS的地方，例如数据库或代码片段。</p>
+    <p>虽然双向文本标记只是用于文本的视觉渲染，但它在功能上并非纯粹的装饰性。</p>
+    <p>标记以持久的方式与文档内容保持集成。如果你使用专用的双向文本标记，它还让内容更加清晰。因此，在有专门的双向文本标记时，你应该使用它。不要简单地将CSS样式添加到通用元素来实现效果。</p>
+    <p>请注意，这假设以标记语言编写的文件总是可以用用于支持混合方向文本的标记。我们鼓励设计或维护DTD或Schema的人为此目的添加元素或属性。</p>
+  </section>
+    
+  <section id="html">
+<h3>以<code>text/html</code>形式提供的HTML或XHTML</h3>
+    <p>仅使用<strong>标记语言</strong>。<a href="https://www.w3.org/TR/css-writing-modes-3/#text-direction">CSS书写模式</a>规范建议在HTML中对双向文本使用标记。</p>
+    <blockquote cite="https://www.w3.org/TR/css-writing-modes-3/#text-direction">
+    "如果文档语言提供了控制双向文本的标记特性，作者和用户应该使用这些特性，而不是指定CSS规则来覆盖它们。"
+    </blockquote>
+    <p>实际上，它明确声明作者不应该在HTML中使用<code class="kw" translate="no">direction</code>或<code class="kw" translate="no">unicode-bidi</code>属性。这是因为HTML规范清楚地定义了浏览器对于双向文本标记的预期行为。</p>
+  </section>
+    
+  <section id="xhtml">
+<h3>以<code>application/xhtml+xml</code>形式提供的XHTML 1.x或polyglot标记</h3>
+    <p>以<code>application/xhtml+xml</code>形式提供的XHTML 1.x和polyglot页面预期使用与HTML相同的语义。因此，也应该仅使用标记而不使用CSS。</p>
+  </section>
+    
+  <section id="xml">
+<h3>以<code>application/xml</code>或<code>text/xml</code>形式提供的通用XML标记和XHTML</h3>
+    <p>通常，用户代理不会自动识别或知道如何处理你在XML文档中使用的任何双向文本标记。因此，应该使用CSS属性来指示文档中文本的预期视觉行为。</p>
+    <p>但是，CSS应该始终链接到文本中的专用双向文本标记。</p>
+    <p>请参阅HTML规范中的<a href="https://html.spec.whatwg.org/multipage/rendering.html#bidi-rendering">15.3.5双向文本</a>部分，了解用于HTML标记的样式。此标记为在XML应用程序中定义标记提供了良好的模型。特别要注意，CSS应用了<code class="kw" translate="no">unicode-bidi</code>的<code class="kw" translate="no">isolate</code>值（对于<code class="kw" translate="no">bdo</code>则是<code class="kw" translate="no">isolate-override</code>）。强烈建议对所有带有<code class="kw" translate="no">dir</code>（或等效）属性的元素使用这种方式，而不是简单的嵌入。（参见<a href="https://www.w3.org/International/articles/inline-bidi-markup/">HTML中的内联标记和双向文本</a>了解原因。）</p>
+    <p>双向样式可以在单独的样式表中定义，并把这个样式表包含在你的其他样式表或文档中。这简化了样式表的开发，并强化了双向和其他样式之间的区别。将双向样式表视为schema信息的一部分，它定义了特定双向标记的含义，而不是存在各种变体的装饰性样式。</p>
+  </section>
+</section>
+
+
+<section id="additionalinfo">
+<h2>其他信息</h2>
+  <p>在HTML和其他基于XML的标记语言中，存在文本出现在属性中或仅支持字符数据的元素中的情况。标记和CSS都不能用于修改属性文本或仅支持字符数据的元素中<strong>部分文本</strong>的方向性。在这些情况下，你需要使用Unicode方向格式化代码。（有关更多详细信息，请参阅<a class="print" href="https://www.org/International/questions/qa-bidi-unicode-controls">使用Unicode控制符处理双向文本</a>。）</p>
+</section>
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+  <li>
+    <p>相关链接，<cite>编写网页</cite></p>
+    <ul>
+      <li><a href="https://www.org/International/techniques/authoring-html?collapse&amp;open=direction">文本方向</a></li>
+      <li><a href="https://www.org/International/techniques/authoring-html#blocks">在块级元素上设置方向</a></li>
+      <li><a href="https://www.org/International/techniques/authoring-html#inline">内联混合文本方向</a></li>
+    </ul>
+  </li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

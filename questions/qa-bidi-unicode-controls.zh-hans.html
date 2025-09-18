@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>如何用Unicode控制字符处理双向文本</title>
+<meta name="description" content="如果无法使用标记语言来正确显示双向文本，我该怎么办？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-bidi-unicode-controls' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-bidi-unicode-controls' // blog search string - usually the filename without extensions
+f.firstPubDate = '2009-07-10' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2023-02-23', time:'10:39'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-07-31', time:'10:39'} // date and time of latest edits to this document/translation
+f.contributors = 'Mati Allouche, Addison Phillips, Atsushi Shimono, 薛富侨' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨, W3C' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-bidi-unicode-controls-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+<style media="all">
+.visualascii {
+	font-weight: bold;
+	font-size: 80%;
+}
+.example1 {	margin-bottom: 2em;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>如何用Unicode控制字符处理双向文本</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+
+
+
+<p>本文介绍了在用不了标记时，内容作者如何将方向元数据应用于双向文本。</p>
+
+<div class="insideinfonote">
+<p class="noprint info">代码示例中的从右到左文本用大写字母表示，从左到右文本用小写字母表示。</p>
+</div>
+
+<p class="warning"><strong>本文假设你熟悉双向文本的概念和使用HTML标记管理双向文本，但需要了解如何用Unicode控制字符做类似的事情，比如在编写纯文本时。</strong>如果你不熟悉Unicode中双向文本的工作原理，应该先阅读<a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode双向文本算法基础</cite></a>，再继续。</p>
+
+<p class="warning">如果你不熟悉在HTML标记中管理双向文本，你也可以读一下<a href="https://www.w3.org/International/articles/inline-bidi-markup/index.zh-hans.html"><cite>HTML中的行内标记和双向文本</cite></a>。</p>
+
+
+
+
+
+<section id="reasons">
+<h2>本文涵盖和不涵盖的内容</h2>
+    <p>你仍然需要用标记来为整个文档建立默认方向（比如在<code class="kw" translate="no">html</code>标签中），以及为块容器元素更改方向。因为控制字符不会跨越段落等块元素的边界，也无法通过标记的层次结构管理继承和作用域，所以只适用于行内。</p>
+<p>比如，虽然HTML页面头部的<code class="kw" translate="no">title</code>元素不能包含标记，但仍然可以在<code class="kw" translate="no">title</code>元素标签上设置默认基方向（或让它继承在<code class="kw" translate="no">html</code>标签的方向）。本文描述了如何在行内或其他纯文本情况下更改方向，例如在<code class="kw" translate="no">title</code>元素<strong>内部</strong>或<code class="kw" translate="no">title</code>属性中，或如何为属性中的文本指定与周围元素不同的方向，等等。本文也适用于WebVTT和CSV等纯文本格式。</p>
+</section>
+
+
+<section id="basedirection">
+<h2>更改行内文本的方向</h2>
+  <p>如果你想要更改一段行内文本的方向，你需要指示开始和结束点。为此，你需要用以下字符之一来指示方向更改的开始。</p>
+    <table class="inband">
+      <tbody>
+        <tr>
+          <th>字符</th>
+          <th>名称</th>
+          <th>码位</th>
+          <th>等效标记</th>
+          <th>注释</th>
+        </tr>
+      <tr>
+          <td>LRI</td>
+          <td>LEFT-TO-RIGHT ISOLATE</td>
+          <td>U+2066</td>
+          <td>dir=&quot;ltr&quot;</td>
+          <td>将方向设置为LTR（从左到右），并将嵌入内容与周围文本隔离</td>
+      </tr>
+        <tr>
+          <td>RLI</td>
+          <td>RIGHT-TO-LEFT ISOLATE</td>
+          <td>U+2067</td>
+          <td>dir=&quot;rtl&quot;</td>
+          <td>同上，但用于RTL（从右到左）</td>
+        </tr>
+        <tr>
+          <td>FSI</td>
+          <td>FIRST-STRONG ISOLATE</td>
+          <td>U+2068</td>
+          <td>dir=&quot;auto&quot;</td>
+          <td>隔离内容，并根据第一个强类型方向字符设置方向</td>
+        </tr>
+        <tr>
+          <td>LRE</td>
+          <td>LEFT-TO-RIGHT EMBEDDING</td>
+          <td>U+202A</td>
+          <td>dir=&quot;ltr&quot;</td>
+          <td>将方向设置为LTR，但允许嵌入文本与周围内容交互，可能会有溢出效应</td>
+        </tr>
+        <tr>
+          <td>RLE</td>
+          <td>RIGHT-TO-LEFT EMBEDDING</td>
+          <td>U+202B</td>
+          <td>dir=&quot;rtl&quot;</td>
+          <td>同上，但用于RTL</td>
+        </tr>
+        <tr>
+          <td> LRO </td>
+          <td>LEFT-TO-RIGHT OVERRIDE</td>
+          <td>U+202D</td>
+          <td>&lt;bdo dir=&quot;ltr&quot;&gt;</td>
+          <td>覆盖双向文本算法，按内存顺序显示字符，从左向右显示</td>
+        </tr>
+        <tr>
+          <td> RLO </td>
+          <td>RIGHT-TO-LEFT OVERRIDE</td>
+          <td>U+202E</td>
+          <td>&lt;bdo dir=&quot;rtl&quot;&gt;</td>
+          <td>同上，但从右向左显示</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>你需要用以下字符之一来结束这个范围：</p>
+    <table class="inband">
+      <tbody>
+        <tr>
+          <th>字符</th>
+          <th>名称</th>
+          <th>码位</th>
+          <th>等效标记</th>
+          <th>注释</th>
+        </tr>
+        <tr>
+          <td>PDI</td>
+          <td>POP DIRECTIONAL ISOLATE</td>
+          <td>U+2069</td>
+          <td>结束标签</td>
+          <td>用于RLI、LRI或FSI</td>
+        </tr>
+      <tr>
+          <td rowspan="2">PDF</td>
+          <td rowspan="2">POP DIRECTIONAL FORMATTING</td>
+          <td rowspan="2">U+202C</td>
+          <td>结束标签</td>
+          <td>用于RLE或LRE</td>
+        </tr>
+        <tr>
+          <td>&lt;/bdo&gt;</td>
+          <td>用于RLO或LRO</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>这些字符是不可见的，尽管在某些编辑器中可能会显示代表它们的符号。你也可以使用字符转义来表示它们，例如<code>&amp;#x2067;</code>，但在源代码中，你可能会发现转义中的字符不会保持在一起。（有关更多信息，请参阅<a href="https://www.w3.org/International/questions/qa-bidi-source.en.html"><cite>RTL文字的源代码和代码示例</cite></a>。）</p>
+
+<p>当你应用方向控制字符来指示文本方向的边界时，你会希望避免边界内的内容与边界外的内容交互，也就是进行<strong>隔离</strong>。在理想情况下，你会遵循Unicode标准的<a href="https://www.unicode.org/reports/tr9/#Directional_Formatting_Characters">建议</a>，使用RLI和LRI，并避免使用RLE和LRE。</p>
+<p>以下示例展示了如何在纯文本中使用这些控制字符。它显示了HTML中的提示文字，其中包含链接到的文档的标题（包含缩写'FAQ'），以及指示目标页面的语言的文字。注意：文本'(FAQ)'如何出现在波斯语文本的右侧。这是不正确的，因为它是（从右到左的）文档标题的一部分。</p>
+    <figure class="example">
+<p><img src="qa-bidi-unicode-controls-data/persian-link-wrong.png" alt="没有控制字符的工具提示。" title="'SNOITSEUQ DEKSA YLTNEUQERF (faq)' [in persian]"></p>
+    </figure>
+    <p>正确的标题应该将文本'(FAQ)'放在波斯文本的左侧，如下所示。</p>
+
+
+<figure class="example">
+<p><img src="qa-bidi-unicode-controls-data/persian-link-right.png" alt="带有控制字符的工具提示。" title="'(faq) SNOITSEUQ DEKSA YLTNEUQERF' [in persian]"></p>
+</figure>
+
+
+<p>为了实现正确的效果，我们添加了两个不可见的控制字符，<span class="uname" style="color: green;">U+2067 RIGHT-TO-LEFT ISOLATE</span>（RLI）和<span class="uname" style="color: red;">U+2069 POP DIRECTIONAL ISOLATE</span>（PDI），在下面的代码片段中表示为字符值引用。字符以"逻辑"顺序显示，而不是按照它们被渲染的顺序。</p>
+
+<figure class="example">
+<blockquote><code>
+<bdo dir="ltr">title=&quot;'<span style="color: green;" title="RLE">&amp;#x2067;</span>FREQUENTLY ASKED QUESTIONS (faq)<span style="color: red;" title="PDF">&amp;#x2069;</span>' [in persian]&quot;</bdo>
+</code></blockquote>
+</figure>
+
+<div id="out_tooltip" class="browser_output">
+<p class="browser_output_title">浏览器中的结果（鼠标悬停查看）：</p>
+<div class="browser_output_example">
+<p>See <a title="'&#x202B;سوالات متداول (FAQ)&#x202C;' [in Persian]" href="http://www.webstandards.org/learn/faq/faq-farsi-translation/"> another example</a>.</p>
+</div>
+</div>
+</section>
+
+
+
+
+
+
+
+<section id="wrapping">
+<h2>紧密包裹相反方向的短语</h2>
+
+<p>在某些情况下，双向文本算法可以很好地处理双向文本，而在其他情况下，它需要一些帮助。在<a href="https://www.w3.org/International/articles/inline-bidi-markup/#tightwrap"><cite>HTML中的行内标记和双向文本</cite></a>中，我们提出了标记双向文本的最简单方法是在文本中每个方向更改的开始和结束处放置标记。这不会有任何负面影响，避免了遗漏需要的标记的情况，减轻了使内容作者的负担。你应该<a class="termref" href="https://www.w3.org/International/articles/inline-bidi-markup/#tightwrap">紧密</a>包裹相关文本。</p>
+
+<p>同样，在处理Unicode控制字符时，在文本中每个方向更改的开始和结束处放置方向控制字符是有意义的。</p>
+
+<p>不过，重要的是要记住范围需要正确的嵌套。如果在RTL上下文中有一段嵌入的LTR文本，而在该LTR文本内部又有一些RTL文本，如果你的范围是并排的而不是嵌套的，就不会产生正确的结果。注意在以下的例子里，方向的变更是嵌入的，而不是并排的：</p>
+
+<figure class="example">
+<p><code>The title is <span style="color:red;">&amp;#x2067;</span>AN INTRODUCTION TO <span style="color:red;">&amp;#x2066;</span>C++<span style="color:red;">&amp;#x2069;</span><span style="color:red;">&amp;#x2069;</span> in Arabic.</code></p>
+</figure>
+
+<div id="out_nesting" class="browser_output">
+<p class="browser_output_title">浏览器中的结果：</p>
+<div class="browser_output_example">
+<p>The title is &#x2067;مدخل إلى &#x2066;C++&#x2069;&#x2069; in Arabic.</p>
+</div>
+</div>
+</section>
+  
+  
+
+
+
+
+
+<section id="spillovers">
+<h2>处理溢出问题</h2>
+    <p>溢出效应的一个经典例子：<a class="termref" href="https://www.w3.org/International/articles/inline-bidi-markup/#oppositedirection">相反方向的短语</a>的后面跟着一个逻辑上独立的数字。这是在相反方向文本周围使用RLE...PDF的代码：</p>
+
+
+<figure class="example">
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=" "> 错误代码。不要复制！</span> <a href="qa-bidi-unicode-controls-data/eg-number-wrong" onclick="showExample('qa-bidi-unicode-controls-data/eg-number-wrong'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="查看代码。" title="查看此示例的代码。"></a></div>
+<p><code>We find the phrase '<span style="color:red;">&amp;#x202B;</span>INTERNATIONALIZATION ACTIVITY<span style="color:red;">&amp;#x202C;</span>' 5 times on the page.</code></p>
+</figure>
+
+<div id="out_number_placement_wrong" class="browser_output">
+<p class="browser_output_title">浏览器中的结果：</p>
+<div class="browser_output_example">
+<p>We found the phrase "&#x202B;‫פעילות הבינאום‬&#x202C;" 5 times on the page.</p>
+</div>
+</div>
+
+
+<p>正确的结果：</p>
+<figure>
+<p><img src="qa-bidi-unicode-controls-data/number-following-right.png" alt="前面代码的显示结果"></p>
+    </figure>
+    <p style="clear: both;">实际的结果：</p>
+    <figure>
+      <p><img src="qa-bidi-unicode-controls-data/number-following-wrong.png" alt="前面代码的显示结果"></p>
+    </figure>
+    <p style="clear: both;">这是因为双向文本算法告诉浏览器将"5"视为希伯来语文本的一部分，忽略了前面的文本处于不同的嵌入级别。这是不对的。我们需要找到一种方法来说明名称和数字是不同的，也就是把名称与数字隔离。</p>
+<p style="clear: both;">RLI/LRI控制字符通过将嵌入文本与跟随它的数字隔离来解决这个问题。你只需使用RLI...PDI而不是RLE...PDF。</p>
+ 
+
+<figure class="example">
+<p><code>We find the phrase '<span style="color:red;">&amp;#x2067;</span>INTERNATIONALIZATION ACTIVITY<span style="color:red;">&amp;#x2069;</span>' 5 times on the page.</code></p>
+</figure>
+
+<div id="out_number_placement_right" class="browser_output">
+<p class="browser_output_title">浏览器中的结果：</p>
+<div class="browser_output_example">
+<p>We found the phrase "&#x2067;نشاط التدويل&#x2069;" 5 times on the page.</p>
+</div>
+</div>
+</section>
+
+
+
+
+
+<section id="rlmlrm">
+<h2>RLM和LRM</h2>
+
+<p>Unicode提供了另外两个与方向相关的不可见控制字符。</p>
+
+
+<table class="inband">
+<tbody>
+<tr>
+<th>字符</th>
+<th>名称</th>
+<th>码位</th>
+<th>等效标记</th>
+<th>注释</th>
+</tr>
+<tr>
+<td>LRM</td>
+<td>LEFT-TO-RIGHT MARK</td>
+<td>U+200E</td>
+<td>无</td>
+<td>强类型LTR字符</td>
+</tr>
+<tr>
+<td>RLM</td>
+<td>RIGHT-TO-LEFT MARK</td>
+<td>U+200F</td>
+<td>无</td>
+<td>强类型RTL字符</td>
+</tr>
+</tbody>
+</table>
+
+<p>它们的问题较少，因为它们是单独使用的，不像我们讨论的其他控制字符那样成对使用来分隔文本范围。但是，它们没有成对控制字符的功能。因为它们是强类型字符，所以它们扩展或打破了双向文本算法默认建立的范围。</p>
+
+<p>在上面的示例中，我们需要告诉双向文本算法数字5是LTR文本的一部分。我们可以在它之前插入一个LRM字符：</p>
+
+<div class="sidenoteGroup">
+    <figure class="example">
+      <div class="badcode"><a href="qa-bidi-unicode-controls-data/eg-number-ok" onclick="showExample('qa-bidi-unicode-controls-data/eg-number-ok'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="查看代码。" title="查看此示例的代码。"></a></div>
+      <p><code>We find the phrase 'INTERNATIONALIZATION ACTIVITY'<span style="color:red;">&amp;lrm;</span> 5 times on the page.</code></p>
+    </figure>
+    <aside class="sideinfonote"><p class="info">我们在这里使用HTML字符实体转义，因为这些是为RLM和LRM定义的。前面提到的控制字符（RLI、RLE等）没有字符实体转义。</p></aside>
+</div>
+
+<div id="out_number_placement" class="browser_output">
+<p class="browser_output_title">浏览器中的结果：</p>
+<div class="browser_output_example">
+<p>We found the phrase "نشاط التدويل"&lrm; 5 times on the page.</p>
+</div>
+</div>
+
+
+<p>这是正确的结果。因为LRM是强LTR方向，它打破了数字与前面RTL文本之间的链接。</p>
+<p>但是，这些单个字符无法做到的一件事是为嵌入的内联文本范围建立基方向，以便正确处理标点符号和嵌套方向更改。对于这些用例，你需要使用成对的字符。</p>
+</section>
+
+
+
+
+
+
+
+<section id="exceptions">
+<h2>其他相关问题</h2>
+<p>在本节中，我们说明了一些可以使用方向控制字符解决的其他溢出问题。</p>
+
+
+
+
+<section id="lists">
+<h3><a href="#lists">列表</a></h3>
+
+<p>在第一个例子中，我们有一个相同方向的RTL文本列表，需要根据整体上下文（在这里是LTR）进行排列。</p>
+
+<p>相同方向的文本片段之间的<a class="termref" href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics.zh-hans.html#neutralcharacters">中性字符</a>可能会被双向文本算法误解。在这个用例中，我们在LTR段落中列出了几个阿拉伯语的国家名称。这是一个相反方向短语后跟着另一个逻辑上独立的相反方向短语的示例。</p>
+
+<p>我们希望看到以下内容：</p>
+
+
+<figure>
+<p><img src="qa-bidi-unicode-controls-data/comma-right.gif" alt="埃及出现在巴林的左侧。"></p>
+</figure>
+<p>如果不使用控制字符，实际结果是前两个阿拉伯单词被颠倒，中间的逗号被移动到单词之间空格的右侧。</p>
+<figure>
+<p><img src="qa-bidi-unicode-controls-data/comma-wrong.gif" alt="巴林出现在埃及的左侧。"></p>
+</figure>
+
+<p>失败的原因是，在两侧都有强类型RTL字符的情况下，双向文本算法将中性的逗号和空格视为阿拉伯语文本的一部分。它将前两个阿拉伯语单词以及逗号和空格解释为同一个阿拉伯语的单向文本片段。实际上，逗号和空格是英文的一部分，我们应该标记阿拉伯语中两个独立的从右到左的单向文本片段之间的边界。</p>
+    <p>这个用例的解决方案是通过用成对的RLI/PDI代码包裹每个列表项，或者通过插入强LTR类型的LRM字符来分离列表的前两项。</p>
+    <figure class="example">
+      <div class="badcode"><a href='qa-bidi-unicode-controls-data/eg-lists-ok' onclick="showExample('qa-bidi-unicode-controls-data/eg-lists-ok'); return false;"><img class="codelink" src="../icons/codelink.gif" alt="查看代码。" title="查看此示例的代码。"></a></div>
+      <p><code>The names of these states in Arabic are <span style="color:red;">&amp;#x2067;</span>EGYPT<span style="color:red;">&amp;#x2069;</span>, <span style="color:red;">&amp;#x2067;</span>BAHRAIN<span style="color:red;">&amp;#x2069;</span> and <span style="color:red;">&amp;#x2067;</span>KUWAIT<span style="color:red;">&amp;#x2069;</span> respectively.</code></p>
+<p><code>The names of these states in Arabic are EGYPT<span style="color:red;">&amp;lrm;</span>, BAHRAIN </span>and </span>KUWAIT respectively.</code></p>
+    </figure>
+
+<div id="out_lists_ok" class="browser_output">
+<p class="browser_output_title">浏览器中的结果：</p>
+<div class="browser_output_example">
+<p>The names of these states in Arabic are &#x2067;‫مصر‬&#x2069;, &#x2067;‫البحرين‬&#x2069; and &#x2067;‫الكويت‬&#x2069; respectively.</p>
+<p>The names of these states in Arabic are ‫مصر‬&lrm;, ‫البحرين‬ and ‫الكويت‬ respectively.</p>
+</div>
+</div>
+</section>
+  
+  
+  <section id="punctuation">
+<h3>标点符号</h3>
+    <p>标点符号或其他中性字符出现在相反方向短语的末尾并属于该短语的一部分是非常常见的。</p>
+    <p>不幸的是，除非给双向文本算法额外的帮助，不同的单向文本片段之间的这种中性字符一般都会被误解。在以下的例子中，感叹号是阿拉伯语文本的一部分，因此应该出现在其左侧：</p>
+    <figure>
+      <p><img src="qa-bidi-unicode-controls-data/exclamation-right.gif" alt="感叹号出现在阿拉伯语文本的左侧。"></p>
+    </figure>
+    <p>如果我们只是依赖双向文本算法，我们会看到：</p>
+    <figure>
+      <p><img src="qa-bidi-unicode-controls-data/exclamation-wrong.gif" alt="感叹号出现在阿拉伯语文本的右侧。"></p>
+    </figure>
+    <p>了解双向文本算法后，我们可以很容易地理解为什么会发生这种情况。因为感叹号是在最后一个RTL字母'ب'（在左侧）和LTR字母'i'（单词'in'的）之间输入的，其方向性由段落的基方向决定，在这种情况下是LTR。因为感叹号被视为LTR，它加入了包含文本'in Arabic'的单向文本片段。</p>
+    <p>有两种方式可以轻松解决这个问题。我们可以简单地<span style="clear: both;">在感叹号后添加RLM/LRM字符。你需要选择与前面的短语具有相同方向性的字符，从而扩展单向文本片段的长度，以包含标点符号。</span></p>
+    <figure class="example">
+      <p><code>The title is &quot;INTERNATIONALIZATION ACTIVITY!<span style="color:red;">&amp;rlm;</span>&quot; in Arabic.</code></p>
+    </figure>
+<div id="out_punctuation_wrong" class="browser_output">
+<p class="browser_output_title">浏览器中的结果：</p>
+<div class="browser_output_example">
+<p>The title is "نشاط التدويل!&rlm;" in Arabic.</p>
+</div>
+</div>
+
+    <p style="clear: both;">或者，你可以将相反方向的短语包装在成对的控制字符中，在这种情况下是RLI后跟PDI。</p>
+    <figure class="example">
+      <p><code>the title is &quot;<span style="color:red;">&amp;#x2067;</span>INTERNATIONALIZATION ACTIVITY!<span style="color:red;">&amp;#x2069;</span>&quot; in Arabic.</code></p>
+    </figure>
+
+
+<div id="out_punctuation_ok" class="browser_output">
+<p class="browser_output_title">浏览器中的结果：</p>
+<div class="browser_output_example">
+<p>The title is "&#x2067;نشاط التدويل<span style="color:green">!</span>&#x2069;" in Arabic.</p>
+</div>
+</div>
+
+
+  </section>
+</section>
+
+
+<!--section>
+<h2 id="injection"><a href="#injection">Managing injected text</a></h2>
+<p>It's possible that you want to inject text into content at run time. If that text comes with control codes around it, you are likely to be ok. If not, you may have a problem.</p>
+<p>Take for example a scenario where a user has requested a book with a Hebrew title in a search on an English page. That book was not found, and the English page wants to provide the user with a friendly message to that effect. Without any directional information, you would likely see something like this.</p>
+<figure>
+  <p><img src="qa-bidi-unicode-controls-data/book-result-incorrect.png" alt="An exclamation mark appearing to the right of Arabic text."></p>
+</figure>
+<p>This is problematic because the 'CSS' should appear at the end of the Hebrew title, ie. to the left.  </p>
+<p>Possibiliities include (a) the book title has control codes at the start and end to indicate the base direction, (b) the script has access to some out-of-band information about the base direction of the book title, (c) there is no information about the base direction of the book title, and a guess has to be made.</p>
+<p>If you were to add the book name to the error message using scripting, you'd need to identify the place where it should go. In HTML this would usually be done using markup.  You'd then need to establish the base direction for the injected text. It doesn't seem to make much sense to use control codes in such a situation, since you could simply add <code>dir="auto"</code> to the markup and solve your problem. Besides which, FSI is the only code point you could use, and that is not yet supported by browsers.</p>
+</section-->
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>教程，<cite><a href="https://www.w3.org/International/tutorials/bidi-xhtml/">使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面</a></cite></p>
+    </li>
+    <li>
+      <p><a href="https://www.w3.org/International/articles/inline-bidi-markup/"><cite>HTML中的行内标记和双向文本</cite></a></p>
+    </li>
+    <li>
+      <p>相关链接：<cite>编写网页</cite></p>
+      <ul>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?collapse&amp;open=direction">文本方向</a></li>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html#inline">行内混合文本方向</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

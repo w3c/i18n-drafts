@@ -151,6 +151,9 @@ s.quickanswer = "Kort antwoord" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Aanvullende informatie" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Abonneer u op een nieuwsfeed."
@@ -185,40 +188,7 @@ s.topics = "Zoeken"
 
 MISSING TRANSLATIONS
 
-check all top left links !
-
-cookieMsg
-articles
-tests
-aboutThisArticle
-status_draft
-status_review
-status_published
-status_notreviewed
-status_obsolete
-worldwide
-ask
-askI18nActivity
-about
-aboutI18nActivity
-lastChanged
-author
-previousAuthors
-acknowledgements
-translation_updated
-historyOfDocumentChanges
-untranslatedChanges
-unlinkedTranslation
-githubRedirect
-new
-updated
-quickanswer
-longeranswer
-additionalinfo
-followOurNews
-i18nActivityHome
-moreResourcesOfThisType
-
+none
 
 
 

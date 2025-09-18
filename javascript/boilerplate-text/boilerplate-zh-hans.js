@@ -90,13 +90,13 @@ s.taskBasedIndex = "学习国际化的技术和需求。"  // title text for s.t
 s.resources = "发现"  // site links link text, top left
 s.informationResources = "在此网站上查找信息。"  // title text for s.resources
 s.ask = "提问"  // site links link text, top left
-s.askI18nActivity = "Ask for help or information."  // title text for s.ask
+s.askI18nActivity = "寻求帮助或信息。"  // title text for s.ask
 s.news = "关注"  // site links link text, top left
 s.newsFiltersAndFeeds = "关注 W3C 国际化的工作。"  // title text for s.news
 s.groups = "参与" // site links link text, top left
 s.groupsThatMakeUp = "参与 W3C 国际化工作。" // title text for s.groups
 s.about = "关于" // site links link text, top left
-s.aboutI18nActivity = "About W3C Internationalization." // title text for s.about
+s.aboutI18nActivity = "关于 W3C 国际化。" // title text for s.about
 
 
 // document status information, below main heading
@@ -154,6 +154,9 @@ s.quickanswer = "简约回复" // heading
 s.longeranswer = "详情" // heading that follows 'Quick answer'
 s.additionalinfo = "更多信息" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "复制"
+s.copied = "已复制！"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "订阅 RSS 提要"  

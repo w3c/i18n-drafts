@@ -134,12 +134,23 @@ var fontlink = ''
 var versionList = ''
 if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length == 1) ) {
 	versionList = '<p class="noprint"> '
+	var translationCount = 0
+	// First pass: count how many translations we'll actually show
+	for (lang=0; lang<trans.versions.length; lang++) {
+		if (f.clang != trans.versions[lang]) {
+			translationCount++
+		}
+	}
+
+	var currentTranslation = 0
 	for (lang=0; lang<trans.versions.length; lang++) {
 		// Skip current language in the list
 		if (f.clang != trans.versions[lang]) {
 			versionList += '<bdi title="'+s.currLang[trans.versions[lang]]+'"><a href="#" onclick="stickyConneg(\''+f.filename+'\',\''+f.clang+'\',\''+trans.versions[lang]+'\'); return false;" lang="'+trans.versions[lang]+
 			'" translate="no" dir="auto">'+g.nativeText[trans.versions[lang]]+'</a></bdi>'+s.rlm+'&nbsp; '
-			if (lang < trans.versions.length-1) versionList += ' • &nbsp;'
+			currentTranslation++
+			// Only add bullet separator if there are more than 1 translation and this isn't the last one
+			if (translationCount > 1 && currentTranslation < translationCount) versionList += ' • &nbsp;'
 			}
 		}
 	versionList += '</p>';

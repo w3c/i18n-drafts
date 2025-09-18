@@ -151,6 +151,9 @@ s.quickanswer = "Snabbt svar" // heading
 s.longeranswer = "Detaljer" // heading that follows 'Quick answer'
 s.additionalinfo = "Ytterligare information" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Prenumerera på en RSS-kanal."  

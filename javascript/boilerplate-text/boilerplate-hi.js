@@ -151,6 +151,9 @@ s.quickanswer = "त्वरित उत्तर" // heading
 s.longeranswer = "विवरण" // heading that follows 'Quick answer'
 s.additionalinfo = "अतिरिक्त जानकारी" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "एक आरएसएस फ़ीड की सदस्यता लें।"  

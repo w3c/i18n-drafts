@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8" />
+<title>在 .htaccess 中设置 charset 信息</title>
+<meta name="description" content="如何在 Apache 服务器上用 .htaccess 设置特定文件的编码？" />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-htaccess-charset' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-htaccess-charset' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-07-02' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2004-07-09', time:'16:27'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-06-26', time:'04:26'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'characters'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-htaccess-charset-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>在.htaccess中设置charset信息</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+    
+<section id="question">
+  <h2>问题</h2>
+    <p class="question">如何在Apache服务器上用.htaccess设置特定文件的编码？</p>
+</section>
+
+
+<section id="background">
+<h2>背景</h2>
+  <p>确保服务器发送的任何字符编码信息都是正确的非常重要，因为HTTP标头中的信息会覆盖文档本身中的信息。</p>
+  <p>许多Apache服务器配置为使用ISO-8859-1（Latin-1）编码发送文件。在本文的示例中，我们假设你想要以不同于默认配置中指定的编码来提供你的文件。（有关选择编码的建议，请参见<a class="print" href="/International/questions/qa-choosing-encodings"><cite>选择和应用字符编码</cite></a>。）</p>
+  <p>以下是发送到用户代理的文件所附带的HTTP标头的示例，字符编码信息包含在倒数第二行的Content-Type标头中。</p>
+  <div class="example">
+    <pre>HTTP/1.1 200 OK
+Date: Wed, 05 Nov 2003 10:46:04 GMT
+Server: Apache/1.3.28 (Unix) PHP/4.2.3
+Content-Location: CSS2-REC.en.html
+Vary: negotiate,accept-language,accept-charset
+TCN: choice
+P3P: policyref=http://www.w3.org/2001/05/P3P/p3p.xml
+Cache-Control: max-age=21600
+Expires: Wed, 05 Nov 2003 16:46:04 GMT
+Last-Modified: Tue, 12 May 1998 22:18:49 GMT
+ETag: "3558cac9;36f99e2b"
+Accept-Ranges: bytes
+Content-Length: 10734
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Language: en</pre>
+  </div>
+  <p>在这个示例中，Content-Type标头表示文件的MIME类型和字符编码。MIME类型文件的格式。HTML文件的MIME类型通常为text/html。此文件的字符编码（<span class="qterm">charset</span>）是 UTF-8。</p>
+  <p>要了解如何查看文件的HTTP标头，请参见文章<a class="print" href="/International/questions/qa-headers-charset"><cite>检查HTTP标头</cite></a>。</p>
+  <p>Apache服务器上的文件可能会在HTTP标头中使用与文件实际编码冲突的默认字符编码声明。服务器发送的字符编码可能是开箱即用的默认值、系统管理员设置的默认值，或者是各种Apache指令的结果。还有的时候，虽然有需要，但服务器却不发送字符编码信息。</p>
+  <p>如果服务器设置为允许用户或管理员修改.htaccess文件，这就提供了覆盖默认设置的方法。</p>
+</section>
+
+
+<section id="answer">
+<h2>答案</h2>
+  <p>有几种不同的情况。首先，你可能想要更改目录中具有相同扩展名的所有文件的默认值。你也有可能想更改单个文件或少数文件的默认值。我们将依次探讨这些情况。</p>
+  <p>在我们的例子里，我们假设默认服务器配置将文件当作ISO-8859-1编码，但你想要用UTF-8提供你的文件（一个非常明智的策略！）。</p>
+  
+  <section id="scope">
+<h3>这篇文章是否与你相关？</h3>
+    <p>本文是为内容作者而非系统管理员编写的，设置服务器的默认编码超出了本文的范围。</p>
+    <p>这里的建议只有在你希望通过HTTP标头声明文件的字符编码时相关。在某些情况下，你<a class="print" href="/International/questions/qa-html-encoding-declarations#httpheadwhat">可能不希望这样做</a>。</p>
+    <p>请注意，本文假设你的服务器设置为使用<a
+					class="print" href="https://httpd.apache.org/docs/2.4/howto/htaccess.html">.htaccess文件</a>，并且下述指令在你服务器上的.htaccess文件中<a class="print" href="https://httpd.apache.org/docs/current/mod/core.html#allowoverride">有效</a>。同时，我们还假设你无法修改服务器的默认配置。如果你不确定，请联系你的服务器管理员。</p>
+    <p>你还应该了解服务器上用于将字符编码信息与扩展名关联的约定。在某些情况下，服务器可能设置为期望字符编码和扩展名关联，如example.html.utf8，需要将.utf8与字符编码关联，而不是把.html与字符编码关联（因为.html代表的是文件类型）。</p>
+    <p>如果这些方法失败，你应该查阅Apache手册（参看后面的<a href="#endlinks">链接</a>）或你的服务器管理员。</p>
+  </section>
+  
+  <section id="extension">
+<h3>按扩展名指定</h3>
+    <p>使用<a class="print" href="https://httpd.apache.org/docs/current/mod/mod_mime.html#addcharset">AddCharset</a>指令将字符编码与当前目录<strong>及子目录</strong>中具有特定扩展名的所有文件关联。例如，要将所有扩展名为.html的文件作为UTF-8发给用户，请在文本编辑器中打开.htaccess文件输入：</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .html
+</pre>
+      </blockquote>
+    </div>
+    <p>扩展名可以带也可以不带前面的点。你可以在同一行中添加多个扩展名。即使你有如example.en.html或example.html.en这样的文件名，这仍然有效。</p>
+    <p>在这个例子里，所有扩展名为.html的文件都会作为UTF-8发送给用户。HTTP Content-Type标头将包含以<code translate="no">charset</code>信息结尾的行，如下所示：</p>
+    <div class="example">
+      <blockquote>
+        <pre>Content-Type: text/html; charset=UTF-8
+</pre>
+      </blockquote>
+    </div>
+    <p><strong>注意：</strong>当前位置所有子目录中具有此扩展名的所有文件也都将作为UTF-8提供。如果出于某种原因，你需要以不同的编码提供一些文件，你需要用其他指令来覆盖这个设置。</p>
+    <p><strong>注意：</strong>你可以将字符编码与任何文件扩展名关联。比如，假设你进行语言协商，并且有两种语言的页面遵循example.en.html和example.ja.html模型。我们还假设你想用服务器的ISO-8859-1默认值发送英语页面，但希望用UTF-8发送日语页面。为此，你可以将字符编码与语言扩展名关联，如下所示：</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .ja
+</pre>
+      </blockquote>
+    </div>
+    <p>但请注意，如果可以的话，将服务器默认值更改为UTF-8，或者将新目录中的所有文件都作为UTF-8发送，可能是更好的解决方案。</p>
+    <p><strong>注意：</strong>你也可以用<a class="print" href="https://httpd.apache.org/docs/current/mod/mod_mime.html#addtype">AddType</a>指令实现相同的结果，尽管这同时声明了字符编码和MIME类型。决定哪种最合适将部分取决于你如何使用扩展名进行内容协商。如果你使用不同的扩展名来表达文档类型和字符编码，这就不太可能合适。</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddType 'text/html; charset=UTF-8' html
+</pre>
+      </blockquote>
+    </div>
+  </section>
+  
+  <section id="odd">
+<h3>更改小部分文件</h3>
+    <p>现在我们假设你只想在一个大目录中将一个文件作为UTF-8发送，所有其他比较老的文件都正确地作为ISO-8859-1发送。你想要作为UTF-8发送的文件为example.html。请在文本编辑器中打开.htaccess文件并输入：</p>
+    <div class="example">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+AddCharset UTF-8 .html
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p>我们在这里所做的是将上一节中讨论的指令包装在一些<a class="print" href="https://httpd.apache.org/docs/current/mod/core.html#files">标记</a>中，标注我们关注的特定文件。如果需要，还有一种稍微不同的语法，让你使用正则表达式指定多个文件名。</p>
+    <p><strong>注意：</strong> 也可以使用上面显示的AddType指令实现相同的结果，或者在这个例子的情况下，用<a class="print" href="https://httpd.apache.org/docs/current/mod/mod_mime.html">ForceType</a> 指令，尽管这会同时声明字符编码和MIME类型。</p>
+    <div class="example">
+      <blockquote>
+        <pre>&lt;Files "example.html"&gt;
+ForceType 'text/html; charset=UTF-8'
+&lt;/Files&gt;
+</pre>
+      </blockquote>
+    </div>
+    <p><strong>注意：</strong>当前位置子目录中任何具有相同名称的文件也将作为UTF-8提供，除非你在相关目录中创建一个反向指令。</p>
+  </section>
+  
+  <section id="more">
+<h3>更复杂的情况</h3>
+    <p>当两个扩展名规则应用于同一文档时，扩展名的顺序很重要。因此，在下面的例子中：</p>
+    <div class="example">
+      <blockquote>
+        <pre>AddCharset UTF-8 .utf8
+AddCharset windows-1252 .html
+</pre>
+      </blockquote>
+    </div>
+    <p>example.utf8.html将作为windows-1252发送，而example.html.utf8将作为UTF-8提供。</p>
+  </section>
+</section>
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p><a href="/International/questions/qa-headers-charset"><cite>检查HTTP标头</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="qa-apache-lang-neg"><cite>Apache MultiViews语言协商设置</cite></a> </p>
+    </li>
+    <li>
+      <p><a href="https://httpd.apache.org/docs/current/mod/mod_mime.html">Apache模块mod_mime文档</a></p>
+    </li>
+    <li>
+      <p>Apache 版本 2 <a href="https://httpd.apache.org/docs/2.4/howto/htaccess.html">.htaccess</a> 和 <a
+						href="https://httpd.apache.org/docs/2.4/mod/core.html#allowoverride">allowOverride</a> 文档</p>
+    </li>
+    <li>
+      <p>教程 – <a href="/International/tutorials/tutorial-char-enc/"><cite>在 HTML 和 CSS 中处理字符编码</cite></a> </p>
+    </li>
+    <li>
+      <p>相关链接 – <cite>设置服务器</cite></p>
+      <ul>
+      <li><a href="/International/techniques/server-setup#characters">字符</a></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
