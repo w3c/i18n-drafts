@@ -269,13 +269,26 @@ g.bottomOfPage = '<footer><address>'+credits+'</address>'+
 // SKIP LINK
 
 function addSkipLink() {
-	// Create the skip link element
+	var firstHeading = document.querySelector('h1');
+	if (!firstHeading) return;
+
+	// Ensure the skip link targets the first h1, even if it lacks an id
+	var targetId = firstHeading.id;
+	if (!targetId) {
+		targetId = 'skip-target';
+		var suffix = 1;
+		while (document.getElementById(targetId)) {
+			targetId = 'skip-target-' + suffix;
+			suffix++;
+		}
+		firstHeading.id = targetId;
+	}
+
 	var skipLink = document.createElement('a');
-	skipLink.href = '#title';
+	skipLink.href = '#' + targetId;
 	skipLink.className = 'skip-link';
 	skipLink.textContent = s.skipNavigation;
-	
-	// Insert as the first element in the body
+
 	document.body.insertBefore(skipLink, document.body.firstChild);
 }
 
