@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Guide to the ECMAScript Internationalization API</title>
+<meta name="description" content="Learn how to use the ECMAScript Internationalization API (Intl object) to format dates, numbers, currencies, and more for global audiences." />
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/intl'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Fuqiao Xue, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-intl'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2025-08-22'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2025-08-22', time:'12:43'}  // date and time of latest substantive changes to this document
+f.status = 'review';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-08-22', time:'12:43'} // date and time of latest edits to this document/translation
+f.contributors = 'Richard Ishida'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'cultural';
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Guide to the ECMAScript Internationalization API</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <p>For years, developers relied on JavaScript libraries, string manipulation, or server-side logic to ensure that users around the world see dates, numbers, and text formatted in a way that is natural and correct for them. These solutions, while functional, often added significant weight to web pages and created maintenance challenges.</p>
+    <p>Fortunately, modern browsers now have a built-in, standardized solution: the ECMAScript Internationalization API, available globally in JavaScript via the <code>Intl</code> object. This API provides a native way to handle locale- and culture-sensitive data and operations, ensuring your application speaks your user's language correctly and efficiently.</p>
+    <p>This article will serve as a practical overview of the most essential parts of the <code>Intl</code> API, providing actionable examples you can use to internationalize your web applications today.</p>
+    <section id="the-core-concept-locales-and-options">
+    <h2>The Core Concept: Locales and Options</h2>
+    <p>Before diving into specific formatters, it's important to understand the two fundamental arguments that nearly every <code>Intl</code> constructor takes:</p>
+    <ol>
+    <li><strong><code>locales</code></strong>: A string representing a language tag (following the BCP 47 standard), such as <code>'en-US'</code> (American English), <code>'fr-FR'</code> (French in France), or simply <code>'ja'</code> (Japanese). You can also provide an array of locales, like <code>['fr-CA', 'fr-FR']</code>, and the browser will use the first one it supports. If omitted, the browser's default locale will be used.</li>
+    <li><strong><code>options</code></strong>: An object that allows you to customize the formatting behavior. This is where the real power of the API lies, enabling you to specify everything from currency symbols to date styles.</li>
+    </ol>
+    </section>
+    <section id="intl-datetimeformat">
+    <h2>Formatting Dates and Times</h2>
+    <p>One of the most common internationalization tasks is displaying dates and times. A date like "10/12/2025" can mean October 12th in the US but December 10th in much of Europe. <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"><code>Intl.DateTimeFormat</code></a> solves this ambiguity effortlessly.</p>
+    <p>The basic usage is simple. You create a formatter instance and then call its <code>.format()</code> method.</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const eventDate = new Date();
+
+// For a user in the United States
+const usFormatter = new Intl.DateTimeFormat('en-US');
+console.log(usFormatter.format(eventDate));
+// Output: 10/26/2025
+
+// For a user in Germany
+const deFormatter = new Intl.DateTimeFormat('de-DE');
+console.log(deFormatter.format(eventDate));
+// Output: 26.10.2025</code></pre>
+</figure>
+    <p>Note that numeric dates are often problematic for readers, and it's much better to avoid the ambiguity by expanding the month. See how to do that in <a href="#fine-grained-control-with-options">Fine-Grained Control with Options</a>.</p>
+
+    <section id="current-date-vs-a-specific-date">
+    <h3>Current Date vs a Specific Date</h3>
+    <p>To display the current date, use <code>new Date()</code>:</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const fmt = new Intl.DateTimeFormat('en-GB', { dateStyle: 'long' });
+
+// Current date (today)
+fmt.format(new Date()); // e.g., 26 October 2025</code></pre>
+    </figure>
+    <p>To display a specific date, use <code>new Date()</code> with parameters. Months are 0-based:</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">// A specific calendar date: 27 June 2025 (local time)
+const june27Local = new Date(2025, 5, 27);
+fmt.format(june27Local); // 27 June 2025</code></pre>
+    </figure>
+  </section>
+
+  <section id="fine-grained-control-with-options">
+    <h3>Fine-Grained Control with Options</h3>
+    <p>You can achieve much more detailed and readable formats using the <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options"><code>options</code> object</a>. The modern approach uses <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#datestyle"><code>dateStyle</code> and <code>timeStyle</code></a>.</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const options = {
+  dateStyle: 'full',
+  timeStyle: 'long',
+};
+
+const formatter = new Intl.DateTimeFormat('es-ES', options);
+console.log(formatter.format(eventDate));
+// Output: viernes, 15 de agosto de 2025, 10:30:00 UTC</code></pre>
+    </figure>
+    <p>You can also specify time zones.</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const japanFormatter = new Intl.DateTimeFormat('ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'Asia/Tokyo',
+});
+
+console.log(japanFormatter.format(eventDate));
+// Sample Output: 2025年10月27日 (Note the date may change due to timezone)</code></pre>
+    </figure>
+  </section>
+    </section>
+
+    <section id="intl-numberformat">
+    <h2>Handling Numbers, Currencies, and Units</h2>
+    <p>Numbers are formatted differently across the world. For example, the decimal separator can be a period or a comma. <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat"><code>Intl.NumberFormat</code></a> handles this seamlessly.</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const largeNumber = 1234567.89;
+
+// United States
+console.log(new Intl.NumberFormat('en-US').format(largeNumber));
+// Output: 1,234,567.89
+
+// Germany
+console.log(new Intl.NumberFormat('de-DE').format(largeNumber));
+// Output: 1.234.567,89
+
+// India
+console.log(new Intl.NumberFormat('en-IN').format(largeNumber));
+// Output: 12,34,567.89
+
+// Thailand using native Thai digits
+console.log(new Intl.NumberFormat('th-TH-u-nu-thai').format(largeNumber));
+// Output: ๑,๒๓๔,๕๖๗.๘๙</code></pre>
+    </figure>
+
+    <section id="currency-formatting">
+    <h3>Currency Formatting</h3>
+    <p>Formatting currency correctly is crucial for e-commerce. It involves more than just a symbol; the position of the symbol and spacing are locale-dependent. <code>Intl.NumberFormat</code> requires the <code>style</code> to be <code>'currency'</code> and an ISO 4217 currency code.</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const price = 99.95;
+
+// US Dollars
+console.log(new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+}).format(price)); // Output: $99.95
+
+// Euros for a German customer
+console.log(new Intl.NumberFormat('de-DE', {
+  style: 'currency',
+  currency: 'EUR'
+}).format(price)); // Output: 99,95 €
+
+// Euros for an Irish customer
+console.log(new Intl.NumberFormat('en-IE', {
+  style: 'currency',
+  currency: 'EUR'
+}).format(price)); // Output: €99.95</code></pre>
+    </figure>
+  </section>
+
+  <section id="unit-and-compact-formatting">
+    <h3>Unit and Compact Formatting</h3>
+    <p>The API also supports unit formatting and compact notation for large numbers.</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">// Unit formatting
+console.log(new Intl.NumberFormat('en-GB', {
+  style: 'unit',
+  unit: 'kilometer-per-hour'
+}).format(100)); // Output: 100 km/h
+
+// Compact notation
+console.log(new Intl.NumberFormat('en-US', {
+  notation: 'compact',
+  compactDisplay: 'short'
+}).format(2500000)); // Output: 2.5M</code></pre>
+    </figure>
+  </section>
+    </section>
+    
+    <section id="intl-collator">
+    <h2>Locale-Aware Sorting</h2>
+    <p>If you've ever tried to sort an array of strings in a language with accents, you know that JavaScript's default <code>Array.prototype.sort()</code> can fail. It sorts based on <a href="https://www.w3.org/TR/i18n-glossary/#dfn-code-point">code points</a>, which often leads to incorrect alphabetical order.</p>
+    <p><a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator"><code>Intl.Collator</code></a> provides a locale-sensitive string comparison function.</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const names = ['Émilie', 'Zoe', 'Elodie', 'Stéphane', 'Åsa', 'Örjan'];
+
+// Default sort
+console.log([...names].sort());
+// Output: ['Elodie', 'Stéphane', 'Zoe', 'Åsa', 'Émilie', 'Örjan']
+
+// Using Intl.Collator for French
+const frCollator = new Intl.Collator('fr');
+console.log(names.sort(frCollator.compare));
+// Output: ['Åsa', 'Elodie', 'Émilie', 'Örjan', 'Stéphane', 'Zoe']
+
+// Using Intl.Collator for Swedish
+const svCollator = new Intl.Collator('sv');
+console.log(names.sort(svCollator.compare));
+// Output: ['Elodie', 'Émilie', 'Stéphane', 'Zoe', 'Åsa', 'Örjan']</code></pre>
+    </figure>
+    <p>You can even use <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator#options">options</a> for case-insensitive sorting or to correctly sort strings containing numbers (like "Chapter 2" vs. "Chapter 10").</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const files = ['item 10', 'item 2'];
+const numericCollator = new Intl.Collator(undefined, { numeric: true });
+console.log(files.sort(numericCollator.compare));
+// Output: [ 'item 2', 'item 10' ]</code></pre>
+    </figure>
+    <p>In this example, by using <code>undefined</code>, we are effectively saying: "I don't want to force a specific locale for sorting. Please use the user's default locale, but make sure to apply the <code>numeric: true</code> option to it."</p>
+    <p>This makes the code robust and user-friendly. It adapts to the user automatically, providing locale-correct sorting while still giving us the specific sorting behavior (numeric) that we need.</p>
+    </section>
+
+    <section id="intl-relativetimeformat">
+    <h2>Relative Time</h2>
+    <p><a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat"><code>Intl.RelativeTimeFormat</code></a> is perfect for creating human-readable strings like "2 days ago" or "in 3 months".</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+console.log(rtf.format(-1, 'day')); // "yesterday"
+console.log(rtf.format(2, 'week'));  // "in 2 weeks"
+console.log(rtf.format(3, 'month')); // "in 3 months"
+
+const rtf_es = new Intl.RelativeTimeFormat('es');
+console.log(rtf_es.format(-1, 'day')); // "hace 1 día"</code></pre>
+    </figure>
+    <p>The <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#numeric"><code>numeric</code> option</a> in <code>Intl.RelativeTimeFormat</code> can have two values:</p>
+    <ol>
+    <li><code>always</code> (default): Always use a number.</li>
+    <li><code>auto</code>: Use a word (like "yesterday" or "tomorrow") if the locale has a special term for that relative time. Otherwise, fall back to using a number.</li>
+    </ol>
+    </section>
+
+    <section id="bytheway">
+    <h2>By the way</h2>
+    <p>This article only scratches the surface. The <code>Intl</code> API also includes <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules"><code>Intl.PluralRules</code></a> (for plural-sensitive formatting), <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat"><code>Intl.ListFormat</code></a> (for "A, B, and C"), <a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames"><code>Intl.DisplayNames</code></a> (for translating region or language names), and more.</p>
+    <p>By embracing the ECMAScript Internationalization API, you move localization logic from bulky libraries into the browser's native engine. You write less code and provide a more correct and performant experience for users worldwide.</p>
+    </section>
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+ <ul id="full-links">
+  <li><cite><a href="https://www.rfc-editor.org/info/bcp47">BCP 47</a></cite></li>
+  <li><cite><a href="https://tc39.es/ecma402/#intl-object">The Intl Object in ECMA-402
+    
+  </a></cite></li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
