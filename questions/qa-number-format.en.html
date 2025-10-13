@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Number, currency, and unit formatting</title>
+<meta name="description" content="How do I use JavaScript to dynamically format numbers, currencies, and units for different locales?">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-number-format'; // the file name WITHOUT extensions
+f.authors = 'Fuqiao Xue, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-number-format'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2025-10-13'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2025-10-13', time:'19:22'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-10-13', time:'13:57' } // date and time of latest edits to this document/translation
+f.contributors = 'Addison Phillips, Richard Ishida'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'cultural';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-number-format-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="copyright" href="#copyright"/>
+
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>Number, currency, and unit formatting</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+  </div>
+  
+<section id="question">
+<h2>Question</h2>
+  <p class="question">How do I use JavaScript to dynamically format numbers, currencies, and units for different locales?</p>
+  <p>The formats used by numbers, including specialized formatting such as currencies and units, varies dramatically across cultures, regions, and languages. A seemingly innocuous error can lead to misunderstanding or mistakes.</p>
+</section>
+
+
+<section id="answer">
+<h2>Answer</h2>
+<p>Hardcoding formats is a brittle and unsustainable approach. Fortunately, the web platform provides robust, standards-based solutions to navigate this complex landscape. This article will guide you, step-by-step, through leveraging JavaScript's built-in <code>Intl</code> object to effortlessly adapt your web pages to varying international number, currency, and unit formats.</p>
+<section id="why-complex">
+<h3>The core problem: why is formatting so complex?</h3>
+<p>Before diving into solutions, let's unpack the nuances that make international number, currency, and unit formatting a non-trivial task:</p>
+
+<section id="decimal-separators">
+<h4>Decimal separators</h4>
+<p>Many regions, like the US and UK, use a period as the decimal separator (e.g., <code>1,234.56</code>). Conversely, much of Europe and South America use a comma (e.g., <code>1.234,56</code>).</p>
+<p>In rare cases, a currency symbol can even act as a decimal separator, like the <a href="https://en.wikipedia.org/wiki/Cape_Verdean_escudo" rel="nofollow">Cape Verdean escudo</a>.</p>
+</section>
+
+<section id="digit-grouping">
+<h4>Digit grouping</h4>
+<p>The grouping separator varies. It can be a <strong>comma (<code>,</code>)</strong>, a <strong>period (<code>.</code>)</strong>, or a <strong>space (<code> </code>)</strong>.</p>
+<p>Grouping patterns also differ. <strong>3-digit grouping</strong> (e.g., <code>1,234,567</code>) is common, but some regions, like India, use a <strong>2-digit grouping</strong> beyond the hundreds (e.g., <code>12,34,567</code>). Some specialized formats might use 4-digit grouping.</p>
+</section>
+
+<section id="numbering-systems">
+<h4>Numbering systems</h4>
+<p>While <a href="https://www.w3.org/TR/i18n-glossary/#dfn-european-digits">European digits</a> (0-9) are globally prevalent, many cultures prefer their native numeral systems. For instance, 12,345 might be <code>١٢٬٣٤٥</code> in Arabic or <code>๑๒,๓๔๕</code> in Thai.</p>
+</section>
+
+<section id="currency-symbol-display">
+<h4>Currency symbol display</h4>
+<p><strong>Symbol vs. Code vs. Name:</strong> Currencies can be displayed in several ways:</p>
+<ul>
+<li><strong>Compact symbols:</strong> Like &quot;€&quot;, &quot;£&quot;, &quot;¥&quot;, &quot;$&quot;</li>
+<li><strong>Medium/disambiguated symbols:</strong> Multi-character symbols that clarify the specific currency (e.g., <code>CA$</code>, <code>US$</code>, <code>MX$</code>)</li>
+<li><strong>Contextual symbol variations:</strong> Different symbols used in different contexts (e.g., <code>¥</code> vs. <code>円</code> for Japanese yen)</li>
+<li><strong>ISO 4217 codes:</strong> Three-letter standardized codes (e.g., <code>EUR</code>, <code>GBP</code>, <code>JPY</code>)</li>
+<li><strong>Full names:</strong> Complete currency names (e.g., <code>US Dollar</code>, <code>Japanese Yen</code>)</li>
+</ul>
+<p><strong>Placement and spacing:</strong> The symbol can appear before the number (e.g., <code>$100.00</code>) or after (e.g., <code>1,000 ₫</code>). From these two examples, we can also see that some currencies use no space between the symbol and number, while others include a space.</p>
+<p><strong>Ambiguity:</strong> The same symbol might represent multiple currencies (e.g., <code>$</code> for US Dollar, Canadian Dollar, Mexican Peso, etc.).</p>
+</section>
+</section>
+
+<section id="intl">
+<h3>The <code>Intl.NumberFormat</code> object</h3>
+<p>The <code>Intl.NumberFormat</code> object in JavaScript automatically handles locale-specific decimal and grouping separators, currency symbols, and other numerical conventions.</p>
+
+<section id="intl-h4">
+<h4>Formatting general numbers with <code>Intl.NumberFormat</code></h4>
+<p>At its simplest, <code>Intl.NumberFormat</code> allows you to format a number according to a specified locale.</p>
+<figure class="example">
+<pre><code class="language-javascript">const number = 1234567.89;
+
+// For a US English user:
+const usFormatter = new Intl.NumberFormat('en-US');
+console.log(`US English: ${usFormatter.format(number)}`); // Output: US English: 1,234,567.89
+
+// For a German user:
+const deFormatter = new Intl.NumberFormat('de-DE');
+console.log(`German: ${deFormatter.format(number)}`); // Output: German: 1.234.567,89
+
+// For an Indian English user (notice the grouping):
+const enINFormatter = new Intl.NumberFormat('en-IN');
+console.log(`Indian English: ${enINFormatter.format(number)}`); // Output: Indian English: 12,34,567.89
+</code></pre>
+</figure>
+
+<p>The <code>options</code> object in <code>new Intl.NumberFormat(locales, options)</code> is where the magic happens.</p>
+<p><code>minimumFractionDigits</code> and <code>maximumFractionDigits</code> control the number of decimal places. <code>useGrouping</code> is a Boolean to enable or disable digit grouping.</p>
+<figure class="example"><pre><code class="language-javascript">const pi = 3.14159265;
+
+// Enforcing specific precision:
+const preciseFormatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 5,
+    maximumFractionDigits: 5,
+});
+console.log(`${preciseFormatter.format(pi)}`); // Output: 3.14159
+
+// No grouping
+const noGroupingFormatter = new Intl.NumberFormat('en-US', {
+    useGrouping: false,
+});
+console.log(`No grouping: ${noGroupingFormatter.format(1234567)}`); // Output: No grouping: 1234567
+</code></pre></figure>
+<h4 id="intl-numberformat-for-currencies"><code>Intl.NumberFormat</code> for currencies</h4>
+<p>You can specify the <code>style: 'currency'</code> and the <code>currency</code> code (using ISO 4217 standard).</p>
+<figure class="example"><pre><code class="language-javascript">const price = 500.75;
+
+// US Dollar
+const usdFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
+console.log(`US Dollar: ${usdFormatter.format(price)}`);        // Output: US Dollar: $500.75
+
+// Euro for Germany
+const eurDeFormatter = new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+});
+console.log(`Euro (Germany): ${eurDeFormatter.format(price)}`); // Output: Euro (Germany): 500,75 €
+
+// Japanese Yen (no fractional digits by default):
+const jpyFormatter = new Intl.NumberFormat('ja-JP', {
+    style: 'currency',
+    currency: 'JPY',
+});
+console.log(`Japanese Yen: ${jpyFormatter.format(price)}`); // Output: Japanese Yen: ￥501 (automatically rounds and uses no decimals)
+
+// Vietnamese Dong (no fractional digits by default):
+const vndFormatter = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+});
+console.log(`Vietnamese Dong: ${vndFormatter.format(12000)}`); // Output: Vietnamese Dong: 12.000 ₫
+</code></pre></figure>
+<p><code>Intl.NumberFormat</code> automatically handles the correct number of fractional digits for a given currency. You can override this with <code>minimumFractionDigits</code> and <code>maximumFractionDigits</code> if needed.</p>
+
+<section id="formatting-units">
+<h4>Formatting units with <code>Intl.NumberFormat</code></h4>
+<p><code>Intl.NumberFormat</code> can also format numbers with units:</p>
+<figure class="example"><pre><code class="language-javascript">const distance = 1000;
+const storage = 5;
+
+// Meters
+const meterFormatter = new Intl.NumberFormat('en-US', {
+    style: 'unit',
+    unit: 'meter', // Standard unit identifier
+    unitDisplay: 'long', // 'long', 'short', or 'narrow'
+});
+console.log(`US Meters (long): ${meterFormatter.format(distance)}`); // Output: US Meters (long): 1,000 meters
+
+const meterShortFormatter = new Intl.NumberFormat('en-US', {
+    style: 'unit',
+    unit: 'meter',
+    unitDisplay: 'short',
+});
+console.log(`US Meters (short): ${meterShortFormatter.format(distance)}`); // Output: US Meters (short): 1,000 m
+
+// Kilobytes for French locale:
+const kbFrFormatter = new Intl.NumberFormat('fr-FR', {
+    style: 'unit',
+    unit: 'kilobyte',
+    unitDisplay: 'long',
+});
+console.log(`French Kilobytes: ${kbFrFormatter.format(storage)}`); // Output: French Kilobytes: 5 kilooctets
+</code></pre></figure>
+<p>You can find a list of standard unit identifiers (e.g., <code>meter</code>, <code>kilogram</code>, <code>liter</code>, <code>kilobyte</code>, <code>percent</code>, <code>hour</code>) in the <a href="https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier">ECMAScript Internationalization API Specification</a>.</p>
+</section>
+</section>
+
+<section>
+<h3 id="choosing-the-right-locale">Choosing the right locale</h3>
+<p>Typically, you'll want to format number, currency, and unit according to the language of the web page. This can be determined from the <code>lang</code> attribute on the HTML element (<a href="https://www.w3.org/International/questions/qa-html-language-declarations">which should be set appropriately</a>):</p>
+
+<figure class="example"><pre><code class="language-javascript">// Get the page's language from the HTML lang attribute
+const pageLocale = document.documentElement.lang || 'en-US'; // Fallback to 'en-US'
+const formatter = new Intl.NumberFormat(pageLocale, { style: 'currency', currency: 'USD' });
+console.log(`${formatter.format(627.92)}`);
+```
+
+Occasionally, you may want to override the page locale with a specific locale, such as when creating internationalization tutorials or displaying content in multiple languages:
+
+```javascript
+// Force a specific locale regardless of page language
+const tutorialFormatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+console.log(`German example: ${tutorialFormatter.format(199.99)}`); // Output: 199,99 €
+</code></pre></figure>
+</section>
+</section>
+
+
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li><a href="https://tc39.es/ecma402/" rel="nofollow">ECMAScript Internationalization API Specification</a></li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
