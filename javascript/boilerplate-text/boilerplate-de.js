@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Wenn Sie der Verwendung eines Cookies zustimmen, werden Ihnen die Seiten der W3C-Internationalisierungstätigkeit (sofern verfügbar) in Ihrer gewählten Sprache angezeigt. Möchten Sie den Cookie setzen?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Weltkarte"  // title text for image, top right
 s.searchI18nSite = "I18n-Suche" // placeholder text for search box, top right

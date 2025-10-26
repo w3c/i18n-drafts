@@ -266,6 +266,32 @@ g.bottomOfPage = '<footer><address>'+credits+'</address>'+
 
 
 
+// SKIP LINK
+
+function addSkipLink() {
+	var firstHeading = document.querySelector('h1');
+	if (!firstHeading) return;
+
+	// Ensure the skip link targets the first h1, even if it lacks an id
+	var targetId = firstHeading.id;
+	if (!targetId) {
+		targetId = 'skip-target';
+		var suffix = 1;
+		while (document.getElementById(targetId)) {
+			targetId = 'skip-target-' + suffix;
+			suffix++;
+		}
+		firstHeading.id = targetId;
+	}
+
+	var skipLink = document.createElement('a');
+	skipLink.href = '#' + targetId;
+	skipLink.className = 'skip-link';
+	skipLink.textContent = s.skipNavigation;
+
+	document.body.insertBefore(skipLink, document.body.firstChild);
+}
+
 // COMPLETE PAGE
 
 function completePage () {
@@ -274,6 +300,7 @@ function completePage () {
 	document.getElementById('relatedlinks').innerHTML = sidebarExtras
 	//fillinTranslations()
 	if (document.getElementById("toclocation")) createtoc(true);
+	addSkipLink()
 	getURLs()
 	}
 

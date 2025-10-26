@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Якщо ви дозволите браузер встановити куки, ви будете продовжувати бачити сторінки W3C Інтернаціоналізація активність (за наявності) на мові, який ви обрали. Ви хочете, щоб встановити печиво?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Карта світу"  // title text for image, top right
 s.searchI18nSite = "Пошук веб-сайту I18n" // placeholder text for search box, top right

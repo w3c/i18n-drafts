@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "若您允許瀏覽器設定 Cookie，日後在造訪時（若該語言版本可用），W3C 國際化活動相關頁面將會持續以您所選擇的語言顯示。請問您是否要設定這個 Cookie？"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "世界地圖"  // title text for image, top right
 s.searchI18nSite = "I18n 網站搜尋" // placeholder text for search box, top right

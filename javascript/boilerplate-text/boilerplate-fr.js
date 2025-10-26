@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Si vous acceptez que votre navigateur crée un cookie, vous continuerez de voir les pages d’activité d’internationalisation de W3C (lorsque cela est possible) dans la langue de votre choix. Souhaitez-vous créer le cookie ?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Carte du monde"  // title text for image, top right
 s.searchI18nSite = "Recherche sur le site I18N" // placeholder text for search box, top right

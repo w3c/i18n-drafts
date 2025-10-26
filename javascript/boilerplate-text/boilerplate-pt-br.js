@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Se você deixar que o navegador instale um cookie, continuará a ver as páginas de Atividade de Internacionalização da W3C (sempre que disponíveis) no idioma que escolher. Deseja instalar o cookie?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Mapa Mundi"  // title text for image, top right
 s.searchI18nSite = "Busca do site de I18n" // placeholder text for search box, top right

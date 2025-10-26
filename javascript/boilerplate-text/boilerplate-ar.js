@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "إذا سمحت للمتصفح بتعيين ملف تعريف الارتباط (Cookies)، فستستمر في مشاهدة صفحات نشاط التدويل W3C (إن وجدت) باللغة التي اخترتها. هل ترغب في إنشاء ملف تعريف الارتباط?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "خريطة العالم"  // title text for image, top right
 s.searchI18nSite = "بحث موقع I18N" // placeholder text for search box, top right

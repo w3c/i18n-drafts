@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "ブラウザーのクッキーを許可すると、W3C 国際化アクティビティのページを(もしあるなら)選択した言語で続けて表示します。クッキーを設定しますか？"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "世界地図"  // title text for image, top right
 s.searchI18nSite = "I18n サイト内検索:" // placeholder text for search box, top right
