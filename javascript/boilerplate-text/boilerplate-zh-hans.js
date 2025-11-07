@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "您可以让浏览器设置cookie，以继续使用您选择的语言浏览W3C国际化标准计划（如果有该语言的翻译的话）。请问您想设置cookie吗？"
 
+// skip navigation link
+s.skipNavigation = "跳至主要内容"
+
 // items in top right beige column
 s.worldMap = "世界地图"  // title text for image, top right
 s.searchI18nSite = "国际化站点搜索" // placeholder text for search box, top right
@@ -151,6 +154,9 @@ s.quickanswer = "简约回复" // heading
 s.longeranswer = "详情" // heading that follows 'Quick answer'
 s.additionalinfo = "更多信息" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "复制"
+s.copied = "已复制！"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "订阅 RSS 提要"  

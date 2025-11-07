@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>对选项菜单进行排序</title>
+<meta name="description" content="为什么在翻译下拉框中的项目时它们没有正确排序？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-select-sorting' // the file name WITHOUT extensions
+f.authors = 'Russ Rolfe, Microsoft Corporation' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-select-sorting' // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-06-09' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2003-06-09', time:'15:10'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-07-11', time:'16:57'} // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'forms'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-select-sorting-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css"></head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>对选项菜单进行排序</h1>
+</header>
+
+
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+
+<p>你可能在表单中有一个下拉框。本文回答了这个问题：为什么在翻译列表中的项目时它们没有正确排序？</p>
+ 
+ 
+<section id="answer">
+<h2>答案</h2>
+  <p>尽管许多编程语言都有类似下拉框的功能，并且可以在显示项目列表之前对其进行排序，但HTML的<code class="kw" translate="no">select</code>元素没有这样的功能。它按接收到的顺序列出<code class="kw" translate="no">option</code>元素。因此，我们必须在将翻译的选项呈现给客户端之前对其进行预排序。这可以手动完成，也可以通过使用一些开发者设计的过程（如使用XSLT转换）来完成。</p>
+  <p>假设我们有一个宠物类型的下拉列表。在列表中，我们有以下按字母顺序排列的项目：</p>
+  <div class="example">
+    <pre><code class="language-html">&lt;form .....&gt;
+    &lt;select size="1" name="pet"&gt;
+       &lt;option value='cat'&gt;cat&lt;/option&gt;
+       &lt;option value='dog'&gt;dog&lt;/option&gt;
+       &lt;option value='mouse'&gt;mouse&lt;/option&gt;
+    &lt;/select&gt;
+...
+...
+&lt;/form&gt;</code></pre>
+  </div>
+  <p>翻译成荷兰语时，列表变成：</p>
+  <div class="example">
+    <pre><code class="language-html">&lt;form .....&gt;
+    &lt;select size="1" name="pet"&gt;
+       &lt;option value='cat'&gt;kat&lt;/option&gt;
+       &lt;option value='dog'&gt;hond&lt;/option&gt;
+       &lt;option value='mouse'&gt;muis&lt;/option&gt;
+    &lt;/select&gt;
+...
+...
+&lt;/form&gt;</code></pre>
+  </div>
+  <p>但是为了按正确的荷兰语字母顺序排列，我们需要重新排列列表：</p>
+  <div class="example">
+    <pre><code class="language-html">&lt;form .....&gt;
+    &lt;select size="1" name="pet"&gt;
+       &lt;option value='dog'&gt;hond&lt;/option&gt;
+       &lt;option value='cat'&gt;kat&lt;/option&gt;
+       &lt;option value='mouse'&gt;muis&lt;/option&gt;
+    &lt;/select&gt;
+...
+...
+&lt;/form&gt;</code></pre>
+  </div>
+  <p>我们必须为每种要显示的语言进行这项工作。</p>
+</section>
+
+
+<section id="bytheway">
+<h2>顺便说一下</h2>
+  <p>请注意，在上面的示例中，我们没有翻译value参数。这种将要显示给用户的数据与后端要处理的数据分离的做法，让开发者保持后端处理的一致性。他们不必在每次添加新语言支持时都更改他们期望从用户那里接收的内容。</p>
+</section>
+
+
+<section id="endlinks">
+<h2>进一步阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+ 
+<ul id="full-links">
+    <li>
+      <p><cite>编写网页</cite></p>
+      <ul>
+	  <li><a href="/International/techniques/authoring-html#cultural">文化问题</a></li>
+	  </ul>
+    </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

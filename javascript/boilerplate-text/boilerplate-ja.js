@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "ブラウザーのクッキーを許可すると、W3C 国際化アクティビティのページを(もしあるなら)選択した言語で続けて表示します。クッキーを設定しますか？"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "世界地図"  // title text for image, top right
 s.searchI18nSite = "I18n サイト内検索:" // placeholder text for search box, top right
@@ -151,6 +154,9 @@ s.quickanswer = "端的な回答" // heading
 s.longeranswer = "詳細な回答" // heading that follows 'Quick answer'
 s.additionalinfo = "補足情報" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "RSSフィードを購読する"  

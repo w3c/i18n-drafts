@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Als je de browser een cookie laat zetten, krijg je in het vervolg de pagina's van W3C's Internationalisatie-activiteit (voorzover beschikbaar) in de gekozen taal. Wil je een cookie zetten?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Wereldkaart"  // title text for image, top right
 s.searchI18nSite = "Zoeken op de I18n site:" // placeholder text for search box, top right
@@ -151,6 +154,9 @@ s.quickanswer = "Kort antwoord" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Aanvullende informatie" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Abonneer u op een nieuwsfeed."
@@ -185,40 +191,7 @@ s.topics = "Zoeken"
 
 MISSING TRANSLATIONS
 
-check all top left links !
-
-cookieMsg
-articles
-tests
-aboutThisArticle
-status_draft
-status_review
-status_published
-status_notreviewed
-status_obsolete
-worldwide
-ask
-askI18nActivity
-about
-aboutI18nActivity
-lastChanged
-author
-previousAuthors
-acknowledgements
-translation_updated
-historyOfDocumentChanges
-untranslatedChanges
-unlinkedTranslation
-githubRedirect
-new
-updated
-quickanswer
-longeranswer
-additionalinfo
-followOurNews
-i18nActivityHome
-moreResourcesOfThisType
-
+none
 
 
 

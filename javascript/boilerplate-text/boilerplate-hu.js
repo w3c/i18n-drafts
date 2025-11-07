@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Amennyiben hozzájárul egy süti elfogadásához, a W3C Nemzetköziesítés Fejlesztési Tevékenység lapjait az ön által választott nyelven is el tudja érni (amennyiben rendelkezésre állnak). Hozzájárul a süti használatához?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Világtérkép"  // title text for image, top right
 s.searchI18nSite = "Keresés a Nemzetköziesítés oldalán" // placeholder text for search box, top right
@@ -90,7 +93,7 @@ s.ask = "Kérdések"  // site links link text, top left
 s.askI18nActivity = "Segítség és további információk."  // title text for s.ask
 s.news = "Hírek"  // site links link text, top left
 s.newsFiltersAndFeeds = "A W3C Nemzetköziesítési Tevékenység követése"  // title text for s.news
-s.groups = "Csoportok" // site links link text, top left
+s.groups = "Részvétel" // site links link text, top left
 s.groupsThatMakeUp = "Részvétel a W3C Nemzetköziesítési Tevékenységének munkálataiban." // title text for s.groups
 s.about = "Rólunk" // site links link text, top left
 s.aboutI18nActivity = "A W3C Nemzetköziesítési Tevékenységéről." // title text for s.about
@@ -151,6 +154,9 @@ s.quickanswer = "Gyors válasz" // heading
 s.longeranswer = "Részletek" // heading that follows 'Quick answer'
 s.additionalinfo = "További információ" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Feliratkozás az RSS csatornára."  
