@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>HTML中的行内标记和双向文本</title>
+<meta name="description" content="Unicode双向文本算法和行内标记的背景知识，帮助你在HTML中正确渲染阿拉伯字母、希伯来字母和其他从右向左书写的文字。">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/inline-bidi-markup'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C, Aharon Lanin, Google'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-inline-bidi-markup'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2003-09-29'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2021-06-25', time:'12:43'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2025-07-29', time:'12:43'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction';
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+<link rel="stylesheet" href="index-data/local.css">
+<style>
+.injectionexamples {
+	margin: 0 0 0px 0;
+    width: 100%;
+	}
+.injectionexamples td {
+	text-align: left;
+	border: 0;
+	padding-bottom: 12px;
+	font-size: 90%;
+	}
+ins {
+	background-color: #FF0
+	}
+del {
+	color: #999;
+	}
+li ol {
+	margin-right: 20px;
+	}
+/*.example {
+	margin-bottom: 2em;
+	}*/
+.hide {
+	background-color: #FCC;
+	}
+.example1 {
+	margin-bottom: 2em;
+	}
+.injectionexamples .example_code { font-size: 120%; font-family: serif; text-align: start; }
+</style>
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>HTML中的行内标记和双向文本</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+
+<p>阿拉伯语、希伯来语和其他使用从右到左文字的语言通常包含数字、拉丁字母或用其他文种书写的文本：这些文本通常在从右到左的上下文中从左到右书写。</p>
+<p>本文告诉你如何编写不同书写方向的文本<strong>在段落或其他HTML块内</strong>混合（即<dfn id="term_inline">内联或短语</dfn>内容）的网页。</p>
+<p class="info">配套文章<a class="print" href="https://www.w3.org/International/questions/qa-html-dir"><cite>HTML中的结构标记和从右到左文本</cite></a>告诉你如何使用<code translate="no" class="kw">html</code>、<code translate="no" class="kw">p</code>、<code translate="no" class="kw">div</code>等标记和表单。</p>
+<p>本文重点关注HTML中的用法，但大多数概念也适用于其他标记语言。</p>
+
+
+<div id="nutshell">
+<h2 id="quick">快速答案</h2>
+
+<p><strong>这里的建议仅适用于行内元素，如<code class="kw" translate="no">span</code>、<code class="kw" translate="no">cite</code>、<code class="kw" translate="no">em</code>等，处理块元素时请参见上面提到的文章。</strong></p>
+
+
+
+<p><strong>如果你知道所涉及的所有文本的方向</strong>，请在标记中<a class="termref" href="#tightwrap">紧密包裹</a><strong>每个</strong><a class="termref" href="#oppositedirection">反向短语</a>，并在该标记上使用<code translate="no" class="kw">dir</code>属性。确保嵌套标记以显示结构。</p>
+
+<figure id="qa_1" class="example">
+<p><code class="language-html">&lt;p&gt;the title is &lt;cite dir=&quot;rtl&quot;&gt;AN INTRODUCTION TO &lt;span dir=&quot;ltr&quot;&gt;c++&lt;/span&gt;&lt;/cite&gt; in arabic.&lt;/p&gt;</code></p>
+<!--div class="demolink"><a href="index-data/basic_tight_wrap.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+
+<div class="browser_output" style="margin-inline:0;">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>The title is <cite dir="rtl">مدخل إلى <span dir="ltr">C++</span></cite> in Arabic.</p>
+</div>
+
+
+<p>如果你想在旧版本或不符合标准的浏览器上运行你的代码，而且在紧密包裹的文本后紧跟着一个数字或逻辑上独立的反向短语，请在短语后立即添加<code translate="no" class="kw">&amp;rlm;</code>或<code translate="no" class="kw">&amp;lrm; </code>（选择与周围文本基方向对应的那个）。</p>
+
+<figure class="example">
+<p><code class="language-html">&lt;p&gt;we find the phrase '&lt;span dir=&quot;rtl&quot;&gt;INTERNATIONALIZATION ACTIVITY&lt;/span&gt;&amp;lrm;' 5 times on the page.&lt;/p&gt;</code></p>
+<!--div class="demolink"><a href="index-data/basic_bulletproof.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+
+<div class="browser_output" style="margin-inline:0;">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>We find the phrase '<span dir="rtl" lang="he">פעילות הבינאום</span>'‎ 5 times on the page.</p>
+</div>
+
+<p><strong>如果你不知道</strong>将在运行时插入的文本的方向，请将<code>dir=auto</code>添加到紧密包裹该位置的所有标记中。如果没有标记，请用<code translate="no" class="kw">bdi</code>元素包裹这个位置。</p>
+
+<figure class="example">
+<p><code class="language-javascript">foreach $phrase<br>
+echo "&lt;p&gt;we found the phrase &lt;q dir='auto'&gt;$phrase['text']&lt;/q&gt; $phrase['count'] times.&lt;/p&gt;";</code></p>
+<!--div class="demolink"><a href="index-data/basic_dir_auto.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+
+<div class="browser_output" style="margin-inline:0;">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>We found the phrase <q dir="auto">פעילות הבינאום</q> 5 times.</p>
+</div>
+
+
+
+
+<figure class="example">
+<p><code class="language-javascript">foreach $restaurant echo "&lt;p&gt;&lt;bdi&gt;$restaurant['name']&lt;/bdi&gt; - $restaurant['count'] reviews&lt;/p&gt;";</code></p>
+<!--div class="demolink"><a href="index-data/basic_dir_auto.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+
+<div id="top_rated" class="browser_output" style="margin-inline:0;">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p><bdi>פיצה סגלה</bdi> - 5 reviews</p><div><img src="index-data/5-stars.png" alt="5 stars"></div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+<section id="how">
+<h2>双向文本算法的工作原理</h2>
+
+<p class="info">如果你对Unicode双向文本算法不太熟悉，在进一步阅读之前，你应该阅读<a href="uba-basics">双向文本算法工作原理的基本介绍</a>。</p>
+<p class="info">如果你需要，还有我们在本文中将引用的<a href="bidi_examples#aboutmarkup">各种元素和属性的描述</a>。</p>
+</section>
+
+
+
+
+
+
+
+<section id="where">
+<h2>双向文本算法的不足</h2>
+  <aside class="insideinfonote">
+<p class="info">本文档中的许多示例以图像形式显示，以避免那些浏览器无法产生预期效果或没有非ASCII字体的用户出现问题。</p>
+<p>包含阿拉伯语字母和希伯来字母的代码示例<a class="print" href="http://www.w3.org/TR/i18n-html-tech-bidi/#bidisource">可能以不同方式显示</a>，取决于你用的编辑器。在本文中，代码示例中的从右到左文本用大写翻译表示，从左到右的文本用小写表示。代码示例中的所有文本都反映的是字符在内存中存储的方向，而不是显示的结果。大写字母的原始版本从右到左阅读。</p>
+<p>要查看完整源代码，请点击“在你的浏览器中测试”链接，并查看页面的源代码。</p>
+
+</aside>
+  <p>在下面的章节中，我们会检查可能出错的具体例子、为什么会出错以及如何修复。不过，重要的是要认识到，当一个方向的内容包含相反方向的<strong>内联</strong>短语时，这些问题会发生。我们将这些称为<span class="newterm" id="oppositedirection">反向短语</span>。反向短语可能是在单个方向运行（比如一个词），也可能是一组包含不同方向的文本，内部有嵌入的基方向变化。</p>
+  <p>在下面的例子中，英语的句子在引号之间包含一个反向短语。这个短语本身又包含一个嵌套的反向短语（“C++”），以及一个必须出现在阿拉伯语短语末尾的感叹号（在左侧引号的旁边）。箭头表示一个反向短语。</p>
+  <div class="figWrap">
+  <figure>
+    <p><img src="index-data/nested_directions.png" alt="前面代码的显示结果"></p>
+  </figure>
+  </div>
+  <p>这类短语的常见例子包括URL、引用、书籍/文章/戏剧的标题、带格式的数字（比如电话号码和MAC地址）、街道和电子邮件地址，以及各种名称，如品牌名、首字母缩略词、零件号、网站名、地名、文件名（和路径）等。</p>
+  <p>在把文本从数据库等地方放入页面的应用中，问题更严重。应用通常不能提前知道文本是否是（或可能包含）反向短语，必须在运行时通过检查字符的Unicode范围来估计其方向。</p>
+  <p>每当出现反向短语时，事情就可能出错。也就是说，如果文本包含行内的反向短语而没有任何特殊包装，就会出现问题，这种短语可以：</p>
+  <ul>
+    <li>以中性字符开始或结束</li>
+    <li>以数字开始</li>
+    <li>后面跟着数字</li>
+    <li>后面跟着另一个但逻辑上独立的反向短语</li>
+    <li>包含一个或多个嵌套短语，其基方向与该短语相反</li>
+  </ul>
+  <p>虽然这个列表看起来令人生畏，但没有必要确定这些情况中的哪一个（如果有的话）适用于特定短语。有一种简单的默认方式来包裹反向短语，可以防止上述所有情况下的问题，在没有这些情况时也不会造成负面影响。下面的步骤描述了如何进行这种包裹。</p>
+</section>
+
+
+
+
+
+
+<section id="whattodo">
+<h2>如何标记行内双向文本</h2>
+<div class="sidenoteGroup">
+  <p>这里我们总结了处理双向行内文本的默认指导原则。很多时候，其他方法也会有用，但这里概述的方法简单易用，应该可以用于所有情况。</p>
+<p>有时，双向文本在没有干预的情况下会正常工作——比如，当反向短语是一个词且不是列表的一部分或后面没有跟数字时。但是，如果你想保持简单，避免需要仔细考虑是否需要添加标记，那么只需对<strong>所有</strong>方向变化遵循这些指导原则。使用这里的方法在不需要的地方不会造成问题，但在文本编辑后有时可能会变得有用。</p>
+<p class="info">配套文档提供了所使用的<a href="bidi_examples#aboutmarkup">标记的描述</a>，以及一组<a href="bidi_examples#staticexamples">工作示例</a>，包含更多讨论和替代方案的探索。</p>
+
+<aside class="sideinfonote">
+<p class="info">如果要标记的文本被<strong>非行内</strong>元素紧密包裹，你通常会将<code translate="no" class="kw">dir</code>属性添加到这个元素。在某些情况下，这可能导致文本块在页面上的对齐方式不理想。为了避免这种情况，你可以在现有标记的标签内立即添加行内元素，并遵循下面的规则来标记该行内元素。有关处理非行内元素中方向的更多信息，请参见<a class="print" href="https://www.w3.org/International/questions/qa-html-dir"><cite>HTML中的结构标记和从右到左文本</cite></a>。</p>
+</aside>
+</div>
+
+
+
+
+
+<section id="html5markup">
+<h3>如果你知道短语的方向</h3>
+
+<p>解决内容中双向文本问题的最佳方法是在设置其基方向的标记中，紧密包裹<strong>每个</strong><a class="termref" href="#oppositedirection">反向短语</a>。<dfn id="tightwrap">紧密包裹</dfn>的意思是元素包含整个反向短语，并且除了反向短语之外什么都没有。</p>
+
+<p>如果短语已经在行内元素中被紧密包裹（也就是它的外层本来就有标签），你可以直接用现有的元素。否则，用<code class="kw" translate="no">span</code>元素紧密包裹反向短语。</p>
+<p>然后添加<code translate="no" class="kw">dir</code>属性。当你这样做时，<a href="#where">之前</a>提出的大多数问题会消失。这个属性不仅将正确的基方向应用于短语，而且当浏览器在元素上遇到<code translate="no" class="kw">dir</code>属性时，它们会在书写方向上<strong>隔离</strong>元素内的文本与周围的文本。</p>
+
+
+
+
+<section id="add_span">
+<h4>添加<code class="kw" translate="no">dir</code>属性</h4>
+
+<p>如果<strong>没有标记</strong>紧密包裹反向短语，请添加<code class="kw" translate="no">span</code>。</p>
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td><strong>之前：</strong></td>
+<td><code translate="no" class="language-html">&lt;p&gt;RTL_TEXT ltr_text&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_span_bad.png" alt="&lt;p&gt;שם מוצר: Discover!&lt;/p&gt;"></td>
+</tr-->
+<tr>
+<td><strong>之后：</strong></td>
+<td><code translate="no" class="language-html">&lt;p&gt;RTL_TEXT &lt;span dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;ltr_text&lt;/span&gt;&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_span_ok.png" alt="&lt;p&gt;שם מוצר: &lt;span dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;Discover!&lt;/span&gt;&lt;/p&gt;"></td>
+</tr-->
+</tbody>
+</table>
+<!--div class="demolink"><a href="index-data/examples/dir_span.html" target="_blank">Test in your browser.</a></div-->
+</div>
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<div dir="rtl">
+<p>שם מוצר: Discover!</p>
+<p>שם מוצר: <span dir="ltr" lang="en">Discover!</span></p>
+</div>
+</div>
+
+
+
+
+<p>或者将<code class="kw" translate="no">dir</code>添加到现有元素：</p>
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td><strong>之前：</strong></td>
+<td><code translate="no" class="language-html">&lt;p&gt;RTL_TEXT &lt;cite lang=&quot;en&quot;&gt;ltr_text&lt;/cite&gt;&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_cite_bad.png" alt="&lt;p&gt;הספר הבא לקריאה: &lt;cite lang=&quot;en&quot;&gt;Who were the Elamites?&lt;/cite&gt;&lt;/p&gt;"></td>
+</tr-->
+<tr>
+<td><strong>之后：</strong></td>
+<td><code translate="no" class="language-html">&lt;p&gt;RTL_TEXT &lt;cite dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;ltr_text&lt;/cite&gt;&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_cite_ok.png" alt="&lt;p&gt;הספר הבא לקריאה: &lt;cite dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;Who were the Elamites?&lt;/cite&gt;&lt;/p&gt;"></td>
+</tr-->
+</tbody>
+</table>
+<!--div class="demolink"><a href="index-data/examples/dir_cite.html" target="_blank">Test in your browser.</a></div-->
+</div>
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<div dir="rtl">
+<p>הספר הבא לקריאה: <cite lang="en">Who were the Elamites?</cite></p>
+<p>הספר הבא לקריאה: <cite dir="ltr" lang="en">Who were the Elamites?</cite></p>
+</div>
+</div>
+</section>
+
+
+
+
+<section id="nested_phrases">
+<h4>嵌套短语</h4>
+
+<p>不要忘了标记嵌套的单向文本，在标记中保持嵌套。</p>
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td><strong>之前：</strong></td>
+<td><code translate="no" class="language-html">&lt;p&gt;ltr_text &lt;cite dir=&quot;rtl&quot;&gt;RTL_TEXT  ltr_text_in_rtl&lt;/cite&gt;&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="ltr"><img src="index-data/dir_nested_bad.png" alt="&lt;p&gt;The title is &lt;cite dir=&quot;rtl&quot;&gt;مدخل إلى C++&lt;/cite&gt; in Arabic.&lt;/p&gt;"></td>
+</tr-->
+<tr>
+<td><strong>之后：</strong></td>
+<td><code translate="no" class="language-html">&lt;p&gt;ltr_text &lt;cite dir=&quot;rtl&quot;&gt;RTL_TEXT &lt;span dir=&quot;ltr&quot;&gt;ltr_text_in_rtl&lt;/span&gt;&lt;/cite&gt;&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="ltr"><img src="index-data/dir_nested_ok.png" alt="&lt;p&gt;The title is &lt;cite dir=&quot;rtl&quot;&gt;مدخل إلى &lt;span dir=&quot;ltr&quot;&gt;C++&lt;/span&gt;&lt;/cite&gt; in Arabic.&lt;/p&gt;"></td>
+</tr-->
+</tbody>
+</table>
+</div>
+
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>The title is <cite dir="rtl">مدخل إلى <span>C++</span></cite> in Arabic.</p>
+<p>The title is <cite dir="rtl">مدخل إلى <span dir="ltr">C++</span></cite> in Arabic.</p>
+</div>
+
+</section>
+
+
+
+
+<section id="spillover_effects">
+<h4>溢出效应</h4>
+
+<p>避免属于不同方向的单向文本片段的后续数字的溢出效应。「###」表示数字。</p>
+<div class="sidenoteGroup">
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td>之前：</td>
+<td><code translate="no" class="language-html">&lt;p&gt;ltr-text &lt;span lang=&quot;ar&quot;&gt;RTL_TEXT&lt;/span&gt; ### ltr_text&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="ltr"><img src="index-data/wadi_rum_bad.png" alt="Wadi Rum – وادي القم – 321km from Amman, is a World Heritage site."></td>
+td colspan="2" class="example_code" dir="ltr">Wadi Rum – وادي القم – 321km from Amman, is a World Heritage site.</td>
+</tr-->
+<tr>
+<td>之后：</td>
+<td><code translate="no" class="language-html">&lt;p&gt;ltr-text &lt;span dir=&quot;rtl&quot; lang=&quot;ar&quot;&gt;RTL_TEXT&lt;/span&gt; ### ltr_text&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="ltr"><img src="index-data/wadi_rum_ok.png" alt="Wadi Rum – <span dir='rtl'>وادي القم</span> – 321km from Amman, is a World Heritage site."></td>
+td colspan="2" class="example_code" dir="ltr">Wadi Rum – <span dir="rtl">وادي القم</span> – 321km from Amman, is a World Heritage site.</td>
+</tr-->
+</tbody>
+</table>
+</div>
+
+<div class="sideinfonote">
+<p>实际上，使用括号（而不是其他标点符号）在Gecko和Blink浏览器中解决了这里的问题，但在撰写本文时在Webkit浏览器中没有解决。然而，如果使用其他标点符号，如逗号或en空格等，问题<strong>确实</strong>会在Gecko和Blink中出现。使用这里的标记可以让你的代码更加健壮，防止浏览器兼容性和未来编辑的问题。</p>
+</div>
+</div>
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>Wadi Rum &lt; <span lang="ar">وادي القم</span> &gt;, 321km from Amman, is a World Heritage site.</p>
+<p>Wadi Rum &lt; <span dir="rtl" lang="ar">وادي القم</span> &gt;, 321km from Amman, is a World Heritage site.</p>
+</div>
+
+
+<p>让列表按正确顺序显示：</p>
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td>之前</td>
+<td><code translate="no" class="language-html">&lt;p&gt;RTL_TEXT ltr_text, ltr_text&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_spillover_list_bad.png" alt="&lt;p lang=&quot;ar&quot;&gt;اتبع هذه الروابط بالترتيب: bidi_intro.net، bidi_advanced.net&lt;/p&gt;"></td>
+</tr-->
+<tr>
+<td>之后</td>
+<td><code translate="no" class="language-html">&lt;p&gt;RTL_TEXT &lt;span dir=&quot;ltr&quot;&gt;ltr_text&lt;/span&gt;, &lt;span dir=&quot;ltr&quot;&gt;ltr_text&lt;/span&gt;&lt;/p&gt;</code></td>
+</tr>
+<!--tr>
+<td colspan="2" class="example_code" dir="rtl"><img src="index-data/dir_spillover_list_ok.png" alt="&lt;p lang=&quot;ar&quot;&gt;اتبع هذه الروابط بالترتيب: &lt;span dir=&quot;ltr&quot;&gt;bidi_intro.net&lt;/span&gt;، &lt;span dir=&quot;ltr&quot;&gt;bidi_advanced.net&lt;/span&gt;&lt;/p&gt;"></td>
+</tr-->
+</tbody>
+</table>
+<!--div class="demolink"><a href="index-data/examples/dir_spillover_list.html" target="_blank">Test in your browser.</a></div-->
+</div>
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<div dir="rtl">
+<p lang="ar">اتبع هذه الروابط بالترتيب: bidi_intro.net، bidi_advanced.net</p>
+<p lang="ar">اتبع هذه الروابط بالترتيب: <span dir="ltr">bidi_intro.net</span>، <span dir="ltr">bidi_advanced.net</span></p>
+</div>
+</div>
+
+
+
+
+<p>很多时候，这些溢出效应可以通过在适当的位置放置<code class="kw" translate="no">&amp;lrm;</code>或<code class="kw" translate="no">&amp;rlm;</code>来解决。这在<a href="bidi_examples#staticexamples">示例页面</a>中有更详细的讨论。不过，这里的包裹法也有效，并且避免了明智判断所需的努力。</p>
+<p><strong>注意：</strong>RLM和LRM只解决<strong>隔离</strong>问题，但无法修复我们之前看到的例子。还要注意，大多数时候你都会想把这些短语包裹在标记中，这样你就可以应用<code class="kw" translate="no">lang</code>属性（以便选择正确的字体和其他排版行为，影响屏幕阅读器的阅读、拼写检查等）。</p>
+</section>
+</section>
+  
+  <section id="html4markup">
+<h3>如果你不知道短语的方向</h3>
+<p>当文本将在运行时添加到你的HTML页面时，你可能无法提前预测文本的基方向。为了处理这种情况，你有两个选择。</p>
+
+<p>如果短语已经被元素紧密包裹，你只需将<code>dir="auto"</code>添加到这个元素。这会方向性地隔离元素的文本，并通过查看第一个强字符来确定基方向。</p>
+
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td>之前</td>
+<td><code class="language-javascript">foreach $phrase<br>
+echo "&lt;p&gt;we found the phrase '&lt;cite&gt;$phrase['text']&lt;/cite&gt;' $phrase['count'] times.&lt;/p&gt;";</code></td>
+</tr>
+<tr>
+<td>之后</td>
+<td><code class="language-javascript">foreach $phrase<br>
+echo "&lt;p&gt;we found the phrase '&lt;cite dir='auto'&gt;$phrase['text']&lt;/cite&gt;' $phrase['count'] times.&lt;/p&gt;";</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>We found the phrase '<cite>פעילות הבינאום</cite>' 5 times.</p>
+<p>We found the phrase '<cite dir="auto">פעילות הבינאום</cite>' <bdi id="count">5</bdi> times.</p>
+</div>
+
+
+
+
+<!--div class="example">
+<p><code translate="no" class="language-html">&lt;p&gt;static-text &lt;cite dir=&quot;auto&quot;&gt;<em>injected-text</em>&lt;/cite&gt;&lt;/p&gt;</code></p>
+</div-->
+
+
+
+
+<p>否则，将短语放在<code translate="no" class="kw">bdi</code>元素中（或者如果你愿意，放在<code translate="no" class="kw">span</code>元素中，并把<code class="kw" translate="no">dir</code>设置为<code class="kw" translate="no">auto</code>）。没有<code translate="no" class="kw">dir</code>属性时，<code translate="no" class="kw">bdi</code>元素的行为和<code>dir=&quot;auto&quot;</code>一样。</p>
+
+<!--div class="example">
+<p><code translate="no" class="language-html">&lt;p&gt;static-text &lt;bdi&gt;<em>injected-text</em>&lt;/bdi&gt;&lt;/p&gt;</code></p>
+</div-->
+
+<div class="example">
+<table class="injectionexamples">
+<tbody>
+<tr>
+<td>之前</td>
+<td><code class="language-javascript">foreach $phrase<br>
+echo "&lt;p&gt;we found the phrase '$phrase['text']' $phrase['count'] times.&lt;/p&gt;";</code></td>
+</tr>
+<tr>
+<td>之后</td>
+<td><code class="language-javascript">foreach $phrase<br>
+echo "&lt;p&gt;we found the phrase '&lt;bdi&gt;$phrase['text']&lt;/bdi&gt;' $phrase['count'] times.&lt;/p&gt;";</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>We found the phrase 'פעילות הבינאום' 5 times.</p>
+<p>We found the phrase '<bdi id="phrase2">פעילות הבינאום</bdi>' <bdi id="count2">5</bdi> times.</p>
+</div>
+
+</section>
+</section>
+
+
+
+
+
+
+
+<section id="nomarkup">
+<h2>不能用标记怎么办？</h2>
+
+<p>在某些情况下，你可能无法用上一节描述的标记，比如HTML中的<code translate="no" class="kw"><code translate="no" class="kw">title</code></code>元素和所有属性值。</p>
+
+<p>在这种情况下，你需要用产生相同结果的不可见Unicode字符。</p>
+
+<p>为了再现上面示例中描述的与嵌套基方向相关的标记效果，我们可以使用字符对包围嵌入的文本。第一个字符是<code class="uname">U+2067 RIGHT-TO-LEFT ISOLATE (RLI)</code>或<code class="uname">U+2066 LEFT-TO-RIGHT ISOLATE (LRI)</code>，放在与开始<code class="kw" translate="no">&lt;span dir=&quot;...&quot;&gt; </code>标签相同的位置。第二个字符是<code class="uname">U+2069 POP DIRECTIONAL ISOLATE (PDI)</code>，对应于标记中的<code class="kw" translate="no">&lt;/span&gt;</code>。这是一个例子：</p>
+
+<div class="sidenoteGroup">
+<figure class="example">
+<p><code class="language-html">&lt;title&gt;the title says  &quot;&amp;#x2067;<span dir="rtl">INTERNATIONALIZATION ACTIVITY, w3c</span>&amp;#x2069;&quot; in hebrew.&lt;/title&gt;</code></p>
+<!--div class="demolink"><a href="index-data/rle.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+<aside class="sideinfonote">
+<p class="info">因为字符是不可见的，你可能更愿意输入字符值引用（numeric character reference, NCR）。</p>
+</aside>
+</div>
+
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>The title says "&#x2067;פעילות הבינאום, W3C&#x2069;" in Hebrew.</p>
+</div>
+
+
+
+
+<p>要模拟<code class="kw" translate="no">dir</code>的<code class="kw" translate="no">auto</code>值或<code class="kw" translate="no">bdi</code>，你可以在短语开头用<code class="uname">U+2068 FIRST STRONG ISOLATE</code>。</p>
+<p>这些控制字符应该只用于行内的短语，不能用于段落等块元素。一般来说，<a class="print" href="https://www.w3.org/International/questions/qa-bidi-controls">建议</a>你在能用的地方用标记，而不是这些字符对，因为标记更容易看到、管理，还和用于块元素的方法一致。当然，在用不了标记的地方，这是唯一的选择。</p>
+  <p>还有另一组改变基方向的字符：<code class="uname">U+202B RIGHT-TO-LEFT EMBEDDING (RLE)</code>、<code class="uname">U+202A LEFT-TO-RIGHT EMBEDDING (LRE)</code>和<code class="uname"> U+202C POP DIRECTIONAL FORMATTING (PDF</code>)，但它们不会方向性地隔离它们包裹的短语，所以最好不要用它们。</p>
+<p>我们在上文中见过的两个字符，<code class="uname">U+200F RIGHT-TO-LEFT MARK</code>（RLM）和<code class="uname">U+200E LEFT-TO-RIGHT MARK</code>（LRM）也可以在适当的地方使用。除了字符值引用外，这些字符还有字符实体引用，<code class="kw" translate="no">&amp;rlm;</code>和<code class="kw" translate="no">&amp;lrm;</code>。</p>
+
+<figure class="example">
+<p><code class="language-html">&lt;title&gt;the title says &quot;INTERNATIONALIZE THE WEB!&amp;rlm;&quot; in arabic.&lt;/title&gt;</code></p>
+<!--div class="demolink"><a href="index-data/rlm.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>The title is "مفتاح معايير الويب!&rlm;" in Arabic.</p>
+</div>
+
+
+
+<p>请注意，在上面的例子里，阿拉伯语文本不再标记语言或样式——这是在可能的地方使用标记而不是这些码位的一个原因。</p>
+</section>
+
+
+<section id="mirrored">
+<h2>镜像字符</h2>
+
+<p>Unicode双向文本算法有显示<dfn>镜像字符</dfn>的规则。这些字符的形状取决于它们是在LTR还是RTL上下文中显示。这些通常是成对的字符，比如括号，但也包括一些通常不成对的字符，如<span class="codepoint" translate="no"><bdi>&#x2260;</bdi><code class="uname">U+2260 NOT EQUAL TO</code></span>。</p>
+
+<p>在下面的例子里，字符<span class="codepoint" translate="no"><bdi>&#x003E;</bdi><code class="uname">U+003E GREATER-THAN SIGN</code></span> 在LTR上下文中指向右侧，但在RTL上下文中指向左侧：</p>
+
+<!--div class="sidenoteGroup">
+<div class="figWrap">
+<figure>
+<img src="index-data/mirrored_chars_he.png" alt="basic vertical japanese">
+<figcaption style="max-width: 450px; margin:auto;">The character <span class="codepoint"><span lang="en" class="qchar">&#x003E;</span> [<span class="uname">U+003E GREATER-THAN SIGN</span>]</span> points to the right when displayed in a LTR context, but to the left in an RTL context.
+    <span class="demolink"><a href="index-data/mirrored_chars.html" target="text">Test in your browser</a></span></figcaption>
+</figure>
+</div>
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox">   <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
+</aside>
+</div-->
+
+
+
+<div class="sidenoteGroup">
+<figure class="example">
+<p><code class="language-html">&lt;p dir=&quot;ltr&quot;&gt;a &amp;gt; b &amp;gt; c&lt;/p&gt;</code></p>
+<p><code class="language-html">&lt;p dir=&quot;rtl&quot;&gt;א &amp;gt; ב &amp;gt; ג&lt;/p&gt;</code></p>
+</figure>
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox">   <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
+</aside>
+</div>
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p dir="ltr">a &gt; b &gt; c</p>
+<p dir="rtl">א &gt; ב &gt; ג</p>
+</div>
+
+
+<p>这是完全自动的，你不用为了改变字形换一个字符。</p>
+<p>开始括号的末端总是面向文本流的方向，而结束括号则是反方向的。这意味着，无论存储的内容是阿拉伯字母/希伯来字母还是拉丁字母，你都会在括号文本的开头使用相同的<span class="codepoint" translate="no"><bdi lang="en">&#x0028;</bdi><code class="uname">U+0028 LEFT PARENTHESIS</code></span>字符。换句话说，你可以把镜像字符的名字里的<code translate="no" class="kw">left</code>想成<span class="qterm">开始</span>，把<span class="kw">right</span>想成<span class="qterm">结束</span>。</p>
+<p>但是双向文本算法的最新实现更进一步，会试着去平衡括号。在下面的图片中，上面的部分是括号过去的样子（没有干预），下面显示它们在平衡作用下的样子。</p>
+<div class="sidenoteGroup">
+  <div class="figWrap">
+<figure>
+<img src="index-data/mirrored-parens.png" alt="basic vertical japanese">
+<figcaption style="max-width: 450px; margin:auto;">使用Unicode双向文本算法的括号，过去的样子（上面）和平衡后的样子（下面）。
+    <!--span class="demolink"><a href="index-data/mirrored-parens.html" target="text">Test in your browser</a></span--></figcaption>
+</figure>
+</div>
+       <aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
+<p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <img src="../../icons/fail.png" alt="fail" style="margin-left: 0.5em;"></p>
+</aside>
+</div>
+
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p dir="rtl">W3C (World Wide Web Consortium) מעביר את שירותי הארחה באירופה ל - ERCIM.</p>
+</div>
+
+<p>同样，你不需要进行任何操作来启用这些改进，浏览器会自动完成。</p>
+</section>
+
+
+<section id="override">
+<h2>覆盖算法</h2>
+  <p>有时你可能不希望双向文本算法进行任何重新排序。在这种情况下，你需要一些额外的标记来包裹你希望保持未排序的文本。在HTML中，我们可以通过行内的<span class="kw">bdo</span>元素来实现。请注意，你不该使用<code class="kw" translate="no">bdo</code>来正常管理双向文本——它只用于特殊情况，主要是教育目的。不要将它与<code class="kw" translate="no"><a href="bidi_examples#bdi">bdi</a></code>所混淆。</p>
+<p>我们可以用<code translate="no" class="kw">bdo</code>标签来显示字符在内存中的顺序。你必须为<code class="kw" translate="no">bdo</code>元素提供<code class="kw" translate="no">dir</code>属性，值必须是<code class="kw" translate="no">rtl</code>或<code class="kw" translate="no">ltr</code>（不能是<code class="kw" translate="no">auto</code>）。例如，下面的图片显示希伯来语文本在内存中的排序。</p>
+  <div class="figWrap">
+  <figure>
+    <p><img src="index-data/override.png" alt="用在内存中的顺序中显示希伯来语文本"></p>
+    <figcaption>使用双向覆盖的文本（最后一行）</figcaption>
+  </figure>
+  </div>
+<p>对于最后一行，我们在HTML中使用以下标记：</p>
+<div class="sidenoteGroup">
+
+
+<figure class="example">
+<p><code class="language-html">&lt;p&gt;&lt;bdo dir=&quot;ltr&quot;&gt;<span dir="rtl">INTERNATIONALIZATION ACTIVITY, w3c</span>&lt;/bdo&gt;&lt;/p&gt;</code></p>
+<!--div class="demolink"><a href="index-data/bdo.html" target="_blank">Test in your browser.</a></div-->
+</figure>
+
+
+<div class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出：</p>
+<p>In the phrase, "<span dir="rtl">פעילות הבינאום, W3C</span>", the order of characters in memory is:</p>
+<p><bdo dir="ltr">פעילות הבינאום, W3C</bdo></p>
+</div>
+
+
+
+
+<p>在XHTML2等其他XML应用中，它可能作为<code translate="no" class="kw">dir</code>属性上的<code translate="no" class="kw">rlo</code>或<code translate="no" class="kw">lro</code>值来实现，使其能够应用于任何元素。还有Unicode控制字符可以用来实现相同的结果，但因为它们创建了不可见的边界，通常<a class="print" href="https://www.w3.org/International/questions/qa-bidi-controls.zh-hans.html">不推荐使用</a>。</p>
+      <aside class="implnote">
+  <p class="impl"><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox">   <img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> <img src="../../icons/edge_16x16.png" width="16" height="16" alt="Edge" title="Edge"> <img src="../../icons/ok.png" alt="OK" style="margin-left: 0.5em;"></p>
+</aside>
+</div>
+  <!--p>That the CSS shim described earlier in this article contains code that applies isolation to the <code translate="no" class="kw">bdo</code> element.</p-->
+</section>
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+ <ul id="full-links">
+    <li>
+      <p>教程，<a href="https://www.w3.org/International/tutorials/bidi-xhtml/index.zh-hans.html"><cite>使用阿拉伯语、希伯来语和其他从右至左书写的文字创建HTML页面</cite></a></p>
+    </li>
+    <li>
+      <p><a href="https://www.w3.org/International/questions/qa-html-dir"><cite>HTML中的结构标记和从右到左文本</cite></a></p>
+    </li>
+    <li>
+      <p><a href="https://www.unicode.org/reports/tr9/"><cite>Unicode标准附录#9，Unicode双向文本算法</cite></a></p>
+    </li>
+    <li>
+      <p><a href="https://r12a.github.io/scripts/tutorial/part4" title="书写系统特征教程"><cite>非拉丁文字教程，文本方向</cite></a></p>
+    </li>
+    <li>
+      <p>相关链接：<cite>编写网页</cite></p>
+      <ul>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#direction">文本方向</a></li>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#inline">行内混合文本方向</a></li>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#mirrored">处理括号和其他镜像字符</a></li>
+        <li><a href="https://www.w3.org/International/techniques/authoring-html#bdo">覆盖Unicode双向文本算法</a></li>
+      </ul>
+    </li>
+    <li>
+      <p>相关链接：<cite>编写SVG</cite></p>
+      <ul>
+        <li>
+          <p><a href="https://www.w3.org/International/techniques/authoring-svg#direction">指定文本方向</a></p>
+        </li>
+      </ul>
+    </li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

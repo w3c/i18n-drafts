@@ -55,6 +55,9 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "اگر اجازه دهید مرورگر یک کوکی تنظیم کند، همچنان برگه‌های فعالیت بین‌المللی‌سازی W3C (در صورت موجود بودن) را به زبانی که انتخاب کرده‌اید مشاهده خواهید کرد. آیا می‌خواهید کوکی تنظیم شود؟"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "نقشه جهان"  // title text for image, top right
 s.searchI18nSite = "جستجو در وبگاه I18n" // placeholder text for search box, top right
@@ -151,6 +154,9 @@ s.quickanswer = "پاسخ سریع" // heading
 s.longeranswer = "جزئیات" // heading that follows 'Quick answer'
 s.additionalinfo = "اطلاعات اضافی" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "اشتراک در خوراک RSS."  
