@@ -20,7 +20,7 @@ f.status = 'published'  // should be one of draft, review, published, notreviewe
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2022-05-30', time:'16:32'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2025-11-14', time:'14:26' } // date and time of latest edits to this document/translation
 f.contributors = '' // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -74,10 +74,10 @@ f.additionalLinks = ''
 
 <section id="answer">
 <h2>Answer</h2>
-  <p>The short answer is: <em>always</em>.</p>
-  <p>A slightly longer answer is: <em>almost</em> always, <em>but not alone</em>.</p>
-  <p>Language negotiation <a href="#shortcomings">does not always work as intended</a>; there are techniques to <a href="#overrides">make up
-    for the shortcomings</a>; one should also provide for <a href="#stickyness">stickiness in navigation</a>.</p>
+  <p>The short answer is: <em>almost always, but not alone</em>.</p>
+  <p>Language negotiation is a useful feature that improves user experience by serving content in preferred languages. However, it has significant limitations that must be addressed.</p>
+  <p>Language negotiation <a href="#shortcomings">does not always work as intended</a>. There are techniques to <a href="#overrides">make up
+    for the shortcomings</a>, and one should also provide for <a href="#stickyness">stickiness in navigation</a>.</p>
     
   <section id="shortcomings">
 <h3>Shortcomings of language negotiation</h3>
@@ -101,6 +101,14 @@ f.additionalLinks = ''
       sub-sections. Note however that some measure of cultural adaptation (e.g. changing the currency) does not necessarily make pages non-equivalent; the
       non-equivalence limitation to language negotiation really exists when a <em>site</em> is adapted so that pages in different languages do not
       correspond to one another any more.</p>
+
+    <section id="searchengines">
+    <h4>Search engine discovery challenges</h4>
+      <p>A major limitation of language negotiation is how search engines discover and index multilingual content. Search engine crawlers often do not send an <code class="kw" translate="no">Accept-Language</code> header when requesting pages, or may default to a specific language such as English. For example, <a href="https://developers.google.com/search/docs/specialty/international/locale-adaptive-pages" target="_blank">Googlebot frequently crawls without this header</a>. This means the crawler may only discover and index the default language version of a page. Consequently, other language versions remain invisible to users searching in those languages, significantly limiting the reach of multilingual content.</p>
+      <p>Furthermore, serving different content to search engines and users is considered "cloaking", a practice that search engines may penalize. While language negotiation itself is not inherently cloaking, improper implementation can be misconstrued as such.</p>
+      <p>To address these issues, search engines explicitly recommend using separate URLs for each language version of a page. This approach provides clear signals to search engines about available language variations. Combined with <code class="kw" translate="no">hreflang</code> annotations in the HTML <code class="kw" translate="no">head</code> or in XML sitemaps, separate URLs help search engines understand which language or regional version to show users based on their language and location settings.</p>
+      <p>If you implement language negotiation, you should also provide language-specific URLs (such as example.com/de/page.html for German and example.com/fr/page.html for French) that can be discovered and indexed by search engines. The language-generic URL (example.com/page.html) can still use content negotiation for direct visitor access, but the language-specific URLs ensure all versions are discoverable.</p>
+    </section>
   </section>
     
   <section id="overrides">
