@@ -6,7 +6,7 @@
 
 Language negotiation is the mechanism by which a server selects the best version of a page based on the client’s `Accept-Language` header. It is a concept of the HTTP protocol. As noted in [When to use language negotiation](https://www.w3.org/International/questions/qa-when-lang-neg), the short answer to "when to use language negotiation" is *always*. However, the long answer is *always, but never alone.*
 
-While language negotiation significantly improves user experience (UX) by automatically serving content in a user's preferred language, it presents critical challenges for search engine optimization (SEO) and discoverability. To implement this correctly, authors must adopt a hybrid strategy that balances user convenience with crawler accessibility.
+While language negotiation significantly improves user experience by automatically serving content in a user's preferred language, it presents critical challenges for search engine optimization (SEO) and discoverability. To implement this correctly, authors must adopt a hybrid strategy that balances user convenience with crawler accessibility.
 
 This article is a guide for properly implementing language negotiation.
 
@@ -24,10 +24,10 @@ Every language version must have a unique, addressable URL, like `example.com/de
 
 Language negotiation should not define the *content* of a URL, but rather the *destination* of the user. Here's an example workflow:
 
-1.  A user visits `www.example.com`.
-2.  The server detects `Accept-Language: it` (Italian).
-3.  The server issues a 302 (Temporary) Redirect to `www.example.com/it/`.
-4.  If no match is found, the server redirects to a default language (e.g., `www.example.com/en/`) or a language selection page.
+1. A user visits `www.example.com`.
+2. The server detects `Accept-Language: it` (Italian).
+3. The server issues a 302 (Temporary) Redirect to `www.example.com/it/`.
+4. If no match is found, the server redirects to a default language (e.g., `www.example.com/en/`) or a language selection page.
 
 *Note: Use a 302 redirect rather than a 301 (Permanent), as the user's language preference (or the device they are using) may change.*
 
@@ -35,16 +35,16 @@ Language negotiation should not define the *content* of a URL, but rather the *d
 
 [When to use language negotiation](https://www.w3.org/International/questions/qa-when-lang-neg) illustrates a critical flaw in negotiation via the persona of "Sylvia".
 
-*   **Scenario A:** Sylvia is Italian but is using a computer in an Internet café in Moscow (browser set to Russian).
-*   **Scenario B:** Sylvia is non-technical and her browser defaults to English, though she prefers Italian.
+* **Scenario A:** Sylvia is Italian but is using a computer in an Internet café in Moscow (browser set to Russian).
+* **Scenario B:** Sylvia is non-technical and her browser defaults to English, though she prefers Italian.
 
 In both cases, automatic negotiation fails. Therefore, you must provide **language controls**.
 
 #### Requirements for Language Controls
 
-*   **Visibility:** Place a clear language switcher (links or a dropdown) on *every* page, not just the homepage.
-*   **Clarity:** Use the native name of the language (e.g., "Deutsch" instead of "German") so users can recognize their own language even if they cannot read the current page content.
-*   **Targeting:** If Sylvia is on `.../en/contact`, the switcher should link specifically to `.../it/contact`, not dump her back to the Italian homepage.
+* **Visibility:** Place a clear language switcher (links or a dropdown) on *every* page, not just the homepage.
+* **Clarity:** Use the native name of the language (e.g., "Deutsch" instead of "German") so users can recognize their own language even if they cannot read the current page content.
+* **Targeting:** If Sylvia is on `.../en/contact`, the switcher should link specifically to `.../it/contact`, not dump her back to the Italian homepage.
 
 ### "Stickiness": Respecting the User's Override
 
