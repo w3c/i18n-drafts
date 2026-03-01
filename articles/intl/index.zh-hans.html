@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>ECMAScript国际化API指南</title>
+<meta name="description" content="学习如何使用ECMAScript国际化API（Intl对象）为全球用户格式化日期、数字、货币等内容。">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/intl'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = '薛富侨（W3C）'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-intl'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-02-02'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-02-02', time:'10:43'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-03-01', time:'22:27' } // date and time of latest edits to this document/translation
+f.contributors = 'Richard Ishida'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'cultural';
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>ECMAScript国际化API指南</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <p>多年来，开发者一直依赖JavaScript库、字符串处理或服务端逻辑，来确保全球用户看到的日期、数字和文本格式既自然又正确。虽然这些方案能用，但往往会显著增加网页体积，而且还带来维护上的挑战。</p>
+    <p>不过，现代浏览器现在内置了一个标准方案：ECMAScript国际化API。你可以通过JavaScript全局可用的<code>Intl</code>对象来使用它。这个API可以原生处理语言区域与文化敏感数据和操作，确保你的应用能够高效且准确地“说用户的语言”。</p>
+    <p>本文将对<code>Intl</code> API中最核心的部分做一个实用的概览，并提供可直接上手的示例，帮助你从今天开始为Web应用实现国际化。</p>
+    <section id="the-core-concept-locales-and-options">
+    <h2>核心概念：语言区域与选项</h2>
+    <p>在深入具体的格式化工具之前，先理解几乎每个<code>Intl</code>构造函数都会接收的两个基础参数很重要：</p>
+    <ol>
+    <li><strong><code>locales</code></strong>：表示语言标签的字符串（遵循BCP 47标准），例如<code>'en-US'</code>（美式英语）、<code>'fr-FR'</code>（法国法语），或<code>'ja'</code>（日语）。你也可以传入语言区域数组，如<code>['fr-CA', 'fr-FR']</code>，浏览器会使用其支持的第一个值。如果省略该参数，则使用浏览器默认语言区域。</li>
+    <li><strong><code>options</code></strong>：用于自定义格式化行为的对象。这个API的强大之处主要体现在这里，你可以从货币符号到日期样式进行细粒度控制。</li>
+    </ol>
+    </section>
+    <section id="intl-datetimeformat">
+    <h2>日期和时间格式化</h2>
+    <p>显示日期和时间是最常见的国际化任务之一。像 “10/12/2025” 这样的日期，在美国可能表示10月12日，而在欧洲的许多地区则表示12月10日。<a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"><code>Intl.DateTimeFormat</code></a>可以轻松消除这种歧义。</p>
+    <p>基本用法很简单：先创建格式化器实例，再调用它的<code>.format()</code>方法：</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const eventDate = new Date();
+
+// 面向美国用户
+const usFormatter = new Intl.DateTimeFormat('en-US');
+console.log(usFormatter.format(eventDate));
+// 输出：10/26/2025
+
+// 面向德国用户
+const deFormatter = new Intl.DateTimeFormat('de-DE');
+console.log(deFormatter.format(eventDate));
+// 输出：26.10.2025</code></pre>
+</figure>
+    <p>需要注意的是，纯数字的日期常常让读者困惑。更好的做法是将月份写完整，从而避免歧义。具体做法见<a href="#fine-grained-control-with-options">使用选项进行精细控制</a>。</p>
+
+    <section id="current-date-vs-a-specific-date">
+    <h3>当前日期与指定日期</h3>
+    <p>要显示当前日期，请使用<code>new Date()</code>：</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const fmt = new Intl.DateTimeFormat('en-GB', { dateStyle: 'long' });
+
+// 当前日期（今天）
+fmt.format(new Date()); // 例如：26 October 2025</code></pre>
+    </figure>
+    <p>要显示指定日期，请给<code>new Date()</code>传入参数。月份从 0 开始计数：</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">// 指定日历日期：2025 年 6 月 27 日（本地时间）
+const june27Local = new Date(2025, 5, 27);
+fmt.format(june27Local); // 27 June 2025</code></pre>
+    </figure>
+  </section>
+
+  <section id="fine-grained-control-with-options">
+    <h3>使用选项进行精细控制</h3>
+    <p>通过<a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#options"><code>options</code>对象</a>，你可以得到更详细、更易读的格式。现代写法通常使用<a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat#datestyle"><code>dateStyle</code>和<code>timeStyle</code></a>。</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const options = {
+  dateStyle: 'full',
+  timeStyle: 'long',
+};
+
+const formatter = new Intl.DateTimeFormat('es-ES', options);
+console.log(formatter.format(eventDate));
+// 输出：viernes, 15 de agosto de 2025, 10:30:00 UTC</code></pre>
+    </figure>
+    <p>你还可以指定时区：</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const japanFormatter = new Intl.DateTimeFormat('ja-JP', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'Asia/Tokyo',
+});
+
+console.log(japanFormatter.format(eventDate));
+// 示例输出：2025年10月27日（注意：日期可能因时区而变化）</code></pre>
+    </figure>
+  </section>
+    </section>
+
+    <section id="intl-numberformat">
+    <h2>处理数字、货币和单位</h2>
+    <p>不同地区对数字的格式化方式并不相同。例如，小数分隔符可能是点，也可能是逗号。<a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat"><code>Intl.NumberFormat</code></a>可以无缝处理这些差异。</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const largeNumber = 1234567.89;
+
+// 美国
+console.log(new Intl.NumberFormat('en-US').format(largeNumber));
+// 输出：1,234,567.89
+
+// 德国
+console.log(new Intl.NumberFormat('de-DE').format(largeNumber));
+// 输出：1.234.567,89
+
+// 印度
+console.log(new Intl.NumberFormat('en-IN').format(largeNumber));
+// 输出：12,34,567.89
+
+// 泰国（使用泰文数字）
+console.log(new Intl.NumberFormat('th-TH-u-nu-thai').format(largeNumber));
+// 输出：๑,๒๓๔,๕๖๗.๘๙</code></pre>
+    </figure>
+
+    <section id="currency-formatting">
+    <h3>货币格式化</h3>
+    <p>货币格式化对电商场景至关重要，而且不只是是加一个符号的问题，符号的位置和间距都和语言、区域有关。使用<code>Intl.NumberFormat</code>时，需将<code>style</code>设为<code>'currency'</code>，并提供ISO 4217 货币代码。</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const price = 99.95;
+
+// 美元
+console.log(new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD'
+}).format(price)); // 输出：$99.95
+
+// 面向德国客户的欧元
+console.log(new Intl.NumberFormat('de-DE', {
+  style: 'currency',
+  currency: 'EUR'
+}).format(price)); // 输出：99,95 €
+
+// 面向爱尔兰客户的欧元
+console.log(new Intl.NumberFormat('en-IE', {
+  style: 'currency',
+  currency: 'EUR'
+}).format(price)); // 输出：€99.95</code></pre>
+    </figure>
+  </section>
+
+  <section id="unit-and-compact-formatting">
+    <h3>单位与紧凑表示法</h3>
+    <p>API还支持单位格式化，以及大数字的紧凑表示法：</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">// 单位格式化
+console.log(new Intl.NumberFormat('en-GB', {
+  style: 'unit',
+  unit: 'kilometer-per-hour'
+}).format(100)); // 输出：100 km/h
+
+// 紧凑表示法
+console.log(new Intl.NumberFormat('en-US', {
+  notation: 'compact',
+  compactDisplay: 'short'
+}).format(2500000)); // 输出：2.5M</code></pre>
+    </figure>
+  </section>
+    </section>
+    
+    <section id="intl-collator">
+    <h2>符合语言区域习惯的排序</h2>
+    <p>如果你曾在带重音符号的语言里对字符串数组排序，就会知道JavaScript默认的<code>Array.prototype.sort()</code>可能失效。它按<a href="https://www.w3.org/TR/i18n-glossary/#dfn-code-point">码位</a>排序，这常常会导致字母顺序不正确。</p>
+    <p><a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator"><code>Intl.Collator</code></a>提供了语言区域敏感的字符串比较函数。</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const names = ['Émilie', 'Zoe', 'Elodie', 'Stéphane', 'Åsa', 'Örjan'];
+
+// 默认排序
+console.log([...names].sort());
+// 输出：['Elodie', 'Stéphane', 'Zoe', 'Åsa', 'Émilie', 'Örjan']
+
+// 使用Intl.Collator（法语）
+const frCollator = new Intl.Collator('fr');
+console.log(names.sort(frCollator.compare));
+// 输出：['Åsa', 'Elodie', 'Émilie', 'Örjan', 'Stéphane', 'Zoe']
+
+// 使用Intl.Collator（瑞典语）
+const svCollator = new Intl.Collator('sv');
+console.log(names.sort(svCollator.compare));
+// 输出：['Elodie', 'Émilie', 'Stéphane', 'Zoe', 'Åsa', 'Örjan']</code></pre>
+    </figure>
+    <p>你甚至可以通过<a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator/Collator#options">options</a>实现不区分大小写排序，或正确处理包含数字的字符串排序（例如 “Chapter 2” 与 “Chapter 10”）。</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const files = ['item 10', 'item 2'];
+const numericCollator = new Intl.Collator(undefined, { numeric: true });
+console.log(files.sort(numericCollator.compare));
+// 输出：[ 'item 2', 'item 10' ]</code></pre>
+    </figure>
+    <p>在这个例子里，<code>undefined</code>实际上表示：“我不想强制指定某个排序语言区域。请使用用户的默认语言区域，但要用<code>numeric: true</code>选项。”</p>
+    <p>这样做能让代码更健壮、更友好：它会自动适配用户，同时仍然提供我们需要的特定排序行为（按数字排序）。</p>
+    </section>
+
+    <section id="intl-relativetimeformat">
+    <h2>相对时间</h2>
+    <p><a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat"><code>Intl.RelativeTimeFormat</code></a>非常适合生成类似“2天前”或“3个月后”这样的自然语言表达。</p>
+    <figure class="example">
+    <pre><code class="lang-javascript">const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+console.log(rtf.format(-1, 'day')); // "yesterday"
+console.log(rtf.format(2, 'week'));  // "in 2 weeks"
+console.log(rtf.format(3, 'month')); // "in 3 months"
+
+const rtf_es = new Intl.RelativeTimeFormat('es');
+console.log(rtf_es.format(-1, 'day')); // "hace 1 día"</code></pre>
+    </figure>
+    <p><code>Intl.RelativeTimeFormat</code>中的<a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/RelativeTimeFormat/RelativeTimeFormat#numeric"><code>numeric</code>选项</a>有两个可选值：</p>
+    <ol>
+    <li><code>always</code>（默认）：始终使用数字。</li>
+    <li><code>auto</code>：如果该语言区域对该相对时间有专门词语（如 “yesterday” 或 “tomorrow”），就用这个词；否则回退为数字表达。</li>
+    </ol>
+    </section>
+
+    <section id="bytheway">
+    <h2>顺便一提</h2>
+    <p>本文只是抛砖引玉。<code>Intl</code> API还包括<a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules"><code>Intl.PluralRules</code></a>（处理复数）、<a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat"><code>Intl.ListFormat</code></a>（处理“A、B和C”这类列表）、<a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DisplayNames"><code>Intl.DisplayNames</code></a>（翻译地区和语言的名字）等更多能力。</p>
+    <p>采用ECMAScript国际化API后，你可以把本地化逻辑从臃肿的库迁移到浏览器原生引擎中。这样不仅代码更少，也能为全球用户提供更准确、性能更好的体验。</p>
+    </section>
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+ <ul id="full-links">
+  <li><cite><a href="https://www.rfc-editor.org/info/bcp47">BCP 47</a></cite></li>
+  <li><cite><a href="https://tc39.es/ecma402/#intl-object">ECMA-402 中的Intl对象
+    
+  </a></cite></li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
