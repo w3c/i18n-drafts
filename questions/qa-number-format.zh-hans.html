@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>数字、货币和单位格式化</title>
+<meta name="description" content="如何使用JavaScript为不同语言/区域动态格式化数字、货币和单位？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-number-format'; // the file name WITHOUT extensions
+f.authors = '薛富侨'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-number-format'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-03-12'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-03-12', time:'19:22'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-03-13', time:'15:08' } // date and time of latest edits to this document/translation
+f.contributors = 'Addison Phillips, Richard Ishida'; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'cultural';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-number-format-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>数字、货币和单位格式化</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script> 
+  </div>
+  
+<section id="question">
+<h2>问题</h2>
+  <p class="question">如何使用JavaScript为不同语言/区域动态格式化数字、货币和单位？</p>
+  <p>数字的格式，包括货币和单位等格式，在不同文化、地区和语言之间差异很大，看似无伤大雅的错误也可能导致误解或出错。</p>
+</section>
+
+
+<section id="answer">
+<h2>答案</h2>
+<p>把格式硬编码到页面里很容易出问题，而且难以长期维护。Web平台提供了稳健且基于标准的方案来应对这个复杂的问题。本文将介绍如何利用JavaScript自带的<code>Intl</code>对象，让你的网页能够轻松适配不同国际环境下的数字、货币和单位格式。</p>
+<section id="why-complex">
+<h3>核心问题：为什么格式化这么复杂？</h3>
+<p>在介绍解决方案之前，先看看为什么国际化数字、货币和单位格式化并不简单：</p>
+
+<section id="decimal-separators">
+<h4>小数分隔符</h4>
+<p>许多地区，如美国和英国，使用句点作为小数分隔符（例如<code>1,234.56</code>），而欧洲和南美的大部分地区使用逗号（例如<code>1.234,56</code>）。</p>
+<p>在少数情况下，货币符号甚至可以充当小数分隔符，例如<a href="https://en.wikipedia.org/wiki/Cape_Verdean_escudo" rel="nofollow">佛得角埃斯库多</a>。</p>
+</section>
+
+<section id="digit-grouping">
+<h4>数字分组</h4>
+<p>数字的分组分隔符有所不同，可能是<strong>逗号</strong>、<strong>句点</strong>，也可能是<strong>空格</strong>。</p>
+<p>分组方式也不同。比较常见的是<strong>每3位一组</strong>（例如<code>1,234,567</code>），但有些地区（如印度）在百位以上采用<strong>每2位一组</strong>（例如<code>12,34,567</code>）。某些格式也会使用每4位一组。</p>
+</section>
+
+<section id="numbering-systems">
+<h4>数字系统</h4>
+<p>虽然<a href="https://www.w3.org/TR/i18n-glossary/#dfn-european-digits">欧洲数字</a>（0-9）在全球都很常见，但许多文化更偏好使用本地的数字系统。例如，12,345在阿拉伯语中可能写作<code>١٢٬٣٤٥</code>，在泰语中可能写作<code>๑๒,๓๔๕</code>。</p>
+</section>
+
+<section id="currency-symbol-display">
+<h4>货币符号的显示方式</h4>
+<p><strong>符号、代码还是名称：</strong>货币可以用多种方式显示：</p>
+<ul>
+<li><strong>简短的符号：</strong>例如 &quot;€&quot;、&quot;£&quot;、&quot;¥&quot;、&quot;$&quot;</li>
+<li><strong>中等长度/消歧义符号：</strong>用多个字符明确具体币种的符号（例如<code>CA$</code>、<code>US$</code>、<code>MX$</code>）</li>
+<li><strong>依上下文变化的符号：</strong>同一种货币在不同语境中使用不同符号（例如日元可显示为<code>¥</code>或<code>円</code>）</li>
+<li><strong>ISO 4217代码：</strong>三个字母的标准化代码（例如<code>EUR</code>、<code>GBP</code>、<code>JPY</code>）</li>
+<li><strong>全名：</strong>完整的货币名称（例如<code>美元</code>、<code>日元</code>）</li>
+</ul>
+<p><strong>位置和间距：</strong>符号可以出现在数字前面（例如<code>$100.00</code>），也可以出现在后面（例如<code>1,000 ₫</code>）。我们从这两个例子也可以看出，有些货币符号与数字之间不留空格，而有些则会留空格。</p>
+<p><strong>歧义：</strong>同一个符号可能代表多种货币（例如<code>$</code>可以表示美元、加元、墨西哥比索等）。</p>
+</section>
+</section>
+
+<section id="intl">
+<h3><code>Intl.NumberFormat</code>对象</h3>
+<p>JavaScript中的<code>Intl.NumberFormat</code>对象会自动处理特定语言/区域的小数分隔符、数字分组分隔符、货币符号以及其他数字书写习惯。</p>
+
+<section id="intl-h4">
+<h4>使用<code>Intl.NumberFormat</code>格式化普通数字</h4>
+<p><code>Intl.NumberFormat</code>允许你按照指定的语言区域来格式化数字。</p>
+<figure class="example">
+<pre><code class="language-javascript">const number = 1234567.89;
+
+// 面向美国英语用户
+const usFormatter = new Intl.NumberFormat('en-US');
+console.log(`英语（美国）: ${usFormatter.format(number)}`); // 输出：英语（美国）: 1,234,567.89
+
+// 面向德语用户
+const deFormatter = new Intl.NumberFormat('de-DE');
+console.log(`德语: ${deFormatter.format(number)}`); // 输出：德语: 1.234.567,89
+
+// 面向印度英语用户（注意分组方式）
+const enINFormatter = new Intl.NumberFormat('en-IN');
+console.log(`英语（印度）: ${enINFormatter.format(number)}`); // 输出：英语（印度）: 12,34,567.89
+</code></pre>
+</figure>
+
+<p><code>new Intl.NumberFormat(locales, options)</code>中的<code>options</code>对象是关键所在。</p>
+<p><code>minimumFractionDigits</code>和<code>maximumFractionDigits</code>用于控制小数位数。<code>useGrouping</code>是一个布尔值，用来开启或关闭数字分组。</p>
+<figure class="example"><pre><code class="language-javascript">const pi = 3.14159265;
+
+// 强制指定精度
+const preciseFormatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 5,
+    maximumFractionDigits: 5,
+});
+console.log(`${preciseFormatter.format(pi)}`); // 输出：3.14159
+
+// 不分组
+const noGroupingFormatter = new Intl.NumberFormat('en-US', {
+    useGrouping: false,
+});
+console.log(`不分组: ${noGroupingFormatter.format(1234567)}`); // 输出：不分组: 1234567
+</code></pre></figure>
+<h4 id="intl-numberformat-for-currencies">用于货币的<code>Intl.NumberFormat</code></h4>
+<p>你可以指定<code>style: 'currency'</code>，并提供<code>currency</code>代码（使用ISO 4217标准）。</p>
+<figure class="example"><pre><code class="language-javascript">const price = 500.75;
+
+// 美元
+const usdFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
+console.log(`美元: ${usdFormatter.format(price)}`);        // 输出：美元: $500.75
+
+// 德国使用的欧元
+const eurDeFormatter = new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+});
+console.log(`欧元（德国）: ${eurDeFormatter.format(price)}`); // 输出：欧元（德国）: 500,75 €
+
+// 日元（默认不显示小数位）：
+const jpyFormatter = new Intl.NumberFormat('ja-JP', {
+    style: 'currency',
+    currency: 'JPY',
+});
+console.log(`日元: ${jpyFormatter.format(price)}`); // 输出：日元: ￥501（会自动四舍五入且不显示小数）
+
+// 越南盾（默认不显示小数位）：
+const vndFormatter = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+});
+console.log(`越南盾: ${vndFormatter.format(12000)}`); // 输出：越南盾: 12.000 ₫
+</code></pre></figure>
+<p><code>Intl.NumberFormat</code>会自动为给定货币处理正确的小数位数。如有需要，你也可以用<code>minimumFractionDigits</code>和<code>maximumFractionDigits</code>来覆盖默认值。</p>
+
+<section id="formatting-units">
+<h4>使用<code>Intl.NumberFormat</code>格式化单位</h4>
+<p><code>Intl.NumberFormat</code>也可以为带单位的数字设置格式：</p>
+<figure class="example"><pre><code class="language-javascript">const distance = 1000;
+const storage = 5;
+
+// 米
+const meterFormatter = new Intl.NumberFormat('en-US', {
+    style: 'unit',
+    unit: 'meter', // 标准单位标识符
+    unitDisplay: 'long', // 'long'、'short' 或 'narrow'
+});
+console.log(`美式英语中的米（长格式）: ${meterFormatter.format(distance)}`); // 输出：美式英语中的米（长格式）: 1,000 meters
+
+const meterShortFormatter = new Intl.NumberFormat('en-US', {
+    style: 'unit',
+    unit: 'meter',
+    unitDisplay: 'short',
+});
+console.log(`美式英语中的米（短格式）: ${meterShortFormatter.format(distance)}`); // 输出：美式英语中的米（短格式）: 1,000 m
+
+// 法语区域设置中的千字节：
+const kbFrFormatter = new Intl.NumberFormat('fr-FR', {
+    style: 'unit',
+    unit: 'kilobyte',
+    unitDisplay: 'long',
+});
+console.log(`法语中的千字节: ${kbFrFormatter.format(storage)}`); // 输出：法语中的千字节: 5 kilooctets
+</code></pre></figure>
+<p>标准单位标识符列表（例如<code>meter</code>、<code>kilogram</code>、<code>liter</code>、<code>kilobyte</code>、<code>percent</code>、<code>hour</code>）可参见<a href="https://tc39.es/ecma402/#sec-issanctionedsimpleunitidentifier">ECMAScript国际化API规范</a>。</p>
+</section>
+</section>
+
+<section>
+<h3 id="choosing-the-right-locale">选择合适的语言区域</h3>
+<p>通常，你会希望根据网页的语言来格式化数字、货币和单位。这可以通过HTML元素上的<code>lang</code>属性来确定（<a href="https://www.w3.org/International/questions/qa-html-language-declarations">你需要设置这个属性</a>）：</p>
+
+<figure class="example"><pre><code class="language-javascript">// 从HTML lang属性获取页面语言
+const pageLocale = document.documentElement.lang || 'en-US'; // 回退为'en-US'
+const formatter = new Intl.NumberFormat(pageLocale, { style: 'currency', currency: 'USD' });
+console.log(`${formatter.format(627.92)}`);
+</code></pre></figure>
+
+<p>有时，你可能希望用某个特定语言区域覆盖页面默认语言，例如在制作国际化教程或展示多语言内容时：</p>
+
+<figure class="example"><pre><code class="language-javascript">// 不管页面语言是什么，都强制使用特定语言区域
+const tutorialFormatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+console.log(`德语示例: ${tutorialFormatter.format(199.99)}`); // 输出：199,99 €
+</code></pre></figure>
+</section>
+</section>
+</section>
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+    <li><a href="https://tc39.es/ecma402/" rel="nofollow">ECMAScript国际化API规范</a></li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
