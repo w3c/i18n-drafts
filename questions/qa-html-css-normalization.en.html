@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Normalization in HTML and CSS</title>
-<meta name="description" content="What are normalization forms, and why do I need to know about them when creating HTML and CSS content?" />
+<title>Normalization in HTML, CSS, and JavaScript</title>
+<meta name="description" content="What are normalization forms, and why do I need to know about them when creating HTML, CSS, and JavaScript content?" />
 <script>
 var f = { }
 
@@ -15,13 +15,13 @@ f.previousauthors = '' // as above
 f.modifiers = '' // people making substantive changes, and their affiliation
 f.searchString = 'qa-html-css-normalization' // blog search string - usually the filename without extensions
 f.firstPubDate = '2010-08-10' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2010-08-10', time:'14:48'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-03-18', time:'12:02'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-02-05', time:'20:08'} // date and time of latest edits to this document/translation
-f.contributors = 'Atsushi Shimono, Kuen-Bang Hou (Favonia), Addison Phillips' // people providing useful contributions or feedback during review or at other times
+f.thisVersion = { date:'2026-03-18', time:'13:24' } // date and time of latest edits to this document/translation
+f.contributors = 'Atsushi Shimono, Kuen-Bang Hou (Favonia), Addison Phillips, Fuqiao Xue' // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
@@ -49,14 +49,14 @@ f.additionalLinks = ''
 <header>
   <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
   
-  <h1>Normalization in HTML and CSS</h1>
+  <h1>Normalization in HTML, CSS, and JavaScript</h1>
 </header>
 
 
 <section id="sidebarExtras">
   <section id="quicktest">
     <h2 class="notoc">Quick check</h2>
-    <form action="http://validator.w3.org/i18n-checker/index" method="get" class="quickcheck">
+    <form action="https://validator.w3.org/i18n-checker/index" method="get" class="quickcheck">
       <p>Check for normalization mismatches in id and class names</p>
       <p>
         <input type="text" value="URI of page to check" name="docAddr" onfocus="this.value=''" />
@@ -79,10 +79,10 @@ f.additionalLinks = ''
     
 
 
-<p>Unicode normalization is something you need to be aware of if you are authoring HTML pages with CSS style sheets in UTF-8 (or any other Unicode encoding), particularly if you are dealing with text in a  script that uses accents or other diacritics.</p>
+<p>Unicode normalization is something you need to be aware of whenever you author HTML, CSS, or JavaScript in UTF-8 (or any other Unicode encoding). It can affect not only human-readable text, but also identifiers and strings used for matching, such as class names, ids, CSS selectors, and script values.</p>
 
 <p>This page addresses the question:<br>
-<span class="question">What is Unicode Normalization, and why do I need to know about it when creating HTML and CSS content?</span></p>
+<span class="question">What is Unicode Normalization, and why do I need to know about it when creating HTML, CSS, and JavaScript content?</span></p>
 
 
 
@@ -119,11 +119,11 @@ f.additionalLinks = ''
 <section id="choosing">
 <h3>Choosing a normalization form</h3>
 
-<p>Natural language content aimed at human consumption does not need to all be in one normalized form – there may sometimes be good reasons to mix normalized forms. Applications that try to match one piece of text with another should, however, compare normalized versions of both.</p>
+<p>Natural language content aimed at human consumption does not need to all be in one normalized form – there may sometimes be good reasons to mix normalized forms. Applications that try to match one piece of text with another should, however, compare normalized versions of both. For web authoring, it is particularly important to apply one consistent policy to syntactic strings such as class names, ids, CSS selectors, and JavaScript strings used for lookup or comparison.</p>
 
-<p style="">Unfortunately, normalization doesn't always take place before content is compared, and a particularly important case is when CSS selectors are compared with HTML class names or ids, as style is applied to a page. If the word <span class="qterm">világ</span> (meaning 'word' in Hungarian) is used in precomposed form in the HTML (eg. <code>&lt;span class=&quot;világ&quot;&gt;</code>), but in decomposed form in the CSS (eg. <code>.vila&#x0301;g { font-style: italic; }</code>), then the selector won't match the class name.</p>
+<p>Unfortunately, normalization doesn't always take place before content is compared, and a particularly important case is when CSS selectors are compared with HTML class names or ids, as style is applied to a page. If the word <span class="qterm">világ</span> (meaning 'world' in Hungarian) is used in precomposed form in the HTML (eg. <code>&lt;span class=&quot;világ&quot;&gt;</code>), but in decomposed form in the CSS (eg. <code>.vila&#x0301;g { font-style: italic; }</code>), then the selector won't match the class name.</p>
 
-<p style="">The following example shows this. The CSS selector is decomposed, whereas one class name in the HTML is decomposed and the other precomposed. As you should be able to see, only the decomposed class name is matched to the style. But notice also that it is not possible to distinguish the two forms in the source text.</p>
+<p>The following example shows this. The CSS selector is decomposed, whereas one class name in the HTML is decomposed and the other precomposed. As you should be able to see, only the decomposed class name is matched to the style. But notice also that it is not possible to distinguish the two forms in the source text.</p>
 
 <figure id="fig_nonmatching" class="example" lang="hu">
 <pre>CSS: <code class="language-css">.vila&#x0301;g { font-style: italic; }</code></pre>
@@ -139,10 +139,29 @@ f.additionalLinks = ''
 </div>
 </div>
 
-<p style="">This means that when creating content you should ensure that selectors and class or id names are character-for-character the same. This is particularly likely to be a  issue if the markup and the CSS are being authored or maintained by different people.</p>
+<p>This means that when creating content you should ensure that selectors and class or id names are character-for-character the same. This is particularly likely to be an issue if the markup and the CSS are being authored or maintained by different people.</p>
 
-<p style="">The best way to ensure that these match is to use one particular Unicode normalization form for all syntactic constructs, and as the default for all authored content. It doesn't really matter whether you use the NFC or NFD normalization form, it's more important that you are consistent. NFC is, however, a good recommendation because this is what many (but not all) keyboards tend to produce. (Most keyboards for European languages output text in NFC already, but this is less likely to be the case if dealing with many non-European languages.)</p>
-<p style="">We don't recommend using any of the K forms in this way.</p>
+<p>The best way to ensure that these match is to use one particular Unicode normalization form for all syntactic constructs, and as the default for all authored content. It doesn't really matter whether you use the NFC or NFD normalization form, it's more important that you are consistent. NFC is, however, a good recommendation because this is what many (but not all) keyboards tend to produce. (Most keyboards for European languages output text in NFC already, but this is less likely to be the case if dealing with many non-European languages.)</p>
+<p>We don't recommend using any of the K forms in this way.</p>
+</section>
+
+
+
+
+<section id="domjs">
+<h3>Matching names in the DOM and in JavaScript</h3>
+
+<p>The same issue appears outside CSS. JavaScript string equality and DOM lookups built from externally sourced text can all fail if you mix normalized forms. This matters for code that uses <code translate="no">getElementById()</code>, <code translate="no">querySelector()</code>, or compares values such as <code translate="no">className</code> directly.</p>
+
+<figure class="example" lang="hu">
+<pre><code class="language-javascript">const composed = 'világ'
+const decomposed = 'vila\u0301g'
+
+console.log(composed === decomposed) // false
+console.log(composed.normalize('NFC') === decomposed.normalize('NFC')) // true</code></pre>
+</figure>
+
+<p>If your script reads an id, class name, or selector fragment from user input, a data file, or another system, normalize it before comparing it with values in the document. The built-in JavaScript function <code translate="no">String.prototype.normalize()</code> can help. If you are generating selectors in script, remember that the string you create still has to be character-for-character compatible with the strings in the HTML and CSS.</p>
 </section>
 
 
@@ -151,11 +170,11 @@ f.additionalLinks = ''
 <section id="converting">
 <h3>Converting the normalization form of a page</h3>
 
-<p style="">You should also try to avoid automatically converting content from one normalization form to another, as it may obliterate some important code point distinctions, such as in the carefully crafted examples of <span lang="hu" class="qterm">világ</span> above, or in filenames or URLs, or text included in the page from elsewhere, etc.</p>
+<p>You should also try to avoid automatically converting content from one normalization form to another, as it may obliterate some important code point distinctions, such as in the carefully crafted examples of <span lang="hu" class="qterm">világ</span> above, or in filenames or URLs, or text included in the page from elsewhere, etc.</p>
 
-<p style="">It may also introduce a security risk, especially in code syntax. For example, the following code points are canonically equivalent: <span class="codepoint" translate="no"><bdi lang="en">&#x003E;&#x0338;</bdi> [<span class="uname">U+003E GREATER-THAN SIGN</span> + <span class="uname">U+0338 COMBINING LONG SOLIDUS OVERLAY</span>]</span> and <span class="codepoint" translate="no"><bdi lang="en">&#x226F;</bdi> [<span class="uname">U+226F NOT GREATER-THAN</span>]</span>. Therefore source code in XML such as <code>&lt;character&gt;&#x0338;&lt;/character&gt;</code> can be corrupted by normalising to NFC.</p>
+<p>It may also introduce a security risk, especially in code syntax. For example, the following code points are canonically equivalent: <span class="codepoint" translate="no"><bdi lang="en">&#x003E;&#x0338;</bdi> [<span class="uname">U+003E GREATER-THAN SIGN</span> + <span class="uname">U+0338 COMBINING LONG SOLIDUS OVERLAY</span>]</span> and <span class="codepoint" translate="no"><bdi lang="en">&#x226F;</bdi> [<span class="uname">U+226F NOT GREATER-THAN</span>]</span>. Therefore source code in XML such as <code>&lt;character&gt;&#x0338;&lt;/character&gt;</code> can be corrupted by normalising to NFC.</p>
 
-<p style="">Sometimes people choose to use compatibility characters in their content, most likely without realising what they are. Examples might include <span class="codepoint" translate="no"><bdi lang="en">&#x00BC;</bdi> [<span class="uname">U+00BC VULGAR FRACTION ONE QUARTER</span>]</span>, <span class="codepoint" translate="no"><bdi lang="en">&#x00B2;</bdi> [<span class="uname">U+00B2 SUPERSCRIPT TWO</span>]</span> (eg. for m²), and <span class="codepoint" translate="no"><bdi lang="en">&#x2116;</bdi> [<span class="uname">U+2116 NUMERO SIGN</span>]</span>. Blind normalization of that content would change those characters to the ASCII code points 1⁄4, 2, and No, respectively. In some cases this may affect the look of the text; in others it may affect the readability.</p>
+<p>Sometimes people choose to use compatibility characters in their content, most likely without realising what they are. Examples might include <span class="codepoint" translate="no"><bdi lang="en">&#x00BC;</bdi> [<span class="uname">U+00BC VULGAR FRACTION ONE QUARTER</span>]</span>, <span class="codepoint" translate="no"><bdi lang="en">&#x00B2;</bdi> [<span class="uname">U+00B2 SUPERSCRIPT TWO</span>]</span> (eg. for m²), and <span class="codepoint" translate="no"><bdi lang="en">&#x2116;</bdi> [<span class="uname">U+2116 NUMERO SIGN</span>]</span>. Blind normalization of that content would change those characters to the ASCII code points 1⁄4, 2, and No, respectively. In some cases this may affect the look of the text; in others it may affect the readability.</p>
 </section>
 
 
@@ -167,11 +186,11 @@ f.additionalLinks = ''
 <section id="editors">
 <h3>Normalization settings in your editor</h3>
 
-<p style="">In some cases your editor may allow you to save data in a choice of normalization forms. The picture below shows  an option for setting a particular normalization form as the default when opening new files in Dreamweaver (NFC is selected). You are shown a similar choice when saving a document.</p>
+<p>In some cases your editor may allow you to save data in a choice of normalization forms. The picture below shows  an option for setting a particular normalization form as the default when opening new files in Dreamweaver (NFC is selected). You are shown a similar choice when saving a document.</p>
 
-<p style=""><img src="qa-html-css-normalization-data/dwprefs-nfc.png" alt="Unicode normalization form preferences on a dialog panel, showing NFC selected." /></p>
+<p><img src="qa-html-css-normalization-data/dwprefs-nfc.png" alt="Unicode normalization form preferences on a dialog panel, showing NFC selected." /></p>
 
-<p style="">If you have set up your editing environment like this, you may find yourself in a situation where you want to deviate from the default normalisation form, for instance to create the examples above. However, as soon as you save the file, it will obliterate those carefully implemented variant forms. A way around this is to use character escapes. If you write the word <span lang="hu" class="qterm">világ</span> in your source code as <code translate="no">vila&amp;#x0301;g</code> it will not be normalized during the save.</p>
+<p>If you have set up your editing environment like this, you may find yourself in a situation where you want to deviate from the default normalisation form, for instance to create the examples above. However, as soon as you save the file, it will obliterate those carefully implemented variant forms. A way around this is to use character escapes. If you write the word <span lang="hu" class="qterm">világ</span> in your source code as <code translate="no">vila&amp;#x0301;g</code> it will not be normalized during the save.</p>
 </section>
 
 
@@ -181,7 +200,7 @@ f.additionalLinks = ''
 <section id="checking">
 <h3>How can I check pages for problems?</h3>
 
-<p style="">You can find out whether an HTML page contains  class names and id values that are not normalized according to NFC by using the <a class="print" href="http://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a>. (Look for the row <samp>Markup / Non-NFC class or id names</samp>.)</p>
+<p>You can find out whether an HTML page contains  class names and id values that are not normalized according to NFC by using the <a class="print" href="https://validator.w3.org/i18n-checker/">W3C Internationalization Checker</a>. (Look for the row <samp>Markup / Non-NFC class or id names</samp>.)</p>
 </section>
 </section>
 
