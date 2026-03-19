@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8" />
 <title>Date formats</title>
-<meta name="description" content="How do I prepare my web pages to display varying international date formats?" />
+<meta name="description" content="How should I store and display dates and times on web pages for international users?" />
 <script>
 var f = { }
 
 // AUTHORS should fill in these assignments:
 f.directory = 'questions'+'/'; // the name of the directory this file is in
 f.filename = 'qa-date-format' // the file name WITHOUT extensions
-f.authors = 'Lloyd Honomichl, Lionbridge' // author(s) and affiliations
+f.authors = 'Lloyd Honomichl (Lionbridge)' // author(s) and affiliations
 f.previousauthors = '' // as above
-f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.modifiers = 'Richard Ishida (W3C), Fuqiao Xue (W3C)' // people making substantive changes, and their affiliation
 f.searchString = 'qa-date-format' // blog search string - usually the filename without extensions
 f.firstPubDate = '2003-06-09' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2007-07-04', time:'18:23'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-03-19', time:'03:31'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, or notreviewed
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-01-22', time:'14:00'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-03-19', time:'13:11' } // date and time of latest edits to this document/translation
 f.contributors = '' // people providing useful contributions or feedback during review or at other times
 
 // TRANSLATORS should fill in these assignments:
@@ -41,6 +41,9 @@ f.additionalLinks = ''
 <script src="../javascript/articletoc-2022.js"></script>
 <link rel="stylesheet" href="../style/article-2022.css" />
 <link rel="copyright" href="#copyright"/>
+
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
 </head>
 
 <body>
@@ -58,106 +61,79 @@ f.additionalLinks = ''
 
 <section id="question">
 <h2>Question</h2>
-<p class="question">How do I prepare my web pages to display varying international date formats?</p>
-<p>Visitors to a web site from varying locales may be confused by date formats. The format MM/DD/YY is unique to the United States (but sometimes used in Canada, too, which can obviously create some confusion there). Most of Europe uses DD/MM/YY. Japan uses YY/MM/DD. The separators may be slashes, dashes or periods. Some locales print leading zeroes, others suppress them. If a native Japanese speaker is reading a US English web page from a web site in Germany that contains the date 03/04/02 how do they interpret it?</p>
+<p class="question">How should I prepare web pages to display dates and times for international users?</p>
+<p>The best practice is not just about picking a display format. First you need to know what kind of value you have: an exact moment in time, a calendar date, a local wall-clock time, a recurring anniversary, or a duration. Once that is clear, you can store the value correctly and format it for the right audience.</p>
 </section>
 
 <section id="answer">
 <h2>Answer</h2>
-  <p>Your first impulse may be to assume this problem will be taken care of during localization of the web pages - i.e. let the translator fix
-    it. Resist this impulse. Do you really want to keep separate copies of documents for the U.S. and the U.K. that differ only in date format? In any
-    case you still have to deal with multilingual users like the one in our example above.</p>
-  <p>You have three options to consider, all with advantages and drawbacks:</p>
-  <ol>
-    <li>Use a locale neutral format</li>
-    <li>Make the month and year obvious</li>
-    <li>Use the Accept-Language HTTP header</li>
-  </ol>
+  <p>Separate machine-readable data from human-readable presentation. Do not make one string do both jobs. Keep dates and times in an unambiguous form for storage and interchange, then format them at the last moment according to the language of the page or the user's chosen locale.</p>
 
 	<section id="opt1">
-<h3>Option One: Use a locale neutral format</h3>
-    <p>ISO 8601 specifies a format of YYYY-MM-DD. 2003-04-02 is clearer than 03/04/02. (Some prefer to modify ISO 8601 by using an
-      abbreviation for the month to make it more clear, for example 2003-Apr-02, but then it is no longer locale neutral.). </p>
-    <p><strong>Pros:</strong></p>
+<h3>Recommendation One: Store machine-readable values</h3>
+    <p>Keep source data in a format that is unambiguous. If you store <code>03/04/2026</code> in a database or data file, nobody can know later whether that means 3 April or March 4.</p>
+    <p>The stored value should match the kind of temporal data you actually have.</p>
     <ul>
-      <li>This method is unambiguous.</li>
-      <li>ISO 8601 is computer friendly. Doing a standard character sort on a list of dates gives you a chronologically ordered list.</li>
+      <li>An exact moment: use an ISO 8601 / RFC 3339 date-time with an offset or <code>Z</code>, for example <code>2026-03-19T14:30:00Z</code>.</li>
+      <li>A calendar date with no time zone, such as a birthday, holiday, due date, or publication date: store only the date, for example <code>2026-03-19</code>.</li>
+      <li>A wall-clock time such as <q>doors open at 19:30</q>: keep it as a local time value rather than silently turning it into a timestamp.</li>
+      <li>A recurring value such as an anniversary: do not coerce it into a one-off timestamp.</li>
     </ul>
-    <p><strong>Cons:</strong></p>
-    <ul>
-      <li>ISO 8601 is people unfriendly. People are comfortable with their "natural" date formats.</li>
-      <li>It takes more space. For a date in a paragraph of text this is no big deal. If a document is a table with some columns containing
-        dates the extra space might become an issue, especially if you've designed a layout that is already pressed for space.</li>
-      <li>This may be particularly user unfriendly in countries where an alternative calendar is used (eg. Thailand favours the Buddhist
-        calendar).</li>
-    </ul>
+    <p>In HTML, use the <code class="kw" translate="no">time</code> element to carry the machine-readable value.</p>
+    <figure class="example"><pre><code class="language-html">&lt;time datetime="2026-03-19"&gt;19 March 2026&lt;/time&gt;
+&lt;time datetime="2026-03-19T14:30:00Z"&gt;19 March 2026, 14:30 UTC&lt;/time&gt;</code></pre></figure>
+    <p>Do not invent a time zone for a date-only value. A publication date or birthday is often a <a href="https://www.w3.org/TR/timezone/#floating-times">floating date</a>, not midnight UTC.</p>
+    <p>Avoid parsing a date-only string with <code>Date</code> in JavaScript when you mean a calendar date. <code>new Date('2026-03-19')</code> creates a timestamp, which can later display as the previous or next day in another time zone.</p>
   </section>
 
 	<section id="opt2">
-<h3>Option Two: Make the month and year obvious</h3>
-    <p>To do this use a name for the month (abbreviated or not) and use 4 digits for all Gregorian year numbers. For example, 2 April
-      2003.</p>
-    <p><strong>Pros:</strong></p>
-    <ul>
-      <li>This method is completely unambiguous.</li>
-      <li>It is people friendly. People are comfortable with their "natural" date formats.</li>
-    </ul>
-    <p><strong>Cons:</strong></p>
-    <ul>
-      <li>It is less computer friendly when it comes to sorting, etc.</li>
-      <li>It takes more space. In some locales even the abbreviation for a month name may be longer than three characters. (In French the
-        first three letters of <em>June</em> and <em>July</em> are the same, <em><span lang="fr">juin</span></em> and <em><span lang="fr">juillet</span></em>). Allowing extra space for this exacerbates the space problem.</li>
-    </ul>
+<h3>Recommendation Two: Format for people, in context</h3>
+    <p>What you display should fit the language and locale of the page or application. For static prose, the clearest answer is often to write the month name and a 4-digit year, such as <q>19 March 2026</q>.</p>
+    <p>In modern JavaScript, use <code>Intl.DateTimeFormat</code> or a Temporal object's <code>toLocaleString()</code> method.</p>
+    <figure class="example"><pre><code class="language-javascript">const locale = document.documentElement.lang || navigator.language;
+
+Temporal.PlainDate.from('2026-03-19')
+  .toLocaleString(locale, { dateStyle: 'long' });
+
+Temporal.Instant.from('2026-03-19T14:30:00Z')
+  .toZonedDateTimeISO('Europe/Paris')
+  .toLocaleString(locale, { dateStyle: 'full', timeStyle: 'short' });</code></pre></figure>
+    <p>When an exact time matters, include the time zone or offset. When only the date matters, do not invent a time. If your audience may expect a non-Gregorian calendar or different digits, let the formatter provide that presentation instead of hard-coding Latin digits and Gregorian month names.</p>
   </section>
 
 	<section id="opt3">
-<h3>Option Three: Use the Accept-Language HTTP header</h3>
-    <p>The HTTP Accept-Language header only specifies the user's language preferences, but is commonly used to determine locale preferences
-      as well.</p>
-    <p>This method works well for dynamically generated web documents when inserting a date from some back-end storage into a page, as long
-      as the user's expectations of date format are clear. Appropriateness is a function of the linguistic context rather than simply the user's browser
-      settings. <span id="japanese-eg">For example</span>:</p>
+<h3>Recommendation Three: Use the Accept-Language HTTP header only as a hint</h3>
+    <p>The HTTP <code>Accept-Language</code> header and browser locale settings can help you choose an initial formatting locale, but they do not tell you everything you need to know. They do not reliably tell you the user's region, time zone, preferred calendar, or whether the page should follow the language of the content rather than the device.</p>
+    <p>For example, showing Japanese-style dates inside an English article usually looks wrong, even if the reader's browser prefers Japanese. In many cases the linguistic context of the page matters more than the browser default. See <a href="/International/questions/qa-accept-lang-locales">Accept-Language used for locale setting</a> for more detail.</p>
+    <p>If your application personalizes dates and times, let the user override the initial choice and remember that preference.</p>
+  </section>
+
+	<section id="temporal">
+<h3>Modern JavaScript: use Temporal</h3>
+    <p>The legacy JavaScript <code>Date</code> object mixes several concepts together and is easy to misuse. Temporal separates them, which makes date, time zone, and calendar handling much safer.</p>
     <ul>
-      <li>Inserting a date from a database into a <em>Japanese</em> page with a Japanese format would be very helpful for the user.</li>
-      <li>A Japanese person reading the generated date 03/04/02 in an <em>English</em> document might mistakenly assume that this used an
-        English ordering.</li>
-      <li>Displaying a generated date in a Japanese date format such as <span lang="ja">２００３年４月２日</span> in an English page
-        would probably look out of place.</li>
+      <li><code>Temporal.Instant</code> for an exact moment in time.</li>
+      <li><code>Temporal.ZonedDateTime</code> for an exact moment shown in a specific time zone and calendar.</li>
+      <li><code>Temporal.PlainDate</code> for a date without a time or time zone.</li>
+      <li><code>Temporal.PlainTime</code> for a wall-clock time without a date.</li>
+      <li><code>Temporal.PlainMonthDay</code> for recurring month/day values such as birthdays.</li>
+      <li><code>Temporal.Duration</code> for elapsed time.</li>
     </ul>
-    <p>How this is done will vary depending on your development environment. Here are some pointers for some common environments.</p>
-    <div class="example">
-      <h4>Java/JSP</h4>
-      <p>Call the <code>getLocale</code> method of the <code>ServletRequest</code> or <code>HttpServletRequest</code> object. Use the
-        returned <code>Locale</code> object to call <code>DateFormat</code>. Note that the SHORT format uses only numbers. If you want unambiguous formats
-        use FULL. In some locales even LONG is all numeric. <!--(<a href="http://www.honomichl.com/java.html">Sample code</a>)--></p>
-      <p>See also <a class="print" href="http://icu-project.org/">ICU4J</a> since it contains   more up-to-date data (and more functionality) than the JDK routines.</p>
-    </div>
-    <div class="example">
-      <h4>ASP</h4>
-      <p>Use <code>Request.ServerVariables('HTTP_ACCEPT_LANGUAGE')</code> to get the user's preferences. Parse the first locale from the list
-        of accepted locales. You'll have to do your own mapping from the alphabetic locale code to a numeric Locale Identifier. Set <code>Session.LCID</code> to the resulting value. Call <code>FormatDateTime</code> to format the date.</p>
-      <p>Use vbLongDate to avoid ambiguity.</p>
-    </div>
-    <div class="example">
-      <h4>Perl</h4>
-      <p>Use <code>$ENV{'HTTP_ACCEPT_LANGUAGE'}</code> to get the preferred language. Use <code>POSIX:strftime</code> to format date values.
-        You'll have to do your own mapping of the accepted languages value to a date format string.</p>
-    </div>
+    <p>As of March 2026, Temporal has reached Stage 4 in the TC39 process and is shipping in Chrome 144+ and Firefox 139+, with Safari expected to follow. For unsupported browsers and Node.js runtimes, use a polyfill such as <code>@js-temporal/polyfill</code>.</p>
   </section>
   
 	<section id="summary">
 <h3>Summary</h3>
-    <p>No ideal solution exists for this problem. Weigh the options and choose according to your preferences and your situation.</p>
-    <p>If there is likely to be any ambiguity on the part of the user, it is usually best to use explicit month names and 4-digit years for
-      Gregorian dates, or at least indicate on the page how to read the dates.</p>
-    <p>Dates can be reformatted using dynamic techniques to match the linguistic context of the page.</p>
+    <p>Store dates and times in an unambiguous machine-readable form, and format them separately for display.</p>
+    <p>Prefer locale-sensitive formatting, and avoid ambiguous all-numeric dates when readers may misinterpret them.</p>
+    <p>For JavaScript, use <code>Intl</code> for formatting and Temporal for new date/time logic. Treat <code>Accept-Language</code> as a starting hint, not as the whole answer.</p>
   </section>
 </section>
 
 
 <section id="bytheway">
 <h2>By the way</h2>
-  <p>Some have advocated the creation of a <code class="kw" translate="no">date</code> tag that would display dates according the locale of the user agent. This is subject to the same practical issues as described for dynamic date generation with the <a href="#japanese-eg">Japanese example</a>. The appropriate format is generally a function of the linguistic context of a page, rather than the user's platform.</p>
+  <p>HTML already provides a <code class="kw" translate="no">time</code> element for machine-readable dates and times. That helps scripts, search engines, and assistive technology, but it does not automatically choose the right human-facing format. You still need to decide whether the page should follow the document language, the user's chosen locale, or an application-specific convention.</p>
 </section>
 
 
@@ -167,21 +143,19 @@ f.additionalLinks = ''
 
   <ul id="full-links">
     <li>
-      <p><a href="http://java.sun.com/j2ee/sdk_1.3/techdocs/api/javax/servlet/ServletRequest.html">ServletRequest API description, including
-        getLocale method</a></p>
+      <p><a class="print" href="https://www.w3.org/TR/timezone/">Working with Time and Timezones</a></p>
     </li>
     <li>
-      <p><a href="http://java.sun.com/j2se/1.4.2/docs/api/java/text/DateFormat.html">Use of the Java DateFormat class</a></p>
+      <p><a class="print" href="/International/articles/intl/">Guide to the ECMAScript Internationalization API</a></p>
     </li>
     <li>
-      <p><a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/script56/html/vsfctformatdatetime.asp">About VBScript
-        FormatDateTime function</a></p>
+      <p><a class="print" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat"><code>Intl.DateTimeFormat</code> on MDN</a></p>
     </li>
     <li>
-      <p><a href="http://www.microsoft.com/globaldev/getWR/steps/wrg_date.mspx#web">Date formatting in the .NET Framework</a></p>
+      <p><a class="print" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal">Temporal on MDN</a></p>
     </li>
     <li>
-      <p><a href="http://www.honomichl.com/java.html">Java/JSP sample code</a></p>
+      <p><a class="print" href="https://github.com/js-temporal/temporal-polyfill"><code>@js-temporal/polyfill</code></a></p>
     </li>
   </ul>
 </section>
