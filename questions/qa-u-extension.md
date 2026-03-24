@@ -6,7 +6,7 @@ How do I use the `u` extension in language tags?
 
 If you work with locales, formatting, sorting, calendars, or user preferences, the BCP 47 `u` extension is a very useful part in a language tag. It lets you start with a normal language tag such as `en-US` or `de-DE` and then add Unicode locale preferences in a standard, interoperable way.
 
-The `u` extension is registered with IANA under the singleton `u`, and the Unicode Consortium is its maintaining authority. The actual valid keys and values come from Unicode CLDR data.
+The `u` extension is registered with IANA under the singleton `u`, and the Unicode Consortium is its maintaining authority. The actual valid keys and values come from Unicode [CLDR](https://cldr.unicode.org/) data.
 
 The `u` extension answers questions like these:
 
