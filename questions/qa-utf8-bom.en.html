@@ -12,15 +12,15 @@ f.directory = 'questions'+'/' // the path to this file, not including /Internati
 f.filename = 'qa-utf8-bom' // the file name WITHOUT extensions
 f.authors = 'Deborah Cawkwell, BBC World Service' // author(s) and affiliations
 f.previousauthors = '' // as above
-f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
+f.modifiers = 'Richard Ishida, W3C; Fuqiao Xue, W3C' // people making substantive changes, and their affiliation
 f.searchString = 'qa-utf8-bom' // blog search string - usually the filename without extensions
 f.firstPubDate = '2003-11-27' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2007-07-17 18:19', time:'12:09'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2025-07-22 18:19', time:'12:09'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2019-05-23', time:'11:03'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2025-07-22', time:'14:30'} // date and time of latest edits to this document/translation
 f.contributors = '' // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -39,6 +39,7 @@ f.additionalLinks = ''
 <script src="../javascript/doc-structure/article-2022.js"> </script>
 <script src="../javascript/articletoc-2022.js"></script>
 <link rel="stylesheet" href="../style/article-2022.css" />
+<link rel="stylesheet" href="qa-utf8-bom-data/local.css" />
 
 <link rel="copyright" href="#copyright">
 
@@ -71,7 +72,7 @@ f.additionalLinks = ''
 <h2 id="answer">Answer</h2>
 
 <p>If you are dealing with a file encoded in UTF-8, your display problems <em>may</em> be caused by the presence of a UTF-8 signature (BOM) that the
-				user agent doesn't recognize. This used to be a problem for static HTML files, but is no longer  in recent versions of major browsers. However, if you use PHP to generate your HTML, this was still an issue with PHP version 5.3.6.</p>
+				user agent doesn't recognize. This used to be a problem for static HTML files, but is no longer an issue in modern browsers. However, BOMs can still cause problems in server-side environments (PHP, Node.js, Python, etc.) and when files are processed by build tools or included dynamically.</p>
 <p>The BOM is always at the beginning of the file, and so you would normally expect to see the display issues at the top of a page. However,
 			  you may also find blank lines appearing within the page if you include text from a separate file that begins with a UTF-8 signature.</p>
 <p>This article will help you determine whether the UTF-8 is causing the problem. If there is no evidence of a UTF-8 signature at the
@@ -122,11 +123,24 @@ think is causing the problem, type in the URI of the <em>included</em> file.)</p
 
 <p>If you have an editor which shows the characters that make up the UTF-8 signature you may be able to delete them by hand. Chances are,
 however, that the BOM is there in the first place because you didn't see it.</p>
-<p>Check whether your editor allows you to specify whether a UTF-8 signature is added or kept <a href="http://www.w3.org/International/questions/qa-setting-encoding-in-applications">during a save</a>. Such an editor provides a way of removing
+<p>Check whether your editor allows you to specify whether a UTF-8 signature is added or kept during a save. Such an editor provides a way of removing
 					the signature by simply reading the file in then saving it out again. For example, if Dreamweaver detects a BOM the Save As dialogue box will have a
 check mark alongside the text "Include Unicode Signature (BOM)". Just uncheck the box and save.</p>
-<p>One of the benefits of using a script is that you can remove the signature quickly, and from multiple files. In fact the script could
-be run automatically as part of your process.</p>
+<p>You can also use the command-line tool <code>sed</code> to remove BOMs:</p>
+<pre><code>sed -i '1s/^\xEF\xBB\xBF//' filename.html</code></pre>
+
+<p>To remove BOMs from multiple files, use the following shell script:</p>
+<pre><code>#!/bin/bash
+# Remove BOM from all HTML files in current directory
+for file in *.html; do
+    if [ -f "$file" ]; then
+        sed -i '1s/^\xEF\xBB\xBF//' "$file"
+        echo "Processed: $file"
+    fi
+done</code></pre>
+
+<p>One of the benefits of using automated tools is that you can remove the signature quickly from multiple files, and the process can
+be integrated into your build pipeline.</p>
 <p>Note: You should check the process impact of removing the signature. It may be that some part of your content development process
 					relies on the use of the signature to indicate that a file is in UTF-8. Bear in mind also that pages with a high proportion of Latin characters may
 look correct superficially but that occasional characters outside the ASCII range (U+0000 to U+007F) may be incorrectly encoded.</p>
@@ -143,23 +157,19 @@ look correct superficially but that occasional characters outside the ASCII rang
   
   <section>
   <h2 id="bytheway"><a href="#bytheway">By the way</a></h2>
-    <p>You will find that some text editors such as Windows Notepad will automatically add a UTF-8 signature to any file you save as UTF-8.</p>
-<p>A UTF-8 signature at the beginning of a CSS file can sometimes cause the initial rules in the file to fail on certain user agents.</p>
-<p>In some browsers, the presence of a UTF-8 signature will cause the browser to interpret the text as UTF-8 regardless of any character
-  encoding declarations to the contrary.</p>
+    <p>Some text editors, particularly older versions of Windows Notepad, automatically add a UTF-8 signature to files saved as UTF-8. Modern versions of Notepad (Windows 10 version 1903 and later) no longer add BOMs by default.</p>
+<p>A UTF-8 signature at the beginning of a CSS file can cause the initial rules to fail in some user agents, particularly older browsers. This is less of an issue with modern browsers.</p>
+<p>In modern browsers, the presence of a UTF-8 signature will cause the browser to interpret the text as UTF-8 regardless of any character encoding declarations to the contrary.</p>
 </section>
 <h2 id="endlinks" class="notoc"><a href="#endlinks">Further reading</a></h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
 <ul id="full-links">
     <li>
-      <p><a href="http://www.unicode.org/faq/utf_bom.html#BOM">Unicode FAQ about the Byte Order Mark</a></p>
+      <p><a href="https://www.w3.org/International/questions/qa-byte-order-mark">The byte-order mark (BOM) in HTML</a></p>
     </li>
-    <li>
-      <p><a href="http://www.unicode.org/International/questions/qa-setting-encoding-in-applications">Setting encoding in web authoring applications</a></p>
-    </li>
-    <li>
-      <p><a href="https://www.w3.org/International/articles/inline-bidi-markup/uba-basics"><cite>Unicode Bidirectional Algorithm basics</cite></a></p>
+	<li>
+      <p><a href="https://www.unicode.org/faq/utf_bom.html#BOM">Unicode FAQ about the Byte Order Mark</a></p>
     </li>
 <li>
   <p><cite>Authoring web pages</cite></p>
