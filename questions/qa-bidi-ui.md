@@ -1,6 +1,6 @@
 ## Question
 
-**How to design user interfaces that support right-to-left (RTL) scripts?**
+**What are some best practices for developing user interfaces that support right-to-left (RTL) languages and content?**
 
 When building user interface that supports both LTR languages (like English) and RTL languages (like Arabic), it is not enough to simply translate the text. The visual balance and flow of the entire application depend on the text direction.
 
