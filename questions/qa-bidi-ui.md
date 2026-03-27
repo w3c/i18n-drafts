@@ -10,7 +10,7 @@ Let's dive into exactly how these layouts relate to each other, what needs direc
 
 The fundamental rule of bidirectional design is aligning the layout with the user's natural scanning pattern. In LTR, the eye starts at the top left and moves right. In RTL, it starts at the top right and moves left. The overarching structure of the page mirrors depending on the script.
 
-If a layout features a navigation sidebar alongside a main content area, the placement depends on the text direction. The sidebar belongs on the right in RTL and the left in LTR, with the main content expanding in the reading direction.
+If a layout features a navigation sidebar alongside a main content area, the placement depends on the text direction. If the sidebar sits on the start side of the layout, that means the right in RTL and the left in LTR, with the main content expanding in the reading direction.
 
 The starting position of a header also changes: a company logo generally belongs in the "top start" corner, meaning the **top right** for RTL and the **top left** for LTR.
 
