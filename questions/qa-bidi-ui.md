@@ -16,6 +16,19 @@ The starting position of a header also changes: a company logo generally belongs
 
 Modern CSS makes this easy. By using CSS Logical Properties, such as `margin-inline-start` instead of `margin-left`, the browser will automatically handle the bidirectional layout for you based on the `dir` attribute of the document.
 
+The following mock layout shows how the overall layout mirror between LTR and RTL interfaces.
+
+<iframe
+  src="qa-bidi-ui-data/figure.html"
+  title="Mirrored LTR and RTL interface layout"
+  loading="lazy"
+  style="width: 100%; min-height: 34rem; border: 1px solid #ccc; border-radius: 8px;"
+>
+  <a href="qa-bidi-ui-data/figure.html">Open the illustration on its own page.</a>
+</iframe>
+
+See the <a href="qa-bidi-ui-data/figure.html">standalone illustration</a>.
+
 ### Content and forms
 
 Text and structural formatting should adhere to the document's start edges. Paragraphs should be right-aligned in RTL and left-aligned in LTR.
