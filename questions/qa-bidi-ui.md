@@ -2,7 +2,7 @@
 
 **What are some best practices for developing user interfaces that support right-to-left (RTL) languages and content?**
 
-When building user interface that supports both LTR languages (like English) and RTL languages (like Arabic), it is not enough to simply translate the text. The visual balance and flow of the entire application depend on the text direction.
+When building user interfaces that support both LTR languages (like English) and RTL languages (like Arabic), it is not enough to simply translate the text. The visual balance and flow of the entire application depend on the text direction.
 
 Let's dive into exactly how these layouts relate to each other, what needs directional awareness, and what should remain constant.
 
