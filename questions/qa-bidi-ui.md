@@ -37,13 +37,21 @@ For lists, the bullets or numbers must appear on the start side of the text (rig
 
 For forms and inputs, the relative positioning of labels to input fields depends on the text direction. A label sitting next to an input field should be on the **right** side of the field in RTL, and the **left** side in LTR. Checkboxes and radio buttons should be placed at the start of their corresponding text labels (right for RTL, left for LTR).
 
+### Isolation for bidirectional text
+
+User interfaces often combine RTL and LTR strings in the same line, such as an Arabic or Hebrew label followed by an English product name, a menu item containing a English acronym, or a notification that includes a user name. In these cases, you often need [isolation](https://www.w3.org/TR/i18n-glossary/#dfn-bidi-isolation) to prevent bidirectional spillover, where the directionality of one piece of text affects adjacent text or punctuation.
+
+In HTML, use the `bdi` element for inline text whose direction may differ from the surrounding context. In plain text or strings that are assembled outside HTML, use the Unicode isolation controls `LRI`, `RLI`, or `FSI`, and close them with `PDI`. These isolate the embedded text so that surrounding punctuation, separators, and neighboring words behave correctly.
+
+Without isolation, text can be ordered in surprising ways, and punctuation can appear on the wrong side of the inserted text.
+
 ### Controls and icons
 
 Directionality in controls is directly tied to the user's mental model of past/future and previous/next. In LTR cultures, "forward" is right, and "backward" is left. In RTL cultures, this is reversed. 
 
 Forward/Next arrows must point to the left in RTL, and to the right in LTR. Back/Previous arrows point right in RTL, and left in LTR.
 
-For breadcrumbs, the flow of navigation follows the text direction. A breadcrumb trail starts with the home page on the far start edge (right for RTL, left for LTR) and progresses towards the current page on the opposite side.
+For breadcrumbs, the flow of navigation follows the text direction. A breadcrumb trail starts with the home page on the far start edge (right for RTL, left for LTR) and progresses towards the current page on the opposite side. When breadcrumb items may contain text with a different direction from the surrounding UI, isolate each item to prevent spillover. That also helps separators behave correctly: for example, a greater-than sign may need to display as an isolated RTL run such as `⁧>⁩`, rather than being reordered unexpectedly by the surrounding text.
 
 Visually, an LTR trail might display as: 
 
