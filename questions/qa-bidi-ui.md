@@ -55,6 +55,10 @@ while an RTL trail would display as:
 
 Any icon that implies motion or direction should match the text direction. Examples include a person running, a chat bubble tail (if it implies the speaker's position), or an airplane taking off towards the layout's "forward" direction.
 
+The following illustration compares control arrows, breadcrumbs, and directional icons in LTR and RTL interfaces.
+
+![Comparison of LTR and RTL controls and icons.](qa-bidi-ui-data/controls-and-icons.jpg)
+
 ### Time and sequences
 
 Because of the reading flow, the visual progression of time and sequences must match the text direction. A timeline or Gantt chart must start on the right side of the screen in RTL and the left in LTR. As time advances, the bars and progress indicators grow or move toward the left in RTL, and toward the right in LTR.
