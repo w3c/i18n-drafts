@@ -99,9 +99,13 @@ function stickyConneg (filename, cLang, targetLang) {
 		var path = ";path=/"
 		document.cookie = 'w3ci18nlang='+targetLang+expires+path
 		}
-	if (targetLang === 'en') targetLang = '.en.html'
-	else targetLang = '.'+targetLang+'.html'
-	document.location.assign(filename+targetLang)
+	document.location.assign(getTranslationUrl(filename, targetLang))
+	}
+
+function getTranslationUrl (filename, targetLang) {
+	if (f.translationPaths && f.translationPaths[targetLang]) return f.translationPaths[targetLang]
+	if (targetLang === 'en') return filename+'.en.html'
+	return filename+'.'+targetLang+'.html'
 	}
 
 

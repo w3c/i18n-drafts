@@ -40,3 +40,45 @@ jobs:
 
       - name: Validate changed content files
         run: node scripts/validate-changed-files.js --base "${{ steps.range.outputs.base_sha }}" --head "${{ steps.range.outputs.head_sha }}"
+
+      - name: Prepare changed HTML files for HTML5 validation
+        id: html5
+        shell: bash
+        run: |
+          validator_root=.html5validator
+          rm -rf "$validator_root"
+          mkdir -p "$validator_root"
+
+          while IFS= read -r -d '' file; do
+            normalized="${file#./}"
+            top_dir="${normalized%%/*}"
+
+            case "$top_dir" in
+              articles|questions|tutorials|getting-started|quicktips|pages|nav|techniques)
+                if [[ "$normalized" == *.html && -f "$normalized" ]]; then
+                  mkdir -p "$validator_root/$(dirname "$normalized")"
+                  cp "$normalized" "$validator_root/$normalized"
+                fi
+                ;;
+            esac
+          done < <(git diff --name-only --diff-filter=ACMR -z "${{ steps.range.outputs.base_sha }}" "${{ steps.range.outputs.head_sha }}")
+
+          if find "$validator_root" -type f -name '*.html' -print -quit | grep -q .; then
+            echo "has_files=true" >> "$GITHUB_OUTPUT"
+            echo "root=$validator_root" >> "$GITHUB_OUTPUT"
+            echo "Prepared these HTML files for validation:"
+            find "$validator_root" -type f -name '*.html' | sort
+          else
+            echo "has_files=false" >> "$GITHUB_OUTPUT"
+            echo "No changed HTML files to validate with html5validator."
+          fi
+
+      - name: Check changed HTML5 syntax
+        if: steps.html5.outputs.has_files == 'true'
+        uses: Cyb3r-Jak3/html5validator-action@v8.0.0
+        with:
+          root: ${{ steps.html5.outputs.root }}
+
+      - name: Skip HTML5 syntax check
+        if: steps.html5.outputs.has_files != 'true'
+        run: echo "No changed HTML files to validate with html5validator."

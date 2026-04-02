@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" >
+<title>Managing inline spaces in Chinese &amp; Japanese</title>
+<meta name="description" content="How to work with underlining for non-Latin scripts." >
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/styling'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'inline-space'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-inline-space'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-04-02'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-04-02', time:'04:29'}  // date and time of latest substantive changes to this document
+f.status = 'draft';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-04-02', time:'04:29'} // date and time of latest edits to this document/translation
+f.contributors = 'The initial text for this article is taken from the <cite>Text spacing</cite> section of <a href="https://r12a.github.io/scripts/jpan/ja.html#letterspace">Japanese (Kanji, Hiragana, Katakana, & Latin) Orthography Notes</a> and <a href="https://r12a.github.io/scripts/hani/zh.html#letterspace">Han (Chinese) Orthography Notes</a>.'; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'styling';
+
+f.additionalLinks = ''
+</script>
+<script src="underline-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"></script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" >
+<link rel="copyright" href="#copyright">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+<link rel="stylesheet" href="inline-space-data/local.css">
+
+
+
+
+
+
+<script>
+function highlightCode () {
+	var examples = document.querySelectorAll('figure.example')
+	for (var i=0;i<examples.length;i++) {
+		var re = /&lt;([^&]+)&gt;/
+		var content = examples[i].innerHTML
+		out = content.replace(/&lt;([^&]+)&gt;/g,'<span class="el">&lt;$1&gt;</span>')
+		examples[i].innerHTML = out
+		}
+	}
+
+function setUnderline (classname, value) {
+    document.querySelectorAll(classname)
+        .forEach(el => el.style.textUnderlinePosition = value)
+    }
+
+function setFont (classname, value) {
+    document.querySelectorAll(classname)
+        .forEach(el => el.style.fontFamily = value)
+    }
+
+</script>
+</head>
+
+
+
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Managing inline spaces in Chinese &amp; Japanese</h1>
+</header>
+
+
+<section>
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+<p>In principle, Japanese and Chinese texts don't use space characters. However, sometimes it is necessary to increase or decrease gaps between characters to improve readability. This article looks at ways of using CSS to add gaps between certain types of text,  to reduce gaps between punctuation marks, and to manage paragraph-initial spacing. It does not look at the changes in spacing between characters that are introduced during full justification.</p>
+
+<p>Rather than simply reproducing the spec itself here, we provide task-oriented guidance to help content authors  achieve key techniques.</p>
+
+<p><em>Note that some of the technologies described here are still under development, and browser adoption is only partial at best. In what follows we will describe what you should do when the CSS specification is properly implemented by browsers, and also describe what currently works and doesn't work.</em></p>
+
+
+<p>Apart from <code class="kw" translate="no">text-decoration</code>, the CSS properties we will use are:</p>
+
+<figure class="example" lang="en">
+<pre><code class="language-css">letter-spacing: normal | &lt;length-percentage&gt;
+text-autospace:normal |
+        no-autospace |
+        [ ideograph-alpha || ideograph-numeric || punctuation ]
+        || [ insert | replace ]
+        | auto
+text-spacing-trim: auto | 
+        [space-all | normal | space-first | trim-start | trim-both | trim-all]
+text-decoration-skip-inset:none|auto;</code></pre>
+</figure>
+</section>
+
+
+
+
+
+<section id="letter_spacing">
+<h2>Inter-character letter-spacing</h2>
+
+<div class="sidenoteGroup">
+<p>Unlike justification, which fits text within a fixed space, letter-spacing (also known as tracking) adds regular amounts of space between letters, and the resulting length is a by-product of that.</p>
+
+<p>Space should not be added between an alphanumeric string and closing punctuation, commas, etc.</p>
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅ All three major browser engines support the use of <code class="kw" translate="no">letter-spacing</code>.</p>
+</aside>
+</div>
+
+<p>Letter-spacing is commonly used to achieve a visual balance between items with large and small numbers of characters, such as expanding the width of short headings, running heads, and captions. When expanding text, equal amounts of space are added between the character frames.</p>
+
+
+<div class="figWrap">
+<figure id="fig_arabic_font_metrics">
+<img src="inline-space-data/fig_letter_spacing_1.jpeg" alt="An illustration of a heading above paragraphs of text which has been lengthened by inserting spaces between characters." style="max-height:12rem;">
+<img src="inline-space-data/fig_letter_spacing_2.jpeg" alt="An illustration of a heading above paragraphs of text which has been lengthened by inserting spaces between characters." style="max-height:12rem;">
+<figcaption>Examples of headings where letter spacing has been applied..</figcaption>
+</figure>
+</div>
+
+<p>Solid set text is normally best for readability, however in large print sizes, such as for magazine headings, it may be desirable to reduce the distance between certain characters. This is typically done by reducing the distance between adjacent letter faces.</p>
+
+<p><span class="leadin">How to do it.</span> To create inter-character spacing in HTML use the CSS <code class="kw" translate="no">letter-spacing</code> property, with the appropriate value, which can be negative or positive.</p>
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-html">&lt;h2 style=&quot;letter-spacing:.3em;&quot;&gt;焼鯖そうめん&lt;/h2&gt;
+&lt;h2 style=&quot;letter-spacing:-.1em;&quot;&gt;焼鯖そうめん&lt;/h2&gt;</code></pre>
+</figure>
+
+<style>
+#demo-letter_spacing .test_lines { font-size: 2.4rem; line-height: 2; }
+</style>
+
+<div id="demo-letter_spacing" class="browser_output">
+<p class="browser_output_title">Output in your browser (only the bottom two lines use letter-spacing):</p>
+
+<div class="test_lines">
+<div id="test-from_font-control">
+<p lang="ja">焼鯖そうめん</p>
+</div>
+<div id="test-letter_spacing_more" style="letter-spacing: .3em;" >
+<p lang="ja">焼鯖そうめん</p>
+</div>
+<div id="test-letter_spacing_less" style="letter-spacing: -.1em;" >
+<p lang="ja">焼鯖そうめん</p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.querySelector('#demo-letter_spacing .test_lines').style.fontFamily = this.value;"></p>
+</div>
+
+
+
+<p><span class="leadin">Does it work?</span> Browsers using Blink, Gecko, and WebKit engines all support the use of <code class="kw" translate="no">letter-spacing</code> as described here.</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="autospace">
+<h2>Spacing around alphabetic or numeric phrases</h2>
+
+<div class="sidenoteGroup">
+<p>When a run of alphanumeric text appears in a line of Japanese or Chinese, it is typically set off from the surrounding han/kanji/kana letters by a small gap in order to improve readability.</p>
+
+
+
+<figure id="fig_text_space">
+<img src="inline-space-data/text_space_none.png" alt="">
+<span style="margin-inline:2rem">&nbsp;</span>
+<img src="inline-space-data/text_space_applied.png" alt="">
+<figcaption>A Japanese paragraph where text-spacing has and has not been applied. (<a href="https://w3c.github.io/jlreq/#id209" target="_blank">source</a>)</figcaption>
+</figure>
+
+
+<p>The amount of spacing can vary. The Chinese Layout Requirements document suggests up to a ¼em space. The Japanese Layout Requirements document suggests a ¼em space, but sometimes other spaces may be appropriate, such as ⅙em. The amount of space introduced by a space character is too large, so it is necessary to insert the correctly sized gap through styling.</p>
+
+<p>Such spacing is not needed when the phrase is followed or preceded by punctuation that already has built in space. It also doesn't appear at the line start/end.</p>
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅ All three major browser engines support the use of <code class="kw" translate="no">text-underline-position:from-font</code> where that metric is available in the font.</p>
+<p style="font-style: italic;">Notes:</p>
+<p>The <code class="kw" translate="no">from-font</code> position is used as the default in Gecko browsers.</p>
+<p>Safari only renders pre-installed macOS fonts, so fonts such as Amiri, and Scheherazade New, which do have underline metrics, won't display unless you use a webfont.</p>
+</aside>
+</div>
+
+
+<section id="autospaceHow">
+<h3>How to do it</h3>
+
+<p>In theory, to achieve this in web pages you should use the <code class="kw" translate="no">text-autospace</code> CSS property in your style sheet. Do not use space characters!</p>
+
+<p>The CSS specification expects that, by default, the browser should automatically insert a gap between runs of ideographs and runs of alphanumeric text (ie. the <code class="kw" translate="no">normal</code> value). The size of the gap is dependent on the browser, however the CSS spec suggests 1/8 of the width of an ideographic character, which is on the smaller side of the suggest lengths. Unfortunately, no browser currently inserts a gap by default at this time.</p>
+
+<details class="moreTests"><summary>Tests</summary>
+<ol>
+<li>
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A%0A&lang=ja&fontSize=94&width=976&height=280&a=In%20Japanese%2C%20the%20browser%20will%20automatically%20create%20a%20gap%20between%20ideographs%20and%20non-ideographic%20letters.&i=Text%20passes%20if%20there%20is%20a%20gap%20between%20ideographs%20and%20letters%20on%20the%20second%20line.%20%20The%20first%20line%20is%20a%20control.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank">In Japanese, the browser will automatically create a gap between ideographs and non-ideographic letters.</a></p>
+
+<p><span class="leadin">Results:</span> None of the Chrome, Firefox, Safari browsers automatically creates a gap.</p>
+</li>
+</ol>
+</details>
+
+
+<p>The values of the <code class="kw" translate="no">text-autospace</code> property can be used to tweak the results as follows.</p>
+
+
+
+
+<dl>
+<dt>ideograph-alpha or ideograph-numeric</dt>
+
+
+<aside class="floatedImplnote">
+<p class="feature">ideograph-alpha</p>
+<table class="implTable">
+<thead><!--<th colspan="3" style="white-space: nowrap">Browser engine support for</th>
+<tr><th colspan="3">text-spacing-trim</th></tr>-->
+<tr>
+<th><img src="inline-space-data/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="inline-space-data/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="inline-space-data/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>✅❌</td><td>✅❌</td></tr>
+</tbody>
+</table>
+
+<p class="feature">ideograph-numeric</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="inline-space-data/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="inline-space-data/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="inline-space-data/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>✅❌</td><td>✅❌</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+
+
+<!--<aside class="floatedImplnote">
+<table class="implTable">
+<tr><td><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"></td>
+<td><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"></td>
+<td><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"></td></tr>
+<tr><td>❌</td><td>✅❌</td><td>✅❌</td></tr>
+</table>
+</aside>-->
+
+
+<dd>
+<p>These 2 values can be used individually to exclude the other option, or they can be used together to create gaps around both alpha and numeric text.</p>
+
+<p>At the time of writing, Blink browsers don't support the use of these values. Gecko browsers support these values when used individually, but not when used together. WebKit browsers create a small gap before the alphanumeric text, but not after. This applies whether or not both values are used together.</p>
+
+<details class="moreTests"><summary>Tests</summary>
+<ol>
+<li>
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20ideograph-alpha%3B%20%7D%0A&lang=ja&fontSize=94&width=976&height=280&a=text-autospace%3Aideograph-alpha%20will%20create%20a%20gap%20between%20ideographs%20and%20non-ideographic%20letters%20in%20Japanese.&i=Text%20passes%20if%20there%20is%20a%20gap%20between%20ideographs%20and%20letters%20on%20the%20second%20line.%20%20The%20first%20line%20is%20a%20control.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank">In Japanese, <code class="kw" translate="no">text-autospace:ideograph-alpha</code> will create a gap between runs of ideographs and non-ideographic letters.</a></p>
+
+<p><span class="leadin">Results:</span> Chrome doesn't add any gap around the alphabetic text. Firefox adds a small gap before and after alphabetic text.  Safari adds a gap only before.</p>
+</li>
+
+<li>
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E23456%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E23456%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20ideograph-numeric%3B%20%7D%0A&lang=ja&fontSize=94&width=976&height=280&a=text-autospace%3Aideograph-numeric%20will%20create%20a%20gap%20between%20ideographs%20and%20digits%20in%20Japanese.&i=Text%20passes%20if%20there%20is%20a%20gap%20between%20ideographs%20and%20digits%20on%20the%20second%20line.%20%20The%20first%20line%20is%20a%20control.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank">In Japanese, text-autospace:ideograph-numeric will create a gap between runs of ideographs and digits</a></p>
+
+<p><span class="leadin">Results:</span> Same result as the previous test.</p>
+</li>
+
+<li>
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%3Cspan%3E23456%3C%2Fspan%3E%E5%B9%85%E8%AA%BF%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%3Cspan%3E23456%3C%2Fspan%3E%E5%B9%85%E8%AA%BF%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20ideograph-alpha%20ideograph-numeric%3B%20%7D%0A&lang=ja&fontSize=77&width=999&height=280&a=text-autospace%3Aideograph-alpha%20ideograph-numeric%3B%20will%20create%20gaps%20between%20ideographs%20and%20alphanumerics%20in%20Japanese.&i=Text%20passes%20if%20there%20is%20a%20gap%20between%20ideographs%20and%20alphanumerics%20on%20the%20second%20line.%20%20The%20first%20line%20is%20a%20control.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank">In Japanese, text-autospace:ideograph-alpha ideograph-numeric; will create gaps between ideographs and alphanumerics.</a></p>
+
+<p><span class="leadin">Results:</span> Chrome doesn't work. Safari works, but only adds space before. This time Firefox also fails.</p>
+</li>
+</ol>
+</details>
+</dd>
+
+
+
+<dt style="clear: right;">replace</dt>
+
+
+<aside class="floatedImplnote">
+<p class="feature">replace</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="inline-space-data/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="inline-space-data/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="inline-space-data/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+</aside>
+
+<dd>
+<p>There are 2 ways in which CSS can add gaps. If the text already contains gaps produced using ordinary space characters the CSS will, by default, only add gaps where there are no spaces. If, on the other hand, you want to reduce the width of any space-based gaps and apply even spacing throughout, use the <code class="kw" translate="no">replace</code> value. <code class="kw" translate="no">text-autospace:ideograph-alpha ideograph-numeric replace;</code> removes any space characters from the displayed text (without changing the characters in memory) and replaces them with a standard width gap; it also creates gaps where the space character hadn't been used.</p>
+
+<p>None of the three major browser engines currently support the use of <code class="kw" translate="no">replace</code>. In fact, it's worse. If you add the <code class="kw" translate="no">replace</code> keyword, Gecko and WebKit browsers will no longer apply the gaps they would produce without it.</p>
+
+<details class="moreTests"><summary>Tests</summary>
+<ol>
+<li>
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E%20CSS%20Text%20%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E%20CSS%20Text%20%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20ideograph-alpha%20replace%3B%20%7D%0A&lang=ja&fontSize=94&width=976&height=280&a=In%20Japanese%2C%20text-autospace%3Aideograph-alpha%20replace%3B%20will%20convert%20space%20characters%20between%20ideographic%20%26%20alpha%20text%20into%20small%20gaps.&i=Text%20passes%20if%20the%20gap%20between%20ideographs%20and%20letters%20on%20the%20second%20line%20is%20small%20than%20the%20control%20on%20the%20first%20line.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank">In Japanese, <code class="kw" translate="no">text-autospace:ideograph-alpha replace;</code> will convert space characters between ideographic &amp; alpha text into small gaps</a></p>
+
+<p><span class="leadin">Results:</span> Chrome, Firefox, and Safari all fail to convert the spaces to smaller gaps.</p>
+</li>
+</ol>
+</details>
+</dd>
+
+
+
+<dt>no-autospace</dt>
+<dd>To remove all synthesised gaps (but leave any manually-typed space characters in place) use  <code class="kw" translate="no">text-autospace:no-autospace</code>.</dd>
+
+<dt>normal</dt>
+<dd>This produces the same behavior as ame behavior as <code class="kw" translate="no">ideograph-alpha ideograph-numeric</code>. That is, it creates a gap between runs of ideographs and runs of  non-ideographic letters or numerals, but only inserts a gap where an ordinary space has not been used.</dd>
+
+<dt>auto</dt>
+<dd>Gives over control of  autospace behaviour to the browser, assuming that the browser has implemented special rules that differ from the normal case. Note that if you use this value your text may look different from browser to browser.</dd>
+</dl>
+
+
+<p>Ideally, when browsers support the CSS, you will probably want to use the following most of the time:<br>
+<code>text-autospace: ideograph-alpha ideograph-numeric replace;</code></p>
+
+<p>However, while the <code class="kw" translate="no">replace</code> value stops the other values working, you may want to go with:<br>
+<code>text-autospace: ideograph-alpha ideograph-numeric;</code></p>
+</section>
+
+
+
+
+<section id="autospaceWork">
+<h3>Does it work?</h3>
+
+<p>As shown in the side panel, the <code class="kw" translate="no">text-autospace</code> property is still not interoperably implemented on major browser engines, and what partial implementations exist are problematic. No browser adds the autospace by default.  That said, adding a <code class="kw" translate="no">text-autospace</code> rule to your CSS style sheet now doesn't do any harm, and may improve the rendered text as implementations improve. (For now, however, drop the <code class="kw" translate="no">replace</code> keyword, since it scuppers what spacing is applied.)</p>
+
+<p>The following demo has three paragraphs.  The first has no styling. The second is styled only with ideograph-alpha ideograph-numeric. And the third line adds the <code class="kw" translate="no">replace</code> keyword. Space characters surround the term "gilt top".</p>
+
+
+<figure class="example" lang="en">
+<pre><code class="language-html">:root { text-autospace: ideograph-alpha ideograph-numeric replace; }</code></pre>
+</figure>
+
+<style>
+#demo-autospace .test_lines { font-size: 1.6rem; line-height: 2; }
+</style>
+
+<div id="demo-autospace" class="browser_output">
+<p class="browser_output_title">Output in your browser (only the bottom two paragraphs use text-autospace):</p>
+
+<div class="test_lines">
+<div id="test-autospace-control">
+<p lang="ja">小口装飾edge decorationには、天に金箔をつける天金 gilt top や、三方に金をつける3方gilt edgesがある。</p>
+</div>
+<div id="test-autospace" style="text-autospace:ideograph-alpha ideograph-numeric;" >
+<p lang="ja">小口装飾edge decorationには、天に金箔をつける天金 gilt top や、三方に金をつける3方gilt edgesがある。</p>
+</div>
+<div id="test-replace" style="text-autospace:ideograph-alpha ideograph-numeric replace;" >
+<p lang="ja">小口装飾edge decorationには、天に金箔をつける天金 gilt top や、三方に金をつける3方gilt edgesがある。</p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.querySelector('#demo-autospace .test_lines').style.fontFamily = this.value;"></p>
+</div>
+</section>
+</section>
+
+
+
+
+
+
+
+<section id="punctuation">
+<h2>Spacing around punctuation</h2>
+
+<p>Punctuation such as full stop, comma, parentheses, etc. normally has built-in space associated with it because the ink takes up only a part of the em square, which is the same size as that used for ideographic or kana characters. However, in some situations, the blank space associated with such punctuation characters&nbsp; is not appropriate.</p>
+
+<p>When text is arranged on a strict grid pattern, none of this space removal applies.</p>
+
+<p>The following sections look at how to manage gaps around punctuation.</p>
+
+<ul>
+<li><a class="secref">punctuation_sequences</a></li>
+<li><a class="secref">punctuation_initial</a></li>
+<li><a class="secref">punctuation_final</a></li>
+</ul>
+</section>
+
+
+
+
+
+<section id="punctuation_sequences">
+<h2>Collapsing space in runs of punctuation</h2>
+
+<p>When certain multiple punctuation marks appear side by side, the cumulative blank parts of each character can add up to create an inappropriately large gap. Such large gaps should be eliminated, to improve readability. Here we will use brackets to illustrate this, but this applies to a number of character combinations. See <a class="figref">fig_character_frame</a>.</p>
+
+
+<figure id="fig_character_frame">
+<img src="inline-space-data/fig_collapse_punctuation_before.jpg" alt="" style="height: 4em;border:2px solid gray;"><br>
+<img src="inline-space-data/fig_collapse_punctuation_after.jpg" alt="" style="height: 4em;border:2px solid gray;">
+<figcaption>Brackets before collapse (top) and after (bottom).</figcaption>
+</figure>
+
+
+
+<p><a class="figref">fig_text_space_adjacent</a> shows the gap collapsed in real text. It shouldn't be necessary to use halfwidth characters for this; you should use normal characters and the application should remove the appropriate amount of space automatically.</p>
+
+
+<figure id="fig_text_space_adjacent">
+<img src="inline-space-data/fig_text_space_adjacent_none.png" alt="">
+<span style="margin-inline:2rem">&nbsp;</span>
+<img src="inline-space-data/fig_text_space_adjacent.png" alt="">
+<figcaption>Space has been removed on the right to make the text more readable.</figcaption>
+</figure>
+
+
+<p>Not all spaces are collapsed. While space is collapsed for colons and semicolons in horizontal text, it is not collapsed for these punctuation marks in vertical text. Space is not collapsed for question marks and exclamation marks whether they occur in horizontal or vertical contexts. For a list of what characters have their width reduced, when, and how, see the <a href="https://drafts.csswg.org/css-text-4/#fullwidth-collapsing">CSS specification</a>.</p>
+
+
+
+
+<section id="punctuationHow">
+<h3>How to do it</h3>
+
+
+<p>The CSS Text spec proposes a way remove superfluous gaps between punctuation marks using the <code class="kw" translate="no">text-spacing-trim</code> CSS property.</p>
+
+<aside class="floatedImplnote">
+<p class="feature">default behaviour</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="inline-space-data/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="inline-space-data/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="inline-space-data/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+<p class="feature">text-spacing-trim</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="inline-space-data/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="inline-space-data/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="inline-space-data/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+<p>You can indicate to the browser that you want to do this using <code class="kw" translate="no">text-spacing-trim:normal</code>, but in fact, any of the following additional values for that property remove space in punctuation clusters: <code class="kw" translate="no">trim-both</code>, <code class="kw" translate="no">space-first</code>, <code class="kw" translate="no">trim-start</code>, and <code class="kw" translate="no">trim-all</code>. (The difference between these values relates to the handling of space at the start of a paragraph, which is discussed below).</p>
+
+
+<figure class="example" lang="en">
+<pre><code class="language-html">:root { text-spacing-trim: normal; }</code></pre>
+</figure>
+
+<style>
+#demo-text_spacing_trim .test_lines { font-size: 2rem; line-height: 2; }
+#demo-text_spacing_trim span { background-color: antiquewhite; }
+</style>
+
+<div id="demo-text_spacing_trim" class="browser_output">
+<p class="browser_output_title">Output in your browser (only the bottom line uses text-spacing-trim):</p>
+
+<div class="test_lines">
+<div>
+<p lang="ja">先代がいて、<span>「</span>お前はま<span>」</span>。</p>
+</div>
+<div style="text-spacing-trim: normal;">
+<p lang="ja">先代がいて、<span>「</span>お前はま<span>」</span>。</p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.querySelector('#demo-text_spacing_trim .test_lines').style.fontFamily = this.value;"></p>
+</div>
+
+
+<p>If, for some reason, you want to prevent the space collapsing you can use <code class="kw" translate="no">text-spacing-trim:space-all</code>.</p>
+</section>
+
+
+
+
+
+<section id="punctuationWork">
+<h3>Does it work?</h3>
+
+<p>As of the time of writing, browser support for this CSS property is limited.</p>
+
+<p>Blink browsers support gap reduction using the values mentioned above, but also reduce the gap by default — no styling needed.</p>
+
+<p>However, WebKit and Gecko browsers do not reduce space between punctuation marks.</p>
+</section>
+
+
+
+
+
+
+
+<section id="punctuation_initial">
+<h2>Line-initial punctuation</h2>
+
+<p>This section is concerned with punctuation marks that normally include built-in space on the left, such as the bracket <span style="background-color:antiquewhite">『</span>.  We'll use that for the following examples, although this applies also to other punctuation marks.</p>
+<p>When a punctuation mark like this appears at the beginning of a line, there are a number of possibilities. At the <strong>beginning of a paragraph</strong>, we may want to see:</p>
+<ol>
+<li>no space before the bracket</li>
+<li>a half-space before the bracket</li>
+<li>a full space before the bracket</li>
+<li>one and a half spaces before the bracket</li>
+</ol>
+
+<p>These decisions will typically be influenced by whether or not a paragraph is preceded by a blank line, or whether the first line of the paragraph is indented.</p>
+
+<p>In each case, a bracket that appears at the beginning of a line but is <strong>not at the start of the paragraph</strong> should have no space before it.</p>
+
+<p>The CSS specification recommends the use of <code class="kw" translate="no">text-spacing-trim</code> to position the initial bracket. Unfortunately, <code class="kw" translate="no">text-spacing-trim</code> is not supported by Gecko or WebKit browsers.  There is, however, some support for Blink browsers, such as Chrome and Edge.</p>
+
+
+
+<section id="punc_initial_nospace">
+<h4>Scenario #1: No space</h4>
+
+<figure id="fig_trim_start" style="float:right; margin-block: 0;">
+<img src="inline-space-data/fig_op_nospace.jpg" alt="" style="width:16rem;">
+</figure>
+
+
+<p>When paragraphs are separated by blank lines, the first line of the paragraph is often not indented. When a paragraph begins with an opening bracket, it is common to remove the halfwidth space before it.</p>
+<p>To do this, you can use <code class="kw" translate="no">text-spacing-trim</code> with the value <code class="kw" translate="no">trim-start</code> or <code class="kw" translate="no">trim-both</code>.</p>
+
+
+<figure class="example" lang="en" style="clear: both;">
+<pre><code class="language-css">:root { text-spacing-trim: trim-start; }
+p { margin-block: 1em; }</code></pre>
+</figure>
+
+<style>
+#demo-trim-start .test_lines { font-size: 1.6rem; line-height: 1.4; font-family: YuMincho, "MS Mincho","Noto Serif CJK JP"; writing-mode:vertical-rl; height: 14em; }
+#demo-trim-start span { background-color: antiquewhite; }
+#demo-trim-start p { margin-block: 1em; }
+</style>
+
+<div id="demo-trim-start" class="browser_output">
+<p class="browser_output_title">Output in your browser. (Adjust the line length so that both opening brackets appear at the start of the line.)</p>
+
+<div class="test_lines">
+<div id="demo-trim-start_test" style="text-spacing-trim: space-first;">
+<p lang="ja">内容は釈実に進化してきた。</p>
+<p lang="ja" style=""><span style="background-color:antiquewhite;">「</span>今回何よりお伝えしたいのは<span style="background-color:antiquewhite;">『</span>家族旅行ハワイ』の行き先にハワイ島が加わったことです。」</p>
+<p lang="ja" style="text-indent: 1em;">溶岩大地が圧巻のハワイ火山国立公園、マウナケア山から望むサ</p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.querySelector('#demo-trim-start .test_lines').style.fontFamily = this.value;">  &nbsp; 
+
+Adjust line length: <input id="offsetSlider2" type="range" min="5" max="20" step="1" value="14" 
+    oninput="document.getElementById('demo-trim-start_test').style.height = this.value+'em';
+         document.getElementById('offsetSliderValue2').value=this.value+'em';"
+         style="width:10em; height:1em;" placeholder="">
+<input value="14em" id="offsetSliderValue2" style="width:3em;"></p>
+</div>
+
+<p>The <code class="kw" translate="no">trim-both</code> value is not supported by Blink browsers.</p>
+</section>
+
+
+<details>
+<summary>Tests</summary>
+<p><a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%90%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%96%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%94%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%BB%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%88%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%88%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8A%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A&css=.test%20%7B%20writing-mode%3Avertical-rl%3B%20%7D%0Aspan%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0Ap%20%7B%20text-spacing-trim%3Atrim-start%3B%20%20%7D&lang=ja&fontSize=36&fontFamily=yumincho&width=900&height=261&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20Japanese%20paragraph.&i=Tests%20pass%20if%20the%20bracket%20and%20its%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20top%20of%20the%20box.">text-spacing-trim:trim-start trims leading space from opening brackets at the start of a Japanese paragraph.</a></p>
+
+<p><a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%90%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%96%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%94%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%BB%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%88%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%88%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8A%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20%20%7D&lang=zh-hant&fontSize=36&width=900&height=850&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20Traditional%20Chinese%20paragraph.&i=Tests%20pass%20if%20the%20bracket%20and%20its%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box.&fonts=Apple LiSung,LiSong Pro,MingLiu,PMingLiu,Songti TC,Noto Serif CJK TC,Nom Na Tong,Apple LiGothic,Heiti TC,Lantinghei TC,LiHei Pro,Microsoft JhengHei,Noto Sans CJK TC,PingFang HK,PingFang TC,PingFang MO,Yuanti TC,Hiragino Sans TC,BiaukaiTC,BiaukaiHK,DFKai-SB,Kaiti TC,Xingkai TC,Baoli TC,Hannotate TC,HanziPen TC,Libian TC,LingWai TC,Wawati TC,Weibei TC,Yuppy TC">text-spacing-trim:trim-start trims leading space from opening brackets at the start of a Traditional Chinese paragraph.</a></p>
+
+
+
+
+<section id="punc_hanging">
+<h4>Scenario #2: Hanging punctuation</h4>
+
+
+<figure id="fig_op_halfspace" style="float:right">
+<img src="inline-space-data/fig_op_halfspace.jpg" alt="" style="width:12rem;">
+</figure>
+
+<p>A common arrangement for Japanese text is to remove the gaps between paragraphs, and start each paragraph with a one em indent. When an opening bracket appears at the beginning of the first line in the paragraph, it occupies the right-hand half of that indentation. This can be visually analysed as a fullwidth character replacing the indent, or as the halfwidth bracket ‘hanging’ to the left of/above the actual line start.</p>
+<p>For this arrangement, the CSS specification suggests the rules shown in the box below. The <code class="kw" translate="no">text-indent</code> property applies the indent across all paragraphs. The <code class="kw" translate="no">text-spacing-trim</code> line removes the leading space from the bracket. Then the <code class="kw" translate="no">hanging-punctuation</code> line moves the bracket into the indent space.</p>
+
+
+<figure class="example" lang="en" style="clear: both;">
+<pre><code class="language-css">p {
+  margin: 0;
+  text-indent: 1em;
+  text-spacing-trim: trim-both;
+  hanging-punctuation: first;
+  }</code></pre>
+</figure>
+
+<style>
+#demo-indent .test_lines { font-size: 1.6rem; line-height: 1.4; }
+#demo-indent span { background-color: antiquewhite; }
+#demo-indent .test_lines p { text-indent: 1em; margin-block: 0; }
+#demo-indent_test p { text-spacing-trim: trim-start; hanging-punctuation: first; }
+</style>
+
+<div id="demo-indent" class="browser_output">
+<p class="browser_output_title">Output in your browser. (Adjust the line length so that both opening brackets appear at the start of the line.)</p>
+
+<div class="test_lines">
+<div id="demo-indent_test">
+<p lang="ja"><span>『</span>先生はそう言った。私はその言葉の意味をすぐには理解できなかった。しかし、先生は続けてこうも言った<span>『</span>人間というものは、時に自分でも気づかないうちに他人を傷つけるものだよ』と。</p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.querySelector('#demo-indent .test_lines').style.fontFamily = this.value;">  &nbsp; 
+
+Adjust line length: <input id="offsetSlider4" type="range" min="20" max="100" step="1" value="100" 
+    oninput="document.getElementById('demo-indent_test').style.width = this.value+'%';
+         document.getElementById('offsetSliderValue4').value=this.value+'%';"
+         style="width:8rem; height:1rem;" placeholder="Scheherazade New WF">
+<input value="100%" id="offsetSliderValue4" style="width:3em;"></p>
+</div>
+</section>
+
+
+
+
+
+
+<section id="punc_chinese">
+<h4>Scenario #3: Non-hanging indent</h4>
+
+
+<figure id="fig_op_chinese" style="float:right">
+<img src="inline-space-data/fig_op_chinese.jpg" alt="" style="width:12rem;">
+</figure>
+
+<p>The figure to the right shows Chinese paragraphs with the first line indented. In the case of Chinese, the typical indent is 2em. The leading space of the bracket is removed, but unlike the previous Japanese example, the bracket doesn't hang in the indent space.</p>
+
+<p>The following CSS will achieve this effect. The <code class="kw" translate="no">text-indent</code> property, once again, applies the indent across all paragraphs (but 2 em gaps this time). The <code class="kw" translate="no">text-spacing-trim</code> line then removes the leading space from the bracket.</p>
+
+
+<figure class="example" lang="en" style="clear: both;">
+<pre><code class="language-css">p {
+  margin: 0;
+  text-indent: 2em;
+  text-spacing-trim: trim-both;
+  }</code></pre>
+</figure>
+
+<style>
+#demo-chinese .test_lines { font-size: 1.6rem; line-height: 1.4; }
+#demo-chinese span { background-color: antiquewhite; }
+#demo-chinese .test_lines p { text-indent: 2em; margin-block: 0; }
+#demo-chinese_test p { text-spacing-trim: trim-start; }
+</style>
+
+<div id="demo-chinese" class="browser_output">
+<p class="browser_output_title">Output in your browser. (Adjust the line length so that both opening brackets appear at the start of the line.)</p>
+
+<div class="test_lines">
+<div id="demo-chinese_test">
+<p lang="ja"><span>〖</span>第二段以開括號起筆，約十二字後再添<span>〖</span>一記符號以呼應層次感。</p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.querySelector('#demo-chinese .test_lines').style.fontFamily = this.value;">  &nbsp; 
+
+Adjust line length: <input id="offsetSlider4" type="range" min="20" max="100" step="1" value="100" 
+    oninput="document.getElementById('demo-chinese_test').style.width = this.value+'%';
+         document.getElementById('offsetSliderValue4').value=this.value+'%';"
+         style="width:8rem; height:1rem;" placeholder="">
+<input value="100%" id="offsetSliderValue4" style="width:3em;"></p>
+</div>
+</section>
+
+
+
+
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">:root { text-spacing-trim: space-first; }
+p { margin-block: 0; text-indent: 1em; }</code></pre>
+</figure>
+
+<style>
+#demo-space-first .test_lines { font-size: 1.6rem; line-height: 1.4; }
+#demo-space-first span { background-color: antiquewhite; }
+</style>
+
+<div id="demo-space-first" class="browser_output">
+<p class="browser_output_title">Output in your browser. (Adjust the line length so that both opening brackets appear at the start of the line.)</p>
+
+<div class="test_lines">
+<div id="demo-space-first_test" style="text-spacing-trim: space-first;">
+<p lang="ja"><span>『</span>先生はそう言った。私はその言葉の意味をすぐには理解できなかった。しかし、先生は続けてこうも言った<span>『</span>人間というものは、時に自分でも気づかないうちに他人を傷つけるものだよ』と。</p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.querySelector('#demo-space-first .test_lines').style.fontFamily = this.value;">  &nbsp; 
+
+Adjust line length: <input id="offsetSlider" type="range" min="20" max="100" step="1" value="100" 
+    oninput="document.getElementById('demo-space-first_test').style.width = this.value+'%';
+         document.getElementById('offsetSliderValue').value=this.value+'%';"
+         style="width:8rem; height:1rem;" placeholder="Scheherazade New WF">
+<input value="100%" id="offsetSliderValue" style="width:3em;"></p>
+</div>
+
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">:root { text-spacing-trim: space-all; }</code></pre>
+</figure>
+
+<style>
+#demo-space-all .test_lines { font-size: 1.6rem; line-height: 1.4; }
+#demo-space-all span { background-color: antiquewhite; }
+</style>
+
+<div id="demo-space-all" class="browser_output">
+<p class="browser_output_title">Output in your browser. (Adjust the line length so that both opening brackets appear at the start of the line.)</p>
+
+<div class="test_lines">
+<div id="demo-space-all_test" style="text-spacing-trim: space-all;">
+<p lang="ja"><span>『</span>先生はそう言った。私はその言葉の意味をすぐには理解できなかった。しかし、先生は続けてこうも言った<span>『</span>人間というものは、時に自分でも気づかないうちに他人を傷つけるものだよ』と。</p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.querySelector('#demo-space-all .test_lines').style.fontFamily = this.value;">  &nbsp; 
+
+Adjust line length: <input id="offsetSlider3" type="range" min="20" max="100" step="1" value="100" 
+    oninput="document.getElementById('demo-space-all_test').style.width = this.value+'%';
+         document.getElementById('offsetSliderValue3').value=this.value+'%';"
+         style="width:8rem; height:1rem;" placeholder="Scheherazade New WF">
+<input value="100%" id="offsetSliderValue3" style="width:3em;"></p>
+</div>
+
+</section>
+
+
+
+
+
+
+
+<section id="punctuation_final">
+<h2>Line-final punctuation</h2>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Sample text from <a href="https://ja.wikipedia.org/wiki/%E5%A4%A9%E6%AD%A6%E5%A4%A9%E7%9A%87#名" target="_blank">Wikipedia</a>:</p>
+<p lang="ja" style="text-spacing-trim:normal;">名の「大海人」（おおあま）は、幼少期に養育を受けた凡海氏（海部一族の伴造）にちなむ。『日本書紀』に直接そのように記した箇所はないが、天武天皇の殯に凡海麁鎌が壬生（養育）のことを誄したことからこのように推測されている（『日本書紀』朱鳥元年9月27日条）。</p>
+
+<p>From JAL</p>
+
+<div style="writing-mode:vertical-rl; height:32rem; text-spacing-trim:trim-start; font-size:1.4rem; font-family:yumincho; width:70%;">
+
+<p>内容は釈実に進化してきた。</p>
+
+<p style="text-indent: 1em;hanging-punctuation: first;"><span style="background-color:antiquewhite;">「</span>今回何よりお伝えしたいのは<span style="background-color:antiquewhite;">『</span>家族旅行ハワイ』の行き先にハワイ島が加わったことです。」</p>
+
+<p style="text-indent: 1em;hanging-punctuation: first;">溶岩大地が圧巻のハワイ火山国立公園、マウナケア山から望むサ</p>
+</div>
+
+
+
+<style>#test2 p { margin: 0; text-indent:2em; }</style>
+
+<div id="test2" style="writing-mode:vertical-rl; height:28rem; font-size:1.4rem; font-family:'LiSong Pro'; width:70%;">
+
+<p>第一段以柔和意象鋪陳心境，字句緩慢流動如風中微光。</p>
+
+<p style=" text-spacing-trim:trim-start;"><span style="background-color:antiquewhite;">〖</span>第二段以開括號起筆，約十二字後再添<span style="background-color:antiquewhite;">〖</span>一記符號以呼應層次感。</p>
+
+<p>第三段以靜謐語氣收束情緒，讓餘韻在字裡行間延展。</p>
+</div>
+
+
+
+
+<p>と担当者の渡辺亜紀。ハワイ島はオアフ島とは異なり、観光の主なテーマは大自然。溶岩大地が圧巻のハワイ火山国立公園、マウナケア山から望むサンセットや星空、海を見渡す斜面のコナコーヒー農園など、ダイナミックな景観美が特徴だ。</p>
+
+
+
+<section id="browsers">
+<h2>Browser versions</h2>
+<p>The article describes behavior for the following browser versions. We will try to update the article as behavior changes.</p>
+<table border="0" summary="Table lists browsers and engines whose behavior is represented in the article.">
+<tbody>
+<tr>
+<th scope="col">Browser engine</th>
+<th scope="col">Browser tested</th>
+<th scope="col">Browsers using that engine</th>
+</tr>
+<tr>
+<td><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> Gecko</td>
+<td>Firefox v147</td>
+<td>Firefox, Conkeror, etc.</td>
+</tr>
+<tr>
+<td><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> Blink</td>
+<td>Chrome v144</td>
+<td>Chrome, Edge, Brave, Opera, Vivaldi, etc.</td>
+</tr>
+<tr>
+<td><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> WebKit</td>
+<td>Safari v26.2</td>
+<td>Safari, iOS-based browsers, Yandex, UC Browser, etc.</td>
+</tr>
+</tbody>
+</table>
+<!--p>&nbsp;</p>
+<ul>
+<li><dfn>Gecko</dfn> (Firefox, Conkeror, etc.)</li>
+<li><dfn>Blink</dfn> (Chrome, Opera, Vivaldi, etc.)</li>
+<li><dfn>Webkit</dfn> (Safari, iOS-based browsers, Yandex, UC Browser, etc.)</li>
+<li><dfn>Edge</dfn> (Microsoft Edge)</li>
+<li><dfn>Trident</dfn> (Internet Explorer)</li>
+</ul-->
+</section>
+
+
+
+
+
+<!--section id="todo">
+<h2 class="notoc">To do</h2>
+<ul style="color:red;">
+<li>Link it to overhang (which gives more room by overlapping adjacent bases)</li>
+<li>Figure out what to do about ruby-merge – present as managing compound nouns, ie. managing the space within adjacent ruby pairs?</li>
+<li>section on styling base text, including removal, replacement with boxes (for educational text), etc.</li>
+<li>clarify <a  href="https://drafts.csswg.org/css-ruby-1/#white-space">space handling</a> - do this in ruby markup article too</li>
+<li>setting line height</li>
+<li>making line head and end flush</li>
+</ul>
+</section-->
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><cite>Authoring web pages</cite></p>
+<ul>
+<li><a href="https://w3c.github.io/i18n-drafts/techniques/authoring-html.en#textdecoration">Styling text decorations</a></li>
+</ul>
+</li>
+<li>
+<p><cite>Language enablement index</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/typography/#text_decoration">Other text decoration &amp; inline features</a> • 
+<a href="https://www.w3.org/TR/typography/#quotations">Quotations &amp; citations</a></li>
+</ul>
+</li>
+<li>
+<p><cite>CSS specification</cite></p>
+<ul>
+<li><a href="https://drafts.csswg.org/css-text-4/#letter-spacing-property">letter-spacing</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#text-autospace-property">text-autospace</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#text-spacing-trim-property">text-spacing-trim</a></li>
+</ul>
+</li>
+<li>
+<p><cite>MDN</cite></p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/letter-spacing">letter-spacing</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-autospace">text-autospace</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-spacing-trim">text-spacing-trim</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>
+completePage() //highlightCode();
+
+// add a link around results images to show bigger
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("figure.resultsImg img").forEach(img => {
+    const link = document.createElement("a");
+    link.href = img.src;
+    link.target = "_blank";
+    link.rel = "noopener";
+
+    img.parentNode.insertBefore(link, img);
+    link.appendChild(img);
+  });
+});
+
+
+</script>
+</body>
+</html>
