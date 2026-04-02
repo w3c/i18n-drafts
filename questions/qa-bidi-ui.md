@@ -41,7 +41,9 @@ For forms and inputs, the relative positioning of labels to input fields depends
 
 User interfaces often combine RTL and LTR strings in the same line, such as an Arabic or Hebrew label followed by an English product name, a menu item containing a English acronym, or a notification that includes a user name. In these cases, you often need [isolation](https://www.w3.org/TR/i18n-glossary/#dfn-bidi-isolation) to prevent bidirectional spillover, where the directionality of one piece of text affects adjacent text or punctuation.
 
-In HTML, use the `bdi` element for inline text whose direction may differ from the surrounding context. In plain text or strings that are assembled outside HTML, use the Unicode isolation controls `LRI`, `RLI`, or `FSI`, and close them with `PDI`. These isolate the embedded text so that surrounding punctuation, separators, and neighboring words behave correctly.
+In HTML, keep track of the direction of each inserted string and set the `dir` attribute on the element that already wraps it, using `ltr`, `rtl`, or `auto` as appropriate. Making the direction explicit in the markup helps isolate the embedded text from the surrounding context so that punctuation and neighboring words behave correctly.
+
+In plain text, use the Unicode isolation controls `LRI`, `RLI`, or `FSI`, and close them with `PDI`. These isolate the embedded text so that the surrounding text behave correctly.
 
 Without isolation, text can be ordered in surprising ways, and punctuation can appear on the wrong side of the inserted text.
 
