@@ -74,6 +74,8 @@ script developers (PHP, JSP, etc.), XHTML/HTML coders (using editors or scriptin
 
 <p>After reviewing the concepts and issues relating to text fragmentation and string reuse, we will look at what works and what doesn't.</p>
 
+<p>This article was originally written in a tooling environment that offered fewer ways to handle plural-sensitive, ordinal-sensitive, and other selectable messages. The problems described here still matter, but some of the recommendations should be read in that historical context. Where modern message-formatting systems are available, it is often preferable to localize complete messages and let the message format handle the necessary selection logic. Topic-comment (also called subject: predicate) remains useful as a workaround when such support is unavailable or impractical.</p>
+
 
 
 
@@ -87,6 +89,8 @@ script developers (PHP, JSP, etc.), XHTML/HTML coders (using editors or scriptin
 <p>Composite messages are typically arranged in one of two ways: the first is a <span class="newterm">sentence-like</span> arrangement; the second, a <span class="newterm">topic-comment</span> arrangement.</p>
 
 <p>The parts of a composite message that vary are referred to here as <span class="newterm">substrings</span>.</p>
+
+<p>Modern localization systems can keep these variations inside a single localizable message by handling plural, ordinal, and other selection logic directly.</p>
 
 
 
@@ -147,6 +151,8 @@ script developers (PHP, JSP, etc.), XHTML/HTML coders (using editors or scriptin
 <h3>Topic-comment arrangements</h3>
 
 <p>Topic-comment arrangements state a topic (the subject) and then state something about it (the comment), usually in a terse way. For example: <code>Printer: enabled</code>. Note that the colon is very commonly used to separate topic and comment in this arrangement.</p>
+
+<p>In constrained environments, this arrangement is often used as a workaround. By keeping a relatively stable topic separate from a changing value or status, it can avoid some agreement and reordering problems that arise when developers fragment a sentence into smaller pieces.</p>
 
 <p>Here is an example that shows some variations on the theme of the topic-comment arrangement.</p>
 
@@ -774,9 +780,11 @@ etc.
 <section id="recommendations">
 <h2>Recommendations</h2>
 
-<p><mark>Use a topic-comment approach whenever possible.</mark> Topic-comment composite messages work well whether the parts are in a single or multiple displayers, and with any type of substring.</p>
+<p><mark>Prefer complete localizable messages whenever your system can support the necessary plural, ordinal, and other selection logic.</mark> Fragmenting a message into pieces should not be the default strategy.</p>
 
-<p><mark>Avoid sentence-like arrangements when they contain substrings that are predefined translatable text or numeric text.</mark></p>
+<p><mark>Avoid sentence-like arrangements when they fragment predefined translatable text or numeric values into pieces that translators cannot safely reorder or adapt.</mark></p>
+
+<p><mark>Use a topic-comment approach when system constraints make richer message formatting unavailable or impractical.</mark> Topic-comment composite messages can work well whether the parts are in a single or multiple displayers, and with any type of substring.</p>
 
 <p><mark>Use sentence-like arrangements with care if you have non-numeric and non-translatable text substrings</mark> (ie. text created at runtime). Do not use if the substring represents a proper noun. In addition, implement sentence-like messages such that the text and substrings can be easily repositioned in any order during translation. When writing program code this usually means using format strings for output
 in such a way that each variable is uniquely identified.</p>
