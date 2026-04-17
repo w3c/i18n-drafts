@@ -15,6 +15,8 @@ Examples:
 
 Each content file has a companion `{filename}-data/` directory containing `translations.js` and supporting files.
 
+For the meaning of the metadata stored in those `translations.js` files, see [`docs/translations-js.md`](docs/translations-js.md).
+
 ### Translations
 
 If you want to translate one or more of these resources, see the [Translation instructions](https://www.w3.org/International/i18n-drafts/pages/translation) page.

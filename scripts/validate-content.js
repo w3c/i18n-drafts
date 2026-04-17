@@ -618,6 +618,10 @@ function loadAndValidateTranslations(absolutePath) {
       continue;
     }
 
+    if (key === 'unlinkedtranslations') {
+      continue;
+    }
+
     const extras = value.filter((entry) => !versions.has(String(entry)));
     if (extras.length > 0) {
       fileIssues.push({
