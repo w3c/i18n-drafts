@@ -15,12 +15,12 @@ f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-input-method'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2026-04-20'; // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2026-04-20', time:'10:59' } // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-04-20', time:'13:45' } // date and time of latest substantive changes to this document
 f.status = 'draft'; // should be one of draft, review, published, or notreviewed
 f.path = '../../'; // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2026-04-20', time:'10:59' }; // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-04-20', time:'13:45' }; // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -39,6 +39,96 @@ f.breadcrumb = 'cultural';
 <link rel="copyright" href="#copyright">
 <script src="../../javascript/prism.js"></script>
 <link rel="stylesheet" href="../../style/prism.css">
+<style>
+.ime-demo {
+  margin: 1.5em 0;
+  padding: 1.25em;
+  border: 1px solid #c9d3dd;
+  border-radius: 0.5em;
+  background: #f8fafc;
+}
+.ime-demo-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1em;
+  margin: 1em 0;
+}
+.ime-demo-panel {
+  padding: 1em;
+  border: 1px solid #d5dce3;
+  border-radius: 0.5em;
+  background: #fff;
+}
+.ime-demo-panel--broken {
+  border-top: 0.35em solid #b42318;
+}
+.ime-demo-panel--correct {
+  border-top: 0.35em solid #027a48;
+}
+.ime-demo-panel h3 {
+  margin-top: 0;
+}
+.ime-demo-label,
+.ime-demo-output-label {
+  font-weight: 600;
+}
+.ime-demo-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.6em 0.7em;
+  border: 1px solid #8a97a6;
+  border-radius: 0.35em;
+  background: #fff;
+  color: #111;
+  font: inherit;
+}
+.ime-demo-status {
+  margin: 0.75em 0;
+  color: #27323c;
+}
+.ime-demo-status span {
+  font-weight: 600;
+}
+.ime-demo-status-active {
+  color: #0b5cab;
+}
+.ime-demo-output {
+  margin: 0.4em 0 0;
+  padding-left: 1.25em;
+  min-height: 3.5em;
+}
+.ime-demo-output li {
+  margin: 0.35em 0;
+}
+.ime-demo-tag {
+  display: inline-block;
+  margin-right: 0.5em;
+  padding: 0.1em 0.45em;
+  border-radius: 999px;
+  font-size: 0.82em;
+  font-weight: 700;
+}
+.ime-demo-tag--broken {
+  background: #fdebec;
+  color: #8a1c16;
+}
+.ime-demo-tag--correct {
+  background: #e6f6ec;
+  color: #166534;
+}
+.ime-demo-empty {
+  color: #5b6773;
+  font-style: italic;
+}
+@media (max-width: 700px) {
+  .ime-demo {
+    padding: 1em;
+  }
+  .ime-demo-panels {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -105,6 +195,44 @@ f.breadcrumb = 'cultural';
     <p>This small condition prevents premature submission.</p>
     </section>
 
+    <section id="try-it-yourself">
+    <h2>Try it yourself</h2>
+    <p>If you have an IME available, switch to the IME and type in both fields and press Enter while the IME is still choosing a candidate. The broken panel will submit too early, while the correct panel will wait until composition has ended.</p>
+    <p>Watch the composition status line and the submitted-text area under each input as you try the same action in both panels.</p>
+
+    <div class="ime-demo" id="ime-demo">
+      <div class="ime-demo-panels">
+        <section class="ime-demo-panel ime-demo-panel--broken" aria-labelledby="ime-demo-broken-heading">
+          <h3 id="ime-demo-broken-heading"><span class="ime-demo-tag ime-demo-tag--broken">Broken</span>Broken handler</h3>
+          <p>Submits on every Enter press, even when composition is active.</p>
+          <label class="ime-demo-label" for="ime-demo-broken-input">Type here</label>
+          <input class="ime-demo-input" id="ime-demo-broken-input" type="text" autocomplete="off" spellcheck="false" data-panel-input="broken">
+          <p class="ime-demo-status">Composition status: <span data-panel-status="broken">Idle</span></p>
+          <p class="ime-demo-output-label">Submitted text</p>
+          <ul class="ime-demo-output" data-panel-output="broken" aria-live="polite" aria-label="Submitted text for the broken handler">
+            <li class="ime-demo-empty">Nothing sent yet.</li>
+          </ul>
+        </section>
+
+        <section class="ime-demo-panel ime-demo-panel--correct" aria-labelledby="ime-demo-correct-heading">
+          <h3 id="ime-demo-correct-heading"><span class="ime-demo-tag ime-demo-tag--correct">Correct</span>Correct handler</h3>
+          <p>Submits only when Enter is pressed after composition has ended.</p>
+          <label class="ime-demo-label" for="ime-demo-correct-input">Type here</label>
+          <input class="ime-demo-input" id="ime-demo-correct-input" type="text" autocomplete="off" spellcheck="false" data-panel-input="correct">
+          <p class="ime-demo-status">Composition status: <span data-panel-status="correct">Idle</span></p>
+          <p class="ime-demo-output-label">Submitted text</p>
+          <ul class="ime-demo-output" data-panel-output="correct" aria-live="polite" aria-label="Submitted text for the correct handler">
+            <li class="ime-demo-empty">Nothing sent yet.</li>
+          </ul>
+        </section>
+      </div>
+
+      <noscript>
+        <p><strong>This demo needs JavaScript.</strong></p>
+      </noscript>
+    </div>
+    </section>
+
     <section id="testing-strategies">
     <h2>Testing strategies</h2>
     <p>IME bugs are easy to miss if you only test with standard keyboards.</p>
@@ -150,6 +278,94 @@ f.breadcrumb = 'cultural';
 </section>
 
 <footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
-<script>completePage()</script>
+<script>
+completePage()
+
+document.addEventListener('DOMContentLoaded', () => {
+  const demo = document.getElementById('ime-demo');
+  if (!demo) {
+    return;
+  }
+
+  const panels = {
+    broken: createPanel('broken'),
+    correct: createPanel('correct'),
+  };
+
+  updateAllStatus();
+
+  function createPanel(key) {
+    const input = document.querySelector(`[data-panel-input="${key}"]`);
+    const status = document.querySelector(`[data-panel-status="${key}"]`);
+    const output = document.querySelector(`[data-panel-output="${key}"]`);
+    const panel = {
+      key,
+      input,
+      status,
+      output,
+      realCompositionActive: false,
+    };
+
+    input.addEventListener('compositionstart', () => {
+      panel.realCompositionActive = true;
+      updateStatus(panel);
+    });
+
+    input.addEventListener('compositionend', () => {
+      panel.realCompositionActive = false;
+      updateStatus(panel);
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') {
+        return;
+      }
+
+      handleEnterAttempt(panel, Boolean(event.isComposing));
+    });
+
+    return panel;
+  }
+
+  function handleEnterAttempt(panel, eventIsComposing) {
+    const composing = panel.realCompositionActive || eventIsComposing;
+
+    if (panel.key === 'broken') {
+      submitPanel(panel);
+      return;
+    }
+
+    if (!composing) {
+      submitPanel(panel);
+    }
+  }
+
+  function submitPanel(panel) {
+    const submittedText = panel.input.value.trim() || '[empty]';
+    clearEmptyItem(panel.output);
+
+    const item = document.createElement('li');
+    item.textContent = submittedText;
+    panel.output.appendChild(item);
+  }
+
+  function clearEmptyItem(list) {
+    const firstItem = list.firstElementChild;
+    if (firstItem && firstItem.classList.contains('ime-demo-empty')) {
+      list.removeChild(firstItem);
+    }
+  }
+
+  function updateAllStatus() {
+    Object.values(panels).forEach(updateStatus);
+  }
+
+  function updateStatus(panel) {
+    const active = panel.realCompositionActive;
+    panel.status.textContent = active ? 'Active' : 'Idle';
+    panel.status.classList.toggle('ime-demo-status-active', active);
+  }
+});
+</script>
 </body>
 </html>
