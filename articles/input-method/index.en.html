@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Handling input methods in web development</title>
+<meta name="description" content="Learn how IME composition affects web text input, and how to avoid common bugs with Enter handling, validation, re-rendering, and shortcuts.">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/input-method'+'/'; // the name of the directory this file is in
+f.filename = 'index'; // the file name WITHOUT extensions
+f.authors = 'Fuqiao Xue, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-input-method'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-04-20'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-04-20', time:'10:59' } // date and time of latest substantive changes to this document
+f.status = 'draft'; // should be one of draft, review, published, or notreviewed
+f.path = '../../'; // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-04-20', time:'10:59' }; // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'cultural';
+</script>
+<script src="index-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Handling input methods in web development</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+    </div>
+
+    <p>For many languages, especially Chinese, Japanese, and Korean, text is entered through an Input Method Editor (IME). IMEs introduce a composition phase where users build up text before it is committed.</p>
+    <p>If your application ignores this phase, it can break interactions like chat, search, and forms.</p>
+    <p>This guide explains how IMEs work on the web, and how to design web applications that behave correctly across browsers.</p>
+
+    <section id="ime-composition">
+    <h2>What IME composition means</h2>
+
+    <!-- [image] -->
+
+    <p>When a user types with an IME, the browser enters a composition session. During this time, keystrokes update an intermediate string, not the final value. The user may press Enter to select a candidate, not to submit. And the final text is only committed when the composition ends.</p>
+    <p>The web platform exposes this state through events and properties, like:</p>
+    <ul>
+      <li><code>compositionstart</code>, <code>compositionupdate</code>, <code>compositionend</code></li>
+      <li><code>KeyboardEvent.isComposing</code></li>
+    </ul>
+    <p>If your code treats Enter as submit regardless of composition state, you will interrupt the user mid-input.</p>
+    </section>
+
+    <section id="enter-submits-too-early">
+    <h2>The classic bug: Enter submits too early</h2>
+    <p>This often appears in places like chat message inputs, search fields, and comment forms.</p>
+    <p>A typical problematic handler looks like this:</p>
+    <figure class="example">
+    <pre><code class="language-javascript">input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    sendMessage();
+  }
+});</code></pre>
+    </figure>
+    <p>For IME users, pressing Enter during composition selects a candidate. The handler above fires anyway and sends incomplete text.</p>
+    </section>
+
+    <section id="respect-composition-state">
+    <h2>Respect composition state</h2>
+    <p>Always check whether composition is active before acting on Enter.</p>
+    <figure class="example">
+    <pre><code class="language-javascript">input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.isComposing) {
+    sendMessage();
+  }
+});</code></pre>
+    </figure>
+    <p>This small condition prevents premature submission.</p>
+    </section>
+
+    <section id="testing-strategies">
+    <h2>Testing strategies</h2>
+    <p>IME bugs are easy to miss if you only test with standard keyboards.</p>
+    <p>Use system IMEs for Chinese, Japanese, or Korean to type partial words and press Enter to select candidates, and verify that no submission occurs until composition ends.</p>
+    </section>
+
+    <section id="other-ime-related-issues">
+    <h2>Other common IME-related issues</h2>
+
+    <section id="cursor-and-selection-problems">
+    <h3>Cursor and selection problems</h3>
+    <p>Re-rendering inputs during composition can:</p>
+    <ul>
+      <li>Reset the cursor</li>
+      <li>Break candidate selection</li>
+      <li>Cancel composition unexpectedly</li>
+    </ul>
+    <p>Avoid unnecessary DOM updates while composition is active.</p>
+    </section>
+
+    <section id="validation-and-formatting">
+    <h3>Validation and formatting</h3>
+    <p>Real-time validation or formatting can interfere with IME input.</p>
+    <p>Do not validate incomplete composition text, and delay formatting until after <code>compositionend</code>.</p>
+    </section>
+
+    <section id="shortcut-conflicts">
+    <h3>Shortcut conflicts</h3>
+    <p>Keyboard shortcuts may overlap with IME usage.</p>
+    <p>Avoid triggering shortcuts during composition, and always check <code>isComposing</code> before acting on key combinations.</p>
+    </section>
+    </section>
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+ <ul id="full-links">
+  <li><cite><a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/API/Element/compositionstart_event">MDN: composition events</a></cite></li>
+  <li><cite><a rel="nofollow" href="https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/isComposing">MDN: <code>KeyboardEvent.isComposing</code></a></cite></li>
+  <li><cite><a href="https://www.w3.org/TR/uievents/">UI Events</a></cite></li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
