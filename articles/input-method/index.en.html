@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Handling input methods in web development</title>
-<meta name="description" content="Learn how IME composition affects web text input, and how to avoid common bugs with Enter handling, validation, re-rendering, and shortcuts.">
+<title>Handling IME composition in web apps</title>
+<meta name="description" content="Learn how IME composition works in web text inputs, and how to avoid common bugs with Enter handling, validation, re-rendering, and shortcuts.">
 <script>
 var f = { }
 
@@ -15,12 +15,12 @@ f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-input-method'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2026-04-20'; // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2026-04-20', time:'13:45' } // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-04-24', time:'13:34' } // date and time of latest substantive changes to this document
 f.status = 'draft'; // should be one of draft, review, published, or notreviewed
 f.path = '../../'; // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2026-04-20', time:'13:45' }; // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-04-24', time:'13:34' }; // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -133,7 +133,7 @@ f.breadcrumb = 'cultural';
 <header>
 <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
 
-  <h1>Handling input methods in web development</h1>
+  <h1>Handling IME composition in web apps</h1>
 </header>
 
 
@@ -156,7 +156,15 @@ f.breadcrumb = 'cultural';
 </div>
 
     <p>When a user types with an IME, the browser enters a composition session. During this time, keystrokes update an intermediate string, not the final value. The user may press Enter to select a candidate, not to submit. And the final text is only committed when the composition ends.</p>
-    <p>The core composition model is the same on mobile and desktop, but the interaction details may differ. On desktop, users often rely on hardware keys such as Enter to choose candidates, while on mobile they more often use virtual keyboards and candidate bars. The same rule applies everywhere: respect composition state.</p>
+    <p>Here is a typical worked example:</p>
+    <ol>
+      <li>The user focuses a text field and starts typing <kbd>n</kbd> and <kbd>i</kbd> with a Japanese IME.</li>
+      <li>The IME opens a composition session and shows a provisional reading such as <code>に</code>. At this point, the user has not finished entering text yet.</li>
+      <li>The user keeps typing until the IME shows a longer intermediate string such as <code>nihonngo</code>, together with candidate text such as <span lang="ja">日本語</span>.</li>
+      <li>The user presses Enter to choose that candidate. Here, Enter means "accept this IME choice", not "submit the form".</li>
+      <li>The browser fires <code>compositionend</code>, commits <span lang="ja">日本語</span> into the input, and only then is the field value ready to be treated as final text.</li>
+    </ol>
+    <p>The core composition model is the same on mobile and desktop, but the interaction details may differ. On desktop, users often rely on hardware keys such as Enter to choose candidates, while on mobile they more often use virtual keyboards and candidate bars. The same rule applies everywhere: treat the text as unfinished while composition is active.</p>
     <p>The web platform exposes this state through events and properties, like:</p>
     <ul>
       <li><code>compositionstart</code>, <code>compositionupdate</code>, <code>compositionend</code></li>
@@ -181,6 +189,8 @@ f.breadcrumb = 'cultural';
 
     <section id="respect-composition-state">
     <h2>Respect composition state</h2>
+    <p>Your code must recognize that the user is still in the middle of building text. While composition is active, do not treat the current value as final input.</p>
+    <p>In practice, that means not submitting on Enter, not running validation that assumes the text is complete, and not triggering shortcuts that could interrupt the IME. Wait until composition ends, then handle the committed text.</p>
     <p>Always check whether composition is active before acting on Enter.</p>
     <figure class="example">
     <pre><code class="language-javascript">input.addEventListener('keydown', (e) => {
