@@ -116,4 +116,6 @@ The most reliable approach is to preserve original forms, model alternative form
 
 ## Further reading
 
+* [Language enablement index](https://www.w3.org/TR/typography/)
+* [Personal names around the world](https://www.w3.org/International/questions/qa-personal-names)
 * [Internationalization techniques: Authoring web pages](https://www.w3.org/International/techniques/authoring-html)
