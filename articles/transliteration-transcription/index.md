@@ -8,13 +8,13 @@ It is important to know when to use each one, how to store the data, and how to 
 
 ### Translation
 
+Usually, you should translate names only when there is a strong convention or an explicit editorial policy for doing so.
+
 Translation conveys meaning from one language to another. For example, “White House” is translated to “白宫” in Chinese.
 
 For names, translation is not always inappropriate. When product teams rely on machine processes or try to localize every string, mistakes sometimes happen. A person named “Grace” should not become the equivalent of “grace” in another language.
 
 A city, institution, or title may be different, because some proper nouns do have established translated forms.
-
-Usually, you should translate names only when there is a strong convention or an explicit editorial policy for doing so.
 
 ### Transliteration
 
