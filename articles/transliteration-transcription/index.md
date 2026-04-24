@@ -18,11 +18,11 @@ A city, institution, or title may be different, because some proper nouns do hav
 
 ### Transliteration
 
-Transliteration maps characters from one script to another, with the goal of preserving the written form as systematically as possible. For example, the Russian word Москва can be transliterated to Moskva.
+Transliteration maps characters from one script to another, with the goal of preserving the written form as systematically as possible. For example, the Russian word Москва can be transliterated to Moskva, and in a transliteration system Moskva can be converted back to Москва accurately.
 
 Transliteration answers the question, “How do I represent this spelling in another script?” It does not primarily aim to preserve pronunciation or meaning.
 
-This matters because multiple transliteration systems may exist for the same source script. The result can vary depending on whether you prioritize linguistic accuracy, passport conventions, library standards, or user familiarity.
+This matters because multiple romanization systems or conventions may exist for the same source script. The result can vary depending on whether you prioritize linguistic accuracy, passport conventions, library standards, or user familiarity.
 
 ### Transcription
 
