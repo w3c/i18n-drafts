@@ -1,10 +1,14 @@
-# Transliteration vs. translation vs. transcription
+# Transliteration, translation, and transcription for names
 
-Transliteration, translation, and transcription solve different problems, and choosing the wrong one can quietly damage usability and trust.
+## Question
 
-Strictly speaking, transliteration can be treated as a type of transcription. However, sometimes it is useful to separate transliteration from other kinds of transcription, because product decisions often depend on the difference between a reversible spelling-based mapping and a pronunciation-oriented rendering.
+**When a name crosses languages or scripts, should I translate it, transliterate it, or transcribe it?**
 
-It is important to know when to use each one, how to store the data, and how to design search behavior.
+Those choices solve different problems. One preserves meaning, another preserves spelling as systematically as possible, and another helps people pronounce the name.
+
+The goal here is to help you decide which approach to use for personal names, place names, and organization names, and to show what that implies for data modeling and display.
+
+Strictly speaking, transliteration can be treated as a type of transcription. However, for product work it is often useful to separate transliteration from other kinds of transcription, because decisions often depend on the difference between a reversible spelling-based mapping and a pronunciation-oriented rendering.
 
 ## Three categories
 
