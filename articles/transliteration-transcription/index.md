@@ -2,9 +2,11 @@
 
 Transliteration, translation, and transcription solve different problems, and choosing the wrong one can quietly damage usability and trust.
 
+Strictly speaking, transliteration can be treated as a type of transcription. However, sometimes it is useful to separate transliteration from other kinds of transcription, because product decisions often depend on the difference between a reversible spelling-based mapping and a pronunciation-oriented rendering.
+
 It is important to know when to use each one, how to store the data, and how to design search behavior.
 
-## The three concepts
+## Three categories
 
 ### Translation
 
@@ -26,21 +28,23 @@ This matters because multiple romanization systems or conventions may exist for 
 
 ### Transcription
 
-Transcription represents how something sounds.
+Here, by transcription, we mean the other kinds of transcription that represent how something sounds rather than how it is spelled.
 
-For example, Mandarin Chinese may be represented using pinyin, which is often treated as a romanization system with a strong phonetic component.
+These transcriptions often use conventions aimed at a particular audience. For accurate phonetic detail, the International Phonetic Alphabet (IPA) is a useful convention. At the other extreme, lay transcriptions often try to suggest pronunciation using the conventions of English or whatever language the reader speaks, which leads to forms such as “mosskvuh”. Those spellings may help some readers a little, but they are language-specific and often inconsistent.
 
-Japanese katakana is commonly used to transcribe foreign names and terms into Japanese sound patterns
+There are many standard transcription systems. Japanese, for example, uses katakana to transcribe foreign names into Japanese sound patterns, and it also has romaji conventions such as Hepburn and Kunrei-shiki. Indic languages likewise have established transcription and romanization conventions used in scholarly and practical contexts. Tibetan is a good illustration of the difference: Wylie and EWTS are transliteration systems, while Tibetan pinyin is intended to reflect pronunciation.
 
 Transcription is sound-focused, and answers the question, “How should this be pronounced?”
+
+A key limitation is reversibility. Unlike transliteration, transcription often does not allow you to reconstruct the original orthography reliably, because it can collapse spelling distinctions.
 
 It is often useful for accessibility, TTS support, language learning, voice interfaces, and pronunciation hints.
 
 ## Why people confuse them
 
-The confusion usually comes from romanization.
+The confusion usually comes from romanization and from overlapping terminology.
 
-Romanization can be transliteration or transcription. People then start using “translation” as a catch-all for any cross-language transformation, which leads to poor decisions in data models and UI labels.
+Romanization can be transliteration or transcription. In some linguistic usage, transliteration is itself treated as a subtype of transcription. But for product work, it is usually more useful to separate systematic, reversible mappings from pronunciation-oriented spellings. Once people stop making that distinction, “translation” often becomes a catch-all for any cross-language transformation, which leads to poor decisions in data models and UI labels.
 
 Names make this worse. A user may have:
 
@@ -98,7 +102,7 @@ Choose based on locale, audience, and context. A map, a passport form, a social 
 
 ## Takeaway
 
-Translation preserves meaning, transliteration preserves script-level correspondence, and transcription preserves sound.
+Translation preserves meaning. Transliteration preserves script-level correspondence and is often reversible. Other types of transcription preserve sound for a particular audience, but usually cannot be converted back to the original spelling.
 
 In multilingual products, especially around names, search, and fallback, that distinction affects whether users can find things, recognize themselves, trust the interface, and complete tasks without friction.
 
