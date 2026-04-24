@@ -61,6 +61,8 @@ For names, the first principle is simple: preserve the original form whenever po
 
 The original script form is often the most authoritative representation of a person, place, or organization. That does not mean it should always be the only visible form. It means it should be stored distinctly and treated as primary data.
 
+The native script also preserves distinctions that Latin-script forms often collapse. In Chinese, a romanized form such as shi can correspond to many different characters and tones, such as 诗 (shī), 时 (shí), 史 (shǐ), and 市 (shì). Once those forms are flattened to Latin script, pronunciation cues are weakened. In Japanese, Ono can represent 小野 or 大野, and kana forms such as おの and おおの also make long-vowel differences explicit in a way that plain ASCII often does not.
+
 A practical data model for names often benefits from separate fields for:
 
 * original form
