@@ -15,9 +15,13 @@ Examples:
 
 Each content file has a companion `{filename}-data/` directory containing `translations.js` and supporting files.
 
+For the meaning of the metadata stored in those `translations.js` files, see [`docs/translations-js.md`](docs/translations-js.md).
+
 ### Translations
 
 If you want to translate one or more of these resources, see the [Translation instructions](https://www.w3.org/International/i18n-drafts/pages/translation) page.
+
+For recurring terminology, use the per-language glossary framework in [glossaries/README.md](glossaries/README.md). Create a new glossary by copying [glossaries/_template.md](glossaries/_template.md) to `glossaries/<lang>.md`, and update the glossary in the same PR when you add or revise a recurring term.
 
 ### Contributing
 

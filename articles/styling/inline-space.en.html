@@ -16,12 +16,12 @@ f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-inline-space'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2026-04-02'; // date of the first publication of the document (after review)
 f.lastSubstUpdate = { date:'2026-04-02', time:'04:29'}  // date and time of latest substantive changes to this document
-f.status = 'draft';  // should be one of draft, review, published, notreviewed or obsolete
+f.status = 'review';  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2026-04-08', time:'16:20' } // date and time of latest edits to this document/translation
-f.contributors = 'The initial text for this article is taken from the <cite>Text spacing</cite> section of <a href="https://r12a.github.io/scripts/jpan/ja.html#letterspace">Japanese (Kanji, Hiragana, Katakana, & Latin) Orthography Notes</a> and <a href="https://r12a.github.io/scripts/hani/zh.html#letterspace">Han (Chinese) Orthography Notes</a>.'; // people providing useful contributions or feedback during review or at other times
+f.thisVersion = { date:'2026-04-30', time:'11:20' } // date and time of latest edits to this document/translation
+f.contributors = 'The initial text for this article is taken from the <cite>Text spacing</cite> section of <a href="https://r12a.github.io/scripts/jpan/ja.html#letterspace">Japanese (Kanji, Hiragana, Katakana, & Latin) Orthography Notes</a> and <a href="https://r12a.github.io/scripts/hani/zh.html#letterspace">Han (Chinese) Orthography Notes</a>. An AI summary was created, then developed further for the Key Takeaways section.'; // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -91,7 +91,7 @@ function setFont (classname, value) {
 
 <p>In principle, Japanese and Chinese texts don't use space characters. However, sometimes it is necessary to increase or decrease gaps between characters to improve readability. This article looks at ways of using CSS to add gaps between certain types of text,  to reduce gaps between punctuation marks, and to manage paragraph-initial spacing. It does not look at the changes in spacing between characters that are introduced during full justification.</p>
 
-<p>Rather than simply reproducing the spec itself here, we provide task-oriented guidance to help content authors  achieve key techniques.</p>
+<p>Rather than simply reproducing the spec itself here, we provide task-oriented guidance to help content authors  achieve key techniques. We make the assumption that content authors know what they want to do, and this article helps them understand how to do it.</p>
 
 <p><em>Note that some of the technologies described here are still under development, and browser adoption is only partial at best. In what follows we will describe what you should do when the CSS specification is properly implemented by browsers, and also describe what currently works and doesn't work.</em></p>
 
@@ -111,6 +111,57 @@ text-indent: [ &lt;length-percentage&gt; ] &amp;&amp; hanging? &amp;&amp; each-l
 hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code>
 </pre>
 </figure>
+</section>
+
+
+
+
+
+<section id="takeaways">
+<h2>Key takeaways</h2>
+
+<p>Although authors will usually jump directly to the task they need from the table of contents, the following provides a brief overview of the current state of implementation across the page as a whole.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅</bdi> Reliable</p>
+<p class="summary">Fully interoperable.</p>
+</aside>
+
+<p><span class="leadin">Inter-character letter-spacing.</span> Modern browsers reliably support adjusting spacing between characters, including CJK text. Positive and negative tracking behaves consistently across engines.</p>
+
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">❌</bdi> Unreliable</p>
+<p class="summary">No automatic support; styled behaviour inconsistent.</p>
+</aside>
+
+<p><span class="leadin">Spacing around alphabetic or numeric phrases.</span> Browsers do not automatically insert the small gaps expected in CJK typography when Latin letters or numbers appear inside CJK text. Attempts to style these gaps produce inconsistent results: Blink and Gecko behave differently, and WebKit only inserts a gap on one side. The “replace” behaviour (uniform spacing even when spaces exist) is not implemented, and currently breaks other behaviour when specified.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> Blink‑only</p>
+<p class="summary">No support in Gecko/WebKit.</p>
+</aside>
+
+<p><span class="leadin">Collapsing space in runs of punctuation.</span> Blink browsers collapse excessive spacing between adjacent punctuation marks by default. Gecko and WebKit do not collapse these gaps, and styled collapsing is only effective in Blink.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> Blink‑only &amp; font‑dependent</p>
+<p class="summary">Not supported in Gecko/&#x200B;WebKit.</p>
+</aside>
+
+<p><span class="leadin">Collapsing line‑initial space.</span> Blink reduces leading space for opening punctuation at the start of a line or paragraph, but results depend on the font. Gecko and WebKit do not reduce this space.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> Mostly Blink‑only</p>
+<p class="summary">Not interoperable.</p>
+</aside>
+
+<p><span class="leadin">Collapsing line‑final space.</span> Blink reduces trailing space for closing punctuation at the end of a line, helping it fit without wrapping. Gecko and WebKit do not implement this behaviour.</p>
 </section>
 
 
@@ -137,6 +188,8 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 <p>Solid set text is normally best for readability, however in large print sizes, such as for magazine headings, it may be desirable to reduce the distance between certain characters. This is typically done by reducing the distance between adjacent letter faces.</p>
 
+<p>(Having said that normally text is set solid, there are occasions where general text might be set with inter-character spacing throughout, such as for some individuals with learning disabilities.)</p>
+
 <aside class="floatedImplnote">
 <p class="feature">letter-spacing</p>
 <table class="implTable">
@@ -155,7 +208,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 
 
-<p><span class="leadin" style="font-size: 110%;">How to do it.</span> To create inter-character spacing in HTML use the CSS <code class="kw" translate="no">letter-spacing</code> property, with the appropriate value, which can be negative or positive.</p>
+<p><span class="leadin howto-header">How to do it.</span> To create inter-character spacing in HTML use the CSS <code class="kw" translate="no">letter-spacing</code> property, with the appropriate value, which can be negative or positive.</p>
 
 
 
@@ -188,7 +241,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 
 
-<p><span class="leadin" style="font-size: 110%;">Does it work?</span> Browsers using Blink, Gecko, and WebKit engines all support the use of <code class="kw" translate="no">letter-spacing</code> as described here.</p>
+<p><span class="leadin howto-header">Does it work?</span> Browsers using Blink, Gecko, and WebKit engines all support the use of <code class="kw" translate="no">letter-spacing</code> as described here.</p>
 </section>
 
 
@@ -220,7 +273,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 <p>The amount of spacing can vary. The Chinese Layout Requirements document suggests up to a ¼em space. The Japanese Layout Requirements document suggests a ¼em space, but sometimes other spaces may be appropriate, such as ⅙em. The amount of space introduced by a space character is too large, and it is much more convenient to insert the correctly sized gap through styling.</p>
 
-<p>Such spacing is not needed when the phrase is followed or preceded by punctuation that already has built in space. It also doesn't appear at the line start/end. It should also be noted that autospacing is additive with letter-spacing, and can also be affected by justification.</p>
+<p>Such spacing is not needed when the phrase is followed or preceded by punctuation that already has built in space. It also doesn't appear at the line start/end. It should also be noted that autospacing is additive with <a href="#letter_spacing">letter-spacing</a>, and can also be affected by justification.</p>
 
 
 
@@ -253,7 +306,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 </details>
 </aside>
 
-<p><span class="leadin" style="font-size: 110%;">How to do it.</span> The CSS specification expects that, with no styling, the browser should automatically insert a gap between runs of ideographs or kana characters and runs of alphanumeric text (ie. the <code class="kw" translate="no">normal</code> value). The size of the gap is dependent on the browser, however the CSS spec suggests 1/8 of the width of an ideographic character, which is on the smaller side of the suggested lengths. Unfortunately,  at this time no browser currently inserts a gap without styling.</p>
+<p><span class="leadin howto-header">How to do it.</span> The CSS specification expects that, with no styling, the browser should automatically insert a gap between runs of ideographs or kana characters and runs of alphanumeric text (ie. the <code class="kw" translate="no">normal</code> value). The size of the gap is dependent on the browser, however the CSS spec suggests 1/8 of the width of an ideographic character, which is on the smaller side of the suggested lengths. Unfortunately,  at this time no browser currently inserts a gap without styling.</p>
 
 <p>To achieve this result using styling, you should, in principle, be able to use the <code class="kw" translate="no">text-autospace</code> CSS property in your style sheet. Do not use space characters!</p>
 
@@ -279,7 +332,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 </tr>
 </thead>
 <tbody>
-<tr><td>✅</td><td>✅</td><td>✅❌</td></tr>
+<tr><td>✅</td><td>✅</td><td>⚠️</td></tr>
 </tbody>
 </table>
 
@@ -314,7 +367,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 </tr>
 </thead>
 <tbody>
-<tr><td>❌</td><td>✅❌</td><td>✅❌</td></tr>
+<tr><td>❌</td><td>⚠️</td><td>⚠️</td></tr>
 </tbody>
 </table>
 
@@ -328,7 +381,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 </tr>
 </thead>
 <tbody>
-<tr><td>❌</td><td>✅❌</td><td>✅❌</td></tr>
+<tr><td>❌</td><td>⚠️</td><td>⚠️</td></tr>
 </tbody>
 </table>
 
@@ -409,19 +462,12 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 <dt>auto</dt>
 <dd>Gives over control of  autospace behaviour to the browser, assuming that the browser has implemented special rules that differ from the normal case. Note that if you use this value your text may look different from browser to browser.</dd>
 </dl>
-
-
-<p>Ideally, when browsers support the CSS, and because <code class="kw" translate="no">replace</code> doesn't work with the <code class="kw" translate="no">normal</code> keyword, you will probably want to use the following most of the time:<br>
-<code>text-autospace: ideograph-alpha ideograph-numeric replace;</code></p>
-
-<p>However, while the <code class="kw" translate="no">replace</code> value stops the other values working,  for now you may want to go with:<br>
-<code>text-autospace: normal;</code></p>
 </section>
 
 
 
 
-<p><span class="leadin" style="font-size: 110%;">Does it work?</span> The <code class="kw" translate="no">text-autospace</code> property is still not interoperably implemented on major browser engines, and what partial implementations exist are problematic. No browser adds the autospace without styling.  That said, adding a <code class="kw" translate="no">text-autospace</code> rule to your CSS style sheet now doesn't do any harm, and may improve the rendered text as implementations improve. (For now, however, drop the <code class="kw" translate="no">replace</code> keyword, since it scuppers what spacing is applied.)</p>
+<p><span class="leadin howto-header">Does it work?</span> The <code class="kw" translate="no">text-autospace</code> property is still not interoperably implemented on major browser engines, and what partial implementations do exist are problematic. No browser adds the autospace without styling.  That said, adding a <code class="kw" translate="no">text-autospace</code> rule to your CSS style sheet now may not do any harm, and may improve the rendered text as implementations improve. (For now, however, drop the <code class="kw" translate="no">replace</code> keyword, since it scuppers what spacing is applied.)</p>
 
 <p style="font-style: italic; font-size: 90%; line-height: 1.2;">The following demo has three paragraphs.  The first has no styling. The second is styled only with <code class="kw" translate="no">normal</code>. And the third line adds the <code class="kw" translate="no">replace</code> keyword. Space characters surround the term "gilt top". Shading is just to help visual examination.</p>
 
@@ -453,6 +499,15 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 <p class="options">Choose a font: <input oninput="document.querySelector('#demo-autospace .test_lines').style.fontFamily = this.value;"></p>
 </div>
+
+
+<p>In principle, when browsers support the CSS fully, and because <code class="kw" translate="no">replace</code> doesn't work with the <code class="kw" translate="no">normal</code> keyword, you will probably want to use the following most of the time:<br>
+<code>text-autospace: ideograph-alpha ideograph-numeric replace;</code></p>
+
+<p>However, while the <code class="kw" translate="no">replace</code> value stops the other values working, for now the best you can probably do is:<br>
+<code>text-autospace: normal;</code></p>
+
+<p>(An issue <a href="https://github.com/w3c/csswg-drafts/issues/13774">has been raised</a> with the CSS Working Group suggesting that the <code class="kw" translate="no">replace</code> keyword should work with <code class="kw" translate="no">normal</code>.)</p>
 </section>
 
 
@@ -515,7 +570,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 <!--<h3>How to do it</h3>-->
 
 
-<p><span class="leadin" style="font-size: 110%;">How to do it.</span> The CSS Text specification proposes a way to remove superfluous gaps between punctuation marks using the <code class="kw" translate="no">text-spacing-trim</code> CSS property.</p>
+<p><span class="leadin howto-header">How to do it.</span> The CSS Text specification proposes a way to remove superfluous gaps between punctuation marks using the <code class="kw" translate="no">text-spacing-trim</code> CSS property.</p>
 
 
 <p>You can indicate to the browser that you want to do this using <code class="kw" translate="no">text-spacing-trim:normal</code>, but in fact, any of the following additional values for that property remove space in punctuation clusters: <code class="kw" translate="no">trim-both</code>, <code class="kw" translate="no">space-first</code>, <code class="kw" translate="no">trim-start</code>, and <code class="kw" translate="no">trim-all</code>. The particular value you should choose depends on how you want to handle  space at the start of a paragraph, which is discussed below.</p>
@@ -549,6 +604,44 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 <tr><td>✅</td><td>❌</td><td>❌</td></tr>
 </tbody>
 </table>
+
+
+<details class="moreTests"><summary>Tests</summary>
+<div class="testData">
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20normal%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Anormal%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:normal will reduce the width of brackets alongside other punctuation.</a></p>
+
+<p><span class="leadin">Results:</span> Appears to work in Chrome, but this also happens by default (without CSS). Doesn't work in Firefox or Safari.</p>
+<hr>
+
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20trim-both%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Atrim-both%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:trim-both will reduce the width of brackets alongside other punctuation.</a></p>
+
+<p><span class="leadin">Results:</span> Same result.</p>
+<hr>
+
+
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20trim-start%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Atrim-start%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:trim-start will reduce the width of brackets alongside other punctuation.</a></p>
+
+<p><span class="leadin">Results:</span> Same result.</p>
+<hr>
+
+
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20trim-all%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Atrim-all%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:trim-all will reduce the width of brackets alongside other punctuation.</a></p>
+
+<p><span class="leadin">Results:</span> Same result.</p>
+<hr>
+
+
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20space-first%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Aspace-first%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:space-first will reduce the width of brackets alongside other punctuation.</a></p>
+
+<p><span class="leadin">Results:</span> Same result.</p>
+<hr>
+
+
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20space-all%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Aspace-all%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:space-all will reduce the width of brackets alongside other punctuation.</a></p>
+
+<p><span class="leadin">Results:</span> The brackets remain fullwidth for Blink browsers as well as Gecko and WebKit browsers.</p>
+</div>
+</details>
 </aside>
 
 
@@ -589,7 +682,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 <!--<h3>Does it work?</h3>-->
 
 
-<p><span class="leadin" style="font-size: 110%;">Does it work?</span> As of the time of writing, browser support for <code class="kw" translate="no">text-spacing-trim</code> is limited.</p>
+<p><span class="leadin howto-header">Does it work?</span> As of the time of writing, browser support for <code class="kw" translate="no">text-spacing-trim</code> is limited.</p>
 
 <p>Blink browsers support gap reduction using the values mentioned above, but also reduce the gap by default — no styling needed.</p>
 
@@ -604,7 +697,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 
 <section id="punctuation_initial">
-<h2>Line-initial punctuation</h2>
+<h2>Collapsing line-initial space</h2>
 
 <p>This section is concerned with punctuation marks that normally include built-in space on the left, such as the bracket <span style="background-color:antiquewhite">「</span>.  We'll use that for the following examples, although this applies also to other punctuation marks.</p>
 <p>When a punctuation mark like this appears at the beginning of a line, there are a number of possibilities. These decisions will typically be influenced by whether or not a paragraph is preceded by a blank line, or whether the first line of the paragraph is indented.</p>
@@ -624,7 +717,7 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 <p>The <code class="kw" translate="no">text-spacing-trim</code> property has a number of possible values. Each property affects the width of punctuation marks at the start and end of a line. <a class="figref">fig_text_spacing_trim_values</a> provides an overview. Brackets that are the first character in a paragraph may or may not be preceded by indentation (set using a different property).</p>
 
-<p style="font-size: 90%; line-height: 1.4;"><em>For each value in <a class="figref">fig_text_spacing_trim_values</a>, three lines are shown containing brackets.  The first line shows whether a paragraph-initial bracket is fullwidth or halfwidth. The left side of the second line shows what an inline bracket would look like when wrapped to a new line. To the right of the second line, a halfwidth graphic indicates that a closing bracket at line end can be reduced to fit. The third line shows the expected width of a paragraph-final bracket when there is adequate space after it to show a fullwidth glyph.</em></p>
+<p style="font-size: 90%; line-height: 1.4;"><em>For each value in <a class="figref">fig_text_spacing_trim_values</a>, three lines are shown containing brackets.  The first line shows whether a paragraph-initial bracket is fullwidth or halfwidth. The left side of the second line shows what an inline bracket would look like when wrapped to a new line. To the right of the second line, a halfwidth graphic indicates that a closing bracket at line end can be reduced to fit if only a halfwidth gap is available. The third line shows the expected width of a paragraph-final bracket when there is adequate space after it to show a fullwidth glyph.</em></p>
 
 
 <style>
@@ -636,58 +729,68 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 <figure id="fig_text_spacing_trim_values">
 <table id="tst_values">
-<!--<thead>
-<tr><th>Value</th><th>Paragraph start</th><th>Line start</th><th>Line end</th><th>Tight line end</th></tr>
-</thead>
---><tbody>
+<tbody>
 <tr><td>normal</td>
-<td><img src="inline-space-data/cell_full_open.jpg"> .......................................<br>
-<img src="inline-space-data/cell_full_open.jpg"> ................................. <img src="inline-space-data/cell_half_close.jpg"><br>
+<td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
+<img src="inline-space-data/cell_full_open.jpg"> ........................... <img src="inline-space-data/cell_full_close.jpg"> or <img src="inline-space-data/cell_half_close.jpg"><br>
 ............ <img src="inline-space-data/cell_full_close.jpg"></td>
-<td>A paragraph-initial bracket is fullwidth.<br>An inline bracket that wraps to a line start is fullwidth.<br>A closing bracket at line end can be reduced to fit. A closing bracket at the end of a paragraph with space available is fullwidth.</td>
+<td>A paragraph-initial bracket is fullwidth.<br>An inline bracket that wraps to a line start is fullwidth.<br>A closing bracket at line end can be reduced to fit. <br>
+A closing bracket at the end of a paragraph with space available is fullwidth.</td>
 </tr>
 <tr><td>trim-both</td>
-<td><img src="inline-space-data/cell_half_open.jpg"> .......................................<br>
-<img src="inline-space-data/cell_half_open.jpg"> ................................. <img src="inline-space-data/cell_half_close.jpg"><br>
+<td><img src="inline-space-data/cell_half_open.jpg"> .......................................................<br>
+<img src="inline-space-data/cell_half_open.jpg"> ............................................... <img src="inline-space-data/cell_half_close.jpg"><br>
 ............ <img src="inline-space-data/cell_half_close.jpg"></td>
 <td>A paragraph-initial bracket is halfwidth.<br>
 An inline bracket that wraps to a line start is halfwidth.<br>
-A closing bracket at line end  is halfwidth.</td>
+A closing bracket at line end  is always halfwidth.</td>
 </tr>
 <tr><td>trim-start</td>
-<td><img src="inline-space-data/cell_half_open.jpg"> .......................................<br>
-<img src="inline-space-data/cell_half_open.jpg"> ................................. <img src="inline-space-data/cell_half_close.jpg"><br>
+<td><img src="inline-space-data/cell_half_open.jpg"> ......................................................<br>
+<img src="inline-space-data/cell_half_open.jpg"> ................................ <img src="inline-space-data/cell_full_close.jpg"> or <img src="inline-space-data/cell_half_close.jpg"><br>
 ............ <img src="inline-space-data/cell_full_close.jpg"></td>
-<td>A paragraph-initial bracket is halfwidth.<br>An inline bracket that wraps to a line start is halfwidth.<br>A closing bracket at line end can be reduced to fit. A closing bracket at the end of a paragraph with space available is fullwidth.</td>
+<td>A paragraph-initial bracket is halfwidth.<br>An inline bracket that wraps to a line start is halfwidth.<br>
+A closing bracket at line end can be reduced to fit.<br>
+A closing bracket at the end of a paragraph with space available is fullwidth.</td>
 </tr>
 <tr><td>space-first</td>
-<td><img src="inline-space-data/cell_full_open.jpg"> .......................................<br>
-<img src="inline-space-data/cell_half_open.jpg"> ................................. <img src="inline-space-data/cell_half_close.jpg"><br>
+<td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
+<img src="inline-space-data/cell_half_open.jpg"> ................................. <img src="inline-space-data/cell_full_close.jpg"> or <img src="inline-space-data/cell_half_close.jpg"><br>
 ............ <img src="inline-space-data/cell_full_close.jpg"></td>
-<td>A paragraph-initial bracket is fullwidth.<br>An inline bracket that wraps to a line start is halfwidth.<br>A closing bracket at line end can be reduced to fit. A closing bracket at the end of a paragraph with space available is fullwidth.</td>
+<td>A paragraph-initial bracket is fullwidth.<br>An inline bracket that wraps to a line start is halfwidth.<br>
+A closing bracket at line end can be reduced to fit.<br>
+A closing bracket at the end of a paragraph with space available is fullwidth.</td>
 </tr>
 <tr><td>trim-all</td>
-<td><img src="inline-space-data/cell_half_open.jpg"> .......................................<br>
-<img src="inline-space-data/cell_half_open.jpg"> ................................. <img src="inline-space-data/cell_half_close.jpg"><br>
+<td><img src="inline-space-data/cell_half_open.jpg"> .........................................................<br>
+<img src="inline-space-data/cell_half_open.jpg"> ............................................. <img src="inline-space-data/cell_half_close.jpg"><br>
 ............ <img src="inline-space-data/cell_half_close.jpg"></td>
 <td>A paragraph-initial bracket is halfwidth.<br>
 An inline bracket that wraps to a line start is halfwidth.<br>
-A closing bracket at line end  is halfwidth.<br>
-This produces halfwidth glyphs for punctuation (including middle dots) wherever they occur, not just at line start/end.</td>
+A closing bracket at line end  is always halfwidth.<br>
+This produces halfwidth glyphs for punctuation (including middle dots) <strong>wherever</strong> they occur, not just at line start/end.</td>
 </tr>
 <tr><td>space-all</td>
-<td><img src="inline-space-data/cell_full_open.jpg"> .......................................<br>
-<img src="inline-space-data/cell_full_open.jpg"> ................................. <img src="inline-space-data/cell_full_close.jpg"><br>
+<td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
+<img src="inline-space-data/cell_full_open.jpg"> ....................................... <img src="inline-space-data/cell_full_close.jpg"><br>
 ............ <img src="inline-space-data/cell_full_close.jpg"></td>
 <td>A paragraph-initial bracket is fullwidth.<br>
 An inline bracket that wraps to a line start is fullwidth.<br>
-A closing bracket at line end is fullwidth.<br>
-This produces fullwidth glyphs for punctuation wherever they occur, not just at line start/end.</td>
+A closing bracket at line end is always fullwidth.<br>
+This produces fullwidth glyphs for punctuation <strong>wherever</strong> they occur, not just at line start/end.</td>
 </tr>
 </tbody>
 </table>
 <figcaption>Values of the property <code class="kw" translate="no">text-spacing-trim</code>, and their effects on brackets at the start and end of a line.</figcaption>
 </figure>
+
+<p style="font-style: italic;">(An <a href="https://github.com/w3c/csswg-drafts/issues/13789">issue has been raised</a> in the CSS repository suggesting that it would be simpler for content authors to be able to set each of the behaviours above separately, rather than using keywords that only cover certain combinations.)</p>
+
+
+
+
+
+
 
 
 <section id="punc_fonts">
@@ -768,29 +871,6 @@ Apple LiSung<br>LiSong Pro<br>Songti TC<br>Nom Na Tong<br>Apple LiGothic<br>Heit
 
 
 <p>The above results were derived from text displayed in horizontal lines. Some fonts (such as PingFang TC) support the expected behaviour in horizontal text, but not in vertically set text. You should also be careful to note whether the font supports glyphs for the bracket you want to use: for example, the Hiragino Sans TC font doesn't appear to support the 〖 bracket (although it does support the 【 bracket) — if you use that bracket and that font you may see unexpected failures.</p>
-
-<!--<details class="moreTests">
-<summary>Tests</summary>
-
-<p>Currently, these tests only work for Blink browsers, such as Chrome, Edge, Brave, etc. These tests are designed to check for macOS fonts only.</p>
-<ol>
-<li>
-<p><span class="leadin">Assertion:</span> <a target="_blank" href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%90%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%96%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%94%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%BB%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%88%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%88%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8A%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A&css=.test%20%7B%20writing-mode%3Avertical-rl%3B%20%7D%0Aspan%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0Ap%20%7B%20text-spacing-trim%3Atrim-start%3B%20%20%7D&lang=ja&fontSize=36&width=900&height=261&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20Japanese%20paragraph%20(using%20macOS%20%26%20Noto%20fonts).&i=Tests%20pass%20if%20the%20bracket%20and%20its%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20top%20of%20the%20box.&fonts=Hiragino Mincho Pro,Noto Serif CJK JP,Toppan Bunkyu Mincho,YuMincho,Hiragino Kaku Gothic Pro,Hiragino Sans,Osaka,Toppan Bunkyu Gothic,Noto Sans CJK JP,YuGothic,Hiragino Maru Gothic Pro,Tsukushi A Round Gothic,Tsukushi B Round Gothic,Toppan Bunkyu Midashi Gothic,YuKyokasho,YuKyokasho Yoko">text-spacing-trim:trim-start trims leading space from opening brackets at the start of a Japanese paragraph (using macOS &amp; Noto fonts).</a></p>
-<p><a target="_blank" href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E3%80%8C%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9&fonts=Hiragino%20Mincho%20Pro%2CNoto%20Serif%20CJK%20JP%2CToppan%20Bunkyu%20Mincho%2CYuMincho%2CHiragino%20Kaku%20Gothic%20Pro%2CHiragino%20Sans%2COsaka%2CToppan%20Bunkyu%20Gothic%2CNoto%20Sans%20CJK%20JP%2CYuGothic%2CArial%20Unicode%20MS%2CHiragino%20Maru%20Gothic%20Pro%2CTsukushi%20A%20Round%20Gothic%2CTsukushi%20B%20Round%20Gothic%2CToppan%20Bunkyu%20Midashi%20Gothic%2CYuKyokasho%2CYuKyokasho%20Yoko&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3B&lang=ja">Font previewer</a></p>
-</li>
-
-
-<li>
-<p><span class="leadin">Assertion:</span> <a target="_blank" href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%90%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%96%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%94%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%BB%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%88%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%88%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8A%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20%20%7D&lang=zh-hans&fontSize=36&width=900&height=850&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20Simplified%20Chinese%20paragraph%20(using%20macOS%20%26%20Noto%20fonts).&i=Tests%20pass%20if%20the%20bracket%20and%20its%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box.&fonts=Noto Serif CJK SC,Noto Sans CJK SC,PingFang SC,SimSong,Songti SC,STSong,Hei,Heiti SC,Lantinghei SC,STHeiti,Yuanti SC,STFangsong,Kai,Kaiti SC,STKaiti,Xingkai SC,Baoli SC,Hannotate SC,HanziPen SC,Libian SC,Wawati SC,Weibei SC,Yuppy SC">text-spacing-trim:trim-start trims leading space from opening brackets at the start of a Simplified Chinese paragraph (using macOS &amp; Noto fonts).</a></p>
-<p><a target="_blank" href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E3%80%8E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F&fonts=Noto%20Serif%20CJK%20TC%2CNoto%20Sans%20CJK%20TC%2CPingFang%20HK%2CPingFang%20TC%2CPingFang%20MO%2CHiragino%20Sans%20TC%2CApple%20LiSung%2CLiSong%20Pro%2CSongti%20TC%2CNom%20Na%20Tong%2CApple%20LiGothic%2CHeiti%20TC%2CLantinghei%20TC%2CLiHei%20Pro%2CYuanti%20TC%2CBiaukaiTC%2CBiaukaiHK%2CKaiti%20TC%2CXingkai%20TC%2CBaoli%20TC%2CHannotate%20TC%2CHanziPen%20TC%2CLibian%20TC%2CWawati%20TC%2CWeibei%20TC%2CYuppy%20TC&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3B&lang=zh-hant">Font previewer</a></p>
-</li>
-
-<li>
-<p><span class="leadin">Assertion:</span> <a target="_blank" href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%90%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%96%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%94%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%BB%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%88%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%88%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8A%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20%20%7D&lang=zh-hant&fontSize=36&width=900&height=850&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20Traditional%20Chinese%20paragraph%20(using%20macOS%20%26%20Noto%20fonts).&i=Tests%20pass%20if%20the%20bracket%20and%20its%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box.&fonts=Noto Serif CJK TC,Noto Sans CJK TC,PingFang HK,PingFang TC,PingFang MO,Hiragino Sans TC,Apple LiSung,LiSong Pro,Songti TC,Nom Na Tong,Apple LiGothic,Heiti TC,Lantinghei TC,LiHei Pro,Yuanti TC,BiaukaiTC,BiaukaiHK,Kaiti TC,Xingkai TC,Baoli TC,Hannotate TC,HanziPen TC,Libian TC,Wawati TC,Weibei TC,Yuppy TC">text-spacing-trim:trim-start trims leading space from opening brackets at the start of a Traditional Chinese paragraph (using macOS &amp; Noto fonts).</a></p>
-<p><a target="_blank" href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E3%80%8C%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7&fonts=Noto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC%2CPingFang%20SC%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CSTHeiti%2CYuanti%20SC%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3B&lang=zh-hans">Font previewer</a></p>
-</li>
-</ol>
-</details>-->
 </section>
 
 
@@ -807,7 +887,7 @@ Apple LiSung<br>LiSong Pro<br>Songti TC<br>Nom Na Tong<br>Apple LiGothic<br>Heit
 
 
 <figure id="fig_trim_startX" style=" margin-block: 0;">
-<img src="inline-space-data/fig_op_nospace.jpg" alt="" style="width:16rem;">
+<img src="inline-space-data/fig_op_nospace.jpg" alt="" style="width:24rem;">
 </figure>
 
 
@@ -846,23 +926,6 @@ Apple LiSung<br>LiSong Pro<br>Songti TC<br>Nom Na Tong<br>Apple LiGothic<br>Heit
 <tr><td>❌</td><td>❌</td><td>❌</td></tr>
 </tbody>
 </table>
-
-<!--<details class="moreTests"><summary>More tests</summary>
-<ol>
-<li>
-<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-start</code> trims leading space from opening brackets at the start of a paragraph on macOS.</a></p>
-
-<p><span class="leadin">Results:</span> Works for Blink browsers, but not for Gecko or WebKit.</p>
-</li>
-
-<li>
-<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-both%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-both%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-both</code> trims leading space from opening brackets at the start of a paragraph on macOS.</a></p>
-
-<p><span class="leadin">Results:</span> Fails for Blink, Gecko and WebKit browsers.</p>
-</li>
-</ol>
-</details>-->
-
 
 
 <details class="moreTests"><summary>More tests</summary>
@@ -921,49 +984,7 @@ Adjust line length: <input id="offsetSlider2" type="range" min="5" max="20" step
 
 
 
-<!--<div id="demo-trim-start" class="browser_output">
-<p class="browser_output_title">Output in your browser. (Adjust the line length so that both opening brackets appear at the start of the line.)</p>
-
-<div class="test_lines">
-<div id="demo-trim-start_test" style="text-spacing-trim: trim-start; margin-block:0;">
-<p lang="ja">内容は釈実に進化してきた。</p>
-<p lang="ja" style=""><span style="background-color:antiquewhite;">「</span>今回何よりお伝えしたいのは<span style="background-color:antiquewhite;">『</span>家族旅行ハワイ』の行き先にハワイ島が加わったことです。」</p>
-<p lang="ja">溶岩大地が圧巻のハワイ火山国立公園、マウナケア山から望む</p>
-</div>
-</div>
-
-<p class="options">Choose a font: <input oninput="document.querySelector('#demo-trim-start .test_lines').style.fontFamily = this.value;" style="width:8em;" placeholder="YuMincho">  &nbsp; 
-
-Adjust line length: <input id="offsetSlider2" type="range" min="5" max="20" step="1" value="14" 
-    oninput="document.getElementById('demo-trim-start_test').style.height = this.value+'em';
-         document.getElementById('offsetSliderValue2').value=this.value+'em';"
-         style="width:8em; height:1em;" placeholder="">
-<input value="14em" id="offsetSliderValue2" style="width:3em;"></p>
-</div>
--->
-
-
-
-<p><span class="leadin" style="font-size: 110%;">Does it work?</span> The <code class="kw" translate="no">trim-start</code> value is supported by Blink browsers, but <code class="kw" translate="no">trim-both</code> is not. Neither value is supported by Gecko or WebKit browsers.</p>
-
-
-
-
-<!--<details class="moreTests"><summary>Tests</summary>
-<ol>
-<li>
-<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-start</code> trims leading space from opening brackets at the start of a paragraph on macOS.</a></p>
-
-<p><span class="leadin">Results:</span> Works for Blink browsers, but not for Gecko or WebKit.</p>
-</li>
-
-<li>
-<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-both%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-both%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-both</code> trims leading space from opening brackets at the start of a paragraph on macOS.</a></p>
-
-<p><span class="leadin">Results:</span> Fails for Blink, Gecko and WebKit browsers.</p>
-</li>
-</ol>
-</details>-->
+<p><span class="leadin howto-header">Does it work?</span> The <code class="kw" translate="no">trim-start</code> value is supported by Blink browsers, but <code class="kw" translate="no">trim-both</code> is not. Neither value is supported by Gecko or WebKit browsers.</p>
 </section>
 
 
@@ -978,7 +999,7 @@ Adjust line length: <input id="offsetSlider2" type="range" min="5" max="20" step
 
 
 <figure id="fig_op_halfspace" style="/*float:right*/">
-<img src="inline-space-data/fig_op_halfspace.jpg" alt="" style="width:12rem;">
+<img src="inline-space-data/fig_op_halfspace.jpg" alt="" style="width:22rem;">
 </figure>
 
 <p>A common arrangement for Japanese text is to remove the gaps between paragraphs, and start each paragraph with a one em indent. When an opening bracket appears at the beginning of the first line in the paragraph, it occupies the right-hand (or lower) half of that indentation. This can be visually analysed as a fullwidth character replacing the indent, or as the halfwidth bracket ‘hanging’ to the left of/above the actual line start.</p>
@@ -1014,6 +1035,21 @@ Adjust line length: <input id="offsetSlider2" type="range" min="5" max="20" step
 <tr><td>❌</td><td>❌</td><td>✅</td></tr>
 </tbody>
 </table>
+
+
+<details class="moreTests"><summary>More tests</summary>
+<div class="testData">
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%E3%80%8D%E3%80%82%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testme%22%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%E3%80%8D%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20hanging-punctuation%3A%20first%3B%20padding-inline%3A1em%7D&lang=ja&fontSize=62&fontFamily=YuMincho&width=976&height=231&a=hanging-punctuation%3Afirst%20will%20move%20a%20bracket%20before%20the%20start%20of%20a%20paragraph.&i=Text%20passes%20if%20the%20opening%20bracket%20on%20the%20SECOND%20line%20is%20positioned%20directly%20below%20the%20one%20on%20the%20first%20line." target="_blank"><code class="kw" translate="no">hanging-punctuation:first</code> will move a bracket before the start of a paragraph.</a></p>
+
+<p><span class="leadin">Results:</span> Works for WebKit browsers, but not for Blink or Gecko. If this fails, then the technique described here will also fail.</p>
+
+<hr>
+
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E3%80%82%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-indent%3A1em%7D&lang=ja&fontSize=29&fontFamily=YuMincho&width=450&height=336&a=text-indent%3A1em%20will%20add%20a%201%20em%20gap%20before%20the%20start%20of%20a%20paragraph.&i=Text%20passes%20if%20there%20is%20a%201em%20gap%20at%20the%20beginning%20of%20the%20SECOND%20paragraph%20(3rd%20line)." target="_blank"><code class="kw" translate="no">text-indent:1em</code> will add a 1 em gap before the start of a paragraph.</a></p>
+
+<p><span class="leadin">Results:</span> Works for Blink, Gecko and WebKit browsers.</p>
+</div>
+</details>
 </aside>
 
 
@@ -1065,31 +1101,8 @@ Adjust line length: <input id="offsetSlider3" type="range" min="5" max="20" step
 
 
 
-<!--<div id="demo-indent" class="browser_output">
-<p class="browser_output_title">Output in your browser. (Adjust the line length so that both opening brackets appear at the start of the line.)</p>
 
-<div class="test_lines">
-<div id="demo-indent_test" style="text-spacing-trim:trim-start; margin-block:0;">
-<p lang="ja" style="text-indent: unset;">内容は釈実に進化してきた。</p>
-<p lang="ja" style=""><span>「</span>今回何よりお伝えしたいのは<span>『</span>家族旅行ハワイ』の行き先にハワイ島が加わったことです。」</p>
-<p lang="ja">溶岩大地が圧巻のハワイ火山国立公園、マウナケア山から望む</p>
-</div>
-</div>
-
-<p class="options">Choose a font: <input oninput="document.querySelector('#demo-indent .test_lines').style.fontFamily = this.value;" style="width:8em;" placeholder="YuMincho">  &nbsp; 
-
-Adjust line length: <input id="offsetSlider3" type="range" min="5" max="20" step="1" value="14" 
-    oninput="document.getElementById('demo-indent_test').style.height = this.value+'em';
-         document.getElementById('offsetSliderValue3').value=this.value+'em';"
-         style="width:8em; height:1em;" placeholder="">
-<input value="15em" id="offsetSliderValue3" style="width:3em;"></p>
-</div>-->
-
-
-
-
-
-<p><span class="leadin" style="font-size: 110%;">Does it work?</span> Unfortunately, this approach cannot currently be produced in Blink or Gecko browsers, since they don't support the <code class="kw" translate="no">hanging-punctuation</code> property.</p>
+<p><span class="leadin howto-header">Does it work?</span> Unfortunately, this approach cannot currently be produced in Blink or Gecko browsers, since they don't support the <code class="kw" translate="no">hanging-punctuation</code> property.</p>
 
 <p>WebKit browsers <em>do</em> support <code class="kw" translate="no">hanging-punctuation:first</code>, and the bracket at the beginning of the paragraph looks as expected.  However, WebKit browsers don't remove the half space before a bracket that is inside a paragraph but is wrapped to the beginning of a line.</p>
 
@@ -1106,7 +1119,7 @@ Adjust line length: <input id="offsetSlider3" type="range" min="5" max="20" step
 
 
 <figure id="fig_op_chinese" style="/*float:right*/">
-<img src="inline-space-data/fig_op_chinese.jpg" alt="" style="width:12rem;">
+<img src="inline-space-data/fig_op_chinese.jpg" alt="" style="width:24rem;">
 </figure>
 
 <p>The figure just above shows Chinese paragraphs with the first line indented. In the case of Chinese, the typical indent is 2em. The leading space of the bracket is removed, but unlike the previous Japanese example, the bracket doesn't hang in the indent space.</p>
@@ -1114,7 +1127,27 @@ Adjust line length: <input id="offsetSlider3" type="range" min="5" max="20" step
 <p>The following CSS should achieve this effect. The <code class="kw" translate="no">text-indent</code> property, once again, applies the indent across all paragraphs (but 2 em gaps this time). The <code class="kw" translate="no">text-spacing-trim</code> line then removes the leading space from the bracket.</p>
 
 
-<figure class="example" lang="en" style="clear: both;">
+
+<aside class="floatedImplnote">
+<p class="feature">space-first</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+
+
+<figure class="example" lang="en">
 <pre><code class="language-css">p {
   margin: 0;
   text-indent: 2em;
@@ -1122,12 +1155,6 @@ Adjust line length: <input id="offsetSlider3" type="range" min="5" max="20" step
   }</code></pre>
 </figure>
 
-<!--<style>
-#demo-chinese .test_lines { font-size: 1.6rem; line-height: 1.4; writing-mode:vertical-rl; }
-#demo-chinese span { background-color: antiquewhite; }
-#demo-chinese .test_lines p { text-indent: 2em; margin-block: 0; }
-#demo-chinese_test p { text-spacing-trim: trim-start; }
--->
 
 <style>
 #demo-chinese .test_lines { font-size: 1.6rem; line-height: 1.4; font-family: "Hiragino Sans TC", "PMingLiu","Noto Serif CJK TC"; writing-mode:vertical-rl; height: 11em; margin:1em; }
@@ -1140,10 +1167,6 @@ Adjust line length: <input id="offsetSlider3" type="range" min="5" max="20" step
 
 <div class="test_lines">
 <div id="demo-chinese_test">
-<!--<p lang="zh-hant" style="text-indent: unset;">漢字漢字漢字漢字漢字漢字漢字。</p>
-<p lang="zh-hant" style=""><span>「</span>漢字漢字漢字漢字漢字漢字漢字漢字漢字<span>『</span>漢字漢字漢字漢字漢字』漢字漢字。」</p>
-<p lang="zh-hant">漢字漢字漢字漢字漢字漢字，漢字漢字。</p>-->
-
 
 <p lang="zh-hant">漢字漢字漢字漢字漢字漢字漢字。</p>
 <p lang="zh-hant" style=""><span>「</span>漢字漢字漢字漢字漢字漢字漢字漢字漢字。」</p>
@@ -1168,34 +1191,7 @@ Adjust line length: <input id="offsetSlider4" type="range" min="5" max="20" step
 
 
 
-<!--<div id="demo-chinese" class="browser_output">
-<p class="browser_output_title">Output in your browser. (Adjust the line length so that both opening brackets appear at the start of the line.)</p>
-
-<div class="test_lines">
-<div id="demo-chinese_test">
-<p style="text-indent: unset;">第一段以柔和意象鋪陳心境，字句緩慢流動如風中微光。</p>
-
-<p style=" text-spacing-trim:trim-both;"><span style="background-color:antiquewhite;">〖</span>第二段以開括號起筆，約十二字後再添<span style="background-color:antiquewhite;">〖</span>一記符號以呼應層次感。</p>
-
-<p>第三段以靜謐語氣收束情緒，讓餘韻在字裡行間延展。</p>
-
-</div>
-</div>
-
-<p class="options">Choose a font: <input oninput="document.querySelector('#demo-chinese .test_lines').style.fontFamily = this.value;">  &nbsp; 
-
-Adjust line length: <input id="offsetSlider4" type="range" min="5" max="20" step="1" value="10" 
-    oninput="document.getElementById('demo-chinese_test').style.height = this.value+'em';
-         document.getElementById('offsetSliderValue4').value=this.value+'em';"
-         style="width:8em; height:1em;" placeholder="">
-<input value="10em" id="offsetSliderValue4" style="width:3em;"></p>
-</div>-->
-
-
-
-
-
-<p><span class="leadin" style="font-size: 110%;">Does it work?</span> In the test above we use the <code class="kw" translate="no">trim-start</code> value, simply because that works in Blink browsers.  Ideally, you would be able to also use <code class="kw" translate="no">trim-both</code>.</p>
+<p><span class="leadin howto-header">Does it work?</span> In the test above we use the <code class="kw" translate="no">trim-start</code> value, simply because that works in Blink browsers.  Ideally, you would be able to also use <code class="kw" translate="no">trim-both</code>.</p>
 <p>This approach works in Blink browsers, but in Gecko and WebKit browsers the brackets are not reduced in size — this produces 2½ spaces before the paragraph-initial bracket. The latter two engines, of course, also fail to remove the leading space from inline brackets that are wrapped to the beginning of a new line.</p>
 </section>
 
@@ -1213,7 +1209,7 @@ Adjust line length: <input id="offsetSlider4" type="range" min="5" max="20" step
 
 
 <figure id="fig_op_spacefirst">
-<img src="inline-space-data/fig_op_halfspace.jpg" alt="" style="width:12rem;">
+<img src="inline-space-data/fig_op_spacefirst.jpg" alt="" style="width:22rem;">
 </figure>
 
 <p>A lot of existing content, especially in ePub documents, was created before CSS addressed the problems of paragraph-initial punctuation. Common practice, as a result, involves the use of an ideographic space character before most initial paragraph lines, but the substitution of a fullwidth bracket glyph instead where needed. This gives the half space before the bracket that we saw in the hanging example above. It looks identical, but it is achieved by using characters, rather than styling.</p>
@@ -1236,6 +1232,8 @@ Adjust line length: <input id="offsetSlider4" type="range" min="5" max="20" step
 <tr><td>✅</td><td>❌</td><td>❌</td></tr>
 </tbody>
 </table>
+
+<p>The failures are due to a lack of reduction for in-paragraph brackets that are wrapped to the line start.</p>
 </aside>
 
 
@@ -1281,31 +1279,9 @@ Adjust line length: <input id="offsetSlider5" type="range" min="5" max="20" step
 <input value="10em" id="offsetSliderValue5" style="width:3em;"></p>
 </div>
 
-<!--<div id="demo-spacefirst" class="browser_output">
-<p class="browser_output_title">Output in your browser. (Adjust the line length so that both opening brackets appear at the start of the line.)</p>
-
-<div class="test_lines">
-<div id="demo-spacefirst_test">
-<p lang="ja">内容は釈実に進化してきた。</p>
-<p lang="ja"><span>「</span>今回何よりお伝えしたいのは<span>『</span>家族旅行ハワイ』の行き先にハワイ島が加わったことです。」</p>
-<p lang="ja">&#x3000;溶岩大地が圧巻のハワイ火山国立公園、マウナケア山から望む</p>
-</div>
-</div>
-
-<p class="options">Choose a font: <input oninput="document.querySelector('#demo-spacefirst .test_lines').style.fontFamily = this.value;" style="width:8em;" placeholder="YuMincho">  &nbsp; 
-
-Adjust line length: <input id="offsetSlider5" type="range" min="5" max="20" step="1" value="14" 
-    oninput="document.getElementById('demo-spacefirst_test').style.height = this.value+'em';
-         document.getElementById('offsetSliderValue5').value=this.value+'em';"
-         style="width:8em; height:1em;" placeholder="">
-<input value="15em" id="offsetSliderValue5" style="width:3em;"></p>
-</div>
--->
 
 
-
-
-<p><span class="leadin" style="font-size: 110%;">Does it work?</span> Blink browsers support this value. Gecko and WebKit browsers are fine with the paragraph-initial bracket (because no styling is applied), but haven't implemented the value, which means that a bracket wrapped to a new line will be fullwidth.</p>
+<p><span class="leadin howto-header">Does it work?</span> Blink browsers support this value. Gecko and WebKit browsers are fine with the paragraph-initial bracket (because no styling is applied), but haven't implemented the value, which means that a bracket wrapped to a new line will be fullwidth.</p>
 </section>
 
 
@@ -1323,6 +1299,8 @@ Adjust line length: <input id="offsetSlider5" type="range" min="5" max="20" step
 <p>The other values, <code class="kw" translate="no">normal</code>, <code class="kw" translate="no">space-all</code>, and <code class="kw" translate="no">trim-all</code>, produce effects illustrated in <a class="figref">fig_text_spacing_trim_values</a>.</p>
 
 <p>Note that, in addition to keeping fullwidth glyphs at line start and end, <code class="kw" translate="no">space-all</code> also prohibits the collapse of space between adjacent, inline punctuation (see <a class="secref">punctuation_sequences</a>).</p>
+
+<p>Similarly, <code class="kw" translate="no">trim-all</code> reduces the width of brackets and other punctuation with collapsible space <strong>everywhere</strong>, not just at line start and end positions, but wherever it occurs.  This is what distinguishes trim-all from trim-both; the latter </p>
 </section>
 </section>
 
@@ -1333,12 +1311,66 @@ Adjust line length: <input id="offsetSlider5" type="range" min="5" max="20" step
 
 
 <section id="punctuation_final">
-<h2>Line-final punctuation</h2>
+<h2>Collapsing line-end space</h2>
 
 <p>When we consider line-final punctuation we want to know whether a closing bracket or other punctuation with trailing space will have that space removed automatically when there is only enough space at the line end for a halfwidth character. If there is a halfwidth character gap but the punctuation remains fullwidth, it will be wrapped to the following line, taking with it the previous character (because closing brackets should not occur at the start of a line).</p>
 
-<p>All of the <code class="kw" translate="no">text-spacing-trim</code> values automatically reduce the width of a closing bracket at the end of a line, except for the <code class="kw" translate="no">space-all</code> value.</p>
+<p>All of the <code class="kw" translate="no">text-spacing-trim</code> values automatically reduce the width of a closing bracket at the end of a line, except for the <code class="kw" translate="no">space-all</code> value. In most cases, if there is room at the end of the line to fit a fullwidth bracket, the bracket will remain fullwidth. If, however, there is only a halfwidth gap at the end of the line, then the bracket will be reduced in size. But two values, <code class="kw" translate="no">trim-both</code> and <code class="kw" translate="no">trim-all</code>, always reduce the width of a bracket at the end of a line, whether or not there is space for a fullwidth glyph.</p>
 
+
+
+
+
+
+
+
+<section id="justification">
+<h3>Justification</h3>
+
+
+
+<aside class="floatedImplnote">
+<p class="feature">full justification</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>Tests</summary>
+<div class="testData">
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22testme%22%3E%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E3%80%8C%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-align%3Ajustify%3B%20text-spacing-trim%3Atrim-both%3B%20%7D&lang=ja&fontSize=29&fontFamily=YuMincho&width=450&height=336&a=text-spacing-trim%3Atrim-both%20makes%20a%20closing%20bracket%20at%20a%20line%20end%20flush%20with%20other%20lines%20when%20justification%20is%20applied.&i=Adjust%20the%20test%20box%20width%2C%20if%20necessary%2C%20so%20that%20the%20closing%20bracket%20is%20at%20the%20end%20of%20the%20line.%20Text%20passes%20if%20the%20closing%20bracket%20is%20flush%20with%20the%20other%20line%20ends." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-both</code>  makes a closing bracket at a line end flush with other lines when justification is applied.</a></p>
+
+<p><span class="leadin">Results:</span> The <code class="kw" translate="no">trim-both</code> value is not supported by Blink browsers, and not for Gecko or WebKit, either.</p>
+<hr>
+
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-all%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-all%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-all</code> trims leading space from opening brackets at the start of a paragraph on macOS.</a></p>
+
+<p><span class="leadin">Results:</span> Fails for Blink, Gecko and WebKit browsers.</p>
+</div>
+</details>
+</aside>
+
+
+
+
+<p>If you want to justify text so that a closing bracket at the end of a line is flush with the ends of the characters on adjacent lines, you need to choose a value of <code class="kw" translate="no">text-spacing-trim</code> that forces a halfwidth bracket at the line end. For this, <code class="kw" translate="no">trim-both</code> is preferable to <code class="kw" translate="no">trim-start</code>, because the latter may put a fullwidth glyph at the line end.</p>
+
+
+<figure id="fig_fully_justified">
+<img src="inline-space-data/fig_justified.jpg" alt="" style="height:10em; margin-inline:2em;">
+<img src="inline-space-data/fig_fully_justified.jpg" alt="" style="height:10em; margin-inline:2em;">
+<figcaption>A line ending with a bracket that is justified using <code class="kw" translate="no">trim-start</code> (left), and the same line justified flush using <code class="kw" translate="no">trim-both</code> (right).</figcaption>
+</figure>
+</section>
 </section>
 
 
@@ -1381,7 +1413,7 @@ Adjust line length: <input id="offsetSlider5" type="range" min="5" max="20" step
 
 
 
-<div style="color:#aaa;">
+<!--<div style="color:#aaa;">
 
 
 <p>Sample text from <a href="https://ja.wikipedia.org/wiki/%E5%A4%A9%E6%AD%A6%E5%A4%A9%E7%9A%87#名" target="_blank">Wikipedia</a>:</p>
@@ -1402,25 +1434,61 @@ Adjust line length: <input id="offsetSlider5" type="range" min="5" max="20" step
 
 <style>#test2 p { margin: 0; text-indent:2em; }</style>
 
-<div id="test2" style="writing-mode:vertical-rl; height:28rem; font-size:1.4rem; font-family:'LiSong Pro'; width:70%;">
-
-<p>第一段以柔和意象鋪陳心境，字句緩慢流動如風中微光。</p>
-
-<p style=" text-spacing-trim:trim-start;"><span style="background-color:antiquewhite;">〖</span>第二段以開括號起筆，約十二字後再添<span style="background-color:antiquewhite;">〖</span>一記符號以呼應層次感。</p>
-
-<p>第三段以靜謐語氣收束情緒，讓餘韻在字裡行間延展。</p>
-</div>
-
-
 
 
 <p>と担当者の渡辺亜紀。ハワイ島はオアフ島とは異なり、観光の主なテーマは大自然。溶岩大地が圧巻のハワイ火山国立公園、マウナケア山から望むサンセットや星空、海を見渡す斜面のコナコーヒー農園など、ダイナミックな景観美が特徴だ。</p>
+
+
+
+<div id="test2" style="writing-mode:vertical-rl; height:12em; font-size:1.4rem; font-family:'Hiragino Sans TC', 'LiSong Pro'; width:70%; text-spacing-trim: trim-start; ">
+
+<p lang="zh-hant">巷口新開的書店安靜明亮，午後常有人駐足。</p>
+<p lang="zh-hant" style=""><span style="background-color:antiquewhite">「</span>如果你喜歡舊地圖，最裡面的書架還有幾本可以看看。」</p>
+<p lang="zh-hant" style="">我在書店裡面看見了<span style="background-color:antiquewhite">『</span>請輕放舊書』幾個字，墨還很新。</p>
+<p lang="zh-hant">離開時雨剛停下，門前石階還留著一層淡淡的水光。</p>
 </div>
 
 
+<div id="test3" style="writing-mode:vertical-rl; height:28em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:70%; text-spacing-trim: trim-start; ">
+
+<p lang="ja">路地の入り口に新しくオープンした書店は、静かで明るく、午後にはよくお客さんで賑わっていた。</p>
+<p lang="ja" style=""><span style="background-color:antiquewhite">「</span>古い地図がお好きなら、一番奥の棚にまだ何枚かありますよ。</p>
+<p lang="ja" style="">ドアは開いていた。店内に入ると、<span style="background-color:antiquewhite">『</span>古書は丁寧にお取り扱いください』という文字が、まだインクの色が鮮やかに残っていた。</p>
+<p lang="ja">店を出る頃には雨は止んでいて、入り口前の石段にはうっすらと水滴が残っていた。</p>
+</div>
 
 
+<div id="test3" style="writing-mode:vertical-rl; height:20em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:70%; text-spacing-trim: trim-start; ">
 
+<p lang="ja">古代の祭礼は地域で異なる。</p>
+<p lang="ja" style=""><span style="background-color:antiquewhite">【</span>祭具】は木製が主流である</p>
+<p lang="ja" style="">儀式の形態は多様で、古式<span style="background-color:antiquewhite">『</span>型』も残る。</p>
+<p lang="ja">現在も一部で継承されている。</p>
+</div>
+</div>
+
+<div id="test3" style="writing-mode:vertical-rl; height:18em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:70%; text-spacing-trim: trim-start; ">
+
+<p lang="ja">古代祭礼の形態は地域ごとに異なっていた。</p>
+<p lang="ja" style=""><span style="background-color:antiquewhite">「</span>祭りは心の拠り所だ」と古老は語った。</p>
+<p lang="ja" style="">儀式の準備には多くの<span style="background-color:antiquewhite">『</span>古式』道具が使われた。</p>
+<p lang="ja">現在も一部地域で伝統が受け継がれている。</p>
+</div>
+
+
+<div id="test4" style="writing-mode:vertical-rl; height:11em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:70%; text-spacing-trim: space-first; ">
+
+<p lang="ja" style="margin:0;">&#x3000;古代祭礼の形態は地域ごとに異なっていた。</p>
+<p lang="ja" style="margin:0;"><span style="background-color:antiquewhite">「</span>祭りは心の拠り所だ」と古老は語った。</p>
+<p lang="ja" style="margin:0;">&#x3000;儀式の準備には多くの<span style="background-color:antiquewhite">『</span>古式』道具が使われた。</p>
+<p lang="ja" style="margin:0;">&#x3000;現在も一部地域で伝統が受け継がれている。</p>
+</div>
+
+
+<div id="test5" style="height:11em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:26em; text-spacing-trim: space-first; text-align: justify-all;">
+
+<p lang="ja" style="margin-inline:10rem;">今回何よりお伝えしたいのは『家族旅行ハワイ<span style="background-color:antiquewhite">』</span>の行き先にハワイ島が加わったことです。</p>
+</div>-->
 
 
 
@@ -1453,31 +1521,12 @@ Adjust line length: <input id="offsetSlider5" type="range" min="5" max="20" step
 </tr>
 </tbody>
 </table>
-<!--p>&nbsp;</p>
-<ul>
-<li><dfn>Gecko</dfn> (Firefox, Conkeror, etc.)</li>
-<li><dfn>Blink</dfn> (Chrome, Opera, Vivaldi, etc.)</li>
-<li><dfn>Webkit</dfn> (Safari, iOS-based browsers, Yandex, UC Browser, etc.)</li>
-<li><dfn>Edge</dfn> (Microsoft Edge)</li>
-<li><dfn>Trident</dfn> (Internet Explorer)</li>
-</ul-->
 </section>
 
 
 
 
 
-<!--section id="todo">
-<h2 class="notoc">To do</h2>
-<ul style="color:red;">
-<li>Link it to overhang (which gives more room by overlapping adjacent bases)</li>
-<li>Figure out what to do about ruby-merge – present as managing compound nouns, ie. managing the space within adjacent ruby pairs?</li>
-<li>section on styling base text, including removal, replacement with boxes (for educational text), etc.</li>
-<li>clarify <a  href="https://drafts.csswg.org/css-ruby-1/#white-space">space handling</a> - do this in ruby markup article too</li>
-<li>setting line height</li>
-<li>making line head and end flush</li>
-</ul>
-</section-->
 
 <section id="endlinks">
 <h2>Further reading</h2>
