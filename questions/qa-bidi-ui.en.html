@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Developing bidirectional user interfaces</title>
+<meta name="description" content="What are some best practices for developing user interfaces that support right-to-left languages and content?">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-bidi-ui'; // the file name WITHOUT extensions
+f.authors = 'Fuqiao Xue, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-qa-bidi-ui'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-06-24'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-06-24', time:'09:30'}  // date and time of latest substantive changes to this document
+f.status = 'draft';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-06-24', time:'09:30' } // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'direction';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-bidi-ui-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>Developing bidirectional user interfaces</h1>
+</header>
+
+
+  <div id="audience">
+    <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+  </div>
+
+<section id="question">
+<h2>Question</h2>
+  <p class="question">What are some best practices for developing user interfaces that support right-to-left (RTL) script languages?</p>
+  <p>When building user interfaces that support both LTR script languages, like English, and RTL script languages, like Arabic, it is not enough to simply translate the text. The visual balance and flow of the entire application depend on the text direction.</p>
+  <p>Let's dive into exactly how these layouts relate to each other, what needs directional awareness, and what should remain constant.</p>
+</section>
+
+
+<section id="big-picture">
+<h2>The big picture</h2>
+  <p>The fundamental rule of bidirectional design is aligning the layout with the user's natural scanning pattern. In LTR, the eye starts at the top left and moves right. In RTL, it starts at the top right and moves left. The overarching structure of the page mirrors depending on the script.</p>
+  <p>If a layout features a navigation sidebar alongside a main content area, the placement depends on the text direction. If the sidebar sits on the start side of the layout, that means the right in RTL and the left in LTR, with the main content expanding in the reading direction.</p>
+  <p>The starting position of a header also changes: a company logo generally belongs in the "top start" corner, meaning the <strong>top right</strong> for RTL and the <strong>top left</strong> for LTR.</p>
+  <p>Modern CSS makes this easy. By using CSS Logical Properties, such as <code>margin-inline-start</code> instead of <code>margin-left</code>, the browser will automatically handle the bidirectional layout for you based on the <code>dir</code> attribute of the document.</p>
+  <p>The following mock layout shows how the overall layout mirrors between LTR and RTL interfaces.</p>
+
+  <iframe
+    src="qa-bidi-ui-data/figure.html"
+    title="Mirrored LTR and RTL interface layout"
+    loading="lazy"
+    style="width: 100%; min-height: 34rem; border: 1px solid #ccc; border-radius: 8px;">
+    <a href="qa-bidi-ui-data/figure.html">Open the illustration on its own page.</a>
+  </iframe>
+
+  <p>See the <a href="qa-bidi-ui-data/figure.html">standalone illustration</a>.</p>
+</section>
+
+
+<section id="content-and-forms">
+<h2>Content and forms</h2>
+  <p>Text and structural formatting should adhere to the document's start edges. Paragraphs should be right-aligned in RTL and left-aligned in LTR.</p>
+  <p>For lists, the bullets or numbers must appear on the start side of the text (right for RTL, left for LTR), with the list naturally indenting in the reading direction.</p>
+  <p>For forms and inputs, the relative positioning of labels to input fields depends on the text direction. A label sitting next to an input field should be on the <strong>right</strong> side of the field in RTL, and the <strong>left</strong> side in LTR. Checkboxes and radio buttons should be placed at the start of their corresponding text labels (right for RTL, left for LTR).</p>
+</section>
+
+
+<section id="isolation">
+<h2>Isolation for bidirectional text</h2>
+  <p>User interfaces often combine RTL and LTR strings in the same line, such as an Arabic or Hebrew label followed by an English product name, a menu item containing an English acronym, or a notification that includes a user name. In these cases, you often need <a href="https://www.w3.org/TR/i18n-glossary/#dfn-bidi-isolation">isolation</a> to prevent bidirectional spillover, where the directionality of one piece of text affects adjacent text or punctuation.</p>
+  <p>Some inserted strings are especially tricky because they are visually ambiguous: they contain mostly numbers, punctuation, and short abbreviations, so it is not immediately obvious how the parts should group together. A classic "price + price" example is an RTL sentence that needs to display <code>AED 1,234.56 + USD 12.99</code>. Without isolation, users may see the currency codes, amounts, or plus sign regrouped in surprising ways, making it unclear which amount belongs to which currency.</p>
+  <p>In HTML, keep track of the direction of each inserted string and set the <code>dir</code> attribute on the element that already wraps it, using <code>ltr</code>, <code>rtl</code>, or <code>auto</code> as appropriate. When neutral characters such as <code>+</code>, <code>-</code>, or parentheses belong with the inserted text, include them inside the isolated wrapper too. For example, if the whole price expression is one unit, write <code>&lt;span dir="ltr"&gt;AED 1,234.56 + USD 12.99&lt;/span&gt;</code>. Making the direction explicit in the markup helps isolate the embedded text from the surrounding context so that punctuation and neighboring words behave correctly.</p>
+  <p>In plain text, use the Unicode isolation controls <code>LRI</code>, <code>RLI</code>, or <code>FSI</code>, and close them with <code>PDI</code>. These isolate the embedded text so that the surrounding text behaves correctly.</p>
+  <p>Without isolation, text can be ordered in surprising ways, and punctuation can appear on the wrong side of the inserted text.</p>
+</section>
+
+
+<section id="controls-and-icons">
+<h2>Controls and icons</h2>
+  <p>Directionality in controls is directly tied to the user's mental model of past/future and previous/next. In LTR cultures, "forward" is right, and "backward" is left. In RTL cultures, this is reversed.</p>
+  <p>Forward/Next arrows must point to the left in RTL, and to the right in LTR. Back/Previous arrows point right in RTL, and left in LTR.</p>
+  <p>For breadcrumbs, the flow of navigation follows the text direction. A breadcrumb trail starts with the home page on the far start edge (right for RTL, left for LTR) and progresses towards the current page on the opposite side. When breadcrumb items may contain text with a different direction from the surrounding UI, isolate each item to prevent spillover. That also helps separators behave correctly: for example, a greater-than sign may need to display as an isolated RTL run such as <code>⁧&gt;⁩</code>, rather than being reordered unexpectedly by the surrounding text.</p>
+  <p>Visually, an LTR trail might display as:</p>
+  <p><code>Home &gt; Category &gt; Current Page</code></p>
+  <p>while an RTL trail would display as:</p>
+  <p><code>Current Page &lt; Category &lt; Home</code></p>
+  <p>Any icon that implies motion or direction should match the text direction. Examples include a person running, a chat bubble tail (if it implies the speaker's position), or an airplane taking off towards the layout's "forward" direction.</p>
+  <p>The following illustration compares control arrows, breadcrumbs, and directional icons in LTR and RTL interfaces.</p>
+
+  <figure>
+    <img src="qa-bidi-ui-data/controls-and-icons.jpg" alt="Comparison of LTR and RTL controls and icons." width="688" height="384" loading="lazy">
+  </figure>
+</section>
+
+
+<section id="time-and-sequences">
+<h2>Time and sequences</h2>
+  <p>Because of the reading flow, the visual progression of time and sequences must match the text direction. A timeline or Gantt chart must start on the right side of the screen in RTL and the left in LTR. As time advances, the bars and progress indicators grow or move toward the left in RTL, and toward the right in LTR.</p>
+  <p>Loading bars and sliders should originate on the proper start edge and fill towards the end edge. For instance, if calculating a percentage mapped to an X-coordinate in an SVG progress bar, remember that the origin (<code>x=0</code>), visually represents the beginning of the bar in LTR, but in an RTL context, it represents the end!</p>
+</section>
+
+
+<section id="what-not-to-mirror">
+<h2>What not to mirror</h2>
+  <p>Blindly mirroring every visual element across directional layouts is a common trap. Certain layouts and graphics should remain constant:</p>
+  <ul>
+  <li><p><strong>Logos:</strong> Almost all logos should remain exactly as they are. Unless a company has specifically designed an RTL and LTR version of its logo for localized branding, their orientation does not change.</p></li>
+  <li><p><strong>Clocks:</strong> The movement of a clock's hands, clockwise, is a universal concept. Do not mirror circular clocks or refresh icons that are based on clockwise rotation.</p></li>
+  <li><p><strong>Non-directional icons:</strong> Icons that represent objects rather than actions or flow should not change based on layout direction. A camera, a floppy disk, a magnifying glass, a bell, or a calendar icon should look exactly the same in both layouts.</p></li>
+  <li><p><strong>Media controls:</strong> Standard media playback controls (Play, Pause, Fast Forward, Rewind) generally do not flip. The standard right-pointing triangle for "Play" is ubiquitous globally.</p></li>
+  </ul>
+
+  <p>If you are writing a technical article, you will often include code snippets. Code blocks should remain left-aligned regardless of the interface's primary direction. The vast majority of syntax characters in markup, programming, and database query languages are based on ASCII characters and English keywords. Therefore, the structural flow of code is inherently LTR.</p>
+</section>
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+  <ul id="full-links">
+  <li><a href="https://www.w3.org/International/questions/qa-html-dir">Structural markup and right-to-left text in HTML</a></li>
+  <li><a href="https://www.w3.org/International/articles/inline-bidi-markup/">Inline markup and bidirectional text in HTML</a></li>
+  <li>Tutorial, <a href="https://www.w3.org/International/tutorials/bidi-xhtml/">Creating HTML Pages in Arabic, Hebrew and Other Right-to-left Scripts</a></li>
+  <li>Related links, Authoring web pages
+    <ul>
+    <li><a href="https://www.w3.org/International/techniques/authoring-html#direction">Text direction</a></li>
+    <li><a href="https://www.w3.org/International/techniques/authoring-html#using">Setting up a right-to-left page</a></li>
+    <li><a href="https://www.w3.org/International/techniques/authoring-html#blocks">Changing the direction of a block element</a></li>
+    </ul>
+  </li>
+  </ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
