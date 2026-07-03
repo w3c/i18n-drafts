@@ -15,12 +15,12 @@ f.previousauthors = '' // as above
 f.modifiers = '' // people making substantive changes, and their affiliation
 f.searchString = 'article-vertical-text' // blog search string - usually the filename without extensions
 f.firstPubDate = '2017-03-13' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2022-08-01', time:'17:53'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-07-03', time:'11:27'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, or notreviewed
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2025-07-11', time:'17:53'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-07-03', time:'11:27'} // date and time of latest edits to this document/translation
 f.contributors = '' // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -74,6 +74,9 @@ figure pre {
 </header>
 
 
+
+
+<section>
 <div id="audience"> 
 <div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
 </div>
@@ -83,7 +86,90 @@ figure pre {
 <p>This article explains how to use CSS to produce vertical text for languages such as Chinese, Japanese, Korean, and Mongolian. The CSS specification contains a lot of implementation-specific information. This article draws out the basic information that content authors need to create the more common features of vertical text. It also compares the theory and practice about what is possible.</p>
 
 <p>Each section explains how you would mark up up your content according to the CSS spec (which is usually simple and straightforward), but then looks at what you currently have to do to achieve the same result in browsers that don't implement the standard property and value names. For more information, see <a href="#browsers">Browser support</a>.</p>
-        
+
+
+<p>Rather than simply reproducing the spec itself here, we provide task-oriented guidance to help content authors  achieve key techniques. We make the assumption that content authors know what they want to do, and this article helps them understand how to do it.</p>
+
+<p><em>Note that some of the technologies described here are still under development, and browser adoption is only partial at best. In what follows we will describe what you should do when the CSS specification is properly implemented by browsers, and also describe what currently works and doesn't work.</em></p>
+
+
+<p>We will work with the following CSS properties. For links to the CSS specification click on the property name.</p>
+
+
+<figure class="example" lang="en">
+<ul>
+<li><code><a href="https://www.w3.org/TR/css-writing-modes-4/#block-flow" target="_blank">writing-mode</a>: horizontal-tb | vertical-rl | vertical-lr | sideways-rl | sideways-lr</code></li>
+
+<li><code><a href="https://www.w3.org/TR/css-writing-modes-4/#propdef-text-orientation" target="_blank">text-orientation</a>: mixed | upright | sideways</code></li>
+
+<li><code><a href="https://www.w3.org/TR/css-text-3/#propdef-text-transform" target="_blank">text-transform</a>: none | [capitalize | uppercase | lowercase ] || full-width || full-size-kana</code></li>
+
+<li><code><a href="https://www.w3.org/TR/css-writing-modes-4/#propdef-text-combine-upright" target="_blank">text-combine-upright</a>: none | all | [ digits &lt;integer&gt;? ]</code></li>
+
+<li><code><a href="https://drafts.csswg.org/css-ui/#appearance-switching" target="_blank">appearance</a>: none | auto | base | base-select | &lt;compat-auto&gt; | &lt;compat-special&gt;</code></li>
+</ul>
+</figure>
+</section>
+
+
+
+
+
+
+
+
+
+<section id="takeaways">
+<h2>Key takeaways</h2>
+
+<p>Although content authors will usually jump directly to the task they need from the table of contents, the following provides a brief overview of the current state of implementation across the page as a whole.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅</bdi> Reliable</p>
+<p class="summary">Fully interoperable.</p>
+</aside>
+
+<p><span class="leadin">Basic setup.</span> The primary mechanism for vertical layout is the CSS <code class="kw" translate="no">writing-mode</code> property: use <code class="kw" translate="no">vertical-rl</code> for Chinese/Japanese/Korean (lines top‑to‑bottom; columns progress right‑to‑left) and <code class="kw" translate="no">vertical-lr</code> for Mongolian (columns progress left‑to‑right). Han characters remain upright while embedded Latin typically rotates; graphics remain upright. Horizontal scripts, such as for vertical table headers in European languages, should use the <code class="kw" translate="no">sideways-</code> values, and not the <code class="kw" translate="no">vertical-</code> values.</p>
+
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅</bdi> For ASCII text</p>
+<p class="availability"><bdi class="icon">❌</bdi> For non-ASCII and complex scripts</p>
+<!--<p class="summary">Non-ASCII and complex scripts not well supported.</p>-->
+</aside>
+
+<p><span class="leadin">Changing the glyph orientation for embedded text.</span> Latin initialisms in vertical <abbr title="Chinese, Japanese, & Korean">CJK</abbr> text can be kept upright using <code class="kw" translate="no">text-orientation</code>, using fullwidth transforms, or using fullwidth code points. The latter two options, however, don't work for non-ASCII letters. Support for upright glyphs in non-ASCII letters and complex scripts is not generally well supported. The <code class="kw" translate="no">sideways</code> value of <code class="kw" translate="no">text-orientation</code> is not needed.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅</bdi> <code class="kw" translate="no">All</code> value ok</p>
+<p class="availability"><bdi class="icon">❌</bdi> <code class="kw" translate="no">Digits</code> value not supported</p>
+<!--<p class="summary">No support in Gecko/WebKit.</p>-->
+</aside>
+
+<p><span class="leadin">Horizontal-in-vertical text.</span> Use <code class="kw" translate="no">text-combine-upright</code> with the <code class="kw" translate="no">all</code> value to combine multiple horizontal characters in a single vertical space, especially for 2-4 digit numbers. The <code class="kw" translate="no">[ digits &lt;integer&gt;? ]</code> value would provide useful control over numbers, but is not supported by browsers.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅</bdi> Forms, lists, and table basics ok</p>
+<p class="availability"><bdi class="icon">⚠️</bdi> Horizontal select options workaround</p>
+<p class="summary">Support in Blink. WebKit coming soon.</p>
+</aside>
+
+<p><span class="leadin">Forms, lists and tables.</span> Major browser engines now display form controls, lists, and tables vertically. The options in a select control, however, are still horizontal by default. A workaround can be applied for some browsers using the appearance property, which should be supported by Blink and WebKit browsers by the end of 2026.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅</bdi> Mostly available</p>
+<!--<p class="summary">Not interoperable.</p>-->
+</aside>
+
+<p><span class="leadin">Using logical dimensions.</span> CSS logical values now work with most relevant properties, and their use is recommended to make styling easier.</p>
+</section>
+
+
 
 
 
@@ -1397,7 +1483,11 @@ figure pre {
 </div>
 </div>
 
-
+Basic setup
+Changing the glyph orientation for embedded text
+Horizontal-in-vertical text
+Forms, lists and tables
+Using logical dimensions
 
 <p>The new keywords being defined in the specification allow you not only to align things to one or other end of a line, but to align things relative to the containing box in a logical way. You will also be able to do other things, such as position and float items logically too.</p>
 
@@ -1413,7 +1503,7 @@ figure pre {
 
 
 <section id="browsers">
-<h2>Browser versions</h2>
+<h2>Browser support</h2>
 <p>The article describes behavior for the following browser versions. We will try to update the article as behavior changes.</p>
 <table border="0" summary="Table lists browsers and engines whose behavior is represented in the article.">
 <tbody>
@@ -1479,19 +1569,45 @@ figure pre {
 <h2>Further reading</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
-    <ul id="full-links">
-      <li>
-        <p><cite><a href="https://www.w3.org/TR/css-writing-modes-3/">CSS Writing Modes Level 3</a></cite></p>
-        
-      </li>
-      <li>
-          <p>Related links, <cite>Authoring web pages</cite></p>
-          <ul>
-      <li><a href="https://www.w3.org/International/techniques/authoring-html?collapse&amp;open=direction">Text direction</a></li>
-      <li><a href="https://www.w3.org/International/techniques/authoring-html#sec_verticaltext">Vertical text</a></li>
-      </ul>
-      </li>
-    </ul>
+<ul id="full-links">
+<li>
+<p><cite>Authoring web pages</cite></p>
+<ul>
+<li><a href="https://www.w3.org/International/techniques/authoring-html?collapse&amp;open=direction">Text direction</a></li>
+<li><a href="https://www.w3.org/International/techniques/authoring-html#sec_verticaltext">Vertical text</a></li>
+</ul>
+</li>
+
+<li>
+<p><cite>Language enablement index</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/typography/#writing_mode">Writing mode</a></li>
+</ul>
+</li>
+
+<li>
+<p><cite>CSS specifications</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/css-writing-modes-4/#block-flow">writing-mode</a> • 
+<a href="https://www.w3.org/TR/css-writing-modes-4/#propdef-text-orientation">text-orientation</a> • 
+<a href="https://www.w3.org/TR/css-text-3/#propdef-text-transform">text-transform</a> • 
+<a href="https://www.w3.org/TR/css-writing-modes-4/#propdef-text-combine-upright">text-combine-upright</a> • 
+<a href="https://drafts.csswg.org/css-ui/#appearance-switching">appearance</a>
+</li>
+</ul>
+</li>
+
+<li>
+<p><cite>MDN</cite></p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/writing-mode">writing-mode</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-orientation">text-orientation</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-transform">text-transform</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-combine-upright">text-combine-upright</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/appearance">appearance</a></li>
+</ul>
+</li>
+</ul>
 </section>
 
 <footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
