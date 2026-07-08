@@ -15,12 +15,12 @@ f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-qa-bidi-ui'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2026-06-24'; // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2026-06-24', time:'09:30'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-07-08', time:'05:04'}  // date and time of latest substantive changes to this document
 f.status = 'draft';  // should be one of draft, review, published, or notreviewed
 f.path = '../' // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2026-06-24', time:'09:30' } // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-07-08', time:'05:04' } // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -42,6 +42,331 @@ f.additionalLinks = ''
 <link rel="copyright" href="#copyright">
 <script src="../javascript/prism.js"></script>
 <link rel="stylesheet" href="../style/prism.css">
+<style>
+.bidi-ui-example {
+  --bidi-ui-bg: #f7f8fa;
+  --bidi-ui-panel: #ffffff;
+  --bidi-ui-border: #cfd7df;
+  --bidi-ui-muted: #5b6773;
+  --bidi-ui-ink: #1f2933;
+  --bidi-ui-blue: #2158d6;
+  --bidi-ui-blue-soft: #edf3ff;
+  --bidi-ui-amber-soft: #fff5dd;
+  --bidi-ui-green-soft: #edf8f1;
+  --bidi-ui-rose-soft: #fff1f2;
+  --bidi-ui-line: #d8dee6;
+  --bidi-ui-field: #fcfdff;
+  background: var(--bidi-ui-bg);
+  color: var(--bidi-ui-ink);
+}
+
+.bidi-ui-example,
+.bidi-ui-example * {
+  box-sizing: border-box;
+}
+
+.bidi-ui-example figcaption {
+  color: var(--bidi-ui-muted);
+  margin-block-start: 0.75rem;
+  margin-block-end: 0;
+  text-align: center;
+}
+
+.bidi-ui-example-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.bidi-ui-example-panel {
+  background: var(--bidi-ui-panel);
+  border: 1px solid var(--bidi-ui-border);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(31, 41, 51, 0.06);
+}
+
+.bidi-ui-panel-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-block: 0 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: var(--bidi-ui-muted);
+}
+
+.bidi-ui-direction-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 2.4rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  background: var(--bidi-ui-blue-soft);
+  color: var(--bidi-ui-blue);
+  font-weight: 700;
+}
+
+.bidi-ui-edge-note {
+  display: flex;
+  justify-content: space-between;
+  margin-block: 0 0.8rem;
+  font-size: 0.78rem;
+  color: var(--bidi-ui-muted);
+}
+
+.bidi-ui-edge-note span,
+.bidi-ui-panel-title span {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.bidi-ui-shell,
+.bidi-ui-surface {
+  border: 1px solid var(--bidi-ui-line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bidi-ui-field);
+}
+
+.bidi-ui-shell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 0.9rem;
+  background: var(--bidi-ui-blue-soft);
+  border-block-end: 1px solid var(--bidi-ui-line);
+}
+
+.bidi-ui-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.65rem;
+  block-size: 1.15rem;
+  border-radius: 999px;
+  background: var(--bidi-ui-blue);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.bidi-ui-header-copy {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.bidi-ui-shell-body {
+  display: flex;
+  min-height: 14rem;
+}
+
+.bidi-ui-nav {
+  inline-size: 34%;
+  padding: 0.9rem 0.8rem;
+  background: var(--bidi-ui-amber-soft);
+  border-inline-end: 1px solid var(--bidi-ui-line);
+}
+
+.bidi-ui-nav-title,
+.bidi-ui-main-title,
+.bidi-ui-crumb-title {
+  margin-block: 0 0.6rem;
+  margin-inline: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--bidi-ui-ink);
+}
+
+.bidi-ui-nav-item,
+.bidi-ui-line {
+  display: block;
+  block-size: 0.52rem;
+  border-radius: 999px;
+  background: #cdd7e1;
+  margin-block-end: 0.45rem;
+}
+
+.bidi-ui-nav-item:nth-of-type(1) { inline-size: 70%; }
+.bidi-ui-nav-item:nth-of-type(2) { inline-size: 54%; }
+.bidi-ui-nav-item:nth-of-type(3) { inline-size: 76%; }
+.bidi-ui-nav-item:nth-of-type(4) { inline-size: 62%; margin-block-end: 0; }
+
+.bidi-ui-main {
+  flex: 1;
+  padding: 0.9rem;
+}
+
+.bidi-ui-crumbs {
+  margin-block-end: 1rem;
+  padding: 0.65rem 0.7rem;
+  border: 1px solid var(--bidi-ui-line);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.83rem;
+  font-weight: 500;
+}
+
+.bidi-ui-example-panel[dir="rtl"] .bidi-ui-crumbs {
+  text-align: end;
+}
+
+.bidi-ui-crumb-current {
+  font-weight: 700;
+}
+
+.bidi-ui-line {
+  inline-size: 100%;
+}
+
+.bidi-ui-line-short { inline-size: 66%; }
+.bidi-ui-line-med { inline-size: 84%; }
+.bidi-ui-line:last-child { margin-block-end: 0; }
+
+.bidi-ui-example-panel[dir="rtl"] .bidi-ui-line {
+  margin-inline-start: auto;
+}
+
+.bidi-ui-content-sample,
+.bidi-ui-form-sample {
+  padding: 1rem;
+}
+
+.bidi-ui-content-sample {
+  background: var(--bidi-ui-green-soft);
+  border-block-end: 1px solid var(--bidi-ui-line);
+}
+
+.bidi-ui-form-sample {
+  background: #fff;
+}
+
+.bidi-ui-sample-label {
+  display: block;
+  margin-block: 0 0.55rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--bidi-ui-muted);
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
+.bidi-ui-example-heading {
+  margin-block: 0 0.55rem;
+  margin-inline: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.bidi-ui-example p {
+  margin-block: 0 0.55rem;
+  margin-inline: 0;
+}
+
+.bidi-ui-short-paragraph {
+  max-inline-size: 22rem;
+  text-align: start;
+}
+
+.bidi-ui-example ul {
+  margin-block: 0;
+  padding-inline-start: 1.55rem;
+  text-align: start;
+}
+
+.bidi-ui-example li + li {
+  margin-block-start: 0.25rem;
+}
+
+.bidi-ui-form-sample fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.bidi-ui-form-sample legend {
+  padding: 0;
+}
+
+.bidi-ui-field-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-block-end: 0.65rem;
+}
+
+.bidi-ui-field-row label {
+  flex: 0 0 4.8rem;
+  font-weight: 650;
+}
+
+.bidi-ui-field-row input[type="text"] {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  min-block-size: 2.25rem;
+  padding-block: 0.35rem;
+  padding-inline: 0.55rem;
+  border: 1px solid #aeb8c2;
+  border-radius: 6px;
+  background: var(--bidi-ui-field);
+  color: var(--bidi-ui-ink);
+  font: inherit;
+}
+
+.bidi-ui-choice-group {
+  display: grid;
+  gap: 0.45rem;
+  margin-block-start: 0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--bidi-ui-line);
+  border-radius: 8px;
+  background: var(--bidi-ui-rose-soft);
+}
+
+.bidi-ui-choice-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-block-size: 1.75rem;
+}
+
+.bidi-ui-choice-label input {
+  inline-size: 1rem;
+  block-size: 1rem;
+  margin: 0;
+  accent-color: var(--bidi-ui-blue);
+}
+
+@media (max-width: 760px) {
+  .bidi-ui-example-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .bidi-ui-example-panel,
+  .bidi-ui-content-sample,
+  .bidi-ui-form-sample {
+    padding: 0.75rem;
+  }
+
+  .bidi-ui-field-row {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .bidi-ui-field-row label {
+    flex-basis: auto;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -72,15 +397,86 @@ f.additionalLinks = ''
   <p>Modern CSS makes this easy. By using CSS Logical Properties, such as <code>margin-inline-start</code> instead of <code>margin-left</code>, the browser will automatically handle the bidirectional layout for you based on the <code>dir</code> attribute of the document.</p>
   <p>The following mock layout shows how the overall layout mirrors between LTR and RTL interfaces.</p>
 
-  <iframe
-    src="qa-bidi-ui-data/figure.html"
-    title="Mirrored LTR and RTL interface layout"
-    loading="lazy"
-    style="width: 100%; min-height: 34rem; border: 1px solid #ccc; border-radius: 8px;">
-    <a href="qa-bidi-ui-data/figure.html">Open the illustration on its own page.</a>
-  </iframe>
+  <figure class="example-wide bidi-ui-example bidi-ui-layout-example">
+    <div class="bidi-ui-example-grid">
+      <div class="bidi-ui-example-panel" dir="ltr" role="group" aria-labelledby="layout-ltr-title">
+        <div class="bidi-ui-panel-title">
+          <span id="layout-ltr-title">LTR interface</span>
+        </div>
+        <div class="bidi-ui-edge-note">
+          <span>Start side</span>
+          <span>End side</span>
+        </div>
 
-  <p>See the <a href="qa-bidi-ui-data/figure.html">standalone illustration</a>.</p>
+        <div class="bidi-ui-shell">
+          <div class="bidi-ui-shell-header">
+            <span class="bidi-ui-logo">Logo</span>
+            <span class="bidi-ui-header-copy">Header content</span>
+          </div>
+
+          <div class="bidi-ui-shell-body">
+            <aside class="bidi-ui-nav" aria-label="Navigation">
+              <p class="bidi-ui-nav-title">Navigation</p>
+              <span class="bidi-ui-nav-item"></span>
+              <span class="bidi-ui-nav-item"></span>
+              <span class="bidi-ui-nav-item"></span>
+              <span class="bidi-ui-nav-item"></span>
+            </aside>
+
+            <div class="bidi-ui-main">
+              <p class="bidi-ui-crumb-title">Breadcrumb</p>
+              <nav class="bidi-ui-crumbs" aria-label="Breadcrumb">Home &gt; Section &gt; <span class="bidi-ui-crumb-current">Current</span></nav>
+
+              <p class="bidi-ui-main-title">Main content</p>
+              <span class="bidi-ui-line"></span>
+              <span class="bidi-ui-line bidi-ui-line-med"></span>
+              <span class="bidi-ui-line"></span>
+              <span class="bidi-ui-line bidi-ui-line-short"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bidi-ui-example-panel" dir="rtl" role="group" aria-labelledby="layout-rtl-title">
+        <div class="bidi-ui-panel-title">
+          <span id="layout-rtl-title">RTL interface</span>
+        </div>
+        <div class="bidi-ui-edge-note">
+          <span>Start side</span>
+          <span>End side</span>
+        </div>
+
+        <div class="bidi-ui-shell">
+          <div class="bidi-ui-shell-header">
+            <span class="bidi-ui-logo">Logo</span>
+            <span class="bidi-ui-header-copy">Header content</span>
+          </div>
+
+          <div class="bidi-ui-shell-body">
+            <aside class="bidi-ui-nav" aria-label="Navigation">
+              <p class="bidi-ui-nav-title">Navigation</p>
+              <span class="bidi-ui-nav-item"></span>
+              <span class="bidi-ui-nav-item"></span>
+              <span class="bidi-ui-nav-item"></span>
+              <span class="bidi-ui-nav-item"></span>
+            </aside>
+
+            <div class="bidi-ui-main">
+              <p class="bidi-ui-crumb-title">Breadcrumb</p>
+              <nav class="bidi-ui-crumbs" aria-label="Breadcrumb" dir="ltr"><span class="bidi-ui-crumb-current">Current</span> &lt; Section &lt; Home</nav>
+
+              <p class="bidi-ui-main-title">Main content</p>
+              <span class="bidi-ui-line"></span>
+              <span class="bidi-ui-line bidi-ui-line-med"></span>
+              <span class="bidi-ui-line"></span>
+              <span class="bidi-ui-line bidi-ui-line-short"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption>Mirrored LTR and RTL interface layout.</figcaption>
+  </figure>
 </section>
 
 
@@ -89,6 +485,104 @@ f.additionalLinks = ''
   <p>Text and structural formatting should adhere to the document's start edges. Paragraphs should be right-aligned in RTL and left-aligned in LTR.</p>
   <p>For lists, the bullets or numbers must appear on the start side of the text (right for RTL, left for LTR), with the list naturally indenting in the reading direction.</p>
   <p>For forms and inputs, the relative positioning of labels to input fields depends on the text direction. A label sitting next to an input field should be on the <strong>right</strong> side of the field in RTL, and the <strong>left</strong> side in LTR. Checkboxes and radio buttons should be placed at the start of their corresponding text labels (right for RTL, left for LTR).</p>
+  <p>The following illustration compares how content and forms align to the start edge in LTR and RTL content.</p>
+
+  <figure class="example-wide bidi-ui-example bidi-ui-content-example">
+    <div class="bidi-ui-example-grid">
+      <div class="bidi-ui-example-panel" dir="ltr" role="group" aria-labelledby="content-ltr-title">
+        <div class="bidi-ui-panel-title">
+          <span id="content-ltr-title">LTR content</span>
+          <span class="bidi-ui-direction-tag">LTR</span>
+        </div>
+        <div class="bidi-ui-edge-note">
+          <span>Start side</span>
+          <span>End side</span>
+        </div>
+
+        <div class="bidi-ui-surface">
+          <div class="bidi-ui-content-sample">
+            <span class="bidi-ui-sample-label">Paragraphs and lists</span>
+            <p class="bidi-ui-example-heading">Shipping preferences</p>
+            <p class="bidi-ui-short-paragraph">Text aligns to the start edge, so each line begins on the left in an LTR context.</p>
+            <ul>
+              <li>One</li>
+              <li>Two</li>
+              <li>Three</li>
+            </ul>
+          </div>
+
+          <form class="bidi-ui-form-sample" action="#" method="get">
+            <fieldset>
+              <legend class="bidi-ui-sample-label">Labels and controls</legend>
+
+              <div class="bidi-ui-field-row">
+                <label for="ltr-form-name">Name</label>
+                <input id="ltr-form-name" name="ltr-form-name" type="text" value="Mona Haddad" readonly>
+              </div>
+
+              <div class="bidi-ui-choice-group" aria-label="LTR choices">
+                <label class="bidi-ui-choice-label">
+                  <input type="checkbox" name="ltr-updates" checked>
+                  <span>Send email updates</span>
+                </label>
+                <label class="bidi-ui-choice-label">
+                  <input type="radio" name="ltr-speed" checked>
+                  <span>Standard delivery</span>
+                </label>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+
+      <div class="bidi-ui-example-panel" dir="rtl" lang="ar" role="group" aria-labelledby="content-rtl-title">
+        <div class="bidi-ui-panel-title">
+          <span id="content-rtl-title" lang="en">RTL content</span>
+          <span class="bidi-ui-direction-tag" lang="en">RTL</span>
+        </div>
+        <div class="bidi-ui-edge-note" lang="en">
+          <span>Start side</span>
+          <span>End side</span>
+        </div>
+
+        <div class="bidi-ui-surface">
+          <div class="bidi-ui-content-sample">
+            <span class="bidi-ui-sample-label" lang="en">Paragraphs and lists</span>
+            <p class="bidi-ui-example-heading">تفضيلات الشحن</p>
+            <p class="bidi-ui-short-paragraph">تتبع بداية كل سطر اتجاه النص، لذلك يبدأ السطر من اليمين في واجهة عربية.</p>
+            <ul>
+              <li>واحد</li>
+              <li>اثنين</li>
+              <li>ثلاثة</li>
+            </ul>
+          </div>
+
+          <form class="bidi-ui-form-sample" action="#" method="get">
+            <fieldset>
+              <legend class="bidi-ui-sample-label" lang="en">Labels and controls</legend>
+
+              <div class="bidi-ui-field-row">
+                <label for="rtl-form-name">الاسم</label>
+                <input id="rtl-form-name" name="rtl-form-name" type="text" value="منى حداد" readonly>
+              </div>
+
+              <div class="bidi-ui-choice-group" aria-label="RTL choices">
+                <label class="bidi-ui-choice-label">
+                  <input type="checkbox" name="rtl-updates" checked>
+                  <span>إرسال تحديثات بالبريد</span>
+                </label>
+                <label class="bidi-ui-choice-label">
+                  <input type="radio" name="rtl-speed" checked>
+                  <span>تسليم عادي</span>
+                </label>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+    <figcaption>LTR and RTL content and form alignment.</figcaption>
+  </figure>
 </section>
 
 
