@@ -56,11 +56,24 @@ function showExample (path) {
 	}
 
 
-function setLanguagePreference (targetLang) {
+function getLanguagePreferenceMessage (cLang, targetLang) {
+	var messages = {}
+	if (typeof cn !== 'undefined') messages = cn
+	var cMsg = messages[cLang]
+	var targetMsg = messages[targetLang]
+	if (cMsg && targetMsg) {
+		var msg = '['+cLang+'] '+cMsg
+		msg += '\n\n'+'['+targetLang+'] '+targetMsg
+		if (targetLang !== 'en' && cLang !== 'en' && messages.en) msg += '\n\n'+'[en] '+messages.en
+		return msg
+		}
+	return targetMsg || cMsg || s.cookieMsg || messages.en || ''
+	}
+
+function setLanguagePreference (targetLang, cLang) {
 	if (!targetLang) return
 	var response = false
-	var msg = s.cookieMsg
-	if (!msg && typeof cn !== 'undefined') msg = cn[targetLang] || cn.en
+	var msg = getLanguagePreferenceMessage(cLang || f.clang, targetLang)
 	if (!msg) return
 	response = confirm(msg)
 	if (response == true) {
@@ -73,7 +86,7 @@ function setLanguagePreference (targetLang) {
 	}
 
 function stickyConneg (filename, cLang, targetLang) {
-	setLanguagePreference(targetLang)
+	setLanguagePreference(targetLang, cLang)
 	document.location.assign(getTranslationUrl(filename, targetLang))
 	}
 
