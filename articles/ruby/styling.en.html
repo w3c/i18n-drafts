@@ -100,16 +100,6 @@ anyone who wants to know how to use ruby annotations. </p-->
 <p class="info">This article will only discuss how to use CSS <em>styling</em> to affect the rendering of ruby content. For information about how to create the <em>markup</em> needed to support ruby, see <a href="https://www.w3.org/International/articles/ruby/markup" class="print">Ruby Markup</a>.</p>
 
 
-<aside class="insideinfonote">
-<p class="info"> While the main body of the text explains how to achieve the result you want using CSS, as described in the editor's draft of the CSS Ruby Layout module, you'll find information in the margin that explain some of the associated caveats and issues, as well as identifying  features that are not supported by one browser or another.</p>
-</aside>
-
-
-<p>The draft of the <a href="https://www.w3.org/TR/css-ruby-1/">CSS Ruby Layout Module Level 1</a> provides a number of initial properties for describing the placement of ruby text in relation to the base text. Later versions of the spec are expected to add more properties. Note that this specification is not yet finalized, so this page will aim to give you an idea of what to expect if it is fully implemented, as well as describing what is currently supported.</p>
-
-<p>We won't simply reproduce the spec itself here, but rather provide guidance about how content authors can achieve key techniques. We will assume that your ruby content is marked up appropriately, so that the mapping between ruby bases and ruby text is correct.</p>
-
-
 <p>Rather than simply reproducing the spec itself here, we provide task-oriented guidance to help content authors  achieve key techniques. We make the assumption that content authors know what they want to do, and this article helps them understand how to do it.</p>
 
 <p><em>Note that some of the technologies described here are still under development, and browser adoption is only partial at best. In what follows we will describe what you should do when the CSS specification is properly implemented by browsers, and also describe what currently works and doesn't work.</em></p>
@@ -126,12 +116,55 @@ anyone who wants to know how to use ruby annotations. </p-->
 
 <li><code><a href="https://www.w3.org/TR/css-ruby-1/#propdef-ruby-merge" target="_blank">ruby-merge</a>: separate | merge | auto</code></li>
 
-<li><code><a href="https://www.w3.org/TR/css-writing-modes-4/#propdef-text-combine-upright" target="_blank">text-combine-upright</a>: none | all | [ digits &lt;integer&gt;? ]</code></li>
-
-<li><code><a href="https://drafts.csswg.org/css-ui/#appearance-switching" target="_blank">appearance</a>: none | auto | base | base-select | &lt;compat-auto&gt; | &lt;compat-special&gt;</code></li>
+<li><code><a href="https://www.w3.org/TR/css-ruby-1/#ruby-overhang" target="_blank">ruby-overhang</a>: none | auto</code></li>
 </ul>
 </figure>
 </section>
+
+
+
+
+
+
+<section id="takeaways">
+<h2>Key takeaways</h2>
+
+<p>Although authors will usually jump directly to the task they need from the table of contents, the following provides a brief overview of the current state of implementation across the page as a whole.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅❌</bdi> Interoperable, except bopomofo</p>
+<p class="summary">Reliable for above/below. Inter-character not supported.</p>
+</aside>
+
+<p><span class="leadin">Positioning annotations above, below, or between bases.</span> Modern browsers reliably support positioning of ruby text above or below base text using CSS. Bopomofo (<i class="foreign">zhuyin fuhau</i>) ruby alignment (to the right of the base) is not supported by any browser.</p>
+
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅⚠️</bdi> Mostly interoperable</p>
+<p class="summary">Basic alignments supported; ruby-merge and ruby-overhang problematic.</p>
+</aside>
+
+<p><span class="leadin">Inline alignment of annotations.</span> The basic alignments, start, center, space-between, and space-around are interoperably supported. Use of <code class="kw" translate="no">ruby-merge</code> for jukugo ruby is not supported.  Overhanging ruby text has mixed support across the 3 main browser engines.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅</bdi> Interoperable support</p>
+<p class="summary">Regardless of markup patterns.</p>
+</aside>
+
+<p><span class="leadin">Adding parentheses to inline annotations.</span> Although tabular markup is not widely supported for normal display of ruby text, inline rendering of ruby does work, whether the markup is interleaved or tabular. It is also possible to use CSS to put parentheses around inline ruby text in all browser engines.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> Gecko‑only</p>
+<p class="summary">Only supported in Gecko.</p>
+</aside>
+
+<p><span class="leadin">Handling gaps in annotations.</span> Although leaving an <code class="kw" translate="no">rt</code> element blank works for all browsers for normal rendering, it doesn't work well for inline rendering.  The better alternative of automatically hiding ruby text that is the same as the base text is currently only supported by Gecko browsers.</p>
+</section>
+
 
 
 
@@ -264,7 +297,7 @@ anyone who wants to know how to use ruby annotations. </p-->
 
 
 <section id="ruby_position">
-<h2>Positioning ruby relative to the base text</h2>
+<h2>Positioning annotations above, below, or between bases</h2>
 
 <p> Here we look at how you make the ruby text appear above or below the ruby base text, or to the side for bopomofo ruby.</p>
 <p>A later section will describe how to display the annotation inline, ie. alongside the base with equal-sized characters.</p>
@@ -532,7 +565,7 @@ ruby ruby { ruby-position: over; }</code></pre>
 
 
 <section id="alignment">
-<h2>Aligning annotations and bases</h2>
+<h2>Inline alignment of annotations</h2>
 
 <div class="sidenoteGroup">
 <p>When the ruby text annotation is longer than the ruby base it belongs to, or vice-versa, there can be several different ways of dealing with the extra space that is lying around. The CSS Ruby spec deals with this mostly through the use of the <code class="kw" translate="no">ruby-align</code> property.</p>
@@ -923,6 +956,8 @@ ruby ruby { ruby-position: over; }</code></pre>
 
 
 <details class="moreTests"><summary>More tests</summary>
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E6%B5%AE%E4%B8%96%E7%B5%B5%3Cruby%3E%3Crb%3E%E6%98%94%E8%A9%B1%3Crt%3E%E3%82%80%E3%81%8B%E3%81%97%E3%81%B0%E3%81%AA%E3%81%97%3C%2Fruby%3E%E6%B5%AE%E4%B8%96%E7%B5%B5%3C%2Fdiv%3E&css=.test%20%7B%20padding%3A1em%3B%20%7D%20rt%20%7B%20border-inline%3A%201px%20solid%20red%3B%20%7D%0Aruby%20%7B%20ruby-align%3A%20center%3B%20%7D&lang=ja&fontSize=50&width=500&height=101&a=A%20long%20annotation%20overlaps%20characters%20outside%20the%20ruby%20element%20without%20CSS.&i=Test%20passes%20if%20the%20ruby%20text%20overlaps%20the%20characters%20either%20side%20of%20the%20ruby%20base%20text.%20The%20vertical%20red%20lines%20are%20just%20guides." target="_blank">A long annotation overlaps characters outside the ruby element without CSS.</a></p>
+
 <p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E6%B5%AE%E4%B8%96%E7%B5%B5%3Cruby%3E%3Crb%3E%E6%98%94%E8%A9%B1%3Crt%3E%E3%82%80%E3%81%8B%E3%81%97%E3%81%B0%E3%81%AA%E3%81%97%3C%2Fruby%3E%E6%B5%AE%E4%B8%96%E7%B5%B5%3C%2Fdiv%3E&css=.test%20%7B%20padding%3A1em%3B%20%7D%20rt%20%7B%20border-inline%3A%201px%20solid%20red%3B%20%7D%0Aruby%20%7B%20ruby-align%3A%20center%3B%20ruby-overhang%3A%20auto%3B%20%7D&lang=ja&fontSize=50&width=500&height=101&a=ruby-overhang%3Aauto%20causes%20a%20long%20annotation%20to%20overlap%20characters%20outside%20the%20ruby%20element.&i=Test%20passes%20if%20the%20ruby%20text%20overlaps%20the%20characters%20either%20side%20of%20the%20ruby%20base%20text.%20The%20vertical%20red%20lines%20are%20just%20guides." target="_blank">ruby-overhang:auto causes a long annotation to overlap characters outside the ruby element.</a></p>
 
 <p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E6%B5%AE%E4%B8%96%E7%B5%B5%3Cruby%3E%3Crb%3E%E6%98%94%E8%A9%B1%3Crt%3E%E3%82%80%E3%81%8B%E3%81%97%E3%81%B0%E3%81%AA%E3%81%97%3C%2Fruby%3E%E6%B5%AE%E4%B8%96%E7%B5%B5%3C%2Fdiv%3E&css=.test%20%7B%20padding%3A1em%3B%20%7D%20rt%20%7B%20border-inline%3A%201px%20solid%20red%3B%20%7D%0Aruby%20%7B%20ruby-align%3A%20center%3B%20ruby-overhang%3A%20none%3B%20%7D&lang=ja&fontSize=50&width=500&height=101&a=ruby-overhang%3Anone%20prevents%20a%20long%20annotation%20overlapping%20characters%20outside%20the%20ruby%20element.&i=Test%20passes%20if%20the%20ruby%20text%20doesn't%20overlap%20the%20characters%20either%20side%20of%20the%20ruby%20base%20text.%20The%20vertical%20red%20lines%20are%20just%20guides." target="_blank">ruby-overhang:none prevents a long annotation overlapping characters outside the ruby element.</a></p>
@@ -932,7 +967,7 @@ ruby ruby { ruby-position: over; }</code></pre>
 
 <style>
 #out_aligning_overhang { font-size: 50px; color: rgb(102, 102, 102); }
-#out_aligning_overhang ruby { ruby-align: space-around; }
+#out_aligning_overhang ruby { ruby-align: center; }
 #out_aligning_overhang rt { border-inline: 1px solid red; }
 </style>
 
@@ -952,7 +987,9 @@ ruby ruby { ruby-position: over; }</code></pre>
 
 <p>WebKit browsers also support an overhang by default, but they <em>do</em> support <code class="kw" translate="no">ruby-overhang: none;</code>, pushing the adjacent text apart so that there is no overhang.</p>
 
-<p>Gecko browsers, which normally have good support for ruby styling, do not support overhang — either by default, nor by CSS styling.</p>
+<p>Gecko browsers, which normally have good support for ruby styling, do not support overhang — neither by default, nor by CSS styling.</p>
+
+<p>Note that no browser produces overlap if the alignment of ruby text is set to <code class="kw" translate="no">space-between</code>.</p>
 </section>
 </section>
 
@@ -962,7 +999,7 @@ ruby ruby { ruby-position: over; }</code></pre>
 
 
 <section id="inline_position">
-<h2>Rendering annotations inline</h2>
+<h2>Adding parentheses to inline annotations</h2>
 
 <p>In some situations you may want the annotations to appear inline, after the base text, and at the same font size as the base characters. For example, the <a href="markup">Ruby markup</a> article describes how complicated kanji characters with ruby on top can create accessibility issues. In other cases you may want to do this because the user interface is too small for ruby text to be legible, or because you want to repurpose the content for another type of application, etc.</p>
 
@@ -1305,19 +1342,53 @@ rt + rtc::before { content: &quot;）（&quot;; }</code></pre>
 <h2>Further reading</h2>
 <aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
 
+
 <ul id="full-links">
 <li>
 <p><a href="index">What is ruby?</a></p>
 </li>
+
 <li>
-<p>Related links, <cite>Authoring web pages</cite></p>
+<p><a href="markup.en.html">Ruby Markup</a></p>
+</li>
+
+<li>
+<p><cite>Authoring web pages</cite></p>
 <ul>
-<li><a href="https://www.w3.org/International/techniques/authoring-html#ruby">Using ruby markup</a></li>
-<li><a href="https://www.w3.org/International/techniques/authoring-html#rubystyle">Styling ruby text</a></li>
+<li><a href="https://www.w3.org/International/techniques/authoring-html#rubystyle">Inline notes &amp; annotations</a></li>
+</ul>
+</li>
+<li>
+<p><cite>Language enablement index</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/typography/#inline_notes">Inline notes &amp; annotations</a></li>
+</ul>
+</li>
+<li>
+<p><cite>CSS specification</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/css-ruby-1/#rubypos">ruby-position</a> • 
+<a href="https://www.w3.org/TR/css-ruby-1/#ruby-align-property">ruby-align</a> • 
+<a href="https://www.w3.org/TR/css-ruby-1/#propdef-ruby-merge">ruby-merge</a> • 
+<a href="https://www.w3.org/TR/css-ruby-1/#ruby-overhang">ruby-overhang</a> • 
+</li>
+</ul>
+</li>
+<li>
+<p><cite>MDN</cite></p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/ruby-position">ruby-position</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/ruby-align">ruby-align</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/ruby-merge">ruby-merge</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/ruby-overhang">ruby-overhang</a>
+</li>
 </ul>
 </li>
 </ul>
 </section>
+
+
+
 
 <footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
 <script>completePage(); //highlightCode();
