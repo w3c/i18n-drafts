@@ -28,8 +28,12 @@ jobs:
         shell: bash
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "base_sha=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
-            echo "head_sha=${{ github.sha }}" >> "$GITHUB_OUTPUT"
+            # github.sha is the synthetic PR merge commit; its first parent is
+            # the exact gh-pages revision used for this checkout.
+            head_sha="${{ github.sha }}"
+            base_sha="$(git rev-parse "$head_sha^1")"
+            echo "base_sha=$base_sha" >> "$GITHUB_OUTPUT"
+            echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
           else
             echo "base_sha=HEAD^" >> "$GITHUB_OUTPUT"
             echo "head_sha=HEAD" >> "$GITHUB_OUTPUT"
