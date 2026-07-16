@@ -21,7 +21,7 @@ f.path = '../../' // what you need to prepend to a URL to get to the /Internatio
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
 f.thisVersion = { date:'2026-07-10', time:'15:55'} // date and time of latest edits to this document/translation
-f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+f.contributors = 'Fuqiao Xue contributed useful review comments.'; // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
 
@@ -137,7 +137,7 @@ anyone who wants to know how to use ruby annotations. </p-->
 <p class="summary">Reliable for above/below. Inter-character not supported.</p>
 </aside>
 
-<p><span class="leadin">Positioning annotations above, below, or between bases.</span> Modern browsers reliably support positioning of ruby text above or below base text using CSS. Bopomofo (<i class="foreign">zhuyin fuhau</i>) ruby alignment (to the right of the base) is not supported by any browser.</p>
+<p><span class="leadin">Positioning annotations above, below, or between bases.</span> Modern browsers reliably support positioning of ruby text above or below base text using CSS. Bopomofo (<i class="foreign">zhuyin fuhao</i>) ruby alignment (to the right of the base) is not supported by any browser.</p>
 
 
 
@@ -173,7 +173,13 @@ anyone who wants to know how to use ruby annotations. </p-->
 <section id="configs">
 <h2>Basic configurations</h2>
 
+<div class="sidenoteGroup">
 <p>This section describes typical scenarios for Japanese and Chinese. The expected behavior is  based on the layout requirements documents for Japanese (<a href="https://www.w3.org/TR/jlreq/">JLReq</a>) and Chinese (<a href="https://www.w3.org/TR/clreq/">CLReq</a>). Only the more common configurations are described here; subsequent sections will explain how to produce these configurations, and how to tailor the results.</p>
+
+<aside class="sideinfonote">
+<p class="warning">To make the examples of markup easier to read, we may split the <code class="kw" translate="no">ruby</code> element components onto several lines. In theory, this should work fine. However, in practise, browsers may add unwanted spaces to the rendered text. Therefore you should aim to keep all the markup on a single line.</p></aside>
+</div>
+
 
 <p>What follows assumes that you have used markup to map ruby text annotations to base characters appropriately, as described in the article <a href="https://www.w3.org/International/articles/ruby/markup">Ruby Markup</a>.</p>
 <section id="ja_basics">
@@ -359,7 +365,7 @@ anyone who wants to know how to use ruby annotations. </p-->
 </div>
 
 
-<p><span class="leadin howto-header">Does it work?</span> This works well because this is the default rendering for ruby.</p>
+<p><span class="leadin howto-header">Does it work?</span> This works well because this is the default rendering for ruby markup.</p>
 </section>
 
 
@@ -510,11 +516,11 @@ anyone who wants to know how to use ruby annotations. </p-->
 </figure>
 </div>
 
-<p>This is complicated a little by the fact that there are two possible ways to create markup for double-sided ruby (see the <a href="markup">Ruby Markup</a> article for more details).</p>
+<p>This is complicated a little by the fact that there are two possible ways to create markup for double-sided ruby: tabular markup, and nested ruby (see the <a href="markup">Ruby Markup</a> article for more details).</p>
 
-<p><span class="leadin howto-header">How to do it.</span> If you use the 'tabular' model of markup, the styling is reasonably straightforward and involves setting <code class="kw" translate="no">ruby-position</code> on the appropriate <code class="kw" translate="no">rtc</code> element. Given markup such as the following:</p>
 
-<div class="sidenoteGroup">
+<p>If you use the 'tabular' model of markup, the example above would be marked up as follows:</p>
+
 <figure class="example" lang="ja">
 <pre><code class="language-html">&lt;ruby&gt;
 &lt;rb&gt;東&lt;/rb&gt;&lt;rb&gt;南&lt;/rb&gt;
@@ -523,28 +529,63 @@ anyone who wants to know how to use ruby annotations. </p-->
 &lt;/ruby&gt;の方角</code></pre>
 </figure>
 
-<aside class="sideinfonote">
-<p class="warning">To make the examples of markup easier to read, we have split the <code class="kw" translate="no">ruby</code> element components onto several lines. In theory, this should work fine. However, in practise, browers may add unwanted spaces to the rendered text. Therefore you should keep all the markup on a single line.</p></aside>
-</div>
+<p>If you use nested markup, you would have markup such as the following:</p>
 
-<p>you could use CSS like this:</p>
+<figure id="fig_double_position2" class="example" lang="ja">
+<pre><code class="language-html">&lt;ruby&gt;&lt;ruby&gt;東&lt;rt&gt;とう&lt;/ruby&gt;&lt;rt&gt;tou&lt;rb&gt;&lt;ruby&gt;南&lt;rt&gt;なん&lt;/ruby&gt;&lt;rt&gt;nan&lt;/ruby&gt;の方角</code></pre>
+</figure>
+
+
+<p><span class="leadin howto-header">How to do it.</span> In principle, for double-sided ruby the simplest approach would be to use <code class="kw" translate="no">ruby-position:alternate</code>. This is also the initial value for <code class="kw" translate="no">ruby-position</code> per the CSS spec. By default, when there are two annotations for a given base it places the first above the base and the second below. This value can also be used in other circumstances to switch the position of the annotations automatically.</p>
+
+<aside class="floatedImplnote">
+<p class="feature">ruby-position: alternate;</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>⚠️</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>More tests</summary>
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cruby%3E%3Crb%3E%E6%9D%B1%3C%2Frb%3E%3Crb%3E%E5%8D%97%3C%2Frb%3E%3Crt%3E%E3%81%A8%E3%81%86%3C%2Frt%3E%3Crt%3E%E3%81%AA%E3%82%93%3C%2Frt%3E%3Crtc%3E%3Crt%3Etou%3C%2Frt%3E%3Crt%3Enan%3C%2Frt%3E%3C%2Frtc%3E%3C%2Fruby%3E%E3%81%AE%E6%96%B9%E8%A7%92&css=.test%20%7B%20padding%3A1em%3B%20%7D%0Aruby%20%7B%20ruby-position%3A%20alternate%3B%20%7D&lang=ja&fontSize=50&width=500&height=101&a=For%20tabular%20markup%2C%20ruby-position%3Aalternate%20puts%20the%20first%20of%20two%20annotations%20above%2C%20and%20the%20second%20below%20by%20default.&i=Test%20passes%20if%20%E3%81%A8%E3%81%86%20is%20above%20the%20base%20and%20tou%20is%20below%20the%20base.%20Same%20for%20the%20second." target="_blank">For tabular markup, ruby-position:alternate puts the first of two annotations above the base, and the second below the base by default.</a></p>
+
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cruby%3E%3Cruby%3E%E6%9D%B1%3Crt%3E%E3%81%A8%E3%81%86%3C%2Fruby%3E%3Crt%3Etou%3Crb%3E%3Cruby%3E%E5%8D%97%3Crt%3E%E3%81%AA%E3%82%93%3C%2Fruby%3E%3Crt%3Enan%3C%2Fruby%3E%E3%81%AE%E6%96%B9%E8%A7%92&css=.test%20%7B%20padding%3A1em%3B%20%7D%0Aruby%20%7B%20ruby-position%3A%20alternate%3B%20%7D&lang=ja&fontSize=50&width=500&height=101&a=When%20nested%20ruby%20is%20used%2C%20ruby-position%3Aalternate%20puts%20the%20first%20of%20two%20annotations%20above%20the%20base%2C%20and%20the%20second%20below%20the%20base%2C%20by%20default.&i=Test%20passes%20if%20%E3%81%A8%E3%81%86%20is%20above%20the%20base%20and%20tou%20is%20below%20the%20base.%20Same%20for%20the%20second." target="_blank">When nested ruby is used, ruby-position:alternate puts the first of two annotations above the base, and the second below the base, by default.</a></p>
+</details>
+</aside>
+
+
+<p>Unfortunately, at the time of writing, this only works for Gecko browsers using the tabular markup approach.  Blink and WebKit browsers don't yet support tabular markup. When using the nested ruby approach the browsers all position the second annotation immediately below the first and both together appear above the base.</p>
+
+<p>So let's look at alternative ways of managing positioning for double-sided ruby.</p>
+
+
+
+
+<p>If you use the 'tabular' model of markup, the styling is reasonably straightforward and involves setting <code class="kw" translate="no">ruby-position</code> on the appropriate <code class="kw" translate="no">rtc</code> element.</p>
 
 <figure id="fig_double_position" class="example" lang="ja">
 <pre><code class="language-css">ruby { ruby-position: over; }
-rtc { ruby-position: under; }</code></pre>
+rtc  { ruby-position: under; }</code></pre>
 </figure>
 
 <div id="out_double_position" class="browser_output">
 <p class="browser_output_title">Output in your browser:</p>
 <p lang="ja"><ruby><rb>東</rb><rb>南</rb><rt>とう</rt><rt>なん</rt><rtc><rt>tou</rt><rt>nan</rt></rtc></ruby>の方角</p></div>
 
-<p>If you use nested markup, and you have markup such as the following:</p>
+<p>Unfortunately, as mentioned earlier, the tabular model is not currently supported by Blink or WebKit browsers, so this only works for Gecko-based browsers.</p>
 
-<figure id="fig_double_position2" class="example" lang="ja">
-<pre><code class="language-html">&lt;ruby&gt;&lt;ruby&gt;東&lt;rt&gt;とう&lt;/ruby&gt;&lt;rt&gt;tou&lt;rb&gt;&lt;ruby&gt;南&lt;rt&gt;なん&lt;/ruby&gt;&lt;rt&gt;nan&lt;/ruby&gt;の方角</code></pre>
-</figure>
 
-<p>you could use CSS like this:</p>
+
+
+<p>If you use nested markup, you could use CSS like this:</p>
 
 <figure class="example" lang="ja">
 <pre><code class="language-css">ruby { ruby-position: under; }<br>
@@ -555,6 +596,8 @@ ruby ruby { ruby-position: over; }</code></pre>
 <p class="browser_output_title">Output in your browser:</p>
 <p lang="ja"><ruby><ruby>東<rt>とう</rt></ruby><rt>tou</rt><rb><ruby>南<rt>なん</rt></ruby></rb><rt>nan</rt></ruby>の方角</p>
 </div>
+
+<p>Although this approach currently works in all browsers, the nested markup is not ideal. Furthermore, it prevents you from taking advantage of the simple and useful features of the <code class="kw" translate="no">alternate</code> value of <code class="kw" translate="no">ruby-position</code> in the future, once it is interoperably supported by browsers.</p>
 </section>
 </section>
 
@@ -1116,7 +1159,7 @@ rt::after { content: '）'; }</code></pre>
 <p>The markup for the example is:</p>
 
 <figure class="example" lang="ja">
-<pre><code class="language-html">&lt;ruby&gt;&lt;rb&gt;水&lt;rb&gt;芝&lt;rb&gt;居&lt;rt&gt;みず&lt;rt&gt;し&lt;rt&gt;ばいばい&lt;/ruby&gt;</code></pre>
+<pre><code class="language-html">&lt;ruby&gt;&lt;rb&gt;水&lt;rb&gt;芝&lt;rb&gt;居&lt;rt&gt;みず&lt;rt&gt;し&lt;rt&gt;ばい&lt;/ruby&gt;</code></pre>
 </figure>
 
 <p>This markup model supports double-sided ruby using the <code class="kw" translate="no">rtc</code> tag (see <a href="markup.en.html#double_sided" target="_blank">Ruby Markup</a>).</p>
