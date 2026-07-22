@@ -56,21 +56,104 @@ function showExample (path) {
 	}
 
 
-function stickyConneg (filename, cLang, targetLang) {
-	var response = false
-	var msg = '['+cLang+'] '+cn[cLang]
-	msg += '\n\n'+'['+targetLang+'] '+cn[targetLang]
-	if (targetLang !== 'en' && cLang !== 'en') msg += '\n\n'+'[en] '+cn.en
-	response = confirm(msg)
-	if (response == true) {
-		var d = new Date()
-		d.setTime(d.getTime() + 60*24*60*60*1000)
-		var expires = ';expires='+d.toUTCString()
-		var path = ";path=/"
-		document.cookie = 'w3ci18nlang='+targetLang+expires+path
-		}
-	document.location.assign(filename+'.'+targetLang+'.html')
+// COOKIE BANNER UTILITIES
+function createCookieBanner(targetLang, filename, cLang) {
+	// Check if banner already exists
+	if (document.getElementById('cookieBanner')) {
+		return;
 	}
+
+	const banner = document.createElement('div');
+	banner.id = 'cookieBanner';
+	banner.className = 'cookie-banner';
+	banner.setAttribute('role', 'dialog');
+	banner.setAttribute('aria-labelledby', 'cookieBannerTitle');
+	banner.setAttribute('aria-describedby', 'cookieBannerDesc');
+	
+	// Build message with both current and target language
+	let message = '';
+	if (cn[cLang]) {
+		message += `<strong>[${cLang}]</strong> ${cn[cLang]}`;
+	}
+	if (cn[targetLang] && targetLang !== cLang) {
+		message += `<br><br><strong>[${targetLang}]</strong> ${cn[targetLang]}`;
+	}
+	if (targetLang !== 'en' && cLang !== 'en') {
+		message += `<br><br><strong>[en]</strong> ${cn.en}`;
+	}
+	
+	banner.innerHTML = `
+		<div class="cookie-banner-content">
+			<div class="cookie-banner-text">
+				<h3 id="cookieBannerTitle" class="cookie-banner-title">Language Preference</h3>
+				<div id="cookieBannerDesc">${message}</div>
+			</div>
+			<div class="cookie-banner-actions">
+				<button id="cookieAccept" class="cookie-btn cookie-btn-primary">
+					${targetLang === 'en' ? 'Yes, remember my choice' : 'Yes'}
+				</button>
+				<button id="cookieDecline" class="cookie-btn cookie-btn-secondary">
+					${targetLang === 'en' ? 'No, just this time' : 'No'}
+				</button>
+			</div>
+		</div>
+	`;
+
+	document.body.appendChild(banner);
+
+	// Event handlers
+	document.getElementById('cookieAccept').addEventListener('click', () => {
+		setCookiePreference(targetLang);
+		removeCookieBanner();
+		navigateToLanguage(filename, targetLang);
+	});
+
+	document.getElementById('cookieDecline').addEventListener('click', () => {
+		removeCookieBanner();
+		navigateToLanguage(filename, targetLang);
+	});
+}
+
+function setCookiePreference(targetLang) {
+	const d = new Date();
+	d.setTime(d.getTime() + 60*24*60*60*1000); // 60 days
+	const expires = ';expires=' + d.toUTCString();
+	const path = ';path=/';
+	const secure = location.protocol === 'https:' ? ';secure' : '';
+	const sameSite = ';samesite=lax';
+	document.cookie = `w3ci18nlang=${targetLang}${expires}${path}${secure}${sameSite}`;
+}
+
+function removeCookieBanner() {
+	const banner = document.getElementById('cookieBanner');
+	if (banner) {
+		banner.style.animation = 'fadeOutScale 0.3s ease-in';
+		setTimeout(() => banner.remove(), 300);
+	}
+}
+
+function navigateToLanguage(filename, targetLang) {
+	const extension = targetLang === 'en' ? '.en.html' : `.${targetLang}.html`;
+	document.location.assign(filename + extension);
+}
+
+// Check if user has already set a preference
+function hasLanguagePreference() {
+	return document.cookie.split(';').some(cookie => 
+		cookie.trim().startsWith('w3ci18nlang=')
+	);
+}
+
+function stickyConneg(filename, cLang, targetLang) {
+	// If user already has a preference set, just navigate
+	if (hasLanguagePreference()) {
+		navigateToLanguage(filename, targetLang);
+		return;
+	}
+
+	// Show the less intrusive banner instead of confirm dialog
+	createCookieBanner(targetLang, filename, cLang);
+}
 
 
 
