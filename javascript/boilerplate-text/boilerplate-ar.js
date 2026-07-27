@@ -61,7 +61,8 @@ s.skipNavigation = "Skip to main content"
 // items in top right beige column
 s.worldMap = "خريطة العالم"  // title text for image, top right
 s.searchI18nSite = "بحث موقع I18N" // placeholder text for search box, top right
-s.translationDisclaimer = `هذه الوثيقة ترجمة للأصل. في حالة وجود تعارض أو أخطاء، تكون <a href="${ f.filename }.en">أحدث نسخة المستند الإنجليزي الأصلي</a> هي الموثوقة. <a href="#copyright">حقوق الطبع والنشر الأصلية</a> بملك W3C، كما هو موضح بأسفله.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `هذه الوثيقة ترجمة للأصل. في حالة وجود تعارض أو أخطاء، تكون <a href="${ s.englishOriginal }">أحدث نسخة المستند الإنجليزي الأصلي</a> هي الموثوقة. <a href="#copyright">حقوق الطبع والنشر الأصلية</a> بملك W3C، كما هو موضح بأسفله.`  // text appears only on translated pages
 
 s.articles = "مقالات" // used in breadcrumbs, top right of page
 s.tests="اختبارات" // used at the end of breadcrumbs for test related pages
@@ -124,8 +125,8 @@ s.historyOfDocumentChanges = `لمعرفة تاريخ التغييرات في ا
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>ملاحظة:</strong> تم إجراء تغييرات على <a href="${ f.filename }.en">النص الأصلي بالإنجليزية</a> منذ ترجمته. تم دمج التغييرات في هذه الصفحة ، وقد يتم عرض بعض الفقرات باللغة الإنجليزية حتى يتم تحديث الترجمة.`
-s.unlinkedTranslation = `<strong>انتباه:</strong> تم إجراء تغييرات مادية على النسخة الأصلية الإنجليزية منذ ترجمة هذه الوثيقة. يُنصح بقراءة <a href="${ f.filename }.en">النسخة الإنجليزية</a> حتى يتم تحديث هذه الترجمة.`
+s.untranslatedChanges = `<strong>ملاحظة:</strong> تم إجراء تغييرات على <a href="${ s.englishOriginal }">النص الأصلي بالإنجليزية</a> منذ ترجمته. تم دمج التغييرات في هذه الصفحة ، وقد يتم عرض بعض الفقرات باللغة الإنجليزية حتى يتم تحديث الترجمة.`
+s.unlinkedTranslation = `<strong>انتباه:</strong> تم إجراء تغييرات مادية على النسخة الأصلية الإنجليزية منذ ترجمة هذه الوثيقة. يُنصح بقراءة <a href="${ s.englishOriginal }">النسخة الإنجليزية</a> حتى يتم تحديث هذه الترجمة.`
 s.githubRedirect = `<strong>ملاحظة!</strong> &nbsp; هذه مسودة المحرر لهذا المقال. يجب أن تشير جميع الروابط والإشارات إلى <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>الإصدار الموجود على موقع W3C</a>.` // used for github-based versions of published articles
 
 

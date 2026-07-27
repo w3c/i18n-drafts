@@ -5,6 +5,11 @@
 const { spawnSync } = require('node:child_process');
 const path = require('node:path');
 
+const {
+  findSingleLanguageWarnings,
+  emitLanguageCoverageWarnings,
+} = require('./pr-language-coverage-warning');
+
 const repoRoot = path.resolve(__dirname, '..');
 const contentRoots = new Set([
   'articles',
@@ -34,6 +39,19 @@ if (cli.errors.length > 0) {
 }
 
 const changedFiles = getChangedFiles(cli).filter(isRelevantPath);
+const isPullRequest = process.env.GITHUB_EVENT_NAME === 'pull_request';
+
+if (isPullRequest) {
+  const warnings = findSingleLanguageWarnings({
+    repoRoot,
+    changedFiles,
+  });
+
+  emitLanguageCoverageWarnings({
+    warnings,
+    summaryPath: process.env.GITHUB_STEP_SUMMARY || '',
+  });
+}
 
 if (changedFiles.length === 0) {
   console.log('No changed content HTML or translations.js files to validate.');

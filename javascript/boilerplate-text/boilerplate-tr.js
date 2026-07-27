@@ -61,7 +61,8 @@ s.skipNavigation = "Skip to main content"
 // items in top right beige column
 s.worldMap = "Dünya haritası"  // title text for image, top right
 s.searchI18nSite = "I18n sitesinde ara" // placeholder text for search box, top right
-s.translationDisclaimer = `Bu belge bir çeviridir. Herhangi bir tutarsızlık veya hata durumunda, <a href="${ f.filename }.en">en son tarihli İngilizce orijinal belge</a> esas alınmalıdır. <a href="#copyright">Orijinal belgenin telif hakkı</a> aşağıdaki belirtildiği gibi W3C'ye aittir.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `Bu belge bir çeviridir. Herhangi bir tutarsızlık veya hata durumunda, <a href="${ s.englishOriginal }">en son tarihli İngilizce orijinal belge</a> esas alınmalıdır. <a href="#copyright">Orijinal belgenin telif hakkı</a> aşağıdaki belirtildiği gibi W3C'ye aittir.`  // text appears only on translated pages
 
 s.articles = "Articles" // used in breadcrumbs, top right of page
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
@@ -124,8 +125,8 @@ s.historyOfDocumentChanges = `For the history of document changes, see the <a hr
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Note:</strong> Changes have been made to <a href="${ f.filename }.en">the English original</a> since this document was translated. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.`
-s.unlinkedTranslation = `<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="${ f.filename }.en">the English version</a> until this translation has been updated.`
+s.untranslatedChanges = `<strong>Note:</strong> Changes have been made to <a href="${ s.englishOriginal }">the English original</a> since this document was translated. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.`
+s.unlinkedTranslation = `<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="${ s.englishOriginal }">the English version</a> until this translation has been updated.`
 s.githubRedirect = `<strong>NOTE!</strong> &nbsp; This is only an editor's draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>version on the W3C site</a>.` // used for github-based versions of published articles
 
 

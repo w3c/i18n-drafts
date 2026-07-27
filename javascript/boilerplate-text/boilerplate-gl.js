@@ -61,7 +61,8 @@ s.skipNavigation = "Skip to main content"
 // items in top right beige column
 s.worldMap = "Mapa mundial"  // title text for image, top right
 s.searchI18nSite = "Procura no sitio de I18n" // placeholder text for search box, top right
-s.translationDisclaimer = `Este documento é unha tradución proporcionada por un voluntario/voluntaria. No caso de ter algunha discrepancia ou erro, o <a href="${ f.filename }.en">último texto orixinal en inglés</a> será o que prevaleza.<a href="#copyright">. O copyright orixinal</a> pertence á W3C, como aparece abaixo.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `Este documento é unha tradución proporcionada por un voluntario/voluntaria. No caso de ter algunha discrepancia ou erro, o <a href="${ s.englishOriginal }">último texto orixinal en inglés</a> será o que prevaleza.<a href="#copyright">. O copyright orixinal</a> pertence á W3C, como aparece abaixo.`  // text appears only on translated pages
 
 s.articles = "Artigos" // used in breadcrumbs, top right of page
 s.tests="Probas" // used at the end of breadcrumbs for test related pages
@@ -124,7 +125,7 @@ s.historyOfDocumentChanges = `Para ver o historial de cambios dos documentos, co
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Nota:</strong> Fixéronse cambios no <a href="${ f.filename }.en">orixinal en inglés</a> desde que se traduciu este documento. Os cambios se incorporaron a esta páxina, polo que é posible que vexa alguns pasaxes en inglés ata que se actualice a tradución.`
+s.untranslatedChanges = `<strong>Nota:</strong> Fixéronse cambios no <a href="${ s.englishOriginal }">orixinal en inglés</a> desde que se traduciu este documento. Os cambios se incorporaron a esta páxina, polo que é posible que vexa alguns pasaxes en inglés ata que se actualice a tradución.`
 s.unlinkedTranslation = `<strong>Advertencia:</strong> Fixéronse cambios sustanciais no orixinal en inglés desde que se traduciu este documento. Recoméndase ler <a href="${ f.filename }">unha versión noutro idioma</a> ata que se actualice esta tradución.`
 s.githubRedirect = `<strong>NOTA!</strong> &nbsp; Este é só un borrador do editor deste artigo. Todas as ligazóns e os marcadores deben redirixir á <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>versión no sitio da W3C</a>, e non a esta páxina.` // used for github-based versions of published articles
 

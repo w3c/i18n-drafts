@@ -14,13 +14,13 @@ f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
 f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-underline'; // blog search string - usually the filename without extensions
-f.firstPubDate = '2026-03-06'; // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2026-03-06', time:'10:10'}  // date and time of latest substantive changes to this document
-f.status = 'review';  // should be one of draft, review, published, notreviewed or obsolete
+f.firstPubDate = '2026-03-30'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-03-30', time:'05:50'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2026-03-15', time:'10:10'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-03-30', time:'05:50'} // date and time of latest edits to this document/translation
 f.contributors = 'Fantasai provided review feedback.'; // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -50,16 +50,6 @@ f.additionalLinks = ''
 
 
 <script>
-function highlightCode () {
-	var examples = document.querySelectorAll('figure.example')
-	for (var i=0;i<examples.length;i++) {
-		var re = /&lt;([^&]+)&gt;/
-		var content = examples[i].innerHTML
-		out = content.replace(/&lt;([^&]+)&gt;/g,'<span class="el">&lt;$1&gt;</span>')
-		examples[i].innerHTML = out
-		}
-	}
-
 function setUnderline (classname, value) {
     document.querySelectorAll(classname)
         .forEach(el => el.style.textUnderlinePosition = value)
@@ -122,11 +112,11 @@ text-decoration-skip-inset:none|auto;</code></pre>
 </figure>
 </div>
 
-<p>The CSS specification suggests that, by default, browsers should place an underline at or near the alphabetic baseline, but should also take into account that some scripts will need the underline to be lower. Browsers are encouraged to take these scripts into account for default settings and <code class="kw" translate="no">auto</code> values, but typically some additional styling will be needed.</p>
+<p>The CSS specification suggests that, without styling, browsers should place an underline at or near the alphabetic baseline, but should also take into account that some scripts will need the underline to be lower. Browsers are encouraged to take these scripts into account for default settings and <code class="kw" translate="no">auto</code> values, but typically some additional styling will be needed.</p>
 
 <p>If you allow the browser to use the default position or an <code class="kw" translate="no">auto</code> value, the line will typically be drawn immediately below the alphabetic baseline, cutting through descenders, subjoined consonants/vowels and diacritics. Gecko browsers will however apply the underline position given by font metrics, if available for that font.</p>
 
-<p>CSS offers three possible strategies for positioning the underline lower than just below the alphabetic baseline. However, the choice of styling is not straightforward. Given the same CSS declarations, the actual placement of the underline will usually vary by font, and may also vary by browser used. It is therefore necessary to set the underline at the same time as assigning the font family for the text, and it's likely you'll need to do some experimentation to get the setting you want.</p>
+<p><span class="leadin" style="font-size: 110%;">How to do it.</span>  CSS offers three possible strategies for positioning the underline lower than just below the alphabetic baseline. However, the choice of styling is not straightforward. Given the same CSS declarations, the actual placement of the underline will usually vary by font, and may also vary by browser used. It is therefore necessary to set the underline at the same time as assigning the font family for the text, and it's likely you'll need to do some experimentation to get the setting you want.</p>
 
 <p>Using <code class="kw" translate="no">text-underline-position:from-font</code> typically lowers the underline, but only for the few fonts that contain the metric. Typically, the underline still cuts through  descenders or subjoined glyphs below the baseline.</p>
 
@@ -144,8 +134,37 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <section id="builtIn">
 <h3>Using built-in font metrics (<code class="kw" translate="no">from-font</code>)</h3>
 
-<div class="sidenoteGroup">
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-position:from-font</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+
+
+<!--<figure id="fig_fromfont_example" style="width:100%; margin-inline:0;">
+<figcaption>Two fonts where the underline doesn't move, followed by 3 fonts where it does when <code class="kw" translate="no">from-font</code> is applied.</figcaption>
+<p><img src="underline-data/fig_fromfont_example.jpg" alt="" style="margin-block:1rem; width:100%;"></p>
+</figure>
+--></aside>
+
 <p>If a font has a built-in metric to indicate the preferred underline position then <a href="https://drafts.csswg.org/css-text-decor-4/#text-underline-position-property"><code class="kw" translate="no">text-underline-position:from-font</code></a> should allow you to use that.  However, many fonts don't include that metric.</p>
+
+<figure id="fig_fromfont_example;">
+<p><img src="underline-data/fig_fromfont_example.jpg" alt="" style="margin-block:1rem; width:20rem;"></p>
+<figcaption>Two fonts where the underline doesn't move, followed by 3 fonts where it does when <code class="kw" translate="no">from-font</code> is applied.</figcaption>
+</figure>
+
+<!--<div class="sidenoteGroup">
 
 
 <aside class="implnote">
@@ -155,12 +174,8 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <p>Safari only renders pre-installed macOS fonts, so fonts such as Amiri, and Scheherazade New, which do have underline metrics, won't display unless you use a webfont.</p>
 
 
-<figure id="fig_fromfont_example" style="width:100%; margin-inline:0;">
-<figcaption>Two fonts where the underline doesn't move, followed by 3 fonts where it does when <code class="kw" translate="no">from-font</code> is applied.</figcaption>
-<p><img src="underline-data/fig_fromfont_example.jpg" alt="" style="margin-block:1rem; width:100%;"></p>
-</figure>
 </aside>
-</div>
+</div>-->
 
 <p> If the font doesn't have built-in metrics to indicate the preferred position of the underline the value falls back to <code class="kw" translate="no">auto</code>, which relies on the browser to do the right thing. Currently, when the value of this property is set to <code class="kw" translate="no">auto</code> Blink and WebKit browsers draw the underline just below the alphabetic baseline, but Gecko applies the <code class="kw" translate="no">from-font</code> position when <code class="kw" translate="no">auto</code> is specified and the font metric exists (which is what the CSS spec recommends).</p>
 
@@ -200,9 +215,19 @@ text-decoration-skip-inset:none|auto;</code></pre>
 
 
 
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-position:from-font</code> where that metric is available in the font.</p>
+
+<p>The <code class="kw" translate="no">from-font</code> position is used as the unstyled default in Gecko browsers (ie. without styling).</p>
+
+<p>Safari only renders pre-installed macOS fonts, so fonts such as Amiri, and Scheherazade New, which do have underline metrics, won't display unless you use a webfont.</p>
+
+
+
+
 <details class="moreTests">
 <summary>More tests...</summary>
 
+<div class="testData">
 <p>The following links allow you to test this property and value against a range of fonts. The links open a web page in a separate browser window. The text is composed from lists of words or graphemes that show long descenders.</p>
 
 <p>There are two types of test. One (W3C) allows you to change the font by mousing over or tapping on the fonts in a list. The other (r12a) lists the text with all fonts at the same time. Of course, the tests only produce results for the fonts installed on your device or platform. Note, in particular, that WebKit browsers do not allow you to access non-system fonts unless they are packaged as webfonts.</p>
@@ -258,7 +283,7 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <img src="underline-data/fig_tibetan_from_font_results.jpg" alt="" style="width:20rem;">
 <figcaption>Test results for Tibetan fonts on macOS in the Chrome browser.</figcaption>
 </figure>
-
+</div>
 </details>
 </section>
 
@@ -274,8 +299,33 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <section id="under">
 <h3>Positioning below the em box (<code class="kw" translate="no">under</code>)</h3>
 
-<div class="sidenoteGroup">
+<aside class="floatedImplnote">
+<p class="feature">text-underline-position:under</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+
 <p>An alternative to <code class="kw" translate="no">from-font</code> that works for all fonts is <code class="kw" translate="no">text-underline-position:under</code>. This is designed to push the underline below the font's em box descent metric.</p>
+
+
+<figure id="fig_under_example">
+<p><img src="underline-data/fig_under_example.jpg" alt="" style="margin-block:1rem; width:20em;"></p>
+<figcaption>Vowelled Arabic text where <code class="kw" translate="no">under</code> is applied.</figcaption>
+</figure>
+
+
+<!--<div class="sidenoteGroup">
 
 
 <aside class="implnote">
@@ -289,7 +339,7 @@ text-decoration-skip-inset:none|auto;</code></pre>
 </figure>
 </aside>
 </div>
-
+-->
 <p>The position below the alphabetic baseline still varies from font to font, but the underline typically appears slightly lower than that produced by<code class="kw" translate="no">from-font</code>. From the fonts tested, however, there is still a degree of unpredictability regarding where the line will be drawn, and the result differs depending on which browser is used. In some cases, the basic descenders are cleared, but in others, especially when vowel markers appear below long descenders or stacks, they are not.</p>
 
 <p>So, you should still test the results for a given font, and on multiple browsers.</p>
@@ -328,9 +378,21 @@ text-decoration-skip-inset:none|auto;</code></pre>
 
 
 
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-position:under</code>.</p>
+
+<p>Safari only renders pre-installed macOS fonts or webfonts.</p>
+
+
+
+
+
+
 <details class="moreTests">
 <summary>More tests...</summary>
 
+<div class="testData">
 <p>The following links allow you to test this property and value against a range of fonts. The links open a web page in a separate browser window. The text is composed from lists of words or graphemes that show long descenders.</p>
 
 <p>There are two types of test. One (W3C) allows you to change the font by mousing over or tapping on the fonts in a list. The other (r12a) lists the text with all fonts at the same time. Of course, the tests only produce results for the fonts installed on your device or platform. Note, in particular, that WebKit browsers do not allow you to access non-system fonts unless they are packaged as webfonts.</p>
@@ -422,6 +484,7 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅ where that metric is available in the font.</p><p>Notes:</p>
 <p>Safari only renders pre-installed macOS fonts.</p>
 </aside>
+</div>
 </details>
 </div>
 </section>
@@ -436,9 +499,29 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <section id="underline_offset">
 <h3>Specifying the distance explicitly (<code class="kw" translate="no">text-underline-offset</code>)</h3>
 
-<div class="sidenoteGroup">
+
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-offset</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+
 <p><a href="https://drafts.csswg.org/css-text-decor-4/#text-underline-position-property"><code class="kw" translate="no">text-underline-offset</code></a> provides a more reliable positioning of the underline relative to the text than the other approaches. For example, if you want to be sure that an underline always clears the glyphs,  this generally provides much more predictable results than the previous approaches. Although you may need to set a different offset for each type of script, the test results indicate that the results don't vary as much, if at all, on a font to font basis.</p>
 
+
+<!--<div class="sidenoteGroup">
 
 <aside class="implnote">
 <p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅ All three major browser engines support the use of <code class="kw" translate="no">text-underline-offset</code>.</p>
@@ -451,7 +534,31 @@ text-decoration-skip-inset:none|auto;</code></pre>
 </figure>
 </aside>
 </div>
+-->
 
+
+
+
+
+
+<figure id="fig_offset_example">
+<p><img src="underline-data/fig_offset_example.jpg" alt="" style="margin-block:1rem; width:20rem;"></p>
+<figcaption>Vowelled Arabic text where <code class="kw" translate="no">text-underline-offset</code> is set to <code class="kw" translate="no">75%</code>.</figcaption>
+</figure>
+
+
+
+<p>The value can be expressed as a fixed distance, for example using <code class="kw" translate="no">px</code>, but generally speaking this is suboptimal because if the font size is changed that distance remains the same. It would be necessary to change the underline offset each time a change is made to the font size. A better approach is to specify the distance in ems or as a percentage.</p>
+
+<p>The actual value needed will commonly depend on the <strong>script</strong> characteristics.  The tests run below showed the following values to be effective on the whole: for unvowelled Arabic, 45%; for vowelled Arabic orthographies, 75%; for Javanese, 100%; for Khmer, 90%, and for Tibetan, 60%. However, some font variation also occurs; for example, unvowelled text in the Scheherazade New and Amiri fonts required a setting of 60%, rather than 45%.</p>
+
+<p>It follows, then, that the font family and the underline offset for the text need to both be set at the same time. However, it's not necessary to change the value when the font size varies, and, unlike the other alternatives just discussed, one setting is more likely to be useful for most or all fonts used for that script.</p>
+
+<p>Values for <code class="kw" translate="no">text-underline-offset</code> can be negative, allowing you to move the underline higher as well as lower.</p>
+
+<p>Be aware that the offset is calculated in addition to any <code class="kw" translate="no">text-underline-position</code> setting. Unless you have a reason not to, it's best to ensure that <code class="kw" translate="no">text-underline-position</code> is not set when <code class="kw" translate="no">text-underline-offset</code> is applied.</p>
+
+<p>If the value is set to <code class="kw" translate="no">auto</code> the browser takes control of the positioning. Note that if <code class="kw" translate="no">text-underline-position</code> is also set to <code class="kw" translate="no">from-font</code>, then that overrides any <code class="kw" translate="no">text-underline-offset:auto</code> setting.</p>
 
 
 
@@ -490,17 +597,12 @@ text-decoration-skip-inset:none|auto;</code></pre>
 
 
 
-<p>The value can be expressed as a fixed distance, for example using <code class="kw" translate="no">px</code>, but generally speaking this is suboptimal because if the font size is changed that distance remains the same. It would be necessary to change the underline offset each time a change is made to the font size. A better approach is to specify the distance in ems or as a percentage.</p>
 
-<p>The actual value needed will commonly depend on the <strong>script</strong> characteristics.  The tests run below showed the following values to be effective on the whole: for unvowelled Arabic, 45%; for vowelled Arabic orthographies, 75%; for Javanese, 100%; for Khmer, 90%, and for Tibetan, 60%. However, some font variation also occurs; for example, unvowelled text in the Scheherazade New and Amiri fonts required a setting of 60%, rather than 45%.</p>
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-offset</code>.</p>
 
-<p>It follows, then, that the font family and the underline offset for the text need to both be set at the same time. However, it's not necessary to change the value when the font size varies, and, unlike the other alternatives just discussed, one setting is more likely to be useful for most or all fonts used for that script.</p>
+<p>Safari only renders pre-installed macOS fonts or webfonts.</p>
 
-<p>Values for <code class="kw" translate="no">text-underline-offset</code> can be negative, allowing you to move the underline higher as well as lower.</p>
 
-<p>Be aware that the offset is calculated in addition to any <code class="kw" translate="no">text-underline-position</code> setting. Unless you have a reason not to, it's best to ensure that <code class="kw" translate="no">text-underline-position</code> is not set when <code class="kw" translate="no">text-underline-offset</code> is applied.</p>
-
-<p>If the value is set to <code class="kw" translate="no">auto</code> the browser takes control of the positioning. Note that if <code class="kw" translate="no">text-underline-position</code> is also set to <code class="kw" translate="no">from-font</code>, then that overrides any <code class="kw" translate="no">text-underline-offset:auto</code> setting.</p>
 
 
 
@@ -508,6 +610,7 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <details class="moreTests">
 <summary>More tests...</summary>
 
+<div class="testData">
 <p>The following links allow you to test this property and value against a range of fonts. The links open a web page in a separate browser window. The text is composed from lists of words or graphemes that show long descenders.</p>
 
 <p>There are two types of test. One (W3C) allows you to change the font by mousing over or tapping on the fonts in a list. The other (r12a) lists the text with all fonts at the same time. Of course, the tests only produce results for the fonts installed on your device or platform. Note, in particular, that WebKit browsers do not allow you to access non-system fonts unless they are packaged as webfonts.</p>
@@ -601,6 +704,7 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅</p><p>Notes:</p>
 <p>Safari only renders pre-installed macOS fonts.</p>
 </aside>
+</div>
 </details>
 </section>
 </section>
@@ -621,8 +725,27 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <section id="horizontal_cjk">
 <h3>Horizontal text</h3>
 
-<div id="horizontal_cjk_sidenote" class="sidenoteGroup">
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-position: under</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+
 <p>You can use <a href="https://www.w3.org/TR/css-text-decor-4/#text-underline-position-property"><code class="kw" translate="no">text-underline-position: under</code></a> to push the underline below the font's em box descent metric.  This is a handy value when dealing with languages such as Chinese and Japanese, where character glyphs extend slightly below the alphabetic baseline (and have no diacritics below them).</p>
+
+<!--<div id="horizontal_cjk_sidenote" class="sidenoteGroup">
 
 <aside class="implnote">
 <p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> &nbsp; ✅  All three major browser engines support the use of <code class="kw" translate="no">text-underline-position</code>.</p>
@@ -632,11 +755,20 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <figcaption>How text-underline-position:under can change the position of the underline.</figcaption>
 </figure>
 </aside>
-</div>
+</div>-->
 
 
 <p>It is also useful to clear things such as parentheses and subscripts, and is sometimes referred to as the ‘accounting’ underline. However, some fonts have descenders or diacritics that extend below the font’s em box — for those, see the previous section.</p>
 
+
+<figure id="under_example">
+<p><img src="underline-data/under.jpg" alt="" style="height:12rem;"></p>
+<figcaption>How <code class="kw" translate="no">text-underline-position:under</code> can change the position of the underline.</figcaption>
+</figure>
+
+
+
+<p>Because the <code class="kw" translate="no">text-underline-position</code> property inherits and is not reset by the <code class="kw" translate="no">text-decoration</code> shorthand property, it can be useful to set its value at a global level, so that all underlines in the page adopt the preferred settings.</p>
 
 
 
@@ -674,7 +806,11 @@ text-decoration-skip-inset:none|auto;</code></pre>
 
 
 
-<p>Because the <code class="kw" translate="no">text-underline-position</code> property inherits and is not reset by the <code class="kw" translate="no">text-decoration</code> shorthand property, it can be useful to set its value at a global level, so that all underlines in the page adopt the preferred settings.</p>
+
+
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-position: under</code>.</p>
 </section>
 
 
@@ -687,8 +823,26 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <section id="vertical_underlines">
 <h3>Vertical text</h3>
 
-<div id="vertical_underlines_sidenote" class="sidenoteGroup">
-<p>Underlines for vertically set text can appear to the left or to the right of the line. For Chinese, the default position is to the left of the line; for Japanese, it is to the right. In fact, the latest versions of Gecko, Blink, and WebKit browsers automatically put the line on the expected side by default, as long as the text is declared to be in one of these languages.</p>
+<aside class="floatedImplnote">
+<p class="feature">text-underline-position:left | right</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅❌</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+<p>Underlines for vertically set text can appear to the left or to the right of the line. For Chinese, the default position is to the left of the line; for Japanese, it is to the right. In fact, the latest versions of Gecko, Blink, and WebKit browsers automatically put the line on the expected side without styling, as long as the text is declared to be in one of these languages.</p>
+
+<!--<div id="vertical_underlines_sidenote" class="sidenoteGroup">
 
 <aside class="implnote">
 <p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> &nbsp; ✅  All three major browser engines support the use of <code class="kw" translate="no">text-underline-position</code>.</p>
@@ -699,9 +853,16 @@ text-decoration-skip-inset:none|auto;</code></pre>
 <figcaption>Default underline positions for (right to left) Japanese, Mongolian, and Chinese.</figcaption>
 </figure>
 </aside>
-</div>
+</div>-->
 
 <p>For Mongolian text, using the traditional script, the underline should be on the right, like for Japanese. At the time of writing, this is the default rendering for Gecko and WebKit browsers, but <em>not</em> for Chrome (which puts the line on the left).</p>
+
+
+<figure id="underV_example">
+<p><img src="underline-data/vertical.jpg" alt="" style="height:14rem;"></p>
+<figcaption>Default underline positions for (right to left) Japanese, Mongolian, and Chinese.</figcaption>
+</figure>
+
 
 <p>To control this explicitly (which is currently necessary for Mongolian), you can use one of two additional values of <code class="kw" translate="no">text-underline-position</code>. The values <code class="kw" translate="no">right</code> and <code class="kw" translate="no">left</code> indicate where the underline will occur relative to the line of text.</p>
 
@@ -748,6 +909,10 @@ Choose a side: <label><input type="radio" name="vunder" onClick="setUnderline('.
 
 <p>The browser's default positioning of the vertical lines may need to be nearer or further away from the line of text. For example, in some combinations of browser and font, the underline is broken  alongside  characters with glyphs that extend to the right. If you want to change this, use <code class="kw" translate="no">text-underline-offset</code>, as we saw in the previous section.</p>
 
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-position</code> and its <code class="kw" translate="no">right</code> and <code class="kw" translate="no">left</code> values.</p>
+
 <p>The tests (below) show that Blink browsers do not automatically position Mongolian underlines on the correct side, so Mongolian underlines need to be styled in order to be interoperable. Chinese and Japanese underlines are, by default, positioned on the correct side by all major browsers.</p>
 
 
@@ -759,6 +924,7 @@ Choose a side: <label><input type="radio" name="vunder" onClick="setUnderline('.
 <details class="moreTests">
 <summary>More tests...</summary>
 
+<div class="testData">
 <p>The following links allow you to test this property and value against a range of fonts. The links open a web page in a separate browser window.</p>
 
 <p>There are two types of test. One (W3C) allows you to change the font by mousing over or tapping on the fonts in a list. The other (r12a) lists the text with all fonts at the same time. Of course, the tests only produce results for the fonts installed on your device or platform. Note, in particular, that WebKit browsers do not allow you to access non-system fonts unless they are packaged as webfonts.</p>
@@ -776,7 +942,7 @@ Choose a side: <label><input type="radio" name="vunder" onClick="setUnderline('.
 
 
 
-<p>r12a:  <strong>Default</strong>
+<p>r12a:  <strong>Unstyled</strong>
 <a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E7%AE%A1%E9%81%93%E8%BC%B8%E6%B0%B4&fonts=title%3AmacOS%2CApple%20LiSung%2CLiSong%20Pro%2CSongti%20TC%2CNom%20Na%20Tong%2CApple%20LiGothic%2CHeiti%20TC%2CLantinghei%20TC%2CLiHei%20Pro%2CPingFang%20HK%2CPingFang%20TC%2CPingFang%20MO%2CYuanti%20TC%2CHiragino%20Sans%20TC%2CArial%20Unicode%20MS%2CBiaukaiTC%2CBiaukaiHK%2CKaiti%20TC%2CXingkai%20TC%2CBaoli%20TC%2CHannotate%20TC%2CHanziPen%20TC%2CLibian%20TC%2CLingWai%20TC%2CWawati%20TC%2CWeibei%20TC%2CYuppy%20TC%2Ctitle%3AWindows%2CMingLiu%2CPMingLiu%2CMicrosoft%20JhengHei%2CDFKai-SB%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20TC%2CNoto%20Sans%20CJK%20TC&css=writing-mode%3A%20vertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3B&lang=zh" target="_blank">Traditional Chinese</a> • 
 
 <a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E7%AE%A1%E9%81%93%E8%BE%93%E9%80%81%E6%B0%B4&fonts=title%3AmacOS%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CPingFang%20SC%2CSimHei%2CSTHeiti%2CYuanti%20SC%2CArial%20Unicode%20MS%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CLingWai%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC%2Ctitle%3AWindows%2CNSimSun%2CSimSun%2CDengXian%2CMicrosoft%20YaHei%2CSimHei%2CFangSong%2CKaiTi%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC&css=writing-mode%3Avertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3B&lang=zh" target="_blank">Simplified Chinese</a> • 
@@ -813,13 +979,14 @@ Choose a side: <label><input type="radio" name="vunder" onClick="setUnderline('.
 
 <p>Traditional and Simplified Chinese tests should put the underline on the left, whereas Japanese and Mongolian expect the underline to be on the right.</p>
 
-<p><span class="leadin">Default tests.</span> Chrome (Blink), Firefox (Gecko), and Safari (WebKit) browsers did as expected for all languages, except that Chrome placed the underline to the left of Mongolian.</p>
+<p><span class="leadin">Unstyled tests.</span> Chrome (Blink), Firefox (Gecko), and Safari (WebKit) browsers did as expected for all languages, except that Chrome placed the underline to the left of Mongolian.</p>
 
 <p><span class="leadin">Tests with <code class="kw" translate="no">under</code>.</span> All browsers tested did as expected for all languages, including Chrome and Mongolian.</p>
 
 <p>These results indicate that currently Mongolian needs to be styled so as to ensure that the underline appears on the correct side. For the others, it results in the same positioning.</p>
 
-<p>It was noticeable that whereas Chrome and Firefox placed the underline very close to the vertical text for Japanese, Safari placed it further away. The <code class="kw" translate="no">property text-underline-offset</code> can be used to move the underline, but this also has variable effects from browser to browser.</p>
+<p>It was noticeable that whereas Chrome and Firefox placed the underline very close to the vertical text for Japanese, Safari placed it further away. The property <code class="kw" translate="no">text-underline-offset</code> can be used to move the underline, but this also has variable effects from browser to browser.</p>
+</div>
 </details>
 
 
@@ -837,8 +1004,35 @@ Choose a side: <label><input type="radio" name="vunder" onClick="setUnderline('.
 <section id="textDecorationStyle">
 <h2>Styling the line shape</h2>
 
-<div id="textDecorationStyle_sidenote" class="sidenoteGroup">
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-style</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
 <p>In Chinese, underlines are used for other purposes than emphasis (interlinear dots provide the emphasis), and the shape of the line carries semantic value.  A solid, plain line is used to demarcate proper nouns.  Book or poem titles, on the other hand, may be indicated using a wavy line.  Similar distinctions can be seen in <a href="https://github.com/w3c/type-samples/issues/58" target="_blank">Mongolian text</a>.</p>
+
+
+
+<figure id="fig_textDecorationStyle_example">
+<p><img src="underline-data/fig_style.jpg" alt="" style="height:10rem;"></p>
+<figcaption>Styled line shapes for proper nouns (top) and book/poem titles (bottom) in Chinese.</figcaption>
+</figure>
+
+
+
+<!--<div id="textDecorationStyle_sidenote" class="sidenoteGroup">
 
 <aside class="implnote">
 <p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> &nbsp; ✅  All three major browser engines support the use of <code class="kw" translate="no">text-underline-style</code>.</p>
@@ -849,10 +1043,12 @@ Choose a side: <label><input type="radio" name="vunder" onClick="setUnderline('.
 <figcaption>Styled line shapes for proper nouns (top) and book/poem titles (bottom) in Chinese.</figcaption>
 </figure>
 </aside>
-</div>
+</div>-->
 
 
 <p>It's possible to change the shape of the underline using the CSS <code class="kw" translate="no"><a href="https://www.w3.org/TR/css-text-decor-4/#propdef-text-decoration-skip-inset"  target="_blank">text-decoration-style</a></code> property. The HTML <code class="kw" translate="no">u</code> element can be used to indicate the range of text to be styled, and the CSS property can be assigned to that. We can use the <code class="kw" translate="no">u</code> element to style both proper nouns and book title, as long as we use class names to indicate which style gets applied to which element.</p>
+
+<p>As can be seen in the list of enumerated values at the top of the page, you can also make the line double, dotted, or dashed. These styles can also have semantic meaning attached to them.</p>
 
 
 
@@ -878,8 +1074,9 @@ u.book { text-decoration-style:wavy; }</code></pre>
 </p>
 </div>
 
-<p>As can be seen in the list of enumerated values at the top of the page, you can also make the line double, dotted, or dashed. These styles can also have semantic meaning attached to them.</p>
 
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-style</code>.</p>
 </section>
 
 
@@ -893,8 +1090,35 @@ u.book { text-decoration-style:wavy; }</code></pre>
 <section id="textDecorationSkipInset">
 <h2>Separating  underline runs</h2>
 
-<div id="textDecorationSkipInset_sidenote" class="sidenoteGroup">
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-style</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+</aside>
+
+
 <p>In Chinese there are no spaces between characters, but where different names occur alongside each other, or where a name and a poem title appear together, there is a need to separate the respective underlines. It is not ideal to insert spaces into the text for this purpose.</p>
+
+
+<figure id="fig_textDecorationSkipInset_example">
+<p><img src="underline-data/fig_skip_inset.jpg" alt="" style="height:4rem;"></p>
+<figcaption>Small gaps between separate underlining for proper nouns and a poem title in Chinese. No spaces are present.</figcaption>
+</figure>
+
+
+
+<!--<div id="textDecorationSkipInset_sidenote" class="sidenoteGroup">
 
 <aside class="implnote">
 <p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> &nbsp; ❌  None of the three major browser engines currently support the use of <code class="kw" translate="no">text-underline-style</code>.</p>
@@ -908,7 +1132,7 @@ u.book { text-decoration-style:wavy; }</code></pre>
 </figure>
 </aside>
 </div>
-
+-->
 
 <p>The good news is that CSS offers a solution using the <code class="kw" translate="no">text-decoration-skip-inset</code> property.</p>
 
@@ -920,6 +1144,8 @@ u.book { text-decoration-style:wavy; }</code></pre>
 <p>The bad news is that it is not yet supported  by  the major browser engines.</p>
 
 <p>On the other hand, Gecko automatically puts the gap between <code class="kw" translate="no">u</code> elements even without the styling. But not Blink, nor WebKit.</p>
+
+<p>One thing that might be expected is that the underline runs the full width of the underlined text if it is not adjacent to another underline. So in the examples just below, the underlines wouldn't be shortened at the far left and far right — only in between the adjacent underlines.  This is not currently described in the CSS specification.</p>
 
 <p>In the following example, the 2 proper nouns are <span lang="zh">宋</span> (Song, the Dynasty) and <span lang="zh">歐陽修</span> (Ouyang Xiu, the author). The poem title is <span lang="zh">明妃曲</span> (Ming Fei Song).</p>
 
@@ -954,17 +1180,23 @@ u.book { text-decoration-style:wavy; text-decoration-skip-inset:auto; }</code></
 </div>
 
 
-<p>One thing that might be expected is that the underline runs the full width of the underlined text if it is not adjacent to another underline. So in the examples just above, the underlines wouldn't be shortened at the far left and far right — only in between the adjacent underlines.  This is not currently described in the CSS specification.</p>
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span>  None of the three major browser engines currently support the use of <code class="kw" translate="no">text-decoration-skip-inset</code>.</p>
+
+<p>However, Gecko-based browsers (eg. Firefox) insert the gaps automatically, without the CSS.</p>
 
 
 
 <details class="moreTests">
 <summary>More tests...</summary>
 
+<div class="testData">
 <p>In the following test there are 2 proper nouns, <span lang="zh">宋</span> (Song, the Dynasty) and <span lang="zh">歐陽修</span> (Ouyang Xiu, the author), followed by a poem title, <span lang="zh">明妃曲</span> (Ming Fei Song). There are no spaces around these.</p>
 
-<p>
-<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%20id%3D%22control%22%20lang%3D%22zh%22%3E%3Cu%20class%3D%22pnoun%22%3E%E5%AE%8B%3C%2Fu%3E%3Cu%20class%3D%22pnoun%22%3E%E6%AD%90%E9%99%BD%E4%BF%AE%3C%2Fu%3E%3Cu%20class%3D%22book%22%3E%E6%98%8E%E5%A6%83%E6%9B%B2%3C%2Fu%3E%3C%2Fp%3E%0A%3Cp%20id%3D%22testp%22%20lang%3D%22zh%22%3E%3Cu%20class%3D%22pnoun%22%3E%E5%AE%8B%3C%2Fu%3E%3Cu%20class%3D%22pnoun%22%3E%E6%AD%90%E9%99%BD%E4%BF%AE%3C%2Fu%3E%3Cu%20class%3D%22book%22%3E%E6%98%8E%E5%A6%83%E6%9B%B2%3C%2Fu%3E%3C%2Fp%3E&css=u%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20under%3B%20%7D%0A%23testp%20u%20%7B%20text-decoration-skip-inset%3A%20auto%3B%20%7D%0A.nounp%20%7B%20text-decoration-style%3A%20solid%3B%20%7D%0A.book%20%7B%20text-decoration-style%3A%20wavy%3B%20%7D%0A&lang=zh&fontSize=36&width=347&height=252&a=Adjacent%20u%20elements%20are%20separated%20by%20a%20gap.&i=Test%20passes%20if%20there%20is%20a%20gap%20in%20the%20solid%20underline%20after%20the%20first%20character%2C%20and%20another%20between%20the%20solid%20and%20wavy%20underlines.%20Only%20the%20bottom%20line%20is%20styled%20using%20text-decoration-skip-inset.&fonts=title%3AmacOS%2CApple%20LiSung%2CLiSong%20Pro%2CSongti%20TC%2CNom%20Na%20Tong%2CApple%20LiGothic%2CHeiti%20TC%2CLantinghei%20TC%2CLiHei%20Pro%2CPingFang%20HK%2CPingFang%20TC%2CPingFang%20MO%2CYuanti%20TC%2CHiragino%20Sans%20TC%2CArial%20Unicode%20MS%2CBiaukaiTC%2CBiaukaiHK%2CKaiti%20TC%2CXingkai%20TC%2CBaoli%20TC%2CHannotate%20TC%2CHanziPen%20TC%2CLibian%20TC%2CLingWai%20TC%2CWawati%20TC%2CWeibei%20TC%2CYuppy%20TC%2Ctitle%3AWindows%2CMingLiu%2CPMingLiu%2CMicrosoft%20JhengHei%2CDFKai-SB%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20TC%2CNoto%20Sans%20CJK%20TC" target="_blank">Chinese</a>
+
+<p><span class="leadin">Assertion:</span> 
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%20id%3D%22control%22%20lang%3D%22zh%22%3E%3Cu%20class%3D%22pnoun%22%3E%E5%AE%8B%3C%2Fu%3E%3Cu%20class%3D%22pnoun%22%3E%E6%AD%90%E9%99%BD%E4%BF%AE%3C%2Fu%3E%3Cu%20class%3D%22book%22%3E%E6%98%8E%E5%A6%83%E6%9B%B2%3C%2Fu%3E%3C%2Fp%3E%0A%3Cp%20id%3D%22testp%22%20lang%3D%22zh%22%3E%3Cu%20class%3D%22pnoun%22%3E%E5%AE%8B%3C%2Fu%3E%3Cu%20class%3D%22pnoun%22%3E%E6%AD%90%E9%99%BD%E4%BF%AE%3C%2Fu%3E%3Cu%20class%3D%22book%22%3E%E6%98%8E%E5%A6%83%E6%9B%B2%3C%2Fu%3E%3C%2Fp%3E&css=u%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20under%3B%20%7D%0A%23testp%20u%20%7B%20text-decoration-skip-inset%3A%20auto%3B%20%7D%0A.nounp%20%7B%20text-decoration-style%3A%20solid%3B%20%7D%0A.book%20%7B%20text-decoration-style%3A%20wavy%3B%20%7D%0A&lang=zh&fontSize=36&width=347&height=252&a=Adjacent%20u%20elements%20are%20separated%20by%20a%20gap.&i=Test%20passes%20if%20there%20is%20a%20gap%20in%20the%20solid%20underline%20after%20the%20first%20character%2C%20and%20another%20between%20the%20solid%20and%20wavy%20underlines.%20Only%20the%20bottom%20line%20is%20styled%20using%20text-decoration-skip-inset.&fonts=title%3AmacOS%2CApple%20LiSung%2CLiSong%20Pro%2CSongti%20TC%2CNom%20Na%20Tong%2CApple%20LiGothic%2CHeiti%20TC%2CLantinghei%20TC%2CLiHei%20Pro%2CPingFang%20HK%2CPingFang%20TC%2CPingFang%20MO%2CYuanti%20TC%2CHiragino%20Sans%20TC%2CArial%20Unicode%20MS%2CBiaukaiTC%2CBiaukaiHK%2CKaiti%20TC%2CXingkai%20TC%2CBaoli%20TC%2CHannotate%20TC%2CHanziPen%20TC%2CLibian%20TC%2CLingWai%20TC%2CWawati%20TC%2CWeibei%20TC%2CYuppy%20TC%2Ctitle%3AWindows%2CMingLiu%2CPMingLiu%2CMicrosoft%20JhengHei%2CDFKai-SB%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20TC%2CNoto%20Sans%20CJK%20TC" target="_blank">Adjacent u elements are separated by a gap.</a>
 </p>
 
 
@@ -972,17 +1204,14 @@ u.book { text-decoration-style:wavy; text-decoration-skip-inset:auto; }</code></
 
 
 
-<p class="results" style="font-style: italic; margin-block-start:3em;">Test results...</p>
+<!--<p class="results" style="font-style: italic; margin-block-start:3em;">Test results...</p>-->
 
-<p>No gaps appear between underline ranges in Chrome (Blink), and Safari (WebKit).</p>
+<p><span class="leadin">Results:</span> No gaps appear between underline ranges in Chrome (Blink), and Safari (WebKit).</p>
 
 <p>Firefox (Gecko) adds gaps, even without the <code class="kw" translate="no">text-decoration-skip-inset</code> styling.</p>
+</div>
 </details>
 </section>
-
-
-
-
 
 
 
@@ -999,31 +1228,27 @@ u.book { text-decoration-style:wavy; text-decoration-skip-inset:auto; }</code></
 <th scope="col">Browsers using that engine</th>
 </tr>
 <tr>
-<td><img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> Gecko</td>
-<td>Firefox v147</td>
-<td>Firefox, Conkeror, etc.</td>
-</tr>
-<tr>
-<td><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> Blink</td>
+<td><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink" style="vertical-align: middle;"> Blink</td>
 <td>Chrome v144</td>
 <td>Chrome, Edge, Brave, Opera, Vivaldi, etc.</td>
 </tr>
 <tr>
-<td><img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> WebKit</td>
+<td><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko" style="vertical-align: middle;"> Gecko</td>
+<td>Firefox v147</td>
+<td>Firefox, Conkeror, etc.</td>
+</tr>
+<tr>
+<td><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit" style="vertical-align: middle;"> WebKit</td>
 <td>Safari v26.2</td>
-<td>Safari, iOS-based browsers, Yandex, UC Browser, etc.</td>
+<td>Safari, iOS browsers, Yandex, UC Browser, etc.</td>
 </tr>
 </tbody>
 </table>
-<!--p>&nbsp;</p>
-<ul>
-<li><dfn>Gecko</dfn> (Firefox, Conkeror, etc.)</li>
-<li><dfn>Blink</dfn> (Chrome, Opera, Vivaldi, etc.)</li>
-<li><dfn>Webkit</dfn> (Safari, iOS-based browsers, Yandex, UC Browser, etc.)</li>
-<li><dfn>Edge</dfn> (Microsoft Edge)</li>
-<li><dfn>Trident</dfn> (Internet Explorer)</li>
-</ul-->
 </section>
+
+
+
+
 
 
 
@@ -1063,7 +1288,7 @@ u.book { text-decoration-style:wavy; text-decoration-skip-inset:auto; }</code></
 
 <footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
 <script>
-completePage() //highlightCode();
+completePage()
 
 // add a link around results images to show bigger
 document.addEventListener("DOMContentLoaded", () => {

@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8" >
+<title>管理中文和日文中的行内空白</title>
+<meta name="description" content="如何处理中文和日文中的文本间距。" >
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/styling'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'inline-space'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-inline-space'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-05-14'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-05-14', time:'12:29'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-05-18', time:'10:57' } // date and time of latest edits to this document/translation
+f.contributors = '本文的初始文本取自<a href="https://r12a.github.io/scripts/jpan/ja.html#letterspace">Japanese (Kanji, Hiragana, Katakana, & Latin) Orthography Notes</a>和<a href="https://r12a.github.io/scripts/hani/zh.html#letterspace">Han (Chinese) Orthography Notes</a>的Text spacing部分。“要点”部分的初稿为AI生成，并进行了进一步扩展。'; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'styling';
+
+f.additionalLinks = ''
+</script>
+<script src="inline-space-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"></script>
+<script src="../../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" >
+<link rel="copyright" href="#copyright">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+<link rel="stylesheet" href="inline-space-data/local.css">
+</head>
+
+
+
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>管理中文和日文中的行内空白</h1>
+</header>
+
+
+<section>
+<div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+<p>原则上，日文和中文文本不使用空格字符，不过有时需要增大或减小字符之间的间距，以提高可读性。本文介绍如何使用CSS在特定类型的文本之间添加间隙、缩小标点符号之间的间隙，以及管理段首空白。本文不讨论两端对齐时引入的字符间距变化。</p>
+
+<p>本文不会简单复述规范本身，而是提供面向任务的指导，帮助内容作者实现关键技术。我们假定内容作者知道自己想做什么，本文帮助他们理解该如何实现。</p>
+
+<p><strong>请注意，本文介绍的一些技术仍在开发中，浏览器支持尚未完整。下文会说明在浏览器正确实现CSS规范后应当如何处理，也会说明目前哪些可行、哪些不可行。</strong></p>
+
+
+<p>本文会用到以下CSS属性。CSS规范链接见<a class="secref">endlinks</a>。</p>
+
+<figure class="example" lang="en">
+<pre><code class="language-css">letter-spacing: normal | &lt;length-percentage&gt;
+text-autospace:normal |
+        no-autospace |
+        [ ideograph-alpha || ideograph-numeric || punctuation ]
+        || [ insert | replace ]
+        | auto
+text-spacing-trim: auto | 
+        [ normal | trim-both | trim-start | space-first | trim-all | space-all]
+text-indent: [ &lt;length-percentage&gt; ] &amp;&amp; hanging? &amp;&amp; each-line?
+hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code>
+</pre>
+</figure>
+</section>
+
+
+
+
+
+<section id="takeaways">
+<h2>要点</h2>
+
+<p>虽然作者通常会直接从目录跳到所需任务，但下面先简要概述本文涉及功能目前的整体实现状态。</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅</bdi> 可靠</p>
+<p class="summary">完全互操作。</p>
+</aside>
+
+<p><span class="leadin">字符间距。</span> 现代浏览器能够可靠支持调整字符之间的间距，包括CJK文本。正字距和负字距在各引擎中的表现一致。</p>
+
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">❌</bdi> 不可靠</p>
+<p class="summary">没有自动支持；样式化行为不一致。</p>
+</aside>
+
+<p><span class="leadin">字母或数字短语周围的间距。</span> 当拉丁字母或数字出现在CJK文本中时，浏览器不会自动插入CJK排版中需要的微小间隙。尝试用样式控制这些间隙会得到不一致的结果：Blink和Gecko的行为不同，WebKit只在一侧插入间隙。“replace”行为（即使已有空格也使用统一间距）尚未实现，而且目前一旦指定还会破坏其他行为。</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> 仅Blink</p>
+<p class="summary">Gecko/WebKit不支持。</p>
+</aside>
+
+<p><span class="leadin">折叠连续标点中的空白。</span> Blink浏览器默认会折叠相邻标点符号之间过大的间距。Gecko和WebKit不会折叠这些间隙，而通过样式折叠间隙也只在Blink中有效。</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> 仅Blink，且依赖字体</p>
+<p class="summary">Gecko/&#x200B;WebKit不支持。</p>
+</aside>
+
+<p><span class="leadin">折叠行首空白。</span> Blink会缩小行首或段首开标点前导空白，但结果取决于字体。Gecko和WebKit不会缩小这类空白。</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> 主要仅Blink</p>
+<p class="summary">不可互操作。</p>
+</aside>
+
+<p><span class="leadin">折叠行尾空白。</span> Blink会缩小行尾闭标点的尾随空白，帮助它在不换行的情况下放入当前行。Gecko和WebKit未实现这一行为。</p>
+</section>
+
+
+
+
+
+<section id="letter_spacing">
+<h2>字符间距</h2>
+
+<p>两端对齐会让文本适配固定宽度，而letter-spacing（也称为tracking，字距调整）是在字母之间添加固定量的空白，最终长度只是其副作用。</p>
+
+<p>不应在字母数字字符串与闭合标点、逗号等之间添加空白。</p>
+
+<p>letter-spacing常用于在字符数多和字符数少的项目之间取得视觉平衡，例如扩展短标题、页眉和图注的宽度。扩展文本时，会在字符框之间加入等量空白。</p>
+
+
+<div class="figWrap">
+<figure id="fig_arabic_font_metrics">
+<img src="inline-space-data/fig_letter_spacing_1.jpeg" alt="一幅示意图：段落上方的标题通过在字符之间插入空白而变长。" style="max-height:12rem;">
+<img src="inline-space-data/fig_letter_spacing_2.jpeg" alt="一幅示意图：段落上方的标题通过在字符之间插入空白而变长。" style="max-height:12rem;">
+<figcaption>应用字符间距后的标题示例。</figcaption>
+</figure>
+</div>
+
+<p>通常，密排文本最有利于阅读；不过在大字号场景中，例如杂志标题，可能需要缩小某些字符之间的距离。这通常通过缩小相邻字面之间的距离来实现。</p>
+
+<p>（虽然通常文本应当紧排，但在某些场景中，普通文本也可能整体设置字符间距，比如在面向某些有学习障碍的读者时。）</p>
+
+<aside class="floatedImplnote">
+<p class="feature">letter-spacing</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+
+<p><span class="leadin howto-header">如何实现</span> 要在HTML中创建字符间距，可使用CSS的<code class="kw" translate="no">letter-spacing</code>属性，并设置合适的值。该值可以为负，也可以为正。</p>
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-html">&lt;h2 style=&quot;letter-spacing:.3em;&quot;&gt;焼鯖そうめん&lt;/h2&gt;
+&lt;h2 style=&quot;letter-spacing:-.1em;&quot;&gt;焼鯖そうめん&lt;/h2&gt;</code></pre>
+</figure>
+
+<style>
+#demo-letter_spacing .test_lines { font-size: 2.4rem; line-height: 2; }
+</style>
+
+<div id="demo-letter_spacing" class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出（只有下面两行使用letter-spacing）：</p>
+
+<div class="test_lines">
+<div id="test-from_font-control">
+<p lang="ja">焼鯖そうめん</p>
+</div>
+<div id="test-letter_spacing_more" style="letter-spacing: .3em;" >
+<p lang="ja">焼鯖そうめん</p>
+</div>
+<div id="test-letter_spacing_less" style="letter-spacing: -.1em;" >
+<p lang="ja">焼鯖そうめん</p>
+</div>
+</div>
+
+<p class="options"><label>选择字体：<input oninput="document.querySelector('#demo-letter_spacing .test_lines').style.fontFamily = this.value;"></label></p>
+</div>
+
+
+
+<p><span class="leadin howto-header">是否有效？</span> 使用Blink、Gecko和WebKit引擎的浏览器都支持本文所述的<code class="kw" translate="no">letter-spacing</code>用法。</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="autospace">
+<h2>西文字母或数字周围的间距</h2>
+
+<p>当一段字母数字文本（CSS中定义为<a href="https://drafts.csswg.org/css-text-4/#non-ideographic-letters" class="termref" target="terms">非表意字母</a>和<a href="https://drafts.csswg.org/css-text-4/#non-ideographic-numerals" class="termref" target="terms">非表意数字</a>）出现在日文或中文行内时，通常会用一个小间隙将其与周围的汉字、假名分隔开，以提高可读性。</p>
+
+
+
+<figure id="fig_text_space">
+<img src="inline-space-data/text_space_none.png" alt="" style="width:15rem;">
+<span style="margin-inline:2rem">&nbsp;</span>
+<img src="inline-space-data/text_space_applied.png" alt="" style="width:15rem;">
+<figcaption>一个日文段落，右侧应用了text-spacing，左侧未应用。(<a href="https://w3c.github.io/jlreq/#id209" target="_blank">来源</a>)</figcaption>
+</figure>
+
+
+<p>间距大小可能有所不同。《中文排版需求》建议最大可为¼em。《日文排版需求》建议使用¼em，但有时其他宽度也可能合适，例如⅙em。普通的空格字符产生的空白过大，而通过样式插入尺寸正确的间隙则要方便得多。</p>
+
+<p>如果西文前后是已经带有内置空白的标点符号，则不需要这种间距。它也不会出现在行首或行尾。还应注意，自动间距会与<a href="#letter_spacing">letter-spacing</a>叠加，并且也可能受到两端对齐的影响。</p>
+
+
+
+
+<section id="autospaceHow">
+<!--<h3>How to do it</h3>
+-->
+
+<aside class="floatedImplnote">
+<p class="feature">自动支持</p>
+<table class="implTable">
+<thead><!--<th colspan="3" style="white-space: nowrap">Browser engine support for</th>
+<tr><th colspan="3">text-spacing-trim</th></tr>-->
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>测试</summary>
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A%0A&lang=ja&fontSize=94&width=976&height=280&a=In%20Japanese%2C%20the%20browser%20will%20automatically%20create%20a%20gap%20between%20ideographs%20and%20non-ideographic%20letters.&i=Text%20passes%20if%20there%20is%20a%20gap%20between%20ideographs%20and%20letters%20on%20the%20second%20line.%20%20The%20first%20line%20is%20a%20control.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank">在日文中，浏览器会自动在表意字符和非表意字母之间创建间隙。</a></p>
+
+<p><span class="leadin">结果：</span> Chrome、Firefox、Safari都不会自动创建间隙。</p>
+</details>
+</aside>
+
+<p><span class="leadin howto-header">如何实现</span> CSS规范预期浏览器在没有样式的情况下，应当自动在连续表意字符或假名字符与连续字母数字文本之间插入间隙（即<code class="kw" translate="no">normal</code>值）。间隙大小取决于浏览器，不过CSS规范建议使用表意字符宽度的1/8，这在建议的长度中偏小。遗憾的是，目前没有浏览器会在无样式的情况下插入间隙。</p>
+
+<p>原则上，要通过样式实现这一效果，应当可以在样式表中使用CSS <code class="kw" translate="no">text-autospace</code>属性。不要使用空格字符！</p>
+
+
+<p><code class="kw" translate="no">text-autospace</code>属性的取值可按如下方式微调结果。</p>
+
+
+
+
+<dl>
+<dt>normal</dt>
+
+
+
+<aside class="floatedImplnote">
+<p class="feature">normal</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>⚠️</td></tr>
+</tbody>
+</table>
+
+<details class="moreTests"><summary>测试</summary>
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%3Cspan%3E23456%3C%2Fspan%3E%E5%B9%85%E8%AA%BF%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%3Cspan%3E23456%3C%2Fspan%3E%E5%B9%85%E8%AA%BF%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20normal%3B%20%7D%0A&lang=ja&fontSize=74&width=999&height=280&a=text-autospace%3Anormal%3B%20will%20create%20gaps%20between%20ideographs%20and%20alphanumerics.&i=Text%20passes%20if%20there%20is%20a%20gap%20between%20ideographs%20and%20alphanumerics%20on%20the%20second%20line.%20%20The%20first%20line%20is%20a%20control.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank"><code class="kw" translate="no">text-autospace:normal</code>会在表意字符和字母数字之间创建间隙。</a></p>
+
+<p><span class="leadin">结果：</span> Chrome、Firefox和Safari都会在字母数字周围产生间隙，不过Safari只在字母数字序列之前产生间隙。</p>
+</details>
+</aside>
+
+
+
+
+<dd>
+<p>这会产生与组合<code class="kw" translate="no">ideograph-alpha ideograph-numeric</code>（见下文）相同的行为。也就是说，它会在连续表意字符与连续非表意字母或数字之间创建间隙，但只会在没有使用普通空格的位置插入间隙。
+</p>
+<p>撰写本文时，Blink和Gecko浏览器会在字母和数字周围产生间隙。WebKit浏览器会在字母数字文本之前创建小间隙，但不会在其后创建。</p>
+</dd>
+
+<dt>ideograph-alpha和ideograph-numeric</dt>
+
+
+<aside class="floatedImplnote">
+<p class="feature">ideograph-alpha</p>
+<table class="implTable">
+<thead><!--<th colspan="3" style="white-space: nowrap">Browser engine support for</th>
+<tr><th colspan="3">text-spacing-trim</th></tr>-->
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>⚠️</td><td>⚠️</td></tr>
+</tbody>
+</table>
+
+<p class="feature">ideograph-numeric</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>⚠️</td><td>⚠️</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>测试</summary>
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20ideograph-alpha%3B%20%7D%0A&lang=ja&fontSize=94&width=976&height=280&a=text-autospace%3Aideograph-alpha%20will%20create%20a%20gap%20between%20ideographs%20and%20non-ideographic%20letters%20in%20Japanese.&i=Text%20passes%20if%20there%20is%20a%20gap%20between%20ideographs%20and%20letters%20on%20the%20second%20line.%20%20The%20first%20line%20is%20a%20control.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank">在日文中，<code class="kw" translate="no">text-autospace:ideograph-alpha</code>会在连续表意字符和非表意字母之间创建间隙。</a></p>
+
+<p><span class="leadin">结果：</span> Chrome不会在字母周围添加任何间隙。Firefox会在字母前后添加小间隙。Safari只在前面添加间隙。</p>
+
+<hr>
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E23456%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E23456%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20ideograph-numeric%3B%20%7D%0A&lang=ja&fontSize=94&width=976&height=280&a=text-autospace%3Aideograph-numeric%20will%20create%20a%20gap%20between%20ideographs%20and%20digits%20in%20Japanese.&i=Text%20passes%20if%20there%20is%20a%20gap%20between%20ideographs%20and%20digits%20on%20the%20second%20line.%20%20The%20first%20line%20is%20a%20control.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank">在日文中，text-autospace:ideograph-numeric会在连续表意字符和数字之间创建间隙</a></p>
+
+<p><span class="leadin">结果：</span> 与前一个测试相同。</p>
+
+<hr>
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%3Cspan%3E23456%3C%2Fspan%3E%E5%B9%85%E8%AA%BF%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%3Cspan%3E23456%3C%2Fspan%3E%E5%B9%85%E8%AA%BF%3Cspan%3ECSS%20Text%3C%2Fspan%3E%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20ideograph-alpha%20ideograph-numeric%3B%20%7D%0A&lang=ja&fontSize=77&width=999&height=280&a=text-autospace%3Aideograph-alpha%20ideograph-numeric%3B%20will%20create%20gaps%20between%20ideographs%20and%20alphanumerics%20in%20Japanese.&i=Text%20passes%20if%20there%20is%20a%20gap%20between%20ideographs%20and%20alphanumerics%20on%20the%20second%20line.%20%20The%20first%20line%20is%20a%20control.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank">在日文中，text-autospace:ideograph-alpha ideograph-numeric; 会在表意字符和字母数字之间创建间隙。</a></p>
+
+<p><span class="leadin">结果：</span> Chrome不生效。Safari生效，但只在前面添加空白。这次Firefox也失败。</p>
+</details>
+</aside>
+
+
+
+<dd>
+<p>这些值通常一起使用。一起使用时，它们会在字母和数字周围创建间隙。</p>
+
+<p>撰写本文时，Blink浏览器不支持这些值。Gecko浏览器在单独使用时支持这些值，但一起使用时不支持。WebKit浏览器会在字母数字文本之前创建小间隙，但不会在之后创建。无论这两个值是否一起使用，情况都是如此。</p>
+
+<p>目前，使用<code class="kw" translate="no">normal</code>值比使用这些单独关键字更稳妥。</p>
+</dd>
+
+
+
+<dt style="clear: right;">replace</dt>
+
+<aside class="floatedImplnote">
+<p class="feature">replace</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+<details class="moreTests"><summary>测试</summary>
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E%20CSS%20Text%20%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E%20CSS%20Text%20%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20ideograph-alpha%20replace%3B%20%7D%0A&lang=ja&fontSize=94&width=976&height=280&a=In%20Japanese%2C%20text-autospace%3Aideograph-alpha%20replace%3B%20will%20convert%20space%20characters%20between%20ideographic%20%26%20alpha%20text%20into%20small%20gaps.&i=Text%20passes%20if%20the%20gap%20between%20ideographs%20and%20letters%20on%20the%20second%20line%20is%20small%20than%20the%20control%20on%20the%20first%20line.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank"><code class="kw" translate="no">text-autospace:ideograph-alpha replace;</code> 会把表意文本与字母文本之间的空格字符转换为小间隙</a></p>
+
+<p><span class="leadin">结果：</span> Chrome、Firefox和Safari都未能把空格转换为较小的间隙。</p>
+
+<hr>
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20class%3D%22control%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E%20CSS%20Text%20%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E%0A%3Cdiv%20class%3D%22testp%22%3E%E7%A9%BA%E7%99%BD%E5%B9%85%3Cspan%3E%20CSS%20Text%20%3C%2Fspan%3E%E8%AA%BF%E7%AF%80%3C%2Fdiv%3E&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A.control%20%7B%20text-autospace%3A%20no-autospace%3B%20%20%7D%0A.testp%20%7B%20text-autospace%3A%20normal%20replace%3B%20%7D%0A&lang=ja&fontSize=94&width=976&height=280&a=text-autospace%3Anormal%20replace%3B%20will%20convert%20space%20characters%20between%20ideographic%20%26%20alpha%20text%20into%20small%20gaps.&i=Text%20passes%20if%20the%20gap%20between%20ideographs%20and%20letters%20on%20the%20second%20line%20is%20small%20than%20the%20control%20on%20the%20first%20line.%20The%20background%20color%20is%20just%20to%20help%20visual%20checking." target="_blank"><code class="kw" translate="no">text-autospace:normal replace;</code> 会把表意文本与字母文本之间的空格字符转换为小间隙。</a></p>
+
+<p><span class="leadin">结果：</span> Chrome、Firefox和Safari都未能把空格转换为较小的间隙。</p>
+</details>
+</aside>
+
+
+<dd>
+<p>CSS可以通过两种方式添加间隙。如果文本中已经包含由普通空格字符产生的间隙，CSS默认只会在没有空格的位置添加间隙。另一方面，如果你想缩小所有基于空格的间隙宽度，并在全文中应用均匀间距，请使用<code class="kw" translate="no">replace</code>值。<code class="kw" translate="no">text-autospace:ideograph-alpha ideograph-numeric replace;</code> 会从显示文本中移除所有空格字符字形（不改变内存中的字符），并用标准宽度的间隙替换；它也会在未使用空格字符的位置创建间隙。</p>
+
+<p>目前三大浏览器引擎都不支持使用<code class="kw" translate="no">replace</code>。实际情况甚至更糟：如果添加<code class="kw" translate="no">replace</code>关键字，Gecko和WebKit浏览器将不再应用它们在没有该关键字时本会产生的间隙。另请注意，<code class="kw" translate="no">replace</code>关键字不能与<code class="kw" translate="no">normal</code>一起使用，这似乎很可惜。（另见相关<a href="https://github.com/w3c/csswg-drafts/issues/13774">功能请求</a>。）</p>
+</dd>
+
+
+
+<dt>no-autospace</dt>
+<dd>要移除所有合成间隙（但保留所有手动输入的空格字符），可使用<code class="kw" translate="no">text-autospace:no-autospace</code>。</dd>
+
+<dt>auto</dt>
+<dd>将自动间距行为的控制权交给浏览器，前提是浏览器实现了不同于常规情况的特殊规则。请注意，如果使用该值，你的文本在不同浏览器中可能看起来不同。</dd>
+</dl>
+</section>
+
+
+
+
+<p><span class="leadin howto-header">是否有效？</span> <code class="kw" translate="no">text-autospace</code>属性在主流浏览器引擎中仍未互操作实现，而已有的部分实现也存在问题。没有浏览器会在无样式的情况下添加自动间距。尽管如此，现在向CSS样式表添加<code class="kw" translate="no">text-autospace</code>规则可能不会造成任何损害，并且随着实现改进，可能改善文本渲染。（不过目前请去掉<code class="kw" translate="no">replace</code>关键字，因为它会破坏已应用的间距。）</p>
+
+<p style="font-size: 90%; line-height: 1.2;">下面的演示包含三个段落。第一个没有样式。第二个只使用<code class="kw" translate="no">normal</code>。第三行添加了<code class="kw" translate="no">replace</code>关键字。“gilt top”的两侧有空格字符。阴影是为了便于读者检查。</p>
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">:root { text-autospace: normal; }
+:root { text-autospace: ideograph-alpha ideograph-numeric replace; }</code></pre>
+</figure>
+
+<style>
+#demo-autospace .test_lines { font-size: 1.6rem; line-height: 2; }
+#demo-autospace .test_lines span { background: antiquewhite; }
+</style>
+
+<div id="demo-autospace" class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出（只有下面两个段落使用text-autospace）：</p>
+
+<div class="test_lines">
+<div id="test-autospace-control">
+<p lang="ja">小口装飾<span>edge decoration</span>には、天に金箔をつける天金<span> gilt top </span>や、三方に金をつける<span>3</span>方<span>gilt edges</span>がある。</p>
+</div>
+<div id="test-autospace" style="text-autospace:normal;" >
+<p lang="ja">小口装飾<span>edge decoration</span>には、天に金箔をつける天金<span> gilt top </span>や、三方に金をつける<span>3</span>方<span>gilt edges</span>がある。</p>
+</div>
+<div id="test-replace" style="text-autospace:normal replace;" >
+<p lang="ja">小口装飾<span>edge decoration</span>には、天に金箔をつける天金<span> gilt top </span>や、三方に金をつける<span>3</span>方<span>gilt edges</span>がある。</p>
+</div>
+</div>
+
+<p class="options"><label>选择字体：<input oninput="document.querySelector('#demo-autospace .test_lines').style.fontFamily = this.value;"></label></p>
+</div>
+
+
+<p>原则上，当浏览器完全支持该CSS功能后，由于<code class="kw" translate="no">replace</code>不能与<code class="kw" translate="no">normal</code>关键字配合使用，多数情况下你可能会想使用以下规则：<br>
+<code>text-autospace: ideograph-alpha ideograph-numeric replace;</code></p>
+
+<p>不过，在<code class="kw" translate="no">replace</code>值会阻止其他值生效的现阶段，你大概最好只能这样做：<br>
+<code>text-autospace: normal;</code></p>
+
+<p>（已向CSS工作组<a href="https://github.com/w3c/csswg-drafts/issues/13774">提出一个issue</a>，建议<code class="kw" translate="no">replace</code>关键字应当能与<code class="kw" translate="no">normal</code>一起使用。）</p>
+</section>
+
+
+
+
+
+
+
+<section id="punctuation">
+<h2>标点符号周围的间距</h2>
+
+<p>句号、逗号、括号等标点通常带有内置空白，因为字形墨迹只占em方框的一部分，而该方框与表意字符或假名字符使用的方框大小相同。不过，在某些情况下，这类标点符号附带的空白并不合适。</p>
+
+<p>如果文本按严格网格排列，则不适用这些空白移除方式。</p>
+
+<p>以下几节介绍如何管理标点符号周围的间隙。</p>
+
+<ul>
+<li><a class="secref">punctuation_sequences</a></li>
+<li><a class="secref">punctuation_initial</a></li>
+<li><a class="secref">punctuation_final</a></li>
+</ul>
+</section>
+
+
+
+
+
+<section id="punctuation_sequences">
+<h2>折叠连续标点中的空白</h2>
+
+<p>当某些多个标点符号相邻出现时，每个字符的空白部分会累加，应消除这类大间隙，以提高可读性。这里用括号说明这一点，但它适用于多种字符组合。见<a class="figref">fig_character_frame</a>。</p>
+
+
+<figure id="fig_character_frame">
+<img src="inline-space-data/fig_collapse_punctuation_before.jpg" alt="" style="height: 4em;border:2px solid gray;"><br>
+<img src="inline-space-data/fig_collapse_punctuation_after.jpg" alt="" style="height: 4em;border:2px solid gray;">
+<figcaption>折叠前（上）和折叠后（下）的括号。</figcaption>
+</figure>
+
+
+
+<p><a class="figref">fig_text_space_adjacent</a>展示了真实文本中折叠后的间隙。不应需要为此使用半角字符。你应当使用普通字符，并由应用自动移除适量空白。</p>
+
+
+<figure id="fig_text_space_adjacent">
+<img src="inline-space-data/fig_text_space_adjacent_none.png" alt="">
+<span style="margin-inline:2rem">&nbsp;</span>
+<img src="inline-space-data/fig_text_space_adjacent.png" alt="">
+<figcaption>右侧移除了空白，使文本更易读。</figcaption>
+</figure>
+
+
+<p>并非所有空白都会被折叠。冒号和分号在横排文本中的空白会被折叠，但这些标点在直排文本中不会折叠空白。问号和叹号无论出现在横排还是直排环境中，都不会折叠空白。哪些字符会缩小宽度、何时缩小以及如何缩小，请参见<a href="https://drafts.csswg.org/css-text-4/#fullwidth-collapsing">CSS规范</a>。</p>
+
+
+
+
+<section id="punctuationHow">
+<!--<h3>How to do it</h3>-->
+
+
+<p><span class="leadin howto-header">如何实现</span> CSS Text规范提出了一种方法，可以使用CSS <code class="kw" translate="no">text-spacing-trim</code>属性移除标点符号之间多余的间隙。</p>
+
+
+<p>你可以使用<code class="kw" translate="no">text-spacing-trim:normal</code>告诉浏览器你想这样做，但实际上，该属性的以下附加值也会移除标点簇中的空白：<code class="kw" translate="no">trim-both</code>、<code class="kw" translate="no">space-first</code>、<code class="kw" translate="no">trim-start</code>和<code class="kw" translate="no">trim-all</code>。具体应选择哪个值，取决于你希望如何处理段首空白，后文会讨论这一点。</p>
+
+
+<aside class="floatedImplnote">
+<p class="feature">无样式行为</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+<p class="feature">text-spacing-trim</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>测试</summary>
+<div class="testData">
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20normal%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Anormal%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:normal会缩小与其他标点相邻的括号宽度</a></p>
+
+<p><span class="leadin">结果：</span> 在Chrome中看起来有效，但这也是默认行为（不使用CSS也会发生）。在Firefox或Safari中无效。</p>
+<hr>
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20trim-both%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Atrim-both%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:trim-both会缩小与其他标点相邻的括号宽度</a></p>
+
+<p><span class="leadin">结果：</span> 结果相同。</p>
+<hr>
+
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20trim-start%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Atrim-start%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:trim-start会缩小与其他标点相邻的括号宽度</a></p>
+
+<p><span class="leadin">结果：</span> 结果相同。</p>
+<hr>
+
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20trim-all%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Atrim-all%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:trim-all会缩小与其他标点相邻的括号宽度</a></p>
+
+<p><span class="leadin">结果：</span> 结果相同。</p>
+<hr>
+
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20space-first%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Aspace-first%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:space-first会缩小与其他标点相邻的括号宽度</a></p>
+
+<p><span class="leadin">结果：</span> 结果相同。</p>
+<hr>
+
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fspan%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E5%85%88%E4%BB%A3%E3%81%8C%E3%81%84%E3%81%A6%E3%80%81%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-spacing-trim%3A%20space-all%3B%20%7D&lang=ja&fontSize=62&width=976&height=231&a=text-spacing-trim%3Aspace-all%20will%20reduce%20the%20width%20of%20brackets%20alongside%20other%20punctuation.&i=Text%20passes%20if%20the%20highlighted%20brackets%20on%20the%20second%20line%20don't%20have%20blank%20spaces.%20The%20first%20line%20indicates%20whether%20this%20happens%20by%20default%20%E2%80%94%20if%20so%2C%20the%20CSS%20may%20be%20irrelevant." target="_blank">text-spacing-trim:space-all会缩小与其他标点相邻的括号宽度</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink浏览器以及Gecko和WebKit浏览器中，括号都保持全角。</p>
+</div>
+</details>
+</aside>
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-html">:root { text-spacing-trim: normal; }</code></pre>
+</figure>
+
+<style>
+#demo-text_spacing_trim .test_lines { font-size: 2rem; line-height: 2; font-family: YuMincho, "MS Mincho","Noto Serif CJK JP"; }
+#demo-text_spacing_trim span { background-color: antiquewhite; }
+</style>
+
+<div id="demo-text_spacing_trim" class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出（只有下面一行使用text-spacing-trim）：</p>
+
+<div class="test_lines">
+<div>
+<p lang="ja">先代がいて、<span>「</span>お前はま<span>」</span>。</p>
+</div>
+<div style="text-spacing-trim: normal;">
+<p lang="ja">先代がいて、<span>「</span>お前はま<span>」</span>。</p>
+</div>
+</div>
+
+<p class="options"><label>选择字体：<input oninput="document.querySelector('#demo-text_spacing_trim .test_lines').style.fontFamily = this.value;"></label></p>
+</div>
+
+
+<p>如果出于某种原因想防止空白折叠，可以使用<code class="kw" translate="no">text-spacing-trim:space-all</code>。</p>
+</section>
+
+
+
+
+
+<section id="punctuationWork">
+<!--<h3>Does it work?</h3>-->
+
+
+<p><span class="leadin howto-header">是否有效？</span> 截至撰写本文时，浏览器对<code class="kw" translate="no">text-spacing-trim</code>的支持有限。</p>
+
+<p>Blink浏览器支持使用上述值缩小间隙，但也会默认缩小间隙，不需要样式。</p>
+
+<p>不过，WebKit和Gecko浏览器不会缩小标点符号之间的空白。</p>
+</section>
+</section>
+
+
+
+
+
+
+
+<section id="punctuation_initial">
+<h2>折叠行首空白</h2>
+
+<p>本节讨论通常在左侧带有内置空白的标点符号，例如括号<span style="background-color:antiquewhite">「</span>。下面的示例会使用它，不过这也适用于其他标点符号。</p>
+<p>当这类标点符号出现在行首时，会有多种可能的处理方式。这些决定通常会受到段落前是否有空行，或段落首行是否缩进的影响。</p>
+<p>在<strong>段落开头</strong>，我们可能希望看到：</p>
+<ol>
+<li>半角宽度的括号，可以有缩进，也可以没有缩进</li>
+<li>括号前有半个空格的缩进，但其他字符前有一个全角空格</li>
+<li>全角括号，也就是其前有半个空格，可以有缩进，也可以没有缩进</li>
+</ol>
+
+
+<p><strong>不在段首</strong>但换行到行首的括号，通常前面不应有空白；不过也可以通过强制使用全角字符来保留该空白。</p>
+
+<p>CSS规范建议使用<code class="kw" translate="no">text-spacing-trim</code>处理这一问题。遗憾的是，Gecko或WebKit浏览器不支持<code class="kw" translate="no">text-spacing-trim</code>。不过，Blink浏览器（如Chrome和Edge）有有限支持。</p>
+
+
+
+<p><code class="kw" translate="no">text-spacing-trim</code>属性有多个可能的取值。每个取值都会影响行首和行尾标点符号的宽度。<a class="figref">fig_text_spacing_trim_values</a>提供了概览。作为段落第一个字符的括号前面可以有缩进，也可以没有缩进（缩进由另一个属性设置）。</p>
+
+<p style="font-size: 90%; line-height: 1.4;">对于<a class="figref">fig_text_spacing_trim_values</a>中的每个取值，图中都显示了三行包含括号的内容。第一行显示段首括号是全角还是半角。第二行左侧显示行内括号换到新行时的样子。第二行右侧的半角图形表示，当行尾只有半角间隙可用时，闭括号可以缩小以适配。第三行显示段末括号在其后有足够空间显示全角字形时的预期宽度。</p>
+
+
+<style>
+#tst_values td:nth-child(3) { max-width: 30em; }
+#tst_values tr td:nth-child(2) { color: burlywood; white-space: nowrap; }
+#tst_values tr td { font-size: 90%; }
+#tst_values tr td:nth-child(4), #tst_values tr td:nth-child(5) { text-align: end; }
+</style>
+
+<figure id="fig_text_spacing_trim_values">
+<table id="tst_values">
+<tbody>
+<tr><td>normal</td>
+<td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
+<img src="inline-space-data/cell_full_open.jpg"> ........................... <img src="inline-space-data/cell_full_close.jpg"> 或 <img src="inline-space-data/cell_half_close.jpg"><br>
+............ <img src="inline-space-data/cell_full_close.jpg"></td>
+<td>段首括号为全角。<br>换到行首的行内括号为全角。<br>行尾闭括号可以缩小以适配。<br>
+段末闭括号在有可用空间时为全角。</td>
+</tr>
+<tr><td>trim-both</td>
+<td><img src="inline-space-data/cell_half_open.jpg"> .......................................................<br>
+<img src="inline-space-data/cell_half_open.jpg"> ............................................... <img src="inline-space-data/cell_half_close.jpg"><br>
+............ <img src="inline-space-data/cell_half_close.jpg"></td>
+<td>段首括号为半角。<br>
+换到行首的行内括号为半角。<br>
+行尾闭括号始终为半角。</td>
+</tr>
+<tr><td>trim-start</td>
+<td><img src="inline-space-data/cell_half_open.jpg"> ......................................................<br>
+<img src="inline-space-data/cell_half_open.jpg"> ................................ <img src="inline-space-data/cell_full_close.jpg"> 或 <img src="inline-space-data/cell_half_close.jpg"><br>
+............ <img src="inline-space-data/cell_full_close.jpg"></td>
+<td>段首括号为半角。<br>换到行首的行内括号为半角。<br>
+行尾闭括号可以缩小以适配。<br>
+段末闭括号在有可用空间时为全角。</td>
+</tr>
+<tr><td>space-first</td>
+<td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
+<img src="inline-space-data/cell_half_open.jpg"> ................................. <img src="inline-space-data/cell_full_close.jpg"> 或 <img src="inline-space-data/cell_half_close.jpg"><br>
+............ <img src="inline-space-data/cell_full_close.jpg"></td>
+<td>段首括号为全角。<br>换到行首的行内括号为半角。<br>
+行尾闭括号可以缩小以适配。<br>
+段末闭括号在有可用空间时为全角。</td>
+</tr>
+<tr><td>trim-all</td>
+<td><img src="inline-space-data/cell_half_open.jpg"> .........................................................<br>
+<img src="inline-space-data/cell_half_open.jpg"> ............................................. <img src="inline-space-data/cell_half_close.jpg"><br>
+............ <img src="inline-space-data/cell_half_close.jpg"></td>
+<td>段首括号为半角。<br>
+换到行首的行内括号为半角。<br>
+行尾闭括号始终为半角。<br>
+这会让标点（包括间隔号）在<strong>任何</strong>出现位置都使用半角字形，而不只是行首/行尾。</td>
+</tr>
+<tr><td>space-all</td>
+<td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
+<img src="inline-space-data/cell_full_open.jpg"> ....................................... <img src="inline-space-data/cell_full_close.jpg"><br>
+............ <img src="inline-space-data/cell_full_close.jpg"></td>
+<td>段首括号为全角。<br>
+换到行首的行内括号为全角。<br>
+行尾闭括号始终为全角。<br>
+这会让标点在<strong>任何</strong>出现位置都使用全角字形，而不只是行首/行尾。</td>
+</tr>
+</tbody>
+</table>
+<figcaption><code class="kw" translate="no">text-spacing-trim</code>属性的取值，以及它们对行首和行尾括号的影响。</figcaption>
+</figure>
+
+<p style="font-style: italic;">（已在CSS仓库中<a href="https://github.com/w3c/csswg-drafts/issues/13789">提出一个issue</a>，建议让内容作者能够分别设置上述各项行为，而不是使用只覆盖特定组合的关键字，这样会更简单。）</p>
+
+
+
+
+
+
+
+
+<section id="punc_fonts">
+<h3>字体依赖</h3>
+
+<aside class="floatedImplnote">
+<details class="moreTests">
+<summary>测试</summary>
+
+<div class="testData">
+<p>目前，这些测试只适用于Blink浏览器，例如Chrome、Edge、Brave等。这些测试仅用于检查macOS字体。</p>
+
+<p><span class="leadin">断言：</span> <a target="_blank" href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%90%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%96%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%94%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%BB%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%88%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%88%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8A%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9%3C%2Fp%3E%0A&css=.test%20%7B%20writing-mode%3Avertical-rl%3B%20%7D%0Aspan%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0Ap%20%7B%20text-spacing-trim%3Atrim-start%3B%20%20%7D&lang=ja&fontSize=36&width=900&height=261&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20Japanese%20paragraph%20(using%20macOS%20%26%20Noto%20fonts).&i=Tests%20pass%20if%20the%20bracket%20and%20its%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20top%20of%20the%20box.&fonts=Hiragino Mincho Pro,Noto Serif CJK JP,Toppan Bunkyu Mincho,YuMincho,Hiragino Kaku Gothic Pro,Hiragino Sans,Osaka,Toppan Bunkyu Gothic,Noto Sans CJK JP,YuGothic,Hiragino Maru Gothic Pro,Tsukushi A Round Gothic,Tsukushi B Round Gothic,Toppan Bunkyu Midashi Gothic,YuKyokasho,YuKyokasho Yoko">text-spacing-trim:trim-start会裁掉日文段落开头开始括号的前导空白（使用macOS和Noto字体）。</a></p>
+<p><a target="_blank" href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E3%80%8C%E6%8B%AC%E5%BC%A7%E5%8F%A5%E8%AA%AD%E7%82%B9&fonts=Hiragino%20Mincho%20Pro%2CNoto%20Serif%20CJK%20JP%2CToppan%20Bunkyu%20Mincho%2CYuMincho%2CHiragino%20Kaku%20Gothic%20Pro%2CHiragino%20Sans%2COsaka%2CToppan%20Bunkyu%20Gothic%2CNoto%20Sans%20CJK%20JP%2CYuGothic%2CArial%20Unicode%20MS%2CHiragino%20Maru%20Gothic%20Pro%2CTsukushi%20A%20Round%20Gothic%2CTsukushi%20B%20Round%20Gothic%2CToppan%20Bunkyu%20Midashi%20Gothic%2CYuKyokasho%2CYuKyokasho%20Yoko&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3B&lang=ja">字体预览器</a></p>
+
+<hr>
+
+<p><span class="leadin">断言：</span> <a target="_blank" href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%90%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%96%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%94%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%BB%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%88%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%88%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8A%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20%20%7D&lang=zh-hans&fontSize=36&width=900&height=850&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20Simplified%20Chinese%20paragraph%20(using%20macOS%20%26%20Noto%20fonts).&i=Tests%20pass%20if%20the%20bracket%20and%20its%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box.&fonts=Noto Serif CJK SC,Noto Sans CJK SC,PingFang SC,SimSong,Songti SC,STSong,Hei,Heiti SC,Lantinghei SC,STHeiti,Yuanti SC,STFangsong,Kai,Kaiti SC,STKaiti,Xingkai SC,Baoli SC,Hannotate SC,HanziPen SC,Libian SC,Wawati SC,Weibei SC,Yuppy SC">text-spacing-trim:trim-start会裁掉简体中文段落开头开始括号的前导空白（使用macOS和Noto字体）。</a></p>
+<p><a target="_blank" href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E3%80%8E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F&fonts=Noto%20Serif%20CJK%20TC%2CNoto%20Sans%20CJK%20TC%2CPingFang%20HK%2CPingFang%20TC%2CPingFang%20MO%2CHiragino%20Sans%20TC%2CApple%20LiSung%2CLiSong%20Pro%2CSongti%20TC%2CNom%20Na%20Tong%2CApple%20LiGothic%2CHeiti%20TC%2CLantinghei%20TC%2CLiHei%20Pro%2CYuanti%20TC%2CBiaukaiTC%2CBiaukaiHK%2CKaiti%20TC%2CXingkai%20TC%2CBaoli%20TC%2CHannotate%20TC%2CHanziPen%20TC%2CLibian%20TC%2CWawati%20TC%2CWeibei%20TC%2CYuppy%20TC&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3B&lang=zh-hant">字体预览器</a></p>
+
+<hr>
+
+<p><span class="leadin">断言：</span> <a target="_blank" href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%90%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%96%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%94%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%BB%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%EF%BC%88%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%88%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8A%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A%3Cp%3E%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E6%8B%AC%E8%99%9F%E6%A8%99%E9%BB%9E%E7%AC%A6%E8%99%9F%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20%20%7D&lang=zh-hant&fontSize=36&width=900&height=850&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20Traditional%20Chinese%20paragraph%20(using%20macOS%20%26%20Noto%20fonts).&i=Tests%20pass%20if%20the%20bracket%20and%20its%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box.&fonts=Noto Serif CJK TC,Noto Sans CJK TC,PingFang HK,PingFang TC,PingFang MO,Hiragino Sans TC,Apple LiSung,LiSong Pro,Songti TC,Nom Na Tong,Apple LiGothic,Heiti TC,Lantinghei TC,LiHei Pro,Yuanti TC,BiaukaiTC,BiaukaiHK,Kaiti TC,Xingkai TC,Baoli TC,Hannotate TC,HanziPen TC,Libian TC,Wawati TC,Weibei TC,Yuppy TC">text-spacing-trim:trim-start会裁掉繁体中文段落开头开始括号的前导空白（使用macOS和Noto字体）。</a></p>
+<p><a target="_blank" href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E3%80%8C%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7&fonts=Noto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC%2CPingFang%20SC%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CSTHeiti%2CYuanti%20SC%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3B&lang=zh-hans">字体预览器</a></p>
+</div>
+</details>
+</aside>
+
+
+
+
+<p>下文会看到，我们希望实现的一些行为目前存在于Blink引擎浏览器中，例如Chrome、Edge、Brave等。不过需要注意的是，能否成功取决于所用字体。</p>
+<p>CSS规范<a href="https://drafts.csswg.org/css-text-4/#fullwidth-collapsing">指出</a>，浏览器可能依赖OpenType特性来裁剪相关字形。</p>
+
+<p>下表显示哪些macOS和Noto字体支持裁剪前导空白，哪些不支持（在Blink浏览器中）。</p>
+
+
+<style>
+#font_dependencies th { line-height: 1; width:15em; }
+#font_dependencies th:nth-child(2) { width: 8em; }
+</style>
+
+<table id="font_dependencies" style="font-size: 85%;">
+<thead>
+<tr>
+<th colspan="2">日文</th>
+<th colspan="2">简体中文</th>
+<th colspan="2">繁体中文</th>
+</tr>
+<tr>
+<th>✅<br></th>
+<th>❌</th>
+<th>✅</th>
+<th>❌</th>
+<th>✅</th>
+<th>❌</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Hiragino Mincho Pro<br>Noto Serif CJK JP<br>Toppan Bunkyu Mincho<br>YuMincho<br>Hiragino Kaku Gothic Pro<br>Hiragino Sans<br>Osaka<br>Toppan Bunkyu Gothic<br>Noto Sans CJK JP<br>YuGothic<br>Arial Unicode MS<br>Hiragino Maru Gothic Pro<br>Tsukushi A Round Gothic<br>Tsukushi B Round Gothic<br>Toppan Bunkyu Midashi Gothic<br>YuKyokasho<br>YuKyokasho Yoko
+</td>
+<td>
+—
+</td>
+<td>Noto Serif CJK SC<br>Noto Sans CJK SC<br>PingFang SC</td>
+<td>SimSong<br>Songti SC<br>STSong<br>Hei<br>Heiti SC<br>Lantinghei SC<br>STHeiti<br>Yuanti SC<br>STFangsong<br>Kai<br>Kaiti SC<br>STKaiti<br>Xingkai SC<br>Baoli SC<br>Hannotate SC<br>HanziPen SC<br>Libian SC<br>Wawati SC<br>Weibei SC<br>Yuppy SC</td>
+<td>
+Noto Serif CJK TC<br>Noto Sans CJK TC<br>PingFang HK<br>PingFang TC<br>PingFang MO<br>Hiragino Sans TC
+</td>
+<td>
+Apple LiSung<br>LiSong Pro<br>Songti TC<br>Nom Na Tong<br>Apple LiGothic<br>Heiti TC<br>Lantinghei TC<br>LiHei Pro<br>Yuanti TC<br>BiaukaiTC<br>BiaukaiHK<br>Kaiti TC<br>Xingkai TC<br>Baoli TC<br>Hannotate TC<br>HanziPen TC<br>Libian TC<br>Wawati TC<br>Weibei TC<br>Yuppy TC
+</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>以上结果来自横排文本显示。某些字体（如PingFang TC）在横排文本中支持预期行为，但在直排文本中不支持。还应注意字体是否支持你想使用的括号字形：例如，Hiragino Sans TC字体似乎不支持 〖 括号（虽然它支持 【 括号），如果同时使用该括号和该字体，可能会看到意外失败。</p>
+</section>
+
+
+
+
+
+
+
+
+
+<section id="punc_initial_nospace">
+<h3>场景 #1：无空白，无缩进</h3>
+
+
+
+<figure id="fig_trim_startX" style=" margin-block: 0;">
+<img src="inline-space-data/fig_op_nospace.jpg" alt="" style="width:24rem;">
+</figure>
+
+
+<p>当段落由空行分隔时，段落首行通常不缩进。此时，如果段落以开始括号开始，通常会移除其前的半角空白。</p>
+
+
+<p>为此，应当可以使用<code class="kw" translate="no">text-spacing-trim</code>，并将值设为<code class="kw" translate="no">trim-start</code>或<code class="kw" translate="no">trim-both</code>。这些值应当移除括号的前导空白，无论括号位于段首，还是位于段落内部但换到新行行首。</p>
+
+<p><code class="kw" translate="no">trim-start</code>和<code class="kw" translate="no">trim-both</code>的区别在于，前者只裁剪开始括号，而后者还会裁剪行尾的闭括号。</p>
+
+<aside class="floatedImplnote">
+<p class="feature">trim-start</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+<p class="feature">trim-both</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>更多测试</summary>
+<div class="testData">
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-start</code>会在macOS上裁掉段首开始括号的前导空白。</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink浏览器中有效，但在Gecko或WebKit中无效。</p>
+
+<hr>
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-both%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-both%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-both</code>会在macOS上裁掉段首开始括号的前导空白。</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink、Gecko和WebKit浏览器中均失败。</p>
+</div>
+</details>
+</aside>
+
+
+
+
+<figure class="example" lang="en" style="clear: left;">
+<pre><code class="language-css">:root { text-spacing-trim: trim-start; }
+p { margin-block: 1em; }</code></pre>
+</figure>
+
+<style>
+#demo-trim-start .test_lines { font-size: 1.6rem; line-height: 1.4; font-family: YuMincho, "MS Mincho","Noto Serif CJK JP"; writing-mode:vertical-rl; height: 10.5em; margin: 1em; }
+#demo-trim-start span { background-color: antiquewhite; }
+#demo-trim-start p { margin-block: 1em; }
+</style>
+
+<div id="demo-trim-start" class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出（调整行长，使两个开始括号都出现在行首。）</p>
+
+<div class="test_lines">
+<div id="demo-trim-start_test" style="text-spacing-trim: trim-start; margin-block:0;">
+<!--<p lang="ja" style="text-indent: unset;">漢字漢字漢字漢字漢字漢字漢字。</p>
+<p lang="ja" style=""><span>「</span>漢字漢字漢字漢字漢字漢字漢字漢字漢字<span>『</span>漢字漢字』漢字。」</p>
+<p lang="ja">漢字漢字漢字漢字漢字漢字，漢字漢字。</p>
+-->
+<p lang="ja">漢字漢字漢字漢字漢字漢字漢字。</p>
+<p lang="ja"><span>「</span>漢字漢字漢字漢字漢字漢字漢字漢漢字。」</p>
+<p lang="ja">漢字漢字漢字漢字漢<span>『</span>漢字漢字漢字漢字漢字』漢字漢字。</p>
+<p lang="ja">漢字漢字漢字漢字漢字漢字，漢字漢字。</p>
+</div>
+</div>
+
+<p class="options"><label>选择字体：<input oninput="document.querySelector('#demo-trim-start .test_lines').style.fontFamily = this.value;" style="width:8em;" placeholder="YuMincho"></label>  &nbsp;
+
+<label>调整行长：<input id="offsetSlider2" type="range" min="5" max="20" step=".5" value="10"
+    oninput="document.getElementById('demo-trim-start_test').style.height = this.value+'em';
+         document.getElementById('offsetSliderValue2').value=this.value+'em';"
+         style="width:8em; height:1em;" placeholder=""></label>
+<input value="10em" id="offsetSliderValue2" style="width:3em;"></p>
+</div>
+
+
+
+<p><span class="leadin howto-header">是否有效？</span> Blink浏览器支持<code class="kw" translate="no">trim-start</code>值，但不支持<code class="kw" translate="no">trim-both</code>。Gecko或WebKit浏览器均不支持这两个值。</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="punc_hanging">
+<h3>场景 #2：“悬挂”标点</h3>
+
+
+<figure id="fig_op_halfspace" style="/*float:right*/">
+<img src="inline-space-data/fig_op_halfspace.jpg" alt="" style="width:22rem;">
+</figure>
+
+<p>日文文本的一种常见排法是移除段落之间的间隙，并让每个段落以1em缩进开始。当开始括号出现在段落首行开头时，它会占据该缩进的右半部分（或下半部分）。从视觉上可以将其理解为一个全角字符替代了缩进，也可以理解为半角括号“悬挂”在实际行首的左侧/上方。</p>
+<p>对于这种排法，CSS规范建议使用下面框中所示规则。<code class="kw" translate="no">text-indent</code>属性为所有段落应用缩进。<code class="kw" translate="no">text-spacing-trim</code>行移除括号的前导空白。然后<code class="kw" translate="no">hanging-punctuation</code>行将括号移入缩进空间。</p>
+
+
+
+<aside class="floatedImplnote">
+<p class="feature">text-indent</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+
+<p class="feature">hanging-punctuation</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>✅</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>更多测试</summary>
+<div class="testData">
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%E3%80%8D%E3%80%82%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testme%22%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E3%81%8A%E5%89%8D%E3%81%AF%E3%81%BE%E3%80%8D%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20hanging-punctuation%3A%20first%3B%20padding-inline%3A1em%7D&lang=ja&fontSize=62&fontFamily=YuMincho&width=976&height=231&a=hanging-punctuation%3Afirst%20will%20move%20a%20bracket%20before%20the%20start%20of%20a%20paragraph.&i=Text%20passes%20if%20the%20opening%20bracket%20on%20the%20SECOND%20line%20is%20positioned%20directly%20below%20the%20one%20on%20the%20first%20line." target="_blank"><code class="kw" translate="no">hanging-punctuation:first</code>会把括号移到段落开头之前。</a></p>
+
+<p><span class="leadin">结果：</span> 在WebKit浏览器中有效，但在Blink或Gecko中无效。如果此测试失败，则本文描述的技术也会失败。</p>
+
+<hr>
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%3E%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E3%80%82%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testme%22%3E%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-indent%3A1em%7D&lang=ja&fontSize=29&fontFamily=YuMincho&width=450&height=336&a=text-indent%3A1em%20will%20add%20a%201%20em%20gap%20before%20the%20start%20of%20a%20paragraph.&i=Text%20passes%20if%20there%20is%20a%201em%20gap%20at%20the%20beginning%20of%20the%20SECOND%20paragraph%20(3rd%20line)." target="_blank"><code class="kw" translate="no">text-indent:1em</code>会在段落开头前添加1em间隙。</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink、Gecko和WebKit浏览器中有效。</p>
+</div>
+</details>
+</aside>
+
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">p {
+  margin-block: 0;
+  text-indent: 1em;
+  text-spacing-trim: trim-both;
+  hanging-punctuation: first;
+  }</code></pre>
+</figure>
+
+
+
+
+<style>
+#demo-indent .test_lines { font-size: 1.6rem; line-height: 1.4; font-family: YuMincho, "MS Mincho","Noto Serif CJK JP"; writing-mode:vertical-rl; height: 10.5em; margin:1em; }
+#demo-indent span { background-color: antiquewhite; }
+#demo-indent p { margin-block: 0; text-indent: 1em; text-spacing-trim: trim-start; hanging-punctuation: first; }
+</style>
+
+<div id="demo-indent" class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出（调整行长，使两个开始括号都出现在行首。）</p>
+
+<div class="test_lines">
+<div id="demo-indent_test" style="text-spacing-trim:trim-start; margin-block:0;">
+<!--<p lang="ja" style="text-indent: unset;">漢字漢字漢字漢字漢字漢字漢字。</p>
+<p lang="ja" style=""><span>「</span>漢字漢字漢字漢字漢字漢字漢字漢字漢字<span>『</span>漢字漢字』漢字。」</p>
+<p lang="ja">漢字漢字漢字漢字漢字漢字，漢字漢字。</p>
+-->
+<p lang="ja">漢字漢字漢字漢字漢字漢字漢字。</p>
+<p lang="ja"><span>「</span>漢字漢字漢字漢字漢字漢字漢字漢漢字。」</p>
+<p lang="ja">漢字漢字漢字漢字<span>『</span>漢字漢字漢字漢字漢字』漢字漢字。</p>
+<p lang="ja">漢字漢字漢字漢字漢字漢字，漢字漢字。</p>
+</div>
+</div>
+
+<p class="options"><label>选择字体：<input oninput="document.querySelector('#demo-indent .test_lines').style.fontFamily = this.value;" style="width:8em;" placeholder="YuMincho"></label>  &nbsp;
+
+<label>调整行长：<input id="offsetSlider3" type="range" min="5" max="20" step=".5" value="10.5"
+    oninput="document.getElementById('demo-indent_test').style.height = this.value+'em';
+         document.getElementById('offsetSliderValue3').value=this.value+'em';"
+         style="width:8em; height:1em;" placeholder=""></label>
+<input value="10.5em" id="offsetSliderValue3" style="width:3em;"></p>
+</div>
+
+
+
+
+
+<p><span class="leadin howto-header">是否有效？</span> 遗憾的是，目前Blink或Gecko浏览器无法实现这种方法，因为它们不支持<code class="kw" translate="no">hanging-punctuation</code>属性。</p>
+
+<p>WebKit浏览器<strong>支持</strong><code class="kw" translate="no">hanging-punctuation:first</code>，段落开头的括号看起来符合预期。不过，WebKit浏览器不会移除段落内部换到行首的括号前的半角空白。</p>
+
+
+</section>
+
+
+
+
+
+
+<section id="punc_chinese">
+<h3>场景 #3：非悬挂缩进</h3>
+
+
+<figure id="fig_op_chinese" style="/*float:right*/">
+<img src="inline-space-data/fig_op_chinese.jpg" alt="" style="width:24rem;">
+</figure>
+
+<p>上图显示了首行缩进的中文段落。中文常见的缩进为2em。括号的前导空白被移除，但与前面的日文示例不同，括号不会悬挂在缩进空间中。</p>
+
+<p>以下CSS应当能实现这一效果。<code class="kw" translate="no">text-indent</code>属性同样为所有段落应用缩进（但这次是2em间隙）。然后<code class="kw" translate="no">text-spacing-trim</code>行移除括号的前导空白。</p>
+
+
+
+<aside class="floatedImplnote">
+<p class="feature">space-first</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">p {
+  margin: 0;
+  text-indent: 2em;
+  text-spacing-trim: trim-start;
+  }</code></pre>
+</figure>
+
+
+<style>
+#demo-chinese .test_lines { font-size: 1.6rem; line-height: 1.4; font-family: "Hiragino Sans TC", "PMingLiu","Noto Serif CJK TC"; writing-mode:vertical-rl; height: 11em; margin:1em; }
+#demo-chinese span { background-color: antiquewhite; }
+#demo-chinese p { margin-block: 0; text-indent: 2em; text-spacing-trim: trim-start; }
+</style>
+
+<div id="demo-chinese" class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出（调整行长，使两个开始括号都出现在行首。）</p>
+
+<div class="test_lines">
+<div id="demo-chinese_test">
+
+<p lang="zh-hant">漢字漢字漢字漢字漢字漢字漢字。</p>
+<p lang="zh-hant" style=""><span>「</span>漢字漢字漢字漢字漢字漢字漢字漢字漢字。」</p>
+<p lang="zh-hant" style="">漢字漢字漢字漢字<span>『</span>漢字漢字漢字漢字漢字』漢字漢字。</p>
+<p lang="zh-hant">漢字漢字漢字漢字漢字漢字，漢字漢字。</p>
+
+<!--<p lang="ja"><span>〖</span>第二段以開括號起筆，約十二字後再添<span>〖</span>一記符號以呼應層次感。</p>-->
+</div>
+</div>
+
+<p class="options"><label>选择字体：<input oninput="document.querySelector('#demo-chinese .test_lines').style.fontFamily = this.value;"></label>  &nbsp;
+
+<label>调整行长：<input id="offsetSlider4" type="range" min="5" max="20" step="1" value="10"
+    oninput="document.getElementById('demo-chinese_test').style.height = this.value+'em';
+         document.getElementById('offsetSliderValue4').value=this.value+'em';"
+         style="width:8em; height:1em;" placeholder=""></label>
+<input value="10em" id="offsetSliderValue4" style="width:3em;"></p>
+</div>
+
+
+
+
+
+
+<p><span class="leadin howto-header">是否有效？</span> 在上面的测试中，我们使用<code class="kw" translate="no">trim-start</code>值，只是因为它在Blink浏览器中有效。理想情况下，你也应当能使用<code class="kw" translate="no">trim-both</code>。</p>
+<p>这种方法在Blink浏览器中有效，但在Gecko和WebKit浏览器中，括号宽度不会缩小，这会在段首括号前产生2½个空格。后两个引擎当然也无法移除换到新行行首的行内括号前导空白。</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section id="punc_space_first">
+<h3>场景 #4：space-first布局</h3>
+
+
+<figure id="fig_op_spacefirst">
+<img src="inline-space-data/fig_op_spacefirst.jpg" alt="" style="width:22rem;">
+</figure>
+
+<p>许多现有内容，尤其是ePub文档，是在CSS处理段首标点问题之前创建的。因此，常见做法是在大多数段落首行前使用一个表意空格字符，但在需要时改用全角括号字形。这会产生上面悬挂示例中看到的括号前半角空白。它看起来相同，但通过字符而不是样式实现。</p>
+
+<p><code class="kw" translate="no">text-spacing-trim</code>的<code class="kw" translate="no">space-first</code>值就是为便于这种排法而设计的。我们仍然希望换到新行的行内括号为半角，但要确保段首括号保持全角（不同于使用<code class="kw" translate="no">trim-start</code>时）。不需要<code class="kw" translate="no">text-indent</code>属性或<code class="kw" translate="no">hanging-punctuation</code>属性。</p>
+
+
+
+<aside class="floatedImplnote">
+<p class="feature">space-first</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+<p>失败原因是段落内部换到行首的括号没有缩小。</p>
+</aside>
+
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">p {
+  margin-block: 0;
+  text-spacing-trim: space-first;
+  }</code></pre>
+</figure>
+
+
+
+
+<style>
+#demo-spacefirst .test_lines { font-size: 1.6rem; line-height: 1.4; font-family: YuMincho, "MS Mincho","Noto Serif CJK JP"; writing-mode:vertical-rl; height: 10.5em; margin: 1em; }
+#demo-spacefirst span { background-color: antiquewhite; }
+#demo-spacefirst p { margin-block: 0; text-spacing-trim: space-first; }
+</style>
+
+<div id="demo-spacefirst" class="browser_output">
+<p class="browser_output_title">你的浏览器中的输出（调整行长，使两个开始括号都出现在行首。）</p>
+
+<div class="test_lines">
+<div id="demo-spacefirst_test">
+<!--<p lang="ja">&#x3000;漢字漢字漢字漢字漢字漢字漢字。</p>
+<p lang="ja"><span>「</span>漢字漢字漢字漢字漢字漢字漢字漢字漢字<span>『</span>漢字漢字漢字漢字漢』字漢字漢字。」</p>
+<p lang="ja">&#x3000;漢字漢字漢字漢字漢字漢字，漢字漢字。</p>-->
+<p lang="ja">&#x3000;漢字漢字漢字漢字漢字漢字漢字。</p>
+<p lang="ja"><span>「</span>漢字漢字漢字漢字漢字漢字漢字漢漢字。」</p>
+<p lang="ja">&#x3000;漢字漢字漢字漢字<span>『</span>漢字漢字漢字漢字漢字』漢字漢字。</p>
+<p lang="ja">&#x3000;漢字漢字漢字漢字漢字漢字，漢字漢字。</p>
+</div>
+</div>
+
+<p class="options"><label>选择字体：<input oninput="document.querySelector('#demo-spacefirst .test_lines').style.fontFamily = this.value;" style="width:8em;" placeholder="YuMincho"></label>  &nbsp;
+
+<label>调整行长：<input id="offsetSlider5" type="range" min="5" max="20" step="1" value="10"
+    oninput="document.getElementById('demo-spacefirst_test').style.height = this.value+'em';
+         document.getElementById('offsetSliderValue5').value=this.value+'em';"
+         style="width:8em; height:1em;" placeholder=""></label>
+<input value="10em" id="offsetSliderValue5" style="width:3em;"></p>
+</div>
+
+
+
+<p><span class="leadin howto-header">是否有效？</span> Blink浏览器支持该值。Gecko和WebKit浏览器对段首括号没有问题（因为没有应用样式），但尚未实现该值，这意味着换到新行的括号会保持全角。</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section id="punc_space_all">
+<h3>场景 #5：space-all</h3>
+
+<p>台湾内容作者可能更倾向于使用<code class="kw" translate="no">space-all</code>。除了让行首和行尾保持全角字形外，<code class="kw" translate="no">space-all</code>还会禁止相邻行内标点之间的空白折叠（见<a class="secref">punctuation_sequences</a>）。</p>
+
+
+<figure id="fig_space_all">
+<img src="inline-space-data/fig_space_all.jpg" alt="" style="width:22rem;">
+</figure>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section id="punc_other">
+<h3>其他值</h3>
+
+<p>其他值<code class="kw" translate="no">normal</code>和<code class="kw" translate="no">trim-all</code>会产生<a class="figref">fig_text_spacing_trim_values</a>所示的效果。</p>
+
+<p><code class="kw" translate="no">trim-all</code>会在<strong>所有地方</strong>裁剪带有可折叠空白的括号和其他标点的宽度，不只是行首和行尾。这正是<code class="kw" translate="no">trim-all</code>与<code class="kw" translate="no">trim-both</code>的区别。</p>
+
+<p><code class="kw" translate="no">trim-both</code>会裁掉行首和行尾的多余空白，但保留行内空白。例如：</p>
+
+<p><img src="inline-space-data/trim_both_internal.jpg" alt="" style="max-width:40em;"></p>
+
+<p>相比之下，<code class="kw" translate="no">trim-all</code>会裁掉所有位置的多余空白。例如：</p>
+
+<p><img src="inline-space-data/trim_all_internal.jpg" alt="" style="max-width:40em;"></p>
+</section>
+</section>
+
+
+
+
+
+
+
+<section id="punctuation_final">
+<h2>折叠行尾空白</h2>
+
+<p>考虑行尾标点时，我们想知道：当行尾只剩足够容纳半角字符的空间时，闭括号或其他带有尾随空白的标点是否会自动移除该空白。如果只有一个半角字符的间隙，而标点仍保持全角，它就会换到下一行，并带走前一个字符（因为闭括号不应出现在行首）。</p>
+
+<p>除<code class="kw" translate="no">space-all</code>值外，所有<code class="kw" translate="no">text-spacing-trim</code>取值都会自动缩小行尾闭括号的宽度。多数情况下，如果行尾有足够空间容纳全角括号，括号会保持全角。但是，如果行尾只有半角间隙，则括号会缩小。不过，<code class="kw" translate="no">trim-both</code>和<code class="kw" translate="no">trim-all</code>这两个值始终会缩小行尾括号的宽度，无论是否有空间容纳全角字形。</p>
+
+
+
+
+
+
+
+
+<section id="justification">
+<h3>两端对齐</h3>
+
+
+
+<aside class="floatedImplnote">
+<p class="feature">完全两端对齐</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>测试</summary>
+<div class="testData">
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22testme%22%3E%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E3%80%8C%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E6%BC%A2%E5%AD%97%E3%80%82%3C%2Fdiv%3E%0A&css=span%20%7B%20background%3Aantiquewhite%3B%20%7D%0A%23testme%20%7B%20text-align%3Ajustify%3B%20text-spacing-trim%3Atrim-both%3B%20%7D&lang=ja&fontSize=29&fontFamily=YuMincho&width=450&height=336&a=text-spacing-trim%3Atrim-both%20makes%20a%20closing%20bracket%20at%20a%20line%20end%20flush%20with%20other%20lines%20when%20justification%20is%20applied.&i=Adjust%20the%20test%20box%20width%2C%20if%20necessary%2C%20so%20that%20the%20closing%20bracket%20is%20at%20the%20end%20of%20the%20line.%20Text%20passes%20if%20the%20closing%20bracket%20is%20flush%20with%20the%20other%20line%20ends." target="_blank">应用两端对齐时，<code class="kw" translate="no">text-spacing-trim:trim-both</code>会让行尾闭括号与其他行齐平。</a></p>
+
+<p><span class="leadin">结果：</span> Blink浏览器不支持<code class="kw" translate="no">trim-both</code>值，Gecko或WebKit也不支持。</p>
+<hr>
+
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-all%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-all%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-all</code>会在macOS上裁掉段首开始括号的前导空白。</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink、Gecko和WebKit浏览器中均失败。</p>
+</div>
+</details>
+</aside>
+
+
+
+
+<p>如果你想对齐文本，使行尾闭括号与相邻行字符末端齐平，需要选择一个会强制行尾括号为半角的<code class="kw" translate="no">text-spacing-trim</code>值。为此，<code class="kw" translate="no">trim-both</code>比<code class="kw" translate="no">trim-start</code>更合适，因为后者可能会在行尾放置全角字形。</p>
+
+
+<figure id="fig_fully_justified">
+<img src="inline-space-data/fig_justified.jpg" alt="" style="height:10em; margin-inline:2em;">
+<img src="inline-space-data/fig_fully_justified.jpg" alt="" style="height:10em; margin-inline:2em;">
+<figcaption>左侧为使用<code class="kw" translate="no">trim-start</code>对齐的括号结尾行，右侧为使用<code class="kw" translate="no">trim-both</code>齐平对齐的同一行。</figcaption>
+</figure>
+</section>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div style="color:#aaa;">
+
+
+<p>Sample text from <a href="https://ja.wikipedia.org/wiki/%E5%A4%A9%E6%AD%A6%E5%A4%A9%E7%9A%87#名" target="_blank">Wikipedia</a>:</p>
+<p lang="ja" style="text-spacing-trim:normal;">名の「大海人」（おおあま）は、幼少期に養育を受けた凡海氏（海部一族の伴造）にちなむ。『日本書紀』に直接そのように記した箇所はないが、天武天皇の殯に凡海麁鎌が壬生（養育）のことを誄したことからこのように推測されている（『日本書紀』朱鳥元年9月27日条）。</p>
+
+<p>From JAL</p>
+
+<div style="writing-mode:vertical-rl; height:32rem; text-spacing-trim:trim-start; font-size:1.4rem; font-family:yumincho; width:70%;">
+
+<p>内容は釈実に進化してきた。</p>
+
+<p style="text-indent: 1em;hanging-punctuation: first;"><span style="background-color:antiquewhite;">「</span>今回何よりお伝えしたいのは<span style="background-color:antiquewhite;">『</span>家族旅行ハワイ』の行き先にハワイ島が加わったことです。」</p>
+
+<p style="text-indent: 1em;hanging-punctuation: first;">溶岩大地が圧巻のハワイ火山国立公園、マウナケア山から望むサ</p>
+</div>
+
+
+
+<style>#test2 p { margin: 0; text-indent:2em; }</style>
+
+
+
+<p>と担当者の渡辺亜紀。ハワイ島はオアフ島とは異なり、観光の主なテーマは大自然。溶岩大地が圧巻のハワイ火山国立公園、マウナケア山から望むサンセットや星空、海を見渡す斜面のコナコーヒー農園など、ダイナミックな景観美が特徴だ。</p>
+
+
+
+<div id="test2" style="writing-mode:vertical-rl; height:12em; font-size:1.4rem; font-family:'Hiragino Sans TC', 'LiSong Pro'; width:70%; text-spacing-trim: trim-start; ">
+
+<p lang="zh-hant">巷口新開的書店安靜明亮，午後常有人駐足。</p>
+<p lang="zh-hant" style=""><span style="background-color:antiquewhite">「</span>如果你喜歡舊地圖，最裡面的書架還有幾本可以看看。」</p>
+<p lang="zh-hant" style="">我在書店裡面看見了<span style="background-color:antiquewhite">『</span>請輕放舊書』幾個字，墨還很新。</p>
+<p lang="zh-hant">離開時雨剛停下，門前石階還留著一層淡淡的水光。</p>
+</div>
+
+
+<div id="test3" style="writing-mode:vertical-rl; height:28em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:70%; text-spacing-trim: trim-start; ">
+
+<p lang="ja">路地の入り口に新しくオープンした書店は、静かで明るく、午後にはよくお客さんで賑わっていた。</p>
+<p lang="ja" style=""><span style="background-color:antiquewhite">「</span>古い地図がお好きなら、一番奥の棚にまだ何枚かありますよ。</p>
+<p lang="ja" style="">ドアは開いていた。店内に入ると、<span style="background-color:antiquewhite">『</span>古書は丁寧にお取り扱いください』という文字が、まだインクの色が鮮やかに残っていた。</p>
+<p lang="ja">店を出る頃には雨は止んでいて、入り口前の石段にはうっすらと水滴が残っていた。</p>
+</div>
+
+
+<div id="test3" style="writing-mode:vertical-rl; height:20em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:70%; text-spacing-trim: trim-start; ">
+
+<p lang="ja">古代の祭礼は地域で異なる。</p>
+<p lang="ja" style=""><span style="background-color:antiquewhite">【</span>祭具】は木製が主流である</p>
+<p lang="ja" style="">儀式の形態は多様で、古式<span style="background-color:antiquewhite">『</span>型』も残る。</p>
+<p lang="ja">現在も一部で継承されている。</p>
+</div>
+</div>
+
+<div id="test3" style="writing-mode:vertical-rl; height:18em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:70%; text-spacing-trim: trim-start; ">
+
+<p lang="ja">古代祭礼の形態は地域ごとに異なっていた。</p>
+<p lang="ja" style=""><span style="background-color:antiquewhite">「</span>祭りは心の拠り所だ」と古老は語った。</p>
+<p lang="ja" style="">儀式の準備には多くの<span style="background-color:antiquewhite">『</span>古式』道具が使われた。</p>
+<p lang="ja">現在も一部地域で伝統が受け継がれている。</p>
+</div>
+
+
+<div id="test4" style="writing-mode:vertical-rl; height:11em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:70%; text-spacing-trim: space-first; ">
+
+<p lang="ja" style="margin:0;">&#x3000;古代祭礼の形態は地域ごとに異なっていた。</p>
+<p lang="ja" style="margin:0;"><span style="background-color:antiquewhite">「</span>祭りは心の拠り所だ」と古老は語った。</p>
+<p lang="ja" style="margin:0;">&#x3000;儀式の準備には多くの<span style="background-color:antiquewhite">『</span>古式』道具が使われた。</p>
+<p lang="ja" style="margin:0;">&#x3000;現在も一部地域で伝統が受け継がれている。</p>
+</div>
+
+
+<div id="test5" style="height:11em; font-size:1.4rem; font-family:'YuMincho', 'LiSong Pro'; width:26em; text-spacing-trim: space-first; text-align: justify-all;">
+
+<p lang="ja" style="margin-inline:10rem;">今回何よりお伝えしたいのは『家族旅行ハワイ<span style="background-color:antiquewhite">』</span>の行き先にハワイ島が加わったことです。</p>
+</div>-->
+
+
+
+
+
+<section id="browsers">
+<h2>浏览器版本</h2>
+<p>本文描述的是以下浏览器版本的行为。我们会随着行为变化更新本文。</p>
+<table border="0" summary="表格列出本文所描述行为对应的浏览器和引擎。">
+<tbody>
+<tr>
+<th scope="col">浏览器引擎</th>
+<th scope="col">测试的浏览器</th>
+<th scope="col">使用该引擎的浏览器</th>
+</tr>
+<tr>
+<td><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink" style="vertical-align: middle;"> Blink</td>
+<td>Chrome v146</td>
+<td>Chrome、Edge、Brave、Opera、Vivaldi等。</td>
+</tr>
+<tr>
+<td><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko" style="vertical-align: middle;"> Gecko</td>
+<td>Firefox v148</td>
+<td>Firefox、Conkeror等。</td>
+</tr>
+<tr>
+<td><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit" style="vertical-align: middle;"> WebKit</td>
+<td>Safari v26.2</td>
+<td>Safari、iOS浏览器、Yandex、UC Browser等。</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+
+
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><cite>编写网页</cite></p>
+<ul>
+<li><a href="https://w3c.github.io/i18n-drafts/techniques/authoring-html.en#textspacing">文本间距</a></li>
+</ul>
+</li>
+<li>
+<p><cite>语言支持索引</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/typography/#spacing">文本间距</a></li>
+</ul>
+</li>
+<li>
+<p><cite>CSS规范</cite></p>
+<ul>
+<li><a href="https://drafts.csswg.org/css-text-4/#letter-spacing-property">letter-spacing</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#text-autospace-property">text-autospace</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#text-spacing-trim-property">text-spacing-trim</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#text-indent-property">text-indent</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#hanging-punctuation-property">hanging-punctuation</a>
+</li>
+</ul>
+</li>
+<li>
+<p><cite>MDN</cite></p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/letter-spacing">letter-spacing</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-autospace">text-autospace</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-spacing-trim">text-spacing-trim</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>
+completePage()
+
+// add a link around results images to show bigger
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("figure.resultsImg img").forEach(img => {
+    const link = document.createElement("a");
+    link.href = img.src;
+    link.target = "_blank";
+    link.rel = "noopener";
+
+    img.parentNode.insertBefore(link, img);
+    link.appendChild(img);
+  });
+});
+
+
+</script>
+</body>
+</html>

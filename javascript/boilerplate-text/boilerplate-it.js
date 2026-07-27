@@ -61,7 +61,8 @@ s.skipNavigation = "Skip to main content"
 // items in top right beige column
 s.worldMap = "Mappa del mondo"  // title text for image, top right
 s.searchI18nSite = "Ricerca nel sito I18n" // placeholder text for search box, top right
-s.translationDisclaimer = `Questo documento è una traduzione. In caso di differenze o errori, dovrebbe essere considerato la fonte più autorevole <a href="${ f.filename }.en">l'ultimo documento originale Inglese</a>. <a href="#copyright">Il copyright originale</a> appartiene al W3C, come mostrato in basso.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `Questo documento è una traduzione. In caso di differenze o errori, dovrebbe essere considerato la fonte più autorevole <a href="${ s.englishOriginal }">l'ultimo documento originale Inglese</a>. <a href="#copyright">Il copyright originale</a> appartiene al W3C, come mostrato in basso.`  // text appears only on translated pages
 
 s.articles = "Articoli" // used in breadcrumbs, top right of page
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
@@ -124,8 +125,8 @@ s.historyOfDocumentChanges = `Per la cronologia delle modifiche apportate al doc
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Nota:</strong> Sono state apportate delle modifiche alla <a href="${ f.filename }.en">versione originale in inglese</a> dal momento in cui il presente documento é stato tradotto. Le modifiche sono state inserite nella presente pagina. Per tale ragione, potrai visualizzare alcuni passaggi in inglese fino a che non aggiornerai la traduzione.`
-s.unlinkedTranslation = `<strong>Avviso:</strong> Delle modifiche sostanziali sono state apportate alla versione originale in inglese dal momento in cui il presente documento é stato tradotto. Ti consigliamo di leggere <a href="${ f.filename }.en">la versione originale in inglese</a> fino al momento in cui la traduzione non é stata aggiornata.`
+s.untranslatedChanges = `<strong>Nota:</strong> Sono state apportate delle modifiche alla <a href="${ s.englishOriginal }">versione originale in inglese</a> dal momento in cui il presente documento é stato tradotto. Le modifiche sono state inserite nella presente pagina. Per tale ragione, potrai visualizzare alcuni passaggi in inglese fino a che non aggiornerai la traduzione.`
+s.unlinkedTranslation = `<strong>Avviso:</strong> Delle modifiche sostanziali sono state apportate alla versione originale in inglese dal momento in cui il presente documento é stato tradotto. Ti consigliamo di leggere <a href="${ s.englishOriginal }">la versione originale in inglese</a> fino al momento in cui la traduzione non é stata aggiornata.`
 s.githubRedirect = `<strong>NOTA!</strong> &nbsp; Questo é solo una bozza dell’articolo del redattore. Tutti i link e i preferiti dovrebbero rimandare a <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>versione sul sito di W3C</a>.` // used for github-based versions of published articles
 
 
