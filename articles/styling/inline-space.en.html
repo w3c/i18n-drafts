@@ -691,7 +691,19 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 <p>The <code class="kw" translate="no">text-spacing-trim</code> property has a number of possible values. Each property affects the width of punctuation marks at the start and end of a line. <a class="figref">fig_text_spacing_trim_values</a> provides an overview. Brackets that are the first character in a paragraph may or may not be preceded by indentation (set using a different property).</p>
 
-<p style="font-size: 90%; line-height: 1.4;"><em>For each value in <a class="figref">fig_text_spacing_trim_values</a>, three lines are shown containing brackets.  The first line shows whether a paragraph-initial bracket is fullwidth or halfwidth. The left side of the second line shows what an inline bracket would look like when wrapped to a new line. To the right of the second line, a halfwidth graphic indicates that a closing bracket at line end can be reduced to fit if only a halfwidth gap is available. The third line shows the expected width of a paragraph-final bracket when there is adequate space after it to show a fullwidth glyph.</em></p>
+<p>Each value of this property has an effect on:</p>
+<ul>
+<li>the width of a paragraph-initial punctuation</li>
+<li>the width of punctuation internal to a paragraph that is wrapped to the start of a line</li>
+<li>the width of punctuation alongside other punctuation marks (which is discussed <a href="#punctuation_sequences">above</a>)</li>
+<li>the width of punctuation at the end of a line</li>
+</ul>
+
+<p>Here, we focus on spacing at the beginning and end of a line.</p>
+
+<p style="font-size: 90%; line-height: 1.4;"><em>For each value in <a class="figref">fig_text_spacing_trim_values</a>, the second column contains three lines containing brackets.  The first line shows whether a paragraph-initial bracket is fullwidth or halfwidth. The left side of the second line shows what an inline bracket would look like when wrapped to a new line. To the right of the second line, a halfwidth graphic indicates that a closing bracket at line end can be reduced to fit if only a halfwidth gap is available. The third line shows the expected width of a paragraph-final bracket when there is adequate space after it to show a fullwidth glyph.</em></p>
+
+<p style="font-size: 90%; line-height: 1.4;"><em>The results in column 4 are only for opening brackets. The tests don't check whether closing brackets are reduced at line ends (generally they are not).</em></p>
 
 
 <style>
@@ -710,7 +722,35 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 ............ <img src="inline-space-data/cell_full_close.jpg"></td>
 <td>A paragraph-initial bracket is fullwidth.<br>An inline bracket that wraps to a line start is fullwidth.<br>A closing bracket at line end can be reduced to fit. <br>
 A closing bracket at the end of a paragraph with space available is fullwidth.</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">normal</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
 </tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>More tests</summary>
+<div class="testData">
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E「%3C%2Fspan%3E今回何よりお伝えしたいのは%3Cspan%3E『%3C%2Fspan%3E家族旅行ハワイ』の行き先にハワイ島が加わったことです%E3%80%82%3Cspan%3E」%3C%2Fspan%3E%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Anormal%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=313&a=text-spacing-trim%3Anormal%20keeps%20leading%20space%20for%20opening%20brackets%20at%20the%20start%20of%20a%20line%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20opening%20brackets%20and%20their%20coloured%20background%20are%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:normal</code> keeps leading space for opening brackets at the start of a line on macOS.</a></p>
+
+<p><span class="leadin">Results:</span> Passes for Blink, Gecko and WebKit browsers, however this is the default spacing for these browsers.</p>
+</div>
+</details>
+</aside>
+</td>
+</tr>
+
+
 <tr><td>trim-both</td>
 <td><img src="inline-space-data/cell_half_open.jpg"> .......................................................<br>
 <img src="inline-space-data/cell_half_open.jpg"> ............................................... <img src="inline-space-data/cell_half_close.jpg"><br>
@@ -718,7 +758,35 @@ A closing bracket at the end of a paragraph with space available is fullwidth.</
 <td>A paragraph-initial bracket is halfwidth.<br>
 An inline bracket that wraps to a line start is halfwidth.<br>
 A closing bracket at line end  is always halfwidth.</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">trim-both</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
 </tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>More tests</summary>
+<div class="testData">
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-both%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-both%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-both</code> trims leading space from opening brackets at the start of a paragraph on macOS.</a></p>
+
+<p><span class="leadin">Results:</span> Fails for Blink, Gecko and WebKit browsers.</p>
+</div>
+</details>
+</aside>
+</td>
+</tr>
+
+
 <tr><td>trim-start</td>
 <td><img src="inline-space-data/cell_half_open.jpg"> ......................................................<br>
 <img src="inline-space-data/cell_half_open.jpg"> ................................ <img src="inline-space-data/cell_full_close.jpg"> or <img src="inline-space-data/cell_half_close.jpg"><br>
@@ -726,7 +794,36 @@ A closing bracket at line end  is always halfwidth.</td>
 <td>A paragraph-initial bracket is halfwidth.<br>An inline bracket that wraps to a line start is halfwidth.<br>
 A closing bracket at line end can be reduced to fit.<br>
 A closing bracket at the end of a paragraph with space available is fullwidth.</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">trim-start</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
 </tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>More tests</summary>
+<div class="testData">
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-start</code> trims leading space from opening brackets at the start of a paragraph on macOS.</a></p>
+
+<p><span class="leadin">Results:</span> Works for Blink browsers, but not for Gecko or WebKit.</p>
+</div>
+</details>
+</aside>
+
+</td>
+</tr>
+
+
 <tr><td>space-first</td>
 <td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
 <img src="inline-space-data/cell_half_open.jpg"> ................................. <img src="inline-space-data/cell_full_close.jpg"> or <img src="inline-space-data/cell_half_close.jpg"><br>
@@ -734,7 +831,26 @@ A closing bracket at the end of a paragraph with space available is fullwidth.</
 <td>A paragraph-initial bracket is fullwidth.<br>An inline bracket that wraps to a line start is halfwidth.<br>
 A closing bracket at line end can be reduced to fit.<br>
 A closing bracket at the end of a paragraph with space available is fullwidth.</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">space-first</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
 </tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+</aside>
+</td>
+</tr>
+
+
 <tr><td>trim-all</td>
 <td><img src="inline-space-data/cell_half_open.jpg"> .........................................................<br>
 <img src="inline-space-data/cell_half_open.jpg"> ............................................. <img src="inline-space-data/cell_half_close.jpg"><br>
@@ -743,6 +859,32 @@ A closing bracket at the end of a paragraph with space available is fullwidth.</
 An inline bracket that wraps to a line start is halfwidth.<br>
 A closing bracket at line end  is always halfwidth.<br>
 This produces halfwidth glyphs for punctuation (including middle dots) <strong>wherever</strong> they occur, not just at line start/end.</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">trim-all</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>More tests</summary>
+<div class="testData">
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-all%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=313&a=text-spacing-trim%3Atrim-all%20trims%20leading%20space%20for%20opening%20brackets%20at%20the%20start%20of%20a%20line%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20opening%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-all</code> trims leading space from opening brackets at the start of a paragraph on macOS.</a></p>
+
+<p><span class="leadin">Results:</span> Fails for Blink, Gecko and WebKit browsers.</p>
+</div>
+</details>
+</aside>
+</td>
 </tr>
 <tr><td>space-all</td>
 <td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
@@ -752,6 +894,32 @@ This produces halfwidth glyphs for punctuation (including middle dots) <strong>w
 An inline bracket that wraps to a line start is fullwidth.<br>
 A closing bracket at line end is always fullwidth.<br>
 This produces fullwidth glyphs for punctuation <strong>wherever</strong> they occur, not just at line start/end.</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">space-all</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>More tests</summary>
+<div class="testData">
+<p><span class="leadin">Assertion:</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Aspace-all%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=313&a=text-spacing-trim%3Atrim-all%20keeps%20leading%20space%20for%20opening%20brackets%20at%20the%20start%20of%20a%20line%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20opening%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:space-all</code> keeps leading space for opening brackets at the start of a line on macOS.</a></p>
+
+<p><span class="leadin">Results:</span> Passes for Blink, Gecko and WebKit browsers, however this is the default spacing for these browsers.</p>
+</div>
+</details>
+</aside>
+</td>
 </tr>
 </tbody>
 </table>
