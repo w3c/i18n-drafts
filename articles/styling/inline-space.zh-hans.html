@@ -20,7 +20,7 @@ f.status = 'published';  // should be one of draft, review, published, notreview
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2026-05-18', time:'10:57' } // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-08-07', time:'00:35' } // date and time of latest edits to this document/translation
 f.contributors = '本文的初始文本取自<a href="https://r12a.github.io/scripts/jpan/ja.html#letterspace">Japanese (Kanji, Hiragana, Katakana, & Latin) Orthography Notes</a>和<a href="https://r12a.github.io/scripts/hani/zh.html#letterspace">Han (Chinese) Orthography Notes</a>的Text spacing部分。“要点”部分的初稿为AI生成，并进行了进一步扩展。'; // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -689,7 +689,19 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 
 <p><code class="kw" translate="no">text-spacing-trim</code>属性有多个可能的取值。每个取值都会影响行首和行尾标点符号的宽度。<a class="figref">fig_text_spacing_trim_values</a>提供了概览。作为段落第一个字符的括号前面可以有缩进，也可以没有缩进（缩进由另一个属性设置）。</p>
 
-<p style="font-size: 90%; line-height: 1.4;">对于<a class="figref">fig_text_spacing_trim_values</a>中的每个取值，图中都显示了三行包含括号的内容。第一行显示段首括号是全角还是半角。第二行左侧显示行内括号换到新行时的样子。第二行右侧的半角图形表示，当行尾只有半角间隙可用时，闭括号可以缩小以适配。第三行显示段末括号在其后有足够空间显示全角字形时的预期宽度。</p>
+<p>这个属性的每个取值都会影响：</p>
+<ul>
+<li>段首标点的宽度</li>
+<li>段落内换到行首的标点的宽度</li>
+<li>与其他标点相邻的标点宽度（上文<a href="#punctuation_sequences">已有讨论</a>）</li>
+<li>行尾标点的宽度</li>
+</ul>
+
+<p>这里，我们重点讨论行首和行尾的空白。</p>
+
+<p style="font-size: 90%; line-height: 1.4;"><em>对于<a class="figref">fig_text_spacing_trim_values</a>中的每个取值，第二列包含三行含有括号的内容。第一行显示段首括号是全角还是半角。第二行的左侧显示行内括号换到新行时的样子。第二行右侧的半角图形表示当行尾只有半角间隙可用时，闭括号可以缩小以适配。第三行显示段末括号在其后有足够空间显示全角字形时的预期宽度。</em></p>
+
+<p style="font-size: 90%; line-height: 1.4;"><em>第四列的结果仅针对开始夹注符号。这些测试不检查行尾的结束括号是否被缩小（通常不会缩小）。</em></p>
 
 
 <style>
@@ -708,6 +720,32 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 ............ <img src="inline-space-data/cell_full_close.jpg"></td>
 <td>段首括号为全角。<br>换到行首的行内括号为全角。<br>行尾闭括号可以缩小以适配。<br>
 段末闭括号在有可用空间时为全角。</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">normal</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>测试</summary>
+<div class="testData">
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E「%3C%2Fspan%3E今回何よりお伝えしたいのは%3Cspan%3E『%3C%2Fspan%3E家族旅行ハワイ』の行き先にハワイ島が加わったことです%E3%80%82%3Cspan%3E」%3C%2Fspan%3E%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Anormal%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=313&a=text-spacing-trim%3Anormal%20keeps%20leading%20space%20for%20opening%20brackets%20at%20the%20start%20of%20a%20line%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20opening%20brackets%20and%20their%20coloured%20background%20are%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:normal</code>在macOS上会保留行首开始夹注符号的前导空白。</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink、Gecko和WebKit浏览器中通过，不过这也是这些浏览器的默认间距行为。</p>
+</div>
+</details>
+</aside>
+</td>
 </tr>
 <tr><td>trim-both</td>
 <td><img src="inline-space-data/cell_half_open.jpg"> .......................................................<br>
@@ -716,6 +754,32 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 <td>段首括号为半角。<br>
 换到行首的行内括号为半角。<br>
 行尾闭括号始终为半角。</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">trim-both</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>测试</summary>
+<div class="testData">
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-both%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-both%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-both</code>在macOS上会裁掉段首开始夹注符号的前导空白。</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink、Gecko和WebKit浏览器中未通过。</p>
+</div>
+</details>
+</aside>
+</td>
 </tr>
 <tr><td>trim-start</td>
 <td><img src="inline-space-data/cell_half_open.jpg"> ......................................................<br>
@@ -724,6 +788,33 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 <td>段首括号为半角。<br>换到行首的行内括号为半角。<br>
 行尾闭括号可以缩小以适配。<br>
 段末闭括号在有可用空间时为全角。</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">trim-start</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>测试</summary>
+<div class="testData">
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%E3%80%8D%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-start%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=215&a=text-spacing-trim%3Atrim-start%20trims%20leading%20space%20from%20opening%20brackets%20at%20the%20start%20of%20a%20paragraph%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-start</code>在macOS上会裁掉段首开始夹注符号的前导空白。</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink浏览器中有效，但在Gecko或WebKit浏览器中无效。</p>
+</div>
+</details>
+</aside>
+
+</td>
 </tr>
 <tr><td>space-first</td>
 <td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
@@ -732,6 +823,23 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 <td>段首括号为全角。<br>换到行首的行内括号为半角。<br>
 行尾闭括号可以缩小以适配。<br>
 段末闭括号在有可用空间时为全角。</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">space-first</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+</aside>
+</td>
 </tr>
 <tr><td>trim-all</td>
 <td><img src="inline-space-data/cell_half_open.jpg"> .........................................................<br>
@@ -741,6 +849,32 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 换到行首的行内括号为半角。<br>
 行尾闭括号始终为半角。<br>
 这会让标点（包括间隔号）在<strong>任何</strong>出现位置都使用半角字形，而不只是行首/行尾。</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">trim-all</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>测试</summary>
+<div class="testData">
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Atrim-all%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=313&a=text-spacing-trim%3Atrim-all%20trims%20leading%20space%20for%20opening%20brackets%20at%20the%20start%20of%20a%20line%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20opening%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:trim-all</code>在macOS上会裁掉段首开始夹注符号的前导空白。</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink、Gecko和WebKit浏览器中未通过。</p>
+</div>
+</details>
+</aside>
+</td>
 </tr>
 <tr><td>space-all</td>
 <td><img src="inline-space-data/cell_full_open.jpg"> ...................................................<br>
@@ -750,6 +884,32 @@ hanging-punctuation: none | [ first || [ force-end | allow-end ] || last ]</code
 换到行首的行内括号为全角。<br>
 行尾闭括号始终为全角。<br>
 这会让标点在<strong>任何</strong>出现位置都使用全角字形，而不只是行首/行尾。</td>
+<td>
+<aside class="floatedImplnote">
+<p class="feature">space-all</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+
+
+<details class="moreTests"><summary>测试</summary>
+<div class="testData">
+<p><span class="leadin">断言：</span> <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%3E%3Cspan%3E%E3%80%8C%3C%2Fspan%3E%E4%BB%8A%E5%9B%9E%E4%BD%95%E3%82%88%E3%82%8A%E3%81%8A%E4%BC%9D%E3%81%88%E3%81%97%E3%81%9F%E3%81%84%E3%81%AE%E3%81%AF%3Cspan%3E%E3%80%8E%3C%2Fspan%3E%E5%AE%B6%E6%97%8F%E6%97%85%E8%A1%8C%E3%83%8F%E3%83%AF%E3%82%A4%E3%80%8F%E3%81%AE%E8%A1%8C%E3%81%8D%E5%85%88%E3%81%AB%E3%83%8F%E3%83%AF%E3%82%A4%E5%B3%B6%E3%81%8C%E5%8A%A0%E3%82%8F%E3%81%A3%E3%81%9F%E3%81%93%E3%81%A8%E3%81%A7%E3%81%99%E3%80%82%3Cspan%3E%E3%80%8D%3C%2Fspan%3E%3C%2Fp%3E%0A&css=.test%20span%20%7B%20background-color%3A%20antiquewhite%3B%20%7D%0A.test%20p%20%7B%20text-spacing-trim%3Aspace-all%3B%20font-family%3AYuMincho%3B%20%7D&lang=ja&fontSize=36&width=540&height=313&a=text-spacing-trim%3Atrim-all%20keeps%20leading%20space%20for%20opening%20brackets%20at%20the%20start%20of%20a%20line%20on%20macOS.&i=Run%20this%20test%20on%20macOS.%20The%20specified%20font%20should%20support%20this%20behaviour.%20Adjust%20the%20width%20of%20the%20box%20below%20so%20that%20both%20brackets%20appear%20at%20the%20start%20of%20a%20line.%20Test%20passes%20if%20both%20opening%20brackets%20and%20their%20coloured%20background%20are%20half%20an%20em%20in%20width%20and%20touch%20the%20side%20of%20the%20box." target="_blank"><code class="kw" translate="no">text-spacing-trim:space-all</code>在macOS上会保留行首开始夹注符号的前导空白。</a></p>
+
+<p><span class="leadin">结果：</span> 在Blink、Gecko和WebKit浏览器中通过，不过这也是这些浏览器的默认间距行为。</p>
+</div>
+</details>
+</aside>
+</td>
 </tr>
 </tbody>
 </table>
