@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Time &amp; date: Essential concepts</title>
-<meta name="description" content="What is a 'floating time' and how do I handle floating times in my Web application?">
+<meta name="description" content="An introduction to the basic concepts of time and date on the Web.">
 <script>
 var f = { }
 
@@ -65,7 +65,7 @@ f.additionalLinks = ''
   <section id="utc">
   <h2>UTC</h2>
   <p><dfn id="def_utc">UTC</dfn> is also known as GMT (Greenwich Mean Time). There are some subtle differences between the two, but none that  the average person would notice.</p>
-  <p>Universal Coordinated Time (UTC) is the basis for modern timekeeping. Among other things, it provides a common baseline for converting between <a href="#incremental_time" class="termref">incremental</a> and <a href="#local_time" class="termref">local</a> time. </p>
+  <p>Coordinated Universal Time (UTC) is the basis for modern timekeeping. Among other things, it provides a common baseline for converting between <a href="#incremental_time" class="termref">incremental</a> and <a href="#local_time" class="termref">local</a> time. </p>
   <p>The time zone offset for UTC is 0. UTC is often indicated in <a href="#field_based_time" class="termref">field-based formats</a> using <code class="kw" translate="no">Z</code>.</p>
   </section>
   
@@ -95,7 +95,7 @@ f.additionalLinks = ''
   <p class="info">The use of the word <span class="qterm">local</span> in HTML doesn't refer to wall time  – instead a time described as <code class="kw" translate="no">datetime-local</code> is really a <a href="#floating_time" class="termref">floating time</a>.</p>
   </aside></div>
   <div class="sidenoteGroup">
-  <p>So, for example, while writing the previous section I may have glanced at the time displayed by my computer and seen <samp>Sat 11 Jun 06:10</samp>. If I apply knowledge about how that time relates to <a href="utc" class="termref">UTC</a> (in my case, adjusting by one hour to account for British Summer Time) I can convert that to the incremental time <samp>1465621816590</samp>.</p>
+  <p>So, for example, while writing the previous section I may have glanced at the time displayed by my computer and seen <samp>Sat 11 Jun 06:10</samp>. If I apply knowledge about how that time relates to <a href="#utc" class="termref">UTC</a> (in my case, adjusting by one hour to account for British Summer Time) I can convert that to the incremental time <samp>1465621816590</samp>.</p>
   <p>It's also possible to convert that to a wall time in another location, such as San Francisco, where someone  looking at their computer's time display at the same time would have seen <samp>Fri 10 Jun 22:10</samp>.</p>
   <aside class="sideinfonote">
   <p class="info">The term <dfn id="def_observed_time">observed time</dfn> refers to a different method of ascertaining the time that relies on physical observation of things such as the sun, moon or stars, and is not really used these days. Observed time of noon is when the sun is at its highest point in the sky. The actual moment in time of noon indicated in this way will vary for people only a few miles apart.</p>
@@ -105,7 +105,7 @@ f.additionalLinks = ''
   
   <section id="floating_time">
   <h2>Floating time</h2>
-  <p>Some  time values are not mapped to a specific moment in <a href="incremental_time" class="termref">incremental time</a>. Instead, they represent a nominal time which is described in the same way in all time zones around the world.</p>
+  <p>Some  time values are not mapped to a specific moment in <a href="#incremental_time" class="termref">incremental time</a>. Instead, they represent a nominal time which is described in the same way in all time zones around the world.</p>
   <p>For example, Saturday 11 June 2016 happens to be the date of the British Queen's official 90th birthday. The specific time when 11th June starts or ends in Britain may actually be on Friday or Sunday in other countries, because their clocks are set differently, but the date of the event is always referred to as Saturday 11 June.  </p>
   <p>We refer to these sorts of time values as <dfn id="def_floating_time">floating times</dfn> because they are not fixed to a specific <a href="#incremental_time" class="termref">incremental time</a> value. When you apply time zone information to floating times  they produce <em>a range of acceptable incremental time values</em>.</p>
   <p>Floating times are not attached and should never be attached to a particular time zone. </p>
@@ -122,7 +122,7 @@ f.additionalLinks = ''
   
 <section id="zone_offset">
   <h2> Zone offset</h2>
-  <p>A <dfn id="def_zone_offset"> zone offset</dfn> is an amount that is added to or subtracted from <a href="utc" class="termref">UTC</a> based on the location of the event around the world relative to the prime meridian. Usually offsets are at one-hour intervals, but offsets can also include other differences, such as 30 or 45 minutes.</p>
+  <p>A <dfn id="def_zone_offset"> zone offset</dfn> is an amount that is added to or subtracted from <a href="#utc" class="termref">UTC</a> based on the location of the event around the world relative to the prime meridian. Usually offsets are at one-hour intervals, but offsets can also include other differences, such as 30 or 45 minutes.</p>
   <p>A common way to express a zone offset in field-based formats is with +/- followed by the offset. So for example, Japan is 9 hours ahead of UTC, so you may see a time written as <samp>2016-06-11 05:10+09:00</samp>.</p>
   <p>Note, importantly, that the zone offset does not help you convert times to wall time where <a href="#dst" class="termref">daylight savings time</a> is in force.</p>
   </section>
@@ -139,7 +139,7 @@ f.additionalLinks = ''
   
   <section id="time_zone_ids">
   <h2>Time Zone Identifiers</h2>
-  <p><dfn id="def_time_zone_id">Time zone identifiers</dfn> allow you to refer to a particular difference from <a href="utc" class="termref">UTC</a> that includes both <a href="#zone_offset" class="termref"> zone offsets</a> and <a href="#dst" class="termref">daylight savings time</a>.</p>
+  <p><dfn id="def_time_zone_id">Time zone identifiers</dfn> allow you to refer to a particular difference from <a href="#utc" class="termref">UTC</a> that includes both <a href="#zone_offset" class="termref"> zone offsets</a> and <a href="#dst" class="termref">daylight savings time</a>.</p>
   <p>The most definitive reference for identifying sets of time zone rules is the <a href="https://www.iana.org/time-zones">TZ database</a> (also known as the Olson time zone database), which is used by systems such as various commercial UNIX operating systems, Linux, Java, CLDR, ICU, and many other systems and libraries. Other systems exist: for example, Microsoft Windows uses its own data set and identifiers.</p>
   <p>In the TZ database, time zones are given IDs that typically consist of a region and exemplar city. An exemplar city is a city in the time zone in question that should be well-known to people using the time zone. For example, the U.S. Pacific time zone has a TZ database ID of <code class="kw" translate="no">America/Los_Angeles</code>. The TZ database also supplies aliases for many IDs; for example, <code class="kw" translate="no">Asia/Ulan Bator</code> is equivalent to <code class="kw" translate="no">Asia/Ulaanbaatar</code>.</p>
   <p>The Common Locale Data Repository (CLDR) can be used to provide a localized form for the IDs. Note that some systems, such as Apple's Mac OS, provide additional exemplar cities.</p>
@@ -151,7 +151,7 @@ f.additionalLinks = ''
   <p>The <dfn id="def_gregorian_calendar">Gregorian calendar</dfn> is the most widely used way of representing civil time. It is a solar calendar, with years usually consisting of 365 days, plus the concept of a "leap year". This adds an additional day every 4 years, except when the year is evenly divisible by 100 (unless the year is also evenly divisible by 400).</p>
 
   <p>There are numerous other calendars in use around the world, some of which are lunar calendars, some that are based on a different start date than the Gregorian calendar, and some that are reset each time a prominent person dies. Often these calendars are still used for religious purposes, but sometimes you will also find them being used in newspapers and emails, or for birth dates.</p>
-  <p>There are technologies, such as ICU or Dojo, that support conversion between different calendaring systems.</p>
+  <p>There are technologies, such as ICU or the JavaScript <code class="kw" translate="no">Intl.DateTimeFormat</code> API, that support conversion between different calendaring systems.</p>
   
   </section>
   
@@ -161,24 +161,24 @@ f.additionalLinks = ''
   <p>The following show examples of field-based times for terms used in the HTML5 spec, as a handy reference.</p>
   
   <dl>
-  <dt>global date and time</dt>
+  <dt><a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#global-dates-and-times">global date and time</a></dt>
   <dd>An 8-digit date, either T or space, a 4-9 digit time (required), a time-zone offset (required) that is Z or +/-2 digits, with optional seconds</dd>
   <dd>2016-05-25T21:19:47.123+08</dd>
   <dd>2016-05-25 21:19:47-08</dd>
   <dd>2016-05-25 21:19:47Z</dd>
   <dd>2016-05-25 21:19:00.123+23:45</dd>
 
-  <dt>normalized global date and time</dt>
+  <dt><a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#global-dates-and-times">normalized global date and time</a></dt>
   <dd>Same as above, except that T is required, 00 is omitted in the seconds field, and the time-zone offset can only be Z.</dd>
   <dd>2016-05-25T21:19:47.123Z</dd>
   <dd>2016-05-25T21:19Z</dd>
   
-  <dt>floating date and time</dt>
+  <dt><a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#local-dates-and-times">local date and time</a></dt>
   <dd>Same as global date and time, but no time-zone offset information</dd>
   <dd>2016-05-25T21:19:47.123</dd>
   <dd>2016-05-25 21:19:00</dd>
   
-  <dt>normalized floating date and time</dt>
+  <dt><a href="https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-normalised-local-date-and-time-string">normalized floating date and time</a></dt>
   <dd>Same as above, except that T is required, and 00 is omitted in the seconds field.</dd>
   <dd>2016-05-25T21:19:47.123</dd>
   <dd>2016-05-25T21</dd>
