@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" >
+<title>Managing inline spaces in Chinese &amp; Japanese</title>
+<meta name="description" content="How to work with text spacing in Chinese &amp; Japanese." >
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/styling'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'inline-space'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-inline-space'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-05-14'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-05-14', time:'12:29'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-05-18', time:'13:40' } // date and time of latest edits to this document/translation
+f.contributors = 'The initial text for this article is taken from the <cite>Text spacing</cite> section of <a href="https://r12a.github.io/scripts/jpan/ja.html#letterspace">Japanese (Kanji, Hiragana, Katakana, & Latin) Orthography Notes</a> and <a href="https://r12a.github.io/scripts/hani/zh.html#letterspace">Han (Chinese) Orthography Notes</a>. An AI summary was created, then developed further for the Key Takeaways section.'; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'styling';
+
+f.additionalLinks = ''
+</script>
+<script src="inline-space-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"></script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" >
+<link rel="copyright" href="#copyright">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+<link rel="stylesheet" href="inline-space-data/local.css">
+</head>
+
+
+
+
+
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Chinese, Japanese, &amp; Korean quotation marks</h1>
+</header>
+
+
+<section>
+<div id="audience">
+<p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+<b class="highlight">Content authors</b>
+</p>
+
+<div id="updateInfo"></div>
+<script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+
+
+
+<p>Chinese, Japanese, and Korean use a variety of symbols to demarcate quotations.  This article looks at which Unicode code points are used for horizontal and vertical text in those languages.</p>
+</section>
+
+
+
+
+
+<section id="takeaways">
+<h2>Key takeaways</h2>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">✅</bdi> Reliable</p>
+<p class="summary">Fully interoperable.</p>
+</aside>
+
+<p><span class="leadin">Simplified Chinese.</span> Horizontal text uses either <span lang="zh-hans">“</span>...<span lang="zh-hans">”</span> or <span lang="zh-hans">『</span>...<span lang="zh-hans">』</span> as primary quotation marks. Vertical text uses <span lang="zh-hans">『</span>...<span lang="zh-hans">』</span>. All punctuation is fullwidth. Some fonts automatically convert comma-style quotation marks to brackets in vertical text.</p>
+
+
+<p><span class="leadin">Traditional Chinese.</span> Horizontal and vertical text uses <span lang="zh-hans">『</span>...<span lang="zh-hans">』</span> as primary quotation marks. All punctuation is fullwidth.</p>
+
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">❌</bdi> Unreliable</p>
+<p class="summary">No automatic support; styled behaviour inconsistent.</p>
+</aside>
+
+<p><span class="leadin">Spacing around alphabetic or numeric phrases.</span> Browsers do not automatically insert the small gaps expected in Chinese/Japanese typography when Latin letters or numbers appear inside text. Attempts to style these gaps produce inconsistent results: Blink and Gecko behave differently, and WebKit only inserts a gap on one side. The “replace” behaviour (uniform spacing even when spaces exist) is not implemented, and currently breaks other behaviour when specified.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> Blink‑only</p>
+<p class="summary">No support in Gecko/WebKit.</p>
+</aside>
+
+<p><span class="leadin">Collapsing space in runs of punctuation.</span> Blink browsers collapse excessive spacing between adjacent punctuation marks by default. Gecko and WebKit do not collapse these gaps, and styled collapsing is only effective in Blink.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> Blink‑only &amp; font‑dependent</p>
+<p class="summary">Not supported in Gecko/&#x200B;WebKit.</p>
+</aside>
+
+<p><span class="leadin">Collapsing line‑initial space.</span> Blink reduces leading space for opening punctuation at the start of a line or paragraph, but results depend on the font. Gecko and WebKit do not reduce this space.</p>
+
+
+<aside class="floatedImplnote">
+<p class="availability"><bdi class="icon">⚠️</bdi> Mostly Blink‑only</p>
+<p class="summary">Not interoperable.</p>
+</aside>
+
+<p><span class="leadin">Collapsing line‑final space.</span> Blink reduces trailing space for closing punctuation at the end of a line, helping it fit without wrapping. Gecko and WebKit do not implement this behaviour.</p>
+</section>
+
+
+
+
+
+<section id="letter_spacing">
+<h2>Scope &amp; definitions</h2>
+
+
+<p>The quotation marks described here cover only the most commonly used punctuation for basic quotations (and quotations embedded within another quotation).  Other characters or typographic approaches may be used for citations of book titles, proper names, etc., and those are not covered in the scope of this article. Sometimes, particularly in dialogues, quoted text doesn't use pairs of characters — such conventions are not covered here.</p>
+
+<p>Often, different code points are used for horizontal and vertical text, but sometimes the alternative glyphs are produced using font-based rules, rather than different code points. Typically, when the same code points are used for horizontal and vertical text, font rules are used to rotate and sometimes shift glyphs within the character cell. It is also common for different punctuation marks to be used for quotes that are embedded within a quote.</p>
+
+<p>In most cases, comma-like quotes or brackets are used. However, different fonts may use slightly different glyphs for the comma-like quotes: some may be curly, others more wedge-shaped. In addition, Japanese uses glyphs that look like primes.</p>
+
+<p>Various aspects need investigation.</p>
+<ol>
+<li>What symbols are used for horizontal vs vertically-set text.</li>
+<li>How those symbols are aligned with the character box.</li>
+<li>Whether the symbols are fullwidth or proportionally-spaced (or halfwidth).</li>
+</ol>
+
+<p>In the figures below, horizontal quotation marks are displayed in one table, and vertical ones in a second table. Each figure shows <strong>primary</strong> and <strong>secondary</strong> quotation marks — the secondary quotations marks are those used inside a higher level quotation. In some cases, authors can choose between alternate quotation marks, and these are shown as separate rows in the table. Delimiters are indicated for the start and end of a quotation.</p>
+
+<p>A list of the relevant Unicode code points is given in the right margin.</p>
+</section>
+
+
+
+
+<style>
+/*#scv, #tcv { writing-mode:vertical-rl; }
+#sc td, #scv td { border: 0; }
+#sc thead th, #scv thead th { text-align: center; }*/
+.vtables { writing-mode:vertical-rl; }
+.htables td, .vtables td { border: 0; }
+.htables thead th, .vtables thead th { text-align: center; line-height: 1.2; }
+
+.chimg { height: 4em; }
+
+.quotation_tables { display: flex; flex-direction: row; }
+
+.floatedImplnote li { list-style-type: none; }
+
+.codepoint bdi { font-size: 2em; }
+li:has(.codepoint) { margin-block-end: 1em; }
+
+</style>
+
+
+
+
+
+
+
+<section id="schinese">
+<h2>Simplified Chinese</h2>
+
+<p>Authors of Simplified Chinese texts may use either comma-like quote marks or brackets for horizontal text. However, vertical text (which is rare) uses only brackets.</p>
+
+
+<aside class="floatedImplnote">
+<p><span class="leadin">Unicode code points:</span></p>
+
+<ul>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hans">&#x201C;</bdi>
+<code class="uname">U+201C: LEFT DOUBLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hans">&#x201D;</bdi>
+<code class="uname">U+201D: RIGHT DOUBLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hans">&#x2018;</bdi>
+<code class="uname">U+2018: LEFT SINGLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hans">&#x2019;</bdi>
+<code class="uname">U+2019: RIGHT SINGLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hans">&#x300E;</bdi>
+<code class="uname">U+300E: LEFT WHITE CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hans">&#x300F;</bdi>
+<code class="uname">U+300F: RIGHT WHITE CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hans">&#x300C;</bdi>
+<code class="uname">U+300C: LEFT CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hans">&#x300D;</bdi>
+<code class="uname">U+300D: RIGHT CORNER BRACKET</code></span></li>
+</ul>
+</aside>
+
+
+
+<figure id="sc_table" class="quotation_tables">
+<table id="sc" class="htables">
+<thead>
+<tr><th colspan="2">primary</th><th colspan="2">secondary</th></tr>
+<tr><th>start</th><th>end</th><th>start</th><th>end</th></tr>
+</thead>
+
+<tbody>
+<tr>
+<td><img src="cjk-quotes-data/201c.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/201d.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/2018.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/2019.jpg" alt="”" class="chimg"></td>
+</tr>
+<tr>
+<td><img src="cjk-quotes-data/300e.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300f.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/300c.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300d.jpg" alt="”" class="chimg"></td>
+</tr>
+</tbody>
+</table>
+
+<p style="width: 5em;">&nbsp;</p>
+
+<table id="scv" class="vtables">
+<thead>
+<tr><th colspan="2">primary</th><th colspan="2">secondary</th></tr>
+<tr><th>start</th><th>end</th><th>start</th><th>end</th></tr>
+</thead>
+
+<tbody>
+<tr>
+<td><img src="cjk-quotes-data/300ev.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300fv.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/300cv.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300dv.jpg" alt="”" class="chimg"></td>
+</tr>
+</tbody>
+</table>
+</figure>
+
+
+
+<p><span class="leadin">Width.</span> All punctuation used for quotations is normally rendered fullwidth. This includes the glyphs for comma-like quotes. Although they are rendered as proportionally-spaced glyphs in most languages. No special, fullwidth code points are reserved for these comma-like quotes.</p>
+<p><span class="leadin">Width.</span> All punctuation used for quotations is normally rendered fullwidth. This includes the glyphs for comma-like quotes. No special, fullwidth code points are reserved for the comma-like quotes; although they are rendered as proportionally-spaced glyphs in most languages, the Chinese fonts will usually render them as fullwidth. </p>
+
+<p>Comma-like quotes and brackets may become halfwidth if they occur alongside certain other punctuation, or at line start/end. For details, see <a href="https://www.w3.org/International/articles/styling/inline-space">Managing inline spaces in Chinese &amp; Japanese</a>.</p>
+
+
+<p><span class="leadin">Rotation.</span> Bracket glyphs are simply rotated in vertical text, but the code points used should remain the same. The Unicode Standard has a number of vertical presentation forms for the brackets, in the range <a href="https://r12a.github.io/uniview/?range=FE41:FE44" target="_blank">FE41..FE44</a>, but these should not be used; presentation forms are only for round trip conversions of legacy data.</p>
+
+
+<p><span class="leadin">Horizontal vs vertical conversion.</span> The fact that comma-like quotes are not used in vertical text may give rise to a mismatch between expected shapes if text is restyled from horizontal to vertical, or vice versa. One way to manage this is to change the code points while converting between horizontal comma-like quotes and vertical brackets.  Another is to use a font that automatically chooses an appropriate shape in addition to rotating the glyph — in which case, comma-like quote <em>code points</em> would be used throughout, but the font would apply the expected glyph during rendering.</p>
+
+<p><a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E2%80%9C%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%E2%80%9D&fonts=Noto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC%2CPingFang%20SC%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CSTHeiti%2CYuanti%20SC%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3Bwriting-mode%3Avertical-rl%3B&lang=zh" target="_blank" style="font-size: 120%;">This test</a> checks whether glyph shapes are changed automatically for system and Noto fonts on macOS. Of the 23 fonts tested, only the following automatically substitute brackets for comma-like quotes: Noto Sans CJK SC, Noto Serif CJK SC, SimSong, Noto Sans CJK SC, Lantinghei SC.</p>
+
+<p><a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E2%80%9C%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%E2%80%9D&fonts=Noto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC%2CPingFang%20SC%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CSTHeiti%2CYuanti%20SC%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3Bwriting-mode%3Avertical-rl%3B&lang=zh" target="_blank" style="font-size: 120%;">This test</a> checks whether glyph shapes are changed automatically for system and Noto fonts on Windows. Of the 9 fonts tested, only the following automatically substitute brackets for comma-like quotes: NSimSun, SimSun.</p>
+</section>
+
+
+
+
+
+
+
+
+
+<section id="tchinese">
+<h2>Traditional Chinese</h2>
+
+<p>Traditional Chinese texts, such as those used in Taiwan, normally use only brackets for horizontal and vertical text (which is more common than in Mainland China).  However, the type of bracket used for primary and secondary quotations are the opposite to those used for Simplified Chinese.</p>
+
+
+<aside class="floatedImplnote">
+<p>Unicode code points:</p>
+
+<ul>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hant">&#x300C;</bdi>
+<code class="uname">U+300C: LEFT CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hant">&#x300D;</bdi>
+<code class="uname">U+300D: RIGHT CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hant">&#x300E;</bdi>
+<code class="uname">U+300E: LEFT WHITE CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="zh-hant">&#x300F;</bdi>
+<code class="uname">U+300F: RIGHT WHITE CORNER BRACKET</code></span></li>
+</ul>
+</aside>
+
+
+
+<figure id="tc_table" class="quotation_tables">
+<table id="tc" class="htables">
+<thead>
+<tr><th colspan="2">primary</th><th colspan="2">secondary</th></tr>
+<tr><th>start</th><th>end</th><th>start</th><th>end</th></tr>
+</thead>
+
+<tbody>
+<tr>
+<td><img src="cjk-quotes-data/300c.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300d.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/300e.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300f.jpg" alt="”" class="chimg"></td>
+</tr>
+</tbody>
+</table>
+
+<p style="width: 5em;">&nbsp;</p>
+
+<table id="tcv" class="vtables">
+<thead>
+<tr><th colspan="2">primary</th><th colspan="2">secondary</th></tr>
+<tr><th>start</th><th>end</th><th>start</th><th>end</th></tr>
+</thead>
+
+<tbody>
+<tr>
+<td><img src="cjk-quotes-data/300cv.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300dv.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/300ev.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300fv.jpg" alt="”" class="chimg"></td>
+</tr>
+</tbody>
+</table>
+</figure>
+
+
+<p>Occasionally, Traditional Chinese text may use double brackets for the default, and single for the embedded. It may also use quotation marks, like Mainland China, but not commonly, and much less so for vertical text.</p>
+
+
+<p><span class="leadin">Width.</span> All quotation punctuation is normally rendered fullwidth.</p>
+
+<p>Comma-like quotes and brackets may become halfwidth if they occur alongside certain other punctuation, or at line start/end. For details, see <a href="https://www.w3.org/International/articles/styling/inline-space">Managing inline spaces in Chinese &amp; Japanese</a>.</p>
+
+
+<p><span class="leadin">Rotation.</span> Bracket glyphs are simply rotated in vertical text, but the code points used should remain the same. The Unicode Standard has a number of vertical presentation forms for the brackets, in the range <a href="https://r12a.github.io/uniview/?range=FE41:FE44" target="_blank">FE41..FE44</a>, but these should not be used; presentation forms are only for round trip conversions of legacy data.</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="japanese">
+<h2>Japanese</h2>
+
+<p>Japanese texts may use comma-like quote marks or brackets for horizontal text. However, vertical text (which is common) uses either brackets or double primes (no comma-like quotes).</p>
+
+
+<aside class="floatedImplnote">
+<p>Unicode code points:</p>
+
+<ul>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x201C;</bdi>
+<code class="uname">U+201C: LEFT DOUBLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x201D;</bdi>
+<code class="uname">U+201D: RIGHT DOUBLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x2018;</bdi>
+<code class="uname">U+2018: LEFT SINGLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x2019;</bdi>
+<code class="uname">U+2019: RIGHT SINGLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x300E;</bdi>
+<code class="uname">U+300E: LEFT WHITE CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x300F;</bdi>
+<code class="uname">U+300F: RIGHT WHITE CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x300C;</bdi>
+<code class="uname">U+300C: LEFT CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x300D;</bdi>
+<code class="uname">U+300D: RIGHT CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x301D;</bdi>
+<code class="uname">U+301D: REVERSED DOUBLE PRIME QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ja">&#x301F;</bdi>
+<code class="uname">U+301F: LOW DOUBLE PRIME QUOTATION MARK</code></span></li>
+</ul>
+</aside>
+
+
+
+<figure id="ja_table" class="quotation_tables">
+<table id="ja" class="htables">
+<thead>
+<tr><th colspan="2">primary</th><th colspan="2">secondary</th></tr>
+<tr><th>start</th><th>end</th><th>start</th><th>end</th></tr>
+</thead>
+
+<tbody>
+<tr>
+<td><img src="cjk-quotes-data/201c.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/201d.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/2018.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/2019.jpg" alt="”" class="chimg"></td>
+</tr>
+<tr>
+<td><img src="cjk-quotes-data/300c.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300d.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/300e.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300f.jpg" alt="”" class="chimg"></td>
+</tr>
+</tbody>
+</table>
+
+<p style="width: 5em;">&nbsp;</p>
+
+<table id="jav" class="vtables">
+<thead>
+<tr><th colspan="2">primary</th><th colspan="2">secondary</th></tr>
+<tr><th>start</th><th>end</th><th>start</th><th>end</th></tr>
+</thead>
+
+<tbody>
+<tr>
+<td><img src="cjk-quotes-data/300cv.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300dv.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/300ev.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300fv.jpg" alt="”" class="chimg"></td>
+</tr>
+<tr>
+<td><img src="cjk-quotes-data/301dv.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/301fv.jpg" alt="”" class="chimg"></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</figure>
+
+
+
+<p><span class="leadin">Width.</span> All punctuation used for quotations is normally rendered fullwidth, including the code points for the comma-like quotes, which are rendered as proportionally-spaced glyphs in most languages. No special, fullwidth code points are reserved for these comma-like quotes — the glyph width is applied by the font.</p>
+
+<p>Comma-like quotes and brackets may become halfwidth if they occur alongside certain other punctuation, or at line start/end. For details, see <a href="https://www.w3.org/International/articles/styling/inline-space">Managing inline spaces in Chinese &amp; Japanese</a>.</p>
+
+
+<p><span class="leadin">Rotation.</span> Bracket glyphs are simply rotated in vertical text, but the code points used should remain the same. The Unicode Standard has a number of vertical presentation forms for the brackets, in the range <a href="https://r12a.github.io/uniview/?range=FE41:FE44" target="_blank">FE41..FE44</a>, but these should not be used; presentation forms are only for round trip conversions of legacy data.</p>
+
+
+<p><span class="leadin">Horizontal vs vertical conversion.</span> The fact that comma-like quotes are not used in vertical text may give rise to a mismatch between expected shapes if text is restyled from horizontal to vertical, or vice versa. One way to manage this is to change the code points while converting between horizontal comma-like quotes and vertical brackets.  Another is to use a font that automatically chooses an appropriate shape in addition to rotating the glyph — in which case, comma-like quote <em>code points</em> would be used throughout.</p>
+
+<p><a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E2%80%9C%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%E2%80%9D&fonts=Noto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC%2CPingFang%20SC%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CSTHeiti%2CYuanti%20SC%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3Bwriting-mode%3Avertical-rl%3B&lang=zh" target="_blank" style="font-size: 120%;">This test</a> checks whether glyph shapes are changed automatically for system and Noto fonts on macOS. Of the 23 fonts tested, only the following automatically substitute brackets for comma-like quotes: Noto Sans CJK SC, Noto Serif CJK SC, SimSong, Noto Sans CJK SC, Lantinghei SC.</p>
+
+<p><a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E2%80%9C%E6%8B%AC%E5%8F%B7%E6%A0%87%E7%82%B9%E7%AC%A6%E5%8F%B7%E2%80%9D&fonts=Noto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC%2CPingFang%20SC%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CSTHeiti%2CYuanti%20SC%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC&css=background-color%3A%20antiquewhite%3Btext-spacing-trim%3Atrim-start%3Bwriting-mode%3Avertical-rl%3B&lang=zh" target="_blank" style="font-size: 120%;">This test</a> checks whether glyph shapes are changed automatically for system and Noto fonts on Windows. Of the 9 fonts tested, only the following automatically substitute brackets for comma-like quotes: NSimSun, SimSun.</p>
+</section>
+
+
+
+
+
+
+
+
+
+<section id="korean">
+<h2>South Korea</h2>
+
+<p>Korean texts in South Korea usually use comma-like quote marks for horizontal text. However, vertical text (which is rare) uses either brackets.</p>
+
+
+<aside class="floatedImplnote">
+<p><span class="leadin">Unicode code points:</span></p>
+
+<ul>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x201C;</bdi>
+<code class="uname">U+201C: LEFT DOUBLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x201D;</bdi>
+<code class="uname">U+201D: RIGHT DOUBLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x2018;</bdi>
+<code class="uname">U+2018: LEFT SINGLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x2019;</bdi>
+<code class="uname">U+2019: RIGHT SINGLE QUOTATION MARK</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x300E;</bdi>
+<code class="uname">U+300E: LEFT WHITE CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x300F;</bdi>
+<code class="uname">U+300F: RIGHT WHITE CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x300C;</bdi>
+<code class="uname">U+300C: LEFT CORNER BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x300D;</bdi>
+<code class="uname">U+300D: RIGHT CORNER BRACKET</code></span></li>
+</ul>
+</aside>
+
+
+
+<figure id="ko_table" class="quotation_tables">
+<table id="ko" class="htables">
+<thead>
+<tr><th colspan="2">primary</th><th colspan="2">secondary</th></tr>
+<tr><th>start</th><th>end</th><th>start</th><th>end</th></tr>
+</thead>
+
+<tbody>
+<tr>
+<td><img src="cjk-quotes-data/201cp.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/201dp.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/2018p.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/2019p.jpg" alt="”" class="chimg"></td>
+</tr>
+<tr>
+<td><img src="cjk-quotes-data/201c.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/201d.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/2018.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/2019.jpg" alt="”" class="chimg"></td>
+</tr>
+</tbody>
+</table>
+
+<p style="width: 5em;">&nbsp;</p>
+
+<table id="kov" class="vtables">
+<thead>
+<tr><th colspan="2">primary</th><th colspan="2">secondary</th></tr>
+<tr><th>start</th><th>end</th><th>start</th><th>end</th></tr>
+</thead>
+
+<tbody>
+<tr>
+<td><img src="cjk-quotes-data/300cv.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300dv.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/300ev.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300fv.jpg" alt="”" class="chimg"></td>
+</tr>
+</tbody>
+</table>
+</figure>
+
+
+
+
+<p><span class="leadin">Width.</span> Horizontal text uses comma-style quotation marks, but they may be proportionally-spaced or fullwidth. No special code points are dedicated to indicate the width — the width is determined by the font used. The brackets used in vertical text are all fullwidth.</p>
+
+<p>As just mentioned, many fonts render quotation marks using proportionally-spaced glyphs, however some other fonts render the same code points as full-width glyphs. If text content is written on the assumption that proportionally-spaced glyphs will be used, then a space character needs to be added next to the quotation mark. However, if the font is changed to one that renders the quotation mark as full-width, the adjacent gap will be quite large. Vice versa, content created with the expectation that quotation marks will be rendered full-width will have no gap alongside the quotation mark if the font is changed to one that uses proportionally-spaced glyphs.  This means that Korean fonts are not as easily interchangeable as Chinese or Japanese fonts.</p>
+
+
+<p><span class="leadin">Rotation.</span> Bracket glyphs are rotated and shifted in vertical text, but the code points used should remain the same. The Unicode Standard has a number of vertical presentation forms for the brackets, in the range <a href="https://r12a.github.io/uniview/?range=FE41:FE44" target="_blank">FE41..FE44</a>, but these should not be used; presentation forms are only for round trip conversions of legacy data.</p>
+</section>
+
+
+
+
+
+
+
+<section id="nkorean">
+<h2>North Korea</h2>
+
+<p>Texts in North Korea use angle brackets for quotation marks. Vertical text is not used in the north.</p>
+
+
+<aside class="floatedImplnote">
+<p>Unicode code points:</p>
+
+<ul>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x300A;</bdi>
+<code class="uname">U+300A: LEFT DOUBLE ANGLE BRACKET</code></span></li>
+<li><span class="codepoint" translate="no"><bdi lang="ko">&#x300B;</bdi>
+<code class="uname">U+300B: RIGHT DOUBLE ANGLE BRACKET</code></span></li>
+</ul>
+</aside>
+
+
+
+<figure id="nko_table" class="quotation_tables">
+<table id="nko" class="htables">
+<thead>
+<tr><th colspan="2">primary</th><th colspan="2">secondary</th></tr>
+<tr><th>start</th><th>end</th><th>start</th><th>end</th></tr>
+</thead>
+
+<tbody>
+<tr>
+<td><img src="cjk-quotes-data/300a.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/300b.jpg" alt="”" class="chimg"></td>
+<td><img src="cjk-quotes-data/3008.jpg" alt="“" class="chimg"></td>
+<td><img src="cjk-quotes-data/3009.jpg" alt="”" class="chimg"></td>
+</tr>
+</tbody>
+</table>
+
+</figure>
+
+
+
+<p><span class="leadin">Width.</span> Quotation marks are rendered fullwidth.</p>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="other">
+<h2>Other stuff</h2>
+
+<ul>
+<li>Standardised variation sequences https://www.unicode.org/reports/tr50/#quotes</li>
+<li>Embedded latin text with quotes https://www.unicode.org/L2/L2026/26128-east-asian-quotation-marks.pdf</li>
+<li>Sibe https://www.unicode.org/L2/L2026/26128-east-asian-quotation-marks.pdf</li>
+</ul>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section id="browsers">
+<h2>Browser versions</h2>
+<p>The article describes behavior for the following browser versions. We will try to update the article as behavior changes.</p>
+<table border="0" summary="Table lists browsers and engines whose behavior is represented in the article.">
+<tbody>
+<tr>
+<th scope="col">Browser engine</th>
+<th scope="col">Browser tested</th>
+<th scope="col">Browsers using that engine</th>
+</tr>
+<tr>
+<td><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink" style="vertical-align: middle;"> Blink</td>
+<td>Chrome v146</td>
+<td>Chrome, Edge, Brave, Opera, Vivaldi, etc.</td>
+</tr>
+<tr>
+<td><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko" style="vertical-align: middle;"> Gecko</td>
+<td>Firefox v148</td>
+<td>Firefox, Conkeror, etc.</td>
+</tr>
+<tr>
+<td><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit" style="vertical-align: middle;"> WebKit</td>
+<td>Safari v26.2</td>
+<td>Safari, iOS browsers, Yandex, UC Browser, etc.</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+
+
+
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><cite>Authoring web pages</cite></p>
+<ul>
+<li><a href="https://w3c.github.io/i18n-drafts/techniques/authoring-html.en#textspacing">Text spacing</a></li>
+</ul>
+</li>
+<li>
+<p><cite>Language enablement index</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/typography/#spacing">Text spacing</a></li>
+</ul>
+</li>
+<li>
+<p><cite>CSS specification</cite></p>
+<ul>
+<li><a href="https://drafts.csswg.org/css-text-4/#letter-spacing-property">letter-spacing</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#text-autospace-property">text-autospace</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#text-spacing-trim-property">text-spacing-trim</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#text-indent-property">text-indent</a> • 
+<a href="https://drafts.csswg.org/css-text-4/#hanging-punctuation-property">hanging-punctuation</a>
+</li>
+</ul>
+</li>
+<li>
+<p><cite>MDN</cite></p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/letter-spacing">letter-spacing</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-autospace">text-autospace</a> • 
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-spacing-trim">text-spacing-trim</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>
+completePage() 
+
+// add a link around results images to show bigger
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("figure.resultsImg img").forEach(img => {
+    const link = document.createElement("a");
+    link.href = img.src;
+    link.target = "_blank";
+    link.rel = "noopener";
+
+    img.parentNode.insertBefore(link, img);
+    link.appendChild(img);
+  });
+});
+
+
+</script>
+</body>
+</html>
