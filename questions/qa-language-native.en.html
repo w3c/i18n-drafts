@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How can I use language metadata in native APIs?</title>
+<meta name="description" content="Pointers to native APIs for applying language metadata to strings and text ranges">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the name of the directory this file is in
+f.filename = 'qa-language-native'; // the file name WITHOUT extensions
+f.authors = 'Fuqiao Xue, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-language-native'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-07-15'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-07-15', time:'00:00'}  // date and time of latest substantive changes to this document
+f.status = 'draft';  // should be one of draft, review, published, or notreviewed
+f.path = '../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-07-15', time:'00:00'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-language-native-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"> </script><!-- TRANSLATORS must change -en to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+</head>
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>How can I use language metadata in native APIs?</h1>
+</header>
+
+
+<div id="audience">
+<p><span id="intendedAudience" class="leadin">Intended audience:</span>
+<b class="highlight">Developers</b>
+</p>
+
+<div id="updateInfo"></div>
+<script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+<p>Sometimes a program receives data from the Web that includes important metadata about the language of a string or a range of text. Developers working with document formats and protocols that include language metadata should preserve it and pass it to the native text APIs that process or display the associated text. This article provides links to documentation for several operating systems, programming environments, and text libraries.</p>
+<p class="info">Language metadata in this article means the language of the text itself. It is different from metadata about the language of the intended audience, and it is different from the user's preferred language. For that distinction, see <a href="qa-text-processing-vs-metadata">Types of language declaration</a>. For an introduction to language and direction metadata on the Web, see <a href="https://www.w3.org/TR/string-meta">Strings on the Web: Language and Direction Metadata</a>.</p>
+
+
+<section id="principles">
+<h2>Principles</h2>
+
+<p>Language tags are normally <a href="https://www.w3.org/TR/i18n-glossary/#dfn-language-tag">BCP 47 language tags</a>, such as <code translate="no">fr</code>, <code translate="no">sr-Latn</code>, or <code translate="no">zh-Hant-TW</code>. Treat the tag as data that belongs to the text and keep the whole tag when passing it between layers.</p>
+
+<ul>
+  <li><strong>Keep the scope.</strong> If only one phrase changes language, attach the metadata to that range instead of changing the language of the whole view or document.</li>
+  <li><strong>Choose the API for the operation.</strong> Text layout APIs use language to select glyphs, fonts, or line-breaking rules. Speech APIs use it to select a voice. Formatting and collation APIs use locale data to generate or compare text.</li>
+  <li><strong>Keep direction separate.</strong> A language tag does not replace a base-direction or string-direction value. Supply both when possible. See <a href="qa-direction-native">How can I use direction metadata in native APIs?</a>.</li>
+</ul>
+</section>
+
+
+<section id="APIs">
+<h2>APIs</h2>
+
+<p>This section links to APIs for applying language metadata to text ranges, controls, and speech engines.</p>
+
+<p class="note">The list is necessarily incomplete: the Internationalization Working Group welcomes contributions and corrections. Click on the link <em>Leave a comment</em> in the <a href="#survey">Tell us what you think</a> box below.</p>
+
+<ul>
+    <li>Apple Core Text: <ul>
+        <li><a href="https://developer.apple.com/documentation/coretext/kctlanguageattributename" target="_blank"><code translate="no">kCTLanguageAttributeName</code></a> applies a locale identifier to a range. Core Text uses it for localized glyph selection and locale-specific line breaking.</li>
+        <li><a href="https://developer.apple.com/documentation/coretext/ctfontcreateforstringwithlanguage(_:_:_:_:)"  target="_blank"><code translate="no">CTFontCreateForStringWithLanguage</code></a> chooses a font for a string range using a language identifier.</li>
+    </ul></li>
+
+    <li>Android: <ul>
+        <li><a href="https://developer.android.com/reference/android/text/style/LocaleSpan"><code translate="no">LocaleSpan</code></a></li>
+        <li><a href="https://developer.android.com/reference/android/widget/TextView#setTextLocale(java.util.Locale)"><code translate="no">TextView.setTextLocale</code></a> and <a href="https://developer.android.com/reference/android/widget/TextView#setTextLocales(android.os.LocaleList)"><code translate="no">setTextLocales</code></a></li>
+        <li><a href="https://developer.android.com/reference/android/speech/tts/TextToSpeech#setLanguage(java.util.Locale)" translate="no"><code>TextToSpeech.setLanguage</code></a> selects the closest available language for speech.</li>
+    </ul></li>
+
+    <li>ICU4C: <ul>
+        <li><a href="https://unicode-org.github.io/icu-docs/apidoc/dev/icu4c/classicu_1_1Locale.html" translate="no"><code>icu::Locale::forLanguageTag</code></a> parses a BCP 47 language tag. Pass the resulting locale to ICU boundary-analysis, collation, and formatting APIs as appropriate for the operation.</li>
+    </ul></li>
+
+    <li>Java AWT and Swing: <ul>
+        <li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.desktop/java/awt/Component.html#setLocale(java.util.Locale)" target="_blank"><code translate="no">Component.setLocale</code></a> is inherited by <code translate="no">Container</code> and its descendants, including Swing components. Use it to associate a locale with a component or container.</li>
+        <li><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Locale.html#forLanguageTag(java.lang.String)" target="_blank"><code translate="no">Locale.forLanguageTag</code></a> creates a <code translate="no">Locale</code> from a BCP 47 language tag.</li>
+    </ul></li>
+</ul>
+</section>
+
+
+
+<section id="example-android">
+<h2>Example: a language range in Android</h2>
+
+<p>Android's <code translate="no">LocaleSpan</code> is useful when one <code translate="no">TextView</code> contains text in more than one language.</p>
+
+<figure class="example">
+<pre><code class="language-java">Locale language = Locale.forLanguageTag("zh-Hant-TW");
+SpannableString styled = new SpannableString(text);
+styled.setSpan(new LocaleSpan(language), 0, styled.length(),
+        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+textView.setText(styled);</code></pre>
+</figure>
+
+<p>If the whole control has one language, <code translate="no">TextView.setTextLocale</code> or <code translate="no">setTextLocales</code> is the appropriate default. For speech, pass the language to <code translate="no">TextToSpeech.setLanguage</code> and check its return value.</p>
+</section>
+
+
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><cite>Strings on the Web: Language and Direction Metadata</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/string-meta">Recommendation</a></li>
+<li><a href="https://www.w3.org/TR/string-meta/#language-metadata">Language metadata</a></li>
+</ul>
+</li>
+<li><a href="qa-text-processing-vs-metadata">Types of language declaration</a></li>
+<li><a href="qa-html-language-declarations">Declaring language in HTML</a></li>
+<li><a href="qa-direction-native">How can I use direction metadata in native APIs?</a></li>
+</ul>
+
+<p>To contribute suggestions, please click on the link <em>Leave a comment</em> in the box to the right.</p>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
