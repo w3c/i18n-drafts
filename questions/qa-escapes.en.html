@@ -20,7 +20,7 @@ f.status = 'published';  // should be one of draft, review, published, or notrev
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2016-01-19', time:'10:22'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2025-11-12', time:'09:10' } // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -143,6 +143,16 @@ f.additionalLinks = ''
     <p>One point worth special note is that values of numeric character references (such as <code>&amp;#x20AC;</code> or <code>&amp;#8364;</code> for the euro sign <span class="qchar">€</span>) are interpreted as Unicode characters – <strong>no matter what encoding you use for your document</strong>. </p>
     <p>For example, the code point number of the euro sign in Windows code page 1252 is 80. It is a common error for people working on content in that encoding to represent the euro sign using <code>&amp;#x80;</code>. This HTML should actually produce a control character, since the escape would be expanded as the character at position 80 in the Unicode repertoire. (In fact, browsers tend to silently correct that particular error. See the <a class="print" href="/International/tests/repo/results/escapes#reallocated">test pages</a>.) </p>
   </section>
+
+  <section id="security">
+    <h3>Security considerations</h3>
+        <p>Proper character escaping is crucial for preventing Cross-Site Scripting (XSS) attacks, especially when displaying user-generated content. When writing user input as part of your HTML markup (whether in the source code or when dynamically generating HTML via scripts), always escape HTML syntax characters:</p>
+        <div class="example">
+          <p><strong>Dangerous:</strong> <code>&lt;p&gt;Hello &lt;script&gt;alert('XSS')&lt;/script&gt;&lt;/p&gt;</code></p>
+          <p><strong>Safe:</strong> <code>&lt;p&gt;Hello &amp;lt;script&amp;gt;alert('XSS')&amp;lt;/script&amp;gt;&lt;/p&gt;</code></p>
+        </div>
+        <p>This applies to all contexts where user data is written into HTML, including element content, attribute values, and URLs. Note that you only need to escape HTML syntax characters (<code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, and in some contexts <code>"</code> and <code>'</code>). Regular text content in any language, such as "<span lang="zh-Hans">你好</span>" in Chinese or "<span lang="ar">مرحباً</span>" in Arabic, does not need to be escaped.</p>
+    </section>
 </section>
   
   
