@@ -56,11 +56,25 @@ function showExample (path) {
 	}
 
 
-function stickyConneg (filename, cLang, targetLang) {
+function getLanguagePreferenceMessage (cLang, targetLang) {
+	var messages = {}
+	if (typeof cn !== 'undefined') messages = cn
+	var cMsg = messages[cLang]
+	var targetMsg = messages[targetLang]
+	if (cMsg && targetMsg) {
+		var msg = '['+cLang+'] '+cMsg
+		msg += '\n\n'+'['+targetLang+'] '+targetMsg
+		if (targetLang !== 'en' && cLang !== 'en' && messages.en) msg += '\n\n'+'[en] '+messages.en
+		return msg
+		}
+	return targetMsg || cMsg || s.cookieMsg || messages.en || ''
+	}
+
+function setLanguagePreference (targetLang, cLang) {
+	if (!targetLang) return
 	var response = false
-	var msg = '['+cLang+'] '+cn[cLang]
-	msg += '\n\n'+'['+targetLang+'] '+cn[targetLang]
-	if (targetLang !== 'en' && cLang !== 'en') msg += '\n\n'+'[en] '+cn.en
+	var msg = getLanguagePreferenceMessage(cLang || f.clang, targetLang)
+	if (!msg) return
 	response = confirm(msg)
 	if (response == true) {
 		var d = new Date()
@@ -69,7 +83,27 @@ function stickyConneg (filename, cLang, targetLang) {
 		var path = ";path=/"
 		document.cookie = 'w3ci18nlang='+targetLang+expires+path
 		}
-	document.location.assign(filename+'.'+targetLang+'.html')
+	}
+
+function stickyConneg (filename, cLang, targetLang) {
+	setLanguagePreference(targetLang, cLang)
+	document.location.assign(getTranslationUrl(filename, targetLang))
+	}
+
+function getTranslationUrl (filename, targetLang) {
+	if (f.translationPaths && f.translationPaths[targetLang]) return f.translationPaths[targetLang]
+	if (targetLang === 'en') return filename+'.en.html'
+	return filename+'.'+targetLang+'.html'
+	}
+
+function enhanceTranslationLinks () {
+	var links = document.querySelectorAll('a[data-lang]')
+	for (var l=0; l<links.length; l++) {
+		links[l].addEventListener('click', function (event) {
+			var link = event.currentTarget || this
+			setLanguagePreference(link.getAttribute('data-lang') || link.getAttribute('lang'))
+			})
+		}
 	}
 
 
@@ -99,7 +133,8 @@ if (trans.versions && !(trans.versions[0] == f.clang && trans.versions.length ==
 	versionList = '<p class="noprint">'
 	for (lang=0; lang<trans.versions.length; lang++) {
 		if (f.clang != trans.versions[lang]) {
-			versionList += '<bdi title="'+s.currLang[trans.versions[lang]]+'"><a href="#" onclick="stickyConneg(\''+f.filename+'\',\''+f.clang+'\',\''+trans.versions[lang]+'\'); return false;" lang="'+trans.versions[lang]+
+			var translationUrl = getTranslationUrl(f.filename, trans.versions[lang])
+			versionList += '<bdi title="'+s.currLang[trans.versions[lang]]+'"><a href="'+translationUrl+'" data-lang="'+trans.versions[lang]+'" lang="'+trans.versions[lang]+
 			'" translate="no" dir="auto">'+g.nativeText[trans.versions[lang]]+'</a></bdi>'+s.rlm+'&#x202F;';
 			if (lang < trans.versions.length-1) versionList += '• &#x202F;'
 			}
@@ -125,7 +160,7 @@ var mainNavigation = '<aside id="mainNavigationAside">'+
 '	</aside>'+
 
 '	<nav id="siteicons">'+
-'   <a href="https://www.w3.org/" title="'+s.gotoW3cHome+'"><img src="https://www.w3.org/Icons/w3c_home" alt="'+s.gotoW3cHome+'" width="72" height="48"></a>'+
+'   <a href="https://www.w3.org/" title="'+s.gotoW3cHome+'"><img alt="W3C" src="https://www.w3.org/assets/logos/w3c-2025/svg/margins/w3c-letters-bg-white.svg" style="border:0; height:58px; width:72px; vertical-align:middle;">'+
 '   <div id="banner" style="margin-inline-start:10px;"><a href="/International" title="'+s.gotoI18nHome+'">'+
 '   <p id="sitename">'+s.internationalizationTitle+'</p>'+
 '   <p id="subtitle">'+s.worldwide+'</p></a></div>'+
@@ -240,7 +275,7 @@ if (g.isTranslation) translatorCredit = s.translatedBy+f.translators+s.sentenceD
 
 var credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+' '+translatorCredit+"</p>"
 // Remove the space for Chinese
-if (document.documentElement.lang === "zh-hans" || document.documentElement.lang === "zh-hant") credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
+// if (document.documentElement.lang === "zh-hans" || document.documentElement.lang === "zh-hant") credits = "<p>"+s.author+f.authors+s.sentenceDelimiter+' '+previousCredit+modCredit+translatorCredit+"</p>"
 
 if (f.contributors && f.contributors != '') credits += "<p class='acknowledgements'>"+s.acknowledgements+f.contributors+"</p>"
 if (f.sources && f.sources != '') credits += "<p class='acknowledgements'>"+f.sources+"</p>"
@@ -266,6 +301,32 @@ g.bottomOfPage = '<footer><address>'+credits+'</address>'+
 
 
 
+// SKIP LINK
+
+function addSkipLink() {
+	var firstHeading = document.querySelector('h1');
+	if (!firstHeading) return;
+
+	// Ensure the skip link targets the first h1, even if it lacks an id
+	var targetId = firstHeading.id;
+	if (!targetId) {
+		targetId = 'skip-target';
+		var suffix = 1;
+		while (document.getElementById(targetId)) {
+			targetId = 'skip-target-' + suffix;
+			suffix++;
+		}
+		firstHeading.id = targetId;
+	}
+
+	var skipLink = document.createElement('a');
+	skipLink.href = '#' + targetId;
+	skipLink.className = 'skip-link';
+	skipLink.textContent = s.skipNavigation;
+
+	document.body.insertBefore(skipLink, document.body.firstChild);
+}
+
 // COMPLETE PAGE
 
 function completePage () {
@@ -274,6 +335,8 @@ function completePage () {
 	document.getElementById('relatedlinks').innerHTML = sidebarExtras
 	//fillinTranslations()
 	if (document.getElementById("toclocation")) createtoc(true);
+	addSkipLink()
+	enhanceTranslationLinks()
 	getURLs()
 	}
 
@@ -309,3 +372,31 @@ function getURLs () {
 	if (document.querySelector('#endlinks')) document.querySelector('#endlinks').parentNode.appendChild(container)
 	
 	}
+
+// Simple copy button for code blocks
+document.addEventListener('DOMContentLoaded', function() {
+    const codeBlocks = document.querySelectorAll('pre code');
+
+    codeBlocks.forEach(function(code) {
+        const pre = code.parentElement;
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'copy-btn';
+        copyBtn.textContent = s.copy;
+
+        copyBtn.addEventListener('click', async function() {
+            const text = code.textContent;
+
+            try {
+                await navigator.clipboard.writeText(text);
+                copyBtn.textContent = s.copied;
+                setTimeout(function() {
+                    copyBtn.textContent = s.copy;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+        });
+
+        pre.appendChild(copyBtn);
+    });
+});

@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" >
+<title>Styling underlines</title>
+<meta name="description" content="How to work with underlining for non-Latin scripts." >
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/styling'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'underline'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-underline'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-03-30'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-03-30', time:'05:50'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-03-30', time:'05:50'} // date and time of latest edits to this document/translation
+f.contributors = 'Fantasai provided review feedback.'; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'styling';
+
+f.additionalLinks = ''
+</script>
+<script src="underline-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"></script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css" >
+<link rel="copyright" href="#copyright">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+<link rel="stylesheet" href="underline-data/local.css">
+
+
+
+
+
+
+<script>
+function setUnderline (classname, value) {
+    document.querySelectorAll(classname)
+        .forEach(el => el.style.textUnderlinePosition = value)
+    }
+
+function setFont (classname, value) {
+    document.querySelectorAll(classname)
+        .forEach(el => el.style.fontFamily = value)
+    }
+
+</script>
+</head>
+
+
+
+
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+<h1>Styling underlines</h1>
+</header>
+
+
+<section>
+<div id="audience">
+<p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+<b class="highlight">Content authors</b>
+</p>
+
+<div id="updateInfo"></div>
+<script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+<p>This article explores various ways in which CSS can be used to manage underlines  for non-Latin scripts.</p>
+
+<p>Rather than simply reproducing the spec itself here, we provide task-oriented guidance to help content authors  achieve key techniques.</p>
+
+<p>Apart from <code class="kw" translate="no">text-decoration</code>, the CSS properties we will use are:</p>
+
+<figure class="example" lang="en">
+<pre><code class="language-css">text-underline-position:auto|[ from-font|under]||[ left|right ]
+text-underline-offset:auto|&lt;length&gt;|&lt;percentage&gt;
+text-underline-style:solid|double|dotted|dashed|wavy;
+text-decoration-skip-inset:none|auto;</code></pre>
+</figure>
+</section>
+
+
+
+
+
+<section id="configs">
+<h2>Working with long descenders</h2>
+
+<p>The underline for Latin script text generally falls just below the alphabetic baseline.  However, for some other writing systems,  it is often better to move the underline downwards so that it doesn't cut through diacritics or descenders.</p>
+
+<p>Writing systems that extend below the baseline much further than Latin script text include Arabic, most Brahmi-derived scripts, particularly Balinese and Javanese, Tibetan, etc. The following image shows typical metrics for Arabic font glyphs compared to size-appropriate Latin text. Note the extra vertical space required.</p>
+
+
+<div class="figWrap">
+<figure id="fig_arabic_font_metrics">
+<img src="underline-data/arabic_font_metrics.png" alt="An illustration of how far above and below Arabic glyphs extend, beyond the Latin ones." style="max-height:12rem;">
+<figcaption>Comparison of Latin and Arabic script extenders.</figcaption>
+</figure>
+</div>
+
+<p>The CSS specification suggests that, without styling, browsers should place an underline at or near the alphabetic baseline, but should also take into account that some scripts will need the underline to be lower. Browsers are encouraged to take these scripts into account for default settings and <code class="kw" translate="no">auto</code> values, but typically some additional styling will be needed.</p>
+
+<p>If you allow the browser to use the default position or an <code class="kw" translate="no">auto</code> value, the line will typically be drawn immediately below the alphabetic baseline, cutting through descenders, subjoined consonants/vowels and diacritics. Gecko browsers will however apply the underline position given by font metrics, if available for that font.</p>
+
+<p><span class="leadin" style="font-size: 110%;">How to do it.</span>  CSS offers three possible strategies for positioning the underline lower than just below the alphabetic baseline. However, the choice of styling is not straightforward. Given the same CSS declarations, the actual placement of the underline will usually vary by font, and may also vary by browser used. It is therefore necessary to set the underline at the same time as assigning the font family for the text, and it's likely you'll need to do some experimentation to get the setting you want.</p>
+
+<p>Using <code class="kw" translate="no">text-underline-position:from-font</code> typically lowers the underline, but only for the few fonts that contain the metric. Typically, the underline still cuts through  descenders or subjoined glyphs below the baseline.</p>
+
+<p><code class="kw" translate="no">Text-underline-position:under</code> usually pushes the underline down further, and for some scripts may clear most descenders  and subjoined glyphs, but not all. It is, however, a little unreliable, and the position may vary from browser to browser, not just font to font.</p>
+
+<p><code class="kw" translate="no">Text-underline-offset</code> gives you more predictable control over the position of the underline, allowing for clearance of long descenders, as well as  any diacritics below them. However, the actual setting is still script dependent, although font by font differences are not a significant issue.</p>
+
+<p>Whichever approach you choose, you should ensure that line heights are set so that the underline doesn't hit the text on following lines.</p>
+
+<p>The following subsections provide additional details as well as tests that you can run for yourself. We chose a number of scripts to test that are representative of writing systems with significant downward extensions. These are Arabic (with and without diacritics), Khmer, Javanese, and Tibetan.</p>
+
+
+
+
+<section id="builtIn">
+<h3>Using built-in font metrics (<code class="kw" translate="no">from-font</code>)</h3>
+
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-position:from-font</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+
+
+<!--<figure id="fig_fromfont_example" style="width:100%; margin-inline:0;">
+<figcaption>Two fonts where the underline doesn't move, followed by 3 fonts where it does when <code class="kw" translate="no">from-font</code> is applied.</figcaption>
+<p><img src="underline-data/fig_fromfont_example.jpg" alt="" style="margin-block:1rem; width:100%;"></p>
+</figure>
+--></aside>
+
+<p>If a font has a built-in metric to indicate the preferred underline position then <a href="https://drafts.csswg.org/css-text-decor-4/#text-underline-position-property"><code class="kw" translate="no">text-underline-position:from-font</code></a> should allow you to use that.  However, many fonts don't include that metric.</p>
+
+<figure id="fig_fromfont_example;">
+<p><img src="underline-data/fig_fromfont_example.jpg" alt="" style="margin-block:1rem; width:20rem;"></p>
+<figcaption>Two fonts where the underline doesn't move, followed by 3 fonts where it does when <code class="kw" translate="no">from-font</code> is applied.</figcaption>
+</figure>
+
+<!--<div class="sidenoteGroup">
+
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅ All three major browser engines support the use of <code class="kw" translate="no">text-underline-position:from-font</code> where that metric is available in the font.</p>
+<p style="font-style: italic;">Notes:</p>
+<p>The <code class="kw" translate="no">from-font</code> position is used as the default in Gecko browsers.</p>
+<p>Safari only renders pre-installed macOS fonts, so fonts such as Amiri, and Scheherazade New, which do have underline metrics, won't display unless you use a webfont.</p>
+
+
+</aside>
+</div>-->
+
+<p> If the font doesn't have built-in metrics to indicate the preferred position of the underline the value falls back to <code class="kw" translate="no">auto</code>, which relies on the browser to do the right thing. Currently, when the value of this property is set to <code class="kw" translate="no">auto</code> Blink and WebKit browsers draw the underline just below the alphabetic baseline, but Gecko applies the <code class="kw" translate="no">from-font</code> position when <code class="kw" translate="no">auto</code> is specified and the font metric exists (which is what the CSS spec recommends).</p>
+
+<p>Key points to note are that only a few fonts are likely to make the metric available, and that the position may not always clear the bottom of the glyph descenders or any associated diacritics.</p>
+
+<p>It is possible to set <code class="kw" translate="no">text-underline-position</code> just once for the whole document; then any <code class="kw" translate="no">text-decoration</code> property or <code class="kw" translate="no">u</code> element that is used will automatically apply it. The CSS specification suggests the following.</p>
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">:root { text-underline-position:from-font; }</code></pre>
+</figure>
+
+<style>
+#demo-from_font .test_lines { font-size: 2.4rem; line-height: 2; font-family: 'Scheherazade New WF'; }
+#demo-from_font u { text-decoration: underline 2px tan; }
+</style>
+
+<div id="demo-from_font" class="browser_output">
+<p class="browser_output_title">Output in your browser (only the bottom two lines use text-underline-position):</p>
+
+<div class="test_lines">
+<div id="test-from_font-control">
+<p lang="ar" dir="rtl"><u>أمازيغ يوم في كل لري إنسان</u></p>
+</div>
+<div id="test-from_font_nodiac" style="text-underline-position: from-font;" >
+<p lang="ar" dir="rtl"><u>أمازيغ يوم في كل لري إنسان</u></p>
+</div>
+<div id="test-from_font" style="text-underline-position: from-font;" >
+<p lang="ar" dir="rtl"><u>داسې مٛعّٜرٜ تࣺيرࣹ لࣸرِيࣺ تُفْلِ گرٟسؠ باے</u></p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.getElementById('test-from_font').style.fontFamily = this.value; document.getElementById('test-from_font_nodiac').style.fontFamily = this.value; document.getElementById('test-from_font-control').style.fontFamily = this.value;" placeholder="Scheherazade New WF"></p>
+</div>
+
+
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-position:from-font</code> where that metric is available in the font.</p>
+
+<p>The <code class="kw" translate="no">from-font</code> position is used as the unstyled default in Gecko browsers (ie. without styling).</p>
+
+<p>Safari only renders pre-installed macOS fonts, so fonts such as Amiri, and Scheherazade New, which do have underline metrics, won't display unless you use a webfont.</p>
+
+
+
+
+<details class="moreTests">
+<summary>More tests...</summary>
+
+<div class="testData">
+<p>The following links allow you to test this property and value against a range of fonts. The links open a web page in a separate browser window. The text is composed from lists of words or graphemes that show long descenders.</p>
+
+<p>There are two types of test. One (W3C) allows you to change the font by mousing over or tapping on the fonts in a list. The other (r12a) lists the text with all fonts at the same time. Of course, the tests only produce results for the fonts installed on your device or platform. Note, in particular, that WebKit browsers do not allow you to access non-system fonts unless they are packaged as webfonts.</p>
+
+<p>W3C: <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%D8%A3%D9%85%D8%A7%D8%B2%D9%8A%D8%BA%20%D9%8A%D9%88%D9%85%20%D9%81%D9%8A%20%D9%83%D9%84%20%D9%84%D8%B1%D9%8A%20%D8%A5%D9%86%D8%B3%D8%A7%D9%86%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%D8%A3%D9%85%D8%A7%D8%B2%D9%8A%D8%BA%20%D9%8A%D9%88%D9%85%20%D9%81%D9%8A%20%D9%83%D9%84%20%D9%84%D8%B1%D9%8A%20%D8%A5%D9%86%D8%B3%D8%A7%D9%86%3C%2Fdiv%3E&css=%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%20%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Afrom-font%3B%20%7D%0A&lang=ar&fontSize=50&width=882&height=247&a=How%20far%20does%20text-underline-position%3Afrom-font%20move%20the%20underline%20downwards%20in%20Arabic%20text%20(no%20diacritics)%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AMac%20fonts%2CAl%20Bayan%2CAl%20Nile%2CAl%20Tarikh%2CArial%2CBaghdad%2CDamascus%2CDecotype%20Naskh%2CGeeza%20Pro%2CMishafi%2CMishafi%20Gold%2CMuna%2CNadeem%2CArial%20Unicode%20MS%2CMyriad%20Arabic%2CTahoma%2CDiwan%20Thuluth%2CWaseem%2CDiwan%20Kufi%2CKufiStandardGK%2CSana%2CBeirut%2CFarah%2Ctitle%3AWindows%20fonts%2CArabic%20Typesetting%2CArial%2CSakkal%20Majalla%2CSimplified%20Arabic%2CTraditional%20Arabic%2CSegoe%20UI%2CTahoma%2CAndalus%2CAldhabi%2CCourier%20New%2CSimplified%20Arabic%20Fixed%2Ctitle%3AGoogle%2FSIL%2CNoto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2Ctitle%3AOther%20fonts%2CAmiri%2CAref%20Ruqaa%2CBeirut%2CLateef%2CTahoma%2CWaseem" target="_blank">Arabic (NO vowel signs)</a> • 
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%D8%AF%D8%A7%D8%B3%DB%90%20%D9%85%D9%9B%D8%B9%D9%91%D9%9C%D8%B1%D9%9C%20%D8%AA%E0%A3%BA%D9%8A%D8%B1%E0%A3%B9%20%D9%84%E0%A3%B8%D8%B1%D9%90%D9%8A%E0%A3%BA%20%D8%AA%D9%8F%D9%81%D9%92%D9%84%D9%90%20%DA%AF%D8%B1%D9%9F%D8%B3%D8%A0%20%D8%A8%D8%A7%DB%92%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%D8%AF%D8%A7%D8%B3%DB%90%20%D9%85%D9%9B%D8%B9%D9%91%D9%9C%D8%B1%D9%9C%20%D8%AA%E0%A3%BA%D9%8A%D8%B1%E0%A3%B9%20%D9%84%E0%A3%B8%D8%B1%D9%90%D9%8A%E0%A3%BA%20%D8%AA%D9%8F%D9%81%D9%92%D9%84%D9%90%20%DA%AF%D8%B1%D9%9F%D8%B3%D8%A0%20%D8%A8%D8%A7%DB%92%3C%2Fdiv%3E&css=%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%20%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Afrom-font%3B%20%7D%0A&fontSize=50&width=882&height=289&a=How%20far%20does%20text-underline-position%3Afrom-font%20move%20the%20underline%20downwards%20in%20Arabic%20ajami%20with%20below%20base%20diacritics%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3ANoto%2FSIL%20fonts%2CNoto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2CAlkalami%2CHarmattan%2CRuwudu%2Ctitle%3AOther%20fonts%2CAmiri%2CLateef" target="_blank">Wolofal, Hausa, Pashto, Kashmiri (Arabic WITH vowel signs)</a> • 
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%EA%A6%89%EA%A6%A9%EA%A6%B8%EA%A6%8F%EA%A7%80%EA%A6%97%EA%A6%B8%EA%A6%81%EA%A6%8F%EA%A6%BA%EA%A6%A2%EA%A6%83%EA%A6%8A%EA%A6%A9%EA%A6%BC%EA%A6%B1%EA%A7%80%EA%A6%8F%EA%A6%A4%EA%A7%80%EA%A6%9B%EA%A6%B6%EA%A6%AD%EA%A7%80%EA%A6%8F%EA%A6%A5%EA%A6%BF%EA%A6%97%EA%A6%B8%EA%A6%AB%EA%A6%B6%EA%A6%A0%EA%A6%A4%EA%A7%80%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%EA%A6%89%EA%A6%A9%EA%A6%B8%EA%A6%8F%EA%A7%80%EA%A6%97%EA%A6%B8%EA%A6%81%EA%A6%8F%EA%A6%BA%EA%A6%A2%EA%A6%83%EA%A6%8A%EA%A6%A9%EA%A6%BC%EA%A6%B1%EA%A7%80%EA%A6%8F%EA%A6%A4%EA%A7%80%EA%A6%9B%EA%A6%B6%EA%A6%AD%EA%A7%80%EA%A6%8F%EA%A6%A5%EA%A6%BF%EA%A6%97%EA%A6%B8%EA%A6%AB%EA%A6%B6%EA%A6%A0%EA%A6%A4%EA%A7%80%3C%2Fdiv%3E&css=.test%20%7B%20line-height%3A%203%3B%20%7D%0A%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Afrom-font%3B%20%7D%0A&lang=jv&fontSize=40&width=882&height=269&a=How%20far%20does%20text-underline-position%3Afrom-font%20move%20the%20underline%20downwards%20in%20Javanese%20text%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AWindows%20fonts%2CJavanese%20Text%2Ctitle%3AGoogle%2FSIL%2CNoto%20Sans%20Javanese%2Ctitle%3AOther%20fonts%2CTuladha%20Jejeg%20OT%2CYogyakarta%2CYogya" target="_blank">Javanese</a> •
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%E1%9E%A2%E1%9E%84%E1%9F%92%E1%9E%82%E1%9F%92%E1%9E%9B%E1%9F%81%E1%9E%9F%E1%9E%9F%E1%9E%84%E1%9E%9F%E1%9F%92%E1%9E%80%E1%9F%92%E1%9E%9A%E1%9E%B7%E1%9E%8F%E1%9E%9F%E1%9E%B6%E1%9E%9F%E1%9F%92%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%B6%E1%9E%85%E1%9E%B6%E1%9E%9A%E1%9F%92%E1%9E%99%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%E1%9E%A2%E1%9E%84%E1%9F%92%E1%9E%82%E1%9F%92%E1%9E%9B%E1%9F%81%E1%9E%9F%E1%9E%9F%E1%9E%84%E1%9E%9F%E1%9F%92%E1%9E%80%E1%9F%92%E1%9E%9A%E1%9E%B7%E1%9E%8F%E1%9E%9F%E1%9E%B6%E1%9E%9F%E1%9F%92%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%B6%E1%9E%85%E1%9E%B6%E1%9E%9A%E1%9F%92%E1%9E%99%3C%2Fdiv%3E&css=.test%20%7B%20line-height%3A%203%3B%20%7D%0A%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Afrom-font%3B%20%7D%0A&lang=km&fontSize=40&width=882&height=269&a=How%20far%20does%20text-underline-position%3Afrom-font%20move%20the%20underline%20downwards%20in%20Khmer%20text%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AMac%20fonts%2CKhmer%20MN%2CKhmer%20Sangam%20MN%2Ctitle%3AWindows%20fonts%2CDaunPenh%2CLeelawadee%20UI%2CMoolBoran%2CKhmer%20UI%2Ctitle%3AGoogle%2FSIL%2CBusra%2CKhmer%20Busra%2CKhmer%20Mondulkiri%2CNoto%20Sans%20Khmer%2CNoto%20Serif%20Khmer%2CKhmer%20Ratanakiri%2CKhmer%20Oureang%2Ctitle%3AOther%20fonts%2CAngkor%2CBattambang%2CBayon%2CBokor%2CChenla%2CContent%2CDangrek%2CFasthand%2CFreehand%2CHanuman%2CKdam%20Thmor%20Pro%2CKantumruy%20Pro%2CKhmer%2CKhmer%20Koulen%2CKhmer%20OS%20Battambang%2CKhmer%20Mool%2CKhmer%20OS%20Muol%2CKhmer%20Ratanakiri%2CKonkhmer%20Sleokchher%2CKoh%20Santepheap%2CMoul%2CMoulpali%2CMetal%2CNokora%2COdor%20Mean%20Chey%2CPreahvihear%2CSiemreap%2CSuwannaphum%2CTaprom" target="_blank">Khmer</a> •
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%E0%BD%81%E0%BE%B1%E0%BD%B2%E0%BD%98%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%B4%E0%BD%91%E0%BC%8B%E0%BD%A6%E0%BE%A4%E0%BE%B1%E0%BD%B2%E0%BD%A2%E0%BC%8B%E0%BD%82%E0%BE%B2%E0%BE%AD%E0%BC%8B%E0%BD%94%E0%BC%8B%E0%BD%99%E0%BD%82%E0%BC%8B%E0%BD%A6%E0%BE%92%E0%BE%B2%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%93%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%91%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%A6%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%E0%BD%81%E0%BE%B1%E0%BD%B2%E0%BD%98%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%B4%E0%BD%91%E0%BC%8B%E0%BD%A6%E0%BE%A4%E0%BE%B1%E0%BD%B2%E0%BD%A2%E0%BC%8B%E0%BD%82%E0%BE%B2%E0%BE%AD%E0%BC%8B%E0%BD%94%E0%BC%8B%E0%BD%99%E0%BD%82%E0%BC%8B%E0%BD%A6%E0%BE%92%E0%BE%B2%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%93%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%91%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%A6%3Cdiv%3E&css=%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Afrom-font%3B%20%7D%0A&lang=bo&fontSize=49&width=882&height=287&a=How%20far%20does%20text-underline-position%3Afrom-font%20move%20the%20underline%20downwards%20in%20Tibetan%20text%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AMac%20fonts%2CKailasa%2CKokonor%2Ctitle%3AWindows%20fonts%2CMicrosoft%20Himalaya%2Ctitle%3AGoogle%2FSIL%2CNoto%20Serif%20Tibetan%2Ctitle%3AOther%2CTibetan%20Machine%20Uni%2CUchen_05%2CBabelstone%20Tibetan%20Slim" target="_blank">Tibetan</a>
+</p>
+
+
+
+<p>r12a: <a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%D8%A3%D9%85%D8%A7%D8%B2%D9%8A%D8%BA%20%D9%8A%D9%88%D9%85%20%D9%81%D9%8A%20%D9%83%D9%84%20%D9%84%D8%B1%D9%8A%20%D8%A5%D9%86%D8%B3%D8%A7%D9%86&fonts=Al%20Bayan%2CAl%20Nile%2CAl%20Tarikh%2CArial%2CBaghdad%2CDamascus%2CDecotype%20Naskh%2CGeeza%20Pro%2CMishafi%2CMishafi%20Gold%2CMuna%2CNadeem%2CArial%20Unicode%20MS%2CMyriad%20Arabic%2CTahoma%2CDiwan%20Thuluth%2CWaseem%2CDiwan%20Kufi%2CKufiStandardGK%2CSana%2CBeirut%2CFarah%2Ctitle%3AWindows%20fonts%2CArabic%20Typesetting%2CArial%2CCalibri%2CSakkal%20Majalla%2CSimplified%20Arabic%2CTraditional%20Arabic%2CSegoe%20UI%2CTahoma%2CAndalus%2CAldhabi%2CCourier%20New%2CSimplified%20Arabic%20Fixed%2CMicrosoft%20Uighur%2Ctitle%3AGoogle%2FSIL%2CNoto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2Ctitle%3AOther%20fonts%2CAmiri%2CAref%20Ruqaa%2CBeirut%2CLateef%2CTahoma%2CWaseem&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-position%3Afrom-font%3B&lang=ar" target="_blank">Arabic (no vowel signs)</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%D8%AF%D8%A7%D8%B3%DB%90%20%D9%85%D9%9B%D8%B9%D9%91%D9%9C%D8%B1%D9%9C%20%D8%AA%E0%A3%BA%D9%8A%D8%B1%E0%A3%B9%20%D9%84%E0%A3%B8%D8%B1%D9%90%D9%8A%E0%A3%BA%20%D8%AA%D9%8F%D9%81%D9%92%D9%84%D9%90%20%DA%AF%D8%B1%D9%9F%D8%B3%D8%A0%20%D8%A8%D8%A7%DB%92&fonts=Noto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2CAmiri%2CLateef%2CAlkalami%2CHarmattan%2CRuwudu&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-position%3Afrom-font%3B" target="_blank">Wolofal, Hausa, Pashto, Kashmiri (Arabic WITH vowel signs)</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%EA%A6%89%EA%A6%A9%EA%A6%B8%EA%A6%8F%EA%A7%80%EA%A6%97%EA%A6%B8%EA%A6%81%EA%A6%8F%EA%A6%BA%EA%A6%A2%EA%A6%83%EA%A6%8A%EA%A6%A9%EA%A6%BC%EA%A6%B1%EA%A7%80%EA%A6%8F%EA%A6%A4%EA%A7%80%EA%A6%9B%EA%A6%B6%EA%A6%AD%EA%A7%80%EA%A6%8F%EA%A6%A5%EA%A6%BF%EA%A6%97%EA%A6%B8%EA%A6%AB%EA%A6%B6%EA%A6%A0%EA%A6%A4%EA%A7%80&fonts=Javanese%20Text%2CNoto%20Sans%20Javanese%2CTuladha%20Jejeg%20OT%2CYogyakarta%2CYogya&css=text-decoration%3A%20underline%20tan%3Btext-underline-position%3A%20from-font%3B&lang=bo" target="_blank">Javanese</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E1%9E%A2%E1%9E%84%E1%9F%92%E1%9E%82%E1%9F%92%E1%9E%9B%E1%9F%81%E1%9E%9F%E1%9E%9F%E1%9E%84%E1%9E%9F%E1%9F%92%E1%9E%80%E1%9F%92%E1%9E%9A%E1%9E%B7%E1%9E%8F%E1%9E%9F%E1%9E%B6%E1%9E%9F%E1%9F%92%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%B6%E1%9E%85%E1%9E%B6%E1%9E%9A%E1%9F%92%E1%9E%99&fonts=Khmer%20MN%2CKhmer%20Sangam%20MN%2CDaunPenh%2CLeelawadee%20UI%2CMoolBoran%2CKhmer%20UI%2CBusra%2CKhmer%20Busra%2CKhmer%20Mondulkiri%2CNoto%20Sans%20Khmer%2CNoto%20Serif%20Khmer%2CKhmer%20Ratanakiri%2CKhmer%20Oureang%2CAngkor%2CBattambang%2CBayon%2CBokor%2CChenla%2CContent%2CDangrek%2CFasthand%2CFreehand%2CHanuman%2CKdam%20Thmor%20Pro%2CKantumruy%20Pro%2CKhmer%2CKhmer%20Koulen%2CKhmer%20OS%20Battambang%2CKhmer%20Mool%2CKhmer%20OS%20Muol%2CKhmer%20Ratanakiri%2CKonkhmer%20Sleokchher%2CKoh%20Santepheap%2CMoul%2CMoulpali%2CMetal%2CNokora%2COdor%20Mean%20Chey%2CPreahvihear%2CSiemreap%2CSuwannaphum%2CTaprom&css=text-decoration%3A%20underline%20tan%3Btext-underline-position%3A%20from-font%3B&lang=km" target="_blank">Khmer</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E0%BD%81%E0%BE%B1%E0%BD%B2%E0%BD%98%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%B4%E0%BD%91%E0%BC%8B%E0%BD%A6%E0%BE%A4%E0%BE%B1%E0%BD%B2%E0%BD%A2%E0%BC%8B%E0%BD%82%E0%BE%B2%E0%BE%AD%E0%BC%8B%E0%BD%94%E0%BC%8B%E0%BD%99%E0%BD%82%E0%BC%8B%E0%BD%A6%E0%BE%92%E0%BE%B2%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%93%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%91%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%A6&fonts=Kailasa%2CKokonor%2CMicrosoft%20Himalaya%2CNoto%20Serif%20Tibetan%2CTibetan%20Machine%20Uni%2CUchen_05%2CBabelstone%20Tibetan%20Slim&css=text-decoration%3A%20underline%20tan%3Btext-underline-position%3Afrom-font%3B&lang=bo" target="_blank">Tibetan</a>
+</p>
+
+
+
+
+
+
+
+
+
+
+<p class="results" style="font-style: italic; margin-block-start:3em;">Test results...</p>
+
+
+<p><span class="leadin">Arabic.</span> Tests with 43 system, Noto, and SIL Arabic fonts found that only 11 moved the underline down when <code class="kw" translate="no">from-font</code> was applied. Of those 11, only 7 actually cleared the descenders. Diacritics below the descenders are not usually present in Arabic and Persian language text, but they may occur for educational or clarification purposes, and there are certain orthographies using the Arabic script that always include all diacritics (such as African ajami texts). When diacritics appear below the descenders they are sometimes bisected by the underline.</p>
+
+<figure class="resultsImg" id="fig_arabic_from_font_results">
+<img src="underline-data/arabic_from_font_results.jpg" alt="" style="width:20rem;">
+<figcaption>Vowelled words from Wolofal, Hausa, Pashto, and Kashmiri. Only Scheherazade New and Amiri fonts move the underline down when from-font is applied. Neither clears all the diacritics.</figcaption>
+</figure>
+
+<p><span class="leadin">Javanese &amp; Khmer.</span> None of the fonts tested moved the underline.</p>
+
+<p><span class="leadin">Tibetan</span> The application of this property only produced a small shift in the position of the underline for those fonts with the metric. The bottom of the subjoined glyphs (and sometimes single consonant descenders) was not cleared.</p>
+
+<figure class="resultsImg" id="fig_tibetan_from_font_results">
+<img src="underline-data/fig_tibetan_from_font_results.jpg" alt="" style="width:20rem;">
+<figcaption>Test results for Tibetan fonts on macOS in the Chrome browser.</figcaption>
+</figure>
+</div>
+</details>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section id="under">
+<h3>Positioning below the em box (<code class="kw" translate="no">under</code>)</h3>
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-position:under</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+<p>An alternative to <code class="kw" translate="no">from-font</code> that works for all fonts is <code class="kw" translate="no">text-underline-position:under</code>. This is designed to push the underline below the font's em box descent metric.</p>
+
+
+<figure id="fig_under_example">
+<p><img src="underline-data/fig_under_example.jpg" alt="" style="margin-block:1rem; width:20em;"></p>
+<figcaption>Vowelled Arabic text where <code class="kw" translate="no">under</code> is applied.</figcaption>
+</figure>
+
+
+<!--<div class="sidenoteGroup">
+
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅ All three major browser engines support the use of <code class="kw" translate="no">text-underline-position:under</code>.</p>
+<p style="font-style: italic;">Note: Safari only renders pre-installed macOS fonts or webfonts.</p>
+
+
+<figure id="fig_under_example" style="width:100%; margin-inline:0;">
+<figcaption>Vowelled Arabic text where <code class="kw" translate="no">under</code> is applied.</figcaption>
+<p><img src="underline-data/fig_under_example.jpg" alt="" style="margin-block:1rem; width:100%;"></p>
+</figure>
+</aside>
+</div>
+-->
+<p>The position below the alphabetic baseline still varies from font to font, but the underline typically appears slightly lower than that produced by<code class="kw" translate="no">from-font</code>. From the fonts tested, however, there is still a degree of unpredictability regarding where the line will be drawn, and the result differs depending on which browser is used. In some cases, the basic descenders are cleared, but in others, especially when vowel markers appear below long descenders or stacks, they are not.</p>
+
+<p>So, you should still test the results for a given font, and on multiple browsers.</p>
+
+<p>As mentioned in the previous section, it is possible to set <code class="kw" translate="no">text-underline-position</code> just once for the whole document; then any <code class="kw" translate="no">text-decoration</code> property that is used will automatically apply it. The CSS specification suggests the following.</p>
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">:root { text-underline-position:under; }</code></pre>
+</figure>
+
+<style>
+#demo-under .test_lines { font-size: 2.4rem; line-height: 2; font-family: 'Scheherazade New WF'; }
+#demo-under u { text-decoration: underline 2px tan; }
+</style>
+
+<div id="demo-under" class="browser_output">
+<p class="browser_output_title">Output in your browser (only the bottom two lines use text-underline-position):</p>
+
+<div class="test_lines">
+<div id="test-under-control">
+<p lang="ar" dir="rtl"><u>أَمَازِيغ يَوْم فيِ كُلّ هٰذِهِ إِنْسَان</u></p>
+</div>
+<div id="test-under_nodiac" style="text-underline-position: under;" >
+<p lang="ar" dir="rtl"><u>أمازيغ يوم في كل هٰذه إنسان</u></p>
+</div>
+<div id="test-under" style="text-underline-position: under;" >
+<p lang="ar" dir="rtl"><u>داسې مٛعّٜرٜ تࣺيرࣹ لࣸرِيࣺ تُفْلِ گرٟسؠ باے</u></p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="document.getElementById('test-under').style.fontFamily = this.value; document.getElementById('test-under_nodiac').style.fontFamily = this.value; document.getElementById('test-under-control').style.fontFamily = this.value;" placeholder="Scheherazade New WF">
+</p>
+</div>
+
+
+
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-position:under</code>.</p>
+
+<p>Safari only renders pre-installed macOS fonts or webfonts.</p>
+
+
+
+
+
+
+<details class="moreTests">
+<summary>More tests...</summary>
+
+<div class="testData">
+<p>The following links allow you to test this property and value against a range of fonts. The links open a web page in a separate browser window. The text is composed from lists of words or graphemes that show long descenders.</p>
+
+<p>There are two types of test. One (W3C) allows you to change the font by mousing over or tapping on the fonts in a list. The other (r12a) lists the text with all fonts at the same time. Of course, the tests only produce results for the fonts installed on your device or platform. Note, in particular, that WebKit browsers do not allow you to access non-system fonts unless they are packaged as webfonts.</p>
+
+<p>W3C: <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%D8%A3%D9%85%D8%A7%D8%B2%D9%8A%D8%BA%20%D9%8A%D9%88%D9%85%20%D9%81%D9%8A%20%D9%83%D9%84%20%D9%84%D8%B1%D9%8A%20%D8%A5%D9%86%D8%B3%D8%A7%D9%86%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%D8%A3%D9%85%D8%A7%D8%B2%D9%8A%D8%BA%20%D9%8A%D9%88%D9%85%20%D9%81%D9%8A%20%D9%83%D9%84%20%D9%84%D8%B1%D9%8A%20%D8%A5%D9%86%D8%B3%D8%A7%D9%86%3C%2Fdiv%3E&css=%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%20%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Aunder%3B%20%7D%0A&lang=ar&fontSize=50&width=882&height=247&a=How%20far%20does%20text-underline-position%3Aunder%20move%20the%20underline%20downwards%20in%20Arabic%20text%20(no%20diacritics)%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AMac%20fonts%2CAl%20Bayan%2CAl%20Nile%2CAl%20Tarikh%2CArial%2CBaghdad%2CDamascus%2CDecotype%20Naskh%2CGeeza%20Pro%2CMishafi%2CMishafi%20Gold%2CMuna%2CNadeem%2CArial%20Unicode%20MS%2CMyriad%20Arabic%2CTahoma%2CDiwan%20Thuluth%2CWaseem%2CDiwan%20Kufi%2CKufiStandardGK%2CSana%2CBeirut%2CFarah%2Ctitle%3AWindows%20fonts%2CArabic%20Typesetting%2CArial%2CSakkal%20Majalla%2CSimplified%20Arabic%2CTraditional%20Arabic%2CSegoe%20UI%2CTahoma%2CAndalus%2CAldhabi%2CCourier%20New%2CSimplified%20Arabic%20Fixed%2Ctitle%3AGoogle%2FSIL%2CNoto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2Ctitle%3AOther%20fonts%2CAmiri%2CAref%20Ruqaa%2CBeirut%2CLateef%2CTahoma%2CWaseem" target="_blank">Arabic (NO vowel signs)</a> • 
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%D8%AF%D8%A7%D8%B3%DB%90%20%D9%85%D9%9B%D8%B9%D9%91%D9%9C%D8%B1%D9%9C%20%D8%AA%E0%A3%BA%D9%8A%D8%B1%E0%A3%B9%20%D9%84%E0%A3%B8%D8%B1%D9%90%D9%8A%E0%A3%BA%20%D8%AA%D9%8F%D9%81%D9%92%D9%84%D9%90%20%DA%AF%D8%B1%D9%9F%D8%B3%D8%A0%20%D8%A8%D8%A7%DB%92%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%D8%AF%D8%A7%D8%B3%DB%90%20%D9%85%D9%9B%D8%B9%D9%91%D9%9C%D8%B1%D9%9C%20%D8%AA%E0%A3%BA%D9%8A%D8%B1%E0%A3%B9%20%D9%84%E0%A3%B8%D8%B1%D9%90%D9%8A%E0%A3%BA%20%D8%AA%D9%8F%D9%81%D9%92%D9%84%D9%90%20%DA%AF%D8%B1%D9%9F%D8%B3%D8%A0%20%D8%A8%D8%A7%DB%92%3C%2Fdiv%3E&css=%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%20%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Aunder%3B%20%7D%0A&fontSize=50&width=882&height=289&a=How%20far%20does%20text-underline-position%3Aunder%20move%20the%20underline%20downwards%20in%20Arabic%20ajami%20with%20below%20base%20diacritics%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3ANoto%2FSIL%20fonts%2CNoto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2CAlkalami%2CHarmattan%2CRuwudu%2Ctitle%3AOther%20fonts%2CAmiri%2CLateef" target="_blank">Wolofal, Hausa, Pashto, Kashmiri (Arabic WITH vowel signs)</a> • 
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%EA%A6%89%EA%A6%A9%EA%A6%B8%EA%A6%8F%EA%A7%80%EA%A6%97%EA%A6%B8%EA%A6%81%EA%A6%8F%EA%A6%BA%EA%A6%A2%EA%A6%83%EA%A6%8A%EA%A6%A9%EA%A6%BC%EA%A6%B1%EA%A7%80%EA%A6%8F%EA%A6%A4%EA%A7%80%EA%A6%9B%EA%A6%B6%EA%A6%AD%EA%A7%80%EA%A6%8F%EA%A6%A5%EA%A6%BF%EA%A6%97%EA%A6%B8%EA%A6%AB%EA%A6%B6%EA%A6%A0%EA%A6%A4%EA%A7%80%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%EA%A6%89%EA%A6%A9%EA%A6%B8%EA%A6%8F%EA%A7%80%EA%A6%97%EA%A6%B8%EA%A6%81%EA%A6%8F%EA%A6%BA%EA%A6%A2%EA%A6%83%EA%A6%8A%EA%A6%A9%EA%A6%BC%EA%A6%B1%EA%A7%80%EA%A6%8F%EA%A6%A4%EA%A7%80%EA%A6%9B%EA%A6%B6%EA%A6%AD%EA%A7%80%EA%A6%8F%EA%A6%A5%EA%A6%BF%EA%A6%97%EA%A6%B8%EA%A6%AB%EA%A6%B6%EA%A6%A0%EA%A6%A4%EA%A7%80%3C%2Fdiv%3E&css=.test%20%7B%20line-height%3A%203%3B%20%7D%0A%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Aunder%3B%20%7D%0A&lang=jv&fontSize=40&width=882&height=269&a=How%20far%20does%20text-underline-position%3Aunder%20move%20the%20underline%20downwards%20in%20Javanese%20text%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AWindows%20fonts%2CJavanese%20Text%2Ctitle%3AGoogle%2FSIL%2CNoto%20Sans%20Javanese%2Ctitle%3AOther%20fonts%2CTuladha%20Jejeg%20OT%2CYogyakarta%2CYogya" target="_blank">Javanese</a> •
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%E1%9E%A2%E1%9E%84%E1%9F%92%E1%9E%82%E1%9F%92%E1%9E%9B%E1%9F%81%E1%9E%9F%E1%9E%9F%E1%9E%84%E1%9E%9F%E1%9F%92%E1%9E%80%E1%9F%92%E1%9E%9A%E1%9E%B7%E1%9E%8F%E1%9E%9F%E1%9E%B6%E1%9E%9F%E1%9F%92%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%B6%E1%9E%85%E1%9E%B6%E1%9E%9A%E1%9F%92%E1%9E%99%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%E1%9E%A2%E1%9E%84%E1%9F%92%E1%9E%82%E1%9F%92%E1%9E%9B%E1%9F%81%E1%9E%9F%E1%9E%9F%E1%9E%84%E1%9E%9F%E1%9F%92%E1%9E%80%E1%9F%92%E1%9E%9A%E1%9E%B7%E1%9E%8F%E1%9E%9F%E1%9E%B6%E1%9E%9F%E1%9F%92%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%B6%E1%9E%85%E1%9E%B6%E1%9E%9A%E1%9F%92%E1%9E%99%3C%2Fdiv%3E&css=.test%20%7B%20line-height%3A%203%3B%20%7D%0A%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Aunder%3B%20%7D%0A&lang=km&fontSize=40&width=882&height=269&a=How%20far%20does%20text-underline-position%3Aunder%20move%20the%20underline%20downwards%20in%20Khmer%20text%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AMac%20fonts%2CKhmer%20MN%2CKhmer%20Sangam%20MN%2Ctitle%3AWindows%20fonts%2CDaunPenh%2CLeelawadee%20UI%2CMoolBoran%2CKhmer%20UI%2Ctitle%3AGoogle%2FSIL%2CBusra%2CKhmer%20Busra%2CKhmer%20Mondulkiri%2CNoto%20Sans%20Khmer%2CNoto%20Serif%20Khmer%2CKhmer%20Ratanakiri%2CKhmer%20Oureang%2Ctitle%3AOther%20fonts%2CAngkor%2CBattambang%2CBayon%2CBokor%2CChenla%2CContent%2CDangrek%2CFasthand%2CFreehand%2CHanuman%2CKdam%20Thmor%20Pro%2CKantumruy%20Pro%2CKhmer%2CKhmer%20Koulen%2CKhmer%20OS%20Battambang%2CKhmer%20Mool%2CKhmer%20OS%20Muol%2CKhmer%20Ratanakiri%2CKonkhmer%20Sleokchher%2CKoh%20Santepheap%2CMoul%2CMoulpali%2CMetal%2CNokora%2COdor%20Mean%20Chey%2CPreahvihear%2CSiemreap%2CSuwannaphum%2CTaprom" target="_blank">Khmer</a> •
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%E0%BD%81%E0%BE%B1%E0%BD%B2%E0%BD%98%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%B4%E0%BD%91%E0%BC%8B%E0%BD%A6%E0%BE%A4%E0%BE%B1%E0%BD%B2%E0%BD%A2%E0%BC%8B%E0%BD%82%E0%BE%B2%E0%BE%AD%E0%BC%8B%E0%BD%94%E0%BC%8B%E0%BD%99%E0%BD%82%E0%BC%8B%E0%BD%A6%E0%BE%92%E0%BE%B2%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%93%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%91%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%A6%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%E0%BD%81%E0%BE%B1%E0%BD%B2%E0%BD%98%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%B4%E0%BD%91%E0%BC%8B%E0%BD%A6%E0%BE%A4%E0%BE%B1%E0%BD%B2%E0%BD%A2%E0%BC%8B%E0%BD%82%E0%BE%B2%E0%BE%AD%E0%BC%8B%E0%BD%94%E0%BC%8B%E0%BD%99%E0%BD%82%E0%BC%8B%E0%BD%A6%E0%BE%92%E0%BE%B2%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%93%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%91%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%A6%3Cdiv%3E&css=%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3Aunder%3B%20%7D%0A&lang=bo&fontSize=49&width=882&height=287&a=How%20far%20does%20text-underline-position%3Aunder%20move%20the%20underline%20downwards%20in%20Tibetan%20text%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AMac%20fonts%2CKailasa%2CKokonor%2Ctitle%3AWindows%20fonts%2CMicrosoft%20Himalaya%2Ctitle%3AGoogle%2FSIL%2CNoto%20Serif%20Tibetan%2Ctitle%3AOther%2CTibetan%20Machine%20Uni%2CUchen_05%2CBabelstone%20Tibetan%20Slim" target="_blank">Tibetan</a>
+</p>
+
+
+
+<p>r12a: <a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%D8%A3%D9%85%D8%A7%D8%B2%D9%8A%D8%BA%20%D9%8A%D9%88%D9%85%20%D9%81%D9%8A%20%D9%83%D9%84%20%D9%84%D8%B1%D9%8A%20%D8%A5%D9%86%D8%B3%D8%A7%D9%86&fonts=Al%20Bayan%2CAl%20Nile%2CAl%20Tarikh%2CArial%2CBaghdad%2CDamascus%2CDecotype%20Naskh%2CGeeza%20Pro%2CMishafi%2CMishafi%20Gold%2CMuna%2CNadeem%2CArial%20Unicode%20MS%2CMyriad%20Arabic%2CTahoma%2CDiwan%20Thuluth%2CWaseem%2CDiwan%20Kufi%2CKufiStandardGK%2CSana%2CBeirut%2CFarah%2Ctitle%3AWindows%20fonts%2CArabic%20Typesetting%2CArial%2CCalibri%2CSakkal%20Majalla%2CSimplified%20Arabic%2CTraditional%20Arabic%2CSegoe%20UI%2CTahoma%2CAndalus%2CAldhabi%2CCourier%20New%2CSimplified%20Arabic%20Fixed%2CMicrosoft%20Uighur%2Ctitle%3AGoogle%2FSIL%2CNoto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2Ctitle%3AOther%20fonts%2CAmiri%2CAref%20Ruqaa%2CBeirut%2CLateef%2CTahoma%2CWaseem&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-position%3Aunder%3B&lang=ar" target="_blank">Arabic (no vowel signs)</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%D8%AF%D8%A7%D8%B3%DB%90%20%D9%85%D9%9B%D8%B9%D9%91%D9%9C%D8%B1%D9%9C%20%D8%AA%E0%A3%BA%D9%8A%D8%B1%E0%A3%B9%20%D9%84%E0%A3%B8%D8%B1%D9%90%D9%8A%E0%A3%BA%20%D8%AA%D9%8F%D9%81%D9%92%D9%84%D9%90%20%DA%AF%D8%B1%D9%9F%D8%B3%D8%A0%20%D8%A8%D8%A7%DB%92&fonts=Noto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2CAmiri%2CLateef%2CAlkalami%2CHarmattan%2CRuwudu&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-position%3Aunder%3B" target="_blank">Wolofal, Hausa, Pashto, Kashmiri (Arabic WITH vowel signs)</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%EA%A6%89%EA%A6%A9%EA%A6%B8%EA%A6%8F%EA%A7%80%EA%A6%97%EA%A6%B8%EA%A6%81%EA%A6%8F%EA%A6%BA%EA%A6%A2%EA%A6%83%EA%A6%8A%EA%A6%A9%EA%A6%BC%EA%A6%B1%EA%A7%80%EA%A6%8F%EA%A6%A4%EA%A7%80%EA%A6%9B%EA%A6%B6%EA%A6%AD%EA%A7%80%EA%A6%8F%EA%A6%A5%EA%A6%BF%EA%A6%97%EA%A6%B8%EA%A6%AB%EA%A6%B6%EA%A6%A0%EA%A6%A4%EA%A7%80&fonts=Javanese%20Text%2CNoto%20Sans%20Javanese%2CTuladha%20Jejeg%20OT%2CYogyakarta%2CYogya&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-position%3A%20under%3B&lang=jv" target="_blank">Javanese</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E1%9E%A2%E1%9E%84%E1%9F%92%E1%9E%82%E1%9F%92%E1%9E%9B%E1%9F%81%E1%9E%9F%E1%9E%9F%E1%9E%84%E1%9E%9F%E1%9F%92%E1%9E%80%E1%9F%92%E1%9E%9A%E1%9E%B7%E1%9E%8F%E1%9E%9F%E1%9E%B6%E1%9E%9F%E1%9F%92%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%B6%E1%9E%85%E1%9E%B6%E1%9E%9A%E1%9F%92%E1%9E%99&fonts=Khmer%20MN%2CKhmer%20Sangam%20MN%2CDaunPenh%2CLeelawadee%20UI%2CMoolBoran%2CKhmer%20UI%2CBusra%2CKhmer%20Busra%2CKhmer%20Mondulkiri%2CNoto%20Sans%20Khmer%2CNoto%20Serif%20Khmer%2CKhmer%20Ratanakiri%2CKhmer%20Oureang%2CAngkor%2CBattambang%2CBayon%2CBokor%2CChenla%2CContent%2CDangrek%2CFasthand%2CFreehand%2CHanuman%2CKdam%20Thmor%20Pro%2CKantumruy%20Pro%2CKhmer%2CKhmer%20Koulen%2CKhmer%20OS%20Battambang%2CKhmer%20Mool%2CKhmer%20OS%20Muol%2CKhmer%20Ratanakiri%2CKonkhmer%20Sleokchher%2CKoh%20Santepheap%2CMoul%2CMoulpali%2CMetal%2CNokora%2COdor%20Mean%20Chey%2CPreahvihear%2CSiemreap%2CSuwannaphum%2CTaprom&css=text-decoration%3A%20underline%20tan%3Btext-underline-position%3A%20under%3B&lang=km" target="_blank">Khmer</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E0%BD%81%E0%BE%B1%E0%BD%B2%E0%BD%98%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%B4%E0%BD%91%E0%BC%8B%E0%BD%A6%E0%BE%A4%E0%BE%B1%E0%BD%B2%E0%BD%A2%E0%BC%8B%E0%BD%82%E0%BE%B2%E0%BE%AD%E0%BC%8B%E0%BD%94%E0%BC%8B%E0%BD%99%E0%BD%82%E0%BC%8B%E0%BD%A6%E0%BE%92%E0%BE%B2%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%93%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%91%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%A6&fonts=Kailasa%2CKokonor%2CMicrosoft%20Himalaya%2CNoto%20Serif%20Tibetan%2CTibetan%20Machine%20Uni%2CUchen_05%2CBabelstone%20Tibetan%20Slim&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-position%3Aunder%3B&lang=bo" target="_blank">Tibetan</a>
+</p>
+
+
+
+
+
+
+
+
+
+<p class="results" style="font-style: italic; margin-block-start:3em;">Test results...</p>
+
+<p>For all results, the actual position for a given font varies from browser to browser. Click on the images to see them full-size.</p>
+
+<p><span class="leadin">Arabic.</span> For Arabic fonts, this setting generally clears the bottom of the descenders, but several fonts still run the underline through or above the diacritics. For a small number of fonts there is a sizeable gap between the bottom of the ink and the underline.</p>
+
+
+<figure class="resultsImg" id="fig_arabic_under_results">
+<img src="underline-data/fig_arabic_under_results.jpg" alt="" style="width:100%;">
+<figcaption>A selection of Arabic test results for Chrome (left), Firefox (middle) and Safari (right), when the value is set to <code class="kw" translate="no">under</code>.</figcaption>
+</figure>
+
+
+<p><span class="leadin">Javanese.</span> In the Chrome browser the underline cuts through descenders and subjoined consonants, but Firefox and Safari (which only displays one font) both clear the bottom of all glyphs.</p>
+
+
+
+<figure class="resultsImg" id="fig_javanese_under_results">
+<div style="white-space: nowrap;">
+<img src="underline-data/fig_javanese_under_results.jpg" alt="" style="width:100%;">
+</div>
+<figcaption>A selection of Javanese test results for Chrome (left), Firefox (middle) and Safari (right), when the value is set to <code class="kw" translate="no">under</code>.</figcaption>
+</figure>
+
+
+<p><span class="leadin">Khmer.</span> In the Chrome browser the underline sometimes clears single subjoined consonants, but not always. When there are two subjoined consonants (not very common), the line doesn't clear the bottom of the glyph. Firefox and Safari (only two fonts shown) both clear the bottom of all glyphs. For a typical text, this means that there is a fair-sized gap between the line and the bottom of the glyphs.</p>
+
+
+
+<figure class="resultsImg" id="fig_khmer_under_results">
+<div style="white-space: nowrap;">
+<img src="underline-data/fig_khmer_under_results.jpg" alt="" style="width:100%;">
+</div>
+<figcaption>A selection of Khmer test results for Chrome (left), Firefox (middle) and Safari (right), when the value is set to <code class="kw" translate="no">under</code>.</figcaption>
+</figure>
+
+
+<p><span class="leadin">Tibetan.</span> Chrome is again more conservative, placing the line just below or bisecting vowels after medial consonants. Firefox and Safari (just the first 2 fonts shown) typically just clear the vowels after medials, but Firefox creates an unexpectedly large gap for Noto Serif Tibetan.</p>
+
+
+
+<figure class="resultsImg" id="fig_tibetan_under_results">
+<div style="white-space: nowrap;">
+<img src="underline-data/fig_tibetan_under_results.jpg" alt="" style="width:100%;">
+</div>
+<figcaption>A selection of Tibetan test results for Chrome (left), Firefox (middle) and Safari (right), when the value is set to <code class="kw" translate="no">under</code>.</figcaption>
+</figure>
+
+
+
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅ where that metric is available in the font.</p><p>Notes:</p>
+<p>Safari only renders pre-installed macOS fonts.</p>
+</aside>
+</div>
+</details>
+</div>
+</section>
+
+
+
+
+
+
+
+
+<section id="underline_offset">
+<h3>Specifying the distance explicitly (<code class="kw" translate="no">text-underline-offset</code>)</h3>
+
+
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-offset</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+<p><a href="https://drafts.csswg.org/css-text-decor-4/#text-underline-position-property"><code class="kw" translate="no">text-underline-offset</code></a> provides a more reliable positioning of the underline relative to the text than the other approaches. For example, if you want to be sure that an underline always clears the glyphs,  this generally provides much more predictable results than the previous approaches. Although you may need to set a different offset for each type of script, the test results indicate that the results don't vary as much, if at all, on a font to font basis.</p>
+
+
+<!--<div class="sidenoteGroup">
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅ All three major browser engines support the use of <code class="kw" translate="no">text-underline-offset</code>.</p>
+<p style="font-style: italic;">Note: Safari only renders pre-installed macOS fonts or webfonts.</p>
+
+
+<figure id="fig_offset_example" style="width:100%; margin-inline:0;">
+<figcaption>Vowelled Arabic text where <code class="kw" translate="no">text-underline-offset</code> is set to <code class="kw" translate="no">75%</code>.</figcaption>
+<p><img src="underline-data/fig_offset_example.jpg" alt="" style="margin-block:1rem; width:100%;"></p>
+</figure>
+</aside>
+</div>
+-->
+
+
+
+
+
+
+<figure id="fig_offset_example">
+<p><img src="underline-data/fig_offset_example.jpg" alt="" style="margin-block:1rem; width:20rem;"></p>
+<figcaption>Vowelled Arabic text where <code class="kw" translate="no">text-underline-offset</code> is set to <code class="kw" translate="no">75%</code>.</figcaption>
+</figure>
+
+
+
+<p>The value can be expressed as a fixed distance, for example using <code class="kw" translate="no">px</code>, but generally speaking this is suboptimal because if the font size is changed that distance remains the same. It would be necessary to change the underline offset each time a change is made to the font size. A better approach is to specify the distance in ems or as a percentage.</p>
+
+<p>The actual value needed will commonly depend on the <strong>script</strong> characteristics.  The tests run below showed the following values to be effective on the whole: for unvowelled Arabic, 45%; for vowelled Arabic orthographies, 75%; for Javanese, 100%; for Khmer, 90%, and for Tibetan, 60%. However, some font variation also occurs; for example, unvowelled text in the Scheherazade New and Amiri fonts required a setting of 60%, rather than 45%.</p>
+
+<p>It follows, then, that the font family and the underline offset for the text need to both be set at the same time. However, it's not necessary to change the value when the font size varies, and, unlike the other alternatives just discussed, one setting is more likely to be useful for most or all fonts used for that script.</p>
+
+<p>Values for <code class="kw" translate="no">text-underline-offset</code> can be negative, allowing you to move the underline higher as well as lower.</p>
+
+<p>Be aware that the offset is calculated in addition to any <code class="kw" translate="no">text-underline-position</code> setting. Unless you have a reason not to, it's best to ensure that <code class="kw" translate="no">text-underline-position</code> is not set when <code class="kw" translate="no">text-underline-offset</code> is applied.</p>
+
+<p>If the value is set to <code class="kw" translate="no">auto</code> the browser takes control of the positioning. Note that if <code class="kw" translate="no">text-underline-position</code> is also set to <code class="kw" translate="no">from-font</code>, then that overrides any <code class="kw" translate="no">text-underline-offset:auto</code> setting.</p>
+
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">:root { text-underline-offset:&lt;distance&gt;; }</code></pre>
+</figure>
+
+<style>
+#demo-offset .test_lines { font-size: 2.4rem; line-height: 2; font-family: 'Scheherazade New WF'; }
+#demo-offset u { text-decoration: underline 2px tan; }
+</style>
+
+<div id="demo-offset" class="browser_output">
+<p class="browser_output_title">Output in your browser (only the bottom line uses text-underline-offset):</p>
+
+<div class="test_lines">
+<div id="test-offset-control">
+<p lang="ar" dir="rtl"><u>داسې مٛعّٜرٜ تࣺيرࣹ لࣸرِيࣺ تُفْلِ گرٟسؠ باے</u></p>
+</div>
+<div>
+<p id="test-offset" lang="ar" dir="rtl" style="text-underline-offset: 75%;"><u>داسې مٛعّٜرٜ تࣺيرࣹ لࣸرِيࣺ تُفْلِ گرٟسؠ باے</u></p>
+</div>
+</div>
+
+<p class="options">Choose a font: 
+<input placeholder="Scheherazade New"
+    oninput="document.getElementById('test-offset').style.fontFamily = this.value; document.getElementById('test-offset-control').style.fontFamily = this.value;"
+    > 
+    Change the offset: <input id="offsetSlider" type="range" min="20" max="100" step="1" value="75" oninput="document.getElementById('test-offset').style.textUnderlineOffset = this.value+'%';
+         document.getElementById('offsetSliderValue').value=this.value+'%';"
+         style="width:8rem; height:1rem;" placeholder="Scheherazade New WF">
+<input value="75%" id="offsetSliderValue" style="width:3em;">
+</p>
+</div>
+
+
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-offset</code>.</p>
+
+<p>Safari only renders pre-installed macOS fonts or webfonts.</p>
+
+
+
+
+
+
+<details class="moreTests">
+<summary>More tests...</summary>
+
+<div class="testData">
+<p>The following links allow you to test this property and value against a range of fonts. The links open a web page in a separate browser window. The text is composed from lists of words or graphemes that show long descenders.</p>
+
+<p>There are two types of test. One (W3C) allows you to change the font by mousing over or tapping on the fonts in a list. The other (r12a) lists the text with all fonts at the same time. Of course, the tests only produce results for the fonts installed on your device or platform. Note, in particular, that WebKit browsers do not allow you to access non-system fonts unless they are packaged as webfonts.</p>
+
+<p>W3C: <a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%D8%A3%D9%85%D8%A7%D8%B2%D9%8A%D8%BA%20%D9%8A%D9%88%D9%85%20%D9%81%D9%8A%20%D9%83%D9%84%20%D9%84%D8%B1%D9%8A%20%D8%A5%D9%86%D8%B3%D8%A7%D9%86%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%D8%A3%D9%85%D8%A7%D8%B2%D9%8A%D8%BA%20%D9%8A%D9%88%D9%85%20%D9%81%D9%8A%20%D9%83%D9%84%20%D9%84%D8%B1%D9%8A%20%D8%A5%D9%86%D8%B3%D8%A7%D9%86%3C%2Fdiv%3E&css=%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%20%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-offset%3A45%25%3B%20%7D%0A&lang=ar&fontSize=50&width=882&height=247&a=How%20far%20does%20text-underline-offset%20move%20the%20underline%20downwards%20in%20Arabic%20text%20(no%20diacritics)%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AMac%20fonts%2CAl%20Bayan%2CAl%20Nile%2CAl%20Tarikh%2CArial%2CBaghdad%2CDamascus%2CDecotype%20Naskh%2CGeeza%20Pro%2CMishafi%2CMishafi%20Gold%2CMuna%2CNadeem%2CArial%20Unicode%20MS%2CMyriad%20Arabic%2CTahoma%2CDiwan%20Thuluth%2CWaseem%2CDiwan%20Kufi%2CKufiStandardGK%2CSana%2CBeirut%2CFarah%2Ctitle%3AWindows%20fonts%2CArabic%20Typesetting%2CArial%2CSakkal%20Majalla%2CSimplified%20Arabic%2CTraditional%20Arabic%2CSegoe%20UI%2CTahoma%2CAndalus%2CAldhabi%2CCourier%20New%2CSimplified%20Arabic%20Fixed%2Ctitle%3AGoogle%2FSIL%2CNoto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2Ctitle%3AOther%20fonts%2CAmiri%2CAref%20Ruqaa%2CBeirut%2CLateef%2CTahoma%2CWaseem" target="_blank">Arabic (NO vowel signs)</a> • 
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%D8%AF%D8%A7%D8%B3%DB%90%20%D9%85%D9%9B%D8%B9%D9%91%D9%9C%D8%B1%D9%9C%20%D8%AA%E0%A3%BA%D9%8A%D8%B1%E0%A3%B9%20%D9%84%E0%A3%B8%D8%B1%D9%90%D9%8A%E0%A3%BA%20%D8%AA%D9%8F%D9%81%D9%92%D9%84%D9%90%20%DA%AF%D8%B1%D9%9F%D8%B3%D8%A0%20%D8%A8%D8%A7%DB%92%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%D8%AF%D8%A7%D8%B3%DB%90%20%D9%85%D9%9B%D8%B9%D9%91%D9%9C%D8%B1%D9%9C%20%D8%AA%E0%A3%BA%D9%8A%D8%B1%E0%A3%B9%20%D9%84%E0%A3%B8%D8%B1%D9%90%D9%8A%E0%A3%BA%20%D8%AA%D9%8F%D9%81%D9%92%D9%84%D9%90%20%DA%AF%D8%B1%D9%9F%D8%B3%D8%A0%20%D8%A8%D8%A7%DB%92%3C%2Fdiv%3E&css=%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%20%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-offset%3A75%25%3B%20%7D%0A&fontSize=50&width=882&height=289&a=How%20far%20does%20text-underline-position%3Aunder%20move%20the%20underline%20downwards%20in%20Arabic%20ajami%20with%20below%20base%20diacritics%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3ANoto%2FSIL%20fonts%2CNoto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2CAlkalami%2CHarmattan%2CRuwudu%2Ctitle%3AOther%20fonts%2CAmiri%2CLateef" target="_blank">Wolofal, Hausa, Pashto, Kashmiri (Arabic WITH vowel signs)</a> • 
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%EA%A6%89%EA%A6%A9%EA%A6%B8%EA%A6%8F%EA%A7%80%EA%A6%97%EA%A6%B8%EA%A6%81%EA%A6%8F%EA%A6%BA%EA%A6%A2%EA%A6%83%EA%A6%8A%EA%A6%A9%EA%A6%BC%EA%A6%B1%EA%A7%80%EA%A6%8F%EA%A6%A4%EA%A7%80%EA%A6%9B%EA%A6%B6%EA%A6%AD%EA%A7%80%EA%A6%8F%EA%A6%A5%EA%A6%BF%EA%A6%97%EA%A6%B8%EA%A6%AB%EA%A6%B6%EA%A6%A0%EA%A6%A4%EA%A7%80%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%EA%A6%89%EA%A6%A9%EA%A6%B8%EA%A6%8F%EA%A7%80%EA%A6%97%EA%A6%B8%EA%A6%81%EA%A6%8F%EA%A6%BA%EA%A6%A2%EA%A6%83%EA%A6%8A%EA%A6%A9%EA%A6%BC%EA%A6%B1%EA%A7%80%EA%A6%8F%EA%A6%A4%EA%A7%80%EA%A6%9B%EA%A6%B6%EA%A6%AD%EA%A7%80%EA%A6%8F%EA%A6%A5%EA%A6%BF%EA%A6%97%EA%A6%B8%EA%A6%AB%EA%A6%B6%EA%A6%A0%EA%A6%A4%EA%A7%80%3C%2Fdiv%3E&css=.test%20%7B%20line-height%3A%203%3B%20%7D%0A%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-offset%3A100%25%3B%20%7D%0A&lang=jv&fontSize=40&width=882&height=269&a=How%20far%20does%20text-underline-position%3Aunder%20move%20the%20underline%20downwards%20in%20Javanese%20text%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AWindows%20fonts%2CJavanese%20Text%2Ctitle%3AGoogle%2FSIL%2CNoto%20Sans%20Javanese%2Ctitle%3AOther%20fonts%2CTuladha%20Jejeg%20OT%2CYogyakarta%2CYogya" target="_blank">Javanese</a> •
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%E1%9E%A2%E1%9E%84%E1%9F%92%E1%9E%82%E1%9F%92%E1%9E%9B%E1%9F%81%E1%9E%9F%E1%9E%9F%E1%9E%84%E1%9E%9F%E1%9F%92%E1%9E%80%E1%9F%92%E1%9E%9A%E1%9E%B7%E1%9E%8F%E1%9E%9F%E1%9E%B6%E1%9E%9F%E1%9F%92%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%B6%E1%9E%85%E1%9E%B6%E1%9E%9A%E1%9F%92%E1%9E%99%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%E1%9E%A2%E1%9E%84%E1%9F%92%E1%9E%82%E1%9F%92%E1%9E%9B%E1%9F%81%E1%9E%9F%E1%9E%9F%E1%9E%84%E1%9E%9F%E1%9F%92%E1%9E%80%E1%9F%92%E1%9E%9A%E1%9E%B7%E1%9E%8F%E1%9E%9F%E1%9E%B6%E1%9E%9F%E1%9F%92%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%B6%E1%9E%85%E1%9E%B6%E1%9E%9A%E1%9F%92%E1%9E%99%3C%2Fdiv%3E&css=.test%20%7B%20line-height%3A%203%3B%20%7D%0A%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-offset%3A90%25%3B%20%7D%0A&lang=km&fontSize=40&width=882&height=269&a=How%20far%20does%20text-underline-position%3Aunder%20move%20the%20underline%20downwards%20in%20Khmer%20text%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AMac%20fonts%2CKhmer%20MN%2CKhmer%20Sangam%20MN%2Ctitle%3AWindows%20fonts%2CDaunPenh%2CLeelawadee%20UI%2CMoolBoran%2CKhmer%20UI%2Ctitle%3AGoogle%2FSIL%2CBusra%2CKhmer%20Busra%2CKhmer%20Mondulkiri%2CNoto%20Sans%20Khmer%2CNoto%20Serif%20Khmer%2CKhmer%20Ratanakiri%2CKhmer%20Oureang%2Ctitle%3AOther%20fonts%2CAngkor%2CBattambang%2CBayon%2CBokor%2CChenla%2CContent%2CDangrek%2CFasthand%2CFreehand%2CHanuman%2CKdam%20Thmor%20Pro%2CKantumruy%20Pro%2CKhmer%2CKhmer%20Koulen%2CKhmer%20OS%20Battambang%2CKhmer%20Mool%2CKhmer%20OS%20Muol%2CKhmer%20Ratanakiri%2CKonkhmer%20Sleokchher%2CKoh%20Santepheap%2CMoul%2CMoulpali%2CMetal%2CNokora%2COdor%20Mean%20Chey%2CPreahvihear%2CSiemreap%2CSuwannaphum%2CTaprom" target="_blank">Khmer</a> •
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cdiv%20id%3D%22control%22%3E%E0%BD%81%E0%BE%B1%E0%BD%B2%E0%BD%98%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%B4%E0%BD%91%E0%BC%8B%E0%BD%A6%E0%BE%A4%E0%BE%B1%E0%BD%B2%E0%BD%A2%E0%BC%8B%E0%BD%82%E0%BE%B2%E0%BE%AD%E0%BC%8B%E0%BD%94%E0%BC%8B%E0%BD%99%E0%BD%82%E0%BC%8B%E0%BD%A6%E0%BE%92%E0%BE%B2%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%93%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%91%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%A6%3C%2Fdiv%3E%0A%3Cdiv%20id%3D%22testp%22%3E%E0%BD%81%E0%BE%B1%E0%BD%B2%E0%BD%98%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%B4%E0%BD%91%E0%BC%8B%E0%BD%A6%E0%BE%A4%E0%BE%B1%E0%BD%B2%E0%BD%A2%E0%BC%8B%E0%BD%82%E0%BE%B2%E0%BE%AD%E0%BC%8B%E0%BD%94%E0%BC%8B%E0%BD%99%E0%BD%82%E0%BC%8B%E0%BD%A6%E0%BE%92%E0%BE%B2%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%93%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%91%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%A6%3Cdiv%3E&css=%23control%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23testp%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-offset%3A60%25%3B%20%7D%0A&lang=bo&fontSize=49&width=882&height=287&a=How%20far%20does%20text-underline-position%3Aunder%20move%20the%20underline%20downwards%20in%20Tibetan%20text%3F&i=Mouse%20over%20or%20tap%20on%20the%20list%20of%20fonts%20below.%20Observe%20whether%20the%20underline%20moves%20down%20from%20just%20below%20the%20baseline%2C%20and%20if%20so%2C%20where%20to.&fonts=title%3AMac%20fonts%2CKailasa%2CKokonor%2Ctitle%3AWindows%20fonts%2CMicrosoft%20Himalaya%2Ctitle%3AGoogle%2FSIL%2CNoto%20Serif%20Tibetan%2Ctitle%3AOther%2CTibetan%20Machine%20Uni%2CUchen_05%2CBabelstone%20Tibetan%20Slim" target="_blank">Tibetan</a>
+</p>
+
+
+
+<p>r12a: <a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%D8%A3%D9%85%D8%A7%D8%B2%D9%8A%D8%BA%20%D9%8A%D9%88%D9%85%20%D9%81%D9%8A%20%D9%83%D9%84%20%D9%84%D8%B1%D9%8A%20%D8%A5%D9%86%D8%B3%D8%A7%D9%86&fonts=Al%20Bayan%2CAl%20Nile%2CAl%20Tarikh%2CArial%2CBaghdad%2CDamascus%2CDecotype%20Naskh%2CGeeza%20Pro%2CMishafi%2CMishafi%20Gold%2CMuna%2CNadeem%2CArial%20Unicode%20MS%2CMyriad%20Arabic%2CTahoma%2CDiwan%20Thuluth%2CWaseem%2CDiwan%20Kufi%2CKufiStandardGK%2CSana%2CBeirut%2CFarah%2Ctitle%3AWindows%20fonts%2CArabic%20Typesetting%2CArial%2CCalibri%2CSakkal%20Majalla%2CSimplified%20Arabic%2CTraditional%20Arabic%2CSegoe%20UI%2CTahoma%2CAndalus%2CAldhabi%2CCourier%20New%2CSimplified%20Arabic%20Fixed%2CMicrosoft%20Uighur%2Ctitle%3AGoogle%2FSIL%2CNoto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2Ctitle%3AOther%20fonts%2CAmiri%2CAref%20Ruqaa%2CBeirut%2CLateef%2CTahoma%2CWaseem&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-offset%3A45%25%3B&lang=ar" target="_blank">Arabic (no vowel signs)</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%D8%AF%D8%A7%D8%B3%DB%90%20%D9%85%D9%9B%D8%B9%D9%91%D9%9C%D8%B1%D9%9C%20%D8%AA%E0%A3%BA%D9%8A%D8%B1%E0%A3%B9%20%D9%84%E0%A3%B8%D8%B1%D9%90%D9%8A%E0%A3%BA%20%D8%AA%D9%8F%D9%81%D9%92%D9%84%D9%90%20%DA%AF%D8%B1%D9%9F%D8%B3%D8%A0%20%D8%A8%D8%A7%DB%92&fonts=Noto%20Naskh%20Arabic%2CScheherazade%20New%2CNoto%20Sans%20Arabic%2CNoto%20Kufi%20Arabic%2CAmiri%2CLateef%2CAlkalami%2CHarmattan%2CRuwudu&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-offset%3A75%25%3B" target="_blank">Wolofal, Hausa, Pashto, Kashmiri (Arabic WITH vowel signs)</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%EA%A6%89%EA%A6%A9%EA%A6%B8%EA%A6%8F%EA%A7%80%EA%A6%97%EA%A6%B8%EA%A6%81%EA%A6%8F%EA%A6%BA%EA%A6%A2%EA%A6%83%EA%A6%8A%EA%A6%A9%EA%A6%BC%EA%A6%B1%EA%A7%80%EA%A6%8F%EA%A6%A4%EA%A7%80%EA%A6%9B%EA%A6%B6%EA%A6%AD%EA%A7%80%EA%A6%8F%EA%A6%A5%EA%A6%BF%EA%A6%97%EA%A6%B8%EA%A6%AB%EA%A6%B6%EA%A6%A0%EA%A6%A4%EA%A7%80&fonts=Javanese%20Text%2CNoto%20Sans%20Javanese%2CTuladha%20Jejeg%20OT%2CYogyakarta%2CYogya&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-offset%3A%20100%25%3B&lang=jv" target="_blank">Javanese</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E1%9E%A2%E1%9E%84%E1%9F%92%E1%9E%82%E1%9F%92%E1%9E%9B%E1%9F%81%E1%9E%9F%E1%9E%9F%E1%9E%84%E1%9E%9F%E1%9F%92%E1%9E%80%E1%9F%92%E1%9E%9A%E1%9E%B7%E1%9E%8F%E1%9E%9F%E1%9E%B6%E1%9E%9F%E1%9F%92%E1%9E%8F%E1%9F%92%E1%9E%9A%E1%9E%B6%E1%9E%85%E1%9E%B6%E1%9E%9A%E1%9F%92%E1%9E%99&fonts=Khmer%20MN%2CKhmer%20Sangam%20MN%2CDaunPenh%2CLeelawadee%20UI%2CMoolBoran%2CKhmer%20UI%2CBusra%2CKhmer%20Busra%2CKhmer%20Mondulkiri%2CNoto%20Sans%20Khmer%2CNoto%20Serif%20Khmer%2CKhmer%20Ratanakiri%2CKhmer%20Oureang%2CAngkor%2CBattambang%2CBayon%2CBokor%2CChenla%2CContent%2CDangrek%2CFasthand%2CFreehand%2CHanuman%2CKdam%20Thmor%20Pro%2CKantumruy%20Pro%2CKhmer%2CKhmer%20Koulen%2CKhmer%20OS%20Battambang%2CKhmer%20Mool%2CKhmer%20OS%20Muol%2CKhmer%20Ratanakiri%2CKonkhmer%20Sleokchher%2CKoh%20Santepheap%2CMoul%2CMoulpali%2CMetal%2CNokora%2COdor%20Mean%20Chey%2CPreahvihear%2CSiemreap%2CSuwannaphum%2CTaprom&css=text-decoration%3A%20underline%20tan%3Btext-underline-offset%3A%2090%25%3B&lang=km" target="_blank">Khmer</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E0%BD%81%E0%BE%B1%E0%BD%B2%E0%BD%98%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%B4%E0%BD%91%E0%BC%8B%E0%BD%A6%E0%BE%A4%E0%BE%B1%E0%BD%B2%E0%BD%A2%E0%BC%8B%E0%BD%82%E0%BE%B2%E0%BE%AD%E0%BC%8B%E0%BD%94%E0%BC%8B%E0%BD%99%E0%BD%82%E0%BC%8B%E0%BD%A6%E0%BE%92%E0%BE%B2%E0%BC%8B%E0%BD%A2%E0%BE%92%E0%BE%B1%E0%BD%93%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%91%E0%BC%8B%E0%BD%A2%E0%BE%A9%E0%BD%BA%E0%BD%A6&fonts=Kailasa%2CKokonor%2CMicrosoft%20Himalaya%2CNoto%20Serif%20Tibetan%2CTibetan%20Machine%20Uni%2CUchen_05%2CBabelstone%20Tibetan%20Slim&css=text-decoration%3A%20underline%202px%20tan%3Btext-underline-offset%3A60%25%3B&lang=bo" target="_blank">Tibetan</a>
+</p>
+
+
+
+
+
+<p class="results" style="font-style: italic; margin-block-start:3em;">Test results...</p>
+
+<p>For all results, this produced the most consistent placement of the underline. The tests were designed to place the underline just below the lowest extent of the ink for each script. Different percentages were applied to each group, but no difference was applied on a font to font basis within a group.</p>
+
+<p><span class="leadin">Arabic.</span> A setting of 45% consistently cleared the longest descenders for the set of fonts without descenders. For the fonts with diacritics from Wolofal, Hausa, Pashto, and Kashmiri orthographies, the same result was achieved when the percentage was set to 75%. (No pre-installed fonts supported these diacritics, so the result for Safari is not shown.)</p>
+
+
+<figure class="resultsImg" id="fig_arabic_offset_results">
+<img src="underline-data/fig_arabic_offset_results.jpg" alt="" style="width:100%;">
+<figcaption>A selection of Arabic test results for Chrome (left), Firefox (middle) and Safari (right), when the <code class="kw" translate="no">text-underline-offset</code> value is set to <code class="kw" translate="no">45%</code>.</figcaption>
+</figure>
+
+
+<figure class="resultsImg" id="fig_arabicd_offset_results">
+<img src="underline-data/fig_arabicd_offset_results.jpg" alt="" style="width:100%;">
+<figcaption>A selection of vowelled Arabic test results for Chrome (left) and Firefox (right) when the <code class="kw" translate="no">text-underline-offset</code> value is set to <code class="kw" translate="no">75%</code>. (Safari results are not shown since no preinstalled fonts support the diacritics for these languages.)</figcaption>
+</figure>
+
+
+<p><span class="leadin">Javanese.</span> A setting of 100% consistently cleared the longest descents.</p>
+
+
+
+<figure class="resultsImg" id="fig_javanese_offset_results">
+<div style="white-space: nowrap;">
+<img src="underline-data/fig_javanese_offset_results.jpg" alt="" style="width:100%;">
+</div>
+<figcaption>A selection of Javanese test results for Chrome (left), Firefox (middle) and Safari (right), when the <code class="kw" translate="no">text-underline-offset</code> value is set to <code class="kw" translate="no">100%</code>.</figcaption>
+</figure>
+
+
+<p><span class="leadin">Khmer.</span> A setting of 90% consistently cleared the longest descents.</p>
+
+
+
+<figure class="resultsImg" id="fig_khmer_offset_results">
+<div style="white-space: nowrap;">
+<img src="underline-data/fig_khmer_offset_results.jpg" alt="" style="width:100%;">
+</div>
+<figcaption>A selection of Khmer test results for Chrome (left), Firefox (middle) and Safari (right), when the <code class="kw" translate="no">text-underline-offset</code> value is set to <code class="kw" translate="no">90%</code>.</figcaption>
+</figure>
+
+
+<p><span class="leadin">Tibetan.</span> A setting of 60% consistently cleared the longest descents.</p>
+
+
+
+<figure class="resultsImg" id="fig_tibetan_offset_results">
+<div style="white-space: nowrap;">
+<img src="underline-data/fig_tibetan_offset_results.jpg" alt="" style="width:100%;">
+</div>
+<figcaption>A selection of Tibetan test results for Chrome (left), Firefox (middle) and Safari (right), when the <code class="kw" translate="no">text-underline-offset</code> value is set to <code class="kw" translate="no">60%</code>.</figcaption>
+</figure>
+
+
+
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" style="width:16px; height:16px; vertical-align: text-bottom;" alt="Blink" title="Blink browsers (eg. Chrome)"> <img src="../../icons/firefox_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="Gecko" title="Gecko browsers (eg. Firefox)"><img src="../../icons/safari_16x16.png"  style="width:16px; height:16px; vertical-align: text-bottom;" alt="WebKit" title="WebKit browsers (eg. Safari)"> &nbsp; ✅</p><p>Notes:</p>
+<p>Safari only renders pre-installed macOS fonts.</p>
+</aside>
+</div>
+</details>
+</section>
+</section>
+
+
+
+
+
+
+
+
+
+<section id="CJKunder">
+<h2>Underlines for CJK and subscripts</h2>
+
+
+
+<section id="horizontal_cjk">
+<h3>Horizontal text</h3>
+
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-position: under</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+<p>You can use <a href="https://www.w3.org/TR/css-text-decor-4/#text-underline-position-property"><code class="kw" translate="no">text-underline-position: under</code></a> to push the underline below the font's em box descent metric.  This is a handy value when dealing with languages such as Chinese and Japanese, where character glyphs extend slightly below the alphabetic baseline (and have no diacritics below them).</p>
+
+<!--<div id="horizontal_cjk_sidenote" class="sidenoteGroup">
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> &nbsp; ✅  All three major browser engines support the use of <code class="kw" translate="no">text-underline-position</code>.</p>
+
+<figure id="under_example" style="width:100%; margin-inline:0;">
+<p><img src="underline-data/under.jpg" alt="" style="height:10rem;"></p>
+<figcaption>How text-underline-position:under can change the position of the underline.</figcaption>
+</figure>
+</aside>
+</div>-->
+
+
+<p>It is also useful to clear things such as parentheses and subscripts, and is sometimes referred to as the ‘accounting’ underline. However, some fonts have descenders or diacritics that extend below the font’s em box — for those, see the previous section.</p>
+
+
+<figure id="under_example">
+<p><img src="underline-data/under.jpg" alt="" style="height:12rem;"></p>
+<figcaption>How <code class="kw" translate="no">text-underline-position:under</code> can change the position of the underline.</figcaption>
+</figure>
+
+
+
+<p>Because the <code class="kw" translate="no">text-underline-position</code> property inherits and is not reset by the <code class="kw" translate="no">text-decoration</code> shorthand property, it can be useful to set its value at a global level, so that all underlines in the page adopt the preferred settings.</p>
+
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">:root { text-underline-position: under; }</code></pre>
+</figure>
+
+<style>
+#demo-under_horiz .test_lines { font-size: 2rem; line-height: 2;  }
+#demo-under_horiz u { text-decoration: underline 2px tan; }
+</style>
+
+<div id="demo-under_horiz" class="browser_output">
+<p class="browser_output_title">Output in your browser (only the bottom line of each pair uses text-underline-position):</p>
+
+<div class="test_lines">
+<div class="test-under">
+<p lang="en"><u>The pipes carry water (H₂O)</u></p>
+</div>
+<div class="test-under">
+<p lang="en" style="text-underline-position: under;"><u>The pipes carry water (H₂O)</u></p>
+</div>
+<div class="test-under">
+<p lang="ja"><u>パイプは水（H₂O）を運びます</u></p>
+</div>
+<div class="test-under">
+<p lang="ja" style="text-underline-position: under;"><u>パイプは水（H₂O）を運びます</u></p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="setFont('.test-under',this.value)"></p>
+</div>
+
+
+
+
+
+
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-position: under</code>.</p>
+</section>
+
+
+
+
+
+
+
+
+<section id="vertical_underlines">
+<h3>Vertical text</h3>
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-position:left | right</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅❌</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+<p>Underlines for vertically set text can appear to the left or to the right of the line. For Chinese, the default position is to the left of the line; for Japanese, it is to the right. In fact, the latest versions of Gecko, Blink, and WebKit browsers automatically put the line on the expected side without styling, as long as the text is declared to be in one of these languages.</p>
+
+<!--<div id="vertical_underlines_sidenote" class="sidenoteGroup">
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> &nbsp; ✅  All three major browser engines support the use of <code class="kw" translate="no">text-underline-position</code>.</p>
+
+
+<figure id="underV_example" style="width:100%; margin-inline:0;">
+<p><img src="underline-data/vertical.jpg" alt="" style="height:14rem;"></p>
+<figcaption>Default underline positions for (right to left) Japanese, Mongolian, and Chinese.</figcaption>
+</figure>
+</aside>
+</div>-->
+
+<p>For Mongolian text, using the traditional script, the underline should be on the right, like for Japanese. At the time of writing, this is the default rendering for Gecko and WebKit browsers, but <em>not</em> for Chrome (which puts the line on the left).</p>
+
+
+<figure id="underV_example">
+<p><img src="underline-data/vertical.jpg" alt="" style="height:14rem;"></p>
+<figcaption>Default underline positions for (right to left) Japanese, Mongolian, and Chinese.</figcaption>
+</figure>
+
+
+<p>To control this explicitly (which is currently necessary for Mongolian), you can use one of two additional values of <code class="kw" translate="no">text-underline-position</code>. The values <code class="kw" translate="no">right</code> and <code class="kw" translate="no">left</code> indicate where the underline will occur relative to the line of text.</p>
+
+<p>As mentioned earlier, the <code class="kw" translate="no">text-underline-position</code> value can be assigned once for the document as a whole.  For the CJK languages it is possible to also declare it once in a way that works for both horizontal and vertical text.   The CSS specification suggests something like the following.</p>
+
+
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">:root:lang(ja), [lang|=ja], 
+:root:lang(ko), [lang|=ko],
+:root:lang(mn), [lang|=mn] { 
+    text-underline-position:under right; }
+:root:lang(zh), [lang|=zh] { 
+    text-underline-position:under left; }
+</code></pre>
+</figure>
+
+<style>
+#demo-under_vert .test_lines { writing-mode:vertical-rl; width:100%; font-size: 2rem; line-height: 2; }
+#demo-under_vert u { text-decoration: underline 2px tan; }
+</style>
+
+
+<div id="demo-under_vert" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+
+<div class="test_lines">
+<div id="test-underlineV">
+<p lang="ja" class="verticalText" style="text-underline-position: under right;"><u>パイプは水を運びます</u></p>
+<p lang="mn" class="verticalText" style="text-underline-position: under right;"><u>ᠵᠠᠷᠢᠮ ᠳᠠᠭᠠᠨ ᠭᠠᠳᠠᠨ᠎ᠠ</u></p>
+<p lang="zh" class="verticalText" style="text-underline-position: under left;"><u>管道输送水</u></p>
+</div>
+</div>
+
+<p class="options">Choose a font: <input oninput="setFont('.verticalText', this.value)">
+&nbsp;
+Choose a side: <label><input type="radio" name="vunder" onClick="setUnderline('.verticalText', 'under left')">Left</label>
+<label><input type="radio" name="vunder" onClick="setUnderline('.verticalText', 'under right')"> Right</label>
+</p>
+</div>
+
+
+<p>The browser's default positioning of the vertical lines may need to be nearer or further away from the line of text. For example, in some combinations of browser and font, the underline is broken  alongside  characters with glyphs that extend to the right. If you want to change this, use <code class="kw" translate="no">text-underline-offset</code>, as we saw in the previous section.</p>
+
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-position</code> and its <code class="kw" translate="no">right</code> and <code class="kw" translate="no">left</code> values.</p>
+
+<p>The tests (below) show that Blink browsers do not automatically position Mongolian underlines on the correct side, so Mongolian underlines need to be styled in order to be interoperable. Chinese and Japanese underlines are, by default, positioned on the correct side by all major browsers.</p>
+
+
+
+
+
+
+
+<details class="moreTests">
+<summary>More tests...</summary>
+
+<div class="testData">
+<p>The following links allow you to test this property and value against a range of fonts. The links open a web page in a separate browser window.</p>
+
+<p>There are two types of test. One (W3C) allows you to change the font by mousing over or tapping on the fonts in a list. The other (r12a) lists the text with all fonts at the same time. Of course, the tests only produce results for the fonts installed on your device or platform. Note, in particular, that WebKit browsers do not allow you to access non-system fonts unless they are packaged as webfonts.</p>
+
+
+<p>W3C: 
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%20id%3D%22unstyled%22%3E%E7%AE%A1%E9%81%93%E8%BC%B8%E6%B0%B4%3C%2Fp%3E%0A%3Cp%20id%3D%22teststyled%22%3E%E7%AE%A1%E9%81%93%E8%BC%B8%E6%B0%B4%3C%2Fp%3E%0A%3Cp%20id%3D%22teststyled2%22%3E%E7%AE%A1%E9%81%93%E8%BC%B8%E6%B0%B4%3C%2Fp%3E&css=.test%20%7B%20writing-mode%3Avertical-rl%3B%20padding%3A1rem%3B%20%7D%0A%23unstyled%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23teststyled%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20under%20left%3B%20%7D%0A%23teststyled2%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20under%20left%3B%20text-underline-offset%3A20%25%3B%20%7D&lang=zh&fontSize=36&width=347&height=281&a=If%20text-decoration%3Aunderline%20is%20used%20for%20vertically%20set%20Traditional%20Chinese%20text%20the%20underline%20will%20be%20drawn%20to%20the%20left.&i=Test%20passes%20if%20the%20underline%20is%20drawn%20to%20the%20left%20of%20the%20Chinese%20text.&fonts=title%3AmacOS%2CApple%20LiSung%2CLiSong%20Pro%2CSongti%20TC%2CNom%20Na%20Tong%2CApple%20LiGothic%2CHeiti%20TC%2CLantinghei%20TC%2CLiHei%20Pro%2CPingFang%20HK%2CPingFang%20TC%2CPingFang%20MO%2CYuanti%20TC%2CHiragino%20Sans%20TC%2CArial%20Unicode%20MS%2CBiaukaiTC%2CBiaukaiHK%2CKaiti%20TC%2CXingkai%20TC%2CBaoli%20TC%2CHannotate%20TC%2CHanziPen%20TC%2CLibian%20TC%2CLingWai%20TC%2CWawati%20TC%2CWeibei%20TC%2CYuppy%20TC%2Ctitle%3AWindows%2CMingLiu%2CPMingLiu%2CMicrosoft%20JhengHei%2CDFKai-SB%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20TC%2CNoto%20Sans%20CJK%20TC" target="_blank">Traditional Chinese</a> • 
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%20id%3D%22unstyled%22%3E%E7%AE%A1%E9%81%93%E8%BE%93%E9%80%81%E6%B0%B4%3C%2Fp%3E%0A%3Cp%20id%3D%22teststyled%22%3E%E7%AE%A1%E9%81%93%E8%BE%93%E9%80%81%E6%B0%B4%3C%2Fp%3E%0A%3Cp%20id%3D%22teststyled2%22%3E%E7%AE%A1%E9%81%93%E8%BE%93%E9%80%81%E6%B0%B4%3C%2Fp%3E&css=.test%20%7B%20writing-mode%3Avertical-rl%3B%20padding%3A1rem%3B%20%7D%0A%23unstyled%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23teststyled%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20under%20left%3B%20%7D%0A%23teststyled2%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20under%20left%3B%20text-underline-offset%3A20%25%3B%20%7D&lang=zh&fontSize=36&width=280&height=281&a=If%20text-decoration%3Aunderline%20is%20used%20for%20vertically%20set%20Simplified%20Chinese%20text%20the%20underline%20will%20be%20drawn%20to%20the%20left.&i=Test%20passes%20if%20the%20underline%20is%20drawn%20to%20the%20left%20of%20the%20Chinese%20text.&fonts=title%3AmacOS%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CPingFang%20SC%2CSimHei%2CSTHeiti%2CYuanti%20SC%2CArial%20Unicode%20MS%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CLingWai%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC%2Ctitle%3AWindows%2CNSimSun%2CSimSun%2CDengXian%2CMicrosoft%20YaHei%2CSimHei%2CFangSong%2CKaiTi%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC" target="_blank">Simplified Chinese</a> • 
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%20id%3D%22unstyled%22%3E%E3%83%91%E3%82%A4%E3%83%97%E3%81%AF%E6%B0%B4%E3%82%92%E9%81%8B%E3%81%B3%E3%81%BE%E3%81%99%3C%2Fp%3E%0A%3Cp%20id%3D%22teststyled%22%3E%E3%83%91%E3%82%A4%E3%83%97%E3%81%AF%E6%B0%B4%E3%82%92%E9%81%8B%E3%81%B3%E3%81%BE%E3%81%99%3C%2Fp%3E%0A%3Cp%20id%3D%22teststyled2%22%3E%E3%83%91%E3%82%A4%E3%83%97%E3%81%AF%E6%B0%B4%E3%82%92%E9%81%8B%E3%81%B3%E3%81%BE%E3%81%99%3C%2Fp%3E&css=.test%20%7B%20writing-mode%3Avertical-rl%3B%20padding%3A1rem%3B%20%7D%0A%23unstyled%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23teststyled%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20under%20right%3B%20%7D%0A%23teststyled2%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20under%20right%3B%20text-underline-offset%3A20%25%3B%20%7D&lang=ja&fontSize=36&width=482&height=281&a=If%20text-decoration%3Aunderline%20is%20used%20for%20vertical%20Japanese%20text%20the%20underline%20will%20be%20drawn%20to%20the%20right.&i=Test%20passes%20if%20the%20underline%20is%20drawn%20to%20the%20left%20of%20the%20Japanese%20text.&fonts=title%3AmacOS%2CHiragino%20Mincho%20Pro%2CToppan%20Bunkyu%20Mincho%2CYuMincho%2CHiragino%20Kaku%20Gothic%20Pro%2CHiragino%20Sans%2COsaka%2CToppan%20Bunkyu%20Gothic%2CYuGothic%2CArial%20Unicode%20MS%2CHiragino%20Maru%20Gothic%20Pro%2CTsukushi%20A%20Round%20Gothic%2CTsukushi%20B%20Round%20Gothic%2CToppan%20Bunkyu%20Midashi%20Gothic%2CYuKyokasho%2CYuKyokasho%20Yoko%2Ctitle%3AWindows%2CMS%20Mincho%2CMS%20PMincho%2CMeiryo%2CMeiryo%20UI%2CMS%20Gothic%2CMS%20PGothic%2CMS%20UI%20Gothic%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20JP%2CNoto%20Sans%20CJK%20JP" target="_blank">Japanese</a> •
+
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%20id%3D%22unstyled%22%3E%E1%A0%B5%E1%A0%A0%E1%A0%B7%E1%A0%A2%E1%A0%AE%E2%80%AF%E1%A0%B3%E1%A0%A0%E1%A0%AD%E1%A0%A0%E1%A0%A8%20%E1%A0%AD%E1%A0%A0%E1%A0%B3%E1%A0%A0%E1%A0%A8%E1%A0%8E%E1%A0%A0%3C%2Fp%3E%0A%3Cp%20id%3D%22teststyled%22%3E%E1%A0%B5%E1%A0%A0%E1%A0%B7%E1%A0%A2%E1%A0%AE%E2%80%AF%E1%A0%B3%E1%A0%A0%E1%A0%AD%E1%A0%A0%E1%A0%A8%20%E1%A0%AD%E1%A0%A0%E1%A0%B3%E1%A0%A0%E1%A0%A8%E1%A0%8E%E1%A0%A0%3C%2Fp%3E%0A%3Cp%20id%3D%22teststyled2%22%3E%E1%A0%B5%E1%A0%A0%E1%A0%B7%E1%A0%A2%E1%A0%AE%E2%80%AF%E1%A0%B3%E1%A0%A0%E1%A0%AD%E1%A0%A0%E1%A0%A8%20%E1%A0%AD%E1%A0%A0%E1%A0%B3%E1%A0%A0%E1%A0%A8%E1%A0%8E%E1%A0%A0%3C%2Fp%3E&css=.test%20%7B%20writing-mode%3Avertical-lr%3B%20padding%3A1rem%3B%20%7D%0A%23unstyled%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20%7D%0A%23teststyled%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20right%3B%20%7D%0A%23teststyled2%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20right%3B%20text-underline-offset%3A20%25%3B%20%7D&lang=mn&fontSize=36&width=537&height=281&a=If%20text-decoration%3Aunderline%20is%20used%20for%20vertical%20Mongolian%20text%20the%20underline%20will%20be%20drawn%20to%20the%20right.&i=Test%20passes%20if%20the%20underline%20is%20drawn%20to%20the%20right%20of%20the%20Mongolian%20text.&fonts=title%3AWindows%2CMongolian%20Baiti%2Ctitle%3ANoto%2FSIL%2CNoto%20Sans%20Mongolian%2Ctitle%3AOther%2CMongolian%20Universal%20White%2CMongolian%20Writing" target="_blank">Mongolian</a>
+</p>
+
+
+
+<p>r12a:  <strong>Unstyled</strong>
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E7%AE%A1%E9%81%93%E8%BC%B8%E6%B0%B4&fonts=title%3AmacOS%2CApple%20LiSung%2CLiSong%20Pro%2CSongti%20TC%2CNom%20Na%20Tong%2CApple%20LiGothic%2CHeiti%20TC%2CLantinghei%20TC%2CLiHei%20Pro%2CPingFang%20HK%2CPingFang%20TC%2CPingFang%20MO%2CYuanti%20TC%2CHiragino%20Sans%20TC%2CArial%20Unicode%20MS%2CBiaukaiTC%2CBiaukaiHK%2CKaiti%20TC%2CXingkai%20TC%2CBaoli%20TC%2CHannotate%20TC%2CHanziPen%20TC%2CLibian%20TC%2CLingWai%20TC%2CWawati%20TC%2CWeibei%20TC%2CYuppy%20TC%2Ctitle%3AWindows%2CMingLiu%2CPMingLiu%2CMicrosoft%20JhengHei%2CDFKai-SB%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20TC%2CNoto%20Sans%20CJK%20TC&css=writing-mode%3A%20vertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3B&lang=zh" target="_blank">Traditional Chinese</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E7%AE%A1%E9%81%93%E8%BE%93%E9%80%81%E6%B0%B4&fonts=title%3AmacOS%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CPingFang%20SC%2CSimHei%2CSTHeiti%2CYuanti%20SC%2CArial%20Unicode%20MS%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CLingWai%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC%2Ctitle%3AWindows%2CNSimSun%2CSimSun%2CDengXian%2CMicrosoft%20YaHei%2CSimHei%2CFangSong%2CKaiTi%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC&css=writing-mode%3Avertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3B&lang=zh" target="_blank">Simplified Chinese</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E3%83%91%E3%82%A4%E3%83%97%E3%81%AF%E6%B0%B4%E3%82%92%E9%81%8B%E3%81%B3%E3%81%BE%E3%81%99&fonts=title%3AmacOS%2CHiragino%20Mincho%20Pro%2CToppan%20Bunkyu%20Mincho%2CYuMincho%2CHiragino%20Kaku%20Gothic%20Pro%2CHiragino%20Sans%2COsaka%2CToppan%20Bunkyu%20Gothic%2CYuGothic%2CArial%20Unicode%20MS%2CHiragino%20Maru%20Gothic%20Pro%2CTsukushi%20A%20Round%20Gothic%2CTsukushi%20B%20Round%20Gothic%2CToppan%20Bunkyu%20Midashi%20Gothic%2CYuKyokasho%2CYuKyokasho%20Yoko%2Ctitle%3AWindows%2CMS%20Mincho%2CMS%20PMincho%2CMeiryo%2CMeiryo%20UI%2CMS%20Gothic%2CMS%20PGothic%2CMS%20UI%20Gothic%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20JP%2CNoto%20Sans%20CJK%20JP&css=writing-mode%3Avertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3B&lang=ja" target="_blank">Japanese</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E1%A0%B5%E1%A0%A0%E1%A0%B7%E1%A0%A2%E1%A0%AE%E2%80%AF%E1%A0%B3%E1%A0%A0%E1%A0%AD%E1%A0%A0%E1%A0%A8%20%E1%A0%AD%E1%A0%A0%E1%A0%B3%E1%A0%A0%E1%A0%A8%E1%A0%8E%E1%A0%A0&fonts=title%3AWindows%2CMongolian%20Baiti%2Ctitle%3ANoto%2FSIL%2CNoto%20Sans%20Mongolian%2Ctitle%3AOther%2CMongolian%20Universal%20White%2CMongolian%20Writing&css=writing-mode%3Avertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3B&lang=mn" target="_blank">Mongolian</a>
+</p>
+
+
+
+
+
+
+<p>r12a:  <strong>Using text-underline-position</strong>
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E7%AE%A1%E9%81%93%E8%BC%B8%E6%B0%B4&fonts=title%3AmacOS%2CApple%20LiSung%2CLiSong%20Pro%2CSongti%20TC%2CNom%20Na%20Tong%2CApple%20LiGothic%2CHeiti%20TC%2CLantinghei%20TC%2CLiHei%20Pro%2CPingFang%20HK%2CPingFang%20TC%2CPingFang%20MO%2CYuanti%20TC%2CHiragino%20Sans%20TC%2CArial%20Unicode%20MS%2CBiaukaiTC%2CBiaukaiHK%2CKaiti%20TC%2CXingkai%20TC%2CBaoli%20TC%2CHannotate%20TC%2CHanziPen%20TC%2CLibian%20TC%2CLingWai%20TC%2CWawati%20TC%2CWeibei%20TC%2CYuppy%20TC%2Ctitle%3AWindows%2CMingLiu%2CPMingLiu%2CMicrosoft%20JhengHei%2CDFKai-SB%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20TC%2CNoto%20Sans%20CJK%20TC&css=writing-mode%3A%20vertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3Btext-underline-position%3A%20under%20left%3B&lang=zh" target="_blank">Traditional Chinese</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E7%AE%A1%E9%81%93%E8%BE%93%E9%80%81%E6%B0%B4&fonts=title%3AmacOS%2CSimSong%2CSongti%20SC%2CSTSong%2CHei%2CHeiti%20SC%2CLantinghei%20SC%2CPingFang%20SC%2CSimHei%2CSTHeiti%2CYuanti%20SC%2CArial%20Unicode%20MS%2CSTFangsong%2CKai%2CKaiti%20SC%2CSTKaiti%2CXingkai%20SC%2CBaoli%20SC%2CHannotate%20SC%2CHanziPen%20SC%2CLibian%20SC%2CLingWai%20SC%2CWawati%20SC%2CWeibei%20SC%2CYuppy%20SC%2Ctitle%3AWindows%2CNSimSun%2CSimSun%2CDengXian%2CMicrosoft%20YaHei%2CSimHei%2CFangSong%2CKaiTi%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20SC%2CNoto%20Sans%20CJK%20SC&css=writing-mode%3Avertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3B&lang=zh" target="_blank">Simplified Chinese</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E3%83%91%E3%82%A4%E3%83%97%E3%81%AF%E6%B0%B4%E3%82%92%E9%81%8B%E3%81%B3%E3%81%BE%E3%81%99&fonts=title%3AmacOS%2CHiragino%20Mincho%20Pro%2CToppan%20Bunkyu%20Mincho%2CYuMincho%2CHiragino%20Kaku%20Gothic%20Pro%2CHiragino%20Sans%2COsaka%2CToppan%20Bunkyu%20Gothic%2CYuGothic%2CArial%20Unicode%20MS%2CHiragino%20Maru%20Gothic%20Pro%2CTsukushi%20A%20Round%20Gothic%2CTsukushi%20B%20Round%20Gothic%2CToppan%20Bunkyu%20Midashi%20Gothic%2CYuKyokasho%2CYuKyokasho%20Yoko%2Ctitle%3AWindows%2CMS%20Mincho%2CMS%20PMincho%2CMeiryo%2CMeiryo%20UI%2CMS%20Gothic%2CMS%20PGothic%2CMS%20UI%20Gothic%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20JP%2CNoto%20Sans%20CJK%20JP&css=writing-mode%3Avertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3B&lang=ja" target="_blank">Japanese</a> • 
+
+<a href="https://r12a.github.io/scripts/apps/showfonts/index.html?text=%E1%A0%B5%E1%A0%A0%E1%A0%B7%E1%A0%A2%E1%A0%AE%E2%80%AF%E1%A0%B3%E1%A0%A0%E1%A0%AD%E1%A0%A0%E1%A0%A8%20%E1%A0%AD%E1%A0%A0%E1%A0%B3%E1%A0%A0%E1%A0%A8%E1%A0%8E%E1%A0%A0&fonts=title%3AWindows%2CMongolian%20Baiti%2Ctitle%3ANoto%2FSIL%2CNoto%20Sans%20Mongolian%2Ctitle%3AOther%2CMongolian%20Universal%20White%2CMongolian%20Writing&css=writing-mode%3Avertical-rl%3Btext-decoration%3A%20underline%202px%20tan%3Btext-underline-position%3A%20right%3B&lang=mn" target="_blank">Mongolian</a>
+</p>
+
+
+
+
+
+
+
+
+
+<p class="results" style="font-style: italic; margin-block-start:3em;">Test results...</p>
+
+<p>Traditional and Simplified Chinese tests should put the underline on the left, whereas Japanese and Mongolian expect the underline to be on the right.</p>
+
+<p><span class="leadin">Unstyled tests.</span> Chrome (Blink), Firefox (Gecko), and Safari (WebKit) browsers did as expected for all languages, except that Chrome placed the underline to the left of Mongolian.</p>
+
+<p><span class="leadin">Tests with <code class="kw" translate="no">under</code>.</span> All browsers tested did as expected for all languages, including Chrome and Mongolian.</p>
+
+<p>These results indicate that currently Mongolian needs to be styled so as to ensure that the underline appears on the correct side. For the others, it results in the same positioning.</p>
+
+<p>It was noticeable that whereas Chrome and Firefox placed the underline very close to the vertical text for Japanese, Safari placed it further away. The property <code class="kw" translate="no">text-underline-offset</code> can be used to move the underline, but this also has variable effects from browser to browser.</p>
+</div>
+</details>
+
+
+</section>
+</section>
+
+
+
+
+
+
+
+
+
+<section id="textDecorationStyle">
+<h2>Styling the line shape</h2>
+
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-style</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
+
+<p>In Chinese, underlines are used for other purposes than emphasis (interlinear dots provide the emphasis), and the shape of the line carries semantic value.  A solid, plain line is used to demarcate proper nouns.  Book or poem titles, on the other hand, may be indicated using a wavy line.  Similar distinctions can be seen in <a href="https://github.com/w3c/type-samples/issues/58" target="_blank">Mongolian text</a>.</p>
+
+
+
+<figure id="fig_textDecorationStyle_example">
+<p><img src="underline-data/fig_style.jpg" alt="" style="height:10rem;"></p>
+<figcaption>Styled line shapes for proper nouns (top) and book/poem titles (bottom) in Chinese.</figcaption>
+</figure>
+
+
+
+<!--<div id="textDecorationStyle_sidenote" class="sidenoteGroup">
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> &nbsp; ✅  All three major browser engines support the use of <code class="kw" translate="no">text-underline-style</code>.</p>
+
+
+<figure id="fig_textDecorationStyle_example" style="width:100%; margin-inline:0;">
+<p><img src="underline-data/fig_style.jpg" alt="" style="height:7rem;"></p>
+<figcaption>Styled line shapes for proper nouns (top) and book/poem titles (bottom) in Chinese.</figcaption>
+</figure>
+</aside>
+</div>-->
+
+
+<p>It's possible to change the shape of the underline using the CSS <code class="kw" translate="no"><a href="https://www.w3.org/TR/css-text-decor-4/#propdef-text-decoration-skip-inset"  target="_blank">text-decoration-style</a></code> property. The HTML <code class="kw" translate="no">u</code> element can be used to indicate the range of text to be styled, and the CSS property can be assigned to that. We can use the <code class="kw" translate="no">u</code> element to style both proper nouns and book title, as long as we use class names to indicate which style gets applied to which element.</p>
+
+<p>As can be seen in the list of enumerated values at the top of the page, you can also make the line double, dotted, or dashed. These styles can also have semantic meaning attached to them.</p>
+
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">u { text-decoration:underline; text-underline-position:under; }
+u.pnoun { text-decoration-style:solid; }
+u.book { text-decoration-style:wavy; }</code></pre>
+</figure>
+
+<div id="out-style" class="browser_output">
+<p class="browser_output_title">Output in your browser:</p>
+<div style="font-size:2.4rem; line-height: 2;">
+
+<div id="test-style_flat">
+<p lang="zh"><u style="text-decoration:underline 2px tan; text-underline-position:under; text-decoration-style: solid;">歐陽修</u></p>
+</div>
+
+<div id="test-style_wavy" >
+<p lang="zh"><u style="text-decoration: underline 2px tan; text-underline-position:under; text-decoration-style: wavy;">明妃曲</u></p>
+</div>
+</div>
+<p class="options">Choose a font: <input oninput="document.getElementById('test-style_flat').style.fontFamily = this.value; document.getElementById('test-under_nodiac').style.fontFamily = this.value; document.getElementById('test-style_wavy').style.fontFamily = this.value;" placeholder="Scheherazade New WF">
+</p>
+</div>
+
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span> All three major browser engines support the use of <code class="kw" translate="no">text-underline-style</code>.</p>
+</section>
+
+
+
+
+
+
+
+
+
+<section id="textDecorationSkipInset">
+<h2>Separating  underline runs</h2>
+
+
+<aside class="floatedImplnote">
+<p class="feature">text-underline-style</p>
+<table class="implTable">
+<thead>
+<tr>
+<th><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>❌</td><td>❌</td></tr>
+</tbody>
+</table>
+</aside>
+
+
+<p>In Chinese there are no spaces between characters, but where different names occur alongside each other, or where a name and a poem title appear together, there is a need to separate the respective underlines. It is not ideal to insert spaces into the text for this purpose.</p>
+
+
+<figure id="fig_textDecorationSkipInset_example">
+<p><img src="underline-data/fig_skip_inset.jpg" alt="" style="height:4rem;"></p>
+<figcaption>Small gaps between separate underlining for proper nouns and a poem title in Chinese. No spaces are present.</figcaption>
+</figure>
+
+
+
+<!--<div id="textDecorationSkipInset_sidenote" class="sidenoteGroup">
+
+<aside class="implnote">
+<p class="impl"><img src="../../icons/chrome_16x16.png" width="16" height="16" alt="Chrome" title="Chrome"> <img src="../../icons/firefox_16x16.png" width="16" height="16" alt="Firefox" title="Firefox"> <img src="../../icons/safari_16x16.png" width="16" height="16" alt="Safari" title="Safari"> &nbsp; ❌  None of the three major browser engines currently support the use of <code class="kw" translate="no">text-underline-style</code>.</p>
+<p style="font-style: italic;">Notes:</p>
+<p>Firefox (Gecko) inserts the gaps automatically, without the CSS.</p>
+
+
+<figure id="fig_textDecorationSkipInset_example" style="width:100%; margin-inline:0;">
+<p><img src="underline-data/fig_skip_inset.jpg" alt="" style="height:3rem;"></p>
+<figcaption>Small gaps between separate underlining for proper nouns and a poem title in Chinese. No spaces are present.</figcaption>
+</figure>
+</aside>
+</div>
+-->
+
+<p>The good news is that CSS offers a solution using the <code class="kw" translate="no">text-decoration-skip-inset</code> property.</p>
+
+
+<figure class="example" lang="en">
+<pre><code class="language-css">text-decoration-skip-inset: none | auto;</code></pre>
+</figure>
+
+<p>The bad news is that it is not yet supported  by  the major browser engines.</p>
+
+<p>On the other hand, Gecko automatically puts the gap between <code class="kw" translate="no">u</code> elements even without the styling. But not Blink, nor WebKit.</p>
+
+<p>One thing that might be expected is that the underline runs the full width of the underlined text if it is not adjacent to another underline. So in the examples just below, the underlines wouldn't be shortened at the far left and far right — only in between the adjacent underlines.  This is not currently described in the CSS specification.</p>
+
+<p>In the following example, the 2 proper nouns are <span lang="zh">宋</span> (Song, the Dynasty) and <span lang="zh">歐陽修</span> (Ouyang Xiu, the author). The poem title is <span lang="zh">明妃曲</span> (Ming Fei Song).</p>
+
+
+<style>
+#out-skipInset  u.pnoun { text-decoration:underline 2px tan; text-underline-position:under; text-decoration-style: solid; }
+#out-skipInset  u.book { text-decoration:underline 2px tan; text-underline-position:under; text-decoration-style: wavy; }
+
+#test-skipInset_test u { text-decoration-skip-inset: auto; }
+</style>
+
+<figure class="example" lang="en">
+<pre><code class="language-css">u { text-decoration:underline; text-underline-position:under; }
+u.pnoun { text-decoration-style:solid;  text-decoration-skip-inset:auto; }
+u.book { text-decoration-style:wavy; text-decoration-skip-inset:auto; }</code></pre>
+</figure>
+
+<div id="out-skipInset" class="browser_output">
+<p class="browser_output_title">Output in your browser (only the bottom line is styled):</p>
+<div style="font-size:2.4rem; line-height: 2;">
+
+<div id="test-skipInset_control">
+<p lang="zh"><u class="pnoun">宋</u><u class="pnoun">歐陽修</u><u class="book">明妃曲</u></p>
+</div>
+
+<div id="test-skipInset_test">
+<p lang="zh"><u class="pnoun">宋</u><u class="pnoun">歐陽修</u><u class="book">明妃曲</u></p>
+</div>
+</div>
+<p class="options">Choose a font: <input oninput="document.getElementById('test-skipInset_control').style.fontFamily = this.value; document.getElementById('test-under_nodiac').style.fontFamily = this.value; document.getElementById('test-skipInset_test').style.fontFamily = this.value;">
+</p>
+</div>
+
+
+
+
+<p><span class="leadin" style="font-size: 110%;">Does it work?</span>  None of the three major browser engines currently support the use of <code class="kw" translate="no">text-decoration-skip-inset</code>.</p>
+
+<p>However, Gecko-based browsers (eg. Firefox) insert the gaps automatically, without the CSS.</p>
+
+
+
+<details class="moreTests">
+<summary>More tests...</summary>
+
+<div class="testData">
+<p>In the following test there are 2 proper nouns, <span lang="zh">宋</span> (Song, the Dynasty) and <span lang="zh">歐陽修</span> (Ouyang Xiu, the author), followed by a poem title, <span lang="zh">明妃曲</span> (Ming Fei Song). There are no spaces around these.</p>
+
+
+<p><span class="leadin">Assertion:</span> 
+<a href="https://w3c.github.io/i18n-tests/exploratory/index.html?text=%3Cp%20id%3D%22control%22%20lang%3D%22zh%22%3E%3Cu%20class%3D%22pnoun%22%3E%E5%AE%8B%3C%2Fu%3E%3Cu%20class%3D%22pnoun%22%3E%E6%AD%90%E9%99%BD%E4%BF%AE%3C%2Fu%3E%3Cu%20class%3D%22book%22%3E%E6%98%8E%E5%A6%83%E6%9B%B2%3C%2Fu%3E%3C%2Fp%3E%0A%3Cp%20id%3D%22testp%22%20lang%3D%22zh%22%3E%3Cu%20class%3D%22pnoun%22%3E%E5%AE%8B%3C%2Fu%3E%3Cu%20class%3D%22pnoun%22%3E%E6%AD%90%E9%99%BD%E4%BF%AE%3C%2Fu%3E%3Cu%20class%3D%22book%22%3E%E6%98%8E%E5%A6%83%E6%9B%B2%3C%2Fu%3E%3C%2Fp%3E&css=u%20%7B%20text-decoration%3A%20underline%202px%20tan%3B%20text-underline-position%3A%20under%3B%20%7D%0A%23testp%20u%20%7B%20text-decoration-skip-inset%3A%20auto%3B%20%7D%0A.nounp%20%7B%20text-decoration-style%3A%20solid%3B%20%7D%0A.book%20%7B%20text-decoration-style%3A%20wavy%3B%20%7D%0A&lang=zh&fontSize=36&width=347&height=252&a=Adjacent%20u%20elements%20are%20separated%20by%20a%20gap.&i=Test%20passes%20if%20there%20is%20a%20gap%20in%20the%20solid%20underline%20after%20the%20first%20character%2C%20and%20another%20between%20the%20solid%20and%20wavy%20underlines.%20Only%20the%20bottom%20line%20is%20styled%20using%20text-decoration-skip-inset.&fonts=title%3AmacOS%2CApple%20LiSung%2CLiSong%20Pro%2CSongti%20TC%2CNom%20Na%20Tong%2CApple%20LiGothic%2CHeiti%20TC%2CLantinghei%20TC%2CLiHei%20Pro%2CPingFang%20HK%2CPingFang%20TC%2CPingFang%20MO%2CYuanti%20TC%2CHiragino%20Sans%20TC%2CArial%20Unicode%20MS%2CBiaukaiTC%2CBiaukaiHK%2CKaiti%20TC%2CXingkai%20TC%2CBaoli%20TC%2CHannotate%20TC%2CHanziPen%20TC%2CLibian%20TC%2CLingWai%20TC%2CWawati%20TC%2CWeibei%20TC%2CYuppy%20TC%2Ctitle%3AWindows%2CMingLiu%2CPMingLiu%2CMicrosoft%20JhengHei%2CDFKai-SB%2Ctitle%3ANoto%2FSIL%2CNoto%20Serif%20CJK%20TC%2CNoto%20Sans%20CJK%20TC" target="_blank">Adjacent u elements are separated by a gap.</a>
+</p>
+
+
+
+
+
+
+<!--<p class="results" style="font-style: italic; margin-block-start:3em;">Test results...</p>-->
+
+<p><span class="leadin">Results:</span> No gaps appear between underline ranges in Chrome (Blink), and Safari (WebKit).</p>
+
+<p>Firefox (Gecko) adds gaps, even without the <code class="kw" translate="no">text-decoration-skip-inset</code> styling.</p>
+</div>
+</details>
+</section>
+
+
+
+
+
+<section id="browsers">
+<h2>Browser versions</h2>
+<p>The article describes behavior for the following browser versions. We will try to update the article as behavior changes.</p>
+<table border="0" summary="Table lists browsers and engines whose behavior is represented in the article.">
+<tbody>
+<tr>
+<th scope="col">Browser engine</th>
+<th scope="col">Browser tested</th>
+<th scope="col">Browsers using that engine</th>
+</tr>
+<tr>
+<td><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink" style="vertical-align: middle;"> Blink</td>
+<td>Chrome v144</td>
+<td>Chrome, Edge, Brave, Opera, Vivaldi, etc.</td>
+</tr>
+<tr>
+<td><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko" style="vertical-align: middle;"> Gecko</td>
+<td>Firefox v147</td>
+<td>Firefox, Conkeror, etc.</td>
+</tr>
+<tr>
+<td><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit" style="vertical-align: middle;"> WebKit</td>
+<td>Safari v26.2</td>
+<td>Safari, iOS browsers, Yandex, UC Browser, etc.</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+
+
+
+
+
+
+
+<!--section id="todo">
+<h2 class="notoc">To do</h2>
+<ul style="color:red;">
+<li>Link it to overhang (which gives more room by overlapping adjacent bases)</li>
+<li>Figure out what to do about ruby-merge – present as managing compound nouns, ie. managing the space within adjacent ruby pairs?</li>
+<li>section on styling base text, including removal, replacement with boxes (for educational text), etc.</li>
+<li>clarify <a  href="https://drafts.csswg.org/css-ruby-1/#white-space">space handling</a> - do this in ruby markup article too</li>
+<li>setting line height</li>
+<li>making line head and end flush</li>
+</ul>
+</section-->
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><cite>Authoring web pages</cite></p>
+<ul>
+<li><a href="https://w3c.github.io/i18n-drafts/techniques/authoring-html.en#textdecoration">Styling text decorations</a></li>
+</ul>
+</li><li>
+<p><cite>Language enablement index</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/typography/#text_decoration">Other text decoration &amp; inline features</a> • 
+<a href="https://www.w3.org/TR/typography/#quotations">Quotations &amp; citations</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>
+completePage()
+
+// add a link around results images to show bigger
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("figure.resultsImg img").forEach(img => {
+    const link = document.createElement("a");
+    link.href = img.src;
+    link.target = "_blank";
+    link.rel = "noopener";
+
+    img.parentNode.insertBefore(link, img);
+    link.appendChild(img);
+  });
+});
+
+
+</script>
+</body>
+</html>

@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "若您允許瀏覽器設定 Cookie，日後在造訪時（若該語言版本可用），W3C 國際化活動相關頁面將會持續以您所選擇的語言顯示。請問您是否要設定這個 Cookie？"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "世界地圖"  // title text for image, top right
 s.searchI18nSite = "I18n 網站搜尋" // placeholder text for search box, top right
-s.translationDisclaimer = `此文件為翻譯。如有不同或錯誤<a href="${ f.filename }.en">應將最新的英文原文</a>作為標準依據，原始版權屬於 W3C，文件内容翻譯如下所示。`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `此文件為翻譯。如有不同或錯誤<a href="${ s.englishOriginal }">應將最新的英文原文</a>作為標準依據，原始版權屬於 W3C，文件内容翻譯如下所示。`  // text appears only on translated pages
 
 s.articles = "文章" // used in breadcrumbs, top right of page
 s.tests="測試頁面" // used at the end of breadcrumbs for test related pages
@@ -121,9 +125,9 @@ s.historyOfDocumentChanges = `如需查閱本文件的修改歷程，請參考�
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>注意：</strong>本文件翻譯完成後，<a href="${ f.filename }.en">英文版本</a>已有更新。這些變更已暫時呈現於本頁，因此在翻譯更新前，您可能會看到部分段落以原文表示。`
+s.untranslatedChanges = `<strong>注意：</strong>本文件翻譯完成後，<a href="${ s.englishOriginal }">英文版本</a>已有更新。這些變更已暫時呈現於本頁，因此在翻譯更新前，您可能會看到部分段落以原文表示。`
 s.unlinkedTranslation = `<strong>警告：</strong>自本文件翻譯完成後，英文原文已進行過重大修改。
-建議您在翻譯更新之前，優先參閱<a href="${ f.filename }.en">英文版本</a>。`
+建議您在翻譯更新之前，優先參閱<a href="${ s.englishOriginal }">英文版本</a>。`
 s.githubRedirect = `<strong>注意！</strong> 本頁僅為本文的編輯草稿版本。所有連結與書籤應導向<a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'> W3C 官方網站上的版本</a>。` // used for github-based versions of published articles
 
 
@@ -152,6 +156,9 @@ s.quickanswer = "快速回答" // heading
 s.longeranswer = "細節" // heading that follows 'Quick answer'
 s.additionalinfo = "附加資訊" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "訂閲 RSS feed."  

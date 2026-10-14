@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Если вы разрешите браузеру установить cookie, вы будете видеть страницы W3C Internationalization Activity на выбранном вами языке (там, где это доступно). Установить cookie?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Карта мира"  // title text for image, top right
 s.searchI18nSite = "Поиск веб-сайта I18n" // placeholder text for search box, top right
-s.translationDisclaimer = `Данный документ является переводом. В случае каких-либо несоответствий и ошибок <a href="${ f.filename }.en">последняя версия документа на английском языке</a> должна рассматриваться в качестве официальной. <a href="#copyright">Первоначальное авторское право</a> принадлежит W3C, как то указано ниже.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `Данный документ является переводом. В случае каких-либо несоответствий и ошибок <a href="${ s.englishOriginal }">последняя версия документа на английском языке</a> должна рассматриваться в качестве официальной. <a href="#copyright">Первоначальное авторское право</a> принадлежит W3C, как то указано ниже.`  // text appears only on translated pages
 
 s.articles = "Статьи" // used in breadcrumbs, top right of page
 s.tests="Тесты" // used at the end of breadcrumbs for test related pages
@@ -121,8 +125,8 @@ s.historyOfDocumentChanges = `Вы можете отслеживать исто�
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Внимание:</strong> <a href="${ f.filename }.en">Оригинал на английском языке</a> был изменен после того, как был создан данный перевод. Изменения были добавлены к текущей странице, так что вы можете видеть некоторые блоки текста на английском языке до тех пор, пока не будет обновлен перевод.`
-s.unlinkedTranslation = `<strong>Предупреждение:</strong> Оригинал на английском языке существенно измененился с того момента, как документ был переводен. Рекомендуется читать <a href="${ f.filename }.en">версию на английском языке</a> до тех пор, пока перевод не будет обновлен.`
+s.untranslatedChanges = `<strong>Внимание:</strong> <a href="${ s.englishOriginal }">Оригинал на английском языке</a> был изменен после того, как был создан данный перевод. Изменения были добавлены к текущей странице, так что вы можете видеть некоторые блоки текста на английском языке до тех пор, пока не будет обновлен перевод.`
+s.unlinkedTranslation = `<strong>Предупреждение:</strong> Оригинал на английском языке существенно измененился с того момента, как документ был переводен. Рекомендуется читать <a href="${ s.englishOriginal }">версию на английском языке</a> до тех пор, пока перевод не будет обновлен.`
 s.githubRedirect = `<strong>Внимание!</strong> &nbsp; Это только редакторский черновик статьи. Все ссылки и закладки должны вести на <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>версию, размещенную на W3C сайте</a>.` // used for github-based versions of published articles
 
 
@@ -151,6 +155,9 @@ s.quickanswer = "Быстрый ответ" // heading
 s.longeranswer = "Подробный ответ" // heading that follows 'Quick answer'
 s.additionalinfo = "Дополнительная информация" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Подпишитесь на ленту новостей RSS."  

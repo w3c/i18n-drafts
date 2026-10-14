@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+<meta charset="utf-8">
+<title>HTTP标头、meta元素与语言信息</title>
+<meta name="description" content="对于HTML，HTTP和meta语言声明有什么用，它们是如何工作的，我应该用它们吗？">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/' // the path to this file, not including /International or the file name
+f.filename = 'qa-http-and-lang' // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C' // author(s) and affiliations
+f.previousauthors = '' // as above
+f.modifiers = '' // people making substantive changes, and their affiliation
+f.searchString = 'qa-http-and-lang' // blog search string - usually the filename without extensions
+f.firstPubDate = '2004-07-02' // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2011-09-15', time:'06:31'}  // date and time of latest substantive changes to this document
+f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-02-03', time:'16:44' } // date and time of latest edits to this document/translation
+f.contributors = '' // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+f.sources = '' // describes sources of information
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '薛富侨' // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'language'
+
+f.additionalLinks = ''
+</script>
+<script src="qa-http-and-lang-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-zh-hans.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<script src="../javascript/prism.js"></script>
+<link rel="stylesheet" href="../style/prism.css">
+<link rel="stylesheet" href="qa-http-and-lang-data/local.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+  
+  <h1>HTTP标头、<code class="kw" translate="no">meta</code>元素与语言信息</h1>
+</header>
+
+
+<div>
+  <div id="audience">
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+</div>
+  
+ 
+
+
+<p><span style="margin-top: 6em;">除了<code class="kw" translate="no">html</code>标签上的<a class="print termref" href="https://www.w3.org/TR/html5/dom.html#the-lang-and-xml:lang-attributes"><code class="kw" translate="no">lang</code></a>（和<a class="print termref" href="https://www.w3.org/TR/xml/#sec-lang-tag"><code class="kw" translate="no">xml:lang</code></a>）属性外，你可能会在HTML <code class="kw" translate="no">meta</code>元素或随HTML页面发送的HTTP标头中遇到语言信息。</span>让我们看看在声明HTML内容的语言时，这些信息是否有用，如果有用，应该如何使用它们。</p>
+<p class="info">本文只讨论HTTP标头和<code class="kw" translate="no">meta</code>元素中的语言声明。它不是关于在HTML页面上设置语言的一般指南：关于这一点，请参阅<a href="qa-html-language-declarations">在HTML中声明语言</a><!--, or  try the <a href="#relatedhead">Related links</a-->。</p>
+<p><span class="info">本文建立在以下区别之上：（1）使用文件元数据来识别文档的受众，以及（2）指定用于处理内容的语言。如果你想更好地理解这种区别，请参阅文章<a href="qa-text-processing-vs-metadata">语言声明的类型</a>。</span></p>
+
+
+<section id="meta_summary">
+<h2>meta元素</h2>
+    <p>你可能会在HTML文件的头部遇到与语言相关的<code class="kw" translate="no">meta</code>元素，看起来像这样：</p>
+<figure class="example">
+<div class="badcode"><span><img src="../icons/dontcopy.png" alt=" ">错误代码。请勿复制！</span></div>
+<p><code class="language-html">&lt;meta http-equiv=&quot;content-language&quot; content=&quot;de&quot;&gt;</code></p>
+</figure>
+<p>HTML规范已弃用将<code class="kw" translate="no">content-language</code>值用于<code class="kw" translate="no">http-equiv</code>属性的做法，不应再使用。你应该始终在<code class="kw" translate="no">html</code>标签上使用<code class="kw" translate="no">lang</code>属性来声明页面文本的默认语言。</p>
+<p class="info">如果你想知道为什么弃用此方法，<a href="#meta">请参阅下文</a>。要了解如何使用<code class="kw" translate="no">lang</code>属性，请参阅<a href="qa-html-language-declarations">在HTML中声明语言</a>。</p>
+</section>
+
+
+
+
+  <section id="http_summary">
+<h2>HTTP标头</h2>
+<p>当你从服务器检索网页或资源时，服务器会随之发送关于你正在检索的事物的各种信息（元数据）。它使用一种称为<a class="print" href="https://www.rfc-editor.org/rfc/rfc9110.html#name-content-language">HTTP标头</a>的格式。你可能会在此类元数据中发现的一项内容与语言有关。请参阅下面示例中的最后一行，其中显示了本文随附的HTTP响应。</p>
+<figure class="example">
+<pre>HTTP/1.1 200 OK
+Date: Sat, 23 Jul 2011 07:28:50 GMT
+Server: Apache/2
+Content-Location: qa-http-and-lang.en.php
+Vary: negotiate,accept-language,Accept-Encoding
+TCN: choice
+P3P: policyref="http://www.w3.org/2001/05/P3P/p3p.xml"
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: text/html; charset=utf-8
+<span style="color:red;">Content-Language: en</span></pre>
+</figure>
+<p>这是一个HTTP <code class="kw" translate="no">Content-Language</code>标头的示例，它声明资源是英语、印地语和旁遮普语的混合体。与HTML元素上的<code class="kw" translate="no">lang</code>属性不同，如果你的目标受众讲多种语言，HTTP标头允许你使用逗号分隔的语言列表。</p>
+<figure class="example">
+<pre>Content-Language: en, hi, pa</pre>
+</figure>
+<p><code class="kw" translate="no">Content-Language</code>标头通过服务器上的设置或后端脚本与特定页面相关联。例如，当服务器保存同一资源的多个语言版本时，通常会在HTTP元数据中找到<code class="kw" translate="no">Content-language</code>标头。如果服务器使用它掌握的关于你的信息来自动选择特定的语言版本（也就是“内容协商”），则选定的语言版本将在HTTP标头中标识。</p>
+<p>HTTP <code class="kw" translate="no">Content-Language</code>标头可以提供与你正在检索的页面或资源相关的有用语言数据，但<a class="print" href="https://www.rfc-editor.org/rfc/rfc9110.html#name-content-language">HTTP规范</a>清楚地表明，此信息的意图是提供有关文档预期<em>受众</em>的元数据，而不是指示文本本身的实际语言。此类元数据可用于提供正确的语言版本、工作流管理、分类、搜索等。另请参阅<a href="#http">从HTTP标头推断文本语言</a>。</p>
+<p>由于HTTP标头中的语言信息是由服务器发送的，因此如果从硬盘、U盘或其他不是基于服务器的位置访问你的页面，则无法获得此信息。目前尚无广泛认可的方法在页面内表示此类元数据。</p>
+</section>
+
+
+
+<section id="processing">
+<h2>指定文本的处理语言</h2>
+<p>在HTML中应使用<code translate="no" class="kw">lang</code>属性来指定文本内容的语言，以便浏览器可以正确显示或处理你的内容（例如，用于断字、样式、拼写检查等）。你应该始终在<code class="kw" translate="no">html</code>元素标签上使用它，然后在包含不同语言内容片段的任何元素上也使用它。</p>
+<p><span class="info">如果你想更好地理解（1）使用文件元数据来识别文档的受众，以及（2）指定用于处理内容的语言之间的区别，请参阅文章<a href="qa-text-processing-vs-metadata">语言声明的类型</a>。</span></p>
+<p class="info">有关如何使用<code class="kw" translate="no">lang</code>属性的更多信息，请参阅<a href="qa-html-language-declarations">在HTML中声明语言</a>。</p>
+</section>
+
+
+
+  
+<section id="http">
+<h2>从HTTP标头推断文本语言</h2>
+<p>如果未在<code class="kw" translate="no">html</code>标签上声明语言，一些主流浏览器会识别HTTP标头中声明的值，以设置页面文本的默认语言。然而，即使在这样做的浏览器中，这个信息似乎也只用于一部分受语言影响的功能。HTML5规范指出，如果<code class="kw" translate="no">html</code>标签上没有<code class="kw" translate="no">lang</code>属性，并且没有<code class="kw" translate="no">http-equiv</code>属性设置为<code class="kw" translate="no">Content-Language</code>的<code class="kw" translate="no">meta</code>元素，并且HTTP标头声明中只有一个语言标签，则浏览器必须使用该信息来猜测页面文本的默认语言。</p>
+    <p>但是，由于你应该始终在<code class="kw" translate="no">html</code>标签上使用语言属性，并且语言属性始终覆盖HTTP标头信息，这实际上成了一个细枝末节。HTTP标头应仅用于提供有关整个文档预期受众的元数据，而<code class="kw" translate="no">html</code>标签上的语言属性应用于声明内容的默认语言。</p>
+</section>
+
+
+
+
+<section id="additionalinfo">
+<h2>附加信息</h2>
+<p>本节中的信息用处不大，但为了完整起见而提供。</p>
+
+
+
+
+<section id="meta">
+<h3>为什么不应该使用<code class="kw" translate="no">meta</code>元素</h3>
+    <p> HTML 4.01规范中没有直接提到在文档<code class="kw" translate="no">head</code>中使用<code class="kw" translate="no">http-equiv</code>属性设置为<code class="kw" translate="no">Content-Language</code>的<code class="kw" translate="no">meta</code>元素，然而，很长一段时间以来，网上关于如何为HTML页面声明语言的非正式指南大都建议使用它，并且当你使用对话框指定语言信息时，某些HTML编辑器会自动创建此类元素。这是一个声明语言为英语的示例。</p>
+    <figure class="example">
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" ">错误代码。请勿复制！</span></div>
+<p><code class="language-html">&lt;meta http-equiv="Content-Language" content="en"&gt;</code> </p>
+    </figure>
+    <p>与<code class="kw" translate="no">lang</code>和<code class="kw" translate="no">xml:lang</code>属性不同，<code class="kw" translate="no">content</code>属性的值可以是逗号分隔的语言标签列表。下面的示例声明文档的主要语言为（同等程度的）德语、法语和意大利语。</p>
+    <figure class="example">
+      <div class="badcode"><span><img src="../icons/dontcopy.png" alt=" ">错误代码。请勿复制！</span></div>
+<p><code class="language-html">&lt;meta http-equiv="Content-Language" content="de, fr, it"&gt;</code></p>
+    </figure>
+    <p>如果<code class="kw" translate="no">meta</code>元素的名称提示不够清晰，那么该值支持多种语言的事实表明此元素实际上是关于文档级元数据的。如果你要有效地指示文本范围的语言，则必须具体——一次只能是一种语言。因此，<code class="kw" translate="no">meta</code>元素是文档内的位置，用于表达有关整个文档预期受众语言的元数据。</p>
+    <p>以前，几乎没有浏览器关注此meta元素。后来，如果<code class="kw" translate="no">html</code>标签上没有语言属性，一些主流浏览器开始使用此元素来设置文档文本的默认语言（这正是你应该在<code class="kw" translate="no">html</code>标签上使用语言属性的目的）。这种实现方式在不同浏览器之间不一致，因此不可靠。</p>
+    <p>由于围绕这种声明的历史混乱和不一致的实现，2011年HTML工作组决定使<code class="kw" translate="no">http-equiv</code>设置为<code class="kw" translate="no">Content-Language</code>的<code class="kw" translate="no">meta</code>元素<a class="print" href="https://html.spec.whatwg.org/multipage/semantics.html#pragma-directives">在HTML中不合规</a>。这意味着你不应再在HTML5中使用它，因此，尽管在其他类型的HTML中技术上并非非法，但最好现在不要在任何地方使用它。</p>
+    <p>然而，HTML5确实为了向后兼容性做出了<a class="print" href="https://html.spec.whatwg.org/multipage/semantics.html#pragma-set-default-language">让步</a>。如果标记中有一个<code class="kw" translate="no">http-equiv</code>设置为<code class="kw" translate="no">Content-Language</code>的meta元素，并且<code class="kw" translate="no">html</code>标签上没有语言属性，并且meta元素的值是单个语言标签，则浏览器必须使用该信息来猜测页面上的默认文本语言。话虽如此，这只是为了向后兼容，你真的不应该再使用这种方法了。只需在<code class="kw" translate="no">html</code>标签上使用语言属性即可。</p>
+    </section>
+    
+
+
+
+<section id="internal_meta">
+<h3>文档内部元数据</h3>
+
+<p>HTML5放弃用于声明语言的meta元素的一个含义是，现在没有明显的方法可以在文档本身内部提供有关文档的元数据。理论上，这对内容管理系统、翻译流程等非常有用。此类信息可以通过HTTP标头携带（正如我们在下一节中看到的那样），但此类系统和流程倾向于处理并非从带有HTTP标头的服务器发送的文档，因此文档内元数据将非常有用。</p>
+<p>也许另一种方法，例如<a class="print" href="https://en.wikipedia.org/wiki/RDFa">RDFa</a>，将提供一种在未来表示此类信息的方式。</p>
+<p><a rel="noopener" href="https://wiki.whatwg.org/wiki/MetaExtensions" class="external external-icon">WHATWG Wiki MetaExtensions页面</a>提供了一个扩展的值列表，可用于<code class="kw" translate="no">meta</code>元素的<code class="kw" translate="no">name</code>值，尽管目前尚未正式接受任何值。其中一个值是<code translate="no">dc.language</code>，用于使用<a class="print" href="https://en.wikipedia.org/wiki/Dublin_Core">Dublin Core</a>符号表达语言信息。</p>
+<figure class="example">
+<p><img src="../icons//dontcopy.png" alt="Do not use this" title="Do not use this" class="dontuse"> <code class="language-html">&lt;meta name="dc.language" content="en"&gt;</code></p>
+</figure>
+<p>然而，尚不清楚浏览器是否曾经使用此信息，或者任何其他应用程序使用它的程度如何。WHATWG页面建议改用<code class="kw" translate="no">lang</code>属性。该建议对于声明文本处理语言很有用，但并未解决其用于表达有关整个页面元数据的可能用途。</p>
+</section>
+</section>
+
+
+<section id="endlinks">
+<h2>延伸阅读</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+    <li>
+      <p>入门？<a href="https://www.w3.org/International/getting-started/language"><cite>Web上的语言</cite></a></p>
+    </li>
+    <li>
+      <p>教程，<a href="https://www.w3.org/International/tutorials/language-decl/"><cite>在HTML中使用语言</cite></a></p>
+    </li>
+    <li>
+      <p><cite>创作网页</cite></p>
+      <ul>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?open=language">语言</a></li>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?open=language&open=primarylanguage">声明有关预期受众语言的元数据</a></li>
+      <li><a href="https://www.w3.org/International/techniques/authoring-html?open=language&open=textprocessing">声明页面的整体语言</a></li>
+      </ul>
+    </li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spec review checklist</title>
-<meta name="description" content="Lists open issues in i18n Activity github repositories." />
+<meta name="description" content="Lists open issues in i18n Activity github repositories.">
 <script>
 var f = { }
 
@@ -20,8 +21,9 @@ f.status = 'notreviewed';  // should be one of draft, review, published, notrevi
 f.path = '../' // what you need to prepend to a URL to get to the /International directory 
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2019-06-03', time:'07:18'} // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-02-06', time:'09:46' } // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
 
 // TRANSLATORS should fill in these assignments:
@@ -36,15 +38,70 @@ f.additionalLinks = ''
 <script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
 <script src="../javascript/doc-structure/sitepage-2022.js"> </script>
 <script src="../javascript/articletoc-2022.js"></script>
-<script src="index-data/label-list.js"></script>
-<link rel="stylesheet" href="../style/sitepage-2022.css" />
-<link rel="stylesheet" href="shortchecklist-data/local.css" />
+<link rel="stylesheet" href="../style/sitepage-2022.css">
+<link rel="stylesheet" href="shortchecklist-data/local.css">
 <link rel="copyright" href="#copyright"/>
 <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 <style>
 #checklist td { vertical-align: top; padding: .25em; font-family: Helvetica, Roboto, Calibri, "Segoe UI", sans-serif; }
 #checklist strong { font-size: 120%; }
+#copyBtn {
+    background: #005a9c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+#copyBtn:hover {
+    background: #003d6b;
+}
+#copy {
+    box-sizing: border-box;
+    padding: 12px;
+    margin: 0 0 1em 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Consistent with ../javascript/doc-structure/sitepage-2022.js */
+@media (max-width: 767px) {
+    #copy {
+        margin: 0 8px 1em 8px;
+        width: calc(100% - 16px);
+    }
+
+    table {
+        width: 80%;
+    }
+}
 </style>
+<script>
+async function copyChecklist() {
+    const textarea = document.getElementById('copy');
+    const btn = document.getElementById('copyBtn');
+    const originalText = btn.textContent;
+
+    try {
+        await navigator.clipboard.writeText(textarea.value);
+        btn.textContent = 'Copied!';
+        setTimeout(function() {
+            btn.textContent = originalText;
+        }, 2000);
+    } catch (err) {
+        // Fallback for older browsers
+        textarea.select();
+        document.execCommand('copy');
+        btn.textContent = 'Copied!';
+        setTimeout(function() {
+            btn.textContent = originalText;
+        }, 2000);
+    }
+}
+</script>
 </head>
 
 <body>
@@ -64,7 +121,7 @@ f.additionalLinks = ''
   <textarea id="copy" style="width:100%;height:10em;">
 This short review is for the following spec: [Spec_name](url_of_the_spec).
 
-1. [ ] _If the spec (or its implementation) contains any natural language text that will be read by a human (this includes error messages or other UI text, JSON strings, etc, etc),_ **ensure that there’s metadata about and support for basic things such as language and text direction**.  Also check the detailed guidance for [Language](https://www.w3.org/TR/international-specs/#resource) and [Text direction](https://www.w3.org/TR/international-specs/#text_direction).
+1. [ ] _If the spec (or its implementation) contains any natural language text that will be read by a human (this includes error messages or other UI text, JSON strings, etc, etc),_ **ensure that there’s metadata about and support for basic things such as language and text direction**.  Also check the detailed guidance for [Language](https://www.w3.org/TR/international-specs/#language) and [Text direction](https://www.w3.org/TR/international-specs/#text_direction).
 
     Comments_go_here.
     - [ ] Not applicable
@@ -126,12 +183,12 @@ This short review is for the following spec: [Spec_name](url_of_the_spec).
 
 Short i18n review checklist is [here](https://www.w3.org/International/i18n-drafts/techniques/shortchecklist.html)
 </textarea>
-<p><button onClick="document.getElementById('copy').select();">Select all</button></p>
+<p><button id="copyBtn" onclick="copyChecklist()">Copy to clipboard</button></p>
 
 
   <h2 class="notoc">Useful links</h2>
   <ul>
-    <li><a class="print" href="https://www.w3.org/International/review-request">Request an i18n review</a></li>
+    <li><a class="print" href="https://www.w3.org/International/i18n-drafts/pages/review-request.en">Request an i18n review</a></li>
     <li><a class="print" href="https://github.com/orgs/w3c/projects/91">Review radar</a></li>
   </ul>
 </section>
@@ -144,8 +201,6 @@ Short i18n review checklist is [here](https://www.w3.org/International/i18n-draf
   <p><strong>The primary purpose for this page is educational. It helps you to learn about internationalization features that may affect the design of your spec.  You should read it <em>and</em> <a href="https://www.w3.org/TR/international-specs/">Internationalization Best Practices for Spec Developers</a> as early as possible, so that you are aware of what your spec will need to address.  Then, to ensure that you haven't missed anything, you can also use this page as a checklist prior to publishing the spec as a FPWD.</strong></p>
 <p>You should raise an issue in your own repository to show the answers to these questions, and attach the <code>i18n-tracker</code> label so that we are notified. Under 'Create a Report' you'll find a way to create a report.</p>
 </section>
-<section id="rawdata">
-</section>
 
 
 <table id="checklist">
@@ -157,7 +212,7 @@ Short i18n review checklist is [here](https://www.w3.org/International/i18n-draf
 <tr>
 <td>... contains <strong>any natural language</strong> text that will be read by a human (this  includes error messages or other UI text, JSON strings, etc, etc),</td>
 <td>... ensure that there’s metadata about and support for basic  things such as language and text direction</td>
-<td><p><a href="https://www.w3.org/TR/international-specs/#resource">Language</a></p>
+<td><p><a href="https://www.w3.org/TR/international-specs/#language">Language</a></p>
 <p><a href="https://www.w3.org/TR/international-specs/#text_direction">Text direction</a></p></td>
 </tr>
 <tr>

@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Als je de browser een cookie laat zetten, krijg je in het vervolg de pagina's van W3C's Internationalisatie-activiteit (voorzover beschikbaar) in de gekozen taal. Wil je een cookie zetten?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Wereldkaart"  // title text for image, top right
 s.searchI18nSite = "Zoeken op de I18n site:" // placeholder text for search box, top right
-s.translationDisclaimer = `Dit document is een vertaling. In geval van afwijkingen of fouten, dient het <a href="${ f.filename }.en">meest recente origineel in het Engels</a> als referentie te worden beschouwd. <a href="#copyright">Het auteursrecht</a> is eigendom van W3C, zoals hieronder getoond.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `Dit document is een vertaling. In geval van afwijkingen of fouten, dient het <a href="${ s.englishOriginal }">meest recente origineel in het Engels</a> als referentie te worden beschouwd. <a href="#copyright">Het auteursrecht</a> is eigendom van W3C, zoals hieronder getoond.`  // text appears only on translated pages
 
 s.articles = "Artikelen" // used in breadcrumbs, top right of page
 s.tests="Testen" // used at the end of breadcrumbs for test related pages
@@ -121,7 +125,7 @@ s.historyOfDocumentChanges = `Voor de wijzigingen van het document in het verled
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Opmerking:</strong> Er zijn veranderingen aangebracht in <a href="${ f.filename }.en">het Engelse origineel</a> nadat dit document werd vertaald. De veranderingen zijn opgenomen in deze pagina, dus je kunt passages in het Engels tegenkomen totdat de vertaling is bijgewerkt.`
+s.untranslatedChanges = `<strong>Opmerking:</strong> Er zijn veranderingen aangebracht in <a href="${ s.englishOriginal }">het Engelse origineel</a> nadat dit document werd vertaald. De veranderingen zijn opgenomen in deze pagina, dus je kunt passages in het Engels tegenkomen totdat de vertaling is bijgewerkt.`
 s.unlinkedTranslation = `<strong>Waarschuwing:</strong> Er zijn inhoudelijke veranderingen gemaakt in het Engelse origineel nadat deze pagina werd vertaald. Je wordt geadviseerd <a href="${ f.filename }">een versie in een andere taal</a> te lezen totdat de vertaling is bijgewerkt.`
 s.githubRedirect = `<strong>Let op!</strong> &nbsp; Dit is alleen maar een ontwerp door de redacteur van dit artikel. Alle links en bladwijzers moeten naar de <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>versie op de W3C-site</a> wijzen, i.p.v. naar deze pagina.` // used for github-based versions of published articles
 
@@ -151,6 +155,9 @@ s.quickanswer = "Kort antwoord" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Aanvullende informatie" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Abonneer u op een nieuwsfeed."

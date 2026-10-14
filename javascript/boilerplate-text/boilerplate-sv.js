@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Om du tillåter webbläsaren att spara en kaka (cookie), så kommer du i fortsättningen att se sidor från W3C Internationalization Activity i det språk du valt (när sådana översättningar finns). Vill du spara kakan?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Världskarta"  // title text for image, top right
 s.searchI18nSite = "Sök på I18n:s webbplats" // placeholder text for search box, top right
-s.translationDisclaimer = `Detta dokument är en översättning av ett engelskt original, utfört av frivilliga. Om det finns tveksamheter eller fel i detta dokument, så är <a href="${ f.filename }.en">senaste version av det engelska originalet</a> den auktoritativa versionen. <a href="#copyright">Copyright</a> tillhör W3C, enligt nedan.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `Detta dokument är en översättning av ett engelskt original, utfört av frivilliga. Om det finns tveksamheter eller fel i detta dokument, så är <a href="${ s.englishOriginal }">senaste version av det engelska originalet</a> den auktoritativa versionen. <a href="#copyright">Copyright</a> tillhör W3C, enligt nedan.`  // text appears only on translated pages
 
 s.articles = "Artiklar" // used in breadcrumbs, top right of page
 s.tests="" // used at the end of breadcrumbs for test related pages
@@ -121,7 +125,7 @@ s.historyOfDocumentChanges = `Om du vill se en logg över hur dokumentet ändrat
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Obs:</strong> Det  <a href="/International/${ f.directory }${ f.filename }.en">engelska originaldokumentet</a> har ändrats sedan det översattes. De ändringarna har lagts in i denna sida, så du kan råka se vissa delar formulerade i engelska, till dess att översättningen uppdaterats.`
+s.untranslatedChanges = `<strong>Obs:</strong> Det  <a href="${ s.englishOriginal }">engelska originaldokumentet</a> har ändrats sedan det översattes. De ändringarna har lagts in i denna sida, så du kan råka se vissa delar formulerade i engelska, till dess att översättningen uppdaterats.`
 s.unlinkedTranslation = `<strong>Varning:</strong> Viktiga ändringar har gjorts i det engelska originalet efter att denna översättning gjordes. Vi rekommenderar att du läser <a href="${ f.filename }">en version i ett annat språk</a> i väntan på att denna översättning blir uppdaterad.`
 s.githubRedirect = `<strong>NOTE!</strong> &nbsp; This is only an editor's draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>version on the W3C site</a>.` // used for github-based versions of published articles
 
@@ -151,6 +155,9 @@ s.quickanswer = "Snabbt svar" // heading
 s.longeranswer = "Detaljer" // heading that follows 'Quick answer'
 s.additionalinfo = "Ytterligare information" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Prenumerera på en RSS-kanal."  

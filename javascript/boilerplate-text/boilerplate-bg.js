@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Ако разрешите браузъра да запише бисквитка, ще продължите да виждате W3C Internationalization Activity страниците (където са налични) на избрания от вас език. Искате ли да запишете бисквиткат?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Карта на света"  // title text for image, top right
 s.searchI18nSite = "Търсене в сайта I18n" // placeholder text for search box, top right
-s.translationDisclaimer = `Този превод на документа е осигурен от доброволец. В случай на несъответствие или грешки, <a href="'+f.filename+'.en">последният Английски оригинал</a> следва да бъде считан за достоверен.<a href="#copyright">Оригиналното авторско право</a> принадлежи на W3C, както е означено по-долу.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `Този превод на документа е осигурен от доброволец. В случай на несъответствие или грешки, <a href="${ s.englishOriginal }">последният Английски оригинал</a> следва да бъде считан за достоверен.<a href="#copyright">Оригиналното авторско право</a> принадлежи на W3C, както е означено по-долу.`  // text appears only on translated pages
 
 s.articles = "Статии" // used in breadcrumbs, top right of page
 s.tests="Тестове" // used at the end of breadcrumbs for test related pages
@@ -121,7 +125,7 @@ s.historyOfDocumentChanges = `За история на промените в д�
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Забележка:</strong> Направени са промени в <a href="${ f.filename }.en">Английският оригинал</a> спрямо последния превод. Промените са вмъкнати в тази страница и затова някои пасажи може все още да бъдат на Английски докато превода не бъде актуализиран.`
+s.untranslatedChanges = `<strong>Забележка:</strong> Направени са промени в <a href="${ s.englishOriginal }">Английският оригинал</a> спрямо последния превод. Промените са вмъкнати в тази страница и затова някои пасажи може все още да бъдат на Английски докато превода не бъде актуализиран.`
 s.unlinkedTranslation = `<strong>Предупреждение:</strong> Значителни промени са направени в Английския оригинал откакто този документ последно е преведен. Съветваме ви да прочетете <a href="${ f.filename }">на друг език</a> докато този превод не бъде актуализиран.`
 s.githubRedirect = `<strong>NOTE!</strong> &nbsp; This is only an editor's draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>version on the W3C site</a>, rather than to this page.` // used for github-based versions of published articles
 
@@ -151,6 +155,9 @@ s.quickanswer = "Бърз отговор" // heading
 s.longeranswer = "Детайли" // heading that follows 'Quick answer'
 s.additionalinfo = "Допълнителна информация" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Абонирай се за RSS фиид."  

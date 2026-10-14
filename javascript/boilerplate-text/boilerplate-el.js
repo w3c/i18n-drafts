@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Παγκόσμιος χάρτης"  // title text for image, top right
 s.searchI18nSite = "Αναζήτηση ιστοχώρου I18n" // placeholder text for search box, top right
-s.translationDisclaimer = `Το παρόν έγγραφο είναι μετάφραση. Σε περίπτωση τυχόν ασυμφωνιών ή σφαλμάτων, επίσημο θα πρέπει να θεωρηθεί <a href="${ f.filename }.en">το πιο πρόσφατο αγγλικό πρωτότυπο</a>. Τα <a href="#copyright">πρωτότυπα πνευματικά δικαιώματα</a> ανήκουν στην W3C, όπως περιγράφεται παρακάτω.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `Το παρόν έγγραφο είναι μετάφραση. Σε περίπτωση τυχόν ασυμφωνιών ή σφαλμάτων, επίσημο θα πρέπει να θεωρηθεί <a href="${ s.englishOriginal }">το πιο πρόσφατο αγγλικό πρωτότυπο</a>. Τα <a href="#copyright">πρωτότυπα πνευματικά δικαιώματα</a> ανήκουν στην W3C, όπως περιγράφεται παρακάτω.`  // text appears only on translated pages
 
 s.articles = "Άρθρα" // used in breadcrumbs, top right of page
 s.tests="Tests" // used at the end of breadcrumbs for test related pages
@@ -121,7 +125,7 @@ s.historyOfDocumentChanges = `For the history of document changes, see the <a hr
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Σημείωση:</strong> Έχουν γίνει αλλαγές στο <a href="${ f.filename }.en">αγγλικό πρωτότυπο</a> από τη μετάφραση αυτού του εγγράφου. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.`
+s.untranslatedChanges = `<strong>Σημείωση:</strong> Έχουν γίνει αλλαγές στο <a href="${ s.englishOriginal }">αγγλικό πρωτότυπο</a> από τη μετάφραση αυτού του εγγράφου. The changes were incorporated into this page, so you may see some passages in English until the translation is updated.`
 s.unlinkedTranslation = `<strong>Warning:</strong> Substantive changes have been made to the English original since this document was translated. You are advised to read <a href="${ f.filename }">a version in another language</a> until this translation has been updated.`
 s.githubRedirect = `<strong>NOTE!</strong> &nbsp; This is only an editor's draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>version on the W3C site</a>, rather than to this page.` // used for github-based versions of published articles
 
@@ -151,6 +155,9 @@ s.quickanswer = "Quick answer" // heading
 s.longeranswer = "Details" // heading that follows 'Quick answer'
 s.additionalinfo = "Additional information" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Εγγραφή σε Τροφοδότη Ειδήσεων RSS."  

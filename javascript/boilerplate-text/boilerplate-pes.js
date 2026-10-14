@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "اگر اجازه دهید مرورگر یک کوکی تنظیم کند، همچنان برگه‌های فعالیت بین‌المللی‌سازی W3C (در صورت موجود بودن) را به زبانی که انتخاب کرده‌اید مشاهده خواهید کرد. آیا می‌خواهید کوکی تنظیم شود؟"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "نقشه جهان"  // title text for image, top right
 s.searchI18nSite = "جستجو در وبگاه I18n" // placeholder text for search box, top right
-s.translationDisclaimer = `این سند ترجمه‌ای است که توسط یک داوطلب ارائه شده است. در صورت هرگونه اختلاف یا خطا، <a href="${ f.filename }.en">نسخه‌ی انگلیسی اصلی</a> به‌عنوان منبع معتبر در نظر گرفته شود. حق نشر اصلی متعلق به W3C است، همانطور که در پایین برگه نشان داده شده است.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `این سند ترجمه‌ای است که توسط یک داوطلب ارائه شده است. در صورت هرگونه اختلاف یا خطا، <a href="${ s.englishOriginal }">نسخه‌ی انگلیسی اصلی</a> به‌عنوان منبع معتبر در نظر گرفته شود. حق نشر اصلی متعلق به W3C است، همانطور که در پایین برگه نشان داده شده است.`  // text appears only on translated pages
 
 s.articles = "مقاله‌ها" // used in breadcrumbs, top right of page
 s.tests="آزمون‌ها" // used at the end of breadcrumbs for test related pages
@@ -121,7 +125,7 @@ s.historyOfDocumentChanges = `برای مشاهده تاریخچه تغییرا�
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>توجه:</strong> تغییراتی در <a href="${ f.filename }.en">نسخه‌ی انگلیسی اصلی</a> ایجاد شده است از زمان ترجمه‌ی این سند. این تغییرات در این برگه اعمال شده‌اند، بنابراین ممکن است برخی قسمت‌ها را به زبان انگلیسی ببینید تا زمانی که ترجمه به‌روزرسانی شود.`
+s.untranslatedChanges = `<strong>توجه:</strong> تغییراتی در <a href="${ s.englishOriginal }">نسخه‌ی انگلیسی اصلی</a> ایجاد شده است از زمان ترجمه‌ی این سند. این تغییرات در این برگه اعمال شده‌اند، بنابراین ممکن است برخی قسمت‌ها را به زبان انگلیسی ببینید تا زمانی که ترجمه به‌روزرسانی شود.`
 s.unlinkedTranslation = `<strong>هشدار:</strong> تغییرات اساسی در نسخه‌ی انگلیسی اصلی از زمان ترجمه‌ی این سند ایجاد شده است. توصیه می‌شود تا زمان به‌روزرسانی این ترجمه، <a href="${ f.filename }">نسخه‌ای به زبان دیگر</a> را مطالعه کنید.`
 s.githubRedirect = `<strong>توجه!</strong> &nbsp; این تنها پیش‌نویس ویرایشی این مقاله است. تمام پیوندها و نشانک‌ها باید به <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>نسخه‌ی موجود در وبگاه W3C</a> اشاره داشته باشند، نه به این برگه.` // used for github-based versions of published articles
 
@@ -151,6 +155,9 @@ s.quickanswer = "پاسخ سریع" // heading
 s.longeranswer = "جزئیات" // heading that follows 'Quick answer'
 s.additionalinfo = "اطلاعات اضافی" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "اشتراک در خوراک RSS."  

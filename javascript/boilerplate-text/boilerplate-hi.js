@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "यदि आप ब्राउज़र के द्वारा कुकी सेट करते हैं, तो आप अपने द्वारा चुनी गई भाषा में W3C अंतर्राष्ट्रीयकरण गतिविधि पृष्ठ (जहाँ उपलब्ध हो) देखना जारी रखेंगे। क्या आप कुकी सेट करना चाहते हैं?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "दुनिया के नक्शे"  // title text for image, top right
 s.searchI18nSite = "I18n साइट खोज" // placeholder text for search box, top right
-s.translationDisclaimer = `यह दस्तावेज एक अनुवाद है. किसी भी विसंगति या त्रुटि के मामले में <a href="${ f.filename }.en">नवीनतम अंग्रेजी मूल</a> आधिकारिक विचार किया जाना चाहिए. <a href="#copyright">मूल कॉपीराइट</a> डब्ल्यू .3 सी. के अंतर्गत आता है, जैसा कि नीचे दिखाया गया है.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `यह दस्तावेज एक अनुवाद है. किसी भी विसंगति या त्रुटि के मामले में <a href="${ s.englishOriginal }">नवीनतम अंग्रेजी मूल</a> आधिकारिक विचार किया जाना चाहिए. <a href="#copyright">मूल कॉपीराइट</a> डब्ल्यू .3 सी. के अंतर्गत आता है, जैसा कि नीचे दिखाया गया है.`  // text appears only on translated pages
 
 s.articles = "Articles" // used in breadcrumbs, top right of page
 s.tests="परीक्षा" // used at the end of breadcrumbs for test related pages
@@ -121,8 +125,8 @@ s.historyOfDocumentChanges = `दस्तावेज़ परिवर्त�
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>टिप्पणी:</strong> जब से इस दस्तावेज़ का अनुवाद हुआ है, <a href="${ f.filename }.en">मूल अंग्रेजी</a> में परिवर्तन किए गए हैं। परिवर्तनों को इस पृष्ठ में शामिल किया गया था, इसलिए अनुवाद के अद्यतन होने तक अंग्रेजी में आप कुछ अवतरणों को देख सकते हैं।`
-s.unlinkedTranslation = `<strong>चेतावनी:</strong> इस दस्तावेज़ के अनुवादित होने के बाद से अंग्रेजी मूल में काफी बदलाव किए गए हैं। आपको सलाह दी जाती है कि जब तक यह अद्यतन नहीं हो जाता है, आप <a href="${ f.filename }.en">अंग्रेजी संस्करण</a> पढ़ें।`
+s.untranslatedChanges = `<strong>टिप्पणी:</strong> जब से इस दस्तावेज़ का अनुवाद हुआ है, <a href="${ s.englishOriginal }">मूल अंग्रेजी</a> में परिवर्तन किए गए हैं। परिवर्तनों को इस पृष्ठ में शामिल किया गया था, इसलिए अनुवाद के अद्यतन होने तक अंग्रेजी में आप कुछ अवतरणों को देख सकते हैं।`
+s.unlinkedTranslation = `<strong>चेतावनी:</strong> इस दस्तावेज़ के अनुवादित होने के बाद से अंग्रेजी मूल में काफी बदलाव किए गए हैं। आपको सलाह दी जाती है कि जब तक यह अद्यतन नहीं हो जाता है, आप <a href="${ s.englishOriginal }">अंग्रेजी संस्करण</a> पढ़ें।`
 s.githubRedirect = `<strong>टिप्पणी!</strong> &nbsp; यह, इस आलेख का एक संपादकीय मसौदा है। सभी लिंक और बुकमार्क <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>version on the W3C site</a> को निर्देशित होने चाहिए।` // used for github-based versions of published articles
 
 
@@ -151,6 +155,9 @@ s.quickanswer = "त्वरित उत्तर" // heading
 s.longeranswer = "विवरण" // heading that follows 'Quick answer'
 s.additionalinfo = "अतिरिक्त जानकारी" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "एक आरएसएस फ़ीड की सदस्यता लें।"  

@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "您可以让浏览器设置cookie，以继续使用您选择的语言浏览W3C国际化标准计划（如果有该语言的翻译的话）。请问您想设置cookie吗？"
 
+// skip navigation link
+s.skipNavigation = "跳至主要内容"
+
 // items in top right beige column
 s.worldMap = "世界地图"  // title text for image, top right
 s.searchI18nSite = "国际化站点搜索" // placeholder text for search box, top right
-s.translationDisclaimer = `本文档译自其他语种。如有任何偏差或错误，请以<a href="${ f.filename }.en">最新英文原文</a>为准。如下所示，原文版权属于 W3C。`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `本文档译自其他语种。如有任何偏差或错误，请以<a href="${ s.englishOriginal }">最新英文原文</a>为准。如下所示，原文版权属于 W3C。`  // text appears only on translated pages
 
 s.articles = "文章" // used in breadcrumbs, top right of page
 s.tests="测试" // used at the end of breadcrumbs for test related pages
@@ -121,8 +125,8 @@ s.historyOfDocumentChanges = `有关文档更新的历史记录，请参阅主�
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>注意：</strong>在此文件翻译以后<a href="${ f.filename }.en.php">英文版本</a> 已有改变。这些更改已合并到此页面中，因此您可能会看到一些英文段落，直到翻译更新为止。`
-s.unlinkedTranslation = `<strong>警告：</strong>本文的英文原文自翻译以来进行了实质性修改，建议您在此版本更新之前阅读<a href="${ f.filename }.en">英文版本</a>。`
+s.untranslatedChanges = `<strong>注意：</strong>在此文件翻译以后<a href="${ s.englishOriginal }">英文版本</a> 已有改变。这些更改已合并到此页面中，因此您可能会看到一些英文段落，直到翻译更新为止。`
+s.unlinkedTranslation = `<strong>警告：</strong>本文的英文原文自翻译以来进行了实质性修改，建议您在此版本更新之前阅读<a href="${ s.englishOriginal }">英文版本</a>。`
 s.githubRedirect = `<strong>注意！</strong> &nbsp; 这只是本文的编辑草案，所有链接和收藏都应指向 <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>W3C 网站上的版本</a>。` // used for github-based versions of published articles
 
 
@@ -151,6 +155,9 @@ s.quickanswer = "简约回复" // heading
 s.longeranswer = "详情" // heading that follows 'Quick answer'
 s.additionalinfo = "更多信息" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "复制"
+s.copied = "已复制！"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "订阅 RSS 提要"  

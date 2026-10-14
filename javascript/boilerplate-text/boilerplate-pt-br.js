@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Se você deixar que o navegador instale um cookie, continuará a ver as páginas de Atividade de Internacionalização da W3C (sempre que disponíveis) no idioma que escolher. Deseja instalar o cookie?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Mapa Mundi"  // title text for image, top right
 s.searchI18nSite = "Busca do site de I18n" // placeholder text for search box, top right
-s.translationDisclaimer = `Este documento é uma tradução produzida por um voluntário. Em caso de discrepâncias ou erros, o <a href="${ f.filename }.en">último original em inglês do</a> deve ser considerado fidedigno.<a href="#copyright">Os direitos autorais do original </a> pertenceem à W3C, como mostrado abaixo.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `Este documento é uma tradução produzida por um voluntário. Em caso de discrepâncias ou erros, o <a href="${ s.englishOriginal }">último original em inglês do</a> deve ser considerado fidedigno.<a href="#copyright">Os direitos autorais do original </a> pertenceem à W3C, como mostrado abaixo.`  // text appears only on translated pages
 
 s.articles = "Artigos" // used in breadcrumbs, top right of page
 s.tests="Testes" // used at the end of breadcrumbs for test related pages
@@ -121,7 +125,7 @@ s.historyOfDocumentChanges = `Para obter o histórico de alterações do documen
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Nota:</strong> Foram feitas alterações no <a href="${ f.filename }.en">original em inglês</a> desde que este documento foi traduzido. Essas mudanças foram incorporadas a esta página, de modo que você poderá ver algumas passagens em inglês até que a tradução seja atualizada.`
+s.untranslatedChanges = `<strong>Nota:</strong> Foram feitas alterações no <a href="${ s.englishOriginal }">original em inglês</a> desde que este documento foi traduzido. Essas mudanças foram incorporadas a esta página, de modo que você poderá ver algumas passagens em inglês até que a tradução seja atualizada.`
 s.unlinkedTranslation = `<strong>Aviso:</strong> Alterações relevantes foram feitas no original em inglês desde que este documento foi traduzido. Aconselhamos que você leia <a href="${ f.filename }">uma versão em outro idioma </a> até que esta tradução tenha sido atualizada.`
 s.githubRedirect = `<strong>NOTE!</strong> &nbsp; This is only an editor's draft of this article. All links and bookmarks should point to the <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>version on the W3C site</a>.` // used for github-based versions of published articles
 
@@ -151,6 +155,9 @@ s.quickanswer = "Resposta resumida" // heading
 s.longeranswer = "Detalhes" // heading that follows 'Quick answer'
 s.additionalinfo = "Informações adicionais" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Subscreva uma alimentação RSS."  

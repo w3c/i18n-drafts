@@ -55,10 +55,14 @@ s.currLang = {
 // this text needs to be copied to javascript/doc-structure/article-dt.js
 s.cookieMsg = "Amennyiben hozzájárul egy süti elfogadásához, a W3C Nemzetköziesítés Fejlesztési Tevékenység lapjait az ön által választott nyelven is el tudja érni (amennyiben rendelkezésre állnak). Hozzájárul a süti használatához?"
 
+// skip navigation link
+s.skipNavigation = "Skip to main content"
+
 // items in top right beige column
 s.worldMap = "Világtérkép"  // title text for image, top right
 s.searchI18nSite = "Keresés a Nemzetköziesítés oldalán" // placeholder text for search box, top right
-s.translationDisclaimer = `A dokumentumot önkéntesek fordították. Eltérések vagy hibák esetén a <a href="${ f.filename }.en">legfrissebb, angol eredeti</a> a meghatározó. <a href="#copyright">Az eredeti szerzői jog</a> tulajdonosa a W3C, további részletek alább találhatók.`  // text appears only on translated pages
+s.englishOriginal = f.translationPaths && f.translationPaths.en ? f.translationPaths.en : `${ f.filename }.en.html`
+s.translationDisclaimer = `A dokumentumot önkéntesek fordították. Eltérések vagy hibák esetén a <a href="${ s.englishOriginal }">legfrissebb, angol eredeti</a> a meghatározó. <a href="#copyright">Az eredeti szerzői jog</a> tulajdonosa a W3C, további részletek alább találhatók.`  // text appears only on translated pages
 
 s.articles = "Cikkek" // used in breadcrumbs, top right of page
 s.tests="Tesztek" // used at the end of breadcrumbs for test related pages
@@ -121,7 +125,7 @@ s.historyOfDocumentChanges = `Amennyiben a dokumentum előzetes változataira k�
 
 
 // banner on translated pages that are missing some translation
-s.untranslatedChanges = `<strong>Megjegyzés:</strong> A fordítás megjelenése óta <a href="${ f.filename }.en">az eredeti angol változat</a> megváltozott. A változásokat átvezettük a dokumentumba, úgyhogy egyes részek, az új fordítás véglegesítéséig, angolul szerepelnek.`
+s.untranslatedChanges = `<strong>Megjegyzés:</strong> A fordítás megjelenése óta <a href="${ s.englishOriginal }">az eredeti angol változat</a> megváltozott. A változásokat átvezettük a dokumentumba, úgyhogy egyes részek, az új fordítás véglegesítéséig, angolul szerepelnek.`
 s.unlinkedTranslation = `<strong>Figyelmeztetés:</strong> A fordítás megjelenése óta az eredeti angol változat jelentősen megváltozott. Tanácsoljuk, hogy az új fordítás véglegesítéséig olvasson egy <a href="${ f.filename }">más nyelvű, rendelkezésre álló változatot</a>.`
 s.githubRedirect = `<strong>NOTE!</strong> &nbsp; Ez a cikknek csak a szerkesztői vázlata. A cikk végleges változata a <a href='https://www.w3.org/International/${ f.directory }${ f.filename }.${ f.clang }'>W3C honlapján található</a>.` // used for github-based versions of published article used for github-based versions of published articles
 
@@ -151,6 +155,9 @@ s.quickanswer = "Gyors válasz" // heading
 s.longeranswer = "Részletek" // heading that follows 'Quick answer'
 s.additionalinfo = "További információ" // heading that sometimes follows 'Details'
 
+// copy button for code blocks
+s.copy = "Copy"
+s.copied = "Copied!"
 
 // obsolete in most recent articles — used to be in bottom right box
 s.subscribeToRSS = "Feliratkozás az RSS csatornára."  
