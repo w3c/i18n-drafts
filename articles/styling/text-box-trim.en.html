@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>How to trim text correctly</title>
+<meta name="description" content="Explains how to use the text-box-trim, text-box-edge and text-box properties to trim the space above and below text.">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'articles/styling'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'text-box-trim'; // the file name WITHOUT extensions
+f.authors = 'Fuqiao Xue, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'article-text-box-trim'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-10-23'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-10-23', time:'13:45'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../../' // what you need to prepend to a URL to get to the /International directory
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-10-23', time:'13:45' } // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = 'styling';
+
+f.additionalLinks = ''
+</script>
+<script src="text-box-trim-data/translations.js"> </script>
+<script src="../../javascript/doc-structure/article-dt.js"> </script>
+<script src="../../javascript/boilerplate-text/boilerplate-en.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../../javascript/doc-structure/article-2022.js"> </script>
+<script src="../../javascript/articletoc-2022.js"></script>
+<link rel="stylesheet" href="../../style/article-2022.css">
+<link rel="copyright" href="#copyright">
+<link rel="stylesheet" href="text-box-trim-data/local.css">
+<script src="../../javascript/prism.js"></script>
+<link rel="stylesheet" href="../../style/prism.css">
+</head>
+
+<body>
+<header>
+  <nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+
+  <h1>How to trim text correctly</h1>
+</header>
+
+
+<div id="audience">
+<p><span id="intendedAudience" class="leadin">Intended audience:</span>
+<b class="highlight">Content authors</b>
+</p>
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+
+<p>Every line of text in CSS sits inside a line box. The line box's height comes from the font's ascent and descent metrics plus <em>half-leading</em>, which is the extra space <code class="kw" translate="no">line-height</code> adds equally above and below the text. Fonts deliberately make ascent and descent generous so that accented capitals, descenders and stacked diacritics fit.</p>
+
+<p>The result is that the visible top of a block of text (for example, the top of the capital letters) almost never lines up with the top of its box. This causes three familiar problems:</p>
+
+<ul>
+<li>A button label that is mathematically centered looks too low.</li>
+<li>The visible gap between a heading and the paragraph below it is larger than the <code class="kw" translate="no">margin</code> you set.</li>
+<li>Text next to an icon or image never lines up with it exactly.</li>
+</ul>
+
+<p>Developers used to fix this with negative margins tuned by eye for one particular font. That fix breaks when the font changes, fails to load, or is replaced by a fallback font. <code class="kw" translate="no">text-box</code> fixes the problem using the font's own metrics, so the result adapts to whichever font is actually rendered.</p>
+
+
+<section id="sec_properties">
+<h2>The properties</h2>
+
+<section id="sec_trim">
+<h3><code class="kw" translate="no">text-box-trim</code>: which sides to trim</h3>
+
+<table class="values">
+<thead>
+<tr>
+<th scope="col">Value</th>
+<th scope="col">Effect on a block container</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row"><code class="kw" translate="no">none</code></th>
+<td>No trimming</td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">trim-start</code></th>
+<td>Trims the block-start side of the <strong>first formatted line</strong></td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">trim-end</code></th>
+<td>Trims the block-end side of the <strong>last formatted line</strong></td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">trim-both</code></th>
+<td>Does both</td>
+</tr>
+</tbody>
+</table>
+</section>
+
+
+<section id="sec_edge">
+<h3><code class="kw" translate="no">text-box-edge</code>: where to cut</h3>
+
+<p>The first keyword sets the <strong>over</strong> edge. The second sets the <strong>under</strong> edge.</p>
+
+<table class="values">
+<thead>
+<tr>
+<th scope="col">Over-edge keywords</th>
+<th scope="col">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row"><code class="kw" translate="no">text</code></th>
+<td>The font's text-over metric (ascent).</td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">cap</code></th>
+<td>Cap height (OpenType <code translate="no">sCapHeight</code>).</td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">ex</code></th>
+<td>x-height (OpenType <code translate="no">sxHeight</code>).</td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">ideographic</code></th>
+<td>Ideographic over edge, the CJK em box (OpenType <code translate="no">idtp</code>).</td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">ideographic-ink</code></th>
+<td>Ideographic ink over edge (OpenType <code translate="no">icft</code>).</td>
+</tr>
+</tbody>
+</table>
+
+<p></p>
+
+<table class="values">
+<thead>
+<tr>
+<th scope="col">Under-edge keywords</th>
+<th scope="col">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row"><code class="kw" translate="no">text</code></th>
+<td>The font's text-under metric (descent).</td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">alphabetic</code></th>
+<td>The alphabetic baseline.</td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">ideographic</code></th>
+<td>Ideographic under edge (OpenType <code translate="no">ideo</code>).</td>
+</tr>
+<tr>
+<th scope="row"><code class="kw" translate="no">ideographic-ink</code></th>
+<td>Ideographic ink under edge (OpenType <code translate="no">icfb</code>).</td>
+</tr>
+</tbody>
+</table>
+
+<p>The initial value is <code class="kw" translate="no">auto</code>. Browsers currently treat it as <code class="kw" translate="no">text</code>.</p>
+</section>
+
+
+<section id="sec_shorthand">
+<h3><code class="kw" translate="no">text-box</code>: the shorthand</h3>
+
+<figure class="example" lang="en">
+<pre><code class="language-css">text-box: normal; /* trim: none, edge: auto */
+text-box: trim-both cap alphabetic; /* explicit */
+text-box: cap alphabetic; /* trim omitted, so it becomes trim-both */</code></pre>
+</figure>
+
+<p>When you leave out the trim value, the shorthand sets it to <code class="kw" translate="no">trim-both</code>, <strong>not</strong> to the initial value <code class="kw" translate="no">none</code>, and this is intentional.</p>
+</section>
+</section>
+
+
+<section id="sec_patterns">
+<h2>Recommended patterns</h2>
+
+<p><strong>Visually centered button or badge (Latin UI):</strong></p>
+
+<figure class="example" lang="en">
+<pre><code class="language-css">.button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75em 1.25em;
+}
+.button &gt; .label {
+  text-box: trim-both cap alphabetic;
+}</code></pre>
+</figure>
+
+<p>Notice that the trim is on the label, not on the flex container, because trimming does not pass into flex items.</p>
+
+<p><strong>Predictable heading-to-body spacing:</strong></p>
+
+<figure class="example" lang="en">
+<pre><code class="language-css">.prose :is(h1, h2, h3, p) {
+  text-box: trim-both cap alphabetic;
+}
+.prose h2 { margin-block: 2rem 1rem; }</code></pre>
+</figure>
+
+<p>The margins you specify now match the visible gaps much more closely.</p>
+
+<p><strong>Japanese heading aligned with an image edge:</strong></p>
+
+<figure class="example" lang="en">
+<pre><code class="language-css">.media-title:lang(ja) {
+  text-box: trim-start ideographic-ink ideographic-ink;
+}</code></pre>
+</figure>
+</section>
+
+
+<section id="endlinks">
+<h2>Further reading</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+
+<ul id="full-links">
+<li>
+<p><cite>Language enablement index</cite></p>
+<ul>
+<li><a href="https://www.w3.org/TR/typography/#baselines">Baselines, line-height, etc.</a></li>
+</ul>
+</li>
+<li>
+<p><cite>CSS specification</cite></p>
+<ul>
+<li><a href="https://drafts.csswg.org/css-inline-3/#text-box-trim">text-box-trim</a> • <a href="https://drafts.csswg.org/css-inline-3/#text-box-edge">text-box-edge</a></li>
+</ul>
+</li>
+<li>
+<p><cite>MDN</cite></p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-box-trim">text-box-trim</a> • <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/text-box-edge">text-box-edge</a></li>
+</ul>
+</li>
+</ul>
+</section>
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
