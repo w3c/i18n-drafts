@@ -97,9 +97,6 @@ function createtoc (maxlevel) {
 		}
     setSectionRefs()
     setFigRefs()
-
-    var selflinks = document.querySelectorAll('a.selflink')
-    for (var s=0; s<selflinks.length; s++) selflinks[s].setAttribute('aria-label', '§')
 	}
     
 
