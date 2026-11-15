@@ -15,12 +15,12 @@ f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-text-box-trim'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2026-10-23'; // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2026-10-23', time:'18:49'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-11-15', time:'13:33'}  // date and time of latest substantive changes to this document
 f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2026-10-23', time:'18:49' } // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-11-15', time:'13:33' } // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -74,12 +74,30 @@ f.additionalLinks = ''
 
 <p>You can see the effect directly in the demos. Because the trimming uses font metrics, the exact amount of space removed depends on the font your browser uses.</p>
 
+<p>Basic trimming is supported by Blink, Gecko and WebKit browsers, but support for individual edge keywords varies. In particular, the Japanese example relies on ideographic metrics that are currently supported only by Gecko. See <a class="secref">browsers</a> for version information and sources.</p>
+
 
 <section id="sec_properties">
 <h2>The properties</h2>
 
 <section id="sec_trim">
 <h3><code class="kw" translate="no">text-box-trim</code>: which sides to trim</h3>
+
+<aside class="floatedImplnote">
+<p class="feature">text-box-trim on block containers</p>
+<table class="implTable">
+<thead>
+<tr>
+<th scope="col"><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th scope="col"><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th scope="col"><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+</aside>
 
 <table class="values">
 <thead>
@@ -141,11 +159,43 @@ f.additionalLinks = ''
 .box-end   { text-box-trim: trim-end; }
 .box-both  { text-box-trim: trim-both; }</code></pre>
 </div>
+
+<p><span class="leadin howto-header">Does it work?</span> Blink, Gecko and WebKit browsers support all four values for block containers. Browsers without support ignore the declaration and leave the text untrimmed.</p>
 </section>
 
 
 <section id="sec_edge">
 <h3><code class="kw" translate="no">text-box-edge</code>: where to cut</h3>
+
+<aside class="floatedImplnote">
+<p class="feature">auto, text, cap, ex, alphabetic</p>
+<table class="implTable">
+<thead>
+<tr>
+<th scope="col"><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th scope="col"><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th scope="col"><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>✅</td><td>✅</td><td>✅</td></tr>
+</tbody>
+</table>
+
+<p class="feature">ideographic, ideographic-ink</p>
+<table class="implTable">
+<thead>
+<tr>
+<th scope="col"><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink"></th>
+<th scope="col"><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko"></th>
+<th scope="col"><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit"></th>
+</tr>
+</thead>
+<tbody>
+<tr><td>❌</td><td>✅</td><td>❌</td></tr>
+</tbody>
+</table>
+</aside>
 
 <p>The first keyword sets the <strong>over</strong> edge. The second sets the <strong>under</strong> edge.</p>
 
@@ -236,6 +286,8 @@ f.additionalLinks = ''
 .edge-cap  { text-box-edge: cap alphabetic; }
 .edge-ex   { text-box-edge: ex alphabetic; }</code></pre>
 </div>
+
+<p><span class="leadin howto-header">Does it work?</span> Blink, Gecko and WebKit browsers support <code class="kw" translate="no">auto</code>, <code class="kw" translate="no">text</code>, <code class="kw" translate="no">cap</code>, <code class="kw" translate="no">ex</code> and <code class="kw" translate="no">alphabetic</code>. Only Gecko currently supports <code class="kw" translate="no">ideographic</code> and <code class="kw" translate="no">ideographic-ink</code>. In Blink and WebKit, a declaration containing either ideographic keyword is ignored.</p>
 </section>
 
 
@@ -268,6 +320,8 @@ f.additionalLinks = ''
 </div>
 
 <p>When you leave out the trim value, the shorthand sets it to <code class="kw" translate="no">trim-both</code>, <strong>not</strong> to the initial value <code class="kw" translate="no">none</code>, and this is intentional.</p>
+
+<p><span class="leadin howto-header">Does it work?</span> The <code class="kw" translate="no">text-box</code> shorthand is supported by Blink, Gecko and WebKit browsers. Its edge keywords have the same support as those of <code class="kw" translate="no">text-box-edge</code>, so a shorthand declaration containing an unsupported keyword is ignored as a whole.</p>
 </section>
 </section>
 
@@ -361,7 +415,47 @@ f.additionalLinks = ''
   text-box: trim-start ideographic-ink ideographic-ink;
 }</code></pre>
 </div>
+
+<p><span class="leadin howto-header">Does it work?</span> This example works in Gecko browsers from Firefox 154. Blink and WebKit browsers do not support <code class="kw" translate="no">ideographic-ink</code>, so they ignore the <code class="kw" translate="no">text-box</code> declaration and both panels remain untrimmed.</p>
 </section>
+</section>
+
+
+<section id="browsers">
+<h2>Browser support</h2>
+
+<p>The versions below are the first releases with basic support for trimming block containers. They do not imply support for every edge keyword.</p>
+
+<p>We will try to update the article as support changes.</p>
+
+<table>
+<thead>
+<tr>
+<th scope="col">Browser engine</th>
+<th scope="col">Basic support from</th>
+<th scope="col">Browsers using that engine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img src="../../icons/icon_blink.svg" class="browser_icon" alt="Blink" title="Blink" style="vertical-align: middle;"> Blink</td>
+<td><a href="https://developer.chrome.com/blog/css-text-box-trim" rel="nofollow">Chrome 133</a></td>
+<td>Chrome, Edge, Brave, Opera, Vivaldi, etc.</td>
+</tr>
+<tr>
+<td><img src="../../icons/icon_gecko.svg" class="browser_icon" alt="Gecko" title="Gecko" style="vertical-align: middle;"> Gecko</td>
+<td><a href="https://www.firefox.com/en-US/firefox/154.0/releasenotes/" rel="nofollow">Firefox 154</a></td>
+<td>Firefox, Tor Browser, etc.</td>
+</tr>
+<tr>
+<td><img src="../../icons/icon_webkit.svg" class="browser_icon" alt="WebKit" title="WebKit" style="vertical-align: middle;"> WebKit</td>
+<td><a href="https://webkit.org/blog/16301/webkit-features-in-safari-18-2/#text-box" rel="nofollow">Safari 18.2</a></td>
+<td>Safari, etc.</td>
+</tr>
+</tbody>
+</table>
+
+<p>Support for trimming inline boxes differs from support for block containers. Gecko supports inline trimming from Firefox 154. Blink does not support it, and WebKit supports it from Safari 26.5 in horizontal writing modes only.</p>
 </section>
 
 
