@@ -15,12 +15,12 @@ f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-text-box-trim'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2026-10-23'; // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2026-11-15', time:'13:33'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-11-16', time:'19:12'}  // date and time of latest substantive changes to this document
 f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../../' // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2026-11-15', time:'13:33' } // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-11-16', time:'19:12' } // date and time of latest edits to this document/translation
 f.contributors = ''; // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -294,7 +294,7 @@ f.additionalLinks = ''
 <section id="sec_shorthand">
 <h3><code class="kw" translate="no">text-box</code>: the shorthand</h3>
 
-<p>The shorthand sets <code class="kw" translate="no">text-box-trim</code> and <code class="kw" translate="no">text-box-edge</code> at the same time, and it behaves differently from most shorthands when you leave out the first part.</p>
+<p>The shorthand sets <code class="kw" translate="no">text-box-trim</code> and <code class="kw" translate="no">text-box-edge</code> at the same time, and it behaves differently from most shorthands when you leave out the trim value.</p>
 
 <div class="tb-demo">
 <div class="tb-demo-head"><span class="tb-badge">Live demo</span> <span><code>normal</code> compared with a shorthand that has no trim value.</span></div>
@@ -322,6 +322,75 @@ f.additionalLinks = ''
 <p>When you leave out the trim value, the shorthand sets it to <code class="kw" translate="no">trim-both</code>, <strong>not</strong> to the initial value <code class="kw" translate="no">none</code>, and this is intentional.</p>
 
 <p><span class="leadin howto-header">Does it work?</span> The <code class="kw" translate="no">text-box</code> shorthand is supported by Blink, Gecko and WebKit browsers. Its edge keywords have the same support as those of <code class="kw" translate="no">text-box-edge</code>, so a shorthand declaration containing an unsupported keyword is ignored as a whole.</p>
+</section>
+</section>
+
+
+<section id="sec_scripts">
+<h2>Choosing an edge for your script</h2>
+
+<p>The edge keywords are not interchangeable across scripts. <code class="kw" translate="no">cap</code> and <code class="kw" translate="no">ex</code> are based on the case metrics of Latin, Cyrillic and Greek, while <code class="kw" translate="no">alphabetic</code> is the baseline on which those scripts normally sit. Other scripts align text to different points, and in some cases the font does not provide a matching metric at all.</p>
+
+<p>The following table gives a starting point.</p>
+
+<div class="script-table">
+<table class="values script-edges">
+<thead>
+<tr>
+<th scope="col">Script</th>
+<th scope="col">Edge to use</th>
+<th scope="col">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">Latin, Greek, Cyrillic</th>
+<td><code class="kw" translate="no">cap</code> or <code class="kw" translate="no">ex</code> over, <code class="kw" translate="no">alphabetic</code> under</td>
+<td><code class="kw" translate="no">cap</code> fits capitals; <code class="kw" translate="no">ex</code> fits lowercase. Neither contains descenders or marks above the letters. Use <code class="kw" translate="no">text</code> when those must stay inside the box.</td>
+</tr>
+<tr>
+<th scope="row">Han, Hiragana, Katakana, Hangul</th>
+<td><code class="kw" translate="no">ideographic</code> or <code class="kw" translate="no">ideographic-ink</code> on both edges</td>
+<td><code class="kw" translate="no">ideographic</code> is the design edge, normally the edge of the em box. <code class="kw" translate="no">ideographic-ink</code> is the ink edge.</td>
+</tr>
+<tr>
+<th scope="row">Devanagari, Bengali, Tibetan</th>
+<td><code class="kw" translate="no">text</code> over, <code class="kw" translate="no">text</code> or <code class="kw" translate="no">alphabetic</code> under</td>
+<td>The ideal top is the hanging baseline. A <code class="kw" translate="no">hanging</code> value has been resolved for <code class="kw" translate="no">text-box-edge</code> but is not shipped yet, so <code class="kw" translate="no">text</code> is the safe fallback.</td>
+</tr>
+<tr>
+<th scope="row">Arabic, Hebrew, Thai</th>
+<td><code class="kw" translate="no">text</code> over, <code class="kw" translate="no">text</code> or <code class="kw" translate="no">alphabetic</code> under</td>
+<td>No case distinction, so <code class="kw" translate="no">cap</code> and <code class="kw" translate="no">ex</code> do not correspond to a reliable top edge. Tall marks may extend beyond the box.</td>
+</tr>
+<tr>
+<th scope="row">Mixed scripts</th>
+<td>Per script run, using <code class="kw" translate="no">:lang()</code></td>
+<td>Metrics come from the first available font, so make the script font first for the text being trimmed.</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>A global reset such as <code class="kw" translate="no">* { text-box: trim-both cap alphabetic; }</code> is not safe for multilingual content: it applies Latin case metrics to every script. Set the edge per language or per component instead.</p>
+
+<section id="sec_no_case">
+<h3>Scripts without case</h3>
+
+<p>Arabic, Hebrew and Thai do not use case in the Latin sense, so <code class="kw" translate="no">cap</code> and <code class="kw" translate="no">ex</code> have no reliable visual meaning. The visual top of a line is not consistently at either metric; it may fall between them, and tall marks can go higher. The <a href="https://drafts.csswg.org/css-inline-3/#intro" rel="nofollow">specification</a> also notes that the relevant OpenType metric is missing for Hebrew. Use <code class="kw" translate="no">text</code> for the over edge, and <code class="kw" translate="no">text</code> or <code class="kw" translate="no">alphabetic</code> for the under edge. If the text has tall vowel signs or tone marks, check that they do not collide with the line above or with the edge of a tight background.</p>
+</section>
+
+
+
+<section id="sec_lang_edges">
+<h3>Setting edges per language</h3>
+
+<p><code class="kw" translate="no">text-box-trim</code> and <code class="kw" translate="no">text-box-edge</code> are separate properties for a reason. <code class="kw" translate="no">text-box-trim</code> does not inherit, so trimming is opt-in for each element. <code class="kw" translate="no">text-box-edge</code> is <a href="https://github.com/w3c/csswg-drafts/issues/10904" rel="nofollow">intended to inherit</a>, so a script-specific edge can be set once for a language subtree and used by every element that opts in to trimming. Browser support for that inheritance is still uneven, so for now set the edge on the element that contains the text, or test the inherited pattern in the browsers you support.</p>
+
+<pre><code class="language-css">:lang(ja) { text-box-edge: ideographic; }
+h2:lang(ja) { text-box-trim: trim-both; }</code></pre>
+
+<p>This is also the practical way to handle a mixed-language page: mark up language changes with <code translate="no">lang</code>, then use <code class="kw" translate="no">:lang()</code> to select the edge and the font for each run.</p>
 </section>
 </section>
 
