@@ -50,7 +50,7 @@ function main() {
     }
   }
 
-  pages.sort((left, right) => left.id.localeCompare(right.id));
+  pages.sort((left, right) => (left.id < right.id ? -1 : left.id > right.id ? 1 : 0));
 
   const payload = {
     generated: formatToday(),

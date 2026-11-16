@@ -1029,7 +1029,7 @@ var translationStatus = {
       "type": "Page",
       "href": "../pages/translation-status.en.html",
       "status": "draft",
-      "updated": "2026-11-15",
+      "updated": "2026-11-16",
       "translated": {},
       "archived": {},
       "outOfDate": []
