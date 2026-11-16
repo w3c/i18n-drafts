@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Translation status</title>
+<meta name="description" content="Which W3C Internationalization pages still need to be translated, and which existing translations are out of date.">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'pages'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'translation-status'; // the file name WITHOUT extensions
+f.authors = 'Fuqiao Xue'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'translation-status'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2026-11-16'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2026-11-16', time:'12:00'}  // date and time of latest substantive changes to this document
+f.status = 'draft';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-11-16', time:'12:00'} // date and time of latest edits to this document/translation
+f.contributors = ''; // people providing useful contributions or feedback during review or at other times
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = 'xxxNAME, ORG'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.breadcrumb = '';
+
+f.additionalLinks = ''
+</script>
+<script src="translation-status-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-en.js"></script><!--TRANSLATORS must change -en to the subtag for their language!-->
+<script src="../javascript/doc-structure/sitepage-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+
+<link rel="stylesheet" href="../style/sitepage-2022.css">
+<style>
+.tstatus-controls {
+	margin: 1.5em 32% 1.5em 7.5%;
+	padding: 1em;
+	background: #f2f2f2;
+	border-radius: .4em;
+	}
+.tstatus-controls label {
+	font-weight: bold;
+	margin-inline-end: .6em;
+	}
+.tstatus-controls select {
+	font-size: 1em;
+	padding: .25em .4em;
+	max-width: 100%;
+	}
+.tstatus-summary {
+	margin: .9em 0 0;
+	font-weight: bold;
+	}
+.tstatus-note {
+	font-size: 90%;
+	color: #444;
+	}
+.tstatus-scroll {
+	width: 92.5%;
+	margin: 1em 0 1em 7.5%;
+	overflow-x: auto;
+	}
+.tstatus-table {
+	width: 100%;
+	margin: 0;
+	border-collapse: collapse;
+	}
+.tstatus-table th {
+	font-size: 85%;
+	background: #eee;
+	}
+.tstatus-table td, .tstatus-table th {
+	border: 1px solid #ccc;
+	padding: .35em .5em;
+	}
+.tstatus-table td.tstatus-number, .tstatus-table th.tstatus-number {
+	text-align: end;
+	white-space: nowrap;
+	}
+.tstatus-table a.tstatus-source {
+	display: block;
+	font-size: 80%;
+	margin-inline-start: 0;
+	white-space: nowrap;
+	}
+.tstatus-badge {
+	font-size: 80%;
+	background: #fff3c4;
+	border-radius: .3em;
+	padding: 0 .35em;
+	white-space: nowrap;
+	}
+.tstatus-coverage td:first-child {
+	white-space: nowrap;
+	}
+.tstatus-empty {
+	font-style: italic;
+	}
+@media (max-width: 767px) {
+	.tstatus-controls {
+		margin-inline: 5%;
+		}
+	.tstatus-scroll {
+		width: 90%;
+		margin-inline: 5%;
+		}
+	}
+</style>
+<link rel="copyright" href="#copyright"/>
+</head>
+
+<body>
+<header>
+  	<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+	</header>
+
+<div class="content">
+<h1>Translation status</h1>
+
+<section id="about">
+<p>This page shows which W3C Internationalization articles, tutorials, and other pages have not yet been translated, and which existing translations may need to be updated. Choose a language to see what needs work.</p>
+<p><strong>Before you start</strong>, please read the <a href="translation.html">translation instructions</a> and write to <a href="mailto:public-i18n-translation@w3.org">public-i18n-translation@w3.org</a>. Someone may already be working on the page, or the English source may be about to change.</p>
+
+<div class="tstatus-controls">
+<label for="tstatus-language">Show the status for</label>
+<select id="tstatus-language">
+<option value="">Choose a language…</option>
+</select>
+<p class="tstatus-summary" id="tstatus-summary" aria-live="polite" tabindex="-1"></p>
+</div>
+</section>
+
+<section id="tstatus-updates-section">
+<h2>Translations that may need updating</h2>
+<p class="tstatus-note">A translation is listed here when it is flagged in the repository as out of date, or when the English page has been changed since the translation was last edited.</p>
+<div id="tstatus-updates"></div>
+</section>
+
+<section id="tstatus-missing-section">
+<h2>Pages not yet translated</h2>
+<p class="tstatus-note">Pages are grouped by type. If an archived translation is mentioned, an older version was withdrawn; it may still be a useful starting point, but check with the translation mailing list first.</p>
+<div id="tstatus-missing"></div>
+</section>
+
+<section id="coverage">
+<h2>Coverage by language</h2>
+<p>The table shows how many pages are translated into each language. Select a language name to see the details.</p>
+<div id="tstatus-coverage"></div>
+</section>
+
+<section id="how">
+<h2>How this list is made</h2>
+<p>The lists are generated from the metadata of the pages. The <code>translations.js</code> file that accompanies each page records which translations are current and which are flagged as out of date, and each translated page records the date it was last edited.</p>
+<p>Pages that are obsolete, or still in draft or review, are not listed. A translation whose English source was edited after the translation was last updated is listed as a precaution, even if the change did not affect the text.</p>
+<p class="tstatus-note" id="tstatus-generated"></p>
+</section>
+
+</div>
+<br style="clear: both;">
+
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script src="translation-status-data/status.js"></script>
+<script src="translation-status-data/app.js"></script>
+<script>completePage()</script>
+</body>
+</html>
