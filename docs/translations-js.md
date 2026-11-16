@@ -62,3 +62,15 @@ The template logic checks the current page language in this order:
 3. `trans.updatedtranslations`
 
 So if a language appears in more than one of those lists, the first matching state wins.
+
+## Translation status page
+
+`pages/translation-status.en.html` uses these fields to show translators which pages are missing a translation and which translations may need updating. The page reads `pages/translation-status-data/status.js`, which is generated from the content pages and their `translations.js` files.
+
+After changing the metadata of a page or a `translations.js` file, regenerate the data:
+
+```bash
+npm run build:translation-status
+```
+
+`npm run check:translation-status` reports whether the generated file is out of date. CI runs this check, so commit the regenerated file whenever it changes.
