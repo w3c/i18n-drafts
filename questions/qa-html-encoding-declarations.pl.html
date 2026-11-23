@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<title>Deklarowanie kodowania znaków w HTML</title>
+<meta content="Jak należy deklarować kodowanie znaków w pliku HTML?" name="description">
+<script>
+var f = { }
+
+// AUTHORS should fill in these assignments:
+f.directory = 'questions'+'/'; // the path to this file, not including /International or the file name
+f.filename = 'qa-html-encoding-declarations'; // the file name WITHOUT extensions
+f.authors = 'Richard Ishida, W3C'; // author(s) and affiliations
+f.previousauthors = ''; // as above
+f.modifiers = ''; // people making substantive changes, and their affiliation
+f.searchString = 'qa-html-encoding-declarations'; // blog search string - usually the filename without extensions
+f.firstPubDate = '2010-09-09'; // date of the first publication of the document (after review)
+f.lastSubstUpdate = { date:'2014-02-26', time:'11:49'}  // date and time of latest substantive changes to this document
+f.status = 'published';  // should be one of draft, review, published, notreviewed or obsolete
+f.path = '../' // what you need to prepend to a URL to get to the /International directory 
+
+// AUTHORS AND TRANSLATORS should fill in these assignments:
+f.thisVersion = { date:'2026-11-18', time:'19:15' } // date and time of latest edits to this document/translation
+f.contributors = 'Henri Sivonen, Gunnar Bittersmann'; // people providing useful contributions or feedback during review or at other times
+// make sure to translate the information in the meta description element
+// also make sure that the lang attribute on the html tag is correct!
+
+// TRANSLATORS should fill in these assignments:
+f.translators = '<a href="https://andrewosobka.com/">Andrew Osobka</a>'; // translator(s) and their affiliation - a elements allowed, but use double quotes for attributes
+
+f.translatorContact = 'andrew.osobka@gmail.com';
+
+f.breadcrumb = 'characters';
+
+f.additionalLinks = ''
+</script>
+<script src="qa-html-encoding-declarations-data/translations.js"> </script>
+<script src="../javascript/doc-structure/article-dt.js"> </script>
+<script src="../javascript/boilerplate-text/boilerplate-pl.js"> </script>
+<!--TRANSLATORS must change -en in the line just above to the subtag for their language! -->
+<script src="../javascript/doc-structure/article-2022.js"> </script>
+<script src="../javascript/articletoc-2022.js"></script>
+<link href="../style/article-2022.css" rel="stylesheet">
+<link href="#copyright" rel="copyright">
+<script src="../javascript/prism.js"></script>
+<link href="../style/prism.css" rel="stylesheet">
+</head>
+<body>
+<header>
+<nav id="mainNavigation"></nav><script>document.getElementById('mainNavigation').innerHTML = mainNavigation</script>
+<h1>Deklarowanie kodowania znaków w HTML</h1>
+</header>
+<div id="audience">
+<!--p><span id="intendedAudience" class="leadin">Intended audience:</span> 
+    HTML authors (using editors or scripting), script developers (PHP, JSP, etc.),  Web project managers, and anyone who  needs an introduction to how to declare the character encoding of their HTML  file.</p-->
+<div id="updateInfo"></div><script>document.getElementById('updateInfo').innerHTML = g.updated</script>
+</div>
+<section id="question">
+<h2>Pytanie</h2>
+<p class="question">Jak należy deklarować kodowanie znaków w pliku HTML?</p>
+<p>Zawsze należy określać kodowanie używane na stronie HTML lub XML. W przeciwnym razie istnieje ryzyko, że znaki w treści zostaną błędnie zinterpretowane. Nie chodzi wyłącznie o czytelność dla człowieka — coraz częściej również maszyny muszą prawidłowo rozumieć dane. Deklaracja kodowania znaków jest także potrzebna do przetwarzania znaków spoza ASCII, wprowadzanych przez użytkowników w formularzach, adresach URL tworzonych przez skrypty i innych miejscach. W tym artykule wyjaśniamy, jak zadeklarować kodowanie w pliku HTML.</p>
+<p class="info">Jeśli chcesz lepiej zrozumieć, czym są znaki i kodowania znaków, przeczytaj artykuł <a class="print" href="/International/questions/qa-what-is-encoding">Kodowanie znaków dla początkujących</a>. Informacje o deklarowaniu kodowania w arkuszach stylów CSS znajdziesz w artykule <a class="print" href="/International/questions/qa-css-charset">Deklaracje kodowania znaków w CSS</a>.</p>
+</section>
+<section id="nutshell">
+<h2 id="quickanswer">Krótka odpowiedź</h2>
+<p>Zawsze deklaruj kodowanie dokumentu za pomocą elementu <code class="kw" translate="no">meta</code> z atrybutem <code class="kw" translate="no">charset</code> albo atrybutów <code class="kw" translate="no">http-equiv</code> i <code class="kw" translate="no">content</code> (tzw. dyrektywy pragma). Cała deklaracja powinna mieścić się w pierwszych 1024 bajtach pliku, dlatego najlepiej umieścić ją bezpośrednio po otwierającym znaczniku <code class="kw" translate="no">head</code>.</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+...</code></pre>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" 
+      content="text/html; charset=utf-8"&gt;
+...</code></pre>
+<p style="clear:both;">Obie metody są równoważne, ale pierwsza wymaga mniej pisania. Nie ma też znaczenia, czy zapiszesz <code>UTF-8</code>, czy <code>utf-8</code>.</p>
+<p>Zawsze należy stosować kodowanie znaków UTF-8. (Pamiętaj, że oznacza to również konieczność <em>zapisania</em> treści w UTF-8). Jeśli naprawdę nie możesz użyć UTF-8, sprawdź <a href="#nonutf8">co należy wziąć pod uwagę</a>.</p>
+<p>Jeśli masz dostęp do ustawień serwera, rozważ także, czy warto <a href="#httphead">używać nagłówka HTTP</a>. <strong>Pamiętaj jednak</strong>, że nagłówek HTTP ma wyższy priorytet niż deklaracje <code class="kw" translate="no">meta</code> w dokumencie. Autorzy treści powinni więc zawsze sprawdzić, czy kodowanie nie zostało już zadeklarowane w nagłówku HTTP. Jeśli tak, element <code class="kw" translate="no">meta</code> musi wskazywać to samo kodowanie.</p>
+<p>Kodowanie zadeklarowane w nagłówku HTTP możesz sprawdzić za pomocą narzędzia <a class="print" href="https://validator.w3.org/i18n-checker/">Internationalization Checker</a>.</p>
+</section>
+<section id="detail">
+<h2>Szczegóły</h2>
+<section id="bom">
+<h3>A co ze znacznikiem kolejności bajtów?</h3>
+<p>Jeśli na początku pliku znajduje się <a class="termref print" href="/International/questions/qa-byte-order-mark#bomwhat">znacznik kolejności bajtów (BOM)</a> w UTF-8, współczesne przeglądarki wykorzystają go do ustalenia, że strona jest zakodowana w UTF-8. Ma on wyższy priorytet niż każda inna deklaracja, w tym nagłówek HTTP.</p>
+<p>Jeżeli plik zawiera BOM, można pominąć deklarację kodowania w elemencie <code class="kw" translate="no">meta</code>. Zalecamy jednak jej pozostawienie, ponieważ pomaga osobom przeglądającym kod źródłowy ustalić kodowanie strony.</p>
+<p>Dowiedz się więcej <a class="print" href="/International/questions/qa-byte-order-mark">o znaczniku kolejności bajtów</a>.</p>
+</section>
+<section id="httphead">
+<h3>Czy należy deklarować kodowanie w nagłówku HTTP?</h3>
+<p>Jeśli jest to uzasadnione i masz taką możliwość, używaj deklaracji kodowania znaków w <a class="termref print" href="/International/articles/definitions-characters/Overview#httpheader">nagłówkach HTTP</a> dla każdego rodzaju treści, <strong>ale razem z</strong> deklaracją wewnątrz dokumentu.</p>
+<p>Autorzy treści powinni zawsze dbać o zgodność deklaracji HTTP z deklaracjami zawartymi w dokumencie.</p>
+<section id="httpprocon">
+<h4>Zalety i wady korzystania z nagłówka HTTP</h4>
+<div class="sidenoteGroup">
+<p>Jedną z zalet nagłówka HTTP jest to, że programy użytkownika mogą wcześniej poznać kodowanie znaków, gdy informacja ta zostaje przesłana w nagłówku.</p>
+<aside class="sideinfonote">
+<p class="info">Informacja o kodowaniu w nagłówku HTTP ma najwyższy priorytet w razie konfliktu z deklaracjami w dokumencie, z wyjątkiem znacznika kolejności bajtów. Serwery pośredniczące, które transkodują dane (czyli konwertują je na inne kodowanie), mogą dzięki temu zmienić kodowanie dokumentu przed wysłaniem go do niewielkich urządzeń obsługujących tylko kilka kodowań. Nie wiadomo, czy obecnie takie transkodowanie jest powszechnie stosowane. Jeśli prowadzi do konwersji na kodowania inne niż UTF-8, wiąże się z dużym ryzykiem utraty danych i nie jest dobrą praktyką.</p>
+</aside>
+</div>
+<p>Z drugiej strony istnieje kilka potencjalnych wad:</p>
+<ul>
+<li>
+<p>Autorom treści może być trudno zmienić informacje o kodowaniu statycznych plików na serwerze — zwłaszcza gdy korzystają z usług dostawcy internetu. Wymaga to znajomości ustawień serwera i dostępu do nich.</p>
+</li>
+<li>
+<p>Ustawienia serwera mogą z różnych przyczyn przestać odpowiadać ustawieniom dokumentu. Może się tak zdarzyć na przykład wtedy, gdy polegasz na domyślnym kodowaniu serwera, a zostanie ono zmienione. Jest to bardzo niekorzystna sytuacja: ze względu na wyższy priorytet informacji HTTP dokument może stać się nieczytelny.</p>
+</li>
+<li>
+<p>Problemy mogą też wystąpić zarówno w dokumentach statycznych, jak i dynamicznych, jeśli nie są odczytywane z serwera — na przykład po zapisaniu ich na płycie CD lub dysku twardym. Informacja o kodowaniu z nagłówka HTTP nie jest wtedy dostępna.</p>
+<p>Podobnie, jeśli kodowanie zadeklarowano wyłącznie w nagłówku HTTP, informacja ta nie jest dostępna podczas edycji plików, przetwarzania ich za pomocą XSLT lub skryptów, przesyłania do tłumaczenia itd.</p>
+</li>
+</ul>
+</section>
+<section id="shouldi">
+<h4>Czy zatem warto stosować tę metodę?</h4>
+<p>Przy udostępnianiu plików z serwera przez HTTP podawanie informacji o kodowaniu dokumentu w nagłówku HTTP nie stanowi problemu, pod warunkiem że jest ona poprawna.</p>
+<p>Ze względu na wymienione wyżej wady zalecamy jednak, aby zawsze deklarować kodowanie również wewnątrz dokumentu. Taka deklaracja pomaga też programistom, testerom i osobom koordynującym tłumaczenia, które chcą sprawdzić kodowanie dokumentu przez obejrzenie jego źródła.</p>
+<p>(Niektórzy uważają, że deklarowanie kodowania w nagłówku HTTP rzadko ma sens, jeśli ta sama informacja znajduje się w dokumencie. Proponują więc, aby nagłówek HTTP nie zawierał informacji o kodowaniu. Zwykle wymagałoby to jednak <em>wyłączenia</em> domyślnych ustawień serwera).</p>
+</section>
+</section>
+<section id="xml">
+<h3>Praca z formatami poliglotycznymi i XML</h3>
+<p><b class="leadin">XHTML5:</b> Dokument XHTML5 jest udostępniany jako XML i korzysta ze składni XML. Parsery XML nie rozpoznają deklaracji kodowania w elementach <code class="kw" translate="no">meta</code> — rozpoznają wyłącznie deklarację XML. Oto przykład:</p>
+<figure class="example">
+<blockquote> <code>&lt;?xml version="1.0" encoding="utf-8"?&gt;<br/>
+        &lt;!DOCTYPE html  .... </code></blockquote>
+</figure>
+<p>Deklaracja XML jest wymagana tylko wtedy, gdy strona nie jest udostępniana w UTF-8 (lub UTF-16). Warto jednak ją zamieścić, aby programiści, testerzy i osoby koordynujące tłumaczenia mogli sprawdzić kodowanie dokumentu, zaglądając do jego źródła.</p>
+<p><b class="leadin">Znaczniki poliglotyczne:</b> Strona wykorzystująca znaczniki poliglotyczne używa podzbioru HTML zgodnego ze składnią XML, dzięki czemu może być analizowana zarówno przez parser HTML, jak i XML. Opisano to w specyfikacji <a class="print" href="https://www.w3.org/TR/html-polyglot/"><cite>Polyglot Markup: A robust profile of the HTML5 vocabulary</cite></a>.</p>
+<p>Ponieważ dokument poliglotyczny musi być zapisany w UTF-8, deklaracja XML nie jest potrzebna — a wręcz nie wolno jej używać. Jeśli jednak plik ma być odczytywany jako HTML, należy zadeklarować kodowanie za pomocą elementu <code class="kw" translate="no">meta</code>, znacznika kolejności bajtów albo nagłówka HTTP.</p>
+<p>Deklaracja w elemencie <code class="kw" translate="no">meta</code> jest rozpoznawana wyłącznie przez parser HTML. Dlatego jeśli stosujesz wariant z atrybutem <code class="kw" translate="no">content</code>, jego wartość powinna zaczynać się od <code>text/html;</code>.</p>
+<figure class="example">
+<blockquote> <code class="language-html">&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"/&gt; </code></blockquote>
+</figure>
+<p>Jeśli używasz elementu <code class="kw" translate="no">meta</code> z atrybutem <code class="kw" translate="no">charset</code>, nie musisz się tym przejmować.</p>
+</section>
+</section>
+<section id="obscure">
+<h2>Informacje dodatkowe</h2>
+<p>Ta sekcja zawiera informacje, które zwykle nie są potrzebne, ale zostały tu zamieszczone dla kompletności wyjaśnienia.</p>
+<section id="nonutf8">
+<h3>Praca z kodowaniami innymi niż UTF-8</h3>
+<div class="sidenoteGroup">
+<p>Stosowanie UTF-8 nie tylko ułatwia tworzenie stron, lecz także pozwala uniknąć nieoczekiwanych rezultatów podczas przesyłania formularzy i kodowania adresów URL, które domyślnie korzystają z kodowania dokumentu. Jeśli naprawdę nie możesz uniknąć kodowania innego niż UTF-8, musisz wybrać nazwę z ograniczonego zestawu, aby zapewnić możliwie największą interoperacyjność i jak najdłuższą czytelność treści.</p>
+<aside class="sideinfonote">
+<p class="info">Chociaż nazwy te zwykle określa się mianem nazw <dfn>charset</dfn>, w rzeczywistości odnoszą się do kodowań, a nie zestawów znaków. Na przykład zestaw znaków Unicode, czyli repertuar znaków, można zakodować na trzy różne sposoby.</p>
+</aside>
+</div>
+<p>Do niedawna źródłem nazw kodowań był <a class="print" href="https://www.iana.org/assignments/character-sets">rejestr IANA</a>. Rejestr IANA zawiera wiele nazw tego samego kodowania; w takim przypadku należy używać nazwy oznaczonej jako „preferowana”.</p>
+<p>Obecnie należy korzystać ze specyfikacji <a class="print" href="https://encoding.spec.whatwg.org/">Encoding</a>, która zawiera listę sprawdzoną w rzeczywistych implementacjach przeglądarek. Znajdziesz ją w tabeli w sekcji <a class="print" href="https://encoding.spec.whatwg.org/#names-and-labels">Names and labels</a>. Najlepiej używać nazw z lewej kolumny tej tabeli.</p>
+<p><strong>Uwaga:</strong> obecność nazwy w którymkolwiek z tych źródeł nie oznacza jeszcze, że dane kodowanie nadaje się do użycia. Niektóre kodowania sprawiają problemy. Jeśli naprawdę nie możesz stosować UTF-8, uważnie przeczytaj zalecenia z artykułu <a class="print" href="/International/questions/qa-choosing-encodings"><cite>Wybór i stosowanie kodowania znaków</cite></a>.</p>
+<p>Nie wymyślaj własnych nazw kodowań poprzedzonych ciągiem <code>x-</code>. To zły pomysł, ponieważ ogranicza interoperacyjność.</p>
+</section>
+<section id="legacyhtml">
+<h3>Praca ze starszymi formatami HTML</h3>
+<p>HTML 4.01 nie przewiduje stosowania atrybutu <code class="kw" translate="no">charset</code> w elemencie <code class="kw" translate="no">meta</code>, ale każda współczesna popularna przeglądarka rozpozna go i zastosuje, nawet jeśli strona jest zadeklarowana jako HTML4, a nie HTML5. Ta sekcja ma znaczenie tylko wtedy, gdy z jakiegoś powodu innego niż obsługa przeglądarek musisz zachować zgodność ze starszym formatem HTML. Opisuje różnice względem sekcji <a href="#detail">Szczegóły</a>.</p>
+<p>Informacje o stronach udostępnianych jako XML znajdziesz w sekcji <a href="#xml">Praca z formatami poliglotycznymi i XML</a>.</p>
+<p><b class="leadin">HTML4:</b> Jak wspomniano wyżej, pełna zgodność z HTML 4.01 wymaga dyrektywy pragma zamiast atrybutu <code class="kw" translate="no">charset</code>.</p>
+<p><b class="leadin">XHTML 1.x udostępniany jako text/html:</b> Pełna zgodność z HTML 4.01 również wymaga dyrektywy pragma zamiast atrybutu <code class="kw" translate="no">charset</code>. Deklaracja XML nie jest potrzebna, ponieważ plik jest udostępniany jako HTML.</p>
+<p><b class="leadin">XHTML 1.x udostępniany jako XML:</b> Użyj atrybutu <code class="kw" translate="no">encoding</code> deklaracji XML w pierwszym wierszu strony. Przed nim nie może znajdować się nic, nawet spacje (dopuszczalny jest jednak <a class="termref print" href="/International/questions/qa-byte-order-mark">znacznik kolejności bajtów</a>).</p>
+</section>
+<section id="charset">
+<h3>Atrybut charset w odnośniku</h3>
+<p>HTML5 wycofał stosowanie atrybutu <code class="kw" translate="no">charset</code> w elementach <code class="kw" translate="no">a</code> i <code class="kw" translate="no">link</code>, dlatego należy go unikać. Pochodzi on ze specyfikacji HTML 4.01, w której przewidziano go dla elementów <code class="kw" translate="no">a</code>, <code class="kw" translate="no">link</code> i <code class="kw" translate="no">script</code>. Miał wskazywać kodowanie dokumentu, do którego prowadzi odnośnik.</p>
+<p>Miał być używany w elemencie odnośnika umieszczonym w treści, na przykład tak:</p>
+<figure class="example">
+<div class="badcode"><span><img alt="X" src="../icons/dontcopy.png"> Błędny kod. Nie kopiuj!</span></div>
+<div><code class="language-html">Zobacz naszą &lt;a href="/mysite/mydoc.html" charset="iso-8859-15"&gt;listę publikacji&lt;/a&gt;.</code></div>
+</figure>
+<p>Zakładano, że jeśli kodowanie pobieranego dokumentu nie zostało określone w żaden inny sposób, przeglądarka będzie mogła zastosować odpowiednie kodowanie.</p>
+<p>Stosowanie tego atrybutu od początku sprawiało problemy. Po pierwsze, nie jest on dobrze obsługiwany przez popularne przeglądarki. Jednym z powodów jest to, że bez dodatkowych zabezpieczeń mógłby umożliwiać ataki XSS. Po drugie, trudno zagwarantować aktualność takiej informacji. Autor dokumentu docelowego może zmienić jego kodowanie bez Twojej wiedzy. Jeśli nadal nie zadeklarował kodowania w samym dokumencie, przeglądarka otrzyma teraz błędną informację. Po trzecie, atrybut ten w ogóle nie powinien być potrzebny, jeśli autorzy przestrzegają zaleceń z tego artykułu i prawidłowo oznaczają dokumenty. To znacznie lepsze rozwiązanie.</p>
+<p>Ta metoda wskazywania kodowania dokumentu ma najniższy priorytet (czyli zostanie zignorowana, jeśli kodowanie zadeklarowano w jakikolwiek inny sposób). Nie można więc używać jej również do poprawiania błędnych deklaracji.</p>
+</section>
+<section id="utf16">
+<h3>Praca z UTF-16</h3>
+<p>Według wyników analizy Google obejmującej próbę kilku miliardów stron mniej niż 0,01% stron internetowych korzysta z UTF-16. UTF-8 odpowiada obecnie za ponad 98% wszystkich stron WWW. Zdecydowanie odradza się stosowanie UTF-16 jako kodowania strony.</p>
+<p>Jeśli z jakiegoś powodu nie masz innego wyjścia, poniżej przedstawiono zasady deklarowania tego kodowania. Różnią się one od zasad dotyczących innych kodowań.</p>
+<p>Specyfikacja HTML5 zabrania deklarowania UTF-16 za pomocą elementu <code class="kw" translate="no">meta</code>, ponieważ wartości muszą być <a class="termref print" href="https://www.w3.org/TR/html5/infrastructure.html#ascii-compatible-character-encoding">zgodne z ASCII</a>. Zamiast tego należy umieścić <a class="termref print" href="/International/questions/qa-byte-order-mark">znacznik kolejności bajtów</a> na samym początku pliku zakodowanego w UTF-16. W praktyce pełni on funkcję deklaracji wewnątrz dokumentu.</p>
+<p>Ponadto jeśli strona jest zakodowana w UTF-16, nie deklaruj kodowania jako „UTF-16BE” ani „UTF-16LE” — użyj wyłącznie „UTF-16”. Znacznik kolejności bajtów na początku pliku wskazuje, czy <a class="termref" href="https://www.unicode.org/glossary/#character_encoding_scheme">schemat kodowania</a> to <span class="qterm">little-endian</span>, czy <span class="qterm">big-endian</span>. (Wynika to z faktu, że treść jawnie zakodowana na przykład jako UTF-16BE nie powinna zawierać znacznika kolejności bajtów, podczas gdy HTML5 wymaga go dla stron zakodowanych w UTF-16).</p>
+</section>
+</section>
+<!--div class="section2">
+  <h3><a id="xmldeclaration" name="xmldeclaration" href="#xmldeclaration">The XML declaration</a></h3>
+  <p>The XML declaration is defined by the XML standard.  It appears at the top of an XML file and supports an <span
+					class="kw">encoding declaration</span>. For example:</p>
+  <div class="example"> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</code> </div>
+  <p>An XML declaration is required for a document parsed as XML if the encoding of the document is other than UTF-8 or UTF-16 and if the encoding is
+    not provided by a <q>higher level protocol</q>, ie. the HTTP header.</p>
+  <p>This is significant, because if you decide to omit the XML declaration you must choose either UTF-8 or UTF-16 as the encoding for the page if it is to be used without HTTP!</p>
+  <p>You should use an XML declaration to specify the encoding of any XHTML 1.x  document served as XML.</p>
+  <p>It can be useful to use an XML declaration for web pages served as XML, even if the encoding is UTF-8 or UTF-16, because an in-document declaration of this kind also helps developers, testers, or translation production managers ascertain the encoding of the file with a
+    visual check of the source code.</p>
+  <div class="sidenoteGroup">
+    <p><span class="leadin">Using the XML declaration for XHTML served as HTML.</span> XHTML served as HTML is parsed as HTML, even though it is based on XML syntax, and therefore an XML declaration should not be recognized by the browser. It is for this reason that you should use a <a href="#metacontenttype">pragma directive</a> to specify the encoding when serving XHTML in this way*.</p>
+    <div class="sidenote">
+      <p>* Conversely, the pragma directive, though valid, is not recognized as an encoding declaration by XML parsers.</p>
+    </div>
+  </div>
+  <p>On the other hand, the file may also be used at some point as input to other processes that do use XML parsers. This includes such things as XML editors, XSLT transformations, AJAX, etc. In addition, sometimes people use server-side logic to determine whether to serve the file as HTML or XML. For these reasons, if you aren't using UTF-8 or UTF-16 you should add an XML declaration at the beginning of the markup, even if it is served to the browser as
+    HTML. This would make the top of a  file look like this:</p>
+  <div class="example"> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;<br>
+    &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
+    &quot;https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;<br>
+    &lt;html xmlns=&quot;http&lrm;://www.w3.org/1999/xhtml&quot; xml:lang=&quot;en&quot; lang=&quot;en&quot;&gt;<br>
+    &lt;head&gt;<br>
+    &lt;meta http-equiv=&quot;Content-type&quot; content=&quot;text/html;charset=ISO-8859-1&quot;&nbsp;/&gt;<br>
+    ...</code> </div>
+  <p>If you <em>are</em> using UTF-8 or UTF-16, however, there is no need for the XML declaration, especially as the <code class="kw">meta</code> element provides for visual inspection of the encoding by people processing the file.</p>
+  <p><span class="leadin">Catering for older browsers.</span> If anything appears before the DOCTYPE declaration in Internet Explorer 6, the page is rendered in <a href="/International/articles/serving-xhtml/#quirks">quirks mode</a>. If you are using UTF-8 or UTF-16 you can omit the XML declaration, and you will have no problem.</p>
+  <p>If, however, you are not using these encodings and Internet Explorer 6 users still count for a significant proportion of your readers, and if your document contains  constructs that are affected by the difference between <a href="/International/articles/serving-xhtml/#quirks">standards mode</a> vs. quirks mode, then this may be an issue. If you want
+    to ensure that your pages are rendered in the same way on all standards-compliant browsers, you will have to add workarounds to your CSS to overcome the differences.</p>
+  <p>There may also be some other rendering issues associated with an XML declaration, though these are probably only an issue for much older browsers. The XHTML specification <a href="https://www.w3.org/TR/2002/REC-xhtml1-20020801/#C_1">warns</a> that <q>processing instructions
+    are rendered on some user agents. Also, some user agents interpret the XML declaration to mean that the document is unrecognized XML rather than
+    HTML, and therefore may not render the document as expected.</q> You should do <a href="https://www.w3.org/International/tests/tests-html-css/list-encoding-html-css">testing</a> on appropriate user agents to decide <a href="https://www.webstandards.org/learn/articles/prolog_problems/">whether this will be an issue for you</a>.</p>
+  <p>Of course, as mentioned above, if you use UTF-8 or UTF-16 you can omit the XML declaration and the file will still work as XML or HTML. This is probably the simplest solution.</p>
+</div-->
+<section id="endlinks">
+<h2>Dalsza lektura</h2>
+<aside class="section" id="survey"> </aside><script>document.getElementById('survey').innerHTML = g.survey</script>
+<ul id="full-links">
+<li>
+<p>Od czego zacząć? <a href="/International/getting-started/characters">Wprowadzenie do zestawów znaków i kodowania znaków</a></p>
+</li>
+<li>
+<p>Samouczek: <a href="/International/tutorials/tutorial-char-enc/">Obsługa kodowania znaków w HTML i CSS</a></p>
+</li>
+<li>
+<p>Powiązane odnośniki: <cite>Tworzenie stron internetowych</cite></p>
+<ul>
+<li><a href="/International/techniques/authoring-html#charset">Znaki</a></li>
+<li><a href="/International/techniques/authoring-html#indoc">Deklarowanie kodowania znaków w HTML</a></li>
+<li><a href="/International/techniques/authoring-html#choosing">Wybór i stosowanie kodowania znaków</a></li>
+</ul>
+</li>
+<li>
+<p>Powiązane odnośniki: <cite>Konfiguracja serwera</cite></p>
+<ul>
+<li><a href="/International/techniques/server-setup#charset">Znaki</a></li>
+</ul>
+</li>
+</ul>
+</section>
+<footer id="thefooter"></footer><script>document.getElementById('thefooter').innerHTML = g.bottomOfPage</script>
+<script>completePage()</script>
+</body>
+</html>
