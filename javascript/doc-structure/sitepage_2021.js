@@ -35,7 +35,7 @@ g.nativeText = {
 'th':'ไทย',
 'tr':'Türkçe',
 'uk':'Українська',
-'vi':'Tiếng&#xA0;Anh',
+'vi':'Tiếng&#xA0;Việt',
 'zh-hans':'简体中文',
 'zh-hant':'繁體中文'
 }
