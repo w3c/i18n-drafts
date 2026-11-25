@@ -39,7 +39,7 @@ s.currLang = {
   'pes':'Persa',
   'pl':'Polonês',
   'pt':'Português',
-  'pt-br':'Português brasiliero',
+  'pt-br':'Português brasileiro',
   'ro':'Romeno',
   'ru':'Russo',
   'sv':'Sueco',
