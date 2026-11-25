@@ -46,7 +46,7 @@ s.currLang = {
   'th':'Tiếng Thái',
   'tr':'Tiếng Thổ Nhĩ Kỳ',
   'uk':'Tiếng U-crai-na',
-  'vi':'Tiếng Anh',
+  'vi':'Tiếng Việt',
   'zh-hans':'Tiếng Trung Quốc (Giản thế)',
   'zh-hant':'Tiếng Trung Quốc (Phồn thế)'
 }
