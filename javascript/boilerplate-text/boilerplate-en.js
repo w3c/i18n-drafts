@@ -51,7 +51,7 @@ s.currLang = {
 'zh-hant':'Traditional Chinese'
 }
 // cookie message, appears when changing languages
-// this text needs to be copied to javascript/doc-structure/article-dt.js
+// generated from data/languages.json by `npm run languages:generate` — edit the cookieMessage there
 s.cookieMsg = "If you let the browser set a cookie, you will continue to see W3C Internationalization Activity pages (where available) in the language you chose. Do you want to set the cookie?"
 
 // skip navigation link

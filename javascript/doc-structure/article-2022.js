@@ -9,11 +9,12 @@ if (window.location.href.match('www.w3.org')) {
 
 // LANGUAGE RELATED STUFF
 
+// generated from data/languages.json by `npm run languages:generate` — do not edit here
 g.nativeText = {
 'ar':'عربي',
 'bg':'Български',
-'de':'Deutsch',
 'da':'Dansk',
+'de':'Deutsch',
 'el':'Ελληνικά',
 'en':'English',
 'es':'Español',
@@ -31,7 +32,7 @@ g.nativeText = {
 'pt':'Português',
 'pt-br':'Português-BR',
 'ro':'Română',
-'ru':'Pусский',
+'ru':'Русский',
 'sv':'Svenska',
 'th':'ไทย',
 'tr':'Türkçe',

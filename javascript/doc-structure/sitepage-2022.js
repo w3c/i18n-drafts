@@ -24,11 +24,12 @@ if (! window.location.href.match('www.w3.org') && ! window.location.href.match('
  * Maps language tags to their native language names for display
  * Used in language switcher dropdowns and navigation
  */
+// generated from data/languages.json by `npm run languages:generate` — do not edit here
 g.nativeText = {
 'ar':'عربي',
 'bg':'Български',
-'de':'Deutsch',
 'da':'Dansk',
+'de':'Deutsch',
 'el':'Ελληνικά',
 'en':'English',
 'es':'Español',
@@ -46,7 +47,7 @@ g.nativeText = {
 'pt':'Português',
 'pt-br':'Português-BR',
 'ro':'Română',
-'ru':'Pусский',
+'ru':'Русский',
 'sv':'Svenska',
 'th':'ไทย',
 'tr':'Türkçe',

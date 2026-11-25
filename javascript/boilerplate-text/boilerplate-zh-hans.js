@@ -52,8 +52,8 @@ s.currLang = {
 }
 
 // cookie message, appears when changing languages
-// this text needs to be copied to javascript/doc-structure/article-dt.js
-s.cookieMsg = "您可以让浏览器设置cookie，以继续使用您选择的语言浏览W3C国际化标准计划（如果有该语言的翻译的话）。请问您想设置cookie吗？"
+// generated from data/languages.json by `npm run languages:generate` — edit the cookieMessage there
+s.cookieMsg = "您可以让浏览器设置cookie，以继续使用您选择的语言浏览 W3C 国际化标准计划（如果有该语言的翻译的话）。请问您想设置cookie吗？"
 
 // skip navigation link
 s.skipNavigation = "跳至主要内容"

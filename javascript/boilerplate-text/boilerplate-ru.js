@@ -52,7 +52,7 @@ s.currLang = {
 }
 
 // cookie message, appears when changing languages
-// this text needs to be copied to javascript/doc-structure/article-dt.js
+// generated from data/languages.json by `npm run languages:generate` — edit the cookieMessage there
 s.cookieMsg = "Если вы разрешите браузеру установить cookie, вы будете видеть страницы W3C Internationalization Activity на выбранном вами языке (там, где это доступно). Установить cookie?"
 
 // skip navigation link

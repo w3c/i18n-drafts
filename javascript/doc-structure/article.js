@@ -4,15 +4,17 @@ var g = { }
 
 // LANGUAGE RELATED STUFF
 
+// generated from data/languages.json by `npm run languages:generate` — do not edit here
 g.nativeText = {
 'ar':'عربي',
 'bg':'Български',
-'de':'Deutsch',
 'da':'Dansk',
+'de':'Deutsch',
 'el':'Ελληνικά',
 'en':'English',
 'es':'Español',
 'fr':'Français',
+'gl':'Galego',
 'he':'עברית',
 'hi':'हिन्दी',
 'hu':'Magyar',
@@ -20,11 +22,12 @@ g.nativeText = {
 'ja':'日本語',
 'ko':'한국어',
 'nl':'Nederlands',
+'pes':'فارسی',
 'pl':'Polski',
 'pt':'Português',
 'pt-br':'Português-BR',
 'ro':'Română',
-'ru':'Pусский',
+'ru':'Русский',
 'sv':'Svenska',
 'th':'ไทย',
 'tr':'Türkçe',
