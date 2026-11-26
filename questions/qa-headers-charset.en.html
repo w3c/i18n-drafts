@@ -15,13 +15,13 @@ f.previousauthors = '' // as above
 f.modifiers = 'Richard Ishida, W3C' // people making substantive changes, and their affiliation
 f.searchString = 'qa-headers-charset' // blog search string - usually the filename without extensions
 f.firstPubDate = '2003-06-16' // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2023-10-17', time:'07:29'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-03-11', time:'14:29'}  // date and time of latest substantive changes to this document
 f.status = 'published'  // should be one of draft, review, published, notreviewed or obsolete
 f.path = '../' // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2023-10-17', time:'10:16'} // date and time of latest edits to this document/translation
-f.contributors = '' // people providing useful contributions or feedback during review or at other times
+f.thisVersion = { date:'2026-03-11', time:'14:45' } // date and time of latest edits to this document/translation
+f.contributors = 'Fuqiao Xue' // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
 f.sources = '' // describes sources of information
@@ -93,8 +93,10 @@ f.additionalLinks = ''
       <li><a class="print" href="https://tools.keycdn.com/curl">HTTP Header Checker by KeyCDN</a></li>
     </ul>
     <p>Note: W3C has no relationship to any of these services.</p>
-    <p>In the HTTP headers, look for the <code class="kw" translate="no">Content-Type</code> header, and in particular for the <code class="kw" translate="no">charset</code> parameter, e.g.</p>
-    <blockquote><code>Content-Type: text/html; charset=utf-8</code></blockquote>
+    <p>In the HTTP headers, look for the <code class="kw" translate="no">Content-Type</code> header, and in particular for the <code class="kw" translate="no">charset</code> parameter. For example:</p>
+    <figure class="example">
+      <pre translate="no">Content-Type: text/html; charset=utf-8</pre>
+    </figure>
     <p>Note: The <code class="kw" translate="no">charset</code> parameter may not be present. This is okay if your document itself indicates its character
       encoding.</p>
   </section>
@@ -108,7 +110,7 @@ f.additionalLinks = ''
       <ol>
           <li>Open DevTools by pressing <kbd>Control+Shift+I</kbd> or <kbd>Command+Option+I</kbd> (Mac).</li>
           <li>Click the <strong>Network</strong> tab. Right now the Network panel is empty.</li>
-          <li>Reload the page to log some network activity. Each row represents a resource. The top resource is usually the main HTML document.</li>
+          <li>Reload the page to log some network activity. Each row represents a resource. The entry whose type is <code class="kw" translate="no">document</code> or <code class="kw" translate="no">doc</code> is usually the main HTML document. If the page redirects, inspect the last document request in the chain.</li>
           <li>Click a resource and open the <strong>Headers</strong> tab to view the HTTP headers.</li>
           <li>In the HTTP headers, look for the <code class="kw" translate="no">Content-Type</code> header, and in particular for the <code class="kw" translate="no">charset</code> parameter.</li>
         </ol>
@@ -130,8 +132,24 @@ f.additionalLinks = ''
 
 
   <section id="telnet">
-<h2>Use <code>telnet</code> or another command-line tool</h2>
-    <p>This requires a bit more expertise, but may be easier to automate. Another command line tool may be <code>wget</code> (with a <code>-S</code> or <code>-s</code> option).</p>
+<h2>Use command-line tools</h2>
+    <p>Command-line tools are useful when you want to automate checks or inspect the exact response returned by the server. <code>curl</code> is usually the simplest option.</p>
+    <figure class="example">
+      <pre translate="no">curl -I https://www.w3.org/</pre>
+    </figure>
+    <p>The <code>-I</code> option sends a <code class="kw" translate="no">HEAD</code> request. If you need to inspect the headers returned for a normal <code class="kw" translate="no">GET</code> request, use:</p>
+    <figure class="example">
+      <pre translate="no">curl -sS -D - -o /dev/null https://www.w3.org/</pre>
+    </figure>
+    <p>If the URL redirects, add <code>-L</code> so that <code>curl</code> follows the redirect chain and shows the final response headers.</p>
+    <figure class="example">
+      <pre translate="no">curl -IL https://www.w3.org/</pre>
+    </figure>
+    <p>You can also use <code>wget</code> with the <code>-S</code> option, or <code>telnet</code> if you need to type the request manually.</p>
+    <figure class="example">
+      <pre translate="no">wget -S -O /dev/null https://www.w3.org/</pre>
+    </figure>
+    <p>In each case, look for the <code class="kw" translate="no">Content-Type</code> header and its <code class="kw" translate="no">charset</code> parameter.</p>
   </section>
 
 
@@ -142,7 +160,7 @@ f.additionalLinks = ''
     some servers in Russia. This requires special care, because your browser, running e.g. on a Mac or on a Windows system, may indicate using a
     different character encoding than the encoding given to you by a Web-based service or the W3C Markup Validation Service (which are mostly based on
     UNIX systems).</p>
-</section>
+  </section>
 
 
 <section id="endlinks">
