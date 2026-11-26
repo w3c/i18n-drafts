@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>Address formats around the world</title>
-<meta name="description" content="How do address formats differ around the world, and what are the implications of those differences on the design of forms, databases, ontologies, etc. for the Web?">
+<meta name="description" content="A practical guide to international address formats. How address lines, postal codes, scripts, and field order vary by country, and how to design web forms and databases that handle those differences.">
 <script>
 var f = { }
 
@@ -15,12 +15,12 @@ f.previousauthors = ''; // as above
 f.modifiers = ''; // people making substantive changes, and their affiliation
 f.searchString = 'article-qa-address-formats'; // blog search string - usually the filename without extensions
 f.firstPubDate = '2026-02-02'; // date of the first publication of the document (after review)
-f.lastSubstUpdate = { date:'2026-02-02', time:'19:22'}  // date and time of latest substantive changes to this document
+f.lastSubstUpdate = { date:'2026-03-10', time:'03:18'}  // date and time of latest substantive changes to this document
 f.status = 'published';  // should be one of draft, review, published, or notreviewed
 f.path = '../' // what you need to prepend to a URL to get to the /International directory
 
 // AUTHORS AND TRANSLATORS should fill in these assignments:
-f.thisVersion = { date:'2026-02-02', time:'10:41' } // date and time of latest edits to this document/translation
+f.thisVersion = { date:'2026-03-10', time:'11:35' } // date and time of latest edits to this document/translation
 f.contributors = 'Annemarie Apple, Jedi Lin, Richard Ishida'; // people providing useful contributions or feedback during review or at other times
 // make sure to translate the information in the meta description element
 // also make sure that the lang attribute on the html tag is correct!
@@ -57,11 +57,68 @@ f.additionalLinks = ''
 
 <section id="question">
 <h2>Question</h2>
-  <p class="question">How do address formats differ around the world, and what are the implications of those differences on the design of forms, databases, ontologies, etc. for the Web?</p>
-  <p>Address formats vary widely across the globe, with differences in structure, content, and the level of granularity. For authors and developers designing forms, databases, or systems that handle addresses, understanding these variations is crucial to avoid frustrating users from other countries. This article will introduce some of the key differences in address formats around the world and provide guidance on how to design systems that can handle them effectively.</p>
-  <p>This is not an exhaustive guide but aims to sensitize you to the complexities of international address formats and the challenges they pose for web design. As with <a href="https://www.w3.org/International/questions/qa-personal-names">personal names</a>, there is no one specific "perfect" solution, but awareness of these differences is the first step toward building more inclusive systems.</p>
+  <p class="question">How do address formats differ around the world, and how should those differences shape the design of web forms, databases, ontologies, and delivery workflows?</p>
+  <p>International address formats vary widely in structure, content, ordering, and granularity. For authors and developers designing forms, databases, shipping flows, or systems that handle addresses, those differences matter: a form that feels obvious in one country can easily fail in another. This article highlights the patterns that most often break international address handling and offers practical guidance for building systems that are more resilient.</p>
+  <p>This article is a practical guide to international address formats for the Web. It is not a country-by-country directory, but it does cover the recurring differences that most often affect form design, validation, storage, and localization. As with <a href="https://www.w3.org/International/questions/qa-personal-names">personal names</a>, there is no one specific "perfect" solution, but awareness of these differences is the first step toward building more inclusive systems.</p>
 </section>
 
+<section id="pattern-matrix">
+<h2>Common international address patterns</h2>
+  <p>The table below is not exhaustive, but it captures some of the differences that often cause problems for forms and validation rules.</p>
+  <div class="table-wrapper">
+    <table id="patternMatrix">
+      <thead>
+        <tr>
+          <th scope="col">Pattern</th>
+          <th scope="col">What varies</th>
+          <th scope="col">Implementation consequence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Street name and house number</th>
+          <td>In countries such as the United States, the United Kingdom, and France, the house number typically precedes the street name. In Germany and Switzerland, the street name commonly comes first.</td>
+          <td>Do not hard-code one field order. If you split fields, localize both the labels and the presentation order by country.</td>
+        </tr>
+        <tr>
+          <th scope="row">House names, flats, and building names</th>
+          <td>Some addresses start with a building name, flat number, or house name, and the street line may appear later or not at all.</td>
+          <td>Allow multiple address lines and avoid assuming that the first line contains the street name.</td>
+        </tr>
+        <tr>
+          <th scope="row">No street names</th>
+          <td>In many parts of Japan, addresses are organized around prefectures, cities, districts, blocks, and building numbers rather than named streets.</td>
+          <td>Do not require a field literally called "street". Use more generic address line labels when possible.</td>
+        </tr>
+        <tr>
+          <th scope="row">Intersection-based addressing</th>
+          <td>Some systems, such as those used in Colombia and Kyoto, describe location relative to an intersecting street or landmark rather than a sequential street number.</td>
+          <td>Support free-form address lines and delivery notes, especially when validating or formatting for shipping.</td>
+        </tr>
+        <tr>
+          <th scope="row">Component order</th>
+          <td>China and Japan commonly write addresses from larger administrative areas down to smaller ones, while many other countries do the reverse. Russia may use either order.</td>
+          <td>Do not parse meaning from position alone. Store structured data explicitly if you need it later.</td>
+        </tr>
+        <tr>
+          <th scope="row">Postal code conventions</th>
+          <td>Postal codes vary in length, separators, case, and precision. Some countries require spaces or hyphens, while others use continuous digits, and some countries do not use postal codes at all.</td>
+          <td>Validation must be country-aware and tolerant of user-entered variation. Postal code fields may need to be optional.</td>
+        </tr>
+        <tr>
+          <th scope="row">Scripts and transliteration</th>
+          <td>Addresses may need to be written in local scripts for domestic delivery but in Latin script for customs forms or cross-border shipping.</td>
+          <td>Allow non-Latin input, and if international shipping is involved, consider storing both native-script and Latin-script forms.</td>
+        </tr>
+        <tr>
+          <th scope="row">Last-mile delivery context</th>
+          <td>Formal postal addresses are not always enough. In some places, landmark-based directions or community delivery practices remain essential.</td>
+          <td>Provide a dedicated field for delivery instructions instead of forcing that information into a structured address model.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
 
 <section id="global-variations">
 <h2>Global variations in address formats</h2>
@@ -225,7 +282,7 @@ Postal Code
   <ul id="full-links">
 <li><a href="https://www.upu.int/en/postal-solutions/programmes-services/addressing-solutions">Universal Postal Union (UPU)</a>: International postal standards and country-specific addressing guidelines. Address format information can be found in their postal addressing standards documentation.</li>
 <li><a href="https://en.wikipedia.org/wiki/Address">Address</a> on Wikipedia</li>
-<li><a href="https://github.com/mirumee/google-i18n-address">Google i18n Address Library</a>: Comprehensive address validation and formatting data for international addresses</li>
+<li><a href="https://github.com/google/libaddressinput">Google libaddressinput</a>: Open-source address metadata and validation library used in Chromium and Android.</li>
 <li><a href="https://github.com/battre/autocomplete-attribute-explainer/">Proposal for extending the autocomplete attribute</a></li>
 <li><a href="https://www.geopostcodes.com/blog/international-address-data/">International Address Format: Structure and Normalization</a></li>
 <li><a href="https://www.w3.org/International/questions/qa-personal-names">Personal names around the world</a></li>
